@@ -6,7 +6,7 @@ setwd("~/Dropbox/SkyIslands/data")
 
 
 ## load data
-D <- read.csv("specimenData/cleaned/specimens.csv")
+D <- read.csv("specimenData/specimens.csv")
 
 ## *******************************************************
 ## next we will create the data structures that that we
