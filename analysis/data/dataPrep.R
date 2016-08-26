@@ -1,10 +1,12 @@
 rm(list=ls())
+library(igraph)
 library(vegan)
 library(fields)
 library(bipartite)
 setwd("~/Dropbox/skyIslands/analysis/data")
 source("src/misc.R")
 source("src/prepNets.R")
+source("src/specialization.R")
 src.dir <- '../../data/relational/data/relational/traditional/'
 spec <-
   read.csv(file.path(src.dir, "specimens-complete.csv"))
@@ -44,4 +46,10 @@ save(spec, file="spec/spec.Rdata")
 
 ### networks
 nets <- breakNet(spec, 'Site', 'Year')
-save(nets, file="networks/nets.Rdata")
+graphs <- lapply(nets, graph.incidence, weighted=TRUE, add.names=NA)
+save(graphs, nets, file="networks/nets.Rdata")
+
+sp.lev <- calcSpec(nets, spec)
+save(sp.lev, file='spec/sp.lev.Rdata')
+
+
