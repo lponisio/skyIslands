@@ -1,0 +1,138 @@
+install.packages("TreeSim")
+mat <- matrix(1:100, 10, 10)
+library(TreeSim)#
+library(ape)#
+library(geiger)#
+library(mvtnorm)#
+library(bipartite)#
+library(igraph)
+library(TreeSim)#
+library(ape)#
+library(geiger)#
+library(mvtnorm)#
+library(bipartite)#
+library(distr)
+library(TreeSim)#
+library(ape)#
+library(geiger)#
+library(mvtnorm)#
+library(bipartite)
+library("igraph")
+x <- expand.grid(1:10, 10:1)
+x
+length(x)
+nrow(x)
+print(js.ran, digits=3)
+print(js.occ, digits=3)
+library(TreeSim)
+sim.bd.taxa(15,1, 0.5, 0.5, complete=FALSE)
+cases
+cases <- mu=seq(from= 0.01, to= 1.0, length.out= 10),#
+                     lambda=seq(from= 0.01, to= 1.0, length.out= 10)
+cases <- c(mu=seq(from= 0.01, to= 1.0, length.out= 10),#
+                     lambda=seq(from= 0.01, to= 1.0, length.out= 10))
+cases
+cases <- list(mu=seq(from= 0.01, to= 1.0, length.out= 10),
+lambda=seq(from= 0.01, to= 1.0, length.out= 10))
+cases
+cases <- list(mu=seq(from= 0.01, to= 1.0, length.out= 10),#
+                     lambda=seq(from= 0.01, to= 1.0, length.out= 10))#
+for(i in 1:length(cases[[1]])){#
+	print(c(cases[[1]][i],cases[[2]][i]))#
+	tree <- sim.bd.taxa(15, 1, lambda = cases[[1]][i], mu=cases[[1]][i], complete=FALSE)#
+	plot(tree)#
+}
+cases <- list(mu=seq(from= 0.01, to= 1.0, length.out= 10),#
+                     lambda=seq(from= 0.01, to= 1.0, length.out= 10))#
+for(i in 1:length(cases[[1]])){#
+	print(c(cases[[1]][i],cases[[2]][i]))#
+	tree <- sim.bd.taxa(15, 1, lambda = cases[[1]][i], mu=cases[[1]][i], complete=FALSE)[[1]]#
+	plot(tree)#
+}
+length(cases[[1]])
+i <- 1
+print(c(cases[[1]][i],cases[[2]][i]))
+tree <- sim.bd.taxa(15, 1, lambda = cases[[1]][i], mu=cases[[1]][i], complete=FALSE)[[1]]
+plot(tree)
+tree
+plot(tree[[1]])
+cases <- list(mu=seq(from= 0.01, to= 1.0, length.out= 10),#
+                     lambda=seq(from= 0.01, to= 1.0, length.out= 10))#
+for(i in 1:length(cases[[1]])){#
+	print(c(cases[[1]][i],cases[[2]][i]))#
+	tree <- sim.bd.taxa(15, 1, lambda = cases[[1]][i], mu=cases[[1]][i], complete=FALSE)[[1]]#
+	plot(tree[[1]])#
+}
+setseed(2)#
+cases <- list(mu=seq(from= 0.01, to= 1.0, length.out= 10),#
+                     lambda=seq(from= 0.01, to= 1.0, length.out= 10))#
+for(i in 1:length(cases[[1]])){#
+	print(c(cases[[1]][i],cases[[2]][i]))#
+	tree <- sim.bd.taxa(15, 1, lambda = cases[[1]][i], mu=cases[[1]][i], complete=FALSE)[[1]]#
+	plot(tree[[1]])#
+}
+set.seed(2)#
+cases <- list(mu=seq(from= 0.01, to= 1.0, length.out= 10),#
+                     lambda=seq(from= 0.01, to= 1.0, length.out= 10))#
+for(i in 1:length(cases[[1]])){#
+	print(c(cases[[1]][i],cases[[2]][i]))#
+	tree <- sim.bd.taxa(15, 1, lambda = cases[[1]][i], mu=cases[[1]][i], complete=FALSE)[[1]]#
+	plot(tree[[1]])#
+}
+set.seed(3)#
+cases <- list(mu=seq(from= 0.01, to= 1.0, length.out= 10),#
+                     lambda=seq(from= 0.01, to= 1.0, length.out= 10))#
+for(i in 1:length(cases[[1]])){#
+	print(c(cases[[1]][i],cases[[2]][i]))#
+	tree <- sim.bd.taxa(15, 1, lambda = cases[[1]][i], mu=cases[[1]][i], complete=FALSE)[[1]]#
+	plot(tree[[1]])#
+}
+library(linkcomm)
+?getCommunityConnectedness
+?getLinkCommunities
+rm(list=ls())#
+library(vegan)#
+library(fields)#
+library(igraph)#
+library(linkcomm)#
+setwd("~/Dropbox/Sky Islands/Analysis/")#
+source('functions/samp2site_spp.R')#
+source('~/Dropbox/hedgerow/network/assembly/src/calc_metrics.R')#
+#
+geo <-#
+  read.csv("../Data/Relational/data/relational/tables/geography.csv")#
+#
+spec <-#
+  read.csv("data/spec.csv")#
+#
+mut.adj <- function(x) {#
+  nr <- dim(x)[1]#
+  nc <- dim(x)[2]#
+  to.fill <- matrix(0,ncol=nc + nr, nrow=nc + nr)#
+  to.fill[1:nr,(nr+1):(nc+nr)] <- x#
+  rownames(to.fill) <- c(rownames(x), rep(NA, nrow(to.fill)-nrow(x)))#
+  colnames(to.fill) <- c(colnames(x), rep(NA, ncol(to.fill)-ncol(x)))#
+  adj.mat <- graph.adjacency(to.fill, mode= "undirected",#
+                             weighted=TRUE,#
+                             add.rownames="code", add.colnames="names"))#
+  return(adj.mat)#
+}#
+#
+pdf.f <- function(f, file, ...) {#
+  cat(sprintf("Writing %s\n", file))#
+  pdf(file, ...)#
+  on.exit(dev.off())#
+  f()#
+}#
+#
+prep.comm <- aggregate(spec$GenSp,#
+                       list(site=spec$PlantGenSp,#
+                            sp=spec$GenSp), length)#
+#
+comm <- samp2site.spp(prep.comm$site, prep.comm$sp, prep.comm$x)#
+comm.dis <- as.matrix(vegdist(comm, "chao", diag= TRUE))#
+#
+mds2 <- wcmdscale(comm.dis, k=2)#
+plot(mds2[,1], mds2[,2], type = "n", xlab = "", ylab = "", axes = FALSE, main = "wcmdscale (vegan)")#
+text(mds2[,1], mds2[,2], rownames(comm.dis), cex = 0.5)
+quartz()
