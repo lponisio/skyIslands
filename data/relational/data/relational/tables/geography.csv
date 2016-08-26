@@ -1,0 +1,6 @@
+"GeographyPK","Site","Country","State","County","Meadow","Forest","MtRange","Lat","Long"
+1,"CH","USA","Arizona","Cochise","Barefoot","Coronado","Chiricahua Mts.",31.917411,109.278936
+2,"JC","USA","New Mexico","Santa Fe","Jack's creek meadow","Santa Fe","Sangre de Cristo Mts.",35.855092,105.640575
+3,"MM","USA","New Mexico","Socorro","South Baldy meadow","Cibola","Magdalena Mts.",33.991475,107.183675
+4,"PL","USA","Arizona","Graham","Hospital Flat","Coronado","Pinaleno Mts.",32.668392,109.877642
+5,"SC","USA","New Mexico","Bernalillo","Kiwanis meadow","Cibola","Sandia Mts.",35.20635,106.443375
