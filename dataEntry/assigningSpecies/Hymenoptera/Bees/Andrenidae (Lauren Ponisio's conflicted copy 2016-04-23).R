@@ -1,0 +1,150 @@
+
+sp.ids <- list(
+
+    Andrena_segregans= list(
+    Genus="Andrena",
+    Subgenus = "Euandrena",
+    Species ="segregans",
+    Subspecies="",
+    Sex="f",
+    Author = "Cockerell",
+    Determiner="R.W. Thorp",
+    temp.id= c(251)),
+
+
+  Pseudopanurgus_atricornis_m= list(genus="Pseudopanurgus", subgenus
+    ="", species="atricornis", subspecies="", sex="m", author =
+    "Cresson", temp.id= c("SC_072812_163", "SC_072812_179",
+    "SC_072812_161", "SC_072812_184", "SC_072812_42", "SC_072812_37",
+    "SC_072712_180", "SC_072712_178", "SC_072112_24", "SC_072312_60",
+    "SC_072112_76", "SC_072312_51", "SC_072012_178", "SC_072012_218",
+    "SC_072612_87","SC_072312_208", "SC_072112_73", "SC_072112_69",
+    "SC_072112_68", "SC_072612_193", "SC_072612_245", "SC_072312_214",
+    "SC_072812_52", "SC_072312_234", "SC_072712_183", "SC_072612_43",
+    "SC_072612_46", "SC_072012_249", "SC_072112_78", "SC_072112_77",
+    "SC_072112_83", "SC_072612_250", "SC_072612_249", "SC_072612_247",
+    "SC_072112_18", "SC_072612_243", "SC_072612_255", "SC_072612_257",
+    "SC_072612_93", "SC_072012_164", "SC_072712_148", "SC_072712_164",
+    "SC_072612_238", "SC_072612_237", "SC_072612_206",
+    "SC_072012_163", "SC_072612_30", "SC_072612_218", "SC_072112_133",
+    "SC_072612_92", "SC_072612_205", "SC_072312_240", "SC_072112_125",
+    "SC_072612_204", "SC_072112_134", "SC_072612_232", "SC_072112_80",
+    "SC_072112_159", "SC_072812_172","SC_072812_195", "SC_072812_167",
+    "SC_072812_169", "SC_072812_192", "SC_072812_191", "SC_072912_12",
+    "SC_072912_67", "SC_072612_246", "JC_071512_193", "MM_080212_201",
+    "MM_073112_116", "MM_073112_44", "MM_080212_285", "MM_080112_149",
+    "MM_080212_316", "MM_080212_168", "JC_071712_98")),
+
+  Pseudopanurgus_atricornis_f= list(genus="Pseudopanurgus", subgenus
+    ="", species="atricornis", subspecies="", sex="f", author =
+    "Cresson", temp.id= c("SC_072712_165", "SC_072712_153",
+    "SC_072012_223", "SC_072712_97", "SC_072612_221", "SC_072612_91",
+    "SC_072612_89", "SC_072612_256", "SC_072612_222", "SC_072012_296",
+    "SC_072312_250", "SC_072112_156", "SC_072312_220",
+    "SC_072312_221", "SC_072012_293", "SC_072712_147",
+    "SC_072312_212", "SC_072112_147", "SC_072712_166", "SC_072112_70",
+    "SC_072612_229", "SC_072312_218", "SC_072112_71", "SC_072612_235",
+    "SC_072612_188", "SC_072112_160", "SC_072112_72", "SC_072112_126",
+    "SC_072112_136", "SC_072612_217", "SC_072612_80", "SC_072112_31",
+    "SC_072012_254", "SC_072612_220", "SC_072012_173",
+    "SC_072112_135", "SC_072612_187", "SC_072012_234",
+    "SC_072012_253", "SC_072012_171", "SC_072612_254",
+    "SC_072012_175", "SC_072612_248", "SC_072612_240", "PL_081212_51",
+    "JC_071712_103", "PL_081312_52", "SC_072012_252", "SC_072312_229",
+    "SC_072312_231", "SC_072112_74", "SC_072612_35", "PL_081312_53",
+    "SC_072712_95", "SC_072312_65", "SC_072712_21", "JC_071712_203",
+    "JC_071712_202", "JC_071512_89", "MM_080212_109", "MM_080112_67",
+    "MM_080112_69", "MM_080112_150", "MM_080112_151", "MM_080312_35",
+    "MM_073112_43", "MM_080112_152", "MM_080312_110", "SC_072812_164",
+    "SC_072812_180", "MM_080312_34", "MM_080212_282", "MM_080112_148",
+    "MM_080212_315", "PL_080912_82", "PL_081112_244", "PL_081212_54",
+    "SC_072712_177", "JC_071512_67", "SC_072812_177", "JC_071712_86",
+    "JC_071512_78", "SC_072912_113", "JC_071412_84", "SC_072812_178",
+    "JC_071712_15", "SC_072812_41", "SC_072812_26", "SC_072812_32",
+    "SC_072712_176", "SC_072712_167", "SC_072712_184",
+    "SC_072712_168", "SC_072812_51", "SC_072712_179", "SC_072812_55",
+    "SC_072812_35", "SC_072712_181", "SC_072612_95", "SC_072612_81",
+    "SC_072112_79", "SC_072112_148", "SC_072012_168", "SC_072612_47",
+    "SC_072312_66", "SC_072312_57", "SC_072612_98", "SC_072012_177",
+    "SC_072612_239", "SC_072012_176", "SC_072312_48", "SC_072112_34",
+    "SC_072112_35", "SC_072012_169", "SC_072112_28", "SC_072112_81",
+    "SC_072112_27", "SC_072112_21", "SC_072112_30", "SC_072112_23",
+    "SC_072312_232", "SC_072312_228", "SC_072712_31", "SC_072112_42",
+    "SC_072312_58", "SC_072612_252", "SC_072312_52", "SC_072112_158",
+    "SC_072712_29", "SC_072112_132", "SC_072112_75", "MM_080412_69",
+    "MM_080412_70", "MM_080412_72", "MM_080412_71", "MM_080412_73",
+    "MM_080412_115", "MM_080412_236", "MM_080412_237",
+    "MM_073112_115","SC_072812_185","SC_072812_189",
+    "SC_072812_174","SC_072912_11","SC_072812_194","SC_072912_117",
+    "SC_072812_168")),
+
+  Andrena_apacheorum= list(genus="Andrena", subgenus ="",
+    species="apacheorum", subspecies="", sex="f", author =
+    "Cockerell", temp.id= c("PL_081212_48", "PL_081212_46",
+    "PL_081212_45", "PL_081212_101", "PL_081212_97", "PL_081112_173",
+    "PL_081312_134", "PL_081312_211", "PL_081212_140",
+    "PL_081112_172", "PL_081212_160", "PL_081112_128", "PL_081112_79",
+    "PL_081212_221", "PL_081212_228", "PL_081112_74", "PL_081312_99",
+    "PL_081212_203", "PL_081012_167", "PL_080912_274",
+    "PL_081012_142", "PL_081012_240", "MM_080312_101", "PL_081112_29",
+    "PL_080912_146", "PL_081112_245", "PL_080912_129",
+    "PL_081112_174", "PL_081312_11", "PL_081112_51", "PL_081012_141",
+    "PL_080912_271", "PL_081012_138", "PL_081012_267",
+    "PL_080912_268", "PL_081012_92", "PL_081012_175", "PL_081112_154",
+    "PL_080912_340", "PL_081012_264", "PL_080912_124", "PL_081112_55",
+    "PL_081012_289", "PL_081112_58", "PL_080912_270", "PL_080912_273",
+    "PL_080912_269", "PL_081012_208", "PL_081312_210", "JC_071512_62",
+    "JC_071512_97", "JC_071712_78", "SC_072712_208", "JC_071712_131",
+    "JC_071412_43", "JC_071712_95","PL_081312_103", "PL_081312_102",
+    "PL_081312_94", "PL_081312_171", "PL_081312_100", "PL_081312_101",
+    "PL_080912_294", "PL_081012_274", "PL_081112_73")),
+
+  Andrena_apacheorum= list(genus="Andrena", subgenus ="",
+    species="apacheorum", subspecies="", sex="m", author =
+    "Cockerell", temp.id= c("PL_081112_53", "PL_080912_303",
+    "PL_081312_111", "PL_081312_112", "PL_081012_238")),
+
+  Panurginus_cressoniellus_f= list(genus="Panurginus", subgenus ="",
+    species="cressoniellus", subspecies="", sex="f", author =
+    "Cockerell", temp.id=
+    c("JC_071512_105","JC_071512_146","JC_071212_51","JC_071212_103",
+    "JC_071212_121", "JC_071712_72")),
+
+  Panurginus_cressoniellus_m= list(genus="Panurginus", subgenus ="",
+    species="cressoniellus", subspecies="", sex="m", author =
+    "Cockerell", temp.id= c("JC_071512_194"))
+
+
+  )
+
+## lengths <- sapply(sp.ids, function(x) length(x$temp.id))
+## Genus <- sapply(sp.ids, function(x) x$genus)
+## SubGenus <- sapply(sp.ids, function(x) x$subgenus)
+## Species <- sapply(sp.ids, function(x) x$species)
+## SubSpecies <- sapply(sp.ids, function(x) x$subspecies)
+## Sex <- sapply(sp.ids, function(x) x$sex)
+## TempID <- sapply(sp.ids, function(x) x$temp.id)
+
+## dd <- data.frame(TempID=unlist(TempID),
+##                  Genus=rep(Genus, lengths),
+##                  SubGenus=rep(SubGenus, lengths),
+##                  Species=rep(Species, lengths),
+##                  SubSpecies=rep(SubSpecies, lengths),
+##                  Sex=rep(Sex, lengths))
+
+## ## lood data:
+## D <- read.csv(file=newfile, as.is=TRUE)
+
+
+## ind <- match(dd$TempID, D$temp.id)
+## D$order[ind] <- 'Hymenoptera'
+## D$family[ind] <- 'Andrenidae'
+## D$genus[ind] <- as.character(dd$Genus)
+## D$subgenus[ind] <- as.character(dd$SubGenus)
+## D$species[ind] <- as.character(dd$Species)
+## D$subspecies[ind] <- as.character(dd$SubSpecies)
+## D$sex[ind] <- as.character(dd$Sex)
+## D$determiner[ind] <- 'J.S. Ascher'
+## D$dateDetermined[ind] <- '2013'
+
+## write.csv(D, file=newfile, row.names=FALSE)
