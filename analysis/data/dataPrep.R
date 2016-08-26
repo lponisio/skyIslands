@@ -2,36 +2,46 @@ rm(list=ls())
 library(vegan)
 library(fields)
 library(bipartite)
-setwd("~/Dropbox/SkyIslands/analysis/data")
-source('src/samp2site_spp.R')
+setwd("~/Dropbox/skyIslands/analysis/data")
 source("src/misc.R")
+source("src/prepNets.R")
+src.dir <- '../../data/relational/data/relational/traditional/'
 spec <-
-  read.csv("../../data/relational/data/relational/traditional/specimens-complete.csv")
+  read.csv(file.path(src.dir, "specimens-complete.csv"))
 
-##get specimen data ready
+## get specimen data ready
 spec <-  spec[spec$Species != "",]
-spec$GenSp <- fix.white.space(paste(spec$Genus, 
+spec$GenusSpecies <- fix.white.space(paste(spec$Genus, 
                           spec$Species,
                           spec$SubSpecies))
 
-spec$PlantGenSp <-  fix.white.space(paste(spec$PlantGenus,
+spec$PlantGenusSpecies <-  fix.white.space(paste(spec$PlantGenus,
                                           spec$PlantSpecies,
                                           spec$PlantVar, spec$PlantSubSpecies))
-spec$Int <-  fix.white.space(paste(spec$GenSp, spec$PlantGenSp))
+spec$Int <-  fix.white.space(paste(spec$GenusSpecies, spec$PlantGenusSpecies))
 spec$IntGen <-  fix.white.space(paste(spec$Genus, spec$PlantGenus))
 
-prep.comm <- aggregate(spec$GenSp,
-                       list(site=spec$PlantGenSp,
-                            sp=spec$GenSp), length)
+prep.comm <- aggregate(spec$GenusSpecies,
+                       list(site=spec$PlantGenusSpecies,
+                            sp=spec$GenusSpecies), length)
 comm <- samp2site.spp(prep.comm$site, prep.comm$sp, prep.comm$x)
 
 d <- specieslevel(comm, index="d")
 
-spec$PolSpec <- d$'higher level'$'d'[match(spec$GenSp,
+spec$PolSpec <- d$'higher level'$'d'[match(spec$GenusSpecies,
                                              rownames(d$'higher level'))]
 
-spec$PlantSpec <- d$'lower level'$'d'[match(spec$PlantGenSp,
+spec$PlantSpec <- d$'lower level'$'d'[match(spec$PlantGenusSpecies,
                                              rownames(d$'lower level'))]
+
+spec$Date <- as.Date(spec$Date, format='%m/%d/%y')
+spec$Doy <- as.numeric(strftime(spec$Date, format='%j'))
+spec$Year <- as.numeric(format(spec$Date,'%Y'))
                                          
-write.csv(spec, "spec.csv", row.names=FALSE)
-save(spec, file="spec.Rdata")
+write.csv(spec, "spec/spec.csv", row.names=FALSE)
+save(spec, file="spec/spec.Rdata")
+
+
+### networks
+nets <- breakNet(spec, 'Site', 'Year')
+save(nets, file="networks/nets.Rdata")
