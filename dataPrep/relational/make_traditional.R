@@ -1,4 +1,4 @@
-setwd("~/Dropbox/SkyIslands/data/relational/data/relational")
+setwd("~/Dropbox/skyIslands_saved/data/relational/relational")
 rm(list=ls())
 library(RSQLite)
 

@@ -2,7 +2,7 @@
 ## make files for use in relational database
 ## *******************************************************
 rm(list=ls())
-setwd("~/Dropbox/SkyIslands/data")
+setwd("~/Dropbox/skyIslands_saved/data")
 
 ## load data
 spec.data <- read.csv("raw/specimens.csv",  stringsAsFactors=FALSE,
@@ -65,13 +65,12 @@ bbsl <- read.csv("raw/BBSLSpecimens.csv", stringsAsFactors=FALSE)
 ## only time this will happen is when we get the labels form Terry
 spec.data$UniqueID[spec.data$TempID == spec.data$UniqueID] <- bbsl$BarcodeID
 
-write.csv(spec.data, file="relational/data/original/specimens.csv",
+write.csv(spec.data, file="relational/original/specimens.csv",
           row.names=FALSE)
 
-source('../dataEntry/speciesIDs/AssignSpecies.R')
+source('../../skyIslands/dataPrep/speciesIDs/AssignSpecies.R')
 
-setwd("~/Dropbox/SkyIslands/data")
-write.csv(spec.data, file="relational/data/original/specimens.csv",
+write.csv(spec.data, file="relational/original/specimens.csv",
           row.names=FALSE)
 
 
@@ -89,7 +88,7 @@ check.data.weather <- aggregate(data.weather$StartTime,
                                      date = data.weather$Date), length)
 
 ## write unique data to a table
-write.csv(unique(data.weather), file="relational/data/original/weather.csv",
+write.csv(unique(data.weather), file="relational/original/weather.csv",
                    row.names=FALSE)
 ## *******************************************************
 
@@ -177,5 +176,5 @@ data.geo <- data.frame(Site=geo$Site,
 ##  Elev -> Elev0 (this is the one without m in the cell)
 
 ## write unique data to a table
-write.csv(data.geo, file="relational/data/original/geography.csv",
+write.csv(data.geo, file="relational/original/geography.csv",
                    row.names=FALSE)

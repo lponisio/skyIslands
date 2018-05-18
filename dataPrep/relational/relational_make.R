@@ -2,9 +2,9 @@
 ## create relational database
 ## *******************************************************
 rm(list=ls())
-setwd("~/Dropbox/SkyIslands/data/relational/data/relational")
+setwd("~/Dropbox/skyIslands_saved/data/relational/relational")
 library(RSQLite)
-source('~/Dropbox/SkyIslands/analysis/data/src/misc.R')
+source('~/Dropbox/skyIslands/analysis/data/src/misc.R')
 
 conditions <- read.csv("../original/weather.csv", as.is=TRUE)
 specimens <- read.csv("../original/specimens.csv", as.is=TRUE)
@@ -79,7 +79,7 @@ conditions$ConditionsFK <-
 specimens$ConditionsFK <-
     cond$ConditionsPK[match(specimens$cond.code, cond$cond.code)]
 
-specimens$UniqueID[is.na(specimens$ConditionsFK)]
+print(paste("specimens without condition keys", specimens$UniqueID[is.na(specimens$ConditionsFK)]))
 
 ## specimens[specimens$UniqueID == "9296",]
 ## conditions[conditions$Date == "7/25/17",]
@@ -119,7 +119,7 @@ specimens$gen.sp <- paste(specimens$Order,
 specimens$InsectFK <- insects$InsectPK[match(specimens$gen.sp,
                                              insects$gen.sp)]
 
-specimens$UniqueID[is.na(specimens$InsectFK)]
+print(paste("instects without insect IDs", specimens$UniqueID[is.na(specimens$InsectFK)]))
 
 write.csv(dbReadTable(con, "tblInsect"),
           file="tables/insect.csv", row.names=FALSE)
@@ -162,7 +162,8 @@ plants.plant.sp <- fix.white.space(paste(plants$PlantGenus,
 ## propogate plant key to specimens
 specimens$PlantFK <- plants$PlantPK[match(specimens.plant.sp,
                                           plants.plant.sp)]
-specimens$UniqueID[is.na(specimens$PlantFK)]
+
+print(paste("plants without plants IDs", specimens$UniqueID[is.na(specimens$PlantFK)]))
 
 write.csv(dbReadTable(con, 'tblPlant'),
           file='tables/plant.csv', row.names=FALSE)
