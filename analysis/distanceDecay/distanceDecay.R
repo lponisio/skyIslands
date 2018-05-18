@@ -1,21 +1,7 @@
+## setwd("~/Dropbox/skyIslands/")
 rm(list=ls())
-library(vegan)
-library(fields)
-setwd("~/Dropbox/SkyIslands/analysis/distanceDecay")
-source('src/misc.R')
-source('src/distDecay.R')
-
-geo <-
-  read.csv("../../data/relational/data/relational/tables/geography.csv")
-
-spec <-
-  read.csv("../data/spec.csv")
-
-##distance dissimilarity
-dist.site <- rdist.earth(cbind(geo$Long, geo$Lat),
-                         cbind(geo$Long, geo$Lat))
-
-c.dist <- dist.site[lower.tri(dist.site)]
+setwd("analysis/distanceDecay")
+source("src/initialize.R")
 
 ## dissimilarity of plants, pol, int
 
