@@ -1,4 +1,6 @@
-add.to.data <- function(sp.ids, case, family, date, D, data.file) {
+add.to.data <- function(sp.ids, case, family, date, data.file) {
+    D <- read.csv(file=data.file, as.is=TRUE)
+
     lengths <- sapply(sp.ids, function(x) length(x$temp.id))
     cats <- names(sp.ids[[1]])[-length(sp.ids[[1]])]
 
@@ -14,9 +16,9 @@ add.to.data <- function(sp.ids, case, family, date, D, data.file) {
     }
 
     ## check that no IDs are already present in main data-set
-    if(any(TempID %in% D$UnqiueID[!is.na(D$Species)])) {
+    if(any(TempID %in% D$UniqueID[!is.na(D$Species)])) {
         cat('!!!TempID already present!!!\n')
-        print(TempID[TempID %in% D$UnqiueID[!is.na(D$Species)]])
+        print(TempID[TempID %in% D$Unique[!is.na(D$Species)]])
     }
 
     ind <- match(TempID, D$UniqueID)

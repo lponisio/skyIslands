@@ -1,8 +1,8 @@
 
 sp.ids <- list(
 
-  Vanessa_cardui = list(genus = "Vanessa", subgenus="", species =
-    "cardui", subspecies = "", sex = "", author = "Linnaeus", family =
+  Vanessa_cardui = list(Genus = "Vanessa", SubGenus="", Species =
+    "cardui", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
     "Nymphalidae", temp.id = c("JC_071612_2", "MM_080212_324",
     "PL_080912_353", "PL_081212_281", "PL_081112_283",
     "PL_081212_300", "PL_081112_266", "PL_081112_261",
@@ -34,22 +34,22 @@ sp.ids <- list(
     "CH_082112_198", "PL_081212_303B", "PL_081212_303C",
     "PL_081312_281", "PL_081312_289", "PL_081312_293")),
 
-  Battus_philenor = list(genus = "Battus", subgenus="", species =
-    "philenor", subspecies = "", sex = "", author = "Linnaeus", family
+  Battus_philenor = list(Genus = "Battus", SubGenus="", Species =
+    "philenor", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
     = "Papilionidae", temp.id = c("PL_081212_307", "PL_081212_306",
     "PL_081212_278", "PL_081212_274", "PL_081312_223",
     "PL_081312_253", "PL_081312_224", "PL_081312_252",
     "PL_081312_222", "PL_081212_275", "PL_081112_252",
     "PL_081212_303", "PL_081212_304", "PL_081212_277")),
 
-  Limenitis_bredowii = list(genus = "Limenitis", subgenus="", species
-    = "bredowii", subspecies = "", sex = "", author = "Butler", family
+  Limenitis_bredowii = list(Genus = "Limenitis", SubGenus="", Species
+    = "bredowii", SubSpecies = "", Sex = "", Author = "Butler", Family
     = "Nymphalidae", temp.id = c("CH_081812_20", "CH_082012_192",
     "CH_082012_163", "CH_082012_164", "CH_082112_184",
     "CH_082012_195")),
 
-  Colias_eurytheme = list(genus = "Colias", subgenus="", species = "eurytheme",
-    subspecies = "", sex = "", author = "Boisduval", family =
+  Colias_eurytheme = list(Genus = "Colias", SubGenus="", Species = "eurytheme",
+    SubSpecies = "", Sex = "", Author = "Boisduval", Family =
     "Pieridae", temp.id = c("SC_072712_265",
     "PL_081112_273", "PL_081112_267", "PL_081112_267B",
     "PL_081112_268", "PL_081212_288", "PL_081212_285",
@@ -77,44 +77,44 @@ sp.ids <- list(
     "SC_072012_327", "JC_071512_6", "SC_072712_267", "SC_072712_267B",
     "PL_081112_279")),
 
-  Euptoierta_claudia = list(genus = "Euptoierta", subgenus="", species
-    = "claudia", subspecies = "", sex = "", author = "Cramer", family
+  Euptoierta_claudia = list(Genus = "Euptoierta", SubGenus="", Species
+    = "claudia", SubSpecies = "", Sex = "", Author = "Cramer", Family
     = "Nymphalidae", temp.id = c("CH_082012_185", "CH_082112_185",
     "PL_081312_278", "PL_081312_236", "PL_081012_320",
     "JC_071212_128", "PL_081212_279", "CH_082012_182",
     "PL_081312_287", "PL_081312_288", "PL_081312_238",
     "MM_080412_245", "PL_081212_290")),
 
-  Vanessa_carye_annabella = list(genus = "Vanessa", subgenus="",
-    species = "carye", subspecies = "annabella", sex = "", author =
-    "Field", family = "Nymphalidae", temp.id = c("PL_081212_309",
+  Vanessa_carye_annabella = list(Genus = "Vanessa", SubGenus="",
+    Species = "carye", SubSpecies = "annabella", Sex = "", Author =
+    "Field", Family = "Nymphalidae", temp.id = c("PL_081212_309",
     "CH_082012_197", "PL_081112_289", "JC_071512_15",
     "MM_073112_128")),
 
-  Vanessa_atlanta = list(genus = "Vanessa", subgenus="", species =
-    "atlanta", subspecies = "", sex = "", author = "Linnaeus", family
+  Vanessa_atlanta = list(Genus = "Vanessa", SubGenus="", Species =
+    "atlanta", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
     = "Nymphalidae", temp.id = c("CH_082012_167")),
 
-  Vanessa_virginiensis = list(genus = "Vanessa", subgenus="", species =
-    "virginiensis", subspecies = "", sex = "", author = "Drury",
-    family = "Nymphalidae", temp.id =c("JC_071412_24",
+  Vanessa_virginiensis = list(Genus = "Vanessa", SubGenus="", Species =
+    "virginiensis", SubSpecies = "", Sex = "", Author = "Drury",
+    Family = "Nymphalidae", temp.id =c("JC_071412_24",
     "CH_082112_201", "CH_082012_198")),
 
-  Papilio_polyxenes = list(genus = "Papilio", subgenus="",species =
-    "polyxenes", subspecies = "", sex = "", author = "Fabricius",
-    family = "Papilionidae", temp.id = c("PL_080912_352",
+  Papilio_polyxenes = list(Genus = "Papilio", SubGenus="",Species =
+    "polyxenes", SubSpecies = "", Sex = "", Author = "Fabricius",
+    Family = "Papilionidae", temp.id = c("PL_080912_352",
     "PL_081212_280", "PL_081112_271", "PL_081212_276",
     "CH_082212_88")),
 
-  Pontia_protodice = list(genus = "Pontia",  subgenus="",species = "protodice",
-    subspecies = "", sex = "", author = "Boisduval & Leconte", family
+  Pontia_protodice = list(Genus = "Pontia",  SubGenus="",Species = "protodice",
+    SubSpecies = "", Sex = "", Author = "Boisduval & Leconte", Family
     = "Pieridae", temp.id = c("JC_071612_13", "JC_071512_10",
     "JC_071412_27", "JC_071512_7", "JC_071512_8", "JC_071212_130",
     "JC_071412_26", "JC_071512_11", "JC_071612_153",
     "CH_082112_202")),
 
-  Hesperia_pahaska = list(genus = "Hesperia", subgenus="",species =
-    "pahaska", subspecies = "", sex = "", author = "Leussler", family
+  Hesperia_pahaska = list(Genus = "Hesperia", SubGenus="",Species =
+    "pahaska", SubSpecies = "", Sex = "", Author = "Leussler", Family
     = "Hesperiidae", temp.id = c("PL_081012_314", "PL_081012_311",
     "PL_080912_363", "PL_080912_426", "PL_081012_312",
     "PL_081012_309", "PL_081112_111", "PL_081012_302",
@@ -130,8 +130,8 @@ sp.ids <- list(
     "PL_081312_270", "PL_081312_245", "PL_081312_247",
     "PL_081312_262", "PL_081312_263")),
 
-  Hesperia_comma = list(genus = "Hesperia", subgenus="",species =
-    "comma", subspecies = "", sex = "", author = "Linnaeus", family =
+  Hesperia_comma = list(Genus = "Hesperia", SubGenus="",Species =
+    "comma", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
     "Hesperiidae", temp.id = c("PL_081312_261", "PL_081312_269",
     "PL_081212_251", "PL_081212_231", "PL_081112_256",
     "PL_080912_422", "PL_080912_416", "PL_080912_364",
@@ -148,116 +148,116 @@ sp.ids <- list(
     "PL_081112_109", "PL_081312_250", "PL_081012_301",
     "PL_081012_298", "PL_081012_299")),
 
-  Nathalis_iole = list(genus = "Nathalis", subgenus="",species =
-    "iole", subspecies = "", sex = "", author = "Boisduval", family =
+  Nathalis_iole = list(Genus = "Nathalis", SubGenus="",Species =
+    "iole", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
     "Pieridae", temp.id = c("MM_080212_320", "MM_080212_323",
     "SC_072812_107", "JC_071712_187", "JC_071612_7", "JC_071512_14")),
 
-  Eurema_nicippe = list(genus = "Eurema", subgenus="",species =
-    "nicippe", subspecies = "", sex = "", author = "Cramer", family =
+  Eurema_nicippe = list(Genus = "Eurema", SubGenus="",Species =
+    "nicippe", SubSpecies = "", Sex = "", Author = "Cramer", Family =
     "Pieridae", temp.id = c("PL_081212_295", "PL_081312_275",
     "JC_071712_10", "JC_071212_131")),
 
-  Polygonia_gracilis = list(genus = "Polygonia", subgenus="",species =
-    "gracilis", subspecies = "", sex = "", author =
-    "Grote & Robinson", family = "Nymphalidae", temp.id
+  Polygonia_gracilis = list(Genus = "Polygonia", SubGenus="",Species =
+    "gracilis", SubSpecies = "", Sex = "", Author =
+    "Grote & Robinson", Family = "Nymphalidae", temp.id
     =c("MM_073112_122", "MM_080212_337", "MM_080212_336",
     "MM_080112_250", "CH_082012_165", "CH_082012_166",
     "MM_080212_334", "MM_080412_247", "MM_080212_328",
     "MM_080212_327", "SC_072912_123")),
 
-  Plebejus_acmon = list(genus = "Plebejus", subgenus="", species =
-    "acmon", subspecies = "", sex = "", author = "Westwood", family =
+  Plebejus_acmon = list(Genus = "Plebejus", SubGenus="", Species =
+    "acmon", SubSpecies = "", Sex = "", Author = "Westwood", Family =
     "Lycaenidae", temp.id =c("SC_072712_270", "SC_072612_285",
     "SC_072012_329", "SC_072012_328")),
 
-  Ministrymon_leda = list(genus = "Ministrymon", subgenus="", species
-    = "leda", subspecies = "", sex = "", author = "Edwards", family =
+  Ministrymon_leda = list(Genus = "Ministrymon", SubGenus="", Species
+    = "leda", SubSpecies = "", Sex = "", Author = "Edwards", Family =
     "Lycaenidae", temp.id =c("SC_072012_330")),
 
-  Strymon_melinus = list(genus = "Strymon", subgenus="", species =
-    "melinus", subspecies = "", sex = "", author = "Hubner", family =
+  Strymon_melinus = list(Genus = "Strymon", SubGenus="", Species =
+    "melinus", SubSpecies = "", Sex = "", Author = "Hubner", Family =
     "Lycaenidae", temp.id =c("MM_073112_126", "JC_071712_7",
     "PL_081212_302", "JC_071712_186")),
 
-  Leptotes_marina = list(genus = "Leptotes", subgenus="", species =
-    "marina", subspecies = "", sex = "", author = "Reakirt", family =
+  Leptotes_marina = list(Genus = "Leptotes", SubGenus="", Species =
+    "marina", SubSpecies = "", Sex = "", Author = "Reakirt", Family =
     "Lycaenidae", temp.id =c("PL_081112_253", "CH_082012_201",
     "MM_080312_210", "PL_080912_415", "CH_082112_212")),
 
-  Plebejus_glandon = list(genus = "Plebejus", subgenus="", species =
-    "glandon", subspecies = "", sex = "", author = "de Prunner",
-    family = "Lycaenidae", temp.id =c("JC_071712_4")),
+  Plebejus_glandon = list(Genus = "Plebejus", SubGenus="", Species =
+    "glandon", SubSpecies = "", Sex = "", Author = "de Prunner",
+    Family = "Lycaenidae", temp.id =c("JC_071712_4")),
 
-  Celastrina_argiolus_ladon = list(genus = "Celastrina", subgenus="",
-    species = "argiolus", subspecies = "ladon", sex = "", author =
-    "Cramer", family = "Lycaenidae", temp.id = c("PL_081212_289",
+  Celastrina_argiolus_ladon = list(Genus = "Celastrina", SubGenus="",
+    Species = "argiolus", SubSpecies = "ladon", Sex = "", Author =
+    "Cramer", Family = "Lycaenidae", temp.id = c("PL_081212_289",
     "MM_080312_213")),
 
-  Phyciodes_tharos= list(genus = "Phyciodes", subgenus="",species =
-    "tharos", subspecies = "", sex = "", author = "Drury", family =
+  Phyciodes_tharos= list(Genus = "Phyciodes", SubGenus="",Species =
+    "tharos", SubSpecies = "", Sex = "", Author = "Drury", Family =
     "Nymphalidae", temp.id =c("PL_081312_243", "PL_081012_339",
     "CH_082012_186", "PL_080912_387", "PL_080912_414")),
 
-  Pyrgus_commonis = list(genus = "Pyrgus", subgenus="", species =
-    "commonis", subspecies = "", sex = "", author = "Grote", family =
+  Pyrgus_commonis = list(Genus = "Pyrgus", SubGenus="", Species =
+    "commonis", SubSpecies = "", Sex = "", Author = "Grote", Family =
     "Hesperiidae", temp.id =c("PL_080912_419", "PL_081012_303",
     "CH_082012_196", "PL_080912_359", "PL_081212_236",
     "PL_081212_239", "JC_071512_119", "SC_072612_286",
     "JC_071512_173")),
 
-  Ochlodes_snowi = list(genus = "Ochlodes", subgenus="",species =
-    "snowi", subspecies = "", sex = "", author = "Edwards", family =
+  Ochlodes_snowi = list(Genus = "Ochlodes", SubGenus="",Species =
+    "snowi", SubSpecies = "", Sex = "", Author = "Edwards", Family =
     "Hesperiidae", temp.id = c("PL_081212_248", "PL_081312_249")),
 
-  Autochton_cellus = list(genus = "Autochton", subgenus="", species =
-    "cellus", subspecies = "", sex = "", author =
-    "Boisduval & Leconte", family = "Hesperiidae", temp.id
+  Autochton_cellus = list(Genus = "Autochton", SubGenus="", Species =
+    "cellus", SubSpecies = "", Sex = "", Author =
+    "Boisduval & Leconte", Family = "Hesperiidae", temp.id
     =c("PL_081312_237")),
 
-  Poanes_zabulon_taxiles = list(genus = "Poanes", subgenus="", species
-    = "zabulon", subspecies = "taxiles", sex = "", author = "Edwards",
-    family = "Hesperiidae", temp.id =c("SC_072012_324")),
+  Poanes_zabulon_taxiles = list(Genus = "Poanes", SubGenus="", Species
+    = "zabulon", SubSpecies = "taxiles", Sex = "", Author = "Edwards",
+    Family = "Hesperiidae", temp.id =c("SC_072012_324")),
 
-  Epargyreus_clarus = list(genus = "Epargyreus", subgenus="",species =
-    "clarus", subspecies = "", sex = "", author = "Cramer", family =
+  Epargyreus_clarus = list(Genus = "Epargyreus", SubGenus="",Species =
+    "clarus", SubSpecies = "", Sex = "", Author = "Cramer", Family =
     "Hesperiidae", temp.id =c("PL_081012_324", "PL_081112_106",
     "PL_081112_281", "PL_081112_280", "PL_081212_297",
     "PL_081212_296", "PL_081212_298", "PL_080912_372",
     "PL_080912_406", "PL_081112_254", "PL_081312_279",
     "PL_081312_240", "PL_081112_256", "PL_081112_255")),
 
-  Achalarus_casica = list(genus = "Achalarus", subgenus="", species = "casica",
-    subspecies = "", sex = "", author = "Herrich-Schaffer", family =
+  Achalarus_casica = list(Genus = "Achalarus", SubGenus="", Species = "casica",
+    SubSpecies = "", Sex = "", Author = "Herrich-Schaffer", Family =
     "Hesperiidae", temp.id =c("PL_081312_285", "PL_081312_244",
     "PL_081312_277","PL_081312_285")),
 
-  Papilio_multicaudata = list(genus = "Papilio", subgenus="", species
-    = "multicaudata", subspecies = "", sex = "", author = "Kirby",
-    family = "Papilionidae", temp.id =c("PL_081112_251")),
+  Papilio_multicaudata = list(Genus = "Papilio", SubGenus="", Species
+    = "multicaudata", SubSpecies = "", Sex = "", Author = "Kirby",
+    Family = "Papilionidae", temp.id =c("PL_081112_251")),
 
-  Neophasia_menapia = list(genus = "Neophasia", subgenus="", species =
-    "menapia", subspecies = "", sex = "", author = "Felder & Felder",
-    family = "Pieridae", temp.id =c("SC_072012_326")),
+  Neophasia_menapia = list(Genus = "Neophasia", SubGenus="", Species =
+    "menapia", SubSpecies = "", Sex = "", Author = "Felder & Felder",
+    Family = "Pieridae", temp.id =c("SC_072012_326")),
 
-  Libytheana_carinenta = list(genus = "Libytheana", subgenus="",
-    species = "carinenta", subspecies = "", sex = "", author =
-    "Cramer", family = "Nymphalidae", temp.id =c("PL_081312_274")),
+  Libytheana_carinenta = list(Genus = "Libytheana", SubGenus="",
+    Species = "carinenta", SubSpecies = "", Sex = "", Author =
+    "Cramer", Family = "Nymphalidae", temp.id =c("PL_081312_274")),
 
-  Speyeria_mormonia = list(genus = "Speyeria", subgenus="",species =
-    "mormonia", subspecies = "", sex = "", author = "Boisduval",
-    family = "Nymphalidae", temp.id =c("JC_071712_2")),
+  Speyeria_mormonia = list(Genus = "Speyeria", SubGenus="",Species =
+    "mormonia", SubSpecies = "", Sex = "", Author = "Boisduval",
+    Family = "Nymphalidae", temp.id =c("JC_071712_2")),
 
-  Cercyonis_oetus = list(genus = "Cercyonis", subgenus="",species =
-    "oetus", subspecies = "", sex = "", author = "Boisduval", family =
+  Cercyonis_oetus = list(Genus = "Cercyonis", SubGenus="",Species =
+    "oetus", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
     "Nymphalidae", temp.id =c("JC_071512_19")),
 
-  Coenonympha_tullia = list(genus = "Coenonympha", subgenus="",
-    species = "tullia", subspecies = "", sex = "", author = "Muller",
-    family = "Nymphalidae", temp.id =c("JC_071612_1", "JC_071712_9")),
+  Coenonympha_tullia = list(Genus = "Coenonympha", SubGenus="",
+    Species = "tullia", SubSpecies = "", Sex = "", Author = "Muller",
+    Family = "Nymphalidae", temp.id =c("JC_071612_1", "JC_071712_9")),
 
-  Speyeria_atlantis = list(genus = "Speyeria", subgenus="", species =
-    "atlantis", subspecies = "", sex = "", author = "Edwards", family
+  Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
+    "atlantis", SubSpecies = "", Sex = "", Author = "Edwards", Family
     = "Nymphalidae", temp.id = c("SC_072612_284", "PL_080912_349",
     "PL_080912_350", "PL_081012_331", "PL_081312_225",
     "PL_081012_343", "PL_080912_390", "PL_080912_354",
@@ -273,8 +273,8 @@ sp.ids <- list(
     "PL_080912_403")),
 
 
-  Hemiargus_isola = list(genus = "Hemiargus", subgenus="", species = "isola",
-    subspecies = "", sex = "", author = "Reakirt", family = "Lycaenidae",
+  Hemiargus_isola = list(Genus = "Hemiargus", SubGenus="", Species = "isola",
+    SubSpecies = "", Sex = "", Author = "Reakirt", Family = "Lycaenidae",
     temp.id = c("SC_072812_106", "SC_072912_122", "PL_081312_241",
     "MM_080212_321", "MM_080412_248", "PL_081312_242",
     "MM_080212_339", "JC_071712_3", "CH_082212_90", "MM_080212_330",
@@ -288,8 +288,8 @@ sp.ids <- list(
     "CH_082112_204", "PL_081112_263", "CH_082212_89", "CH_082112_211",
     "CH_082112_213", "PL_081112_264", "CH_082112_205")),
 
-  Garisma_garita = list(genus = "Garisma", subgenus="",species =
-    "garita", subspecies = "", sex = "", author = "Reakirt", family =
+  Garisma_garita = list(Genus = "Garisma", SubGenus="",Species =
+    "garita", SubSpecies = "", Sex = "", Author = "Reakirt", Family =
     "Hesperiidae", temp.id = c("MM_080112_245", "MM_080112_246",
     "MM_080112_247", "MM_080312_214", "MM_080312_215",
     "MM_080312_216", "MM_080312_217", "MM_080412_252",
@@ -297,37 +297,37 @@ sp.ids <- list(
     "JC_071212_124", "JC_071712_22", "JC_071212_125", "JC_071712_29",
     "JC_071512_174", "JC_071612_139", "JC_071612_142")),
 
-  Hemiargus_ceraunus = list(genus = "Hemiargus", subgenus="", species
-    = "ceraunus", subspecies = "", sex = "", author = "Fabricius",
-    family = "Lycaenidae", temp.id = c("CH_082112_207")),
+  Hemiargus_ceraunus = list(Genus = "Hemiargus", SubGenus="", Species
+    = "ceraunus", SubSpecies = "", Sex = "", Author = "Fabricius",
+    Family = "Lycaenidae", temp.id = c("CH_082112_207")),
 
-  Polites_draco = list(genus = "Polites", subgenus="", species = "draco",
-    subspecies = "", sex = "", author = "Edwards", family =
+  Polites_draco = list(Genus = "Polites", SubGenus="", Species = "draco",
+    SubSpecies = "", Sex = "", Author = "Edwards", Family =
     "Hesperiidae", temp.id = c("JC_071612_143")),
 
-  Texola_elada = list(genus = "Texola", subgenus="",species = "elada",
-    subspecies = "", sex = "", author = "Hewitson", family =
+  Texola_elada = list(Genus = "Texola", SubGenus="",Species = "elada",
+    SubSpecies = "", Sex = "", Author = "Hewitson", Family =
     "Nymphalidae", temp.id = c("PL_081112_269")),
 
-  Atrytonopsis_morpho1 = list(genus = "Atrytonopsis", subgenus="",
-    species = "sp.", subspecies = "a", sex = "", author = "", family =
+  Atrytonopsis_morpho1 = list(Genus = "Atrytonopsis", SubGenus="",
+    Species = "sp.", SubSpecies = "a", Sex = "", Author = "", Family =
     "Hesperiidae", temp.id = c("JC_071412_29")),
 
-  Poanes_zabulon_taxiles = list(genus = "Poanes", subgenus="", species
-    = "zabulon", subspecies = "taxiles", sex = "", author = "Edwards",
-    family = "Hesperiidae", temp.id = c("CH_082212_39")),
+  Poanes_zabulon_taxiles = list(Genus = "Poanes", SubGenus="", Species
+    = "zabulon", SubSpecies = "taxiles", Sex = "", Author = "Edwards",
+    Family = "Hesperiidae", temp.id = c("CH_082212_39")),
 
-  Thorybes_pylades = list(genus = "Thorybes", subgenus="", species =
-    "pylades", subspecies = "", sex = "", author = "Scudder", family =
+  Thorybes_pylades = list(Genus = "Thorybes", SubGenus="", Species =
+    "pylades", SubSpecies = "", Sex = "", Author = "Scudder", Family =
     "Hesperiidae", temp.id = c("PL_081112_105", "PL_080912_355",
     "PL_080912_392", "PL_081112_104", "PL_081212_235")),
 
-  Erynnis_morpho1 = list(genus = "Erynnis", subgenus="", species =
-    "sp.", subspecies = "a", sex = "", author = "", family =
+  Erynnis_morpho1 = list(Genus = "Erynnis", SubGenus="", Species =
+    "sp.", SubSpecies = "a", Sex = "", Author = "", Family =
     "Hesperiidae", temp.id = c("PL_081312_244")),
 
-  Erynnis_morpho2 = list(genus = "Erynnis", subgenus="", species =
-    "sp.", subspecies = "b", sex = "", author = "", family =
+  Erynnis_morpho2 = list(Genus = "Erynnis", SubGenus="", Species =
+    "sp.", SubSpecies = "b", Sex = "", Author = "", Family =
     "Hesperiidae", temp.id = c("PL_081312_277"))
 
   )
@@ -335,13 +335,13 @@ sp.ids <- list(
 ## ############## read in data and match temp.ids ###################
 
 ## lengths <- sapply(sp.ids, function(x) length(x$temp.id))
-## Genus <- sapply(sp.ids, function(x) x$genus)
-## SubGenus <- sapply(sp.ids, function(x) x$subgenus)
-## Species <- sapply(sp.ids, function(x) x$species)
-## SubSpecies <- sapply(sp.ids, function(x) x$subspecies)
-## Sex <- sapply(sp.ids, function(x) x$sex)
+## Genus <- sapply(sp.ids, function(x) x$Genus)
+## SubGenus <- sapply(sp.ids, function(x) x$SubGenus)
+## Species <- sapply(sp.ids, function(x) x$Species)
+## SubSpecies <- sapply(sp.ids, function(x) x$SubSpecies)
+## Sex <- sapply(sp.ids, function(x) x$Sex)
 ## TempID <- sapply(sp.ids, function(x) x$temp.id)
-## Family <- sapply(sp.ids, function(x) x$family)
+## Family <- sapply(sp.ids, function(x) x$Family)
 
 ## dd <- data.frame(TempID=unlist(TempID),
 ##                  Genus=rep(Genus, lengths),
@@ -357,13 +357,13 @@ sp.ids <- list(
 
 ## ind <- match(dd$TempID, D$temp.id)
 ## D$order[ind] <- 'Lepidoptera'
-## D$family[ind] <- as.character(dd$Family)
-## D$genus[ind] <- as.character(dd$Genus)
-## D$subgenus[ind] <- as.character(dd$SubGenus)
-## D$species[ind] <- as.character(dd$Species)
-## D$subspecies[ind] <- as.character(dd$SubSpecies)
-## D$sex[ind] <- as.character(dd$Sex)
-## D$determiner[ind] <- 'L. Ponisio'
+## D$Family[ind] <- as.character(dd$Family)
+## D$Genus[ind] <- as.character(dd$Genus)
+## D$SubGenus[ind] <- as.character(dd$SubGenus)
+## D$Species[ind] <- as.character(dd$Species)
+## D$SubSpecies[ind] <- as.character(dd$SubSpecies)
+## D$Sex[ind] <- as.character(dd$Sex)
+## D$Determiner[ind] <- 'L. Ponisio'
 ## D$dateDetermined[ind] <- '2013'
 
 ## write.csv(D, file=newfile, row.names=FALSE)

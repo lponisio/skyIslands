@@ -1,8 +1,8 @@
 
 sp.ids <- list(
 
-  Selasphorus_platycercus= list(genus="Selasphorus", subgenus ="",
-    species="platycercus", subspecies="", sex="", author = "",
+  Selasphorus_platycercus= list(Genus="Selasphorus", SubGenus ="",
+    Species="platycercus", SubSpecies="", Sex="", Author = "",
     temp.id= c("JC_071212_1001", "JC_071412_1002", "JC_071412_1003",
     "JC_071412_1004", "JC_071412_1005", "JC_071412_1006",
     "JC_071412_1007", "JC_071512_1008", "JC_071512_1009",
@@ -16,17 +16,17 @@ sp.ids <- list(
     "SC_072112_1031", "SC_072112_1032", "CH_082112_1033",
     "CH_082112_1034", "CH_082212_1035", "CH_082212_1036")),
 
-  Selasphorus_rufus= list(genus="Selasphorus", subgenus ="",
-    species="rufus", subspecies="", sex="", author = "", temp.id=
+  Selasphorus_rufus= list(Genus="Selasphorus", SubGenus ="",
+    Species="rufus", SubSpecies="", Sex="", Author = "", temp.id=
     c("CH_082112_1037", "CH_082112_1038", "CH_082212_1039",
     "CH_082212_1040")))
 
 ## lengths <- sapply(sp.ids, function(x) length(x$temp.id))
-## Genus <- sapply(sp.ids, function(x) x$genus)
-## SubGenus <- sapply(sp.ids, function(x) x$subgenus)
-## Species <- sapply(sp.ids, function(x) x$species)
-## SubSpecies <- sapply(sp.ids, function(x) x$subspecies)
-## Sex <- sapply(sp.ids, function(x) x$sex)
+## Genus <- sapply(sp.ids, function(x) x$Genus)
+## SubGenus <- sapply(sp.ids, function(x) x$SubGenus)
+## Species <- sapply(sp.ids, function(x) x$Species)
+## SubSpecies <- sapply(sp.ids, function(x) x$SubSpecies)
+## Sex <- sapply(sp.ids, function(x) x$Sex)
 ## TempID <- sapply(sp.ids, function(x) x$temp.id)
 
 ## dd <- data.frame(TempID=unlist(TempID),
@@ -42,11 +42,11 @@ sp.ids <- list(
 ## ind <- match(dd$TempID, D$temp.id)
 ## D$order[ind] <- 'Apodiformes'
 ## D$family[ind] <- 'Trochilidae'
-## D$genus[ind] <- as.character(dd$Genus)
-## D$subgenus[ind] <- as.character(dd$SubGenus)
-## D$species[ind] <- as.character(dd$Species)
-## D$subspecies[ind] <- as.character(dd$SubSpecies)
-## D$sex[ind] <- as.character(dd$Sex)
+## D$Genus[ind] <- as.character(dd$Genus)
+## D$SubGenus[ind] <- as.character(dd$SubGenus)
+## D$Species[ind] <- as.character(dd$Species)
+## D$SubSpecies[ind] <- as.character(dd$SubSpecies)
+## D$Sex[ind] <- as.character(dd$Sex)
 ## D$determiner[ind] <- 'A.J. Rominger'
 ## D$dateDetermined[ind] <- '2013'
 

@@ -4,7 +4,7 @@
 rm(list=ls())
 setwd("~/Dropbox/skyIslands_saved/data/relational/relational")
 library(RSQLite)
-source('~/Dropbox/skyIslands/analysis/data/src/misc.R')
+source('~/Dropbox/skyIslands/dataPrep/src/misc.R')
 
 conditions <- read.csv("../original/weather.csv", as.is=TRUE)
 specimens <- read.csv("../original/specimens.csv", as.is=TRUE)

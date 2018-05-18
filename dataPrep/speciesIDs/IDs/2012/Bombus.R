@@ -1,8 +1,8 @@
 
 sp.ids <- list(
 
-  Bombus_sonorus_f = list(genus = "Bombus", subgenus="",  species = "sonorus",
-    subspecies = "", sex ="f", author = "Say", temp.id =
+  Bombus_sonorus_f = list(Genus = "Bombus", SubGenus="",  Species = "sonorus",
+    SubSpecies = "", Sex ="f", Author = "Say", temp.id =
     c("CH_082012_136","CH_082112_177","CH_082112_69","CH_082112_174",
     "CH_082112_68","CH_082112_58","CH_082012_115","CH_082012_131",
     "CH_082012_179","CH_082012_59","CH_082012_124","CH_082012_64",
@@ -21,8 +21,8 @@ sp.ids <- list(
     "CH_081912_3","CH_082012_1","CH_081912_15","CH_081912_10",
     "CH_081912_11","CH_082112_108","CH_082212_71")),
   
-  Bombus_huntii_f = list(genus = "Bombus", subgenus="", species = "huntii",
-    subspecies = "", sex ="f", author = "Greene", temp.id =
+  Bombus_huntii_f = list(Genus = "Bombus", SubGenus="", Species = "huntii",
+    SubSpecies = "", Sex ="f", Author = "Greene", temp.id =
     c("MM_080212_146", "MM_080412_136", "MM_080412_123",
     "MM_080412_209", "MM_080412_205", "MM_080212_9", "MM_080212_237",
     "MM_080412_142", "MM_080212_120", "MM_080212_25", "MM_073112_24",
@@ -61,8 +61,8 @@ sp.ids <- list(
     "SC_072012_207", "SC_072612_219", "MM_080412_218",
     "SC_072612_172")),
   
-  Bombus_huntii_m = list(genus = "Bombus", subgenus="", species =
-    "huntii", subspecies = "", sex ="m", author = "Greene", temp.id =
+  Bombus_huntii_m = list(Genus = "Bombus", SubGenus="", Species =
+    "huntii", SubSpecies = "", Sex ="m", Author = "Greene", temp.id =
     c("SC_072012_116", "MM_080412_139", "SC_072312_8",
     "SC_072012_126", "SC_072012_211", "SC_072112_22", "SC_072012_276",
     "SC_072012_243", "SC_072112_41", "SC_072012_205", "SC_072112_39",
@@ -75,8 +75,8 @@ sp.ids <- list(
     "SC_072012_103", "SC_072312_9", "SC_072012_102", "SC_072812_122",
     "JC_071212_83")),
   
-  Bombus_flavifrons_f = list(genus = "Bombus", subgenus="", species =
-    "flavifrons", subspecies = "", sex ="f", author = "Cresson",
+  Bombus_flavifrons_f = list(Genus = "Bombus", SubGenus="", Species =
+    "flavifrons", SubSpecies = "", Sex ="f", Author = "Cresson",
     temp.id = c("JC_071212_36", "JC_071212_69", "JC_071512_66",
     "MM_080312_31", "MM_080212_299", "MM_080112_226", "MM_080412_206",
     "MM_080412_97", "JC_071512_22", "JC_071512_110", "JC_071512_120",
@@ -90,8 +90,8 @@ sp.ids <- list(
     "MM_080112_31", "MM_080312_122", "MM_073112_19", "MM_073112_121",
     "JC_071712_109", "JC_071712_18", "MM_080212_77")),
 
-  Bombus_flavifrons_m = list(genus = "Bombus", subgenus="", species =
-    "flavifrons", subspecies = "", sex ="m", author = "Cresson",
+  Bombus_flavifrons_m = list(Genus = "Bombus", SubGenus="", Species =
+    "flavifrons", SubSpecies = "", Sex ="m", Author = "Cresson",
     temp.id = c("SC_072012_125", "SC_072012_275", "SC_072312_242",
     "MM_080312_205", "SC_072012_113", "SC_072612_155", "SC_072312_35",
     "SC_072312_279", "SC_072812_133", "SC_072112_52", "SC_072612_180",
@@ -100,8 +100,8 @@ sp.ids <- list(
     "MM_080112_138", "MM_080312_70", "MM_073112_106", "MM_080412_108",
     "MM_080312_72", "MM_080312_154", "MM_080212_190")),
   
-  Bombus_rufocinctus_f = list(genus = "Bombus", subgenus="", species =
-    "rufocinctus", subspecies = "", sex ="f", author = "Cresson",
+  Bombus_rufocinctus_f = list(Genus = "Bombus", SubGenus="", Species =
+    "rufocinctus", SubSpecies = "", Sex ="f", Author = "Cresson",
     temp.id = c("JC_071412_15", "JC_071712_154", "JC_071112_20",
     "JC_071412_145", "JC_071512_54", "JC_071712_150", "JC_071712_112",
     "JC_071212_13", "JC_071212_39", "JC_071112_12", "JC_071612_48",
@@ -113,8 +113,8 @@ sp.ids <- list(
     "MM_080212_92", "JC_071412_17", "JC_071512_70", "JC_071712_152",
     "JC_071712_153", "JC_071712_157", "JC_071712_37")),
 
-  Bombus_centralis_f = list(genus = "Bombus", subgenus="", species =
-    "centralis", subspecies = "", sex ="f", author = "Cresson",
+  Bombus_centralis_f = list(Genus = "Bombus", SubGenus="", Species =
+    "centralis", SubSpecies = "", Sex ="f", Author = "Cresson",
     temp.id = c("PL_081012_248", "PL_080912_133", "PL_081112_57",
     "PL_080912_136", "PL_080912_131", "PL_081012_12", "PL_081212_150",
     "PL_080912_250", "PL_081112_147", "PL_081012_252",
@@ -132,8 +132,8 @@ sp.ids <- list(
     "PL_081212_19", "PL_081312_169", "PL_080912_132", "PL_081012_287",
     "PL_081012_101", "MM_080212_218")),
   
-  Bombus_bifarius_f = list(genus = "Bombus", subgenus="", species = "bifarius",
-    subspecies = "", sex ="f", author = "Cresson", temp.id =
+  Bombus_bifarius_f = list(Genus = "Bombus", SubGenus="", Species = "bifarius",
+    SubSpecies = "", Sex ="f", Author = "Cresson", temp.id =
     c("JC_071412_60", "JC_071512_165", "JC_071612_94", "JC_071212_81",
     "JC_071412_50", "JC_071412_37", "JC_071512_50", "JC_071412_118",
     "JC_071512_51", "JC_071512_124", "JC_071612_28", "JC_071712_127",
@@ -150,34 +150,34 @@ sp.ids <- list(
     "JC_071112_15", "JC_071112_8", "JC_071412_126", "JC_071512_55",
     "JC_071412_90", "JC_071612_27", "JC_071212_97", "JC_071412_39")),
   
-  Bombus_morrisoni_m = list(genus = "Bombus", subgenus="", species =
-    "morrisoni", subspecies = "", sex ="m", author = "Cresson",
+  Bombus_morrisoni_m = list(Genus = "Bombus", SubGenus="", Species =
+    "morrisoni", SubSpecies = "", Sex ="m", Author = "Cresson",
     temp.id = c("SC_072312_34", "MM_080412_22")),
   
-  Bombus_morrisoni_f = list(genus = "Bombus", subgenus="", species =
-    "morrisoni", subspecies = "", sex ="f", author = "Cresson",
+  Bombus_morrisoni_f = list(Genus = "Bombus", SubGenus="", Species =
+    "morrisoni", SubSpecies = "", Sex ="f", Author = "Cresson",
     temp.id = c("MM_073112_15", "MM_080412_133", "MM_073112_71",
     "MM_080312_6", "MM_073112_69")),
   
-  Bombus_nevadensis_f = list(genus = "Bombus", subgenus="", species =
-    "nevadensis", subspecies = "", sex ="f", author = "Cresson",
+  Bombus_nevadensis_f = list(Genus = "Bombus", SubGenus="", Species =
+    "nevadensis", SubSpecies = "", Sex ="f", Author = "Cresson",
     temp.id = c("SC_072712_100", "SC_072012_318", "SC_072912_64",
     "SC_072012_263", "SC_072912_78", "SC_072012_131", "SC_072612_156",
     "SC_072012_132", "SC_072012_134", "SC_072312_237", "SC_072812_6",
     "SC_072112_112", "SC_072012_130", "SC_072012_264")),
   
-  Bombus_fervidus_f = list(genus = "Bombus", subgenus="", species =
-    "fervidus", subspecies = "", sex ="f", author = "Fabricius",
+  Bombus_fervidus_f = list(Genus = "Bombus", SubGenus="", Species =
+    "fervidus", SubSpecies = "", Sex ="f", Author = "Fabricius",
     temp.id = c("SC_072912_4", "SC_072912_3", "SC_072712_123",
     "SC_072712_40", "SC_072612_114", "SC_072812_112", "SC_072612_157",
     "SC_072312_155")),
 
-  Bombus_fervidus_m = list(genus = "Bombus", subgenus="", species =
-    "fervidus", subspecies = "", sex ="m", author = "Fabricius",
+  Bombus_fervidus_m = list(Genus = "Bombus", SubGenus="", Species =
+    "fervidus", SubSpecies = "", Sex ="m", Author = "Fabricius",
     temp.id = c( "SC_072612_114", "SC_072612_157", "SC_072312_155")),
   
-  Bombus_occidentalis_f = list(genus = "Bombus", subgenus="", species =
-    "occidentalis", subspecies = "", sex ="f", author = "Greene",
+  Bombus_occidentalis_f = list(Genus = "Bombus", SubGenus="", Species =
+    "occidentalis", SubSpecies = "", Sex ="f", Author = "Greene",
     temp.id = c("JC_071412_70", "JC_071212_3"))
   
   )
@@ -186,11 +186,11 @@ sp.ids <- list(
 ## ############## read in data and match temp.ids ###################
 
 ## lengths <- sapply(sp.ids, function(x) length(x$temp.id))
-## Genus <- sapply(sp.ids, function(x) x$genus)
-## SubGenus <- sapply(sp.ids, function(x) x$subgenus)
-## Species <- sapply(sp.ids, function(x) x$species)
-## SubSpecies <- sapply(sp.ids, function(x) x$subspecies)
-## Sex <- sapply(sp.ids, function(x) x$sex)
+## Genus <- sapply(sp.ids, function(x) x$Genus)
+## SubGenus <- sapply(sp.ids, function(x) x$SubGenus)
+## Species <- sapply(sp.ids, function(x) x$Species)
+## SubSpecies <- sapply(sp.ids, function(x) x$SubSpecies)
+## Sex <- sapply(sp.ids, function(x) x$Sex)
 ## TempID <- sapply(sp.ids, function(x) x$temp.id)
 
 ## dd <- data.frame(TempID=unlist(TempID),
@@ -206,12 +206,12 @@ sp.ids <- list(
 ## ind <- match(dd$TempID, D$temp.id)
 ## D$order[ind] <- 'Hymenoptera'
 ## D$family[ind] <- 'Apidae'
-## D$genus[ind] <- as.character(dd$Genus)
-## D$subgenus[ind] <- as.character(dd$SubGenus)
-## D$species[ind] <- as.character(dd$Species)
-## D$subspecies[ind] <- as.character(dd$SubSpecies)
-## D$sex[ind] <- as.character(dd$Sex)
-## D$determiner[ind] <- 'R.W. Thorp'
+## D$Genus[ind] <- as.character(dd$Genus)
+## D$SubGenus[ind] <- as.character(dd$SubGenus)
+## D$Species[ind] <- as.character(dd$Species)
+## D$SubSpecies[ind] <- as.character(dd$SubSpecies)
+## D$Sex[ind] <- as.character(dd$Sex)
+## D$Determiner[ind] <- 'R.W. Thorp'
 ## D$dateDetermined[ind] <- '2013'
 
 ## write.csv(D, file=newfile, row.names=FALSE)

@@ -1,9 +1,9 @@
 
 sp.ids <- list(
 
- Melissodes_confusa= list(genus="Melissodes", subgenus="Eumelissodes",
-    species="confusa", subspecies="", sex="f", author = "Cresson",
-    determiner="Karen Wright", temp.id= c("PL_081312_3",
+ Melissodes_confusa= list(Genus="Melissodes", SubGenus="Eumelissodes",
+    Species="confusa", SubSpecies="", Sex="f", Author = "Cresson",
+    Determiner="Karen Wright", temp.id= c("PL_081312_3",
     "CH_081912_4", "PL_081012_6", "PL_081112_8", "PL_081312_8",
     "CH_081912_8", "JC_071212_9", "PL_081312_10","PL_081212_13",
     "PL_081112_15", "CH_081912_16", "PL_081012_17", "PL_081212_17",
@@ -30,84 +30,84 @@ sp.ids <- list(
     "PL_081212_262", "PL_081212_264", "PL_081212_270",
     "PL_081312_295")),
 
-   Melissodes_coreopsis= list(genus="Melissodes",
-    subgenus="Eumelissodes", species="coreopsis", subspecies="",
-    sex="f", author = "Robertson", determiner="Karen Wright", temp.id=
+   Melissodes_coreopsis= list(Genus="Melissodes",
+    SubGenus="Eumelissodes", Species="coreopsis", SubSpecies="",
+    Sex="f", Author = "Robertson", Determiner="Karen Wright", temp.id=
     c("JC_071512_164")),
   
-   Melissodes_gilensis= list(genus="Melissodes",
-    subgenus="Melissodes", species="gilensis", subspecies="", sex="f",
-    author = "Cockerell", determiner="Karen Wright", temp.id=
+   Melissodes_gilensis= list(Genus="Melissodes",
+    SubGenus="Melissodes", Species="gilensis", SubSpecies="", Sex="f",
+    Author = "Cockerell", Determiner="Karen Wright", temp.id=
     c("PL_081212_23")),
 
-  Melissodes_grindeliae= list(genus="Melissodes",
-    subgenus="Eumelissodes", species="grindeliae", subspecies="",
-    sex="f", author = "Cockerell", determiner="Karen Wright", temp.id=
+  Melissodes_grindeliae= list(Genus="Melissodes",
+    SubGenus="Eumelissodes", Species="grindeliae", SubSpecies="",
+    Sex="f", Author = "Cockerell", Determiner="Karen Wright", temp.id=
     c("SC_072012_258", "SC_072612_258")),
 
-  Melissodes_limbus= list(genus="Melissodes", subgenus="Eumelissodes",
-    species="limbus", subspecies="", sex="f", author = "LaBerge",
-    determiner="Karen Wright", temp.id= c("PL_081312_195")),
+  Melissodes_limbus= list(Genus="Melissodes", SubGenus="Eumelissodes",
+    Species="limbus", SubSpecies="", Sex="f", Author = "LaBerge",
+    Determiner="Karen Wright", temp.id= c("PL_081312_195")),
 
-  Melissodes_menuachus= list(genus="Melissodes",
-    subgenus="Eumelissodes", species="menuachus", subspecies="",
-    sex="f", author = "Cresson", determiner="Karen Wright", temp.id=
+  Melissodes_menuachus= list(Genus="Melissodes",
+    SubGenus="Eumelissodes", Species="menuachus", SubSpecies="",
+    Sex="f", Author = "Cresson", Determiner="Karen Wright", temp.id=
     c("JC_071712_28", "SC_072812_34", "JC_071412_40",
     "SC_072812_157")),
 
-  Melissodes_pallidisignata= list(genus="Melissodes",
-    subgenus="Eumelissodes", species="pallidisignata", subspecies="",
-    sex="f", author = "Cockerell", determiner="Karen Wright", temp.id=
+  Melissodes_pallidisignata= list(Genus="Melissodes",
+    SubGenus="Eumelissodes", Species="pallidisignata", SubSpecies="",
+    Sex="f", Author = "Cockerell", Determiner="Karen Wright", temp.id=
     c("SC_072812_25", "SC_072812_181")),
 
-  Melissodes_paroselae= list(genus="Melissodes",
-    subgenus="Melissodes", species="paroselae", subspecies="",
-    sex="f", author = "Cockerell", determiner="Karen Wright", temp.id=
+  Melissodes_paroselae= list(Genus="Melissodes",
+    SubGenus="Melissodes", Species="paroselae", SubSpecies="",
+    Sex="f", Author = "Cockerell", Determiner="Karen Wright", temp.id=
     c("PL_081312_2")),
 
-  Melissodes_tristis= list(genus="Melissodes",
-    subgenus="Eumelissodes", species="tristis", subspecies="",
-    sex="f", author = "Cockerell", determiner="Karen Wright", temp.id=
+  Melissodes_tristis= list(Genus="Melissodes",
+    SubGenus="Eumelissodes", Species="tristis", SubSpecies="",
+    Sex="f", Author = "Cockerell", Determiner="Karen Wright", temp.id=
     c("JC_071212_8", "JC_071212_10", "JC_071212_18", "JC_071612_63",
     "JC_071512_91", "JC_071612_100", "JC_071212_106", "JC_071512_113",
     "PL_081212_165", "PL_081212_194", "PL_081212_222")),
 
-  Melissodes_verbesinarum= list(genus="Melissodes",
-    subgenus="Eumelissodes", species="verbesinarum", subspecies="",
-    sex="f", author = "Cockerell", determiner="Karen Wright", temp.id=
+  Melissodes_verbesinarum= list(Genus="Melissodes",
+    SubGenus="Eumelissodes", Species="verbesinarum", SubSpecies="",
+    Sex="f", Author = "Cockerell", Determiner="Karen Wright", temp.id=
     c("PL_081312_45", "PL_081312_199")),
 
-  Melissodes_morpho_a= list(genus="Melissodes",
-    subgenus="", species="sp.", subspecies="a",
-    sex="f", author = "", determiner="Karen Wright", temp.id=
+  Melissodes_morpho_a= list(Genus="Melissodes",
+    SubGenus="", Species="sp.", SubSpecies="a",
+    Sex="f", Author = "", Determiner="Karen Wright", temp.id=
     c("JC_071512_136")),
 
-  Melissodes_morpho_b= list(genus="Melissodes",
-    subgenus="", species="sp.", subspecies="b",
-    sex="f", author = "", determiner="Karen Wright", temp.id=
+  Melissodes_morpho_b= list(Genus="Melissodes",
+    SubGenus="", Species="sp.", SubSpecies="b",
+    Sex="f", Author = "", Determiner="Karen Wright", temp.id=
     c("JC_071512_138")),
 
-  Melissodes_morpho_c= list(genus="Melissodes",
-    subgenus="", species="sp.", subspecies="c",
-    sex="f", author = "", determiner="Karen Wright", temp.id=
+  Melissodes_morpho_c= list(Genus="Melissodes",
+    SubGenus="", Species="sp.", SubSpecies="c",
+    Sex="f", Author = "", Determiner="Karen Wright", temp.id=
     c("SC_072012_251")),
 
-  Svastra_morpho_a= list(genus="Svastra",
-    subgenus="", species="sp.", subspecies="a",
-    sex="f", author = "", determiner="Karen Wright", temp.id=
+  Svastra_morpho_a= list(Genus="Svastra",
+    SubGenus="", Species="sp.", SubSpecies="a",
+    Sex="f", Author = "", Determiner="Karen Wright", temp.id=
     c("PL_081212_26")),
 
-  Xylocopa_californica = list(genus="Xylacopa", subgenus="",
-    species="californica", subspecies="arizonensis", sex="", author =
-    "Cresson", determiner="J.S. Ascher", temp.id= c("CH_082012_135",
+  Xylocopa_californica = list(Genus="Xylacopa", SubGenus="",
+    Species="californica", SubSpecies="arizonensis", Sex="", Author =
+    "Cresson", Determiner="J.S. Ascher", temp.id= c("CH_082012_135",
     "CH_082112_84", "CH_082112_93", "PL_081112_139", "PL_081112_4",
     "PL_080912_162", "PL_080912_302", "PL_081312_107",
     "PL_081312_173", "PL_081312_172", "PL_081312_6", "PL_081312_108",
     "PL_081212_267")),
 
-  Anthophora_montana_f = list(genus="Anthophora", subgenus="",
-    species="montana", subspecies="", sex="f", author = "Cresson",
-    determiner="J.S. Ascher", temp.id= c("PL_081312_17",
+  Anthophora_montana_f = list(Genus="Anthophora", SubGenus="",
+    Species="montana", SubSpecies="", Sex="f", Author = "Cresson",
+    Determiner="J.S. Ascher", temp.id= c("PL_081312_17",
     "PL_081212_198", "PL_081212_268", "PL_081312_16", "CH_082012_114",
     "CH_082112_114", "PL_081212_139", "PL_081212_44", "PL_081312_20",
     "PL_081312_14", "PL_081312_148", "PL_081212_1", "PL_081212_8",
@@ -121,9 +121,9 @@ sp.ids <- list(
     "SC_072012_133", "SC_072012_203", "SC_072812_128",
     "SC_072812_127", "SC_072712_109", "SC_072812_1")),
   
-  Anthophora_montana_m = list(genus="Anthophora", subgenus="",
-    species="montana", subspecies="", sex="m", author = "Cresson",
-    determiner="J.S. Ascher", temp.id= c("SC_072812_116",
+  Anthophora_montana_m = list(Genus="Anthophora", SubGenus="",
+    Species="montana", SubSpecies="", Sex="m", Author = "Cresson",
+    Determiner="J.S. Ascher", temp.id= c("SC_072812_116",
     "SC_072612_158", "SC_072712_118", "SC_072712_121",
     "SC_072712_122", "SC_072712_101", "SC_072812_111",
     "SC_072812_113", "SC_072012_265", "SC_072312_13", "SC_072812_5",
@@ -136,13 +136,13 @@ sp.ids <- list(
     "MM_073112_47", "SC_072712_107", "SC_072812_159", "SC_072012_202"
     , "SC_072112_47", "SC_072912_63", "SC_072612_61")),
   
-  Anthophora_californica = list(genus="Anthophora", subgenus="",
-    species="californica", subspecies="", sex="f", author = "Cresson",
-    determiner="J.S. Ascher", temp.id= c("PL_081312_146")),
+  Anthophora_californica = list(Genus="Anthophora", SubGenus="",
+    Species="californica", SubSpecies="", Sex="f", Author = "Cresson",
+    Determiner="J.S. Ascher", temp.id= c("PL_081312_146")),
   
-  Anthophora_terminalis = list(genus="Anthophora", subgenus="",
-    species="terminalis", subspecies="", sex="f", author = "Cresson",
-    determiner="J.S. Ascher", temp.id= c("PL_081012_257" ,
+  Anthophora_terminalis = list(Genus="Anthophora", SubGenus="",
+    Species="terminalis", SubSpecies="", Sex="f", Author = "Cresson",
+    Determiner="J.S. Ascher", temp.id= c("PL_081012_257" ,
     "PL_081012_258", "PL_080912_287", "PL_081112_94", "PL_081012_259",
     "PL_081012_90", "PL_080912_283", "PL_081112_227", "PL_081112_179",
     "PL_081012_245", "PL_081012_86", "PL_081112_41", "PL_080912_284",
@@ -152,9 +152,9 @@ sp.ids <- list(
     "PL_081312_149", "PL_081112_229", "JC_071712_64", "PL_081012_88",
     "PL_081312_145", "PL_081312_15")),
 
-  Anthophora_urbana = list(genus="Anthophora", subgenus="",
-    species="urbana", subspecies="", sex="", author = "Cresson",
-    determiner="J.S. Ascher", temp.id= c("MM_080412_1",
+  Anthophora_urbana = list(Genus="Anthophora", SubGenus="",
+    Species="urbana", SubSpecies="", Sex="", Author = "Cresson",
+    Determiner="J.S. Ascher", temp.id= c("MM_080412_1",
     "MM_080312_96", "MM_080412_6", "MM_080412_3", "MM_080112_136",
     "MM_080312_123", "MM_080112_13", "MM_080212_121", "MM_080212_99",
     "MM_080412_140", "MM_080412_92", "MM_080412_176", "MM_080412_106",
@@ -162,35 +162,35 @@ sp.ids <- list(
     "MM_080312_15" , "MM_080112_3", "CH_082212_36", "MM_080312_131",
     "MM_080412_5" , "MM_080112_142", "MM_080412_119", "MM_080412_2")),
 
-  Anthophora_marginata = list(genus="Anthophora", subgenus="",
-    species="marginata", subspecies="", sex="f", author = "Smith",
-    determiner="J.S. Ascher", temp.id= c("CH_082112_116")),
+  Anthophora_marginata = list(Genus="Anthophora", SubGenus="",
+    Species="marginata", SubSpecies="", Sex="f", Author = "Smith",
+    Determiner="J.S. Ascher", temp.id= c("CH_082112_116")),
   
-  Tetraloniella_lippiae = list(genus="Tetraloniella", subgenus="",
-    species="lippiae", subspecies="", sex="f", author = "Cockerell",
-    determiner="J.S. Ascher", temp.id= c("PL_081312_19")),
+  Tetraloniella_lippiae = list(Genus="Tetraloniella", SubGenus="",
+    Species="lippiae", SubSpecies="", Sex="f", Author = "Cockerell",
+    Determiner="J.S. Ascher", temp.id= c("PL_081312_19")),
 
-  Diadasia_diminuta = list(genus="Diadasia", subgenus="",
-    species="diminuta", subspecies="", sex="f", author = "Cresson",
-    determiner="J.S. Ascher", temp.id= c("MM_080312_33",
+  Diadasia_diminuta = list(Genus="Diadasia", SubGenus="",
+    Species="diminuta", SubSpecies="", Sex="f", Author = "Cresson",
+    Determiner="J.S. Ascher", temp.id= c("MM_080312_33",
     "PL_081312_196")),
 
-  Ptilothrix_morpho= list(genus=" Ptilothrix", subgenus="",
-    species="sp.", subspecies="a", sex="", author = "",
-    determiner="J.S. Ascher", temp.id= c("PL_081312_214")),
+  Ptilothrix_morpho= list(Genus=" Ptilothrix", SubGenus="",
+    Species="sp.", SubSpecies="a", Sex="", Author = "",
+    Determiner="J.S. Ascher", temp.id= c("PL_081312_214")),
 
-  Svastra_machaerantherae = list(genus="Svastra", subgenus="",
-    species="machaerantherae", subspecies="", sex="f", author =
-    "Cockerell", determiner="J.S. Ascher", temp.id= c("PL_081112_46",
+  Svastra_machaerantherae = list(Genus="Svastra", SubGenus="",
+    Species="machaerantherae", SubSpecies="", Sex="f", Author =
+    "Cockerell", Determiner="J.S. Ascher", temp.id= c("PL_081112_46",
     "PL_081312_44")),
 
-  Triepeolus = list(genus="Triepeolus", subgenus="", species="sp.",
-    subspecies="a", sex="m", author = "", determiner="J.S. Ascher",
+  Triepeolus = list(Genus="Triepeolus", SubGenus="", Species="sp.",
+    SubSpecies="a", Sex="m", Author = "", Determiner="J.S. Ascher",
     temp.id= c("SC_072612_31")),
 
-  Apis_mellifera= list(genus="Apis", subgenus = "", species
-    ="mellifera", subspecies="", sex="f", author = "Linnaeus",
-    determiner="J.S. Ascher", temp.id= c("CH_082112_126",
+  Apis_mellifera= list(Genus="Apis", SubGenus = "", Species
+    ="mellifera", SubSpecies="", Sex="f", Author = "Linnaeus",
+    Determiner="J.S. Ascher", temp.id= c("CH_082112_126",
     "CH_082112_125", "CH_082112_138", "CH_082112_135",
     "CH_082112_136", "CH_082112_134", "CH_082112_133",
     "CH_082112_149", "CH_082112_150", "CH_082112_181",
@@ -280,12 +280,12 @@ sp.ids <- list(
 ## ############## read in data and match temp.ids ###################
 
 ## lengths <- sapply(sp.ids, function(x) length(x$temp.id))
-## Genus <- sapply(sp.ids, function(x) x$genus)
-## SubGenus <- sapply(sp.ids, function(x) x$subgenus)
-## Species <- sapply(sp.ids, function(x) x$species)
-## SubSpecies <- sapply(sp.ids, function(x) x$subspecies)
-## Sex <- sapply(sp.ids, function(x) x$sex)
-## Determiner <- sapply(sp.ids, function(x) x$determiner)
+## Genus <- sapply(sp.ids, function(x) x$Genus)
+## SubGenus <- sapply(sp.ids, function(x) x$SubGenus)
+## Species <- sapply(sp.ids, function(x) x$Species)
+## SubSpecies <- sapply(sp.ids, function(x) x$SubSpecies)
+## Sex <- sapply(sp.ids, function(x) x$Sex)
+## Determiner <- sapply(sp.ids, function(x) x$Determiner)
 ## TempID <- sapply(sp.ids, function(x) x$temp.id)
 
 ## dd <- data.frame(TempID=unlist(TempID), 
@@ -303,11 +303,11 @@ sp.ids <- list(
 ## ind <- match(dd$TempID, D$temp.id)
 ## D$order[ind] <- 'Hymenoptera'
 ## D$family[ind] <- 'Apidae'
-## D$genus[ind] <- as.character(dd$Genus)
-## D$subgenus[ind] <- as.character(dd$SubGenus)
-## D$species[ind] <- as.character(dd$Species)
-## D$subspecies[ind] <- as.character(dd$SubSpecies)
-## D$sex[ind] <- as.character(dd$Sex)
+## D$Genus[ind] <- as.character(dd$Genus)
+## D$SubGenus[ind] <- as.character(dd$SubGenus)
+## D$Species[ind] <- as.character(dd$Species)
+## D$SubSpecies[ind] <- as.character(dd$SubSpecies)
+## D$Sex[ind] <- as.character(dd$Sex)
 ## D$dateDetermined[ind] <- '2013'
 
 ## write.csv(D, file=newfile, row.names=FALSE)

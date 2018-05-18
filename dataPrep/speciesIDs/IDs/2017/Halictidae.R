@@ -1,9 +1,9 @@
 
 sp.ids <- list(
 
-    Agapostemen_angelicus_f = list(genus="Agapostemen", subgenus ="",
-                                   species="angelicus", subspecies="", sex="f", author = "Cockerell",
-                                   determiner = "L.C. Ponisio",
+    Agapostemen_angelicus_f = list(Genus="Agapostemen", SubGenus ="",
+                                   Species="angelicus", SubSpecies="", Sex="f", Author = "Cockerell",
+                                   Determiner = "L.C. Ponisio",
                                    temp.id= c("BBSL1074035", "BBSL1074034", "BBSL1074020", "BBSL1073950", "BBSL1073955", "BBSL1070672", "BBSL1070673",
                                               "BBSL1070620", "BBSL1070638", "BBSL1071878", "BBSL1074191", "BBSL1074192", "BBSL1074193", "BBSL1074210",
                                               "BBSL1074224", "BBSL1074219", "BBSL1074273", "BBSL1074275", "BBSL1074264", "BBSL1074241", "BBSL1074135",
@@ -23,9 +23,9 @@ sp.ids <- list(
                                               "BBSL1074041", "BBSL1074036"
                                               )),
 
-    Agapostemen_angelicus_m = list(genus="Agapostemen", subgenus ="",
-                                   species="angelicus", subspecies="", sex="m", author = "Cockerell",
-                                   determiner = "L.C. Ponisio",
+    Agapostemen_angelicus_m = list(Genus="Agapostemen", SubGenus ="",
+                                   Species="angelicus", SubSpecies="", Sex="m", Author = "Cockerell",
+                                   Determiner = "L.C. Ponisio",
                                    temp.id= c("BBSL1059634", "BBSL1059672", "BBSL1059625", "BBSL1059626", "BBSL1059611", "BBSL1059662", "BBSL1059642",
                                               "BBSL1059668", "BBSL1059651", "BBSL1059641", "BBSL1059640", "BBSL1059590", "BBSL1059588", "BBSL1059597",
                                               "BBSL1059283", "BBSL1059275", "BBSL1058711", "BBSL1059241", "BBSL1060069", "BBSL1059972", "BBSL1059456",
@@ -43,27 +43,27 @@ sp.ids <- list(
                                               "BBSL1072289", "BBSL1072140", "BBSL1073826", "BBSL1072141")
                                    ),
 
-    Dufourea_harveyi_m = list(genus="Dufourea", subgenus ="",
-                           species="harveyi", subspecies="", sex="m", author = "Cresson",
-                           determiner = "T. Griswold",
+    Dufourea_harveyi_m = list(Genus="Dufourea", SubGenus ="",
+                           Species="harveyi", SubSpecies="", Sex="m", Author = "Cresson",
+                           Determiner = "T. Griswold",
                            temp.id= c("BBSL1073460")),
 
-    Dufourea_maura_f= list(genus="Dufourea", subgenus ="",
-                           species="maura", subspecies="", sex="f", author = "Cresson",
-                           determiner = "T. Griswold",
+    Dufourea_maura_f= list(Genus="Dufourea", SubGenus ="",
+                           Species="maura", SubSpecies="", Sex="f", Author = "Cresson",
+                           Determiner = "T. Griswold",
                            temp.id= c("BBSL1071354", "BBSL1071565", "BBSL1071566", "BBSL1074166", "BBSL1074167",
                                       "BBSL1074168", "BBSL1074169", "BBSL1074269", "BBSL1074272", "BBSL1074265",
                                       "BBSL1074388", "BBSL1074389", "BBSL1071759", "BBSL1071760", "BBSL1071769",
                                       "BBSL1072559")),
 
-    Dufourea_maura_m= list(genus="Dufourea", subgenus ="",
-                           species="maura", subspecies="", sex="m", author = "Cresson",
-                           determiner = "T. Griswold",
+    Dufourea_maura_m= list(Genus="Dufourea", SubGenus ="",
+                           Species="maura", SubSpecies="", Sex="m", Author = "Cresson",
+                           Determiner = "T. Griswold",
                            temp.id= c("BBSL1058701")),
 
-     Lasioglossum_sisymbrii_f = list(genus="Lasioglossum", subgenus
-                                  ="Lasioglossum", species="sisymbrii", subspecies="", sex="f",
-                                  author = "Cockerell", determiner = "T. Griswold", temp.id=
+     Lasioglossum_sisymbrii_f = list(Genus="Lasioglossum", SubGenus
+                                  ="Lasioglossum", Species="sisymbrii", SubSpecies="", Sex="f",
+                                  Author = "Cockerell", Determiner = "T. Griswold", temp.id=
                                                                                         c("BBSL1074065"))
 
 )

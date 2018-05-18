@@ -70,9 +70,6 @@ write.csv(spec.data, file="relational/original/specimens.csv",
 
 source('../../skyIslands/dataPrep/speciesIDs/AssignSpecies.R')
 
-write.csv(spec.data, file="relational/original/specimens.csv",
-          row.names=FALSE)
-
 
 ## *******************************************************
 ## create conditions file

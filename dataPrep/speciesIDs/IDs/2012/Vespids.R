@@ -1,8 +1,8 @@
 
 sp.ids <- list(
 
-  bustamente = list(genus="Ancistrocerus", subgenus ="",
-    species="bustamente", subspecies="", sex="", author = "Saussure",
+  bustamente = list(Genus="Ancistrocerus", SubGenus ="",
+    Species="bustamente", SubSpecies="", Sex="", Author = "Saussure",
     temp.id
     =c("SC_072112_61","MM_080212_161","MM_080212_195","SC_072612_106",
     "SC_072312_269", "SC_072312_260", "SC_072612_109","CH_082112_52",
@@ -53,8 +53,8 @@ sp.ids <- list(
     "SC_072312_262", "SC_072312_261", "SC_072612_12", "SC_072812_199",
     "SC_072812_71", "SC_072712_134", "CH_082112_169")),
 
-  catskill = list(genus="Ancistrocerus", subgenus ="",
-    species="catskill", subspecies="", sex="", author = "Saussure",
+  catskill = list(Genus="Ancistrocerus", SubGenus ="",
+    Species="catskill", SubSpecies="", Sex="", Author = "Saussure",
     temp.id =c("JC_071612_122", "SC_072812_17", "SC_072012_199",
     "SC_072012_90", "SC_072112_66", "SC_072312_256", "PL_080912_112",
     "SC_072612_1", "SC_072012_95", "SC_072012_96", "SC_072012_98",
@@ -63,54 +63,54 @@ sp.ids <- list(
     "SC_072312_296", "SC_072012_76", "SC_072612_129",
     "SC_072912_75")),
 
-  spilogaster = list(genus="Ancistrocerus", subgenus ="",
-                   species="spilogaster", subspecies="", sex="",
-                   author = "Cameron", temp.id =c("SC_072712_130",
+  spilogaster = list(Genus="Ancistrocerus", SubGenus ="",
+                   Species="spilogaster", SubSpecies="", Sex="",
+                   Author = "Cameron", temp.id =c("SC_072712_130",
                    "SC_072712_43")),
 
-  lineativentris = list(genus="Ancistrocerus", subgenus ="",
-          species="lineativentris", subspecies="", sex="", author =
+  lineativentris = list(Genus="Ancistrocerus", SubGenus ="",
+          Species="lineativentris", SubSpecies="", Sex="", Author =
           "Cameron", temp.id=c("PL_081312_105")),
 
-  adiabatus = list(genus="Ancistrocerus", subgenus ="",
-          species="adiabatus", subspecies="", sex="", author =
+  adiabatus = list(Genus="Ancistrocerus", SubGenus ="",
+          Species="adiabatus", SubSpecies="", Sex="", Author =
           "Saussure", temp.id =c("SC_072912_32", "SC_072012_285",
           "SC_072312_193", "SC_072312_258", "MM_073112_111",
           "SC_072612_268")),
 
-  tuberculocephalus = list(genus="Ancistrocerus", subgenus ="",
-          species="tuberculocephalus", subspecies="", sex="", author =
+  tuberculocephalus = list(Genus="Ancistrocerus", SubGenus ="",
+          Species="tuberculocephalus", SubSpecies="", Sex="", Author =
           "Saussure", temp.id=c("CH_082112_17", "CH_082012_150",
           "SC_072312_70", "PL_081112_32", "PL_081312_132")),
 
   
-  antilope = list(genus="Ancistrocerus", subgenus ="",
-          species="antilope", subspecies="", sex="", author =
+  antilope = list(Genus="Ancistrocerus", SubGenus ="",
+          Species="antilope", SubSpecies="", Sex="", Author =
           "Panzer", temp.id =c("PL_081012_49", "PL_080912_110",
           "SC_072312_23", "SC_072612_14")),
 
-   bollii = list(genus="Eumenes", subgenus ="", species="bollii",
-          subspecies="", sex="", author = "Cresson", temp.id
+   bollii = list(Genus="Eumenes", SubGenus ="", Species="bollii",
+          SubSpecies="", Sex="", Author = "Cresson", temp.id
           =c("CH_082012_144")),
 
-   arenaria = list(genus="Dolichovespula", subgenus ="",
-          species="arenaria", subspecies="", sex="f", author =
+   arenaria = list(Genus="Dolichovespula", SubGenus ="",
+          Species="arenaria", SubSpecies="", Sex="f", Author =
           "Fabricius", temp.id =c("JC_071612_22")),
 
-   hidalgo = list(genus="Euodynerus", subgenus ="", species="hidalgo",
-          subspecies="", sex="", author = "Saussure", temp.id
+   hidalgo = list(Genus="Euodynerus", SubGenus ="", Species="hidalgo",
+          SubSpecies="", Sex="", Author = "Saussure", temp.id
           =c("CH_082112_165")),
 
-   annulatus = list(genus="Euodynerus", subgenus ="",
-          species="annulatus", subspecies="", sex="", author = "Say",
+   annulatus = list(Genus="Euodynerus", SubGenus ="",
+          Species="annulatus", SubSpecies="", Sex="", Author = "Say",
           temp.id =c("PL_081312_141")),
 
-   herrichii = list(genus="Pseudepipona", subgenus ="",
-          species="herrichii", subspecies="aldrichi", sex="", author =
+   herrichii = list(Genus="Pseudepipona", SubGenus ="",
+          Species="herrichii", SubSpecies="aldrichi", Sex="", Author =
           "Fox", temp.id =c("JC_071512_21")),
 
-   toas = list(genus="Stenodynerus", subgenus ="", species="toas",
-          subspecies="", sex="", author = "Cresson", temp.id
+   toas = list(Genus="Stenodynerus", SubGenus ="", Species="toas",
+          SubSpecies="", Sex="", Author = "Cresson", temp.id
           =c("PL_081312_106", "JC_071612_109", "JC_071712_106",
           "JC_071512_135", "JC_071712_50")) )
 
@@ -118,11 +118,11 @@ sp.ids <- list(
 ## ############## read in data and match temp.ids ###################
 
 ## lengths <- sapply(sp.ids, function(x) length(x$temp.id))
-## Genus <- sapply(sp.ids, function(x) x$genus)
-## SubGenus <- sapply(sp.ids, function(x) x$subgenus)
-## Species <- sapply(sp.ids, function(x) x$species)
-## SubSpecies <- sapply(sp.ids, function(x) x$subspecies)
-## Sex <- sapply(sp.ids, function(x) x$sex)
+## Genus <- sapply(sp.ids, function(x) x$Genus)
+## SubGenus <- sapply(sp.ids, function(x) x$SubGenus)
+## Species <- sapply(sp.ids, function(x) x$Species)
+## SubSpecies <- sapply(sp.ids, function(x) x$SubSpecies)
+## Sex <- sapply(sp.ids, function(x) x$Sex)
 ## TempID <- sapply(sp.ids, function(x) x$temp.id)
 
 ## dd <- data.frame(TempID=unlist(TempID),
@@ -139,12 +139,12 @@ sp.ids <- list(
 ## ind <- match(dd$TempID, D$temp.id)
 ## D$order[ind] <- 'Hymenoptera'
 ## D$family[ind] <- 'Vespidae'
-## D$genus[ind] <- as.character(dd$Genus)
-## D$subgenus[ind] <- as.character(dd$SubGenus)
-## D$species[ind] <- as.character(dd$Species)
-## D$subspecies[ind] <- as.character(dd$SubSpecies)
-## D$sex[ind] <- as.character(dd$Sex)
-## D$determiner[ind] <- 'J.M. Carpenter'
+## D$Genus[ind] <- as.character(dd$Genus)
+## D$SubGenus[ind] <- as.character(dd$SubGenus)
+## D$Species[ind] <- as.character(dd$Species)
+## D$SubSpecies[ind] <- as.character(dd$SubSpecies)
+## D$Sex[ind] <- as.character(dd$Sex)
+## D$Determiner[ind] <- 'J.M. Carpenter'
 ## D$dateDetermined[ind] <- '2013'
 
 ## write.csv(D, file=newfile, row.names=FALSE)
