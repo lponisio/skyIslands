@@ -79,10 +79,10 @@ conditions$ConditionsFK <-
 specimens$ConditionsFK <-
     cond$ConditionsPK[match(specimens$cond.code, cond$cond.code)]
 
-print(paste("specimens without condition keys", specimens$UniqueID[is.na(specimens$ConditionsFK)]))
+print(paste("specimen without condition keys", specimens$TempID[is.na(specimens$ConditionsFK)]))
 
-## specimens[specimens$UniqueID == "9296",]
-## conditions[conditions$Date == "7/25/17",]
+# specimens[specimens$TempID == "9782",]
+# conditions[conditions$Date == "6/17/17",]
 
 write.csv(dbReadTable(con, "tblConditions"),
           file="tables/conditions.csv", row.names=FALSE)

@@ -3,7 +3,7 @@ sp.ids <- list(
 
   bustamente = list(Genus="Ancistrocerus", SubGenus ="",
     Species="bustamente", SubSpecies="", Sex="", Author = "Saussure",
-    temp.id
+    Determiner="J. Carpenter", temp.id
     =c("SC_072112_61","MM_080212_161","MM_080212_195","SC_072612_106",
     "SC_072312_269", "SC_072312_260", "SC_072612_109","CH_082112_52",
     "SC_072712_46", "SC_072712_44", "SC_072612_122", "SC_072012_121",
@@ -55,7 +55,7 @@ sp.ids <- list(
 
   catskill = list(Genus="Ancistrocerus", SubGenus ="",
     Species="catskill", SubSpecies="", Sex="", Author = "Saussure",
-    temp.id =c("JC_071612_122", "SC_072812_17", "SC_072012_199",
+    Determiner="J. Carpenter", temp.id =c("JC_071612_122", "SC_072812_17", "SC_072012_199",
     "SC_072012_90", "SC_072112_66", "SC_072312_256", "PL_080912_112",
     "SC_072612_1", "SC_072012_95", "SC_072012_96", "SC_072012_98",
     "SC_072012_136", "SC_072312_19", "SC_072712_240", "SC_072712_245",
@@ -65,86 +65,52 @@ sp.ids <- list(
 
   spilogaster = list(Genus="Ancistrocerus", SubGenus ="",
                    Species="spilogaster", SubSpecies="", Sex="",
-                   Author = "Cameron", temp.id =c("SC_072712_130",
+                   Author = "Cameron", Determiner="J. Carpenter", temp.id =c("SC_072712_130",
                    "SC_072712_43")),
 
   lineativentris = list(Genus="Ancistrocerus", SubGenus ="",
           Species="lineativentris", SubSpecies="", Sex="", Author =
-          "Cameron", temp.id=c("PL_081312_105")),
+          "Cameron", Determiner="J. Carpenter", temp.id=c("PL_081312_105")),
 
   adiabatus = list(Genus="Ancistrocerus", SubGenus ="",
           Species="adiabatus", SubSpecies="", Sex="", Author =
-          "Saussure", temp.id =c("SC_072912_32", "SC_072012_285",
+          "Saussure", Determiner="J. Carpenter", temp.id =c("SC_072912_32", "SC_072012_285",
           "SC_072312_193", "SC_072312_258", "MM_073112_111",
           "SC_072612_268")),
 
   tuberculocephalus = list(Genus="Ancistrocerus", SubGenus ="",
           Species="tuberculocephalus", SubSpecies="", Sex="", Author =
-          "Saussure", temp.id=c("CH_082112_17", "CH_082012_150",
+          "Saussure", Determiner="J. Carpenter", temp.id=c("CH_082112_17", "CH_082012_150",
           "SC_072312_70", "PL_081112_32", "PL_081312_132")),
 
-  
+
   antilope = list(Genus="Ancistrocerus", SubGenus ="",
           Species="antilope", SubSpecies="", Sex="", Author =
-          "Panzer", temp.id =c("PL_081012_49", "PL_080912_110",
+          "Panzer", Determiner="J. Carpenter", temp.id =c("PL_081012_49", "PL_080912_110",
           "SC_072312_23", "SC_072612_14")),
 
    bollii = list(Genus="Eumenes", SubGenus ="", Species="bollii",
-          SubSpecies="", Sex="", Author = "Cresson", temp.id
+          SubSpecies="", Sex="", Author = "Cresson", Determiner="J. Carpenter", temp.id
           =c("CH_082012_144")),
 
    arenaria = list(Genus="Dolichovespula", SubGenus ="",
           Species="arenaria", SubSpecies="", Sex="f", Author =
-          "Fabricius", temp.id =c("JC_071612_22")),
+          "Fabricius", Determiner="J. Carpenter", temp.id =c("JC_071612_22")),
 
    hidalgo = list(Genus="Euodynerus", SubGenus ="", Species="hidalgo",
-          SubSpecies="", Sex="", Author = "Saussure", temp.id
+          SubSpecies="", Sex="", Author = "Saussure", Determiner="J. Carpenter", temp.id
           =c("CH_082112_165")),
 
    annulatus = list(Genus="Euodynerus", SubGenus ="",
           Species="annulatus", SubSpecies="", Sex="", Author = "Say",
-          temp.id =c("PL_081312_141")),
+          Determiner="J. Carpenter", temp.id =c("PL_081312_141")),
 
    herrichii = list(Genus="Pseudepipona", SubGenus ="",
           Species="herrichii", SubSpecies="aldrichi", Sex="", Author =
-          "Fox", temp.id =c("JC_071512_21")),
+          "Fox", Determiner="J. Carpenter", temp.id =c("JC_071512_21")),
 
    toas = list(Genus="Stenodynerus", SubGenus ="", Species="toas",
-          SubSpecies="", Sex="", Author = "Cresson", temp.id
+          SubSpecies="", Sex="", Author = "Cresson", Determiner="J. Carpenter", temp.id
           =c("PL_081312_106", "JC_071612_109", "JC_071712_106",
           "JC_071512_135", "JC_071712_50")) )
 
-
-## ############## read in data and match temp.ids ###################
-
-## lengths <- sapply(sp.ids, function(x) length(x$temp.id))
-## Genus <- sapply(sp.ids, function(x) x$Genus)
-## SubGenus <- sapply(sp.ids, function(x) x$SubGenus)
-## Species <- sapply(sp.ids, function(x) x$Species)
-## SubSpecies <- sapply(sp.ids, function(x) x$SubSpecies)
-## Sex <- sapply(sp.ids, function(x) x$Sex)
-## TempID <- sapply(sp.ids, function(x) x$temp.id)
-
-## dd <- data.frame(TempID=unlist(TempID),
-##                  Genus=rep(Genus, lengths),
-##                  SubGenus=rep(SubGenus, lengths),
-##                  Species=rep(Species, lengths),
-##                  SubSpecies=rep(SubSpecies, lengths),
-##                  Sex=rep(Sex, lengths))
-
-## ## lood data:
-## D <- read.csv(file=newfile, as.is=TRUE)
-
-
-## ind <- match(dd$TempID, D$temp.id)
-## D$order[ind] <- 'Hymenoptera'
-## D$family[ind] <- 'Vespidae'
-## D$Genus[ind] <- as.character(dd$Genus)
-## D$SubGenus[ind] <- as.character(dd$SubGenus)
-## D$Species[ind] <- as.character(dd$Species)
-## D$SubSpecies[ind] <- as.character(dd$SubSpecies)
-## D$Sex[ind] <- as.character(dd$Sex)
-## D$Determiner[ind] <- 'J.M. Carpenter'
-## D$dateDetermined[ind] <- '2013'
-
-## write.csv(D, file=newfile, row.names=FALSE)

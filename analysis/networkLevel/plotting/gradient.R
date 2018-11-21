@@ -1,3 +1,5 @@
+
+setwd('~/Dropbox/skyIslands/analysis/networkLevel')
 library(RColorBrewer)
 library(lme4)
 library(lmerTest)
@@ -58,7 +60,7 @@ nop.pi <- predict.int(mod= baci.no.plant.mod,
                         dd=dd.nop,
                         y="niche.overlap.plants",
                         family="gaussian")
-                        
+
 ## ************************************************************
 ## niche overlap - Polinators
 ## ************************************************************

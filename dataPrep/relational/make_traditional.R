@@ -27,8 +27,8 @@ drop <- c('InsectPK', 'InsectFK',
           'PanPK', 'PanFK',
           'ConditionsPK', 'ConditionsFK')
 res.complete <- res.complete[-match(drop, names(res.complete))]
-drop <- c('GeographyFK')
-res.complete <- res.complete[-match(drop, names(res.complete))]
+
+res.complete <- res.complete[,!grepl("\\..", colnames(res.complete))]
 
 print(paste("after traditional, dim=", nrow(res.complete)))
 

@@ -1,11 +1,12 @@
 
-calc.metric <- function(dat.web, H2_integer=FALSE,
-                        networkLevel.mets= c("H2", "connectance",
-                          "weighted connectance", "niche overlap",
-                          "number of species")) {
+calc.metric <- function(dat.web, H2_integer=TRUE,
+                        networkLevel.mets= c("connectance",
+                                             "weighted connectance",
+                                             "niche overlap",
+                                             "H2", "number of species")) {
   ## calculates modularity
-  calc.mod <- function(dat.web){ 
-    ## converts a p-a matrix to a graph for modularity computation 
+  calc.mod <- function(dat.web){
+    ## converts a p-a matrix to a graph for modularity computation
     mut.adj <- function(x) {
       nr <- dim(x)[1]
       nc <- dim(x)[2]
@@ -18,13 +19,13 @@ calc.metric <- function(dat.web, H2_integer=FALSE,
     weights <- as.vector(dat.web)
     weights <- weights[weights != 0]
 
-    ## if matrix is binary, modularity calculate is not affected by
+    ## if matrix is binary, modularity calculation is not affected by
     ## the weights
     greedy <- modularity(graph,
                          membership(fastgreedy.community(graph,
                                                          weights=weights)),
                          weights=weights)
-    
+
     random.walk <-  modularity(graph,
                                membership(walktrap.community(graph,
                                                              weights=weights)),
@@ -32,12 +33,12 @@ calc.metric <- function(dat.web, H2_integer=FALSE,
     dendro <-  modularity(graph,
                           membership(edge.betweenness.community(graph,
                                                                 weights=
-                                                                weights)),
+                                                                1/weights)),
                           weights=weights)
     return(c(G=greedy,
              R=random.walk,
              D=dendro))
-  } 
+  }
 
   dat.web <- as.matrix(empty(dat.web))
   ## matrix of all the same number
@@ -55,7 +56,35 @@ calc.metric <- function(dat.web, H2_integer=FALSE,
   }
   mod.met <- calc.mod(dat.web)
   return(c(mets, mod.met= mod.met))
-  
+
+}
+
+
+##  function that computes summary statistics on simulated null matrices
+##  (nulls simulated from web N times)
+cor.metrics <- function (true.stat, null.stat, N) {
+  ## calculate pvalues
+  pvals <- function(stats, nnull){
+    colSums(stats >= stats[rep(1, nrow(stats)),])/(nnull + 1)
+  }
+  ## calculate zvalues two different ways
+  zvals <-function(stats){
+    z.sd <-   apply(stats, 2, sd, na.rm = TRUE)
+    z <- (stats[1,] -
+             apply(stats, 2, mean, na.rm = TRUE))/
+               z.sd
+    z[is.infinite(z)] <- NA
+    return(c(z=z, sd=z.sd))
+  }
+  out.mets <- rbind(true.stat, null.stat)
+  ## compute z scores
+  zvalues <- zvals(out.mets)
+  ## names(zvalues) <- paste("z, names(true.stat), sep="")
+  ## compute p-values
+  pvalues <- pvals(out.mets, N)
+  names(pvalues) <- paste("p", names(true.stat), sep=".")
+  out <- c(true.stat, zvalues, pvalues)
+  return(out)
 }
 
 prob.null <- function(M) {
@@ -63,7 +92,7 @@ prob.null <- function(M) {
     mats <- diag(vdims)
     ## what cell number are the interactions
     posdiag <- 1:vdims + ((1:vdims - 1) * vdims)
-    desp <- matrix(rep(1:vdims, vdims), vdims, vdims, 
+    desp <- matrix(rep(1:vdims, vdims), vdims, vdims,
                    byrow = TRUE) - (1:vdims)
     fdesp <- sample(1:vdims)
     move <- desp[cbind(1:vdims, fdesp)]
@@ -95,11 +124,11 @@ prob.null <- function(M) {
   MR[cbind(pos, sample2)] <- 2
   MRoccupied <- which(MR > 0)
   vleft <- lvalues - vdimb
-  if (vleft > 0) 
-    MRoccupied <- c(MRoccupied, sample((1:lMR)[-MRoccupied], 
+  if (vleft > 0)
+    MRoccupied <- c(MRoccupied, sample((1:lMR)[-MRoccupied],
                                        vleft))
   MR[MRoccupied] <- sample(values)
-  if (dim(MR)[1] != dim(M)[1]) 
+  if (dim(MR)[1] != dim(M)[1])
     MR <- t(MR)
   return(MR)
 }

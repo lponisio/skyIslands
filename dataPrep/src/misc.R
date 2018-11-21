@@ -9,7 +9,6 @@ samp2site.spp <- function(site, spp, abund, FUN=mean) {
 }
 
 ## does the reverse of samp2site
-
 comm.mat2sample <-  function (z) {
   temp <- data.frame(expand.grid(dimnames(z))[1:2],
                      as.vector(as.matrix(z)))

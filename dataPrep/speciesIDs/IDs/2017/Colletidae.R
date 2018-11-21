@@ -1,9 +1,9 @@
 
 sp.ids <- list(
 
-  Colletes_compactus_m = list(Genus="Colletes", SubGenus ="compactus",
+  Colletes_compactus_m = list(Genus="Colletes", SubGenus ="Compactus",
                               Species="compactus", SubSpecies="", Sex="m",
-                              Author = "", Determiner = "T. Griswold",
+                              Author = "Cresson", Determiner = "T. Griswold",
                           temp.id= c("BBSL1073193", "BBSL1073266",
                                      "BBSL1073267", "BBSL1073268",
                                      "BBSL1073269", "BBSL1073270",
@@ -19,7 +19,7 @@ sp.ids <- list(
   Colletes_nigrifrons_f = list(Genus="Colletes", SubGenus ="consors",
                             Species="nigrifrons", SubSpecies="",
                             Sex="f",
-                            Author = "", Determiner = "T. Griswold",
+                            Author = "Titus", Determiner = "T. Griswold",
                             temp.id= c("BBSL1058717", "BBSL1058680",
                                        "BBSL1071022", "BBSL1071049",
                                        "BBSL1071052", "BBSL1071077",
@@ -31,47 +31,47 @@ sp.ids <- list(
                                        "BBSL1071076", "BBSL1071079",
                                        "BBSL1071080", "BBSL1071089")),
 
-  Colletes_scopiventer_f = list(Genus="Colletes", SubGenus ="consors",
+  Colletes_scopiventer_f = list(Genus="Colletes", SubGenus ="Consors",
                              Species="scopiventer", SubSpecies="",
                              Sex="f",
-                             Author = "", Determiner = "T. Griswold",
+                             Author = "Swenk", Determiner = "T. Griswold",
                              temp.id= c("BBSL1070461")),
 
-  Colletes_lutzi_f = list(Genus="Colletes", SubGenus ="hyalinus",
+  Colletes_lutzi_f = list(Genus="Colletes", SubGenus ="Hyalinus",
                           Species="lutzi", SubSpecies="lutzi", Sex="f",
-                          Author = "", Determiner = "T. Griswold",
+                          Author = "Timberlake", Determiner = "T. Griswold",
                        temp.id= c("BBSL1070634")),
 
-  Colletes_phaceliae_f = list(Genus="Colletes", SubGenus ="hyalinus",
+  Colletes_phaceliae_f = list(Genus="Colletes", SubGenus ="Hyalinus",
                            Species="phaceliae", SubSpecies="",
                            Sex="f",
-                           Author = "", Determiner = "T. Griswold",
+                           Author = "Cockerell", Determiner = "T. Griswold",
                            temp.id= c("BBSL1071104", "BBSL1071069")),
 
-  Colletes_gilensis_m= list(Genus="Colletes", SubGenus ="productus",
+  Colletes_gilensis_m= list(Genus="Colletes", SubGenus ="Productus",
                             Species="gilensis", SubSpecies="",
                             Sex="m",
-                            Author = "", Determiner = "T. Griswold",
+                            Author = "Cockerell", Determiner = "T. Griswold",
                             temp.id= c("BBSL1074274", "BBSL1059883",
                                        "BBSL1059170", "BBSL1059258")),
 
-  Colletes_gilensis_f= list(Genus="Colletes", SubGenus ="productus",
+  Colletes_gilensis_f= list(Genus="Colletes", SubGenus ="Productus",
                             Species="gilensis", SubSpecies="",
                             Sex="f",
-                            Author = "", Determiner = "T. Griswold",
+                            Author = "Cockerell", Determiner = "T. Griswold",
                             temp.id= c("BBSL1070592")),
 
-  Colletes_eulophi_f = list(Genus="Colletes", SubGenus ="simulans",
+  Colletes_eulophi_f = list(Genus="Colletes", SubGenus ="Simulans",
                             Species="eulophi", SubSpecies="", Sex="f",
-                            Author = "", Determiner = "T. Griswold",
+                            Author = "Robertson", Determiner = "T. Griswold",
                          temp.id= c("BBSL1072848", "BBSL1074423")),
 
-  Colletes_wootoni_f = list(Genus="Colletes", SubGenus ="simulans",
+  Colletes_wootoni_f = list(Genus="Colletes", SubGenus ="Simulans",
                             Species="wootoni", SubSpecies="", Sex="f",
-                            Author = "", Determiner = "T. Griswold",
+                            Author = "Cockerell", Determiner = "T. Griswold",
                          temp.id= c("BBSL1070927", "BBSL1060049")),
 
-  Hylaeus_annulatus_f = list(Genus="Hylaeus", SubGenus ="",
+  Hylaeus_annulatus_f = list(Genus="Hylaeus", SubGenus ="Hylaeus",
                              Species="annulatus", SubSpecies="",
                              Sex="f",
                              Author = "Linnaeus", Determiner = "T. Griswold",
@@ -86,15 +86,15 @@ sp.ids <- list(
                                         "BBSL1071485", "BBSL1071896",
                                         "BBSL1071941", "BBSL1070593")),
 
-  Hylaeus_annulatus_m = list(Genus="Hylaeus", SubGenus ="",
+  Hylaeus_annulatus_m = list(Genus="Hylaeus", SubGenus ="Hylaeus",
                              Species="annulatus", SubSpecies="",
                              Sex="m",
                              Author = "Linnaeus", Determiner = "T. Griswold",
                              temp.id= c("BBSL1058282")),
 
-  Hylaeus_basalis_f = list(Genus="Hylaeus", SubGenus ="",
+  Hylaeus_basalis_f = list(Genus="Hylaeus", SubGenus ="Cephalylaeus",
                            Species="basalis", SubSpecies="", Sex="f",
-                           Author = "", Determiner = "T. Griswold",
+                           Author = "Smith", Determiner = "T. Griswold",
                          temp.id= c("BBSL1058725", "BBSL1058671"))
 
 )

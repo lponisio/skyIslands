@@ -3,7 +3,7 @@ sp.ids <- list(
 
   Pseudopanurgus_atricornis_m= list(Genus="Pseudopanurgus", SubGenus
     ="", Species="atricornis", SubSpecies="", Sex="m", Author =
-    "Cresson", temp.id= c("SC_072812_163", "SC_072812_179",
+    "Cresson", Determiner="J.S. Ascher", temp.id= c("SC_072812_163", "SC_072812_179",
     "SC_072812_161", "SC_072812_184", "SC_072812_42", "SC_072812_37",
     "SC_072712_180", "SC_072712_178", "SC_072112_24", "SC_072312_60",
     "SC_072112_76", "SC_072312_51", "SC_072012_178", "SC_072012_218",
@@ -26,7 +26,7 @@ sp.ids <- list(
 
   Pseudopanurgus_atricornis_f= list(Genus="Pseudopanurgus", SubGenus
     ="", Species="atricornis", SubSpecies="", Sex="f", Author =
-    "Cresson", temp.id= c("SC_072712_165", "SC_072712_153",
+    "Cresson", Determiner="J.S. Ascher", temp.id= c("SC_072712_165", "SC_072712_153",
     "SC_072012_223", "SC_072712_97", "SC_072612_221", "SC_072612_91",
     "SC_072612_89", "SC_072612_256", "SC_072612_222", "SC_072012_296",
     "SC_072312_250", "SC_072112_156", "SC_072312_220",
@@ -67,9 +67,9 @@ sp.ids <- list(
     "SC_072812_174","SC_072912_11","SC_072812_194","SC_072912_117",
     "SC_072812_168")),
 
-  Andrena_apacheorum= list(Genus="Andrena", SubGenus ="",
+  Andrena_apacheorum= list(Genus="Andrena", SubGenus ="Cnemidandrena",
     Species="apacheorum", SubSpecies="", Sex="f", Author =
-    "Cockerell", temp.id= c("PL_081212_48", "PL_081212_46",
+    "Cockerell", Determiner="J.S. Ascher", temp.id= c("PL_081212_48", "PL_081212_46",
     "PL_081212_45", "PL_081212_101", "PL_081212_97", "PL_081112_173",
     "PL_081312_134", "PL_081312_211", "PL_081212_140",
     "PL_081112_172", "PL_081212_160", "PL_081112_128", "PL_081112_79",
@@ -88,52 +88,20 @@ sp.ids <- list(
     "PL_081312_94", "PL_081312_171", "PL_081312_100", "PL_081312_101",
     "PL_080912_294", "PL_081012_274", "PL_081112_73")),
 
-  Andrena_apacheorum= list(Genus="Andrena", SubGenus ="",
+  Andrena_apacheorum= list(Genus="Andrena", SubGenus ="Cnemidandrena",
     Species="apacheorum", SubSpecies="", Sex="m", Author =
-    "Cockerell", temp.id= c("PL_081112_53", "PL_080912_303",
+    "Cockerell", Determiner="J.S. Ascher", temp.id= c("PL_081112_53", "PL_080912_303",
     "PL_081312_111", "PL_081312_112", "PL_081012_238")),
 
   Panurginus_cressoniellus_f= list(Genus="Panurginus", SubGenus ="",
     Species="cressoniellus", SubSpecies="", Sex="f", Author =
-    "Cockerell", temp.id=
+    "Cockerell", Determiner="J.S. Ascher", temp.id=
     c("JC_071512_105","JC_071512_146","JC_071212_51","JC_071212_103",
     "JC_071212_121", "JC_071712_72")),
 
   Panurginus_cressoniellus_m= list(Genus="Panurginus", SubGenus ="",
     Species="cressoniellus", SubSpecies="", Sex="m", Author =
-    "Cockerell", temp.id= c("JC_071512_194"))
+    "Cockerell", Determiner="J.S. Ascher", temp.id= c("JC_071512_194"))
 
 
   )
-
-## lengths <- sapply(sp.ids, function(x) length(x$temp.id))
-## Genus <- sapply(sp.ids, function(x) x$Genus)
-## SubGenus <- sapply(sp.ids, function(x) x$SubGenus)
-## Species <- sapply(sp.ids, function(x) x$Species)
-## SubSpecies <- sapply(sp.ids, function(x) x$SubSpecies)
-## Sex <- sapply(sp.ids, function(x) x$Sex)
-## TempID <- sapply(sp.ids, function(x) x$temp.id)
-
-## dd <- data.frame(TempID=unlist(TempID),
-##                  Genus=rep(Genus, lengths),
-##                  SubGenus=rep(SubGenus, lengths),
-##                  Species=rep(Species, lengths),
-##                  SubSpecies=rep(SubSpecies, lengths),
-##                  Sex=rep(Sex, lengths))
-
-## ## lood data:
-## D <- read.csv(file=newfile, as.is=TRUE)
-
-
-## ind <- match(dd$TempID, D$temp.id)
-## D$order[ind] <- 'Hymenoptera'
-## D$family[ind] <- 'Andrenidae'
-## D$Genus[ind] <- as.character(dd$Genus)
-## D$SubGenus[ind] <- as.character(dd$SubGenus)
-## D$Species[ind] <- as.character(dd$Species)
-## D$SubSpecies[ind] <- as.character(dd$SubSpecies)
-## D$Sex[ind] <- as.character(dd$Sex)
-## D$Determiner[ind] <- 'J.S. Ascher'
-## D$dateDetermined[ind] <- '2013'
-
-## write.csv(D, file=newfile, row.names=FALSE)

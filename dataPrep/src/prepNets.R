@@ -8,20 +8,43 @@ dropNet <- function(z){
   })]
 }
 
+## breakNet <- function(spec.dat, site, year){
+##   ## puts data together in a list and removes empty matrices
+##   sites <- split(spec.dat, spec.dat[,site])
+##   networks <- lapply(sites, function(x){
+##     lapply(split(x, f=x[,year]), as.matrix)
+##   })
+##   ## formats data matrices appropriate for network analysis
+##   comms <- rapply(networks, function(y){
+##     samp2site.spp(site=y[,"PlantGenusSpecies"],
+##                   spp=y[,"GenusSpecies"],
+##                   abund=rep(1, nrow(y)))
+##   }, how="replace")
+##   adj.mat <- unlist(lapply(comms, dropNet), recursive=FALSE)
+##   return(adj.mat)
+## }
+
+
+
 breakNet <- function(spec.dat, site, year){
-  ## puts data together in a list and removes empty matrices
-  sites <- split(spec.dat, spec.dat[,site])
-  networks <- lapply(sites, function(x){
-    lapply(split(x, f=x[,year]), as.matrix)
-  })
-  ## formats data matrices appropriate for network analysis
-  comms <- rapply(networks, function(y){
-    samp2site.spp(site=y[,"PlantGenusSpecies"],
-                  spp=y[,"GenusSpecies"],
-                  abund=rep(1, nrow(y)))
-  }, how="replace")
-  adj.mat <- unlist(lapply(comms, dropNet), recursive=FALSE)
-  return(adj.mat)
+    ## puts data together in a list and removes empty matrices
+    agg.spec <- aggregate(list(abund=spec.dat$GenusSpecies),
+                          list(GenusSpecies=spec.dat$GenusSpecies,
+                               Site=spec.dat[,site],
+                               Year=spec.dat[,year],
+                               PlantGenusSpecies=spec.dat$PlantGenusSpecies),
+                          length)
+    sites <- split(agg.spec, agg.spec[,site])
+    networks <- lapply(sites, function(x){
+        split(x, f=x[,year])
+    })
+    ## formats data matrices appropriate for network analysis
+    comms <- lapply(unlist(networks, recursive=FALSE), function(y){
+        samp2site.spp(site=y[,"PlantGenusSpecies"],
+                      spp=y[,"GenusSpecies"],
+                      abund=y[,"abund"])
+    })
+    return(comms)
 }
 
 

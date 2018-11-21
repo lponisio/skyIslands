@@ -2,7 +2,7 @@
 sp.ids <- list(
 
 
-    Anthophora_montana_f = list(Genus="Anthophora", SubGenus="",
+    Anthophora_montana_f = list(Genus="Anthophora", SubGenus="Mystacanthophora",
                                 Species="montana", SubSpecies="", Sex="f", Author = "Cresson",
                                 Determiner="L.C. Ponisio",
 
@@ -22,7 +22,7 @@ sp.ids <- list(
                                            "BBSL1073804", "BBSL1073798", "BBSL1073836", "BBSL1073822",
                                            "BBSL1073849", "BBSL1073846", "BBSL1073682")),
 
-    Anthophora_montana_m = list(Genus="Anthophora", SubGenus="",
+    Anthophora_montana_m = list(Genus="Anthophora", SubGenus="Mystacanthophora",
                                 Species="montana", SubSpecies="", Sex="m", Author = "Cresson",
                                 Determiner="L.C. Ponisio",
 
@@ -51,7 +51,7 @@ sp.ids <- list(
                                            "BBSL1073840", "BBSL1073844", "BBSL1073843", "BBSL1073790",
                                            "BBSL1073813", "BBSL1072322", "BBSL1073793", "BBSL1073847")),
 
-    Anthophora_terminalis_f = list(Genus="Anthophora", SubGenus="",
+    Anthophora_terminalis_f = list(Genus="Anthophora", SubGenus="Clisodon",
                                    Species="terminalis",
                                    SubSpecies="", Sex="f",
                                    Author = "Cresson",
@@ -59,7 +59,7 @@ sp.ids <- list(
 
                                    temp.id= c("BBSL1059784")),
 
-    Apis_mellifera_f = list(Genus="Apis", SubGenus = "", Species
+    Apis_mellifera_f = list(Genus="Apis", SubGenus = "Apis", Species
                             ="mellifera", SubSpecies="", Sex="f", Author = "Linnaeus",
                             Determiner="L.C. Ponisio",
 
@@ -91,17 +91,21 @@ sp.ids <- list(
                                        "BBSL1071388", "BBSL1071319",
                                        "BBSL1074436")),
 
-    Bombus_appositus_f = list(Genus = "Bombus", SubGenus="",
+    Bombus_appositus_f = list(Genus = "Bombus", SubGenus="Subterraneobombus",
                               Species = "appositus", SubSpecies = "",
                               Sex ="f", Author = "Cresson",
-                              Determiner="D. Yanega",
-
+                              Determiner="D. Yanega", 
                               temp.id = c("BBSL1070618", "BBSL1058678")),
 
-    Bombus_bifarius_f = list(Genus = "Bombus", SubGenus="", Species = "bifarius",
+    Bombus_appositus_m = list(Genus = "Bombus", SubGenus="Subterraneobombus",
+                              Species = "appositus", SubSpecies = "",
+                              Sex ="m", Author = "Cresson",
+                              Determiner="D. Yanega",
+                              temp.id = c("BBSL1070676")),
+
+    Bombus_bifarius_f = list(Genus = "Bombus", SubGenus="Pyrobombus", Species = "bifarius",
                              SubSpecies = "", Sex ="f", Author = "Cresson",
                              Determiner="D. Yanega",
-
                              temp.id =  c("BBSL1058737",
                                           "BBSL1070598", "BBSL1070677", "BBSL1071062", "BBSL1070647",
                                           "BBSL1058750", "BBSL1071039", "BBSL1058736", "BBSL1058738",
@@ -113,7 +117,12 @@ sp.ids <- list(
                                           "BBSL1070546", "BBSL1071681", "BBSL1071762", "BBSL1071734",
                                           "BBSL1071757")),
 
-    Bombus_centralis_f = list(Genus = "Bombus", SubGenus="", Species = "centralis",
+    Bombus_bifarius_m = list(Genus = "Bombus", SubGenus="Pyrobombus", Species = "bifarius",
+    						SubSpecies = "", Sex ="m", Author = "Cresson", Determiner="D. Yanega", 
+    						temp.id = c("BBSL1070171", "BBSL1070596", "BBSL1070182", "BBSL1070225",
+    						"BBSL1070632", "BBSL1070649", "BBSL1070227", "BBSL1070224", "BBSL1070623")),
+     
+	Bombus_centralis_f = list(Genus = "Bombus", SubGenus="Pyrobombus", Species = "centralis",
                               SubSpecies = "", Sex ="f", Author = "Cresson",
                               Determiner="D. Yanega",
                               temp.id = c("BBSL1058631",
@@ -130,20 +139,20 @@ sp.ids <- list(
                                           "BBSL1072896", "BBSL1073358", "BBSL1072012", "BBSL1059555",
                                           "BBSL1059813", "BBSL1059867", "BBSL1074182", "BBSL1074070",
                                           "BBSL1074084", "BBSL1059895", "BBSL1059955", "BBSL1060041",
-                                          "BBSL1059968", "BBSL1059954")),
+                                          "BBSL1059968", "BBSL1059954", "BBSL1071469")),
 
-    Bombus_fervidus_f = list(Genus = "Bombus", SubGenus="", Species = "fervidus",
+    Bombus_fervidus_f = list(Genus = "Bombus", SubGenus="Thoracobombus", Species = "fervidus",
                              SubSpecies = "", Sex ="f", Author = "Fabricius",
                              Determiner="D. Yanega",
                              temp.id = c("BBSL1059890",
                                          "BBSL1058172", "BBSL1071423", "BBSL1071505")),
 
-    Bombus_fervidus_m = list(Genus = "Bombus", SubGenus="", Species = "fervidus",
+    Bombus_fervidus_m = list(Genus = "Bombus", SubGenus="Thoracobombus", Species = "fervidus",
                              SubSpecies = "", Sex ="m", Author = "Fabricius",
                              Determiner="D. Yanega",
                              temp.id = c("BBSL1059137")),
 
-    Bombus_flavifrons_f = list(Genus = "Bombus", SubGenus="", Species = "flavifrons",
+    Bombus_flavifrons_f = list(Genus = "Bombus", SubGenus="Pyrobombus", Species = "flavifrons",
                                SubSpecies = "", Sex ="f", Author = "Cresson",
                                Determiner="D. Yanega",
                                temp.id = c("BBSL1058649",
@@ -155,9 +164,15 @@ sp.ids <- list(
                                            "BBSL1071908", "BBSL1071902", "BBSL1071905", "BBSL1071918",
                                            "BBSL1071924", "BBSL1071893", "BBSL1071929", "BBSL1071900",
                                            "BBSL1072558", "BBSL1072568", "BBSL1071921", "BBSL1071925",
-                                           "BBSL1071911", "BBSL1071891", "BBSL1071889", "BBSL1071910")),
+                                           "BBSL1071911", "BBSL1071891", "BBSL1071889", "BBSL1071910", 
+                                           "BBSL1074170", "BBSL1071922")),
 
-    Bombus_huntii_f = list(Genus = "Bombus", SubGenus="", Species = "huntii",
+    Bombus_flavifrons_m = list(Genus = "Bombus", SubGenus="Pyrobombus", Species =
+    							"flavifrons", SubSpecies = "", Sex ="m", Author = "Cresson",
+    							Determiner="D. Yanega", temp.id = c("BBSL1071934", "BBSL1071897", 
+    							"BBSL1071899", "BBSL1072563")),
+  
+	Bombus_huntii_f = list(Genus = "Bombus", SubGenus="Pyrobombus", Species = "huntii",
                            SubSpecies = "", Sex ="f", Author = "Greene",
                            Determiner="D. Yanega",
                            temp.id = c("BBSL1059321", "BBSL1059320", "BBSL1059319",
@@ -257,7 +272,7 @@ sp.ids <- list(
                                        "BBSL1060128", "BBSL1060130", "BBSL1060072", "BBSL1060111",
                                        "BBSL1060091", "BBSL1060114", "BBSL1060125")),
 
-    Bombus_huntii_m = list(Genus = "Bombus", SubGenus="", Species = "huntii", SubSpecies = "",
+    Bombus_huntii_m = list(Genus = "Bombus", SubGenus="Pyrobombus", Species = "huntii", SubSpecies = "",
                            Sex ="m", Author = "Greene",
                            Determiner="D. Yanega",
                            temp.id =
@@ -268,15 +283,16 @@ sp.ids <- list(
                                  "BBSL1059587", "BBSL1059643", "BBSL1058444", "BBSL1059567",
                                  "BBSL1058855", "BBSL1058216", "BBSL1059568", "BBSL1059520",
                                  "BBSL1059586", "BBSL1059519", "BBSL1059788", "BBSL1059654",
-                                 "BBSL1059658", "BBSL1059592", "BBSL1059873")),
+                                 "BBSL1059658", "BBSL1059592", "BBSL1059873", "BBSL1073971", 
+                                 "BBSL1070291")),
 
-    Bombus_morrisoni_f = list(Genus = "Bombus", SubGenus="", Species = "morrisoni",
+    Bombus_morrisoni_f = list(Genus = "Bombus", SubGenus="Cullumanobombus", Species = "morrisoni",
                               SubSpecies = "", Sex ="f", Author = "Cresson",
                               Determiner="D. Yanega",
 
                               temp.id = c("BBSL1058541",  "BBSL1071598", "BBSL1070652", "BBSL1071549", "BBSL1058372")),
 
-    Bombus_nevadensis_f = list(Genus = "Bombus", SubGenus="", Species =
+    Bombus_nevadensis_f = list(Genus = "Bombus", SubGenus="Bombias", Species =
                                                                   "nevadensis", SubSpecies = "", Sex ="f",
                                Author = "Cresson",
                                Determiner="D. Yanega",
@@ -292,19 +308,19 @@ sp.ids <- list(
                                            "BBSL1070974", "BBSL1070973", "BBSL1070975", "BBSL1071000",
                                            "BBSL1073094", "BBSL1073093", "BBSL1071887", "BBSL1073519")),
 
-    Bombus_nevadensis_m = list(Genus = "Bombus", SubGenus="",
+    Bombus_nevadensis_m = list(Genus = "Bombus", SubGenus="Bombias",
                                Species = "nevadensis", SubSpecies = "", Sex ="m", Author = "Cresson",
                                Determiner="D. Yanega",
 
                                temp.id = c("BBSL1070718")),
 
-    Bombus_occidentalis_f = list(Genus = "Bombus", SubGenus="",
+    Bombus_occidentalis_f = list(Genus = "Bombus", SubGenus="Bombus",
                                  Species = "occidentalis", SubSpecies = "", Sex ="f", Author = "Greene",
                                  Determiner="D. Yanega",
 
                                  temp.id = c("BBSL1058774")),
 
-    Bombus_rufocinctus_f = list(Genus = "Bombus", SubGenus="", Species ="rufocinctus", SubSpecies = "", Sex ="f", Author = "Cresson",
+    Bombus_rufocinctus_f = list(Genus = "Bombus", SubGenus="Cullumanobombus", Species ="rufocinctus", SubSpecies = "", Sex ="f", Author = "Cresson",
                                 Determiner="D. Yanega",
 
                                 temp.id = c("BBSL1058655",
@@ -327,16 +343,16 @@ sp.ids <- list(
                                             "BBSL1071923", "BBSL1070581", "BBSL1070612", "BBSL1070615",
                                             "BBSL1070703", "BBSL1071073", "BBSL1071083", "BBSL1071110",
                                             "BBSL1073768", "BBSL1074414", "BBSL1074106", "BBSL1074342",
-                                            "BBSL1074149", "BBSL1074100", "BBSL1070563")),
+                                            "BBSL1074149", "BBSL1074100", "BBSL1070563", "BBSL1071901")),
 
-    Bombus_rufocinctus_m = list(Genus = "Bombus", SubGenus="",
+    Bombus_rufocinctus_m = list(Genus = "Bombus", SubGenus="Cullumanobombus",
                                 Species ="rufocinctus", SubSpecies = "", Sex ="m", Author = "Cresson",
                                 Determiner="D. Yanega",
 
                                 temp.id = c("BBSL1070674", "BBSL1070605",
                                             "BBSL1070651", "BBSL1070684")),
 
-    Diadasia_australis_f = list(Genus="Diadasia", SubGenus="",
+    Diadasia_australis_f = list(Genus="Diadasia", SubGenus="Coquillettapis",
                                 Species="australis",
                                 SubSpecies="", Sex="f",
                                 Author = "Cresson",
@@ -344,7 +360,7 @@ sp.ids <- list(
 
                                 temp.id= c("BBSL1072633", "BBSL1070837", "BBSL1072149")),
 
-    Diadasia_australis_m = list(Genus="Diadasia", SubGenus="",
+    Diadasia_australis_m = list(Genus="Diadasia", SubGenus="Coquillettapis",
                                 Species="australis",
                                 SubSpecies="", Sex="m",
                                 Author = "Cresson",
@@ -352,7 +368,7 @@ sp.ids <- list(
 
                                 temp.id= c("BBSL1072632")),
 
-    Diadasia_diminuta_f = list(Genus="Diadasia", SubGenus="",
+    Diadasia_diminuta_f = list(Genus="Diadasia", SubGenus="Coquillettapis",
                                Species="diminuta",
                                SubSpecies="", Sex="f",
                                Author = "Cresson",
@@ -361,13 +377,13 @@ sp.ids <- list(
                                temp.id= c("BBSL1071512")),
 
     Habropoda_salviarum_f = list(Genus="Habropoda", SubGenus ="",
-                                 Species="salviarum", SubSpecies="", Sex="f", Author = "",
+                                 Species="salviarum", SubSpecies="", Sex="f", Author = "Cockerell",
                                  Determiner = "T. Griswold",
 
                                  temp.id= c("BBSL1073833")),
 
 
-    Xeromelecta_californica_f = list(Genus="Xeromelecta", SubGenus="",
+    Xeromelecta_californica_f = list(Genus="Xeromelecta", SubGenus="Melectomorpha",
                                      Species="californica",
                                      SubSpecies="", Sex="f",
                                      Author = "Cresson",
@@ -375,7 +391,7 @@ sp.ids <- list(
 
                                      temp.id= c("BBSL1073307")),
 
-    Xeromelecta_californica_m = list(Genus="Xeromelecta", SubGenus="",
+    Xeromelecta_californica_m = list(Genus="Xeromelecta", SubGenus="Melectomorpha",
                                      Species="californica",
                                      SubSpecies="",
                                      Sex="m", Author = "Cresson",
@@ -383,7 +399,7 @@ sp.ids <- list(
 
                                      temp.id= c("BBSL1071213", "BBSL1072803")),
 
-    Xylocopa_californica_f = list(Genus="Xylacopa", SubGenus="",
+    Xylocopa_californica_f = list(Genus="Xylocopa", SubGenus="Xylocopoides",
                                   Species="californica",
                                   SubSpecies="arizonensis", Sex="f",
                                   Author = "Cresson", Determiner="L.C. Ponisio",

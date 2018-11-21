@@ -8,7 +8,7 @@ setwd("~/Dropbox/skyIslands_saved/data")
 spec.data <- read.csv("raw/specimens.csv",  stringsAsFactors=FALSE,
                       colClasses=c("SampleRound"="character"))
 
-## raw data was entered eith different names than in 2012 but they are
+## raw data was entered with different names than in 2012 but they are
 ## what we want for the relational database
 
 ## *******************************************************
@@ -63,7 +63,7 @@ bbsl <- read.csv("raw/BBSLSpecimens.csv", stringsAsFactors=FALSE)
 
 
 ## only time this will happen is when we get the labels form Terry
-spec.data$UniqueID[spec.data$TempID == spec.data$UniqueID] <- bbsl$BarcodeID
+spec.data$UniqueID[spec.data$Year == "2017"] <- bbsl$BarcodeID
 
 write.csv(spec.data, file="relational/original/specimens.csv",
           row.names=FALSE)

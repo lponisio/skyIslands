@@ -73,5 +73,5 @@ add.to.data(sp.ids=sp.ids,
 
 source(file.path(save.dir, 'IDs/2012/Syrphidae.R'))
 add.to.data(sp.ids=sp.ids,
-            case='fly',"Syrphidae", "",
+            case='fly',"Syrphidae", "2012",
             data.file=spec.data.file)

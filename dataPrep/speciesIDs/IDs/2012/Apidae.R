@@ -97,7 +97,7 @@ sp.ids <- list(
     Sex="f", Author = "", Determiner="Karen Wright", temp.id=
     c("PL_081212_26")),
 
-  Xylocopa_californica = list(Genus="Xylacopa", SubGenus="",
+  Xylocopa_californica = list(Genus="Xylocopa", SubGenus="Xylocopoides",
     Species="californica", SubSpecies="arizonensis", Sex="", Author =
     "Cresson", Determiner="J.S. Ascher", temp.id= c("CH_082012_135",
     "CH_082112_84", "CH_082112_93", "PL_081112_139", "PL_081112_4",
@@ -105,7 +105,7 @@ sp.ids <- list(
     "PL_081312_173", "PL_081312_172", "PL_081312_6", "PL_081312_108",
     "PL_081212_267")),
 
-  Anthophora_montana_f = list(Genus="Anthophora", SubGenus="",
+  Anthophora_montana_f = list(Genus="Anthophora", SubGenus="Mystacanthophora",
     Species="montana", SubSpecies="", Sex="f", Author = "Cresson",
     Determiner="J.S. Ascher", temp.id= c("PL_081312_17",
     "PL_081212_198", "PL_081212_268", "PL_081312_16", "CH_082012_114",
@@ -121,7 +121,7 @@ sp.ids <- list(
     "SC_072012_133", "SC_072012_203", "SC_072812_128",
     "SC_072812_127", "SC_072712_109", "SC_072812_1")),
   
-  Anthophora_montana_m = list(Genus="Anthophora", SubGenus="",
+  Anthophora_montana_m = list(Genus="Anthophora", SubGenus="Mystacanthophora",
     Species="montana", SubSpecies="", Sex="m", Author = "Cresson",
     Determiner="J.S. Ascher", temp.id= c("SC_072812_116",
     "SC_072612_158", "SC_072712_118", "SC_072712_121",
@@ -136,11 +136,11 @@ sp.ids <- list(
     "MM_073112_47", "SC_072712_107", "SC_072812_159", "SC_072012_202"
     , "SC_072112_47", "SC_072912_63", "SC_072612_61")),
   
-  Anthophora_californica = list(Genus="Anthophora", SubGenus="",
+  Anthophora_californica = list(Genus="Anthophora", SubGenus="Anthophoroides",
     Species="californica", SubSpecies="", Sex="f", Author = "Cresson",
     Determiner="J.S. Ascher", temp.id= c("PL_081312_146")),
   
-  Anthophora_terminalis = list(Genus="Anthophora", SubGenus="",
+  Anthophora_terminalis = list(Genus="Anthophora", SubGenus="Clisodon",
     Species="terminalis", SubSpecies="", Sex="f", Author = "Cresson",
     Determiner="J.S. Ascher", temp.id= c("PL_081012_257" ,
     "PL_081012_258", "PL_080912_287", "PL_081112_94", "PL_081012_259",
@@ -152,7 +152,7 @@ sp.ids <- list(
     "PL_081312_149", "PL_081112_229", "JC_071712_64", "PL_081012_88",
     "PL_081312_145", "PL_081312_15")),
 
-  Anthophora_urbana = list(Genus="Anthophora", SubGenus="",
+  Anthophora_urbana = list(Genus="Anthophora", SubGenus="Mystacanthophora",
     Species="urbana", SubSpecies="", Sex="", Author = "Cresson",
     Determiner="J.S. Ascher", temp.id= c("MM_080412_1",
     "MM_080312_96", "MM_080412_6", "MM_080412_3", "MM_080112_136",
@@ -162,15 +162,15 @@ sp.ids <- list(
     "MM_080312_15" , "MM_080112_3", "CH_082212_36", "MM_080312_131",
     "MM_080412_5" , "MM_080112_142", "MM_080412_119", "MM_080412_2")),
 
-  Anthophora_marginata = list(Genus="Anthophora", SubGenus="",
+  Anthophora_marginata = list(Genus="Anthophora", SubGenus="Anthophoroides",
     Species="marginata", SubSpecies="", Sex="f", Author = "Smith",
     Determiner="J.S. Ascher", temp.id= c("CH_082112_116")),
   
-  Tetraloniella_lippiae = list(Genus="Tetraloniella", SubGenus="",
+  Tetraloniella_lippiae = list(Genus="Tetraloniella", SubGenus="Tetraloniella",
     Species="lippiae", SubSpecies="", Sex="f", Author = "Cockerell",
     Determiner="J.S. Ascher", temp.id= c("PL_081312_19")),
 
-  Diadasia_diminuta = list(Genus="Diadasia", SubGenus="",
+  Diadasia_diminuta = list(Genus="Diadasia", SubGenus="Coquillettapis",
     Species="diminuta", SubSpecies="", Sex="f", Author = "Cresson",
     Determiner="J.S. Ascher", temp.id= c("MM_080312_33",
     "PL_081312_196")),
@@ -179,7 +179,7 @@ sp.ids <- list(
     Species="sp.", SubSpecies="a", Sex="", Author = "",
     Determiner="J.S. Ascher", temp.id= c("PL_081312_214")),
 
-  Svastra_machaerantherae = list(Genus="Svastra", SubGenus="",
+  Svastra_machaerantherae = list(Genus="Svastra", SubGenus="Epimelissodes",
     Species="machaerantherae", SubSpecies="", Sex="f", Author =
     "Cockerell", Determiner="J.S. Ascher", temp.id= c("PL_081112_46",
     "PL_081312_44")),
@@ -188,7 +188,7 @@ sp.ids <- list(
     SubSpecies="a", Sex="m", Author = "", Determiner="J.S. Ascher",
     temp.id= c("SC_072612_31")),
 
-  Apis_mellifera= list(Genus="Apis", SubGenus = "", Species
+  Apis_mellifera= list(Genus="Apis", SubGenus = "Apis", Species
     ="mellifera", SubSpecies="", Sex="f", Author = "Linnaeus",
     Determiner="J.S. Ascher", temp.id= c("CH_082112_126",
     "CH_082112_125", "CH_082112_138", "CH_082112_135",

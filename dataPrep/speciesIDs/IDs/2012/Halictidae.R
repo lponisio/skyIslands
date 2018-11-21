@@ -1,7 +1,7 @@
 
 sp.ids <- list(
 
-  Agapostemen_angelicus_f = list(Genus="Agapostemen", SubGenus ="",
+  Agapostemen_angelicus_f = list(Genus="Agapostemen", SubGenus ="Agapostemen",
     Species="angelicus", SubSpecies="", Sex="f", Author = "Cockerell",
     Determiner = "J.S. Ascher", temp.id= c("SC_072712_198",
     "SC_072812_56", "SC_072812_58", "SC_072812_54", "SC_072312_63",
@@ -21,7 +21,7 @@ sp.ids <- list(
     "SC_072712_259", "SC_072812_176", "PL_081112_221", "PL_081212_55",
     "PL_081312_161", "CH_082012_116")),
 
-  Agapostemen_angelicus_m = list(Genus="Agapostemen", SubGenus ="",
+  Agapostemen_angelicus_m = list(Genus="Agapostemen", SubGenus ="Agapostemen",
     Species="angelicus", SubSpecies="", Sex="m", Author = "Cockerell",
     Determiner = "J.S. Ascher", temp.id= c("SC_072812_47",
     "SC_072112_36", "SC_072312_225", "SC_072712_116", "SC_072312_64",
@@ -35,34 +35,34 @@ sp.ids <- list(
     "JC_071612_66", "JC_071412_47", "SC_072812_129",
     "SC_072812_162")),
 
-  Dieunomia_nevadensis_f= list(Genus="Dieunomia", SubGenus ="",
+  Dieunomia_nevadensis_f= list(Genus="Dieunomia", SubGenus ="Epinomia",
     Species="nevadensis", SubSpecies="arizonensis", Sex="f", Author =
     "Cockerell", Determiner = "J.S. Ascher", temp.id=
     c("CH_082012_128")),
 
-  Dieunomia_nevadensis_m = list(Genus="Dieunomia", SubGenus ="",
+  Dieunomia_nevadensis_m = list(Genus="Dieunomia", SubGenus ="Epinomia",
     Species="nevadensis", SubSpecies="arizonensis", Sex="m", Author =
     "Cockerell", Determiner = "J.S. Ascher", temp.id=
     c("PL_081312_76")),
-  
-  Halictus_tripartitus = list(Genus="Halictus", SubGenus ="",
+
+  Halictus_tripartitus = list(Genus="Halictus", SubGenus ="Seladonia",
     Species="tripartitus", SubSpecies="", Sex="", Author =
     "Cockerell", Determiner = "J.S. Ascher", temp.id=
     c("SC_072312_31", "SC_072312_223", "SC_072312_251",
     "SC_072912_22","SC_072912_23", "PL_081112_246", "MM_080112_216")),
 
-  Halictus_ligatus = list(Genus="Halictus", SubGenus ="",
+  Halictus_ligatus = list(Genus="Halictus", SubGenus ="Odontalictus",
     Species="ligatus", SubSpecies="", Sex="", Author = "Say",
     Determiner = "J.S. Ascher", temp.id= c("SC_072712_98",
     "PL_080912_87", "PL_081012_231", "PL_080912_168",
     "SC_072712_169")),
 
-  Halictus_farinosus = list(Genus="Halictus", SubGenus ="",
+  Halictus_farinosus = list(Genus="Halictus", SubGenus ="Nealictus",
     Species="farinosus", SubSpecies="", Sex="", Author = "Smith",
     Determiner = "J.S. Ascher", temp.id= c("SC_072612_9",
     "SC_072312_247", "SC_072012_311")),
 
-  Halictus_rubicundus = list(Genus="Halictus", SubGenus ="",
+  Halictus_rubicundus = list(Genus="Halictus", SubGenus ="Protohalictus",
     Species="rubicundus", SubSpecies="", Sex="", Author = "Christ",
     Determiner = "J.S. Ascher", temp.id= c("JC_071612_56",
     "JC_071512_134", "JC_071512_77", "JC_071412_6", "JC_071512_159",
@@ -169,7 +169,7 @@ sp.ids <- list(
     c("PL_081112_13","JC_071512_95","JC_071212_89","JC_071512_82",
     "SC_072312_252", "PL_081112_170", "PL_081112_77", "PL_080912_277",
     "PL_081312_209", "SC_072912_83", "SC_072812_206", "SC_072812_205")),
-  
+
     Lasioglossum_ruidosense_f= list(Genus="Lasioglossum", SubGenus
     ="Dialictus", Species="ruidosense", SubSpecies="", Sex="f", Author
     = "Cockerell", Determiner = "J. Gibbs", temp.id=
@@ -189,12 +189,12 @@ sp.ids <- list(
     ="Hemihalictus", Species="diatretum", SubSpecies="", Sex="m",
     Author = "Vachal", Determiner = "J. Gibbs", temp.id=
     c("SC_072012_50","SC_072012_63")),
-  
+
    Lasioglossum_ruficorne= list(Genus="Lasioglossum", SubGenus
     ="Hemihalictus", Species="ruficorne", SubSpecies="", Sex="m",
     Author = "Crawford", Determiner = "J. Gibbs", temp.id=
     c("SC_072312_217", "SC_072012_51")),
-  
+
    Lasioglossum_semicaeruleum_f = list(Genus="Lasioglossum", SubGenus
     ="Dialictus", Species="semicaeruleum", SubSpecies="", Sex="f", Author =
     "Cockerell", Determiner = "J. Gibbs", temp.id= c("SC_072712_227",
@@ -228,13 +228,13 @@ sp.ids <- list(
     ="Dialictus", Species="semicaeruleum", SubSpecies="", Sex="m", Author =
     "Cockerell", Determiner = "J. Gibbs", temp.id= c("SC_072312_282",
     "JC_071512_139")),
-  
+
   Lasioglossum_aquilae_m = list(Genus="Lasioglossum", SubGenus
-    ="Dialictus", Species="aquilae", SubSpecies="", Sex="m", Author = "",
+    ="Dialictus", Species="aquilae", SubSpecies="", Sex="m", Author = "Cockerell",
     Determiner = "J. Gibbs", temp.id= c("JC_071412_55")),
 
   Lasioglossum_aquilae_f = list(Genus="Lasioglossum", SubGenus
-    ="Dialictus", Species="aquilae", SubSpecies="", Sex="f", Author = "",
+    ="Dialictus", Species="aquilae", SubSpecies="", Sex="f", Author = "Cockerell",
     Determiner = "J. Gibbs", temp.id= c("JC_071412_3", "JC_071412_142",
   "JC_071612_77", "JC_071612_54", "JC_071612_149", "JC_071612_121",
   "JC_071612_106", "JC_071612_32", "JC_071612_117", "JC_071612_24",
@@ -249,15 +249,15 @@ sp.ids <- list(
   "JC_071412_105", "JC_071412_67", "JC_071512_29", "JC_071412_44",
   "JC_071412_69", "JC_071512_94", "JC_071512_72", "JC_071512_149",
   "JC_071412_144", "JC_071712_102")),
-  
+
    Lasioglossum_prasinogaster_f= list(Genus="Lasioglossum", SubGenus
     ="Dialictus", Species="prasinogaster", SubSpecies="", Sex="f", Author =
     "Gibbs", Determiner = "J. Gibbs", temp.id= c("JC_071712_170")),
-  
+
    Lasioglossum_perdifficile= list(Genus="Lasioglossum", SubGenus
     ="Dialictus", Species="perdifficile", SubSpecies="", Sex="f", Author =
     "Cockerell", Determiner = "J. Gibbs", temp.id= c("MM_080112_37")),
-  
+
    Lasioglossum_lusorium_f= list(Genus="Lasioglossum", SubGenus
     ="Sphecodogastra", Species="lusorium", SubSpecies="", Sex="f",
     Author = "Cresson", Determiner = "J. Gibbs", temp.id=
@@ -268,11 +268,11 @@ sp.ids <- list(
     Author = "Cresson", Determiner = "J. Gibbs", temp.id=
     c("SC_072712_105")),
 
-   Lasioglossum_obnubilum= list(Genus="Lasioglossum", SubGenus ="",
+   Lasioglossum_obnubilum= list(Genus="Lasioglossum", SubGenus ="Dialictus",
     Species="obnubilum", SubSpecies="Dialictus", Sex="f", Author = "Sandhouse",
     Determiner = "J. Gibbs", temp.id= c("JC_071712_161",
     "JC_071412_53", "JC_071512_92")),
-  
+
    Lasioglossum_laevissimum= list(Genus="Lasioglossum", SubGenus
     ="Dialictus", Species="laevissimum", SubSpecies="", Sex="f",
     Author = "Smith", Determiner = "J. Gibbs", temp.id= c("JC_071612_127",
@@ -285,7 +285,7 @@ sp.ids <- list(
     ="Evylaeus", Species="cinctipes", SubSpecies="", Sex="f", Author =
     "Provancher", Determiner = "J. Gibbs", temp.id=
     c("SC_072612_21")),
-  
+
    Lasioglossum_occultum_f= list(Genus="Lasioglossum", SubGenus
     ="Sphecodogastra", Species="occultum", SubSpecies="", Sex="f",
     Author = "Vachal", Determiner = "J. Gibbs", temp.id=
@@ -305,66 +305,26 @@ sp.ids <- list(
     Author = "Crawford", Determiner = "J. Gibbs", temp.id=
     c("SC_072012_14")),
 
-   Lasioglossum_desertum= list(Genus="Lasioglossum", SubGenus
-    ="", Species="desertum", SubSpecies="", Sex="f",
-    Author = "", Determiner = "", temp.id=
+   Lasioglossum_desertum_f= list(Genus="Lasioglossum", SubGenus
+    ="Lasioglossum", Species="desertum", SubSpecies="", Sex="f",
+    Author = "Smith", Determiner = "J. Gibbs", temp.id=
     c("CH_082112_9", "CH_082212_38")),
 
- Lasioglossum_desertum= list(Genus="Lasioglossum", SubGenus
-    ="", Species="desertum", SubSpecies="", Sex="m",
-    Author = "", Determiner = "", temp.id=
+ Lasioglossum_desertum_m= list(Genus="Lasioglossum", SubGenus
+    ="Lasioglossum", Species="desertum", SubSpecies="", Sex="m",
+    Author = "Smith", Determiner = "J. Gibbs", temp.id=
     c("PL_081212_47")),
 
    Lasioglossum_manitouellum= list(Genus="Lasioglossum", SubGenus
-    ="", Species="manitouellum", SubSpecies="", Sex="f",
-    Author = "", Determiner = "", temp.id=
+    ="Lasioglossum", Species="manitouellum", SubSpecies="", Sex="f",
+    Author = "Cockerell", Determiner = "J. Gibbs", temp.id=
     c("SC_072312_27", "SC_072312_188", "SC_072112_154",
     "SC_072712_235")),
 
   Lasioglossum_sedi= list(Genus="Lasioglossum", SubGenus
-    ="", Species="sedi", SubSpecies="", Sex="f",
-    Author = "", Determiner = "", temp.id=
+    ="Dialictus", Species="sedi", SubSpecies="", Sex="f",
+    Author = "Sandhouse", Determiner = "J. Gibbs", temp.id=
     c("JC_071512_169", "JC_071512_36"))
-
-  ## Pseudopanurgus_sp= list(Genus="Pseudopanurgus", SubGenus
-  ##   ="", Species="sp", SubSpecies="", Sex="f",
-  ##   Author = "", Determiner = "", temp.id=
-  ##   c("PL_081212_52", "PL_081212_50", "PL_081212_53", "PL_081312_50",
-  ##   "PL_081312_54", "PL_081312_48", "PL_081012_393", "PL_081312_49",
-  ##   "CH_082012_35", "CH_082112_20")),
 
   )
 
-## ############## read in data and match temp.ids ###################
-
-## lengths <- sapply(sp.ids, function(x) length(x$temp.id))
-## Genus <- sapply(sp.ids, function(x) x$Genus)
-## SubGenus <- sapply(sp.ids, function(x) x$SubGenus)
-## Species <- sapply(sp.ids, function(x) x$Species)
-## SubSpecies <- sapply(sp.ids, function(x) x$SubSpecies)
-## Sex <- sapply(sp.ids, function(x) x$Sex)
-## TempID <- sapply(sp.ids, function(x) x$temp.id)
-
-## dd <- data.frame(TempID=unlist(TempID),
-##                  Genus=rep(Genus, lengths),
-##                  SubGenus=rep(SubGenus, lengths),
-##                  Species=rep(Species, lengths),
-##                  SubSpecies=rep(SubSpecies, lengths),
-##                  Sex=rep(Sex, lengths))
-
-## ## lood data:
-## D <- read.csv(file=newfile, as.is=TRUE)
-
-
-## ind <- match(dd$TempID, D$temp.id)
-## D$order[ind] <- 'Hymenoptera'
-## D$family[ind] <- 'Halictidae'
-## D$Genus[ind] <- as.character(dd$Genus)
-## D$SubGenus[ind] <- as.character(dd$SubGenus)
-## D$Species[ind] <- as.character(dd$Species)
-## D$SubSpecies[ind] <- as.character(dd$SubSpecies)
-## D$Sex[ind] <- as.character(dd$Sex)
-## D$Determiner[ind] <- 'J.S. Ascher'
-## D$dateDetermined[ind] <- '2013'
-
-## write.csv(D, file=newfile, row.names=FALSE)

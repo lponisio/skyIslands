@@ -1,7 +1,7 @@
 
 sp.ids <- list(
 
-    Agapostemen_angelicus_f = list(Genus="Agapostemen", SubGenus ="",
+    Agapostemen_angelicus_f = list(Genus="Agapostemon", SubGenus ="Agapostemon",
                                    Species="angelicus", SubSpecies="", Sex="f", Author = "Cockerell",
                                    Determiner = "L.C. Ponisio",
                                    temp.id= c("BBSL1074035", "BBSL1074034", "BBSL1074020", "BBSL1073950", "BBSL1073955", "BBSL1070672", "BBSL1070673",
@@ -23,7 +23,7 @@ sp.ids <- list(
                                               "BBSL1074041", "BBSL1074036"
                                               )),
 
-    Agapostemen_angelicus_m = list(Genus="Agapostemen", SubGenus ="",
+    Agapostemen_angelicus_m = list(Genus="Agapostemon", SubGenus ="Agapostemon",
                                    Species="angelicus", SubSpecies="", Sex="m", Author = "Cockerell",
                                    Determiner = "L.C. Ponisio",
                                    temp.id= c("BBSL1059634", "BBSL1059672", "BBSL1059625", "BBSL1059626", "BBSL1059611", "BBSL1059662", "BBSL1059642",
@@ -44,7 +44,7 @@ sp.ids <- list(
                                    ),
 
     Dufourea_harveyi_m = list(Genus="Dufourea", SubGenus ="",
-                           Species="harveyi", SubSpecies="", Sex="m", Author = "Cresson",
+                           Species="harveyi", SubSpecies="", Sex="m", Author = "Cockerell",
                            Determiner = "T. Griswold",
                            temp.id= c("BBSL1073460")),
 

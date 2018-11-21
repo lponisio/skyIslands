@@ -1,7 +1,7 @@
 
 sp.ids <- list(
 
-  Bombus_sonorus_f = list(Genus = "Bombus", SubGenus="",  Species = "sonorus",
+  Bombus_sonorus_f = list(Genus = "Bombus", SubGenus="Thoracobombus",  Species = "sonorus",
     SubSpecies = "", Sex ="f", Author = "Say", temp.id =
     c("CH_082012_136","CH_082112_177","CH_082112_69","CH_082112_174",
     "CH_082112_68","CH_082112_58","CH_082012_115","CH_082012_131",
@@ -21,7 +21,7 @@ sp.ids <- list(
     "CH_081912_3","CH_082012_1","CH_081912_15","CH_081912_10",
     "CH_081912_11","CH_082112_108","CH_082212_71")),
   
-  Bombus_huntii_f = list(Genus = "Bombus", SubGenus="", Species = "huntii",
+  Bombus_huntii_f = list(Genus = "Bombus", SubGenus="Pyrobombus", Species = "huntii",
     SubSpecies = "", Sex ="f", Author = "Greene", temp.id =
     c("MM_080212_146", "MM_080412_136", "MM_080412_123",
     "MM_080412_209", "MM_080412_205", "MM_080212_9", "MM_080212_237",
@@ -61,7 +61,7 @@ sp.ids <- list(
     "SC_072012_207", "SC_072612_219", "MM_080412_218",
     "SC_072612_172")),
   
-  Bombus_huntii_m = list(Genus = "Bombus", SubGenus="", Species =
+  Bombus_huntii_m = list(Genus = "Bombus", SubGenus="Pyrobombus", Species =
     "huntii", SubSpecies = "", Sex ="m", Author = "Greene", temp.id =
     c("SC_072012_116", "MM_080412_139", "SC_072312_8",
     "SC_072012_126", "SC_072012_211", "SC_072112_22", "SC_072012_276",
@@ -75,7 +75,7 @@ sp.ids <- list(
     "SC_072012_103", "SC_072312_9", "SC_072012_102", "SC_072812_122",
     "JC_071212_83")),
   
-  Bombus_flavifrons_f = list(Genus = "Bombus", SubGenus="", Species =
+  Bombus_flavifrons_f = list(Genus = "Bombus", SubGenus="Pyrobombus", Species =
     "flavifrons", SubSpecies = "", Sex ="f", Author = "Cresson",
     temp.id = c("JC_071212_36", "JC_071212_69", "JC_071512_66",
     "MM_080312_31", "MM_080212_299", "MM_080112_226", "MM_080412_206",
@@ -90,7 +90,7 @@ sp.ids <- list(
     "MM_080112_31", "MM_080312_122", "MM_073112_19", "MM_073112_121",
     "JC_071712_109", "JC_071712_18", "MM_080212_77")),
 
-  Bombus_flavifrons_m = list(Genus = "Bombus", SubGenus="", Species =
+  Bombus_flavifrons_m = list(Genus = "Bombus", SubGenus="Pyrobombus", Species =
     "flavifrons", SubSpecies = "", Sex ="m", Author = "Cresson",
     temp.id = c("SC_072012_125", "SC_072012_275", "SC_072312_242",
     "MM_080312_205", "SC_072012_113", "SC_072612_155", "SC_072312_35",
@@ -100,7 +100,7 @@ sp.ids <- list(
     "MM_080112_138", "MM_080312_70", "MM_073112_106", "MM_080412_108",
     "MM_080312_72", "MM_080312_154", "MM_080212_190")),
   
-  Bombus_rufocinctus_f = list(Genus = "Bombus", SubGenus="", Species =
+  Bombus_rufocinctus_f = list(Genus = "Bombus", SubGenus="Cullumanobombus", Species =
     "rufocinctus", SubSpecies = "", Sex ="f", Author = "Cresson",
     temp.id = c("JC_071412_15", "JC_071712_154", "JC_071112_20",
     "JC_071412_145", "JC_071512_54", "JC_071712_150", "JC_071712_112",
@@ -113,7 +113,7 @@ sp.ids <- list(
     "MM_080212_92", "JC_071412_17", "JC_071512_70", "JC_071712_152",
     "JC_071712_153", "JC_071712_157", "JC_071712_37")),
 
-  Bombus_centralis_f = list(Genus = "Bombus", SubGenus="", Species =
+  Bombus_centralis_f = list(Genus = "Bombus", SubGenus="Pyrobombus", Species =
     "centralis", SubSpecies = "", Sex ="f", Author = "Cresson",
     temp.id = c("PL_081012_248", "PL_080912_133", "PL_081112_57",
     "PL_080912_136", "PL_080912_131", "PL_081012_12", "PL_081212_150",
@@ -132,7 +132,7 @@ sp.ids <- list(
     "PL_081212_19", "PL_081312_169", "PL_080912_132", "PL_081012_287",
     "PL_081012_101", "MM_080212_218")),
   
-  Bombus_bifarius_f = list(Genus = "Bombus", SubGenus="", Species = "bifarius",
+  Bombus_bifarius_f = list(Genus = "Bombus", SubGenus="Pyrobombus", Species = "bifarius",
     SubSpecies = "", Sex ="f", Author = "Cresson", temp.id =
     c("JC_071412_60", "JC_071512_165", "JC_071612_94", "JC_071212_81",
     "JC_071412_50", "JC_071412_37", "JC_071512_50", "JC_071412_118",
@@ -150,33 +150,33 @@ sp.ids <- list(
     "JC_071112_15", "JC_071112_8", "JC_071412_126", "JC_071512_55",
     "JC_071412_90", "JC_071612_27", "JC_071212_97", "JC_071412_39")),
   
-  Bombus_morrisoni_m = list(Genus = "Bombus", SubGenus="", Species =
+  Bombus_morrisoni_m = list(Genus = "Bombus", SubGenus="Cullumanobombus", Species =
     "morrisoni", SubSpecies = "", Sex ="m", Author = "Cresson",
     temp.id = c("SC_072312_34", "MM_080412_22")),
   
-  Bombus_morrisoni_f = list(Genus = "Bombus", SubGenus="", Species =
+  Bombus_morrisoni_f = list(Genus = "Bombus", SubGenus="Cullumanobombus", Species =
     "morrisoni", SubSpecies = "", Sex ="f", Author = "Cresson",
     temp.id = c("MM_073112_15", "MM_080412_133", "MM_073112_71",
     "MM_080312_6", "MM_073112_69")),
   
-  Bombus_nevadensis_f = list(Genus = "Bombus", SubGenus="", Species =
+  Bombus_nevadensis_f = list(Genus = "Bombus", SubGenus="Bombias", Species =
     "nevadensis", SubSpecies = "", Sex ="f", Author = "Cresson",
     temp.id = c("SC_072712_100", "SC_072012_318", "SC_072912_64",
     "SC_072012_263", "SC_072912_78", "SC_072012_131", "SC_072612_156",
     "SC_072012_132", "SC_072012_134", "SC_072312_237", "SC_072812_6",
     "SC_072112_112", "SC_072012_130", "SC_072012_264")),
   
-  Bombus_fervidus_f = list(Genus = "Bombus", SubGenus="", Species =
+  Bombus_fervidus_f = list(Genus = "Bombus", SubGenus="Thoracobombus", Species =
     "fervidus", SubSpecies = "", Sex ="f", Author = "Fabricius",
     temp.id = c("SC_072912_4", "SC_072912_3", "SC_072712_123",
     "SC_072712_40", "SC_072612_114", "SC_072812_112", "SC_072612_157",
     "SC_072312_155")),
 
-  Bombus_fervidus_m = list(Genus = "Bombus", SubGenus="", Species =
+  Bombus_fervidus_m = list(Genus = "Bombus", SubGenus="Thoracobombus", Species =
     "fervidus", SubSpecies = "", Sex ="m", Author = "Fabricius",
     temp.id = c( "SC_072612_114", "SC_072612_157", "SC_072312_155")),
   
-  Bombus_occidentalis_f = list(Genus = "Bombus", SubGenus="", Species =
+  Bombus_occidentalis_f = list(Genus = "Bombus", SubGenus="Bombus", Species =
     "occidentalis", SubSpecies = "", Sex ="f", Author = "Greene",
     temp.id = c("JC_071412_70", "JC_071212_3"))
   
