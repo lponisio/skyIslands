@@ -60,7 +60,7 @@ conditions$cond.code <- apply(conditions[keep], 1, paste, collapse=";")
 specimens$cond.code <- apply(specimens[keep], 1, paste, collapse=";")
 
 ## make table
-keep <- c("Date", "Dos", "Collector", "SampleRound", "NetNumber", "Method", "StartTime", "EndTime",
+keep <- c("Date", "Collector", "SampleRound", "NetNumber", "Method", "StartTime", "EndTime",
           "TempStart", "TempEnd", "WindStart", "WindEnd", "SkyStart",
           "SkyEnd","GeographyFK", "cond.code")
 
@@ -81,8 +81,8 @@ specimens$ConditionsFK <-
 
 print(paste("specimen without condition keys", specimens$TempID[is.na(specimens$ConditionsFK)]))
 
-# specimens[specimens$TempID == "9782",]
-# conditions[conditions$Date == "6/17/17",]
+specimens[specimens$TempID == "12123",]
+conditions[conditions$Date == "8/2/18",]
 
 write.csv(dbReadTable(con, "tblConditions"),
           file="tables/conditions.csv", row.names=FALSE)
