@@ -16,7 +16,8 @@ spec.data <- read.csv("raw/specimens.csv",  stringsAsFactors=FALSE,
 ## will use to construct our relational database
 ## *******************************************************
 
-spec.data <- spec.data[rep(seq_len(nrow(spec.data)), spec.data$SpecimenCount),]
+spec.data <- spec.data[rep(seq_len(nrow(spec.data)),
+                           spec.data$SpecimenCount),]
 
 spec.data$SpecimenCount <- NULL
 spec.data$SiteSubSite <-  spec.data$Site
@@ -28,33 +29,37 @@ print(paste("original number of specimens", nrow(spec.data)))
 spec.2012 <- as.Date(spec.data$Date, "%m/%d/%y") < "2013-01-01"
 spec.2017 <- as.Date(spec.data$Date, "%m/%d/%y") > "2013-01-01"
 
-spec.data$SiteSubSite[spec.2012] <- paste0(spec.data$SiteSubSite[spec.2012], "1")
+spec.data$SiteSubSite[spec.2012] <-
+    paste0(spec.data$SiteSubSite[spec.2012], "1")
 
 plant.keys <- read.csv("raw/plants.csv", stringsAsFactors=FALSE)
 
-spec.data$FinalPlantSp[spec.2017] <- plant.keys$GenusSpecies[match(spec.data$FieldPlantID[spec.2017],
-                                                                   plant.keys$FieldPlantID)]
+spec.data$FinalPlantSp[spec.2017] <-
+    plant.keys$GenusSpecies[match(spec.data$FieldPlantID[spec.2017],
+                                  plant.keys$FieldPlantID)]
 
-spec.data$UniqueID[spec.2017] <- spec.data$TempID[spec.2017] <-
-    1:length(spec.data$UniqueID[spec.2017])
+## spec.data$UniqueID[spec.2017] <- spec.data$TempID[spec.2017] <-
+##     1:length(spec.data$UniqueID[spec.2017])
 
 spec.data$FinalPlantSp[is.na(spec.data$FinalPlantSp)] <- ""
 
 spec.data$NetNumber <-
-    sapply(strsplit(spec.data$SampleRound, ".", fixed=TRUE), function(x) x[2])
+    sapply(strsplit(spec.data$SampleRound, ".", fixed=TRUE),
+           function(x) x[2])
 
 spec.data$SampleRound <-
-    sapply(strsplit(spec.data$SampleRound, ".", fixed=TRUE), function(x) x[1])
+    sapply(strsplit(spec.data$SampleRound, ".", fixed=TRUE),
+           function(x) x[1])
 
 spec.data$Method <- "Net"
 spec.data$Method[is.na(spec.data$FieldPlantID)] <- "Pan"
 spec.data$Method[spec.data$SampleRound == 0] <- "Vane"
 
-check.data.spec <- aggregate(spec.data$Date, list(site = spec.data$Site,
-                                                  date =
-                                                  spec.data$Date),
+check.data.spec <- aggregate(spec.data$Date,
+                             list(site = spec.data$Site,
+                                  date =
+                                      spec.data$Date),
                              length)
-
 
 ## manually add BBSL numbers - should only need to do this for 2017
 ## data - will add at point of data entry for future specimens
@@ -64,6 +69,13 @@ bbsl <- read.csv("raw/BBSLSpecimens.csv", stringsAsFactors=FALSE)
 
 ## only time this will happen is when we get the labels form Terry
 spec.data$UniqueID[spec.data$Year == "2017"] <- bbsl$BarcodeID
+
+spec.data$TempID <- 1:nrow(spec.data)
+spec.data$UniqueID[is.na(spec.data$UniqueID)] <-  ""
+
+spec.data$UniqueID[spec.data$UniqueID == ""] <-
+    spec.data$TempID[spec.data$UniqueID == ""]
+
 
 write.csv(spec.data, file="relational/original/specimens.csv",
           row.names=FALSE)
