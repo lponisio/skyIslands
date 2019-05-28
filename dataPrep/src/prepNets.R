@@ -8,22 +8,6 @@ dropNet <- function(z){
   })]
 }
 
-## breakNet <- function(spec.dat, site, year){
-##   ## puts data together in a list and removes empty matrices
-##   sites <- split(spec.dat, spec.dat[,site])
-##   networks <- lapply(sites, function(x){
-##     lapply(split(x, f=x[,year]), as.matrix)
-##   })
-##   ## formats data matrices appropriate for network analysis
-##   comms <- rapply(networks, function(y){
-##     samp2site.spp(site=y[,"PlantGenusSpecies"],
-##                   spp=y[,"GenusSpecies"],
-##                   abund=rep(1, nrow(y)))
-##   }, how="replace")
-##   adj.mat <- unlist(lapply(comms, dropNet), recursive=FALSE)
-##   return(adj.mat)
-## }
-
 
 
 breakNet <- function(spec.dat, site, year){
@@ -32,11 +16,12 @@ breakNet <- function(spec.dat, site, year){
                           list(GenusSpecies=spec.dat$GenusSpecies,
                                Site=spec.dat[,site],
                                Year=spec.dat[,year],
-                               PlantGenusSpecies=spec.dat$PlantGenusSpecies),
+                               PlantGenusSpecies=
+                                   spec.dat$PlantGenusSpecies),
                           length)
     sites <- split(agg.spec, agg.spec[,site])
     networks <- lapply(sites, function(x){
-        split(x, f=x[,year])
+        split(x, f=x[,"Year"])
     })
     ## formats data matrices appropriate for network analysis
     comms <- lapply(unlist(networks, recursive=FALSE), function(y){
@@ -53,10 +38,10 @@ getSpecies <- function(networks, FUN){
   site.plant <- rep(names(species.site), lapply(species.site, length))
   species <- data.frame(species=do.call(c, species.site),
                         siteStatus=site.plant,
-                        site= sapply(strsplit(site.plant, "_"), function(x)
-                          x[1]),
-                        status= sapply(strsplit(site.plant, "_"), function(x)
-                          x[2]))
+                        site= sapply(strsplit(site.plant, "_"),
+                                     function(x) x[1]),
+                        status= sapply(strsplit(site.plant, "_"),
+                                       function(x) x[2]))
   return(species)
 }
 

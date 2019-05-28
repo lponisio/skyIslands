@@ -12,7 +12,23 @@ spec$Order <- spec$Family <- spec$Genus <- spec$SubGenus <- spec$Species <-
   spec$SubSpecies <-  spec$Sex <-  spec$Determiner <-
       spec$DateDetermined <-  spec$Author <- NA
 
- write.csv(spec, file=spec.data.file, row.names=FALSE)
+write.csv(spec, file=spec.data.file, row.names=FALSE)
+
+## 2018 field season
+## source(file.path(save.dir, 'IDs/2018/Apidae.R'))
+## add.to.data(sp.ids=sp.ids,
+##             case='bee', "Apidae","2019",
+##             data.file=spec.data.file)
+
+## source(file.path(save.dir, 'IDs/2018/Halictidae.R'))
+## add.to.data(sp.ids=sp.ids,
+##             case='bee', "Halictidae","2019",
+##             data.file=spec.data.file)
+
+## source(file.path(save.dir, 'IDs/2018/Megachilidae.R'))
+## add.to.data(sp.ids=sp.ids,
+##             case='bee', "Megachilidae","2019",
+##             data.file=spec.data.file)
 
 ## 2017 field season
 source(file.path(save.dir, 'IDs/2017/Apidae.R'))
