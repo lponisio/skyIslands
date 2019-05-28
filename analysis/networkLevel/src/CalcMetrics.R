@@ -133,9 +133,29 @@ prob.null <- function(M) {
   return(MR)
 }
 
+
+bas.null <- function(comm) {
+	fill <- sum(comm > 0)
+
+	nr <- rowSums(comm)
+	nc <- colSums(comm)
+
+	probs <- expand.grid(nr,nc)
+	probs <- probs[,1]*probs[,2]
+
+	sim.cell <- sample(length(probs),fill,prob=probs)
+
+	out <- numeric(length(probs))
+	out[sim.cell] <- 1
+
+	return(matrix(out,ncol=ncol(comm)))
+}
+
+
+
 ## function to simulate 1 null, and calculate statistics on it
 null.stat <- function(dat.web) {
-  sim.web <- prob.null(dat.web)
+  sim.web <- bas.null(dat.web)
   return(calc.metric(sim.web))
 }
 
