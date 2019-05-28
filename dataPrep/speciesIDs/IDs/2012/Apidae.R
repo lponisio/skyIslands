@@ -34,7 +34,7 @@ sp.ids <- list(
     SubGenus="Eumelissodes", Species="coreopsis", SubSpecies="",
     Sex="f", Author = "Robertson", Determiner="Karen Wright", temp.id=
     c("JC_071512_164")),
-  
+
    Melissodes_gilensis= list(Genus="Melissodes",
     SubGenus="Melissodes", Species="gilensis", SubSpecies="", Sex="f",
     Author = "Cockerell", Determiner="Karen Wright", temp.id=
@@ -120,7 +120,7 @@ sp.ids <- list(
     "SC_072312_14", "SC_072812_110", "SC_072712_39", "SC_072712_119",
     "SC_072012_133", "SC_072012_203", "SC_072812_128",
     "SC_072812_127", "SC_072712_109", "SC_072812_1")),
-  
+
   Anthophora_montana_m = list(Genus="Anthophora", SubGenus="Mystacanthophora",
     Species="montana", SubSpecies="", Sex="m", Author = "Cresson",
     Determiner="J.S. Ascher", temp.id= c("SC_072812_116",
@@ -135,11 +135,11 @@ sp.ids <- list(
     "CH_082112_74", "MM_080412_75", "MM_080412_77", "MM_080412_76",
     "MM_073112_47", "SC_072712_107", "SC_072812_159", "SC_072012_202"
     , "SC_072112_47", "SC_072912_63", "SC_072612_61")),
-  
+
   Anthophora_californica = list(Genus="Anthophora", SubGenus="Anthophoroides",
     Species="californica", SubSpecies="", Sex="f", Author = "Cresson",
     Determiner="J.S. Ascher", temp.id= c("PL_081312_146")),
-  
+
   Anthophora_terminalis = list(Genus="Anthophora", SubGenus="Clisodon",
     Species="terminalis", SubSpecies="", Sex="f", Author = "Cresson",
     Determiner="J.S. Ascher", temp.id= c("PL_081012_257" ,
@@ -165,7 +165,7 @@ sp.ids <- list(
   Anthophora_marginata = list(Genus="Anthophora", SubGenus="Anthophoroides",
     Species="marginata", SubSpecies="", Sex="f", Author = "Smith",
     Determiner="J.S. Ascher", temp.id= c("CH_082112_116")),
-  
+
   Tetraloniella_lippiae = list(Genus="Tetraloniella", SubGenus="Tetraloniella",
     Species="lippiae", SubSpecies="", Sex="f", Author = "Cockerell",
     Determiner="J.S. Ascher", temp.id= c("PL_081312_19")),
@@ -277,37 +277,3 @@ sp.ids <- list(
   )
 
 
-## ############## read in data and match temp.ids ###################
-
-## lengths <- sapply(sp.ids, function(x) length(x$temp.id))
-## Genus <- sapply(sp.ids, function(x) x$Genus)
-## SubGenus <- sapply(sp.ids, function(x) x$SubGenus)
-## Species <- sapply(sp.ids, function(x) x$Species)
-## SubSpecies <- sapply(sp.ids, function(x) x$SubSpecies)
-## Sex <- sapply(sp.ids, function(x) x$Sex)
-## Determiner <- sapply(sp.ids, function(x) x$Determiner)
-## TempID <- sapply(sp.ids, function(x) x$temp.id)
-
-## dd <- data.frame(TempID=unlist(TempID), 
-##                  Genus=rep(Genus, lengths), 
-##                  SubGenus=rep(SubGenus, lengths), 
-##                  Species=rep(Species, lengths), 
-##                  SubSpecies=rep(SubSpecies, lengths),
-##                  Determiner=rep(Determiner, lengths), 
-##                  Sex=rep(Sex, lengths))
-
-## ## lood data:
-## D <- read.csv(file=newfile, as.is=TRUE)
-
-
-## ind <- match(dd$TempID, D$temp.id)
-## D$order[ind] <- 'Hymenoptera'
-## D$family[ind] <- 'Apidae'
-## D$Genus[ind] <- as.character(dd$Genus)
-## D$SubGenus[ind] <- as.character(dd$SubGenus)
-## D$Species[ind] <- as.character(dd$Species)
-## D$SubSpecies[ind] <- as.character(dd$SubSpecies)
-## D$Sex[ind] <- as.character(dd$Sex)
-## D$dateDetermined[ind] <- '2013'
-
-## write.csv(D, file=newfile, row.names=FALSE)
