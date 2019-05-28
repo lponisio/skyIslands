@@ -1,9 +1,10 @@
+## setwd("~/Dropbox/skyIslands")
+setwd("analysis/turnover")
 rm(list=ls())
 library(vegan)
 library(fields)
 library(linkcomm)
 library(picante)
-setwd("~/Dropbox/skyIslands/analysis/distanceDecay")
 source('src/misc.R')
 source('src/Phylo-beta-int.R')
 source('src/Phylo-beta-sp.R')
@@ -19,8 +20,8 @@ spec <-
 ## prepare link community in terminal
 ## ************************************************************
 
-edges.com <-cbind(as.character(spec$GenSp),
-                  as.character(spec$PlantGenSp))
+edges.com <-cbind(as.character(spec$GenusSpecies),
+                  as.character(spec$PlantGenusSpecies))
 
 lc <- getLinkCommunities(edges.com, hcmethod = "average",
                          bipartite=TRUE)
@@ -42,5 +43,5 @@ int <- int.dis(spec, c.dist, abund.w=TRUE,
 
 sp <- pp.dis(spec, types= c("GenSp", "PlantGenSp", "Int"),
              c.dist=c.dist, sub="all",
-             path ='../figures/distanceDecay') 
+             path ='../figures/distanceDecay')
 
