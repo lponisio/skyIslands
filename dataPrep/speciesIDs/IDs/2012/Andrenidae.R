@@ -69,7 +69,7 @@ sp.ids <- list(
 
   Andrena_apacheorum= list(Genus="Andrena", SubGenus ="Cnemidandrena",
     Species="apacheorum", SubSpecies="", Sex="f", Author =
-    "Cockerell", Determiner="J.S. Ascher", temp.id= c("PL_081212_48", "PL_081212_46",
+    "Cockerell", Determiner="RW Thorp", temp.id= c("PL_081212_48", "PL_081212_46",
     "PL_081212_45", "PL_081212_101", "PL_081212_97", "PL_081112_173",
     "PL_081312_134", "PL_081312_211", "PL_081212_140",
     "PL_081112_172", "PL_081212_160", "PL_081112_128", "PL_081112_79",
@@ -86,12 +86,31 @@ sp.ids <- list(
     "JC_071512_97", "JC_071712_78", "SC_072712_208", "JC_071712_131",
     "JC_071412_43", "JC_071712_95","PL_081312_103", "PL_081312_102",
     "PL_081312_94", "PL_081312_171", "PL_081312_100", "PL_081312_101",
-    "PL_080912_294", "PL_081012_274", "PL_081112_73")),
+    "PL_080912_294", "PL_081012_274", "PL_081112_73", "PL_081212_48",
+    "MM_080212_208", "MM_080312_111", "MM_080312_203",
+    "MM_080312_202", "MM_080112_198", "MM_080212_160",
+    "MM_080212_302", "MM_080212_65", "MM_080112_221", "MM_080312_71",
+    "MM_080212_105","MM_080412_203", "MM_080112_220", "MM_080212_80",
+    "MM_080112_199", "MM_080112_117", "MM_080212_267",
+    "MM_080112_224", "MM_080312_83", "MM_080312_84", "MM_080312_82",
+    "MM_080412_204", "MM_080412_163", "MM_080212_162",
+    "MM_080312_101", "MM_080212_72", "MM_080212_71", "MM_080112_92", "MM_080112_235")),
+
+  ## last 4 infected with strepsitera
 
   Andrena_apacheorum= list(Genus="Andrena", SubGenus ="Cnemidandrena",
     Species="apacheorum", SubSpecies="", Sex="m", Author =
     "Cockerell", Determiner="J.S. Ascher", temp.id= c("PL_081112_53", "PL_080912_303",
-    "PL_081312_111", "PL_081312_112", "PL_081012_238")),
+    "PL_081312_111", "PL_081312_112", "PL_081012_238",
+    "PL_081112_177", "JC_071712_49", "JC_071412_157", "MM_080212_173",
+    "MM_080212_301", "MM_080212_1", "JC_071512_166", "JC_071512_60",
+    "JC_071212_41", "JC_071512_127", "JC_071112_3", "SC_072612_183",
+    "SC_072012_154", "SC_072312_197", "JC_071612_18", "JC_071712_20",
+    "JC_071612_44", "SC_072712_209")),
+
+ Andrena_costillensis= list(Genus="Andrena", SubGenus ="Cnemidandrena",
+    Species="costillensis", SubSpecies="", Sex="f", Author =
+    "Viereck \& Cockerell", Determiner="RW Thorp", temp.id= c("JC_071612_150")),
 
   Panurginus_cressoniellus_f= list(Genus="Panurginus", SubGenus ="",
     Species="cressoniellus", SubSpecies="", Sex="f", Author =
@@ -101,7 +120,13 @@ sp.ids <- list(
 
   Panurginus_cressoniellus_m= list(Genus="Panurginus", SubGenus ="",
     Species="cressoniellus", SubSpecies="", Sex="m", Author =
-    "Cockerell", Determiner="J.S. Ascher", temp.id= c("JC_071512_194"))
+    "Cockerell", Determiner="J.S. Ascher", temp.id=
+                                               c("JC_071512_194")),
+
+
+  Andrena_segregans= list(Genus="Andrena", SubGenus ="Euandrena",
+    Species="", SubSpecies="", Sex="f", Author =
+    "Cockerell", Determiner="RW Thorp", temp.id= c("SC_072612_251")),
 
 
   )
