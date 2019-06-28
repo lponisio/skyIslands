@@ -20,9 +20,9 @@ add.to.data <- function(sp.ids, case, family, date, data.file) {
         cat('!!!TempID already present!!!\n')
         print(TempID[TempID %in% D$Unique[!is.na(D$Species)]])
     }
-
     ind <- match(TempID, D$UniqueID)
 
+    if(any(is.na(ind))) browser()
     if(case=='bee') {
         D$Order[ind] <- 'Hymenoptera'
         D$GenID[ind] <- 'Bee'
@@ -47,7 +47,7 @@ add.to.data <- function(sp.ids, case, family, date, data.file) {
     D[ind,cats] <- dd[,cats]
     D$DateDetermined[ind] <- date
 
-    if(case != "beetle"  & case != "fly"){
+    if(case != "beetle"){
         D$Family[ind] <- family
     }
     write.csv(D,

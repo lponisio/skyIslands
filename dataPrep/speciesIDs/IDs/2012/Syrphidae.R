@@ -3,7 +3,8 @@ sp.ids <- list(
 
   Copestylum_avidum = list(Genus="Copestylum", SubGenus="",
     Species="avidum", SubSpecies="", Sex="", Author = "Sacken",
-    Determiner="M.Hauser", temp.id= c("MM_073112_104", "MM_080112_84", "MM_080112_115",
+    Determiner="M.Hauser",
+    temp.id= c("MM_073112_104", "MM_080112_84", "MM_080112_115",
     "MM_080112_156", "MM_080112_185", "MM_080112_172", "MM_080112_14",
     "MM_080112_210", "MM_080112_163", "MM_080112_90", "MM_080112_190",
     "MM_080112_186", "MM_080112_168", "MM_080112_212", "MM_073112_33",
@@ -42,7 +43,8 @@ sp.ids <- list(
 
   Copestylum_marginatum = list(Genus = "Copestylum", SubGenus="",
     Species = "marginatum", SubSpecies="", Sex="", Author = "Say",
-    Determiner="M.Hauser", temp.id = c("PL_081112_231","PL_081312_104","PL_081212_174",
+    Determiner="M.Hauser",
+    temp.id = c("PL_081112_231","PL_081312_104","PL_081212_174",
     "PL_081212_273", "PL_081212_24", "PL_081212_56")),
 
   Copestylum_lentum = list(Genus ="Copestylum",SubGenus="", Species =

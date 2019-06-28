@@ -10,10 +10,10 @@ sp.ids <- list(
 
    Colletes_skinneri= list(Genus="Colletes", SubGenus ="",
     Species="skinneri", SubSpecies="", Sex="f", Author = "Viereck",
-    Determiner="J.S. Ascher", temp.id= c("PL_081312_133","MM_080412_4","MM_080212_240")),
+    Determiner="J.S. Ascher", temp.id= c("MM_080412_4","MM_080212_240")),
 
     Colletes_gilensis= list(Genus="Colletes", SubGenus ="Productus",
-    Species="gilensis", SubSpecies="", Sex="f", Author = "Cockerell",
+    Species="gilensis", SubSpecies="", Sex="m", Author = "Cockerell",
     Determiner="J.S. Ascher", temp.id= c("SC_072712_58"))
 
   )

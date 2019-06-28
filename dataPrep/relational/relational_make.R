@@ -92,7 +92,7 @@ write.csv(dbReadTable(con, "tblConditions"),
 ## *******************************************************
 
 keep <- c("Order", "Family", "Genus", "SubGenus", "Species",
-          "SubSpecies", "Determiner", "Author", "DateDetermined")
+          "SubSpecies", "Determiner", "Author")
 
 insects <- specimens[keep]
 insects <- unique(insects)

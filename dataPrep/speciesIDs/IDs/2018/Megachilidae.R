@@ -2,19 +2,69 @@
 sp.ids <- list(
 
     Anthidium_maculosum_f = list(Genus="Anthidium",
-                                 SubGenus ="Anthidium", Species="maculosum",
+                                 SubGenus ="Anthidium",
+                                 Species="maculosum",
                                  SubSpecies="", Sex="f",
-                                 Author = "Cresson", Determiner = "T. Griswold",
+                                 Author = "Cresson",
+                                 Determiner = "K. Watrous",
                                  temp.id= c("17879", "17741", "17715",
-                                 "17721", "17714", "17683", "17701",
-                                 "17686", "17682", "18042", "18190",
-                                 "18176", "18263")),
+                                            "17721", "17714", "17683",
+                                            "17701", "17686", "17682",
+                                            "18042", "18190", "18176",
+                                            "18263")),
 
     Anthidium_maculosum_m = list(Genus="Anthidium",
-                                 SubGenus ="Anthidium", Species="maculosum",
+                                 SubGenus ="Anthidium",
+                                 Species="maculosum",
                                  SubSpecies="", Sex="m",
-                                 Author = "Cresson", Determiner = "T. Griswold",
+                                 Author = "Cresson",
+                                 Determiner = "K. Watrous",
                                  temp.id= c("17743", "17737", "17725",
-                                 "17734", "17700", "18189", "18268"))
+                                            "17734", "17700", "18189",
+                                            "18268")),
+
+    Megachile_fidelis_f = list(Genus="Megachile",
+                               SubGenus ="Sayapis",
+                               Species="fidelis",
+                               SubSpecies="",
+                               Sex="f",
+                               Author = "Cresson",
+                               Determiner = "K. Watrous",
+                               temp.id= c("17837", "18227")),
+
+    Megachile_frigida_f = list(Genus="Megachile",
+                               SubGenus ="Xanthosarus",
+                               Species="frigida",
+                               SubSpecies="",
+                               Sex="f", Author = "Smith",
+                               Determiner = "K. Watrous",
+                               temp.id=  c("18597")),
+
+    Megachile_gemula_f = list(Genus="Megachile",
+                              SubGenus ="Xanthosarus",
+                              Species="gemula",
+                              SubSpecies="",
+                              Sex="f", Author = "Cresson",
+                              Determiner = "K. Watrous",
+                              temp.id=  c("18717")),
+
+
+    Megachile_mellitarsis_f = list(Genus="Megachile",
+                                   SubGenus ="Sayapis",
+                                   Species="mellitarsis",
+                                   SubSpecies="", Sex="f",
+                                   Author = "Cresson",
+                                   Determiner = "K. Watrous",
+                                   temp.id= c("18224")),
+
+    Heriades_cressoni_f = list(Genus="Heriades",
+                               SubGenus ="Neotrypetes",
+                               Species="cressoni",
+                               SubSpecies="", Sex="f",
+                               Author = "Michener",
+                               Determiner = "L.C. Ponisio",
+                               temp.id= c("18132", "18049", "18090",
+                                          "18521", "18662", "18517"))
+
 
 )

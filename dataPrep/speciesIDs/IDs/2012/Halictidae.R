@@ -230,11 +230,16 @@ sp.ids <- list(
     "JC_071512_139")),
 
   Lasioglossum_aquilae_m = list(Genus="Lasioglossum", SubGenus
-    ="Dialictus", Species="aquilae", SubSpecies="", Sex="m", Author = "Cockerell",
-    Determiner = "J. Gibbs", temp.id= c("JC_071412_55")),
+                                ="Dialictus", Species="aquilae", SubSpecies="",
+                                Sex="m",
+                                Author = "Cockerell",
+                                Determiner = "J. Gibbs",
+                                temp.id= c("JC_071412_55")),
 
   Lasioglossum_aquilae_f = list(Genus="Lasioglossum", SubGenus
-    ="Dialictus", Species="aquilae", SubSpecies="", Sex="f", Author = "Cockerell",
+                                ="Dialictus", Species="aquilae",
+                                SubSpecies="",
+                                Sex="f", Author = "Cockerell",
     Determiner = "J. Gibbs", temp.id= c("JC_071412_3", "JC_071412_142",
   "JC_071612_77", "JC_071612_54", "JC_071612_149", "JC_071612_121",
   "JC_071612_106", "JC_071612_32", "JC_071612_117", "JC_071612_24",
