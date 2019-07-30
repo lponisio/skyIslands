@@ -30,7 +30,8 @@ sp.ids <- list(
                                Sex="f",
                                Author = "Cresson",
                                Determiner = "K. Watrous",
-                               temp.id= c("17837", "18227")),
+                               temp.id= c("17837", "18227",
+                                          "20431", "20433")),
 
     Megachile_frigida_f = list(Genus="Megachile",
                                SubGenus ="Xanthosarus",
@@ -40,13 +41,22 @@ sp.ids <- list(
                                Determiner = "K. Watrous",
                                temp.id=  c("18597")),
 
-    Megachile_gemula_f = list(Genus="Megachile",
-                              SubGenus ="Xanthosarus",
-                              Species="gemula",
-                              SubSpecies="",
-                              Sex="f", Author = "Cresson",
-                              Determiner = "K. Watrous",
-                              temp.id=  c("18717")),
+    Megachile_frigida_m = list(Genus="Megachile",
+                               SubGenus ="Xanthosarus",
+                               Species="frigida",
+                               SubSpecies="",
+                               Sex="m", Author = "Smith",
+                               Determiner = "K. Watrous",
+                               temp.id=  c("20437", "20428", "20429",
+                                           "20562", "20436", "20503")),
+
+    ## Megachile_gemula_f = list(Genus="Megachile",
+    ##                           SubGenus ="Xanthosarus",
+    ##                           Species="gemula",
+    ##                           SubSpecies="",
+    ##                           Sex="f", Author = "Cresson",
+    ##                           Determiner = "K. Watrous",
+    ##                           temp.id=  c("18717")),
 
 
     Megachile_mellitarsis_f = list(Genus="Megachile",
@@ -55,7 +65,7 @@ sp.ids <- list(
                                    SubSpecies="", Sex="f",
                                    Author = "Cresson",
                                    Determiner = "K. Watrous",
-                                   temp.id= c("18224")),
+                                   temp.id= c("18224", "20505")),
 
     Heriades_cressoni_f = list(Genus="Heriades",
                                SubGenus ="Neotrypetes",

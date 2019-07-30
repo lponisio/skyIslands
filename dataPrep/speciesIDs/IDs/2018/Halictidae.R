@@ -61,7 +61,9 @@ sp.ids <- list(
                              Species="ligatus", SubSpecies="",
                              Sex="f", Author = "Say",
                              Determiner = "D. Yanega",
-                             temp.id= c("17853", "18737")),
+                             temp.id= c("17853", "18737",
+                                        "18143", "17975")),
+
 
       Halictus_tripartitus_f= list(Genus="Halictus",
                                  SubGenus ="Seladonia",
@@ -81,7 +83,7 @@ sp.ids <- list(
                                     temp.id=
                                         c("18580",
                                           "18581",
-                                          "18593"
+                                          "18593",
                                           "17977")),
 
         Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
@@ -123,7 +125,15 @@ sp.ids <- list(
                                     "18350",
                                     "18053",
                                     "18055",
-                                    "18703"))
+                                    "18703")),
+
+       Halictus_rubicundus_m= list(Genus="Halictus",
+                                SubGenus ="Protohalictus",
+                                Species="rubicundus",
+                                SubSpecies="", Sex="m",
+                                Author = "Christ",
+                                Determiner = "D. Yanega",
+                                temp.id= c("18708", "17807"))
 
 
 

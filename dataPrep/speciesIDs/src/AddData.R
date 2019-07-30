@@ -22,7 +22,9 @@ add.to.data <- function(sp.ids, case, family, date, data.file) {
     }
     ind <- match(TempID, D$UniqueID)
 
-    if(any(is.na(ind))) browser()
+    if(any(is.na(ind))){
+        print(paste("bad temp ID", TempID[is.na(ind)]))
+    }
     if(case=='bee') {
         D$Order[ind] <- 'Hymenoptera'
         D$GenID[ind] <- 'Bee'

@@ -571,7 +571,7 @@ sp.ids <- list(
                                           "BBSL1074196",
                                           "BBSL1073934",
                                           "BBSL1074432",
-                                          "BBSL1086104"
+                                          "BBSL1086104",
                                           "BBSL1059885")),
 
     Nomia_spa = list(Genus="Nomia", SubGenus="",
@@ -814,7 +814,10 @@ sp.ids <- list(
                              Sex="m",
                              Author = "Say",
                              Determiner = "D. Yanega",
-                             temp.id= c("BBSL1072881")),
+                             temp.id= c("BBSL1072881", "BBSL1071234",
+                             "BBSL1072142", "BBSL1084429",
+                             "BBSL1072829", "BBSL1073329",
+                             "BBSL1072921", "BBSL1071177")),
 
     Halictus_farinosus = list(Genus="Halictus", SubGenus ="Nealictus",
                               Species="farinosus", SubSpecies="",

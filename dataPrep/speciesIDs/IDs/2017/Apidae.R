@@ -44,7 +44,7 @@ sp.ids <- list(
                                Determiner="D. Yanega",
                                temp.id= c("BBSL1085802",
                                           "BBSL1085792",
-                                          "BBSL1085826"))
+                                          "BBSL1085826")),
 
 
     Anthophora_urbana_f = list(Genus="Anthophora",
