@@ -1,6 +1,134 @@
 
 sp.ids <- list(
 
+ asemosyrphus_f = list(Genus=" asemosyrphus", SubGenus="",
+    Species="polygrammus", SubSpecies="", Sex="f", Author = "",
+    Determiner="M.Hauser",
+    temp.id= c("BBSL1087077",
+    "BBSL1084930",
+    "BBSL1084954")),
+               
+ asemosyrphus_m = list(Genus=" asemosyrphus", SubGenus="",
+    Species="polygrammus", SubSpecies="", Sex="", Author = "",
+    Determiner="M.Hauser",
+    temp.id= c("BBSL1073070",
+    "BBSL1059934")),
+
+              
+hammerschmidtia_m = list(Genus="hammerschmidtia", SubGenus="",
+    Species="rufa", SubSpecies="", Sex="m", Author = "",
+    Determiner="M.Hauser",
+    temp.id= c("BBSL1059916")),  
+               
+pseudoscaeva_m = list(Genus="pseudoscaeva", SubGenus="",
+    Species="diversifasciata", SubSpecies="", Sex="m", Author = "",
+    Determiner="M.Hauser",
+    temp.id= c("BBSL1058407",
+    "BBSL1071297"
+    
+               )),
+
+paragus_m = list(Genus="paragus", SubGenus="",
+    Species="haemorrhous", SubSpecies="", Sex="m", Author = "",
+    Determiner="M.Hauser",
+    temp.id= c("BBSL1084336"
+    
+               )),
+paragus_f= list(Genus="paragus", SubGenus="",
+    Species="haemorrhous", SubSpecies="", Sex="f", Author = "",
+    Determiner="M.Hauser",
+    temp.id= c("BBSL1072788",
+    "BBSL1071242"
+                   )),
+                              
+ neocnemodon_m = list(Genus="Neocnemodon", SubGenus="",
+    Species="sp.", SubSpecies="a", Sex="m", Author = "",
+    Determiner="M.Hauser",
+    temp.id= c("BBSL1059903",
+    
+               )),
+               
+ neocnemodon_f = list(Genus="Neocnemodon", SubGenus="",
+    Species="sp.", SubSpecies="a", Sex="f", Author = "",
+    Determiner="M.Hauser",
+    temp.id= c("BBSL1087165"
+    
+    
+               )),
+
+              
+
+eupeodes_f= list(Genus="eupeodes", SubGenus="",
+    Species="snowi", SubSpecies="", Sex="f", Author = "",
+    Determiner="M.Hauser",
+    temp.id= c("BBSL1071709"
+    
+               )),
+
+eupeodes_m= list(Genus="eupeodes", SubGenus="",
+    Species="fumipennis", SubSpecies="", Sex="m", Author = "",
+    Determiner="M.Hauser",
+    temp.id= c("BBSL1072804"
+    
+    
+               )),
+ eupeodes_m= list(Genus="eupeodes", SubGenus="",
+    Species="volucuris", SubSpecies="", Sex="m", Author = "",
+    Determiner="M.Hauser",
+    temp.id= c("BBSL1070972"
+    "BBSL1058228",
+    "BBSL1059846",
+    "BBSL1087065",
+    "BBSL1073370",
+    "BBSL1060079",
+    
+    
+    
+               )),
+              
+  eupeodes_f= list(Genus="eupeodes", SubGenus="",
+    Species="volucuris", SubSpecies="", Sex="f", Author = "",
+    Determiner="M.Hauser",
+    temp.id= c(BBSL1084943
+    BBSL1058729
+    BBSL1070541
+    BBSL1071067
+    BBSL1073114
+    BBSL1073948
+    BBSL1073949
+    
+    
+    
+               )),
+             
+scaeva_f= list(Genus="", SubGenus="",
+    Species="affinis", SubSpecies="", Sex="f", Author = "",
+    Determiner="M.Hauser",
+    temp.id= c(BBSL1059966
+    BBSL1074014
+    
+    
+    
+   
+               )),
+               
+lapposyrphus_m= list(Genus="", SubGenus="",
+    Species="lapponicus", SubSpecies="", Sex="m", Author = "",
+    Determiner="M.Hauser",
+    temp.id= c(BBSL1060062
+    BBSL1071931
+        
+    
+    
+               )),
+ lapposyrphus_f= list(Genus="", SubGenus="",
+    Species="lapponicus", SubSpecies="", Sex="f", Author = "",
+    Determiner="M.Hauser",
+    temp.id= c(BBSL1058339
+    ))             
+             
+             
+
   Copestylum_avidum_f = list(Genus="Copestylum", SubGenus="",
     Species="avidum", SubSpecies="", Sex="f", Author = "Sacken",
     Determiner="M.Hauser",
@@ -37,10 +165,25 @@ sp.ids <- list(
                "BBSL1074417"
                )),
 
-  Copestylum_marginatum = list(Genus = "Copestylum", SubGenus="",
+  Copestylum_marginatum_f = list(Genus = "Copestylum", SubGenus="",
     Species = "marginatum", SubSpecies="", Sex="", Author = "Say",
     Determiner="M.Hauser",
-    temp.id = c()),
+    temp.id = c("BBSL1059420",
+    "BBSL1059419",
+    "BBSL1059957",
+    "BBSL1059261",
+    "BBSL1070377"
+    )),
+
+Copestylum_marginatum_m = list(Genus = "Copestylum", SubGenus="",
+    Species = "marginatum", SubSpecies="", Sex="", Author = "Say",
+    Determiner="M.Hauser",
+    temp.id = c("BBSL1072806",
+    "BBSL1085006",
+    "BBSL1059992",
+    "BBSL1059251"
+    )),
+
 
   Copestylum_lentum_f = list(Genus ="Copestylum",
                            SubGenus="",
@@ -445,6 +588,20 @@ sp.ids <- list(
     = "Williston", Determiner="M.Hauser",
     temp.id = c()),
 
+Copestylum_satur_f = list(Genus = "Copestylum",
+    SubGenus="",Species = "satur", SubSpecies="", Sex = "", Author
+    = "", Determiner="M.Hauser",
+    temp.id = c(BBSL1071340
+    BBSL1084952
+    )),
+
+Copestylum_satur_m = list(Genus = "Copestylum",
+    SubGenus="",Species = "satur", SubSpecies="", Sex = "", Author
+    = "", Determiner="M.Hauser",
+    temp.id = c(BBSL1060046
+    BBSL1059368
+    )),
+
   Copestylum_victoria = list(Genus="Copestylum",SubGenus="",
                              Species=
                                  "victoria", SubSpecies="",
@@ -494,9 +651,34 @@ sp.ids <- list(
     ="kahli", SubSpecies="", Sex = "", Author="Snow", Determiner="M.Hauser", temp.id =
     c()),
 
-  Toxomerus_marginatus = list(Genus = "Toxomerus",SubGenus="", Species
+  Toxomerus_marginatus_f = list(Genus = "Toxomerus",SubGenus="", Species
     = "marginatus", SubSpecies="", Sex = "", Author ="Meigen", Determiner="M.Hauser", temp.id
-    = c()),
+    = c(BBSL1072192
+    BBSL1072261
+    BBSL1071977
+    BBSL1084597
+    BBSL1085200
+    BBSL1087245
+    BBSL1072654
+    BBSL1072018
+    BBSL1072989
+    BBSL1073068
+    BBSL1087244
+    BBSL1087183
+    BBSL1087200
+    BBSL1087192
+    )),
+
+Toxomerus_marginatus_m = list(Genus = "Toxomerus",SubGenus="", Species
+    = "marginatus", SubSpecies="", Sex = "", Author ="Meigen", Determiner="M.Hauser", temp.id
+    = c( BBSL1084385
+    BBSL1084560
+    BBSL1070864
+    BBSL1072213
+    BBSL1073354
+    BBSL1087184
+    BBSL1071149
+    BBSL1084419)),
 
   Xylota_morpho1 = list(Genus = "Xylota",SubGenus="", Species = "sp.",
     SubSpecies = "a", Sex = "", Author = "", Determiner="M.Hauser", temp.id =
@@ -514,151 +696,24 @@ sp.ids <- list(
     "mexicana", SubSpecies="", Sex = "", Author = "Macquart", Determiner="M.Hauser", temp.id
     = c()),
 
-  Eristalis_hirta = list(Genus = "Eristalis", SubGenus="", Species =
+  Eristalis_hirta_m = list(Genus = "Eristalis", SubGenus="", Species =
     "hirta", SubSpecies="", Sex = "", Author = "Loew", Determiner="M.Hauser", temp.id =
-    c()),
+    c(BBSL1060043
+    BBSL1060042
+    )),
+    
+    Eristalis_hirta_f = list(Genus = "Eristalis", SubGenus="", Species =
+    "hirta", SubSpecies="", Sex = "", Author = "Loew", Determiner="M.Hauser", temp.id =
+    c(BBSL1059923
+    )),
+
 
   Eristalis_tenax_f = list(Genus = "Eristalis", SubGenus="", Species =
     "tenax", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id =
                                                                                       c("BBSL1059746",
                                                                                    )),
 
-  Syritta_pipiens = list(Genus = "Syritta",SubGenus="", Species =
-    "pipiens", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Sphaerophoria_morpho1 = list(Genus = "Sphaerophoria",SubGenus="",
-    Species= "sp.", SubSpecies= "a", Sex = "", Author= "", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Blera_confusa = list(Genus = "Blera",SubGenus="", Species="confusa",
-    SubSpecies="", Sex = "", Author="Johnson", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Spilomyia_kahli = list(Genus = "Spilomyia",SubGenus="", Species
-    ="kahli", SubSpecies="", Sex = "", Author="Snow", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Toxomerus_marginatus = list(Genus = "Toxomerus",SubGenus="", Species
-    = "marginatus", SubSpecies="", Sex = "", Author ="Meigen", Determiner="M.Hauser", temp.id
-    = c()),
-
-  Xylota_morpho1 = list(Genus = "Xylota",SubGenus="", Species = "sp.",
-    SubSpecies = "a", Sex = "", Author = "", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Xylota_morpho2 = list(Genus = "Xylota", SubGenus="", Species="sp.",
-    SubSpecies = "b", Sex = "", Author="", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Xylota_morpho3 = list(Genus = "Xylota", SubGenus="", Species="sp.",
-    SubSpecies = "c", Sex = "", Author="", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Palpada_mexicana = list(Genus = "Palpada", SubGenus="", Species =
-    "mexicana", SubSpecies="", Sex = "", Author = "Macquart", Determiner="M.Hauser", temp.id
-    = c()),
-
-  Eristalis_hirta = list(Genus = "Eristalis", SubGenus="", Species =
-    "hirta", SubSpecies="", Sex = "", Author = "Loew", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Eristalis_tenax_f = list(Genus = "Eristalis", SubGenus="", Species =
-    "tenax", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id =
-                                                                                      c("BBSL1059746",
-                                                                                   )),
-
-  Syritta_pipiens = list(Genus = "Syritta",SubGenus="", Species =
-    "pipiens", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Sphaerophoria_morpho1 = list(Genus = "Sphaerophoria",SubGenus="",
-    Species= "sp.", SubSpecies= "a", Sex = "", Author= "", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Blera_confusa = list(Genus = "Blera",SubGenus="", Species="confusa",
-    SubSpecies="", Sex = "", Author="Johnson", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Spilomyia_kahli = list(Genus = "Spilomyia",SubGenus="", Species
-    ="kahli", SubSpecies="", Sex = "", Author="Snow", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Toxomerus_marginatus = list(Genus = "Toxomerus",SubGenus="", Species
-    = "marginatus", SubSpecies="", Sex = "", Author ="Meigen", Determiner="M.Hauser", temp.id
-    = c()),
-
-  Xylota_morpho1 = list(Genus = "Xylota",SubGenus="", Species = "sp.",
-    SubSpecies = "a", Sex = "", Author = "", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Xylota_morpho2 = list(Genus = "Xylota", SubGenus="", Species="sp.",
-    SubSpecies = "b", Sex = "", Author="", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Xylota_morpho3 = list(Genus = "Xylota", SubGenus="", Species="sp.",
-    SubSpecies = "c", Sex = "", Author="", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Palpada_mexicana = list(Genus = "Palpada", SubGenus="", Species =
-    "mexicana", SubSpecies="", Sex = "", Author = "Macquart", Determiner="M.Hauser", temp.id
-    = c()),
-
-  Eristalis_hirta = list(Genus = "Eristalis", SubGenus="", Species =
-    "hirta", SubSpecies="", Sex = "", Author = "Loew", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Eristalis_tenax_f = list(Genus = "Eristalis", SubGenus="", Species =
-    "tenax", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id =
-                                                                                      c("BBSL1059746",
-                                                                                   )),
-
-  Syritta_pipiens = list(Genus = "Syritta",SubGenus="", Species =
-    "pipiens", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Sphaerophoria_morpho1 = list(Genus = "Sphaerophoria",SubGenus="",
-    Species= "sp.", SubSpecies= "a", Sex = "", Author= "", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Blera_confusa = list(Genus = "Blera",SubGenus="", Species="confusa",
-    SubSpecies="", Sex = "", Author="Johnson", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Spilomyia_kahli = list(Genus = "Spilomyia",SubGenus="", Species
-    ="kahli", SubSpecies="", Sex = "", Author="Snow", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Toxomerus_marginatus = list(Genus = "Toxomerus",SubGenus="", Species
-    = "marginatus", SubSpecies="", Sex = "", Author ="Meigen", Determiner="M.Hauser", temp.id
-    = c()),
-
-  Xylota_morpho1 = list(Genus = "Xylota",SubGenus="", Species = "sp.",
-    SubSpecies = "a", Sex = "", Author = "", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Xylota_morpho2 = list(Genus = "Xylota", SubGenus="", Species="sp.",
-    SubSpecies = "b", Sex = "", Author="", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Xylota_morpho3 = list(Genus = "Xylota", SubGenus="", Species="sp.",
-    SubSpecies = "c", Sex = "", Author="", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Palpada_mexicana = list(Genus = "Palpada", SubGenus="", Species =
-    "mexicana", SubSpecies="", Sex = "", Author = "Macquart", Determiner="M.Hauser", temp.id
-    = c()),
-
-  Eristalis_hirta = list(Genus = "Eristalis", SubGenus="", Species =
-    "hirta", SubSpecies="", Sex = "", Author = "Loew", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Eristalis_tenax_f = list(Genus = "Eristalis", SubGenus="", Species =
-    "tenax", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id =
-                                                                                      c("BBSL1059746",
-                                                                                   )),
-
-  Syritta_pipiens = list(Genus = "Syritta",SubGenus="", Species =
+    Syritta_pipiens = list(Genus = "Syritta",SubGenus="", Species =
     "pipiens", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id =
     c()),
 
@@ -948,9 +1003,47 @@ sp.ids <- list(
 
                                        ))
 
-  Eristalis_arbustorum = list(Genus = "Eristalis", SubGenus="",
+  Eristalis_arbustorum_m = list(Genus = "Eristalis", SubGenus="",
     Species = "arbustorum", SubSpecies="", Sex = "", Author =
-    "Linnaeus", Determiner="M.Hauser", temp.id = c()),
+    "Linnaeus", Determiner="M.Hauser", temp.id = c(BBSL1073080
+    BBSL1070965
+    BBSL1073006
+    )),
+    
+  Eristalis_bellardii_m= list(Genus = "Belllardi", SubGenus="",
+    Species = "bellardi", SubSpecies="", Sex = "", Author =
+    "", Determiner="M.Hauser", temp.id = c(BBSL1058425
+    BBSL1058134
+    BBSL1058131
+    BBSL1058123
+    BBSL1058404
+    BBSL1071380
+    BBSL1071362
+    BBSL1071320
+    BBSL1058567
+    BBSL1058586
+    BBSL1071410
+    BBSL1058615
+    BBSL1071321
+    BBSL1071607
+    )),
+
+ Eristalis_bellardii_f= list(Genus = "Belllardi", SubGenus="",
+    Species = "bellardi", SubSpecies="", Sex = "", Author =
+    "", Determiner="M.Hauser", temp.id = c(BBSL1071576
+    BBSL1071431
+    BBSL1071381
+    BBSL1071653
+    BBSL1071648
+    BBSL1071477
+    BBSL1071556
+    BBSL1071605
+    BBSL1058178
+    BBSL1058138
+    BBSL1071534
+    BBSL1058385
+    )),   
+ 
 
   Arctophila_flagrans = list(Genus = "Arctophila", SubGenus="",
     Species= "flagrans", SubSpecies="", Sex = "",
@@ -960,57 +1053,65 @@ sp.ids <- list(
     "polygrammus", SubSpecies="", Sex = "", Author="Loew", Determiner="M.Hauser", temp.id =
     c()),
 
-  Didea_fuscipes = list(Genus = "Didea", SubGenus="", Species = "fuscipes",
+  Didea_fuscipes_f = list(Genus = "Didea", SubGenus="", Species = "fuscipes",
     SubSpecies="", Sex = "", Author = "Loew",
-    Determiner="M.Hauser", temp.id = c()),
+    Determiner="M.Hauser", temp.id = c(BBSL1074302
+    BBSL1087173
+    )),
+    
+ Didea_fuscipes_mBBSL1059956
+     = list(Genus = "Didea", SubGenus="", Species = "fuscipes",
+    SubSpecies="", Sex = "", Author = "Loew",
+    Determiner="M.Hauser", temp.id = c(BBSL1074302
+    BBSL1087173
+    )),
 
-  Cheilosia_morpho1 = list(Genus = "Cheilosia", SubGenus="", Species =
-    "sp.", SubSpecies = "a", Sex = "", Author="", Determiner="M.Hauser", temp.id =
-    c()),
 
-  Allograpta_exotica =list(Genus = "Allograpta", SubGenus="", Species
-    = "exotica", SubSpecies="", Sex = "", Author="Wiedemann", Determiner="M.Hauser", temp.id
-    = c()),
-
-  Allograpta_obliqua = list(Genus = "Allograpta", SubGenus="", Species
-    = "obliqua", SubSpecies="", Sex = "", Author="Say", Determiner="M.Hauser", temp.id =
-    c()),
 
   Dasysyrphus_morpho1 = list(Genus = "Dasysyrphus", SubGenus="",
     Species = "sp.", SubSpecies = "a", Sex = "", Author = "", Determiner="M.Hauser", temp.id
-    = c()),
+    = c("BBSL1059973", "BBSL1059974", "BBSL1060028", "BBSL1074087", "BBSL1074111", "BBSL1074206", "BBSL1073052", "BBSL1074115", "BBSL1071662", "BBSL1058981", "BBSL1071606", "BBSL1085057"
+    )),
 
-  Eupeodes_volucris = list(Genus = "Eupeodes", SubGenus="", Species=
-    "volucris", SubSpecies ="", Sex = "", Author = "Osten Sacken",
-    Determiner="M.Hauser", temp.id = c()),
 
-  Meligramma_guttata = list(Genus = "Meligramma", SubGenus="", Species
-    = "guttata", SubSpecies="", Sex = "", Author = "Fallen", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Melangyna_lasiophthalma = list(Genus = "Melangyna", SubGenus="",
-    Species = "lasiophthalma", SubSpecies="", Sex = "", Author =
-    "Zetterstedt", Determiner="M.Hauser", temp.id = c()),
-
-  Mallota_sackeni = list(Genus = "Mallota", SubGenus="", Species =
-    "sackeni", SubSpecies="", Sex = "", Author = "Williston", Determiner="M.Hauser", temp.id
-    =c()),
-
-  Lapposyrphus_lapponicus = list(Genus = "Lapposyrphus", SubGenus="",
-    Species = "lapponicus", SubSpecies="", Sex = "", Author =
-    "Zetterstedt", Determiner="M.Hauser", temp.id =c()),
-
-  Syrphus_sonorensis =list(Genus = "Syrphus", SubGenus="", Species =
-    "sonorensis", SubSpecies="", Sex = "", Author = "Vockeroth",
-    Determiner="M.Hauser", temp.id =c()),
-
-  Syrphus_ribesii =list(Genus = "Syrphus", SubGenus="", Species =
+  Syrphus_ribesii_f =list(Genus = "Syrphus", SubGenus="", Species =
     "ribesii", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id
-    =c()),
+    =c(BBSL1071429
+    BBSL1071555
+    BBSL1059995
+    BBSL1058569
+    )),
+ 
+ Syrphus_ribesii_m =list(Genus = "Syrphus", SubGenus="", Species =
+    "ribesii", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id
+    =c(BBSL1071974
+    BBSL1058314
+    BBSL1058286
+    )),
 
-  Syrphus_opinator =list(Genus = "Syrphus", SubGenus="", Species =
+
+  Syrphus_opinator_f =list(Genus = "Syrphus", SubGenus="", Species =
     "opinator", SubSpecies="", Sex = "", Author = "Osten Sacken",
-    Determiner="M.Hauser", temp.id =c()),
+    Determiner="M.Hauser", temp.id =c(BBSL1060063
+    BBSL1060039
+    BBSL1058287
+    BBSL1060081
+    BBSL1058320
+    BBSL1084600
+    )),
+   
+ Syrphus_opinator_m =list(Genus = "Syrphus", SubGenus="", Species =
+    "opinator", SubSpecies="", Sex = "", Author = "Osten Sacken",
+    Determiner="M.Hauser", temp.id =c(BBSL1072653
+    BBSL1070802
+    )),
+
+
+volucella_facialis_f =list(Genus = "Volucella", SubGenus="", Species =
+    "facialis", SubSpecies="", Sex = "", Author = "",
+    Determiner="M.Hauser", temp.id =c(BBSL1071107
+    BBSL1058772
+    )),
 
   Chamaesyrphus_willistoni_f = list(Genus = "Chamaesyrphus",
     SubGenus="", Species = "willistoni", SubSpecies="", Sex = "f",
@@ -1032,13 +1133,24 @@ sp.ids <- list(
     Species = "spinipes", SubSpecies="", Sex = "", Author =
     "Vockeroth", Determiner="M.Hauser", temp.id = c()),
 
-  Pipizini_morpho1 = list(Genus = "Pipizini", SubGenus="", Species =
+  Pipizini_morpho1_f = list(Genus = "Pipizini", SubGenus="", Species =
     "sp.", SubSpecies= "a", Sex = "", Author = "", Determiner="M.Hauser", temp.id =
-    c()),
+    c(BBSL1071130
+    )),
 
   Cheilosia_morpho1 = list(Genus = "Cheilosia", SubGenus="", Species =
     "sp.", SubSpecies="a", Sex = "", Author = "", Determiner="M.Hauser", temp.id
-    =c())
+    =c(BBSL1058522
+    BBSL1058648
+    BBSL1058676
+    BBSL1058695
+    BBSL1070600
+    BBSL1058747
+    BBSL1071092
+    BBSL1070213
+    BBSL1070571
+    BBSL1071125
+    BBSL1084753
+    ))
 
-  )
-
+ 
