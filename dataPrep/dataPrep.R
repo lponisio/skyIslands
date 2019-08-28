@@ -22,7 +22,8 @@ source("src/specialization.R")
 ## did not complete full sampling rounds in any of these sites. Was
 ## just scouting.
 ## can keep UK and SS when more species are IDed
-site.2.drop <- c("JM", "CC", "UK", "SS")
+## site.2.drop <- c("JM", "CC", "UK", "SS")
+site.2.drop <- c("JM", "CC")
 spec <- spec[!spec$Site %in% site.2.drop,]
 spec <- droplevels(spec)
 
@@ -45,10 +46,10 @@ spec$Date <- as.Date(spec$Date, format='%m/%d/%y')
 spec$Doy <- as.numeric(strftime(spec$Date, format='%j'))
 spec$Year <- as.numeric(format(spec$Date,'%Y'))
 
-## drop non-bees
+## drop non-bee, non-Syrphids
 spec <- spec[spec$Family %in% c("Andrenidae", "Apidae",
                                 "Colletidae", "Halictidae",
-                                "Megachilidae"),]
+                                "Megachilidae", "Syrphidae"),]
 
 
 ## for networks, drop specimens withoutplant IDs
@@ -73,5 +74,3 @@ save(graphs, nets, file="../data/nets.Rdata")
 
 sp.lev <- calcSpec(nets, spec)
 save(sp.lev, file='../data/sp.lev.Rdata')
-
-

@@ -15,6 +15,11 @@ spec$Order <- spec$Family <- spec$Genus <- spec$SubGenus <- spec$Species <-
 write.csv(spec, file=spec.data.file, row.names=FALSE)
 
 ## 2018 field season
+source(file.path(save.dir, 'IDs/2018/Syrphidae.R'))
+add.to.data(sp.ids=sp.ids,
+            case='fly',"Syrphidae", "2019",
+            data.file=spec.data.file)
+
 source(file.path(save.dir, 'IDs/2018/Apidae.R'))
 add.to.data(sp.ids=sp.ids, case='bee', "Apidae","2019",
 data.file=spec.data.file)
@@ -30,6 +35,12 @@ add.to.data(sp.ids=sp.ids,
             data.file=spec.data.file)
 
 ## 2017 field season
+source(file.path(save.dir, 'IDs/2017/Syrphidae.R'))
+add.to.data(sp.ids=sp.ids,
+            case='fly',"Syrphidae", "2019",
+            data.file=spec.data.file)
+
+
 source(file.path(save.dir, 'IDs/2017/Apidae.R'))
 add.to.data(sp.ids=sp.ids,
             case='bee', "Apidae","2018",

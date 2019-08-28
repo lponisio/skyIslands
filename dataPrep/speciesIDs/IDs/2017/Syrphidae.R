@@ -1,1156 +1,903 @@
 
 sp.ids <- list(
 
- asemosyrphus_f = list(Genus=" asemosyrphus", SubGenus="",
-    Species="polygrammus", SubSpecies="", Sex="f", Author = "",
-    Determiner="M.Hauser",
-    temp.id= c("BBSL1087077",
-    "BBSL1084930",
-    "BBSL1084954")),
-               
- asemosyrphus_m = list(Genus=" asemosyrphus", SubGenus="",
-    Species="polygrammus", SubSpecies="", Sex="", Author = "",
-    Determiner="M.Hauser",
-    temp.id= c("BBSL1073070",
-    "BBSL1059934")),
-
-              
-hammerschmidtia_m = list(Genus="hammerschmidtia", SubGenus="",
-    Species="rufa", SubSpecies="", Sex="m", Author = "",
-    Determiner="M.Hauser",
-    temp.id= c("BBSL1059916")),  
-               
-pseudoscaeva_m = list(Genus="pseudoscaeva", SubGenus="",
-    Species="diversifasciata", SubSpecies="", Sex="m", Author = "",
-    Determiner="M.Hauser",
-    temp.id= c("BBSL1058407",
-    "BBSL1071297"
-    
-               )),
-
-paragus_m = list(Genus="paragus", SubGenus="",
-    Species="haemorrhous", SubSpecies="", Sex="m", Author = "",
-    Determiner="M.Hauser",
-    temp.id= c("BBSL1084336"
-    
-               )),
-paragus_f= list(Genus="paragus", SubGenus="",
-    Species="haemorrhous", SubSpecies="", Sex="f", Author = "",
-    Determiner="M.Hauser",
-    temp.id= c("BBSL1072788",
-    "BBSL1071242"
-                   )),
-                              
- neocnemodon_m = list(Genus="Neocnemodon", SubGenus="",
-    Species="sp.", SubSpecies="a", Sex="m", Author = "",
-    Determiner="M.Hauser",
-    temp.id= c("BBSL1059903",
-    
-               )),
-               
- neocnemodon_f = list(Genus="Neocnemodon", SubGenus="",
-    Species="sp.", SubSpecies="a", Sex="f", Author = "",
-    Determiner="M.Hauser",
-    temp.id= c("BBSL1087165"
-    
-    
-               )),
-
-              
-
-eupeodes_f= list(Genus="eupeodes", SubGenus="",
-    Species="snowi", SubSpecies="", Sex="f", Author = "",
-    Determiner="M.Hauser",
-    temp.id= c("BBSL1071709"
-    
-               )),
-
-eupeodes_m= list(Genus="eupeodes", SubGenus="",
-    Species="fumipennis", SubSpecies="", Sex="m", Author = "",
-    Determiner="M.Hauser",
-    temp.id= c("BBSL1072804"
-    
-    
-               )),
- eupeodes_m= list(Genus="eupeodes", SubGenus="",
-    Species="volucuris", SubSpecies="", Sex="m", Author = "",
-    Determiner="M.Hauser",
-    temp.id= c("BBSL1070972"
-    "BBSL1058228",
-    "BBSL1059846",
-    "BBSL1087065",
-    "BBSL1073370",
-    "BBSL1060079",
-    
-    
-    
-               )),
-              
-  eupeodes_f= list(Genus="eupeodes", SubGenus="",
-    Species="volucuris", SubSpecies="", Sex="f", Author = "",
-    Determiner="M.Hauser",
-    temp.id= c(BBSL1084943
-    BBSL1058729
-    BBSL1070541
-    BBSL1071067
-    BBSL1073114
-    BBSL1073948
-    BBSL1073949
-    
-    
-    
-               )),
-             
-scaeva_f= list(Genus="", SubGenus="",
-    Species="affinis", SubSpecies="", Sex="f", Author = "",
-    Determiner="M.Hauser",
-    temp.id= c(BBSL1059966
-    BBSL1074014
-    
-    
-    
-   
-               )),
-               
-lapposyrphus_m= list(Genus="", SubGenus="",
-    Species="lapponicus", SubSpecies="", Sex="m", Author = "",
-    Determiner="M.Hauser",
-    temp.id= c(BBSL1060062
-    BBSL1071931
-        
-    
-    
-               )),
- lapposyrphus_f= list(Genus="", SubGenus="",
-    Species="lapponicus", SubSpecies="", Sex="f", Author = "",
-    Determiner="M.Hauser",
-    temp.id= c(BBSL1058339
-    ))             
-             
-             
-
-  Copestylum_avidum_f = list(Genus="Copestylum", SubGenus="",
-    Species="avidum", SubSpecies="", Sex="f", Author = "Sacken",
-    Determiner="M.Hauser",
-    temp.id= c("BBSL1058992",
-               "BBSL1059226",
-               "BBSL1070312",
-               "BBSL1074128",
-               "BBSL1074346",
-               "BBSL1087048",
-               "BBSL1073021",
-               "BBSL1085129",
-               "BBSL1085243",
-               "BBSL1070537",
-               "BBSL1058122"
-               )),
-
-    Copestylum_avidum_m = list(Genus="Copestylum", SubGenus="",
-    Species="avidum", SubSpecies="", Sex="m", Author = "Sacken",
-    Determiner="M.Hauser",
-    temp.id= c("BBSL1070238",
-               "BBSL1070560",
-               "BBSL1074203",
-               "BBSL1059222",
-               "BBSL1058137",
-               "BBSL1059048",
-               "BBSL1058358",
-               "BBSL1070550",
-               "BBSL1058894",
-               "BBSL1059418",
-               "BBSL1058491",
-               "BBSL1059391",
-               "BBSL1058782",
-               "BBSL1085107",
-               "BBSL1074417"
-               )),
-
-  Copestylum_marginatum_f = list(Genus = "Copestylum", SubGenus="",
-    Species = "marginatum", SubSpecies="", Sex="", Author = "Say",
-    Determiner="M.Hauser",
-    temp.id = c("BBSL1059420",
-    "BBSL1059419",
-    "BBSL1059957",
-    "BBSL1059261",
-    "BBSL1070377"
-    )),
-
-Copestylum_marginatum_m = list(Genus = "Copestylum", SubGenus="",
-    Species = "marginatum", SubSpecies="", Sex="", Author = "Say",
-    Determiner="M.Hauser",
-    temp.id = c("BBSL1072806",
-    "BBSL1085006",
-    "BBSL1059992",
-    "BBSL1059251"
-    )),
-
-
-  Copestylum_lentum_f = list(Genus ="Copestylum",
-                           SubGenus="",
-                           Species =
-                               "lentum", SubSpecies="", Sex="",
-                           Author ="Williston",
-                           Determiner="M.Hauser", temp.id = c("BBSL1059354",
-                                                              "BBSL1059242",
-                                                              "BBSL1060016",
-                                                              "BBSL1059765",
-                                                              "BBSL1059764",
-                                                              "BBSL1059138",
-                                                              "BBSL1071973",
-                                                              "BBSL1059046",
-                                                              "BBSL1072784",
-                                                              "BBSL1072775",
-                                                              "BBSL1085150",
-                                                              "BBSL1085149",
-                                                              "BBSL1059999",
-                                                              "BBSL1059114",
-                                                              "BBSL1059297",
-                                                              "BBSL1059149",
-                                                              "BBSL1073090",
-                                                              "BBSL1073131",
-                                                              "BBSL1059887",
-                                                              "BBSL1059935",
-                              "BBSL1060031",
-                              "BBSL1058135",
-                              "BBSL1058816",
-                              "BBSL1060017",
-                              "BBSL1059904",
-                              "BBSL1059217",
-                              "BBSL1059026",
-                              "BBSL1058433",
-                              "BBSL1073078",
-                              "BBSL1059965",
-                              "BBSL1073071",
-                              "BBSL1074368",
-                              "BBSL1059994",
-                              "BBSL1058893",
-                              "BBSL1058833",
-                              "BBSL1059393",
-                              "BBSL1059997",
-                              "BBSL1059996",
-                              "BBSL1059998",
-                              "BBSL1060021",
-                              "BBSL1058913",
-                              "BBSL1059991",
-                              "BBSL1059978",
-                              "BBSL1059886",
-                              "BBSL1059863",
-                              "BBSL1059010",
-                              "BBSL1059150",
-                              "BBSL1070328",
-                              "BBSL1059909",
-                              "BBSL1059296",
-                              "BBSL1059166",
-                              "BBSL1058827",
-                              "BBSL1059392")),
-
-  Copestylum_lentum_m = list(Genus ="Copestylum",
-                           SubGenus="",
-                           Species =
-                               "lentum", SubSpecies="", Sex="",
-                           Author ="Williston",
-                           Determiner="M.Hauser", temp.id = c("BBSL1059941",
-                                                              "BBSL1059671",
-                                                              "BBSL1059920"
-                                                              )),
-
-
-  Copestylum_violaceum_f = list(Genus ="Copestylum",SubGenus="", Species
-                              = "violaceum", SubSpecies="", Sex ="", Author ="Say",
-                              Determiner="M.Hauser", temp.id =
-                                                         c("BBSL1058324",
-                                                           "BBSL1058240",
-                                                           "BBSL1059352",
-                                                           "BBSL1058311",
-                                                           "BBSL1058325",
-                                                           "BBSL1058778",
-                                                           "BBSL1058780",
-                                                           "BBSL1058783",
-                                                           "BBSL1059434",
-                                                           "BBSL1059199",
-                                                           "BBSL1058991",
-                                                           "BBSL1059300",
-                                                           "BBSL1058638",
-                                                           "BBSL1058509",
-                                                           "BBSL1058504",
-                                                           "BBSL1058503",
-                                                           "BBSL1058143",
-                                                           "BBSL1058073",
-                                                           "BBSL1058632",
-                                                           "BBSL1059310",
-                                                           "BBSL1059328",
-                                                           "BBSL1058435",
-                                                           "BBSL1059317",
-                                                           "BBSL1059337",
-                                                           "BBSL1059426",
-                                                           "BBSL1059427",
-                                                           "BBSL1059027",
-                                                           "BBSL1059351",
-                                                           "BBSL1058448",
-                                                           "BBSL1058546",
-                                                           "BBSL1058527",
-                                                           "BBSL1058542",
-                                                           "BBSL1058550",
-                                                           "BBSL1060045",
-                                                           "BBSL1059141",
-                                                           "BBSL1059081",
-                                                           "BBSL1059080",
-                                                           "BBSL1071396",
-                                                           "BBSL1070525",
-                                                           "BBSL1071649",
-                                                           "BBSL1071344",
-                                                           "BBSL1071345",
-                                                           "BBSL1071646",
-                                                           "BBSL1071650",
-                                                           "BBSL1071622",
-                                                           "BBSL1071623",
-                                                           "BBSL1071618",
-                                                           "BBSL1071619",
-                                                           "BBSL1071620",
-                                                           "BBSL1071621",
-                                                           "BBSL1071365",
-                                                           "BBSL1071363",
-                                                           "BBSL1071406",
-                                                           "BBSL1071405",
-                                                           "BBSL1071404",
-                                                           "BBSL1071402",
-                                                           "BBSL1071400",
-                                                           "BBSL1071395",
-                                                           "BBSL1071397",
-                                                           "BBSL1071398",
-                                                           "BBSL1071399",
-                                                           "BBSL1071394",
-                                                           "BBSL1071386",
-                                                           "BBSL1071384",
-                                                           "BBSL1071426",
-                                                           "BBSL1071427",
-                                                           "BBSL1071428",
-                                                           "BBSL1071432",
-                                                           "BBSL1071433",
-                                                           "BBSL1071436",
-                                                           "BBSL1058356",
-                                                           "BBSL1058160",
-                                                           "BBSL1058341",
-                                                           "BBSL1058423",
-                                                           "BBSL1058428",
-                                                           "BBSL1058114",
-                                                           "BBSL1058220",
-                                                           "BBSL1058233",
-                                                           "BBSL1058243",
-                                                           "BBSL1071580",
-                                                           "BBSL1071581",
-                                                           "BBSL1071578",
-                                                           "BBSL1071589",
-                                                           "BBSL1071590",
-                                                           "BBSL1071594",
-                                                           "BBSL1071591",
-                                                           "BBSL1071592",
-                                                           "BBSL1071322",
-                                                           "BBSL1071343",
-                                                           "BBSL1071577",
-                                                           "BBSL1059403",
-                                                           "BBSL1059235",
-                                                           "BBSL1058468",
-                                                           "BBSL1059402",
-                                                           "BBSL1071533",
-                                                           "BBSL1071532",
-                                                           "BBSL1071531",
-                                                           "BBSL1071499",
-                                                           "BBSL1071463",
-                                                           "BBSL1071462",
-                                                           "BBSL1071459",
-                                                           "BBSL1071603",
-                                                           "BBSL1071602",
-                                                           "BBSL1071601",
-                                                           "BBSL1070249",
-                                                           "BBSL1070350",
-                                                           "BBSL1074204",
-                                                           "BBSL1058394",
-                                                           "BBSL1071341",
-                                                           "BBSL1058570",
-                                                           "BBSL1058386",
-                                                           "BBSL1058581",
-                                                           "BBSL1059060",
-                                                           "BBSL1058636",
-                                                           "BBSL1058634",
-                                                           "BBSL1058872",
-                                                           "BBSL1058861",
-                                                           "BBSL1058940",
-                                                           "BBSL1058903",
-                                                           "BBSL1058898",
-                                                           "BBSL1058362",
-                                                           "BBSL1058159" )),
-  Copestylum_violaceum_m = list(Genus ="Copestylum",SubGenus="", Species
-                              = "violaceum", SubSpecies="", Sex ="", Author ="Say",
-                              Determiner="M.Hauser", temp.id =
-                                                         c("BBSL1071547",
-                                                           "BBSL1071546",
-                                                           "BBSL1071481",
-                                                           "BBSL1071479",
-                                                           "BBSL1071460",
-                                                           "BBSL1071461",
-                                                           "BBSL1071458",
-                                                           "BBSL1071604",
-                                                           "BBSL1071600",
-                                                           "BBSL1070327",
-                                                           "BBSL1070239",
-                                                           "BBSL1070336",
-                                                           "BBSL1074345",
-                                                           "BBSL1074360",
-                                                           "BBSL1074351",
-                                                           "BBSL1074157",
-                                                           "BBSL1070526",
-                                                           "BBSL1058387",
-                                                           "BBSL1058585",
-                                                           "BBSL1058388",
-                                                           "BBSL1058389",
-                                                           "BBSL1071651",
-                                                           "BBSL1058575",
-                                                           "BBSL1058390",
-                                                           "BBSL1058583",
-                                                           "BBSL1071342",
-                                                           "BBSL1070524",
-                                                           "BBSL1071652",
-                                                           "BBSL1071348",
-                                                           "BBSL1071346",
-                                                           "BBSL1071647",
-                                                           "BBSL1071624",
-                                                           "BBSL1071364",
-                                                           "BBSL1071407",
-                                                           "BBSL1071409",
-                                                           "BBSL1071403",
-                                                           "BBSL1071401",
-                                                           "BBSL1071393",
-                                                           "BBSL1071387",
-                                                           "BBSL1071383",
-                                                           "BBSL1071385",
-                                                           "BBSL1071430",
-                                                           "BBSL1071437",
-                                                           "BBSL1071435",
-                                                           "BBSL1071579",
-                                                           "BBSL1058342",
-                                                           "BBSL1058153",
-                                                           "BBSL1058413",
-                                                           "BBSL1058168",
-                                                           "BBSL1058398",
-                                                           "BBSL1058415",
-                                                           "BBSL1058396",
-                                                           "BBSL1058395",
-                                                           "BBSL1058399",
-                                                           "BBSL1058402",
-                                                           "BBSL1058411",
-                                                           "BBSL1058410",
-                                                           "BBSL1058420",
-                                                           "BBSL1058418",
-                                                           "BBSL1058115",
-                                                           "BBSL1058126",
-                                                           "BBSL1058127",
-                                                           "BBSL1058150",
-                                                           "BBSL1058105",
-                                                           "BBSL1058125",
-                                                           "BBSL1058107",
-                                                           "BBSL1058106",
-                                                           "BBSL1058108",
-                                                           "BBSL1058582",
-                                                           "BBSL1058244",
-                                                           "BBSL1060057",
-                                                           "BBSL1058221",
-                                                           "BBSL1058232",
-                                                           "BBSL1058222",
-                                                           "BBSL1060065",
-                                                           "BBSL1060056",
-                                                           "BBSL1060064",
-                                                           "BBSL1060084",
-                                                           "BBSL1060085",
-                                                           "BBSL1060086",
-                                                           "BBSL1058309",
-                                                           "BBSL1058424",
-                                                           "BBSL1058310",
-                                                           "BBSL1058263",
-                                                           "BBSL1058262",
-                                                           "BBSL1058327",
-                                                           "BBSL1058457",
-                                                           "BBSL1058326",
-                                                           "BBSL1058809",
-                                                           "BBSL1059308",
-                                                           "BBSL1058434",
-                                                           "BBSL1059109",
-                                                           "BBSL1059280",
-                                                           "BBSL1058498",
-                                                           "BBSL1058489",
-                                                           "BBSL1058528",
-                                                           "BBSL1058531",
-                                                           "BBSL1058502",
-                                                           "BBSL1058508",
-                                                           "BBSL1058145",
-                                                           "BBSL1058510",
-                                                           "BBSL1058142",
-                                                           "BBSL1058093",
-                                                           "BBSL1058144",
-                                                           "BBSL1058091",
-                                                           "BBSL1058090",
-                                                           "BBSL1058092",
-                                                           "BBSL1058071",
-                                                           "BBSL1058075",
-                                                           "BBSL1058074",
-                                                           "BBSL1058507",
-                                                           "BBSL1059309",
-                                                           "BBSL1058438",
-                                                           "BBSL1071582",
-                                                           "BBSL1071588",
-                                                           "BBSL1071593",
-                                                           "BBSL1071323",
-                                                           "BBSL1071324",
-                                                           "BBSL1071325",
-                                                           "BBSL1071347",
-                                                           "BBSL1058188",
-                                                           "BBSL1058456",
-                                                           "BBSL1058196",
-                                                           "BBSL1058328",
-                                                           "BBSL1058224",
-                                                           "BBSL1058272",
-                                                           "BBSL1058225",
-                                                           "BBSL1058199",
-                                                           "BBSL1058190",
-                                                           "BBSL1058201",
-                                                           "BBSL1058458",
-                                                           "BBSL1058181",
-                                                           "BBSL1058182",
-                                                           "BBSL1058265",
-                                                           "BBSL1058208",
-                                                           "BBSL1058180",
-                                                           "BBSL1060054",
-                                                           "BBSL1060055",
-                                                           "BBSL1058179",
-                                                           "BBSL1058454",
-                                                           "BBSL1060053",
-                                                           "BBSL1058312",
-                                                           "BBSL1058455",
-                                                           "BBSL1058273",
-                                                           "BBSL1058192",
-                                                           "BBSL1071520",
-                                                           "BBSL1071538",
-                                                           "BBSL1058436",
-                                                           "BBSL1058437",
-                                                           "BBSL1059329",
-                                                           "BBSL1059338",
-                                                           "BBSL1058534",
-                                                           "BBSL1058447",
-                                                           "BBSL1058544",
-                                                           "BBSL1058530",
-                                                           "BBSL1058493",
-                                                           "BBSL1058492",
-                                                           "BBSL1058545",
-                                                           "BBSL1058548",
-                                                           "BBSL1058549",
-                                                           "BBSL1058529",
-                                                           "BBSL1058535",
-                                                           "BBSL1058596",
-                                                           "BBSL1058598",
-                                                           "BBSL1058599",
-                                                           "BBSL1058601",
-                                                           "BBSL1058595",
-                                                           "BBSL1058619",
-                                                           "BBSL1058600"
-                                                           )),
-
-  Copestylum_mexicana = list(Genus = "Copestylum",SubGenus="", Species
-                             "BBSL1058597",
-                             "BBSL1058815",
-                             "BBSL1058275",
-                             "BBSL1058284",
-                             "BBSL1058276",
-                             "BBSL1058277",
-                             "BBSL1058348",
-                             "BBSL1058156",
-                             "BBSL1058154"
-                             = "mexicana", SubSpecies="", Sex = "", Author = "Macquart",
-    Determiner="M.Hauser", temp.id = c()),
-
-  Copestylum_anna_f = list(Genus = "Copestylum", SubGenus="",Species =
-    "anna", SubSpecies="", Sex = "", Author = "Williston", Determiner="M.Hauser", temp.id =
-                                                                                      c("BBSL1074223",
-                                                                                          "BBSL1070545",
-                                                                                        )),
-
-    Copestylum_anna_m = list(Genus = "Copestylum", SubGenus="",Species =
-    "anna", SubSpecies="", Sex = "", Author = "Williston", Determiner="M.Hauser", temp.id =
-                                                                                      c("BBSL1074427",
-                                                                                        "BBSL1074365",
-                                                                                        "BBSL1074428",
-                                                                                        "BBSL1059087"
-                                                                                        )),
-
-
-
-  Copestylum_comstocki = list(Genus = "Copestylum",
-    SubGenus="",Species = "comstocki", SubSpecies="", Sex = "", Author
-    = "Williston", Determiner="M.Hauser",
-    temp.id = c()),
-
-Copestylum_satur_f = list(Genus = "Copestylum",
-    SubGenus="",Species = "satur", SubSpecies="", Sex = "", Author
-    = "", Determiner="M.Hauser",
-    temp.id = c(BBSL1071340
-    BBSL1084952
-    )),
-
-Copestylum_satur_m = list(Genus = "Copestylum",
-    SubGenus="",Species = "satur", SubSpecies="", Sex = "", Author
-    = "", Determiner="M.Hauser",
-    temp.id = c(BBSL1060046
-    BBSL1059368
-    )),
-
-  Copestylum_victoria = list(Genus="Copestylum",SubGenus="",
-                             Species=
-                                 "victoria", SubSpecies="",
-                             Sex = "", Author="Williston",
-                             Determiner="M.Hauser", temp.id =
-    c()),
-
-  Copestylum_apiciferum = list(Genus="Copestylum",SubGenus="", Species
-    = "apiciferum", SubSpecies="", Sex = "", Author = "Townsend",
-    Determiner="M.Hauser", temp.id = c()),
-
-  Copestylum_haagi = list(Genus ="Copestylum",SubGenus="", Species =
-    "haagi", SubSpecies="", Sex = "", Author = "Jaennicke", Determiner="M.Hauser", temp.id =
-                                                                                       c("BBSL1059348",
-                                                                                         )),
-
-  Chrysotoxum_morpho1 = list(Genus="Chrysotoxum",SubGenus="", Species
-    = "sp.", SubSpecies = "a", Sex = "", Author = "", Determiner="M.Hauser", temp.id =
-                                                                                 c("BBSL1074207",
-                                                                                   "BBSL1074208",
-                                                                                   "BBSL1070354",
-                                                                                   "BBSL1074091",
-                                                                                   "BBSL1074137",
-                                                                                   "BBSL1070268",
-                                                                                   "BBSL1085788",
-                                                                                   "BBSL1085782",
-                                                                                   "BBSL1085814",
-                                                                                   "BBSL1070214",
-                                                                                   "BBSL1070610",
-                                                                                   "BBSL1059279",
-                                                                                   "BBSL1059897"
-                                                                                   )),
-
-  Syritta_pipiens = list(Genus = "Syritta",SubGenus="", Species =
-    "pipiens", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Sphaerophoria_morpho1 = list(Genus = "Sphaerophoria",SubGenus="",
-    Species= "sp.", SubSpecies= "a", Sex = "", Author= "", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Blera_confusa = list(Genus = "Blera",SubGenus="", Species="confusa",
-    SubSpecies="", Sex = "", Author="Johnson", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Spilomyia_kahli = list(Genus = "Spilomyia",SubGenus="", Species
-    ="kahli", SubSpecies="", Sex = "", Author="Snow", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Toxomerus_marginatus_f = list(Genus = "Toxomerus",SubGenus="", Species
-    = "marginatus", SubSpecies="", Sex = "", Author ="Meigen", Determiner="M.Hauser", temp.id
-    = c(BBSL1072192
-    BBSL1072261
-    BBSL1071977
-    BBSL1084597
-    BBSL1085200
-    BBSL1087245
-    BBSL1072654
-    BBSL1072018
-    BBSL1072989
-    BBSL1073068
-    BBSL1087244
-    BBSL1087183
-    BBSL1087200
-    BBSL1087192
-    )),
-
-Toxomerus_marginatus_m = list(Genus = "Toxomerus",SubGenus="", Species
-    = "marginatus", SubSpecies="", Sex = "", Author ="Meigen", Determiner="M.Hauser", temp.id
-    = c( BBSL1084385
-    BBSL1084560
-    BBSL1070864
-    BBSL1072213
-    BBSL1073354
-    BBSL1087184
-    BBSL1071149
-    BBSL1084419)),
-
-  Xylota_morpho1 = list(Genus = "Xylota",SubGenus="", Species = "sp.",
-    SubSpecies = "a", Sex = "", Author = "", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Xylota_morpho2 = list(Genus = "Xylota", SubGenus="", Species="sp.",
-    SubSpecies = "b", Sex = "", Author="", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Xylota_morpho3 = list(Genus = "Xylota", SubGenus="", Species="sp.",
-    SubSpecies = "c", Sex = "", Author="", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Palpada_mexicana = list(Genus = "Palpada", SubGenus="", Species =
-    "mexicana", SubSpecies="", Sex = "", Author = "Macquart", Determiner="M.Hauser", temp.id
-    = c()),
-
-  Eristalis_hirta_m = list(Genus = "Eristalis", SubGenus="", Species =
-    "hirta", SubSpecies="", Sex = "", Author = "Loew", Determiner="M.Hauser", temp.id =
-    c(BBSL1060043
-    BBSL1060042
-    )),
-    
-    Eristalis_hirta_f = list(Genus = "Eristalis", SubGenus="", Species =
-    "hirta", SubSpecies="", Sex = "", Author = "Loew", Determiner="M.Hauser", temp.id =
-    c(BBSL1059923
-    )),
-
-
-  Eristalis_tenax_f = list(Genus = "Eristalis", SubGenus="", Species =
-    "tenax", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id =
-                                                                                      c("BBSL1059746",
-                                                                                   )),
-
-    Syritta_pipiens = list(Genus = "Syritta",SubGenus="", Species =
-    "pipiens", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Sphaerophoria_morpho1 = list(Genus = "Sphaerophoria",SubGenus="",
-    Species= "sp.", SubSpecies= "a", Sex = "", Author= "", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Blera_confusa = list(Genus = "Blera",SubGenus="", Species="confusa",
-    SubSpecies="", Sex = "", Author="Johnson", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Spilomyia_kahli = list(Genus = "Spilomyia",SubGenus="", Species
-    ="kahli", SubSpecies="", Sex = "", Author="Snow", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Toxomerus_marginatus = list(Genus = "Toxomerus",SubGenus="", Species
-    = "marginatus", SubSpecies="", Sex = "", Author ="Meigen", Determiner="M.Hauser", temp.id
-    = c()),
-
-  Xylota_morpho1 = list(Genus = "Xylota",SubGenus="", Species = "sp.",
-    SubSpecies = "a", Sex = "", Author = "", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Xylota_morpho2 = list(Genus = "Xylota", SubGenus="", Species="sp.",
-    SubSpecies = "b", Sex = "", Author="", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Xylota_morpho3 = list(Genus = "Xylota", SubGenus="", Species="sp.",
-    SubSpecies = "c", Sex = "", Author="", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Palpada_mexicana = list(Genus = "Palpada", SubGenus="", Species =
-    "mexicana", SubSpecies="", Sex = "", Author = "Macquart", Determiner="M.Hauser", temp.id
-    = c()),
-
-  Eristalis_hirta = list(Genus = "Eristalis", SubGenus="", Species =
-    "hirta", SubSpecies="", Sex = "", Author = "Loew", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Eristalis_tenax_f = list(Genus = "Eristalis", SubGenus="", Species =
-    "tenax", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id =
-                                                                                      c("BBSL1059746",
-                                                                                        )),
-
-  Eristalis_tenax_m = list(Genus = "Eristalis", SubGenus="", Species =
-    "tenax", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id =
-                                                                                      c("BBSL1073072",
-                                                                                        )),
-
-
-
-  Eristalis_stipator_f = list(Genus = "Eristalis", SubGenus="", Species
-    = "stipator", SubSpecies="", Sex = "", Author = "Osten Sacken",
-    Determiner="M.Hauser", temp.id = c("BBSL1074406",
-                                       "BBSL1074301",
-                                       "BBSL1072924",
-                                       "BBSL1072974",
-                                       "BBSL1074132",
-                                       "BBSL1072962",
-                                       "BBSL1072938",
-                                       "BBSL1072934",
-                                       "BBSL1073244",
-                                       "BBSL1073243",
-                                       "BBSL1084431",
-                                       "BBSL1058651",
-                                       "BBSL1058572",
-                                       "BBSL1058382",
-                                       "BBSL1059480",
-                                       "BBSL1058690",
-                                       "BBSL1070688",
-                                       "BBSL1070183",
-                                       "BBSL1059830",
-                                       "BBSL1059763",
-                                       "BBSL1071339",
-                                       "BBSL1071392",
-                                       "BBSL1071586",
-                                       "BBSL1071587",
-                                       "BBSL1071093",
-                                       "BBSL1071446",
-                                       "BBSL1058578",
-                                       "BBSL1059358",
-                                       "BBSL1058814",
-                                       "BBSL1058808",
-                                       "BBSL1059842",
-                                       "BBSL1058177",
-                                       "BBSL1073124",
-                                       "BBSL1059563",
-                                       "BBSL1058432",
-                                       "BBSL1060051",
-                                       "BBSL1059845",
-                                       "BBSL1058191",
-                                       "BBSL1058219",
-                                       "BBSL1058242",
-                                       "BBSL1070695",
-                                       "BBSL1059780",
-                                       "BBSL1059699",
-                                       "BBSL1058212",
-                                       "BBSL1058264",
-                                       "BBSL1058252",
-                                       "BBSL1058443",
-                                       "BBSL1058441",
-                                       "BBSL1059570",
-                                       "BBSL1059797",
-                                       "BBSL1058241",
-                                       "BBSL1059377",
-                                       "BBSL1058873",
-                                       "BBSL1060078",
-                                       "BBSL1058874",
-                                       "BBSL1058072",
-                                       "BBSL1058899",
-                                       "BBSL1058611",
-                                       "BBSL1058865",
-                                       "BBSL1058082",
-                                       "BBSL1060048",
-                                       "BBSL1058966",
-                                       "BBSL1058167",
-                                       "BBSL1058806",
-                                       "BBSL1058810",
-                                       "BBSL1058086",
-                                       "BBSL1058334",
-                                       "BBSL1058147",
-                                       "BBSL1058384",
-                                       "BBSL1058691",
-                                       "BBSL1058689",
-                                       "BBSL1058706",
-                                       "BBSL1058109",
-                                       "BBSL1058104",
-                                       "BBSL1058400",
-                                       "BBSL1058403",
-                                       "BBSL1058650",
-                                       "BBSL1058580",
-                                       "BBSL1059977",
-                                       "BBSL1073125",
-                                       "BBSL1071408",
-                                       "BBSL1073079",
-                                       "BBSL1074437",
-                                       "BBSL1070985",
-                                       "BBSL1071034",
-                                       "BBSL1072808",
-                                       "BBSL1072886",
-                                       "BBSL1073057",
-                                       "BBSL1074366"
-
-                                       )),
-
-   Eristalis_stipator_m = list(Genus = "Eristalis", SubGenus="", Species
-    = "stipator", SubSpecies="", Sex = "", Author = "Osten Sacken",
-    Determiner="M.Hauser", temp.id = c("BBSL1058408",
-                                       "BBSL1058117",
-                                       "BBSL1070635",
-                                       "BBSL1070624",
-                                       "BBSL1070174",
-                                       "BBSL1070689",
-                                       "BBSL1058688",
-                                       "BBSL1058383",
-                                       "BBSL1070531",
-                                       "BBSL1070530",
-                                       "BBSL1070582",
-                                       "BBSL1070192",
-                                       "BBSL1058440",
-                                       "BBSL1058465",
-                                       "BBSL1058461",
-                                       "BBSL1058592",
-                                       "BBSL1060047",
-                                       "BBSL1058617",
-                                       "BBSL1058845",
-                                       "BBSL1058897",
-                                       "BBSL1058866",
-                                       "BBSL1058076",
-                                       "BBSL1058078",
-                                       "BBSL1058079",
-                                       "BBSL1058080",
-                                       "BBSL1058089",
-                                       "BBSL1058132",
-                                       "BBSL1058130",
-                                       "BBSL1058103",
-                                       "BBSL1058336",
-                                       "BBSL1058333",
-                                       "BBSL1058121",
-                                       "BBSL1058164",
-                                       "BBSL1058165",
-                                       "BBSL1058355",
-                                       "BBSL1058335",
-                                       "BBSL1058338",
-                                       "BBSL1058354",
-                                       "BBSL1058337",
-                                       "BBSL1058120",
-                                       "BBSL1058119",
-                                       "BBSL1071391",
-                                       "BBSL1071382",
-                                       "BBSL1071617",
-                                       "BBSL1058166",
-                                       "BBSL1073081",
-                                       "BBSL1071521",
-                                       "BBSL1071554",
-                                       "BBSL1071500",
-                                       "BBSL1070982",
-                                       "BBSL1073007",
-                                       "BBSL1071038",
-                                       "BBSL1071029",
-                                       "BBSL1073089",
-                                       "BBSL1071056",
-                                       "BBSL1071084",
-                                       "BBSL1072878",
-                                       "BBSL1072877",
-                                       "BBSL1073936",
-                                       "BBSL1071434",
-                                       "BBSL1073083",
-                                       "BBSL1072937",
-                                       "BBSL1073978",
-                                       "BBSL1073032",
-                                       "BBSL1085048",
-                                       "BBSL1072942",
-                                       "BBSL1072940",
-                                       "BBSL1070948",
-                                       "BBSL1072936",
-                                       "BBSL1085692",
-                                       "BBSL1085151",
-                                       "BBSL1084631",
-                                       "BBSL1058705",
-                                       "BBSL1058668",
-                                       "BBSL1058576",
-                                       "BBSL1058401",
-                                       "BBSL1058712",
-                                       "BBSL1060050",
-                                       "BBSL1059580",
-                                       "BBSL1059401",
-                                       "BBSL1060083",
-                                       "BBSL1060077",
-                                       "BBSL1060052",
-                                       "BBSL1058313",
-                                       "BBSL1058727",
-                                       "BBSL1059271",
-                                       "BBSL1058317",
-                                       "BBSL1058319",
-                                       "BBSL1059560",
-                                       "BBSL1058231",
-                                       "BBSL1058318",
-                                       "BBSL1058316",
-                                       "BBSL1058315",
-                                       "BBSL1058261",
-                                       "BBSL1058431",
-                                       "BBSL1058118",
-                                       "BBSL1058748",
-                                       "BBSL1059836",
-                                       "BBSL1059360",
-                                       "BBSL1058285",
-                                       "BBSL1058187",
-                                       "BBSL1058176",
-                                       "BBSL1059856",
-                                       "BBSL1059810",
-                                       "BBSL1058200",
-                                       "BBSL1058463",
-                                       "BBSL1058466",
-                                       "BBSL1058464",
-                                       "BBSL1059967",
-                                       "BBSL1058459",
-                                       "BBSL1059673",
-                                       "BBSL1059811",
-                                       "BBSL1058305",
-                                       "BBSL1059353",
-                                       "BBSL1059494",
-                                       "BBSL1058307",
-                                       "BBSL1058306",
-                                       "BBSL1058304",
-                                       "BBSL1058303",
-                                       "BBSL1058302",
-                                       "BBSL1058301",
-                                       "BBSL1058422",
-                                       "BBSL1058693",
-                                       "BBSL1058426",
-                                       "BBSL1058427",
-                                       "BBSL1058421",
-                                       "BBSL1059749",
-                                       "BBSL1059741",
-                                       "BBSL1058804",
-                                       "BBSL1058933",
-                                       "BBSL1058543",
-                                       "BBSL1058496",
-                                       "BBSL1058532",
-                                       "BBSL1058490",
-                                       "BBSL1058497",
-                                       "BBSL1059889",
-                                       "BBSL1059906",
-                                       "BBSL1058993",
-                                       "BBSL1060082"
-
-                                       ))
-
-  Eristalis_arbustorum_m = list(Genus = "Eristalis", SubGenus="",
-    Species = "arbustorum", SubSpecies="", Sex = "", Author =
-    "Linnaeus", Determiner="M.Hauser", temp.id = c(BBSL1073080
-    BBSL1070965
-    BBSL1073006
-    )),
-    
-  Eristalis_bellardii_m= list(Genus = "Belllardi", SubGenus="",
-    Species = "bellardi", SubSpecies="", Sex = "", Author =
-    "", Determiner="M.Hauser", temp.id = c(BBSL1058425
-    BBSL1058134
-    BBSL1058131
-    BBSL1058123
-    BBSL1058404
-    BBSL1071380
-    BBSL1071362
-    BBSL1071320
-    BBSL1058567
-    BBSL1058586
-    BBSL1071410
-    BBSL1058615
-    BBSL1071321
-    BBSL1071607
-    )),
-
- Eristalis_bellardii_f= list(Genus = "Belllardi", SubGenus="",
-    Species = "bellardi", SubSpecies="", Sex = "", Author =
-    "", Determiner="M.Hauser", temp.id = c(BBSL1071576
-    BBSL1071431
-    BBSL1071381
-    BBSL1071653
-    BBSL1071648
-    BBSL1071477
-    BBSL1071556
-    BBSL1071605
-    BBSL1058178
-    BBSL1058138
-    BBSL1071534
-    BBSL1058385
-    )),   
- 
-
-  Arctophila_flagrans = list(Genus = "Arctophila", SubGenus="",
-    Species= "flagrans", SubSpecies="", Sex = "",
-    Author="Osten Sacken", Determiner="M.Hauser", temp.id = c()),
-
-  Lejops_polygrammus = list(Genus = "Lejops", SubGenus="", Species=
-    "polygrammus", SubSpecies="", Sex = "", Author="Loew", Determiner="M.Hauser", temp.id =
-    c()),
-
-  Didea_fuscipes_f = list(Genus = "Didea", SubGenus="", Species = "fuscipes",
-    SubSpecies="", Sex = "", Author = "Loew",
-    Determiner="M.Hauser", temp.id = c(BBSL1074302
-    BBSL1087173
-    )),
-    
- Didea_fuscipes_mBBSL1059956
-     = list(Genus = "Didea", SubGenus="", Species = "fuscipes",
-    SubSpecies="", Sex = "", Author = "Loew",
-    Determiner="M.Hauser", temp.id = c(BBSL1074302
-    BBSL1087173
-    )),
-
-
-
-  Dasysyrphus_morpho1 = list(Genus = "Dasysyrphus", SubGenus="",
-    Species = "sp.", SubSpecies = "a", Sex = "", Author = "", Determiner="M.Hauser", temp.id
-    = c("BBSL1059973", "BBSL1059974", "BBSL1060028", "BBSL1074087", "BBSL1074111", "BBSL1074206", "BBSL1073052", "BBSL1074115", "BBSL1071662", "BBSL1058981", "BBSL1071606", "BBSL1085057"
-    )),
-
-
-  Syrphus_ribesii_f =list(Genus = "Syrphus", SubGenus="", Species =
-    "ribesii", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id
-    =c(BBSL1071429
-    BBSL1071555
-    BBSL1059995
-    BBSL1058569
-    )),
- 
- Syrphus_ribesii_m =list(Genus = "Syrphus", SubGenus="", Species =
-    "ribesii", SubSpecies="", Sex = "", Author = "Linnaeus", Determiner="M.Hauser", temp.id
-    =c(BBSL1071974
-    BBSL1058314
-    BBSL1058286
-    )),
-
-
-  Syrphus_opinator_f =list(Genus = "Syrphus", SubGenus="", Species =
-    "opinator", SubSpecies="", Sex = "", Author = "Osten Sacken",
-    Determiner="M.Hauser", temp.id =c(BBSL1060063
-    BBSL1060039
-    BBSL1058287
-    BBSL1060081
-    BBSL1058320
-    BBSL1084600
-    )),
-   
- Syrphus_opinator_m =list(Genus = "Syrphus", SubGenus="", Species =
-    "opinator", SubSpecies="", Sex = "", Author = "Osten Sacken",
-    Determiner="M.Hauser", temp.id =c(BBSL1072653
-    BBSL1070802
-    )),
-
-
-volucella_facialis_f =list(Genus = "Volucella", SubGenus="", Species =
-    "facialis", SubSpecies="", Sex = "", Author = "",
-    Determiner="M.Hauser", temp.id =c(BBSL1071107
-    BBSL1058772
-    )),
-
-  Chamaesyrphus_willistoni_f = list(Genus = "Chamaesyrphus",
-    SubGenus="", Species = "willistoni", SubSpecies="", Sex = "f",
-    Author = "", Determiner="M.Hauser", temp.id =c()),
-
-  Chamaesyrphus_willistoni_m= list(Genus = "Chamaesyrphus",
-    SubGenus="", Species = "willistoni", SubSpecies="", Sex = "m",
-    Author = "", Determiner="M.Hauser", temp.id =c()),
-
-  Platycheirus_stegnus = list(Genus = "Platycheirus", SubGenus="",
-    Species = "stegnus", SubSpecies ="", Sex = "", Author = "Say",
-    Determiner="M.Hauser", temp.id =c()),
-
-  Platycheirus_confusus = list(Genus = "Platycheirus", SubGenus="",
-    Species = "confusus", SubSpecies="", Sex = "", Author = "Curran",
-    Determiner="M.Hauser", temp.id =c()),
-
-  Platycheirus_spinipes =list(Genus = "Platycheirus", SubGenus="",
-    Species = "spinipes", SubSpecies="", Sex = "", Author =
-    "Vockeroth", Determiner="M.Hauser", temp.id = c()),
-
-  Pipizini_morpho1_f = list(Genus = "Pipizini", SubGenus="", Species =
-    "sp.", SubSpecies= "a", Sex = "", Author = "", Determiner="M.Hauser", temp.id =
-    c(BBSL1071130
-    )),
-
-  Cheilosia_morpho1 = list(Genus = "Cheilosia", SubGenus="", Species =
-    "sp.", SubSpecies="a", Sex = "", Author = "", Determiner="M.Hauser", temp.id
-    =c(BBSL1058522
-    BBSL1058648
-    BBSL1058676
-    BBSL1058695
-    BBSL1070600
-    BBSL1058747
-    BBSL1071092
-    BBSL1070213
-    BBSL1070571
-    BBSL1071125
-    BBSL1084753
-    ))
-
- 
+
+    Copestylum_satur_f = list(Genus = "Copestylum",
+                              SubGenus="",Species = "satur",
+                              SubSpecies="", Sex = "",
+                              Author  = "", Determiner="M.Hauser",
+                              temp.id = c("BBSL1071340", "BBSL1084952")),
+
+    Copestylum_satur_m = list(Genus = "Copestylum",
+                              SubGenus="",
+                              Species = "satur",
+                              SubSpecies="", Sex = "", Author = "",
+                              Determiner="M.Hauser",
+                              temp.id = c("BBSL1060046",
+                                          "BBSL1059368")),
+
+    Toxomerus_marginatus_f = list(Genus = "Toxomerus",SubGenus="",
+                                  Species = "marginatus",
+                                  SubSpecies="", Sex = "",
+                                  Author ="Meigen",
+                                  Determiner="M.Hauser",
+                                  temp.id = c("BBSL1072192",
+                                              "BBSL1072261",
+                                              "BBSL1071977",
+                                              "BBSL1084597",
+                                              "BBSL1085200",
+                                              "BBSL1087245",
+                                              "BBSL1072654",
+                                              "BBSL1072018",
+                                              "BBSL1072989",
+                                              "BBSL1073068",
+                                              "BBSL1087244",
+                                              "BBSL1087183",
+                                              "BBSL1087200",
+                                              "BBSL1087192"
+                                              )),
+
+    Toxomerus_marginatus_m = list(Genus = "Toxomerus",SubGenus="", Species
+                                  = "marginatus", SubSpecies="", Sex = "", Author ="Meigen",
+                                  Determiner="M.Hauser",
+                                  temp.id = c("BBSL1084385",
+                                              "BBSL1084560",
+                                              "BBSL1070864",
+                                              "BBSL1072213",
+                                              "BBSL1073354",
+                                              "BBSL1087184",
+                                              "BBSL1071149",
+                                              "BBSL1084419")),
+
+
+    Eristalis_arbustorum_m = list(Genus = "Eristalis", SubGenus="",
+                                  Species = "arbustorum",
+                                  SubSpecies="", Sex = "",
+                                  Author =  "Linnaeus",
+                                  Determiner="M.Hauser",
+                                  temp.id = c("BBSL1073080",
+                                              "BBSL1070965",
+                                              "BBSL1073006")),
+
+    Eristalis_bellardii_m= list(Genus = "Belllardi", SubGenus="",
+                                Species = "bellardi", SubSpecies="",
+                                Sex = "",
+                                Author =   "",
+                                Determiner="M.Hauser",
+                                temp.id = c("BBSL1058425",
+                                            "BBSL1058134",
+                                            "BBSL1058131",
+                                            "BBSL1058123",
+                                            "BBSL1058404",
+                                            "BBSL1071380",
+                                            "BBSL1071362",
+                                            "BBSL1071320",
+                                            "BBSL1058567",
+                                            "BBSL1058586",
+                                            "BBSL1071410",
+                                            "BBSL1058615",
+                                            "BBSL1071321",
+                                            "BBSL1071607")),
+
+    Eristalis_bellardii_f= list(Genus = "Belllardi", SubGenus="",
+                                Species = "bellardi", SubSpecies="",
+                                Sex = "",
+                                Author =  "",
+                                Determiner="M.Hauser",
+                                temp.id = c("BBSL1071576",
+                                            "BBSL1071431",
+                                            "BBSL1071381",
+                                            "BBSL1071653",
+                                            "BBSL1071648",
+                                            "BBSL1071477",
+                                            "BBSL1071556",
+                                            "BBSL1071605",
+                                            "BBSL1058178",
+                                            "BBSL1058138",
+                                            "BBSL1071534",
+                                            "BBSL1058385")),
+
+
+    Didea_fuscipes_f = list(Genus = "Didea", SubGenus="", Species = "fuscipes",
+                            SubSpecies="", Sex = "", Author = "Loew",
+                            Determiner="M.Hauser",
+                            temp.id = c("BBSL1074302", "BBSL1087173")),
+
+    Didea_fuscipes_m
+    = list(Genus = "Didea", SubGenus="", Species = "fuscipes",
+           SubSpecies="", Sex = "", Author = "Loew",
+           Determiner="M.Hauser", temp.id = c("BBSL1074302",
+                                              "BBSL1087173",
+                                              "BBSL1059956")),
+
+
+
+    Dasysyrphus_morpho1 = list(Genus = "Dasysyrphus", SubGenus="",
+                               Species = "sp.", SubSpecies = "a", Sex = "", Author = "",
+                               Determiner="M.Hauser",
+                               temp.id = c("BBSL1059973",
+                                           "BBSL1059974",
+                                           "BBSL1060028",
+                                           "BBSL1074087",
+                                           "BBSL1074111",
+                                           "BBSL1074206",
+                                           "BBSL1073052",
+                                           "BBSL1074115",
+                                           "BBSL1071662",
+                                           "BBSL1058981",
+                                           "BBSL1071606",
+                                           "BBSL1085057")),
+
+
+    Syrphus_ribesii_f =list(Genus = "Syrphus", SubGenus="",
+                            Species = "ribesii", SubSpecies="",
+                            Sex = "", Author = "Linnaeus",
+                            Determiner="M.Hauser",
+                            temp.id =c("BBSL1071429", "BBSL1071555",
+                                       "BBSL1059995", "BBSL1058569")),
+
+    Syrphus_ribesii_m =list(Genus = "Syrphus", SubGenus="",
+                            Species = "ribesii",
+                            SubSpecies="",
+                            Sex = "",
+                            Author = "Linnaeus",
+                            Determiner="M.Hauser",
+                            temp.id  =c("BBSL1071974", "BBSL1058314",
+                                        "BBSL1058286")),
+
+
+    Syrphus_opinator_f =list(Genus = "Syrphus", SubGenus="",
+                             Species =  "opinator",
+                             SubSpecies="",
+                             Sex = "", Author = "Osten Sacken",
+                             Determiner="M.Hauser", temp.id
+                             =c("BBSL1060063",
+                                "BBSL1060039", "BBSL1058287",
+                                "BBSL1060081", "BBSL1058320",
+                                "BBSL1084600")),
+
+    Syrphus_opinator_m =list(Genus = "Syrphus", SubGenus="",
+                             Species =  "opinator",
+                             SubSpecies="", Sex = "",
+                             Author = "Osten Sacken",
+                             Determiner="M.Hauser",
+                             temp.id =c("BBSL1072653", "BBSL1070802")),
+
+
+    volucella_facialis_f =list(Genus = "Volucella", SubGenus="",
+                               Species =  "facialis", SubSpecies="",
+                               Sex = "", Author = "",
+                               Determiner="M.Hauser",
+                               temp.id =c("BBSL1071107", "BBSL1058772")),
+
+
+
+    Pipizini_morpho1_f = list(Genus = "Pipizini",
+                              SubGenus="",
+                              Species = "sp.",
+                              SubSpecies= "a", Sex = "",
+                              Author = "",
+                              Determiner="M.Hauser",
+                              temp.id = c("BBSL1071130")),
+
+    Cheilosia_morpho1 = list(Genus = "Cheilosia", SubGenus="",
+                             Species = "sp.", SubSpecies="a",
+                             Sex = "", Author = "",
+                             Determiner="M.Hauser",
+                             temp.id =c("BBSL1058522", "BBSL1058648",
+                                        "BBSL1058676", "BBSL1058695",
+                                        "BBSL1070600", "BBSL1058747",
+                                        "BBSL1071092", "BBSL1070213",
+                                        "BBSL1070571", "BBSL1071125",
+                                        "BBSL1084753")),
+
+    asemosyrphus_polygrammus_f = list(Genus="Asemosyrphus", SubGenus="",
+                          Species="polygrammus", SubSpecies="",
+                          Sex="f", Author = "",
+                          Determiner="M.Hauser",
+                          temp.id= c("BBSL1087077",
+                                     "BBSL1084930",
+                                     "BBSL1084954")),
+
+    asemosyrphus_polygrammus_m = list(Genus="Asemosyrphus",
+                          SubGenus="",
+                          Species="polygrammus",
+                          SubSpecies="",
+                          Sex="", Author = "",
+                          Determiner="M.Hauser",
+                          temp.id= c("BBSL1073070",
+                                     "BBSL1059934")),
+
+    hammerschmidtia_m = list(Genus="Hammerschmidtia",
+                             SubGenus="",
+                             Species="rufa",
+                             SubSpecies="",
+                             Sex="m",
+                             Author = "",
+                             Determiner="M.Hauser",
+                             temp.id= c("BBSL1059916")),
+
+    pseudoscaeva_m = list(Genus="Pseudoscaeva",
+                          SubGenus="",
+                          Species="diversifasciata",
+                          SubSpecies="",
+                          Sex="m", Author = "",
+                          Determiner="M.Hauser",
+                          temp.id= c("BBSL1058407",
+                                     "BBSL1071297")),
+
+    paragus_m = list(Genus="Paragus",
+                     SubGenus="",
+                     Species="haemorrhous",
+                     SubSpecies="",
+                     Sex="m",
+                     Author = "",
+                     Determiner="M.Hauser",
+                     temp.id= c("BBSL1084336")),
+
+    paragus_f= list(Genus="Paragus",
+                    SubGenus="",
+                    Species="haemorrhous",
+                    SubSpecies="",
+                    Sex="f", Author = "",
+                    Determiner="M.Hauser",
+                    temp.id= c("BBSL1072788",
+                               "BBSL1071242")),
+
+    neocnemodon_m = list(Genus="Neocnemodon",
+                         SubGenus="",
+                         Species="sp.",
+                         SubSpecies="a",
+                         Sex="m", Author = "",
+                         Determiner="M.Hauser",
+                         temp.id= c("BBSL1059903")),
+
+    neocnemodon_f = list(Genus="Neocnemodon",
+                         SubGenus="",
+                         Species="sp.", SubSpecies="a",
+                         Sex="f", Author = "",
+                         Determiner="M.Hauser",
+                         temp.id= c("BBSL1087165")),
+
+    eupeodes_f= list(Genus="eupeodes",
+                     SubGenus="",
+                     Species="snowi",
+                     SubSpecies="",
+                     Sex="f",
+                     Author = "",
+                     Determiner="M.Hauser",
+                     temp.id= c("BBSL1071709")),
+
+    eupeodes_m= list(Genus="eupeodes",
+                     SubGenus="",
+                     Species="fumipennis",
+                     SubSpecies="",
+                     Sex="m",
+                     Author = "",
+                     Determiner="M.Hauser",
+                     temp.id= c("BBSL1072804")),
+
+    eupeodes_m= list(Genus="eupeodes",
+                     SubGenus="",
+                     Species="volucuris",
+                     SubSpecies="",
+                     Sex="m", Author = "",
+                     Determiner="M.Hauser",
+                     temp.id= c("BBSL1070972",
+                                "BBSL1058228",
+                                "BBSL1059846",
+                                "BBSL1087065",
+                                "BBSL1073370",
+                                "BBSL1060079" )),
+
+    eupeodes_f= list(Genus="eupeodes",
+                     SubGenus="",
+                     Species="volucuris",
+                     SubSpecies="",
+                     Sex="f",
+                     Author = "",
+                     Determiner="M.Hauser",
+                     temp.id= c("BBSL1084943",
+                                "BBSL1058729",
+                                "BBSL1070541",
+                                "BBSL1071067",
+                                "BBSL1073114",
+                                "BBSL1073948",
+                                "BBSL1073949" )),
+
+    scaeva_f= list(Genus="",
+                   SubGenus="",
+                   Species="affinis",
+                   SubSpecies="",
+                   Sex="f", Author = "",
+                   Determiner="M.Hauser",
+                   temp.id= c("BBSL1059966",
+                              "BBSL1074014")),
+
+
+
+    lapposyrphus_m= list(Genus="", SubGenus="",
+                         Species="lapponicus",
+                         SubSpecies="",
+                         Sex="m", Author = "",
+                         Determiner="M.Hauser",
+                         temp.id= c("BBSL1060062",
+                                    "BBSL1071931")),
+
+    lapposyrphus_f= list(Genus="", SubGenus="",
+                         Species="lapponicus",
+                         SubSpecies="", Sex="f",
+                         Author = "",
+                         Determiner="M.Hauser",
+                         temp.id= c("BBSL1058339")),
+
+
+    Copestylum_avidum_f = list(Genus="Copestylum",
+                               SubGenus="",
+                               Species="avidum",
+                               SubSpecies="", Sex="f",
+                               Author = "Sacken",
+                               Determiner="M.Hauser",
+                               temp.id= c("BBSL1058992",
+                                          "BBSL1059226",
+                                          "BBSL1070312",
+                                          "BBSL1074128",
+                                          "BBSL1074346",
+                                          "BBSL1087048",
+                                          "BBSL1073021",
+                                          "BBSL1085129",
+                                          "BBSL1085243",
+                                          "BBSL1070537",
+                                          "BBSL1058122"
+                                          )),
+
+    Copestylum_avidum_m = list(Genus="Copestylum",
+                               SubGenus="",
+                               Species="avidum",
+                               SubSpecies="",
+                               Sex="m",
+                               Author = "Sacken",
+                               Determiner="M.Hauser",
+                               temp.id= c("BBSL1070238",
+                                          "BBSL1070560",
+                                          "BBSL1074203",
+                                          "BBSL1059222",
+                                          "BBSL1058137",
+                                          "BBSL1059048",
+                                          "BBSL1058358",
+                                          "BBSL1070550",
+                                          "BBSL1058894",
+                                          "BBSL1059418",
+                                          "BBSL1058491",
+                                          "BBSL1059391",
+                                          "BBSL1058782",
+                                          "BBSL1085107",
+                                          "BBSL1074417"
+                                          )),
+
+
+    Copestylum_lentum_f = list(Genus ="Copestylum",
+                               SubGenus="",
+                               Species = "lentum", SubSpecies="",
+                               Sex="",
+                               Author ="Williston",
+                               Determiner="M.Hauser",
+                               temp.id =
+                                   c("BBSL1059354",
+                                     "BBSL1059242", "BBSL1060016",
+                                     "BBSL1059765", "BBSL1059764",
+                                     "BBSL1059138", "BBSL1071973",
+                                     "BBSL1059046", "BBSL1072784",
+                                     "BBSL1072775", "BBSL1085150",
+                                     "BBSL1085149", "BBSL1059999",
+                                     "BBSL1059114", "BBSL1059297",
+                                     "BBSL1059149", "BBSL1073090",
+                                     "BBSL1073131", "BBSL1059887",
+                                     "BBSL1059935", "BBSL1060031",
+                                     "BBSL1058135", "BBSL1058816",
+                                     "BBSL1060017", "BBSL1059904",
+                                     "BBSL1059217", "BBSL1059026",
+                                     "BBSL1058433", "BBSL1073078",
+                                     "BBSL1059965", "BBSL1073071",
+                                     "BBSL1074368", "BBSL1059994",
+                                     "BBSL1058893", "BBSL1058833",
+                                     "BBSL1059393", "BBSL1059997",
+                                     "BBSL1059996", "BBSL1059998",
+                                     "BBSL1060021", "BBSL1058913",
+                                     "BBSL1059991", "BBSL1059978",
+                                     "BBSL1059886", "BBSL1059863",
+                                     "BBSL1059010", "BBSL1059150",
+                                     "BBSL1070328", "BBSL1059909",
+                                     "BBSL1059296", "BBSL1059166",
+                                     "BBSL1058827", "BBSL1059392")),
+
+    Copestylum_lentum_m = list(Genus ="Copestylum",
+                               SubGenus="",
+                               Species =
+                                   "lentum", SubSpecies="", Sex="",
+                               Author ="Williston",
+                               Determiner="M.Hauser",
+                               temp.id = c("BBSL1059941", "BBSL1059671",
+                                           "BBSL1059920")),
+
+
+    Copestylum_violaceum_f = list(Genus ="Copestylum",SubGenus="", Species
+                                  = "violaceum", SubSpecies="", Sex ="",
+                                  Author ="Say",
+                                  Determiner="M.Hauser",
+                                  temp.id =
+                                      c("BBSL1058324",
+                                        "BBSL1058240", "BBSL1059352",
+                                        "BBSL1058311", "BBSL1058325",
+                                        "BBSL1058778", "BBSL1058780",
+                                        "BBSL1058783", "BBSL1059434",
+                                        "BBSL1059199", "BBSL1058991",
+                                        "BBSL1059300", "BBSL1058638",
+                                        "BBSL1058509", "BBSL1058504",
+                                        "BBSL1058503", "BBSL1058143",
+                                        "BBSL1058073", "BBSL1058632",
+                                        "BBSL1059310", "BBSL1059328",
+                                        "BBSL1058435", "BBSL1059317",
+                                        "BBSL1059337", "BBSL1059426",
+                                        "BBSL1059427", "BBSL1059027",
+                                        "BBSL1059351", "BBSL1058448",
+                                        "BBSL1058546", "BBSL1058527",
+                                        "BBSL1058542", "BBSL1058550",
+                                        "BBSL1060045", "BBSL1059141",
+                                        "BBSL1059081", "BBSL1059080",
+                                        "BBSL1071396", "BBSL1070525",
+                                        "BBSL1071649", "BBSL1071344",
+                                        "BBSL1071345", "BBSL1071646",
+                                        "BBSL1071650", "BBSL1071622",
+                                        "BBSL1071623", "BBSL1071618",
+                                        "BBSL1071619", "BBSL1071620",
+                                        "BBSL1071621", "BBSL1071365",
+                                        "BBSL1071363", "BBSL1071406",
+                                        "BBSL1071405", "BBSL1071404",
+                                        "BBSL1071402", "BBSL1071400",
+                                        "BBSL1071395", "BBSL1071397",
+                                        "BBSL1071398", "BBSL1071399",
+                                        "BBSL1071394", "BBSL1071386",
+                                        "BBSL1071384", "BBSL1071426",
+                                        "BBSL1071427", "BBSL1071428",
+                                        "BBSL1071432", "BBSL1071433",
+                                        "BBSL1071436", "BBSL1058356",
+                                        "BBSL1058160", "BBSL1058341",
+                                        "BBSL1058423", "BBSL1058428",
+                                        "BBSL1058114", "BBSL1058220",
+                                        "BBSL1058233", "BBSL1058243",
+                                        "BBSL1071580", "BBSL1071581",
+                                        "BBSL1071578", "BBSL1071589",
+                                        "BBSL1071590", "BBSL1071594",
+                                        "BBSL1071591", "BBSL1071592",
+                                        "BBSL1071322", "BBSL1071343",
+                                        "BBSL1071577", "BBSL1059403",
+                                        "BBSL1059235", "BBSL1058468",
+                                        "BBSL1059402", "BBSL1071533",
+                                        "BBSL1071532", "BBSL1071531",
+                                        "BBSL1071499", "BBSL1071463",
+                                        "BBSL1071462", "BBSL1071459",
+                                        "BBSL1071603", "BBSL1071602",
+                                        "BBSL1071601", "BBSL1070249",
+                                        "BBSL1070350", "BBSL1074204",
+                                        "BBSL1058394", "BBSL1071341",
+                                        "BBSL1058570", "BBSL1058386",
+                                        "BBSL1058581", "BBSL1059060",
+                                        "BBSL1058636", "BBSL1058634",
+                                        "BBSL1058872", "BBSL1058861",
+                                        "BBSL1058940", "BBSL1058903",
+                                        "BBSL1058898", "BBSL1058362",
+                                        "BBSL1058159" )),
+
+
+    Copestylum_violaceum_m = list(Genus ="Copestylum",SubGenus="",
+                                  Species = "violaceum",
+                                  SubSpecies="",
+                                  Sex ="", Author ="Say",
+                                  Determiner="M.Hauser",
+                                  temp.id =
+                                      c("BBSL1071547",
+                                        "BBSL1071546", "BBSL1071481",
+                                        "BBSL1071479", "BBSL1071460",
+                                        "BBSL1071461", "BBSL1071458",
+                                        "BBSL1071604", "BBSL1071600",
+                                        "BBSL1070327", "BBSL1070239",
+                                        "BBSL1070336", "BBSL1074345",
+                                        "BBSL1074360", "BBSL1074351",
+                                        "BBSL1074157", "BBSL1070526",
+                                        "BBSL1058387", "BBSL1058585",
+                                        "BBSL1058388", "BBSL1058389",
+                                        "BBSL1071651", "BBSL1058575",
+                                        "BBSL1058390", "BBSL1058583",
+                                        "BBSL1071342", "BBSL1070524",
+                                        "BBSL1071652", "BBSL1071348",
+                                        "BBSL1071346", "BBSL1071647",
+                                        "BBSL1071624", "BBSL1071364",
+                                        "BBSL1071407", "BBSL1071409",
+                                        "BBSL1071403", "BBSL1071401",
+                                        "BBSL1071393", "BBSL1071387",
+                                        "BBSL1071383", "BBSL1071385",
+                                        "BBSL1071430", "BBSL1071437",
+                                        "BBSL1071435", "BBSL1071579",
+                                        "BBSL1058342", "BBSL1058153",
+                                        "BBSL1058413", "BBSL1058168",
+                                        "BBSL1058398", "BBSL1058415",
+                                        "BBSL1058396", "BBSL1058395",
+                                        "BBSL1058399", "BBSL1058402",
+                                        "BBSL1058411", "BBSL1058410",
+                                        "BBSL1058420", "BBSL1058418",
+                                        "BBSL1058115", "BBSL1058126",
+                                        "BBSL1058127", "BBSL1058150",
+                                        "BBSL1058105", "BBSL1058125",
+                                        "BBSL1058107", "BBSL1058106",
+                                        "BBSL1058108", "BBSL1058582",
+                                        "BBSL1058244", "BBSL1060057",
+                                        "BBSL1058221", "BBSL1058232",
+                                        "BBSL1058222", "BBSL1060065",
+                                        "BBSL1060056", "BBSL1060064",
+                                        "BBSL1060084", "BBSL1060085",
+                                        "BBSL1060086", "BBSL1058309",
+                                        "BBSL1058424", "BBSL1058310",
+                                        "BBSL1058263", "BBSL1058262",
+                                        "BBSL1058327", "BBSL1058457",
+                                        "BBSL1058326", "BBSL1058809",
+                                        "BBSL1059308", "BBSL1058434",
+                                        "BBSL1059109", "BBSL1059280",
+                                        "BBSL1058498", "BBSL1058489",
+                                        "BBSL1058528", "BBSL1058531",
+                                        "BBSL1058502", "BBSL1058508",
+                                        "BBSL1058145", "BBSL1058510",
+                                        "BBSL1058142", "BBSL1058093",
+                                        "BBSL1058144", "BBSL1058091",
+                                        "BBSL1058090", "BBSL1058092",
+                                        "BBSL1058071", "BBSL1058075",
+                                        "BBSL1058074", "BBSL1058507",
+                                        "BBSL1059309", "BBSL1058438",
+                                        "BBSL1071582", "BBSL1071588",
+                                        "BBSL1071593", "BBSL1071323",
+                                        "BBSL1071324", "BBSL1071325",
+                                        "BBSL1071347", "BBSL1058188",
+                                        "BBSL1058456", "BBSL1058196",
+                                        "BBSL1058328", "BBSL1058224",
+                                        "BBSL1058272", "BBSL1058225",
+                                        "BBSL1058199", "BBSL1058190",
+                                        "BBSL1058201", "BBSL1058458",
+                                        "BBSL1058181", "BBSL1058182",
+                                        "BBSL1058265", "BBSL1058208",
+                                        "BBSL1058180", "BBSL1060054",
+                                        "BBSL1060055", "BBSL1058179",
+                                        "BBSL1058454", "BBSL1060053",
+                                        "BBSL1058312", "BBSL1058455",
+                                        "BBSL1058273", "BBSL1058192",
+                                        "BBSL1071520", "BBSL1071538",
+                                        "BBSL1058436", "BBSL1058437",
+                                        "BBSL1059329", "BBSL1059338",
+                                        "BBSL1058534", "BBSL1058447",
+                                        "BBSL1058544", "BBSL1058530",
+                                        "BBSL1058493", "BBSL1058492",
+                                        "BBSL1058545", "BBSL1058548",
+                                        "BBSL1058549", "BBSL1058529",
+                                        "BBSL1058535", "BBSL1058596",
+                                        "BBSL1058598", "BBSL1058599",
+                                        "BBSL1058601", "BBSL1058595",
+                                        "BBSL1058619", "BBSL1058600")),
+
+    Copestylum_mexicana = list(Genus = "Copestylum", SubGenus="",
+                               Species   = "mexicana",
+                               SubSpecies="",
+                               Sex = "", Author = "Macquart",
+                               Determiner="M.Hauser",
+                               temp.id = c("BBSL1058597", "BBSL1058815",
+                                           "BBSL1058275", "BBSL1058284",
+                                           "BBSL1058276", "BBSL1058277",
+                                           "BBSL1058348", "BBSL1058156",
+                                           "BBSL1058154")),
+
+    Copestylum_anna_f = list(Genus = "Copestylum",
+                             SubGenus="",
+                             Species = "anna",
+                             SubSpecies="", Sex = "",
+                             Author =  "Williston",
+                             Determiner="M.Hauser",
+                             temp.id =
+                                 c("BBSL1074223", "BBSL1070545")),
+
+    Copestylum_anna_m = list(Genus = "Copestylum", SubGenus="",
+                             Species = "anna",
+                             SubSpecies="", Sex = "",
+                             Author = "Williston",
+                             Determiner="M.Hauser",
+                             temp.id =
+                                 c("BBSL1074427", "BBSL1074365",
+                                   "BBSL1074428", "BBSL1059087")),
+
+    Copestylum_haagi = list(Genus ="Copestylum",
+                            SubGenus="",
+                            Species = "haagi",
+                            SubSpecies="", Sex = "",
+                            Author = "Jaennicke",
+                            Determiner="M.Hauser",
+                            temp.id =  c("BBSL1059348")),
+
+    Chrysotoxum_morpho1 = list(Genus="Chrysotoxum",
+                               SubGenus="", Species = "sp.",
+                               SubSpecies = "a", Sex = "",
+                               Author = "", Determiner="M.Hauser",
+                               temp.id =  c("BBSL1074207",
+                                            "BBSL1074208",
+                                            "BBSL1070354",
+                                            "BBSL1074091",
+                                            "BBSL1074137",
+                                            "BBSL1070268",
+                                            "BBSL1085788",
+                                            "BBSL1085782",
+                                            "BBSL1085814",
+                                            "BBSL1070214",
+                                            "BBSL1070610",
+                                            "BBSL1059279",
+                                            "BBSL1059897")),
+
+
+    Eristalis_tenax_f = list(Genus = "Eristalis",
+                             SubGenus="",
+                             Species = "tenax",
+                             SubSpecies="", Sex = "",
+                             Author = "Linnaeus",
+                             Determiner="M.Hauser",
+                             temp.id =  c("BBSL1059746")),
+
+    Eristalis_tenax_m = list(Genus = "Eristalis",
+                             SubGenus="",
+                             Species =  "tenax",
+                             SubSpecies="", Sex = "",
+                             Author = "Linnaeus", Determiner="M.Hauser",
+                             temp.id = c("BBSL1073072")),
+
+
+
+
+    Eristalis_stipator_f = list(Genus = "Eristalis", SubGenus="",
+                                Species = "stipator",
+                                SubSpecies="", Sex = "",
+                                Author = "Osten Sacken",
+                                Determiner="M.Hauser",
+                                temp.id = c("BBSL1074406",
+                                            "BBSL1074301",
+                                            "BBSL1072924",
+                                            "BBSL1072974",
+                                            "BBSL1074132",
+                                            "BBSL1072962",
+                                            "BBSL1072938",
+                                            "BBSL1072934",
+                                            "BBSL1073244",
+                                            "BBSL1073243",
+                                            "BBSL1084431",
+                                            "BBSL1058651",
+                                            "BBSL1058572",
+                                            "BBSL1058382",
+                                            "BBSL1059480",
+                                            "BBSL1058690",
+                                            "BBSL1070688",
+                                            "BBSL1070183",
+                                            "BBSL1059830",
+                                            "BBSL1059763",
+                                            "BBSL1071339",
+                                            "BBSL1071392",
+                                            "BBSL1071586",
+                                            "BBSL1071587",
+                                            "BBSL1071093",
+                                            "BBSL1071446",
+                                            "BBSL1058578",
+                                            "BBSL1059358",
+                                            "BBSL1058814",
+                                            "BBSL1058808",
+                                            "BBSL1059842",
+                                            "BBSL1058177",
+                                            "BBSL1073124",
+                                            "BBSL1059563",
+                                            "BBSL1058432",
+                                            "BBSL1060051",
+                                            "BBSL1059845",
+                                            "BBSL1058191",
+                                            "BBSL1058219",
+                                            "BBSL1058242",
+                                            "BBSL1070695",
+                                            "BBSL1059780",
+                                            "BBSL1059699",
+                                            "BBSL1058212",
+                                            "BBSL1058264",
+                                            "BBSL1058252",
+                                            "BBSL1058443",
+                                            "BBSL1058441",
+                                            "BBSL1059570",
+                                            "BBSL1059797",
+                                            "BBSL1058241",
+                                            "BBSL1059377",
+                                            "BBSL1058873",
+                                            "BBSL1060078",
+                                            "BBSL1058874",
+                                            "BBSL1058072",
+                                            "BBSL1058899",
+                                            "BBSL1058611",
+                                            "BBSL1058865",
+                                            "BBSL1058082",
+                                            "BBSL1060048",
+                                            "BBSL1058966",
+                                            "BBSL1058167",
+                                            "BBSL1058806",
+                                            "BBSL1058810",
+                                            "BBSL1058086",
+                                            "BBSL1058334",
+                                            "BBSL1058147",
+                                            "BBSL1058384",
+                                            "BBSL1058691",
+                                            "BBSL1058689",
+                                            "BBSL1058706",
+                                            "BBSL1058109",
+                                            "BBSL1058104",
+                                            "BBSL1058400",
+                                            "BBSL1058403",
+                                            "BBSL1058650",
+                                            "BBSL1058580",
+                                            "BBSL1059977",
+                                            "BBSL1073125",
+                                            "BBSL1071408",
+                                            "BBSL1073079",
+                                            "BBSL1074437",
+                                            "BBSL1070985",
+                                            "BBSL1071034",
+                                            "BBSL1072808",
+                                            "BBSL1072886",
+                                            "BBSL1073057",
+                                            "BBSL1074366"
+
+                                            )),
+
+    Eristalis_stipator_m = list(Genus = "Eristalis", SubGenus="", Species
+                                = "stipator", SubSpecies="",
+                                Sex = "",
+                                Author = "Osten Sacken",
+                                Determiner="M.Hauser",
+                                temp.id = c("BBSL1058408",
+                                            "BBSL1058117",
+                                            "BBSL1070635",
+                                            "BBSL1070624",
+                                            "BBSL1070174",
+                                            "BBSL1070689",
+                                            "BBSL1058688",
+                                            "BBSL1058383",
+                                            "BBSL1070531",
+                                            "BBSL1070530",
+                                            "BBSL1070582",
+                                            "BBSL1070192",
+                                            "BBSL1058440",
+                                            "BBSL1058465",
+                                            "BBSL1058461",
+                                            "BBSL1058592",
+                                            "BBSL1060047",
+                                            "BBSL1058617",
+                                            "BBSL1058845",
+                                            "BBSL1058897",
+                                            "BBSL1058866",
+                                            "BBSL1058076",
+                                            "BBSL1058078",
+                                            "BBSL1058079",
+                                            "BBSL1058080",
+                                            "BBSL1058089",
+                                            "BBSL1058132",
+                                            "BBSL1058130",
+                                            "BBSL1058103",
+                                            "BBSL1058336",
+                                            "BBSL1058333",
+                                            "BBSL1058121",
+                                            "BBSL1058164",
+                                            "BBSL1058165",
+                                            "BBSL1058355",
+                                            "BBSL1058335",
+                                            "BBSL1058338",
+                                            "BBSL1058354",
+                                            "BBSL1058337",
+                                            "BBSL1058120",
+                                            "BBSL1058119",
+                                            "BBSL1071391",
+                                            "BBSL1071382",
+                                            "BBSL1071617",
+                                            "BBSL1058166",
+                                            "BBSL1073081",
+                                            "BBSL1071521",
+                                            "BBSL1071554",
+                                            "BBSL1071500",
+                                            "BBSL1070982",
+                                            "BBSL1073007",
+                                            "BBSL1071038",
+                                            "BBSL1071029",
+                                            "BBSL1073089",
+                                            "BBSL1071056",
+                                            "BBSL1071084",
+                                            "BBSL1072878",
+                                            "BBSL1072877",
+                                            "BBSL1073936",
+                                            "BBSL1071434",
+                                            "BBSL1073083",
+                                            "BBSL1072937",
+                                            "BBSL1073978",
+                                            "BBSL1073032",
+                                            "BBSL1085048",
+                                            "BBSL1072942",
+                                            "BBSL1072940",
+                                            "BBSL1070948",
+                                            "BBSL1072936",
+                                            "BBSL1085692",
+                                            "BBSL1085151",
+                                            "BBSL1084631",
+                                            "BBSL1058705",
+                                            "BBSL1058668",
+                                            "BBSL1058576",
+                                            "BBSL1058401",
+                                            "BBSL1058712",
+                                            "BBSL1060050",
+                                            "BBSL1059580",
+                                            "BBSL1059401",
+                                            "BBSL1060083",
+                                            "BBSL1060077",
+                                            "BBSL1060052",
+                                            "BBSL1058313",
+                                            "BBSL1058727",
+                                            "BBSL1059271",
+                                            "BBSL1058317",
+                                            "BBSL1058319",
+                                            "BBSL1059560",
+                                            "BBSL1058231",
+                                            "BBSL1058318",
+                                            "BBSL1058316",
+                                            "BBSL1058315",
+                                            "BBSL1058261",
+                                            "BBSL1058431",
+                                            "BBSL1058118",
+                                            "BBSL1058748",
+                                            "BBSL1059836",
+                                            "BBSL1059360",
+                                            "BBSL1058285",
+                                            "BBSL1058187",
+                                            "BBSL1058176",
+                                            "BBSL1059856",
+                                            "BBSL1059810",
+                                            "BBSL1058200",
+                                            "BBSL1058463",
+                                            "BBSL1058466",
+                                            "BBSL1058464",
+                                            "BBSL1059967",
+                                            "BBSL1058459",
+                                            "BBSL1059673",
+                                            "BBSL1059811",
+                                            "BBSL1058305",
+                                            "BBSL1059353",
+                                            "BBSL1059494",
+                                            "BBSL1058307",
+                                            "BBSL1058306",
+                                            "BBSL1058304",
+                                            "BBSL1058303",
+                                            "BBSL1058302",
+                                            "BBSL1058301",
+                                            "BBSL1058422",
+                                            "BBSL1058693",
+                                            "BBSL1058426",
+                                            "BBSL1058427",
+                                            "BBSL1058421",
+                                            "BBSL1059749",
+                                            "BBSL1059741",
+                                            "BBSL1058804",
+                                            "BBSL1058933",
+                                            "BBSL1058543",
+                                            "BBSL1058496",
+                                            "BBSL1058532",
+                                            "BBSL1058490",
+                                            "BBSL1058497",
+                                            "BBSL1059889",
+                                            "BBSL1059906",
+                                            "BBSL1058993",
+                                            "BBSL1060082"
+                                            ))
+
+)
+

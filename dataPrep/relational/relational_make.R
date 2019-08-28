@@ -102,7 +102,9 @@ insects$gen.sp <- paste(insects$Order,
                         insects$Genus,
                         insects$SubGenus,
                         insects$Species,
-                        insects$SubSpecies, sep=";")
+                        insects$SubSpecies,
+                        insects$Determiner,
+                        sep=";")
 insects <- cbind(InsectPK=seq_len(nrow(insects)), insects)
 rownames(insects) <- NULL
 
@@ -115,11 +117,13 @@ specimens$gen.sp <- paste(specimens$Order,
                           specimens$Genus,
                           specimens$SubGenus,
                           specimens$Species,
-                          specimens$SubSpecies, sep=";")
+                          specimens$SubSpecies,
+                          specimens$Determiner,
+                          sep=";")
 specimens$InsectFK <- insects$InsectPK[match(specimens$gen.sp,
                                              insects$gen.sp)]
 
-print(paste("instects without insect IDs", specimens$UniqueID[is.na(specimens$InsectFK)]))
+print(paste("insects without insect IDs", specimens$UniqueID[is.na(specimens$InsectFK)]))
 
 write.csv(dbReadTable(con, "tblInsect"),
           file="tables/insect.csv", row.names=FALSE)

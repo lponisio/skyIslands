@@ -424,7 +424,7 @@ sp.ids <- list(
                                Sex="f",
                                Author =
                                    "Viereck \\& Cockerell",
-                               Determiner="RW Thorp",
+                               Determiner="D. Yanega",
                                temp.id= c("18720"))
 
 
