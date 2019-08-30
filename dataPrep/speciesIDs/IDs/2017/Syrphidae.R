@@ -259,7 +259,7 @@ sp.ids <- list(
                          Determiner="M.Hauser",
                          temp.id= c("BBSL1087165")),
 
-    eupeodes_f= list(Genus="eupeodes",
+    eupeodes_f= list(Genus="Eupeodes",
                      SubGenus="",
                      Species="snowi",
                      SubSpecies="",
@@ -268,7 +268,7 @@ sp.ids <- list(
                      Determiner="M.Hauser",
                      temp.id= c("BBSL1071709")),
 
-    eupeodes_m= list(Genus="eupeodes",
+    eupeodes_m= list(Genus="Eupeodes",
                      SubGenus="",
                      Species="fumipennis",
                      SubSpecies="",
@@ -277,11 +277,11 @@ sp.ids <- list(
                      Determiner="M.Hauser",
                      temp.id= c("BBSL1072804")),
 
-    eupeodes_m= list(Genus="eupeodes",
+    eupeodes_m= list(Genus="Eupeodes",
                      SubGenus="",
-                     Species="volucuris",
+                     Species="volucris",
                      SubSpecies="",
-                     Sex="m", Author = "",
+                     Sex="m", Author = "Osten Sacken",
                      Determiner="M.Hauser",
                      temp.id= c("BBSL1070972",
                                 "BBSL1058228",
@@ -290,12 +290,12 @@ sp.ids <- list(
                                 "BBSL1073370",
                                 "BBSL1060079" )),
 
-    eupeodes_f= list(Genus="eupeodes",
+    eupeodes_f= list(Genus="Eupeodes",
                      SubGenus="",
-                     Species="volucuris",
+                     Species="volucris",
                      SubSpecies="",
                      Sex="f",
-                     Author = "",
+                     Author = "Osten Sacken",
                      Determiner="M.Hauser",
                      temp.id= c("BBSL1084943",
                                 "BBSL1058729",
@@ -305,7 +305,7 @@ sp.ids <- list(
                                 "BBSL1073948",
                                 "BBSL1073949" )),
 
-    scaeva_f= list(Genus="",
+    scaeva_f= list(Genus="Scaeva",
                    SubGenus="",
                    Species="affinis",
                    SubSpecies="",
@@ -316,7 +316,7 @@ sp.ids <- list(
 
 
 
-    lapposyrphus_m= list(Genus="", SubGenus="",
+    lapposyrphus_m= list(Genus="Lapposyrphus", SubGenus="",
                          Species="lapponicus",
                          SubSpecies="",
                          Sex="m", Author = "",
@@ -324,7 +324,7 @@ sp.ids <- list(
                          temp.id= c("BBSL1060062",
                                     "BBSL1071931")),
 
-    lapposyrphus_f= list(Genus="", SubGenus="",
+    lapposyrphus_f= list(Genus="Lapposyrphus", SubGenus="",
                          Species="lapponicus",
                          SubSpecies="", Sex="f",
                          Author = "",

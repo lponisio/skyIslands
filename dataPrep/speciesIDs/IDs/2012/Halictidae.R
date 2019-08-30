@@ -1,7 +1,7 @@
 
 sp.ids <- list(
 
-  Agapostemen_angelicus_f = list(Genus="Agapostemen", SubGenus ="Agapostemen",
+  Agapostemon_angelicus_f = list(Genus="Agapostemon", SubGenus ="Agapostemon",
     Species="angelicus", SubSpecies="", Sex="f", Author = "Cockerell",
     Determiner = "J.S. Ascher", temp.id= c("SC_072712_198",
     "SC_072812_56", "SC_072812_58", "SC_072812_54", "SC_072312_63",
@@ -21,7 +21,7 @@ sp.ids <- list(
     "SC_072712_259", "SC_072812_176", "PL_081112_221", "PL_081212_55",
     "PL_081312_161", "CH_082012_116")),
 
-  Agapostemen_angelicus_m = list(Genus="Agapostemen", SubGenus ="Agapostemen",
+  Agapostemen_angelicus_m = list(Genus="Agapostemon", SubGenus ="Agapostemon",
     Species="angelicus", SubSpecies="", Sex="m", Author = "Cockerell",
     Determiner = "J.S. Ascher", temp.id= c("SC_072812_47",
     "SC_072112_36", "SC_072312_225", "SC_072712_116", "SC_072312_64",

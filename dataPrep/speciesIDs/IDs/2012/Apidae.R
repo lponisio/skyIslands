@@ -1074,7 +1074,7 @@ sp.ids <- list(
 
 
     Andrena_segregans= list(Genus="Andrena", SubGenus ="Euandrena",
-                            Species="", SubSpecies="",
+                            Species="segregans", SubSpecies="",
                             Sex="f", Author ="Cockerell",
                             Determiner="RW Thorp",
                             temp.id= c("SC_072612_251")),

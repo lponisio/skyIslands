@@ -59,7 +59,7 @@ sp.ids <- list(
                                           "BBSL1072668", "BBSL1072616",
                                           "BBSL1084486", "BBSL1084459",
                                           "BBSL1085303", "BBSL1084460",
-                                          "BBSL1084461")),
+                                          "BBSL1084461", "BBSL1087202")),
 
     Anthophora_urbana_m = list(Genus="Anthophora",
                                SubGenus="Mystacanthophora",

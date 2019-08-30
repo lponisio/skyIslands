@@ -177,13 +177,13 @@ sp.ids <- list(
                          temp.id= c("17836","17803","17794")),
 
 
-    paragus_m = list(Genus="paragus", SubGenus="",
+    paragus_m = list(Genus="Paragus", SubGenus="",
                      Species="haemorrhous", SubSpecies="", Sex="m",
                      Author = "",
                      Determiner="M.Hauser",
                      temp.id= c( "17732")),
 
-    paragus_f= list(Genus="paragus", SubGenus="",
+    paragus_f= list(Genus="Paragus", SubGenus="",
                     Species="haemorrhous", SubSpecies="", Sex="f",
                     Author = "",
                     Determiner="M.Hauser",
@@ -195,31 +195,31 @@ sp.ids <- list(
                          Determiner="M.Hauser",
                          temp.id= c("17947")),
 
-    heringia_f= list(Genus="heringia", SubGenus="",
+    heringia_f= list(Genus="Heringia", SubGenus="",
                      Species="", SubSpecies="", Sex="f", Author = "",
                      Determiner="M.Hauser",
                      temp.id= c("18539")),
 
 
-    eupeodes_m= list(Genus="eupeodes", SubGenus="",
+    eupeodes_m= list(Genus="Eupeodes", SubGenus="",
                      Species="fumipennis", SubSpecies="", Sex="m",
                      Author = "",
                      Determiner="M.Hauser",
                      temp.id= c("18434")),
 
-    eupeodes_f= list(Genus="eupeodes", SubGenus="",
+    eupeodes_f= list(Genus="Eupeodes", SubGenus="",
                      Species="fumipennis", SubSpecies="", Sex="f",
                      Author = "",
                      Determiner="M.Hauser",
                      temp.id= c("18550")),
 
-    eupeodes_f= list(Genus="eupeodes", SubGenus="",
-                     Species="volucuris", SubSpecies="", Sex="f",
+    eupeodes_f= list(Genus="Eupeodes", SubGenus="",
+                     Species="volucris", SubSpecies="", Sex="f",
                      Author = "",
                      Determiner="M.Hauser",
                      temp.id= c( "17669")),
 
-    scaeva_f= list(Genus="", SubGenus="",
+    scaeva_f= list(Genus="Scaeva", SubGenus="",
                    Species="affinis", SubSpecies="", Sex="f", Author = "",
                    Determiner="M.Hauser",
                    temp.id= c("18208","17804","18217","18061","18603",
@@ -227,18 +227,18 @@ sp.ids <- list(
                               "18206","17837","17672", "17878",
                               "18044","18040")),
 
-    scaeva_m= list(Genus="", SubGenus="",
+    scaeva_m= list(Genus="Scaeva", SubGenus="",
                    Species="affinis", SubSpecies="", Sex="m", Author = "",
                    Determiner="M.Hauser",
                    temp.id= c("18479","18239")),
 
-    lapposyrphus_m= list(Genus="", SubGenus="",
+    lapposyrphus_m= list(Genus="Lapposyrphus", SubGenus="",
                          Species="lapponicus", SubSpecies="",
                          Sex="m", Author = "",
                          Determiner="M.Hauser",
                          temp.id= c("18264","18181","17178")),
 
-    lapposyrphus_f= list(Genus="", SubGenus="",
+    lapposyrphus_f= list(Genus="Lapposyrphus", SubGenus="",
                          Species="lapponicus", SubSpecies="",
                          Sex="f", Author = "",
                          Determiner="M.Hauser",

@@ -1,8 +1,9 @@
 
 sp.ids <- list(
 
-    hammerschmidtia_f = list(Genus="hammerschmidtia", SubGenus="",
-                             Species="rufa", SubSpecies="", Sex="f", Author = "",
+    hammerschmidtia_f = list(Genus="Hammerschmidtia", SubGenus="",
+                             Species="rufa", SubSpecies="", Sex="f",
+                             Author = "",
                              Determiner="M.Hauser",
                              temp.id= c("JC_071712_41")),
 
