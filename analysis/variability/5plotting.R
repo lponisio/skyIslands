@@ -18,7 +18,10 @@ dd.abund.var.pca <- expand.grid(var.pca1=seq(
                                 beta.dist=mean(delta$beta.dist),
                                 deltaFloralAbund=
                                     mean(delta$deltaFloralAbund),
+                                mean.pca1=
+                                    mean(delta$mean.pca1),
                                 deltaAbund=0)
+
 abund.var.pca.pi <- predict.int(mod= mods,
                                 dd=dd.abund.var.pca,
                                 y="deltaAbund",
@@ -33,6 +36,8 @@ dd.abund.beta.dist <- expand.grid(beta.dist=seq(
                                   var.pca1=mean(delta$var.pca1),
                                   deltaFloralAbund=
                                       mean(delta$deltaFloralAbund),
+                                  mean.pca1=
+                                      mean(delta$mean.pca1),
                                   deltaAbund=0)
 abund.beta.dist.pi <- predict.int(mod= mods,
                                   dd=dd.abund.beta.dist,

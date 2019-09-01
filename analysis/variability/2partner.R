@@ -13,8 +13,8 @@ if(length(args) != 0){
 source('src/initialize_beta.R')
 
 ## ************************************************************
-## beta diversity as variation between years,
-## centroid for each site
+## beta diversity as variation between sites,
+## centroid for each year
 ## ************************************************************
 
 dis <- mapply(function(a, b, c, d)
