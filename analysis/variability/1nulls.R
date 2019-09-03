@@ -1,50 +1,32 @@
 ## setwd('~/Dropbox/skyislands')
 rm(list=ls())
 setwd('analysis/variability')
-source('src/initialize.R')
-source('src/commPrep.R')
-save.dir.comm <- "saved/communities"
-save.dir.nulls <- "saved/nulls"
-
-source('src/misc.R')
-source('src/vaznull2.R')
-
-sites <- unique(spec$Site)
-years <- unique(spec$Year)
-spec$Int <- paste(spec$GenusSpecies,
-                  spec$PlantGenusSpecies)
-
-args <- commandArgs(trailingOnly=TRUE)
-if(length(args) != 0){
-    type <- args[1]
-    nnull <- args[2]
-} else{
-    type <- "pol"
-    nnull <- 99
-}
-
-if(type=="pol"){
-    species.type="GenusSpecies"
-    species.type.int="PlantGenusSpecies"
-}
-
-if(type=="plants"){
-    species.type="PlantGenusSpecies"
-    species.type.int="GenusSpecies"
-}
+source('src/initialize_nulls.R')
 
 ## ************************************************************
-## year by species matrices pollinators!
+## create community matrices for species species by year or site
 ## ************************************************************
-comms <- lapply(years, calcSiteBeta,
+
+## when lapplying on years, generates networks for each species
+## (pollinator if species.type=="GenusSpecies) to examine turnover
+## between sites within a year
+
+## when lapplying on sites, generates networks for each species
+## (pollinator if species.type=="GenusSpecies) to examine turnover
+## between years within a site
+
+comms <- lapply(to.lapply, calcSiteBeta,
                 species.type=species.type,
                 spec=spec,
-                species.type.int=species.type.int)
+                species.type.int=species.type.int,
+                type.net= net.type)
 
-comm <- makePretty(comms, spec)
+comm <- makePretty(comms, spec, net.type)
 
 save(comm, file=file.path(save.dir.comm,
-                          sprintf('%s-abund.Rdata', type)))
+                          sprintf('%s-%s-abund.Rdata',
+                                  sp.type,
+                                  net.type)))
 
 ## ************************************************************
 ## alpha div nulls
@@ -52,7 +34,9 @@ save(comm, file=file.path(save.dir.comm,
 nulls <- rapply(comm$comm, vaznull.2, N=nnull, how="replace")
 
 save(nulls, file=file.path(save.dir.nulls,
-                           sprintf('%s-alpha.Rdata', type)))
+                           sprintf('%s-%s-alpha.Rdata',
+                                   sp.type,
+                                   net.type)))
 
 ## ************************************************************
 ## occurrence nulls
@@ -68,22 +52,30 @@ rep.occ.null <- function(web, N){
 nulls <- rapply(comm$comm, rep.occ.null, N=nnull, how="replace")
 
 save(nulls, file=file.path(save.dir.nulls,
-                           sprintf('%s-occ.Rdata', type)))
+                           sprintf('%s-%s-occ.Rdata',
+                                   sp.type,
+                                   net.type)))
 
 ## ************************************************************
 ## test
 ## ************************************************************
 ## set interactions to be all the same across sampling rounds for each
 ## species
-test.comm <- lapply(comm$comm$'2012', function(x){
-    x[1:nrow(x), 1:ncol(x)] <- 0
-    x[,c(1,2,3)] <- 2
-    x
-})
-comm$comm$'2012' <- test.comm
-nulls <- rapply(comm$comm, vaznull.2, N=nnull, how="replace")
+if(net.type == "Year"){
+    test.comm <- lapply(comm$comm$'2012', function(x){
+        x[1:nrow(x), 1:ncol(x)] <- 0
+        x[,c(1,2,3)] <- 2
+        x
+    })
+    comm$comm$'2012' <- test.comm
+    nulls <- rapply(comm$comm, vaznull.2, N=nnull, how="replace")
 
-save(nulls, file=file.path(save.dir.nulls,
-                           sprintf('%s-alpha-test.Rdata', type)))
-save(comm, file=file.path(save.dir.comm,
-                          sprintf('%s-abund-test.Rdata', type)))
+    save(nulls, file=file.path(save.dir.nulls,
+                               sprintf('%s-%s-alpha-test.Rdata',
+                                       sp.type,
+                                       net.type)))
+    save(comm, file=file.path(save.dir.comm,
+                              sprintf('%s-%s-abund-test.Rdata',
+                                      sp.type,
+                                      net.type)))
+}

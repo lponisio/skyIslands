@@ -1,8 +1,19 @@
+args <- commandArgs(trailingOnly=TRUE)
+if(length(args) != 0){
+    sp.type <- args[1]
+    net.type <- args[2]
+    occ <- args[3]
+} else{
+    sp.type <- "pol"
+    net.type <- "Year"
+    occ <- "abund"
+}
+
 library(vegan)
 source('src/misc.R')
 source('src/beta.R')
 
-if(type == "pol"){
+if(sp.type == "pol"){
     speciesType <- "pollinator"
 } else{
     speciesType <- "plants"
@@ -11,11 +22,15 @@ if(type == "pol"){
 
 if(occ == "abund"){
     binary <- FALSE
-    dis.method <- "chao"
+    dis.method <- "gower"
     load(file=file.path('saved/communities',
-                        sprintf('%s-abund.Rdata', type)))
+                        sprintf('%s-%s-abund.Rdata',
+                                sp.type,
+                                net.type)))
     load(file=file.path('saved/nulls',
-                        sprintf('%s-alpha.Rdata', type)))
+                        sprintf('%s-%s-alpha.Rdata',
+                                sp.type,
+                                net.type)))
 }
 
 if(occ == "occ"){
@@ -23,17 +38,21 @@ if(occ == "occ"){
     binary <- TRUE
     dis.method <- "jaccard"
     load(file=file.path('saved/communities',
-                        sprintf('%s-abund.Rdata', type)))
+                        sprintf('%s-%s-abund.Rdata',
+                                sp.type,
+                                net.type)))
     load(file=file.path('saved/nulls',
-                        sprintf('%s-occ.Rdata', type)))
+                        sprintf('%s-%s-occ.Rdata',
+                                sp.type,
+                                net.type)))
 }
 
-if(type=="pol"){
+if(sp.type=="pol"){
     ylabel <- "Pollinator species turnover"
 }
-if(type=="ints"){
+if(sp.type=="ints"){
     ylabel <- "Interaction turnover"
 }
-if(type=="plants"){
+if(sp.type=="plants"){
     ylabel <- "Plant species turnover"
 }

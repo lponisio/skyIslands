@@ -74,12 +74,11 @@ makeBetaDataPretty <- function(){
                          unlist(nsite.date))
     site.date <- unlist(name.site.date)
 
-    dats <- data.frame(Year=rep(names(nobs), nrep.site.date),
-                       GenusSpecies=species.names,
+    dats <- data.frame(GenusSpecies=species.names,
                        dist=unlist(distances))
     dats$Site <- sapply(strsplit(as.character(site.date), split=':'),
                         function(x) x[[1]])
-    dats$Date <- sapply(strsplit(as.character(site.date), split=':'),
+    dats$Year <- sapply(strsplit(as.character(site.date), split=':'),
                         function(x) x[[2]])
     rownames(dats) <- NULL
     return(dats)

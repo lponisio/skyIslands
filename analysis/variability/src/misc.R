@@ -1,4 +1,18 @@
 
+getNetData <- function(nets){
+    sites <- sapply(strsplit(nets, "\\."),
+                       function(x) x[1])
+    years <-  sapply(strsplit(nets, "\\."),
+                    function(x) x[2])
+    SR <-  sapply(strsplit(nets, "\\."),
+                        function(x) x[3])
+    return(data.frame(Site=sites,
+                      Year=years,
+                      SR=SR))
+}
+
+
+
 add.alpha <- function(col, alpha=0.2){
     apply(sapply(col, col2rgb)/255, 2,
           function(x)
@@ -51,6 +65,7 @@ convertMatrix2Sample <- function(z){
                        as.vector(as.matrix(z)))
     temp <- temp[!is.na(temp[, 3]), ]
     temp <- temp[sort.list(temp[, 1]), ]
-    data.frame(Site = temp[, 1], deltaAbund = temp[, 3], GenusSpecies = temp[, 2])
+    data.frame(Site = temp[, 1], deltaAbund = temp[, 3],
+               GenusSpecies = temp[, 2])
 }
 
