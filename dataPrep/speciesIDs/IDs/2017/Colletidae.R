@@ -10,7 +10,8 @@ sp.ids <- list(
                                          "BBSL1073240",
                                          "BBSL1073257",
                                          "BBSL1073241",
-                                         "BBSL1073258")),
+                                         "BBSL1073258"
+                                         "BBSL1058839")),
 
     Colletes_compactus_m = list(Genus="Colletes", SubGenus ="Compactus",
                                 Species="compactus", SubSpecies="", Sex="m",
