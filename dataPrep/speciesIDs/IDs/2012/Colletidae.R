@@ -24,5 +24,12 @@ sp.ids <- list(
     Species="gilensis", SubSpecies="", Sex="m", Author = "Cockerell",
     Determiner="J.S. Ascher", 
     temp.id= c("SC_072712_58"))
+    
+    
+    
+    Colletes_slevini_m= list(Genus="Colletes", SubGenus ="",
+    Species="slevini", SubSpecies="", Sex="m", Author = "Cockerell",
+    Determiner="T. Griswold", 
+    temp.id= c("SC_072012_21", "SC_072612_134", "SC_072612_133", "SC_072012_312", "SC_072712_80"))
 
   )

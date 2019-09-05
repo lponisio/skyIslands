@@ -1,6 +1,14 @@
 
 sp.ids <- list(
 
+ Colletes_slevini_m= list(Genus="Colletes", SubGenus ="",
+    Species="slevini", SubSpecies="", Sex="m", Author = "Cockerell",
+    Determiner="D. Yanega", 
+    temp.id= c("18598"))
+
+  )
+
+
 
     Colletes_skinneri_f= list(Genus="Colletes", SubGenus ="",
                               Species="skinneri",
@@ -18,14 +26,22 @@ sp.ids <- list(
                               Sex="m",
                               Author = "Viereck",
                               Determiner="D. Yanega",
-                              temp.id= c("18415", "18381", "17982",
-                                         "18774", "18412", "18413", "18359",
+                              temp.id= c("17982", "18774")),
+                                         
+                                         
+     Colletes_compactus_m= list(Genus="Colletes", SubGenus ="",
+                              Species="compactus",
+                              SubSpecies="",
+                              Sex="m",
+                              Author = "Cresson",
+                              Determiner="D. Yanega",
+                              temp.id= c("18415", "18381", "18412", "18413", "18359",
                                          "18375", "17894", "18414", "18418",
                                          "18419", "18417", "18385", "18374")),
 
-    Colletes_gilensis_m= list(Genus="Colletes", SubGenus ="Productus",
+    Colletes_gilensis_f= list(Genus="Colletes", SubGenus ="Productus",
                               Species="gilensis", SubSpecies="",
-                              Sex="m",
+                              Sex="f",
                               Author = "Cockerell",
                               Determiner = "D. Yanega",
                               temp.id= c("18199", "18192", "18221",

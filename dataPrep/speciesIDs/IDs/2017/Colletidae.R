@@ -1,6 +1,13 @@
 
 sp.ids <- list(
 
+ Colletes_slevini_m= list(Genus="Colletes", SubGenus ="",
+    Species="slevini", SubSpecies="", Sex="m", Author = "Cockerell",
+    Determiner="T. Griswold", 
+    temp.id= c("BBSL1058839"))
+
+  )
+
 
     Colletes_skinneri_m= list(Genus="Colletes", SubGenus ="",
                               Species="skinneri", SubSpecies="", Sex="m",
@@ -42,7 +49,7 @@ sp.ids <- list(
                                             "BBSL1071090", "BBSL1071091",
                                             "BBSL1071116", "BBSL1071071",
                                             "BBSL1071076", "BBSL1071079",
-                                            "BBSL1071080", "BBSL1071089")),
+                                            "BBSL1071080", "BBSL1071089", "BBSL1084762")),
 
     Colletes_scopiventer_f = list(Genus="Colletes", SubGenus ="Consors",
                                   Species="scopiventer", SubSpecies="",
@@ -90,29 +97,21 @@ sp.ids <- list(
                               Determiner = "T. Griswold",
                               temp.id= c("BBSL1070927", "BBSL1060049")),
 
-    Hylaeus_annulatus_f = list(Genus="Hylaeus", SubGenus ="Hylaeus",
+   Hylaeus_annulatus_f = list(Genus="Hylaeus", SubGenus ="Hylaeus",
                                Species="annulatus", SubSpecies="",
                                Sex="f",
                                Author = "Linnaeus",
                                Determiner = "T. Griswold",
-                               temp.id= c("BBSL1058270", "BBSL1058280",
-                                          "BBSL1058291", "BBSL1058344",
-                                          "BBSL1058374", "BBSL1071642",
-                                          "BBSL1058450", "BBSL1058462",
-                                          "BBSL1058477", "BBSL1058517",
-                                          "BBSL1058521", "BBSL1058526",
-                                          "BBSL1058539", "BBSL1071355",
-                                          "BBSL1071419", "BBSL1071465",
-                                          "BBSL1071485", "BBSL1071896",
-                                          "BBSL1071941", "BBSL1070593",
+                               temp.id= c( "BBSL1071355", "BBSL1071941", "BBSL1071896",  "BBSL1070593", "BBSL1071419", "BBSL1071465", "BBSL1058270",  "BBSL1058539",   "BBSL1058291", "BBSL1058521",  "BBSL1058344","BBSL1058462", "BBSL1058374", "BBSL1058517",         "BBSL1058450",   "BBSL1058280",     "BBSL1058526", "BBSL1058477", "BBSL1071642","BBSL1071485", 
                                           "BBSL1086528", "BBSL1086698",
                                           "BBSL1086695", "BBSL1086705",
                                           "BBSL1084714", "BBSL1085355",
                                           "BBSL1086547", "BBSL1085273",
                                           "BBSL1086556", "BBSL1071633",
                                           "BBSL1086492", "BBSL1084607",
+                                          "BBSL1071633")
                                           "BBSL1086533")),
-
+                                          
     Hylaeus_annulatus_m = list(Genus="Hylaeus", SubGenus ="Hylaeus",
                                Species="annulatus", SubSpecies="",
                                Sex="m",
