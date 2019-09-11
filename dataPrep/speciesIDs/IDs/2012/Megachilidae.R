@@ -61,19 +61,19 @@ sp.ids <- list(
                                            Determiner = "T. Griswold",
                                            temp.id= c("JC_071712_114",
                                            "PL_081212_269",
-                                           "MM_080412_100")
+                                           "MM_080412_100")),
                                            
     Osmia_juxta_f = list(Genus="Osmia",
                          SubGenus ="Melanosmia", Species="juxta",
                          SubSpecies="", Sex="f",
                          Author = "Cresson", Determiner = "T. Griswold",
-                         temp.id= c("JC_071212_75", "JC_071712_175"),
+                         temp.id= c("JC_071212_75", "JC_071712_175")),
                          
     Megachile_comata_f = list(Genus="Megachile", SubGenus ="Xanthosarus",
                               Species="comata", SubSpecies="",
                               Sex="f",
                               Author = "Cresson", Determiner = "T. Griswold",
-                              temp.id= c("MM_080312_193", "MM_080212_263", "SC_072712_163")),
+                              temp.id= c("MM_080312_193", "MM_080212_263", "SC_072712_163"))
 
 
 

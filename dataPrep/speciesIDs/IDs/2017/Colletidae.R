@@ -4,9 +4,7 @@ sp.ids <- list(
  Colletes_slevini_m= list(Genus="Colletes", SubGenus ="",
     Species="slevini", SubSpecies="", Sex="m", Author = "Cockerell",
     Determiner="T. Griswold", 
-    temp.id= c("BBSL1058839"))
-
-  )
+    temp.id= c("BBSL1058839")),
 
 
     Colletes_skinneri_m= list(Genus="Colletes", SubGenus ="",
@@ -17,8 +15,7 @@ sp.ids <- list(
                                          "BBSL1073240",
                                          "BBSL1073257",
                                          "BBSL1073241",
-                                         "BBSL1073258"
-                                         "BBSL1058839")),
+                                         "BBSL1073258")),
 
     Colletes_compactus_m = list(Genus="Colletes", SubGenus ="Compactus",
                                 Species="compactus", SubSpecies="", Sex="m",
@@ -107,9 +104,9 @@ sp.ids <- list(
                                           "BBSL1086695", "BBSL1086705",
                                           "BBSL1084714", "BBSL1085355",
                                           "BBSL1086547", "BBSL1085273",
-                                          "BBSL1086556", "BBSL1071633",
+                                          "BBSL1086556", 
                                           "BBSL1086492", "BBSL1084607",
-                                          "BBSL1071633")
+                                          "BBSL1071633",
                                           "BBSL1086533")),
                                           
     Hylaeus_annulatus_m = list(Genus="Hylaeus", SubGenus ="Hylaeus",
