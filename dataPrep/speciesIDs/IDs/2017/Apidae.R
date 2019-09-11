@@ -913,7 +913,13 @@ sp.ids <- list(
                                 Author = "Cresson",
                                 Determiner="T. Griswold",
 
-                                temp.id= c("BBSL1072633", "BBSL1070837", "BBSL1072149")),
+                                temp.id= c("BBSL1072633",
+                                           "BBSL1070837",
+                                           "BBSL1072149",
+                                           "BBSL1084581",
+                                           "BBSL1086953",
+                                           "BBSL1087226",
+                                           "BBSL1084835")),
 
     Diadasia_australis_m = list(Genus="Diadasia", SubGenus="Coquillettapis",
                                 Species="australis",
@@ -929,7 +935,18 @@ sp.ids <- list(
                                SubSpecies="", Sex="f",
                                Author = "Cresson",
                                Determiner="T. Griswold",
-                               temp.id= c("BBSL1071512")),
+                               temp.id= c("BBSL1071512"
+                                          "BBSL1086479")),
+
+
+
+       Diadasia_ochracea_f = list(Genus="Diadasia",
+                               SubGenus="Dasiapis",
+                               Species="ochracea",
+                               SubSpecies="", Sex="f",
+                               Author = "Cockerell",
+                               Determiner="D. Yanega",
+                               temp.id= c("BBSL1084601")),
 
     Habropoda_salviarum_f = list(Genus="Habropoda", SubGenus ="",
                                  Species="salviarum", SubSpecies="",
@@ -1192,14 +1209,14 @@ sp.ids <- list(
 
 
 
-        Hesperapis_sp_a_f= list(Genus="Hesperapis", SubGenus ="",
-                               Species="sp.", SubSpecies="a",
-                               Sex="f",
-                               Author = "",
-                               Determiner="D. Yanega",
-                               temp.id= c("BBSL1072005"))
+    Hesperapis_sp_a_f= list(Genus="Hesperapis", SubGenus ="",
+                            Species="sp.", SubSpecies="a",
+                            Sex="f",
+                            Author = "",
+                            Determiner="D. Yanega",
+                            temp.id= c("BBSL1072005"))
 
 
 
 
-    )
+)

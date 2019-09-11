@@ -43,7 +43,15 @@ sp.ids <- list(
   Coelioxys_sodalis = list(Genus="Coelioxys",
     SubGenus ="Coelioxys", Species="sodalis",
     SubSpecies="", Sex="f", Author = "Cresson",
-    Determiner="J.S. Ascher", temp.id= c("JC_071612_99"))
+    Determiner="J.S. Ascher", temp.id= c("JC_071612_99")),
+
+    Heriades_cressoni_f = list(Genus="Heriades",
+                               SubGenus ="Neotrypetes",
+                               Species="cressoni",
+                               SubSpecies="", Sex="f",
+                               Author = "Michener",
+                               Determiner = "D. Yanega",
+                               temp.id= c("JC_071712_119"))
 
 
   )
