@@ -203,7 +203,7 @@ sp.ids <- list(
                                           "BBSL1074271",
                                            "BBSL1073932", "BBSL1072615",
                                            "BBSL1073116", "BBSL1071186",
-                                           "BBSL1071160", 
+                                           "BBSL1071160",
                                            "BBSL1071155", "BBSL1072280",
                                            "BBSL1072684", "BBSL1072148",
                                            "BBSL1072279", "BBSL1073827",
@@ -225,7 +225,7 @@ sp.ids <- list(
                                            "BBSL1086904", "BBSL1085170",
                                            "BBSL1086884", "BBSL1086085",
                                            "BBSL1086084")),
-                                           
+
 
     Anthophora_californica = list(Genus="Anthophora",
                                   SubGenus="Anthophoroides",
@@ -234,8 +234,8 @@ sp.ids <- list(
                                   Author = "Cresson",
                                   Determiner="D. Yanega",
                                   temp.id= c("BBSL1086908")),
-                                 
-                                  
+
+
      Anthophora_californica = list(Genus="Anthophora",
                                   SubGenus="Anthophoroides",
                                   Species="californica",
@@ -243,7 +243,7 @@ sp.ids <- list(
                                   Author = "Cresson",
                                   Determiner="D. Yanega",
                                   temp.id= c( "BBSL1071178", "BBSL1059263")),
-                                  
+
     Anthophora_marginata = list(Genus="Anthophora",
                                 SubGenus="Anthophoroides",
                                 Species="marginata",
@@ -252,9 +252,9 @@ sp.ids <- list(
                                 Author = "Smith",
                                 Determiner="D. Yanega",
                                 temp.id= c("BBSL1073793")),
-                                  
-                                  
-                                 
+
+
+
     Anthophora_terminalis_f = list(Genus="Anthophora",
                                    SubGenus="Clisodon",
                                    Species="terminalis",
@@ -942,7 +942,13 @@ sp.ids <- list(
                                 Author = "Cresson",
                                 Determiner="T. Griswold",
 
-                                temp.id= c("BBSL1072633", "BBSL1070837", "BBSL1072149")),
+                                temp.id= c("BBSL1072633",
+                                           "BBSL1070837",
+                                           "BBSL1072149",
+                                           "BBSL1084581",
+                                           "BBSL1086953",
+                                           "BBSL1087226",
+                                           "BBSL1084835")),
 
     Diadasia_australis_m = list(Genus="Diadasia", SubGenus="Coquillettapis",
                                 Species="australis",
@@ -958,7 +964,18 @@ sp.ids <- list(
                                SubSpecies="", Sex="f",
                                Author = "Cresson",
                                Determiner="T. Griswold",
-                               temp.id= c("BBSL1071512")),
+                               temp.id= c("BBSL1071512",
+                                          "BBSL1086479")),
+
+
+
+       Diadasia_ochracea_f = list(Genus="Diadasia",
+                               SubGenus="Dasiapis",
+                               Species="ochracea",
+                               SubSpecies="", Sex="f",
+                               Author = "Cockerell",
+                               Determiner="D. Yanega",
+                               temp.id= c("BBSL1084601")),
 
     Habropoda_salviarum_f = list(Genus="Habropoda", SubGenus ="",
                                  Species="salviarum", SubSpecies="",
@@ -1220,14 +1237,14 @@ sp.ids <- list(
 
 
 
-        Hesperapis_sp_a_f= list(Genus="Hesperapis", SubGenus ="",
-                               Species="sp.", SubSpecies="a",
-                               Sex="f",
-                               Author = "",
-                               Determiner="D. Yanega",
-                               temp.id= c("BBSL1072005"))
+    Hesperapis_sp_a_f= list(Genus="Hesperapis", SubGenus ="",
+                            Species="sp.", SubSpecies="a",
+                            Sex="f",
+                            Author = "",
+                            Determiner="D. Yanega",
+                            temp.id= c("BBSL1072005"))
 
 
 
 
-    )
+)

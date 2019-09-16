@@ -98,22 +98,26 @@ sp.ids <- list(
                                 SubSpecies="", Sex="f", Author =
                                                             "Kirby",
                                 Determiner = "T. Griswold",
-                                temp.id= c("BBSL1072040", "BBSL1059786")),
+                                temp.id= c("BBSL1072040",
+                                "BBSL1059786", "BBSL1087003")),
 
     Hoplitis_fulgida_m = list(Genus="Hoplitis",
                               SubGenus ="Alcidamea", Species="fulgida",
                               SubSpecies="", Sex="m", Author =
                                                           "Cresson",
                               Determiner = "T. Griswold",
-                              temp.id= c("BBSL1060036")),
+                              temp.id= c("BBSL1060036", "BBSL1085035",
+                              "BBSL1084487")),
 
     Lithurgus_apicalis_m = list(Genus="Lithurgus",
                                 SubGenus ="", Species="apicalis",
                                 SubSpecies="", Sex="m",
                                 Author = "Cresson",
                                 Determiner = "T. Griswold",
-                                temp.id= c("BBSL1073350", "BBSL1070834",
-                                           "BBSL1072634", "BBSL1070381",
+                                temp.id= c("BBSL1073350",
+                                           "BBSL1070834",
+                                           "BBSL1072634",
+                                           "BBSL1070381",
                                            "BBSL1072252",
                                            "BBSL1087227")),
 
