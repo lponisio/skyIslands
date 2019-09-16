@@ -23,7 +23,7 @@ sp.ids <- list(
     Colletes_gilensis= list(Genus="Colletes", SubGenus ="Productus",
     Species="gilensis", SubSpecies="", Sex="m", Author = "Cockerell",
     Determiner="J.S. Ascher", 
-    temp.id= c("SC_072712_58"))
+    temp.id= c("SC_072712_58")),
     
     
     
