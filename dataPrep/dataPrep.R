@@ -133,6 +133,7 @@ save(sp.lev, file='../data/splev.Rdata')
 table(spec$GenusSpecies)
 
 tab <- table(spec$GenusSpecies, spec$Site)
+tab2 <- table(spec$PlantGenusSpecies, spec$Site)
 
 table(spec$PlantGenusSpecies)
 table(spec$PlantGenusSpecies, spec$Site)
