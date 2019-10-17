@@ -11,25 +11,15 @@ sp.ids <- list(
   Colletes_skinneri_f= list(Genus="Colletes", SubGenus ="",
                             Species="skinneri", SubSpecies="", Sex="f", Author = "Viereck",
                             Determiner="J.S. Ascher", temp.id=
-                                                          c("MM_080412_4",
+                                                          c("PL_081312_133",
+                                                          "MM_080412_4",
                                                             "MM_080212_240")),
-
-  Colletes_skinneri_m= list(Genus="Colletes", SubGenus ="",
-                            Species="skinneri", SubSpecies="", Sex="m",
-                            Author = "Viereck",
-                            Determiner="T. Griswold",
-                            temp.id= c("SC_072012_21",
-                                       "SC_072612_134",
-                                       "SC_072612_133",
-                                       "SC_072012_312",
-                                       "SC_072712_80")),
 
 
   Colletes_gilensis= list(Genus="Colletes", SubGenus ="Productus",
                           Species="gilensis", SubSpecies="", Sex="m", Author = "Cockerell",
                           Determiner="J.S. Ascher",
                           temp.id= c("SC_072712_58")),
-
 
 
   Colletes_slevini_m= list(Genus="Colletes", SubGenus ="",

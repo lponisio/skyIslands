@@ -1047,7 +1047,6 @@ sp.ids <- list(
                                   "BBSL1084359")),
 
 
-<<<<<<< HEAD
     Pseudopanurgus_sp_a_m= list(Genus="Pseudopanurgus",
                                 SubGenus ="",
                                 Species="sp.",
@@ -1074,7 +1073,7 @@ sp.ids <- list(
                                            "BBSL1086796",
                                            "BBSL1086519",
                                            "BBSL1085993")),
-=======
+
     ## Pseudopanurgus_sp_a_m= list(Genus="Pseudopanurgus",
     ##                             SubGenus ="",
     ##                             Species="sp.",
@@ -1102,7 +1101,7 @@ sp.ids <- list(
     ##                                        "BBSL1086796",
     ##                                        "BBSL1086519",
     ##                                        "BBSL1085993")),
->>>>>>> e8b0c754e794f85aabf80c5a8a8c2a2e32223206
+
 
     Pseudopanurgus_atricornis_f= list(Genus="Pseudopanurgus",
                                       SubGenus ="",

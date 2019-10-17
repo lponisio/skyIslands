@@ -30,7 +30,8 @@ sp.ids <- list(
                                Sex="f",
                                Author = "Cresson",
                                Determiner = "K. Watrous",
-                               temp.id= c("17837", "18227",
+                               temp.id= c("17937", 
+                               "18227",
                                           "20431", "20433")),
 
     Megachile_frigida_f = list(Genus="Megachile",

@@ -112,10 +112,11 @@ sp.ids <- list(
                                 temp.id = c("18087","18682")),
 
 
-    Didea_f = list(Genus = "Didea", SubGenus="", Species = "",
-                   SubSpecies="", Sex = "f", Author = "",
-                   Determiner="M.Hauser",
-                   temp.id = c("18163")),
+## issue with duplicate ID
+    # Didea_f = list(Genus = "Didea", SubGenus="", Species = "",
+                   # SubSpecies="", Sex = "f", Author = "",
+                   # Determiner="M.Hauser",
+                   # temp.id = c("18163")),
 
     Didea_fuscipes_m  = list(Genus = "Didea", SubGenus="",
                              Species = "fuscipes",
