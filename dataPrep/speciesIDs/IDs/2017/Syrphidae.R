@@ -106,9 +106,7 @@ sp.ids <- list(
     Didea_fuscipes_m
     = list(Genus = "Didea", SubGenus="", Species = "fuscipes",
            SubSpecies="", Sex = "", Author = "Loew",
-           Determiner="M.Hauser", temp.id = c("BBSL1074302",
-                                              "BBSL1087173",
-                                              "BBSL1059956")),
+           Determiner="M.Hauser", temp.id = c("BBSL1059956")),
 
 
 
