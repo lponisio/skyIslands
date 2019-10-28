@@ -20,7 +20,7 @@ sp.ids <- list(
     "JC_071112_21", "SC_072712_60", "SC_072712_256", "SC_072712_257",
     "SC_072712_259", "SC_072812_176", "PL_081112_221", "PL_081212_55",
     "PL_081312_161", "CH_082012_116")),
-    
+
     # "JC_071212_38" duplicated with bombus ruf
 
   Agapostemen_angelicus_m = list(Genus="Agapostemon", SubGenus ="Agapostemon",
@@ -117,7 +117,7 @@ sp.ids <- list(
     "SC_072612_142","SC_072312_200", "SC_072312_176","SC_072312_177",
     "SC_072612_128", "SC_072312_184","SC_072612_141", "SC_072612_147",
     "SC_072612_149","SC_072612_140", "SC_072612_136")),
-    
+
    ## "MM_073112_3" duplicated with bombus huntii
 
  Dufourea_fimbriata_f= list(Genus="Dufourea", SubGenus ="",
@@ -167,14 +167,14 @@ sp.ids <- list(
     "SC_072012_60")),
 
    Lasioglossum_ruidosense_m= list(Genus="Lasioglossum", SubGenus
-    ="Dialictus", Species="ruidosense", SubSpecies="", Sex="m", Author
+    ="Dialictus", Species="ruidosense", SubSpecies="cf.", Sex="m", Author
     = "Cockerell", Determiner = "J. Gibbs", temp.id=
     c("PL_081112_13","JC_071512_95","JC_071212_89","JC_071512_82",
     "SC_072312_252", "PL_081112_170", "PL_081112_77", "PL_080912_277",
     "PL_081312_209", "SC_072912_83", "SC_072812_206", "SC_072812_205")),
 
     Lasioglossum_ruidosense_f= list(Genus="Lasioglossum", SubGenus
-    ="Dialictus", Species="ruidosense", SubSpecies="", Sex="f", Author
+    ="Dialictus", Species="ruidosense", SubSpecies="cf.", Sex="f", Author
     = "Cockerell", Determiner = "J. Gibbs", temp.id=
     c("MM_080112_116", "PL_081312_12", "MM_080212_114",
     "MM_080412_219", "MM_080412_196", "SC_072812_198",
@@ -277,7 +277,7 @@ sp.ids <- list(
     c("SC_072712_105")),
 
    Lasioglossum_obnubilum= list(Genus="Lasioglossum", SubGenus ="Dialictus",
-    Species="obnubilum", SubSpecies="Dialictus", Sex="f", Author = "Sandhouse",
+    Species="obnubilum", SubSpecies="", Sex="f", Author = "Sandhouse",
     Determiner = "J. Gibbs", temp.id= c("JC_071712_161",
     "JC_071412_53", "JC_071512_92")),
 
@@ -295,14 +295,14 @@ sp.ids <- list(
     c("SC_072612_21")),
 
    Lasioglossum_occultum_f= list(Genus="Lasioglossum", SubGenus
-    ="Sphecodogastra", Species="occultum", SubSpecies="", Sex="f",
+    ="Sphecodogastra", Species="occultum", SubSpecies="cf.", Sex="f",
     Author = "Vachal", Determiner = "J. Gibbs", temp.id=
     c("SC_072312_61", "SC_072712_241", "SC_072112_87", "SC_072612_5",
     "SC_072612_33", "SC_072312_224", "SC_072712_238",
     "SC_072612_102", "SC_072312_20", "SC_072912_40", "SC_072112_15")),
 
    Lasioglossum_occultum_m= list(Genus="Lasioglossum", SubGenus
-    ="Sphecodogastra", Species="occultum", SubSpecies="", Sex="m",
+    ="Sphecodogastra", Species="occultum", SubSpecies="cf.", Sex="m",
     Author = "Vachal", Determiner = "J. Gibbs", temp.id=
     c("JC_071712_105", "SC_072912_77", "JC_071512_96",
     "SC_072312_16", "SC_072012_26", "SC_072612_111", "SC_072712_63",

@@ -760,7 +760,9 @@ sp.ids <- list(
                                      "BBSL1072885",
                                      "BBSL1072792",
                                      "BBSL1086910",
+                                     "BBSL1070970",
                                      "BBSL1072723",
+                                     "BBSL1072687",
                                      "BBSL1070989")),
 
     Halictus_ligatus_f= list(Genus="Halictus", SubGenus ="Odontalictus",

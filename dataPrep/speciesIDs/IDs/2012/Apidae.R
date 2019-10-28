@@ -461,11 +461,11 @@ sp.ids <- list(
                                    temp.id= c("PL_081112_46",
                                               "PL_081312_44")),
 
-    Triepeolus_sp_a= list(Genus="Triepeolus",
+    Triepeolus_sp_c= list(Genus="Triepeolus",
                       SubGenus="",
                       Species="sp.",
-                      SubSpecies="a",
-                      Sex="m", Author = "",
+                      SubSpecies="c",
+                      Sex="f", Author = "",
                       Determiner="J.S. Ascher",
                       temp.id= c("SC_072612_31")),
 
@@ -965,7 +965,7 @@ sp.ids <- list(
                                                           "PL_080912_294",
                                                           "PL_081012_274",
                                                           "PL_081112_73",
-                                             
+
                                                           "MM_080212_208",
                                                           "MM_080312_111",
                                                           "MM_080312_203",

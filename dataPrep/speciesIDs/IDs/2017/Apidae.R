@@ -159,8 +159,10 @@ sp.ids <- list(
                                            "BBSL1085947", "BBSL1085915",
                                            "BBSL1085913")),
 
-    Anthophora_montana_m = list(Genus="Anthophora", SubGenus="Mystacanthophora",
-                                Species="montana", SubSpecies="", Sex="m", Author = "Cresson",
+    Anthophora_montana_m = list(Genus="Anthophora",
+                                SubGenus="Mystacanthophora",
+                                Species="montana", SubSpecies="",
+                                Sex="m", Author = "Cresson",
                                 Determiner="L.C. Ponisio",
 
                                 temp.id= c("BBSL1059215", "BBSL1059628",
@@ -242,7 +244,8 @@ sp.ids <- list(
                                   SubSpecies="", Sex="m",
                                   Author = "Cresson",
                                   Determiner="D. Yanega",
-                                  temp.id= c( "BBSL1071178", "BBSL1059263")),
+                                  temp.id= c( "BBSL1071178",
+                                             "BBSL1059263")),
 
     Anthophora_marginata = list(Genus="Anthophora",
                                 SubGenus="Anthophoroides",
@@ -736,7 +739,25 @@ sp.ids <- list(
                                        "BBSL1060124", "BBSL1060128",
                                        "BBSL1060130", "BBSL1060072",
                                        "BBSL1060111", "BBSL1060091",
-                                       "BBSL1060114", "BBSL1060125")),
+                                       "BBSL1060114", "BBSL1060125",
+                                       "BBSL1085062", "BBSL1085071",
+                                       "BBSL1085034", "BBSL1086067",
+                                       "BBSL1086061",
+                                       "BBSL1085074",
+                                       "BBSL1085189",
+                                       "BBSL1085138",
+                                       "BBSL1085001",
+                                       "BBSL1084934",
+                                       "BBSL1086062",
+                                       "BBSL1084971",
+                                       "BBSL1085879",
+                                       "BBSL1085136",
+                                       "BBSL1085122",
+                                       "BBSL1085696",
+                                       "BBSL1086072",
+                                       "BBSL1086068",
+                                       "BBSL1085724",
+                                       "BBSL1085604"))
 
     Bombus_huntii_m = list(Genus = "Bombus",
                            SubGenus="Pyrobombus",
@@ -761,7 +782,8 @@ sp.ids <- list(
                                  "BBSL1059788", "BBSL1059654",
                                  "BBSL1059658", "BBSL1059592",
                                  "BBSL1059873", "BBSL1073971",
-                                 "BBSL1070291")),
+                                 "BBSL1070291", "BBSL1084961",
+                                 "BBSL1085020")),
 
     Bombus_morrisoni_f = list(Genus = "Bombus",
                               SubGenus="Cullumanobombus",
@@ -923,7 +945,8 @@ sp.ids <- list(
                                             "BBSL1074149",
                                             "BBSL1074100",
                                             "BBSL1070563",
-                                            "BBSL1071901")),
+                                            "BBSL1071901",
+                                            "BBSL1085568")),
 
 
     Bombus_rufocinctus_m = list(Genus = "Bombus",
@@ -955,7 +978,6 @@ sp.ids <- list(
                                 SubSpecies="", Sex="m",
                                 Author = "Cresson",
                                 Determiner="T. Griswold",
-
                                 temp.id= c("BBSL1072632")),
 
     Diadasia_diminuta_f = list(Genus="Diadasia",
@@ -1012,15 +1034,15 @@ sp.ids <- list(
                                              "BBSL1073211")),
 
     Nomada_spa= list(Genus="Nomada", SubGenus="",
-                     Species="sp. a",
-                     SubSpecies="", Sex="f",
+                     Species="sp.",
+                     SubSpecies="a", Sex="f",
                      Author = "",
                      Determiner="L.C. Ponisio",
                      temp.id= c("BBSL1086799")),
 
     Nomada_spb= list(Genus="Nomada", SubGenus="",
-                     Species="sp. b",
-                     SubSpecies="", Sex="f",
+                     Species="sp",
+                     SubSpecies="b", Sex="f",
                      Author = "",
                      Determiner="L.C. Ponisio",
                      temp.id= c("BBSL1087212")),

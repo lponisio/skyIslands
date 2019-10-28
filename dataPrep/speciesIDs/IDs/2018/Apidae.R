@@ -248,8 +248,8 @@ sp.ids <- list(
                                           "20791")),
 
     Nomada_spc= list(Genus="Nomada", SubGenus="",
-                     Species="sp. c",
-                     SubSpecies="", Sex="f",
+                     Species="sp.",
+                     SubSpecies="d", Sex="f",
                      Author = "",
                      Determiner="L.C. Ponisio",
                      temp.id= c("17895", "18382")),
