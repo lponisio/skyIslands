@@ -9,22 +9,21 @@ simExtinction <- function(nets,
                           extinction.method,
                           spec,
                           participant="lower"){
-  ext <- lapply(nets, second.extinct,
-                participant="lower",
-                method=extinction.method)
 
-  rob <- sapply(ext, robustness)
-  sites <- sapply(strsplit(names(rob), "[.]"), function(x) x[1])
-  years <- sapply(strsplit(names(rob), "[.]"), function(x) x[2])
+    ext <- lapply(nets, second.extinct,
+                  participant="lower",
+                  method=extinction.method)
 
-  dats <- data.frame(Site= sites,
-                     Year=years,
-                     Robustness=rob)
-  rownames(dats) <- NULL
-  dats$SiteStatus <- spec$SiteStatus[match(paste(dats$Site, dats$Year),
-                                           paste(spec$Site, spec$Year))]
+    rob <- sapply(ext, robustness)
+    sites <- sapply(strsplit(names(rob), "[.]"), function(x) x[1])
+    years <- sapply(strsplit(names(rob), "[.]"), function(x) x[2])
 
-  dats$ypr <- spec$ypr[match(paste(dats$Site, dats$Year),
-                             paste(spec$Site, spec$Year))]
-  return(dats)
-}                        
+    dats <- data.frame(Site= sites,
+                       Year=years,
+                       Robustness=rob)
+    rownames(dats) <- NULL
+
+    dats$Lat <- spec$Lat[match(dats$Site, spec$Site)]
+
+    return(dats)
+}

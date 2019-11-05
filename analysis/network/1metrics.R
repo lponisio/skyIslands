@@ -1,4 +1,4 @@
-setwd('~/Dropbox/skyIslands/')
+## seated````('~/Dropbox/skyIslands/')
 rm(list=ls())
 setwd('analysis/network')
 source('src/initialize.R')
@@ -22,8 +22,6 @@ if(length(args) != 0){
 ##                                "partner diversity",
 ##                                "functional complementarity",
 ##                                "links per species",
-##                                "weighted NODF",
-##                                "NODF",
 ##                                "number of species",
 ##                                "niche overlap"))
 
@@ -32,24 +30,30 @@ if(length(args) != 0){
 
 ## ************************************************************
 load(file='saved/corMets.Rdata')
+cor.dats$Year  <- as.factor(cor.dats$Year)
+
+## cor.dats$ppRatio <- log(cor.dats$"number.of.species.LL"/
+##     cor.dats$"number.of.species.HL")
+
 
 ys <- c("functional.complementarity.LL",
         "functional.complementarity.HL",
-        "zH2",
+        "pH2",
         "links.per.species",
-        "zweighted.NODF",
-        "zmod.met.R",
         "niche.overlap.LL",
         "niche.overlap.HL",
-        "partner.diversity.HL",
-        "partner.diversity.LL")
+        "number.of.species.LL",
+        "number.of.species.HL")
 
+
+cor.dats$Year <- as.factor(cor.dats$Year)
 
 ## create formulas for site characteristics
 formulas.div <-lapply(ys, function(x) {
     as.formula(paste(x, "~",
                      paste("scale(Lat)",
-                           "scale(I(Lat)^2)",
+                           ## "scale(I(Lat)^2)",
+                           ## "Year",
                            "(1|Site)",
                            sep="+")))
 })

@@ -27,12 +27,6 @@ pol.pca.scores <- calcPcaMeanVar(species.roles=pol,
                                  loadings=loadings,
                                  agg.col = "Year")
 
-autoplot(pol.pca.scores$pca.loadings$'2017', loadings=TRUE,
-         ## loadings.label = TRUE,
-         ## loadings.label.size = 2,
-         loadings.colour = 'blue')
-
-
 ## *********************************************************************
 ## plants
 ## *********************************************************************

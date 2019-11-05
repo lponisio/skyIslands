@@ -104,15 +104,22 @@ calcNetworkMetrics <- function (dat.web, N,
 
 
 prepDat <- function(cor.stats, spec.dat,
-                    cols.to.keep= c("Doy", "Lat", "DoyPoly1",
-                    "DoyPoly2", "LatPoly1", "LatPoly2", "Elev")){
+                    cols.to.keep= c("Site", "Lat", "LatPoly1", "LatPoly2", "Elev")){
   dats <- do.call(rbind, cor.stats)
   out <- data.frame(dats)
   out$Site <- sapply(strsplit(names(cor.stats), "\\."),
                      function(x) x[1])
   out$Year <-  sapply(strsplit(names(cor.stats), "\\."),
                       function(x) x[2])
-  out <- merge(out, spec[, c(cols.to.keep)])
+  out$SampleRound <-  sapply(strsplit(names(cor.stats), "\\."),
+                             function(x) x[3])
+  site.dats <- unique(spec[, c(cols.to.keep)])
+  site.dats$Site  <- as.character(site.dats$Site)
+  site.dats <- apply(site.dats[, cols.to.keep[-1]], 2, function(x)
+      tapply(x, site.dats$Site, mean, na.rm=TRUE))
+  site.dats <- as.data.frame(site.dats)
+  site.dats$Site <- rownames(site.dats)
+  out <- merge(out, site.dats, by="Site", all.x=TRUE)
   rownames(out) <- NULL
   return(out)
 }

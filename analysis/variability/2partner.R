@@ -2,14 +2,6 @@
 rm(list=ls())
 setwd('analysis/variability')
 
-args <- commandArgs(trailingOnly=TRUE)
-if(length(args) != 0){
-    type <- args[1]
-    occ <- args[2]
-} else{
-    type <- "pol"
-    occ <- "abund"
-}
 source('src/initialize_beta.R')
 
 ## ************************************************************
@@ -30,4 +22,5 @@ dis <- mapply(function(a, b, c, d)
 
 beta.dist <- makeBetaDataPretty()
 
-save(beta.dist, file="saved/results/partnerVar.Rdata")
+save(beta.dist, file=sprintf("saved/results/partnerVar_%s.Rdata",
+                             net.type))
