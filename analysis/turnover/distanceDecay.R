@@ -1,6 +1,6 @@
 ## setwd("~/Dropbox/skyIslands/")
 rm(list=ls())
-setwd("analysis/distanceDecay")
+setwd("analysis/turnover")
 source("src/initialize.R")
 
 ## dissimilarity of plants, pol, int

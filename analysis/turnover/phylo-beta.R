@@ -22,8 +22,6 @@ library(picante)
 ## turnover of phylo interactions through time
 ## ************************************************************
 load(file="saved/lc.Rdata")
-spec$Int <- paste(spec$GenusSpecies,
-                  spec$PlantGenusSpecies)
 
 phylo.int.time <- calcCommDis(spec, "Int", lc,
                               abund.w=FALSE,

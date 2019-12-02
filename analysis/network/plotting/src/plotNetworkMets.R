@@ -4,21 +4,25 @@ plotNetworkMets <- function(){
     col.fill <- add.alpha(col.lines, alpha=0.3)
     names(col.lines) <- names(col.fill) <- ys
 
+
     layout(matrix(1:length(ys), ncol=2, byrow=TRUE))
-    par(oma=c(6, 7, 2, 1),
-        mar=c(0.5, 0, 1, 1), cex.axis=1.5)
+
+
+    par(oma=c(6, 3, 2, 1),
+        mar=c(0.5, 7, 1, 1), cex.axis=1.5)
+
 
     for(y in ys){
         print(y)
-        browser()
         ## create a matrix of possible variable values
         dd.met <- expand.grid(xvar =seq(
-                                  from=  min(scale(cor.dats[, x])),
-                                  to= max(scale(cor.dats[, x])),
+                                  from=  min(cor.dats[, x]),
+                                  to= max(cor.dats[, x]),
                                   length=10),
+                              Year=c("2012", "2017", "2018"),
                               yvar=0)
         colnames(dd.met)[1] <- x
-        colnames(dd.met)[2] <- y
+        colnames(dd.met)[3] <- y
 
         ## "predict" data using model coefficient to draw predicted
         ## relationship and CI
@@ -35,11 +39,12 @@ plotNetworkMets <- function(){
                    col.lines=col.lines,
                    col.fill=col.fill,
                    ylabel= ylabs[y],
-                   plot.x=FALSE)
-        ## if(y == "links.per.species"){
-        ##     axis(1, pretty(cor.dats[,x], 4))
-        ##     mtext(xlabel, 1, line=3, cex=1)
-        ## }
+                   plot.x=FALSE,
+                   years=unique(cor.dats$Year))
+        if(grepl("number.of.species", y)){
+            axis(1, pretty(cor.dats[,x], 4))
+            mtext(xlabel, 1, line=3, cex=1)
+        }
 
         plotDiag <- function(){
             plotDiagnostics(mods=mods.div[[y]], dats=cor.dats)
@@ -47,7 +52,7 @@ plotNetworkMets <- function(){
 
         pdf.f(plotDiag,
               file=file.path('figures/diagnostics/',
-                             sprintf('%s.pdf', y)),
+                             sprintf('%s_%s.pdf', y, xlabel)),
               height=6, width=4)
     }
 

@@ -2,7 +2,7 @@
 ## with site status and ypr
 ## takes networks and specimen data
 
-calcSpec <- function(nets, spec){
+calcSpec <- function(nets){
     ## applies specieslevel from bipartite to networks
     species.lev <- lapply(nets, function(x){
         sl <- specieslevel(x)

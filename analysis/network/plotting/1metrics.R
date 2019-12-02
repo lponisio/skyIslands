@@ -1,4 +1,4 @@
-setwd('~/Dropbox/skyIslands/')
+## setwd('~/Dropbox/skyIslands/')
 rm(list=ls())
 setwd('analysis/network')
 source('src/initialize.R')
@@ -9,7 +9,6 @@ source("plotting/src/diagnostics.R")
 source("plotting/src/plotNetworkMets.R")
 
 xvars <- c("Lat")
-type <- "all"
 xlabel <- "Latitude"
 
 ## ************************************************************
@@ -19,11 +18,18 @@ xlabel <- "Latitude"
 load('saved/mods/metrics.Rdata')
 
 ys <- names(mods.div)
-ylabs <- ys
+ylabs <- c("Plant \n complementarity",
+           "Pollinatator \n complementarity",
+           "Reciprocal \n specialization",
+           "Niche breadth",
+           "Plant \n niche overlap", "Pollinator \n niche overlap",
+           "Plant \n richness", "Pollinator \n richness")
 names(ylabs) <- ys
+
 x <- xvars
-## x2 <- xvars[2]
+
 
 pdf.f(plotNetworkMets, file=file.path("figures",
-                                      sprintf("%s.pdf", type)),
-      width=5, height=8)
+                                      sprintf("%s.pdf", xlabel)),
+      width=8.5, height=11)
+

@@ -21,10 +21,9 @@ source("src/prepNets.R")
 source("src/specialization.R")
 
 ## did not complete full sampling rounds in any of these sites. Was
-## just scouting.
-## can keep UK and SS when more species are IDed
+## just scouting.  can keep UK and SS when more species are IDed
 ## site.2.drop <- c("JM", "CC", "UK", "SS")
-site.2.drop <- c("JM", "CC", "SS")
+site.2.drop <- c("JM", "CC", "SS", "UK")
 spec <- spec[!spec$Site %in% site.2.drop,]
 spec <- droplevels(spec)
 
@@ -48,13 +47,13 @@ spec$Doy <- as.numeric(strftime(spec$Date, format='%j'))
 spec$Year <- as.numeric(format(spec$Date,'%Y'))
 
 ## drop non-bee, non-Syrphids
-## spec <- spec[spec$Family %in% c("Andrenidae", "Apidae",
-##                                 "Colletidae", "Halictidae",
-##                                 "Megachilidae", "Syrphidae"),]
-
 spec <- spec[spec$Family %in% c("Andrenidae", "Apidae",
                                 "Colletidae", "Halictidae",
-                                "Megachilidae"),]
+                                "Megachilidae", "Syrphidae"),]
+
+## spec <- spec[spec$Family %in% c("Andrenidae", "Apidae",
+##                                 "Colletidae", "Halictidae",
+##                                 "Megachilidae"),]
 
 
 ## drop lasioglossum until we get 2017, 2018 IDs back from Joel
@@ -125,18 +124,31 @@ graphs <- lapply(nets, graph.incidence, weighted=TRUE)
 save(graphs, nets, file="../data/nets.Rdata")
 
 
-sp.lev <- calcSpec(nets, spec)
+sp.lev <- calcSpec(nets)
+
+
+
+
 save(sp.lev, file='../data/splev.Rdata')
 
 
-## checks
-table(spec$GenusSpecies)
+##
 
-tab <- table(spec$GenusSpecies, spec$Site)
-tab2 <- table(spec$PlantGenusSpecies, spec$Site)
+print(paste("Pollinator species", length(unique(spec$GenusSpecies))))
+print(paste("Plant species", length(unique(spec$PlantGenusSpecies))))
+print(paste("Pollinator genera", length(unique(spec$Genus))))
+print(paste("Interactions", length(unique(spec$Int))))
+print(paste("Specimens", nrow(spec)))
 
-table(spec$PlantGenusSpecies)
-table(spec$PlantGenusSpecies, spec$Site)
-table(spec$PlantGenusSpecies, spec$Year)
 
-table(spec$PlantGenusSpecies, spec$Family)
+
+## table(spec$GenusSpecies)
+
+## tab <- table(spec$GenusSpecies, spec$Site)
+## tab2 <- table(spec$PlantGenusSpecies, spec$Site)
+
+## table(spec$PlantGenusSpecies)
+## table(spec$PlantGenusSpecies, spec$Site)
+## table(spec$PlantGenusSpecies, spec$Year)
+
+## table(spec$PlantGenusSpecies, spec$Family)

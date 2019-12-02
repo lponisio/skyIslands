@@ -235,7 +235,8 @@ sp.ids <- list(
                                   SubSpecies="", Sex="f",
                                   Author = "Cresson",
                                   Determiner="D. Yanega",
-                                  temp.id= c("BBSL1086908")),
+                                  temp.id= c("BBSL1086908",
+                                             "BBSL1084598")),
 
 
      Anthophora_californica = list(Genus="Anthophora",
@@ -757,7 +758,7 @@ sp.ids <- list(
                                        "BBSL1086072",
                                        "BBSL1086068",
                                        "BBSL1085724",
-                                       "BBSL1085604"))
+                                       "BBSL1085604")),
 
     Bombus_huntii_m = list(Genus = "Bombus",
                            SubGenus="Pyrobombus",

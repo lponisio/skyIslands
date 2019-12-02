@@ -14,7 +14,7 @@ calcCommDis <- function(spec.dat, type, lc, abund.w = TRUE,
 
     ## dist.site is the geographic distances between sites if
     ## computing between sites within a year, NA else
-
+browser()
     prep.comm <- aggregate(spec.dat[, type],
                            list(site=spec.dat[,within],
                                 year=spec.dat[,between],
