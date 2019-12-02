@@ -142,7 +142,7 @@ print(paste("Specimens", nrow(spec)))
 
 
 
-## table(spec$GenusSpecies)
+table(spec$GenusSpecies)
 
 ## tab <- table(spec$GenusSpecies, spec$Site)
 ## tab2 <- table(spec$PlantGenusSpecies, spec$Site)

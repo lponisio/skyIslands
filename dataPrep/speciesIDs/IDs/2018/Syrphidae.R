@@ -197,7 +197,7 @@ sp.ids <- list(
                          temp.id= c("17947")),
 
     heringia_f= list(Genus="Heringia", SubGenus="",
-                     Species="", SubSpecies="", Sex="f", Author = "",
+                     Species="sp.", SubSpecies="a", Sex="f", Author = "",
                      Determiner="M.Hauser",
                      temp.id= c("18539")),
 
