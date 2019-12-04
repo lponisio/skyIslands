@@ -5,7 +5,7 @@ if(length(args) != 0){
     occ <- args[3]
 } else{
     sp.type <- "pol"
-    net.type <- "Year"
+    net.type <- "SiteYear"
     occ <- "abund"
 }
 

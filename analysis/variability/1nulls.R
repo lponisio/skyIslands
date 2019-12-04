@@ -7,6 +7,9 @@ source('src/initialize_nulls.R')
 ## create community matrices for species species by year or site
 ## ************************************************************
 
+## net.type is either, Site, Year or SiteYear for looking at turnover
+## between years withina  a site, between sites within a year, and ???
+
 ## when lapplying on years, generates networks for each species
 ## (pollinator if species.type=="GenusSpecies) to examine turnover
 ## between sites within a year
@@ -31,7 +34,7 @@ save(comm, file=file.path(save.dir.comm,
 ## ************************************************************
 ## alpha div nulls
 ## ************************************************************
-nulls <- rapply(comm$comm, vaznull.2, N=nnull, how="replace")
+nulls <- rapply(comm$comm, calcProbNull, N=nnull, how="replace")
 
 save(nulls, file=file.path(save.dir.nulls,
                            sprintf('%s-%s-alpha.Rdata',
@@ -68,7 +71,7 @@ if(net.type == "Year"){
         x
     })
     comm$comm$'2012' <- test.comm
-    nulls <- rapply(comm$comm, vaznull.2, N=nnull, how="replace")
+    nulls <- rapply(comm$comm, calcProbNull, N=nnull, how="replace")
 
     save(nulls, file=file.path(save.dir.nulls,
                                sprintf('%s-%s-alpha-test.Rdata',

@@ -20,7 +20,6 @@ calcBeta <- function(comm,
         })
         null.dis[[i]][[length(nulls[[i]]) + 1]] <- comm.dis[[i]]
     }
-
     beta.disper.result <- vector("list", length(comm))
     for(i in 1:length(comm)){
         arr <- array(unlist(null.dis[[i]]), c(dim(comm.dis[[i]])[1],
@@ -44,11 +43,13 @@ calcBeta <- function(comm,
             cor.dis <-  as.dist(((cor.dis - min(cor.dis))/diff(range(cor.dis))),
                                 diag= TRUE)
         }
+        if(any(is.na(cor.dis))) browser()
         ## run model
         beta.disper.result[[i]] <- betadisper(cor.dis,
                                               rep("all",
                                                   nrow(as.matrix(cor.dis))),
-                                              type="centroid")
+                                              type="centroid",
+                                              bias.adjust=TRUE)
 
     }
     return(beta.disper.result)
@@ -65,7 +66,6 @@ makeBetaDataPretty <- function(){
     name.site.date <- sapply(comm$comm, function(x){
         sapply(x, rownames)}
         )
-
     distances <- lapply(dis, function(x){
         lapply(x, function(y) y$distances)}
         )
@@ -73,13 +73,25 @@ makeBetaDataPretty <- function(){
     species.names <- rep(unlist(sapply(nsite.date, names)),
                          unlist(nsite.date))
     site.date <- unlist(name.site.date)
-
     dats <- data.frame(GenusSpecies=species.names,
                        dist=unlist(distances))
-    dats$Site <- sapply(strsplit(as.character(site.date), split=':'),
-                        function(x) x[[1]])
-    dats$Year <- sapply(strsplit(as.character(site.date), split=':'),
-                        function(x) x[[2]])
+    if(net.type=="SiteYear"){
+        dats$Site <- sapply(strsplit(rep(names(nrep.site.date),
+                                         nrep.site.date),
+                                     split=':'),
+                            function(x) x[[1]])
+        dats$Year <- sapply(strsplit(rep(names(nrep.site.date),
+                                         nrep.site.date),
+                                     split=':'),
+                            function(x) x[[2]])
+        dats$SampleRound <- unlist(name.site.date)
+    } else if(net.type == "Site"){
+        dats$Site <- rep(names(nrep.site.date), nrep.site.date)
+        dats$Year <- unlist(name.site.date)
+    } else if(net.type == "Year"){
+        dats$Year <- rep(names(nrep.site.date), nrep.site.date)
+        dats$Site <- unlist(name.site.date)
+    }
     rownames(dats) <- NULL
     return(dats)
 }

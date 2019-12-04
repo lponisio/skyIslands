@@ -6,13 +6,13 @@ if(length(args) != 0){
 } else{
     sp.type <- "pol"
     net.type <- "SiteYear"
-    nnull <- 9
+    nnull <- 999
 }
 
 
 library(bipartite, quietly = TRUE)
 source('src/misc.R')
-source('src/vaznull2.R')
+source('src/probNull.R')
 source('src/commPrep.R')
 
 load('../../data/spec.Rdata')
