@@ -2,9 +2,16 @@
 
 
 calcSiteBeta <- function(x, species.type, spec, species.type.int,
-                         date.cut.off = 2,
-                         observation.cut.off = 2,
+                         turnover.cut.off = 3,
                          type.net){
+    if(type.net == "Year"){
+        col.agg <- "Site"
+    } else if(type.net == "Site"){
+        col.agg <- "Year"
+    } else if(type.net == "SiteYear"){
+        col.agg <- "Date"
+    }
+
     ## count interactions
     prep.comm <- aggregate(list(Abund=spec[, species.type]),
                            list(GenusSpecies=spec[, species.type],
@@ -32,21 +39,21 @@ calcSiteBeta <- function(x, species.type, spec, species.type.int,
                                     Year=prep.comm$Year),
                                mean)
     }
-    browser()
     prep.comm <- prep.comm[!prep.comm$InterGenusSpecies == "",]
     by.species <- split(prep.comm, prep.comm$GenusSpecies)
-    num.observations <- sapply(by.species, function(x) sum(x$Abund))
-    ## subset to species seen in > date.cut.off years and at least
-    ## observation.cut.off times
-    by.species <- by.species[num.observations >= observation.cut.off]
-    num.dates <- sapply(by.species, function(x) length(unique(x$SiteYear)))
-    by.species <- by.species[num.dates >= date.cut.off]
+    ## subset to species seen in > turnover cut off (needs to be
+    ## enough unique observations to use for beta-diversity
+    ## calculation)
+    num.4.turnover <- sapply(by.species, function(x)
+        length(unique(x[,col.agg])))
+
+    by.species <- by.species[num.4.turnover >= turnover.cut.off]
     by.species <- by.species[!sapply(by.species, is.null)]
 
     ## year/site plant combinations
-    empty.matrix <- matrix(0, nrow=length(unique(prep.comm$SiteYear)),
+    empty.matrix <- matrix(0, nrow=length(unique(prep.comm[, col.agg])),
                            ncol=length(unique(prep.comm$InterGenusSpecies)))
-    rownames(empty.matrix) <- sort(unique(prep.comm$SiteYear))
+    rownames(empty.matrix) <- sort(unique(prep.comm[,col.agg]))
     colnames(empty.matrix) <-
         sort(unique(prep.comm$InterGenusSpecies))
 
@@ -57,17 +64,18 @@ calcSiteBeta <- function(x, species.type, spec, species.type.int,
             this.by.species <- by.species[[i]]
             for(j in 1:nrow(this.by.species)){
                 this.row <- this.by.species[j,]
-                comm[[i]][match(this.row["SiteYear"], rownames(comm[[i]])),
+                comm[[i]][match(as.character(this.row[,col.agg]),
+                                rownames(comm[[i]])),
                           match(this.row["InterGenusSpecies"],
                                 colnames(comm[[i]]))] <-
                     as.numeric(this.row[["Abund"]])
             }
             comm[[i]] <- comm[[i]][rowSums(comm[[i]]) > 0,]
+            comm[[i]] <- comm[[i]][,colSums(comm[[i]]) > 0]
             if(!is.matrix(comm[[i]])) comm[[i]] <- NA
         }
         names(comm) <- names(by.species)
         comm <- comm[!sapply(comm, function(x) all(is.na(x)))]
-        browser()
         return(list(comm=comm, year=x))
     }
 }
@@ -98,13 +106,13 @@ makePretty <- function(comms, spec, net.type){
     }
 
     if(net.type == "SiteYear"){
-        browser()
         comm.pp <- list(comm=comms,
                         site.date=site.date,
-                        sites= sapply(strsplit(site.date, ":"), function(x) x[1]),
-                        years= sapply(strsplit(site.date, ":"), function(x) x[2])
+                        sites= sapply(strsplit(names(site.date), ":"),
+                                      function(x) x[1]),
+                        years= sapply(strsplit(names(site.date), ":"),
+                                      function(x) x[2])
                         )
     }
-
     return(comm.pp)
 }
