@@ -14,3 +14,4 @@ beta.dist <- rbind(beta.dist.site,
                    beta.dist.year)
 
 boxplot(beta.dist$dist~beta.dist$Type)
+
