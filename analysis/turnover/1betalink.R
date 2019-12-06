@@ -36,6 +36,10 @@ beta.same.year <- beta.net[apply(beta.net, 1,
 save(beta.same.site, beta.same.year, file="saved/SpIntTurnover.Rdata")
 
 
+## ******************************************************************
+## plotting
+## ******************************************************************
+
 yvars <- c("S", "WN", "S_Plants", "S_Pols", "PropST", "OS")
 
 ylabs <- c("Species turnover", "Interaction Turnover",
