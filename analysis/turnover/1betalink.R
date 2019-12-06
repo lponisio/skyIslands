@@ -15,7 +15,7 @@ nets.graph <- prepare_networks(nets)
 
 beta.net <- network_betadiversity(nets.graph,
                                   plants=plants, pols=pols,
-                                  geo.dist=dist.site)
+                                  geo.dist=geo.dist)
 
 ## Bs: Dissimilarity in the species composition of communities
 ## Bwn: Dissimilarity of interactions
@@ -23,7 +23,6 @@ beta.net <- network_betadiversity(nets.graph,
 ## common to both realisations
 ## Bst: Dissimilarity of interactions due to species turnover
 ## ProbST: Bst/wn: Dissimilarity of interactions due to species turnover
-## ProbOS: Bos/wn: Dissimilarity of interactions due to rewiring
 
 ## turnover though time
 beta.same.site <- beta.net[apply(beta.net, 1,
