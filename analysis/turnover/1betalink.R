@@ -3,10 +3,7 @@ rm(list=ls())
 setwd("analysis/turnover")
 source("src/initialize.R")
 source("src/chao.R")
-source("src/betalink.R")
 source("src/betaNet.R")
-library(ggplot2)
-library(gridExtra)
 
 plants <- unique(spec$PlantGenusSpecies)
 pols <- unique(spec$GenusSpecies)
@@ -33,7 +30,10 @@ beta.same.site <- beta.net[apply(beta.net, 1,
 beta.same.year <- beta.net[apply(beta.net, 1,
                                  function(x) x["Year1"] ==
                                              x["Year2"] &
-                                             x["Site1"] != x["Site2"]),]
+                                             x["Site1"] !=
+                                             x["Site2"]),]
+
+save(beta.same.site, beta.same.year, file="saved/SpIntTurnover.Rdata")
 
 
 yvars <- c("S", "WN", "S_Plants", "S_Pols", "PropST", "OS")
@@ -57,4 +57,5 @@ for(i in 1:length(yvars)){
 }
 
 do.call(grid.arrange, panels)
+
 

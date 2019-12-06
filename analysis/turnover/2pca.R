@@ -41,12 +41,35 @@ pcas.diffs.same.year <- pcas.species[apply(pcas.species, 1,
                                                        x["SR1"] ==
                                                        x["SR2"]),]
 
+save(pcas.diffs.same.year, file="saved/PcaTurnover.Rdata")
 
-p <- ggplot(pcas.diffs.same.year,
-       aes(x=GeoDist, y=diffPca,
-           pch=Year1, col=GenusSpecies)) + geom_point() + geom_line() +
-    labs(x="Geographic Distance", y="Network role change") +
-    lims(y=c(0,1))
 
-p + theme(legend.position="top", legend.box = "horizontal")
+load(file="saved/SpIntTurnover.Rdata")
+
+pcas.beta <- merge(pcas.diffs.same.year, beta.same.year,
+                   all.x=TRUE)
+
+## ******************************************************************
+## plotting
+## ******************************************************************
+
+xvars <- c("GeoDist", "S", "S_Plants", "S_Pols")
+xlabs <- c("Geographic distance", "Species turnover",
+           "Plant turnover",
+           "Pollinator turnover")
+
+panels <- vector("list", length(xvars))
+
+for(i in 1:length(xvars)){
+    this.beta <- pcas.beta
+    colnames(this.beta)[colnames(this.beta) == xvars[i]] <- "x"
+    panels[[i]] <- ggplot(this.beta,
+       aes(x=x, y=diffPca,
+           color=GenusSpecies, pch=Year1)) + geom_point()  +
+    labs(y="Change in network position", x=xlabs[i])  +
+        theme(legend.position = "none")
+}
+
+do.call(grid.arrange, panels)
+
 
