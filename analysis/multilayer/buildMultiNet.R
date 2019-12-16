@@ -1,92 +1,71 @@
-## require(devtools)
-## install_github("frankkramer-lab/mully")
 setwd('~/Dropbox/skyIslands')
 rm(list=ls())
 setwd('analysis/multilayer')
 
-library(mully)
 library(multinet)
-library(ggplot2)
-library(betalink)
 library(igraph)
+source("src/misc.R")
+source("src/plotting.R")
 
 load('../../data/spec.Rdata')
-load('../../data/nets.Rdata')
+load('../../data/netsYr.Rdata')
 
-site.order <- c("JC", "SC", "SM", "MM", "HM", "PL", "CH")
+same.year <- split(nets.graph.uw, years)
 
-years <- sapply(strsplit(names(nets), "[.]"), function(x) x[[2]])
-sites <- sapply(strsplit(names(nets), "[.]"), function(x) x[[1]])
+pols <- unique(spec$GenusSpecies)
+plants <- unique(spec$PlantGenusSpecies)
 
-nets.graph <- prepare_networks(nets, directed=FALSE)
-nets.graph <- nets.graph
+spatial.order <- list('2012'=c("JC", "SC", "MM", "PL", "CH"),
+                 '2017'= c("JC", "SC", "SM", "MM", "HM", "CH"),
+                 '2018'= c("JC", "SC", "SM", "MM", "HM", "PL", "CH"))
+years <- c("2012", "2017", "2018")
 
-same.year <- split(nets.graph, years)
+for(yr in years){
+    print(yr)
+    ml.net <- ml_empty()
+    site.yr <- paste(spatial.order[[yr]], yr, sep=".")
+    for(i in 1:length(spatial.order[[yr]])){
+        add_igraph_layer_ml(ml.net, same.year[[yr]][[site.yr[i]]],
+                            spatial.order[[yr]][i])
+    }
 
-## **************************************************************
-## 2012 multi layer network
-## **************************************************************
-net.2012 <- ml_empty()
-add_igraph_layer_ml(net.2012, same.year$'2012'$JC.2012.1, "layer1")
-add_igraph_layer_ml(net.2012, same.year$'2012'$SC.2012.1, "layer2")
-add_igraph_layer_ml(net.2012, same.year$'2012'$MM.2012.1, "layer3")
-add_igraph_layer_ml(net.2012, same.year$'2012'$PL.2012.1, "layer4")
-add_igraph_layer_ml(net.2012, same.year$'2012'$CH.2012.1, "layer5")
+    for(i in 1:(length(spatial.order[[yr]]) -1)){
+        l1.to.l2 <- names(V(same.year[[yr]][[site.yr[i]]]))[
+            names(V(same.year[[yr]][[site.yr[i]]])) %in%
+            names(V(same.year[[yr]][[site.yr[i + 1]]]))]
 
-l1.to.l2 <- V(same.year$'2012'$JC.2012.1)[V(same.year$'2012'$JC.2012.1) %in%
-                              V(same.year$'2012'$SC.2012.1)]
-l1.to.l2 <- names(l1.to.l2)
+        inter_layer_edges12 <- data.frame(
+            actor1 = l1.to.l2,
+            layer1 = rep(spatial.order[[yr]][i], length(l1.to.l2)),
+            actor2 =  l1.to.l2,
+            layer2 = rep(spatial.order[[yr]][i+1], length(l1.to.l2)))
 
-l2.to.l3 <- V(same.year$'2012'$SC.2012.1)[V(same.year$'2012'$SC.2012.1) %in%
-                              V(same.year$'2012'$MM.2012.1)]
-l2.to.l3 <- names(l2.to.l3)
+        add_edges_ml(ml.net, inter_layer_edges12)
 
-l3.to.l4 <- V(same.year$'2012'$MM.2012.1)[V(same.year$'2012'$MM.2012.1) %in%
-                              V(same.year$'2012'$PL.2012.1)]
-l3.to.l4 <- names(l3.to.l4)
+    }
 
-l4.to.l5 <- V(same.year$'2012'$PL.2012.1)[V(same.year$'2012'$PL.2012.1) %in%
-                              V(same.year$'2012'$CH.2012.1)]
-l4.to.l5 <- names(l4.to.l5)
+    add_attributes_ml(ml.net, attributes="SpType", type="string",
+                      target="actor")
 
-inter_layer_edges12 <- data.frame(
-    actor1 = l1.to.l2,
-    layer1 = rep("layer1", length(l1.to.l2)),
-    actor2 =  l1.to.l2,
-    layer2 = rep("layer2", length(l1.to.l2)))
-
-add_edges_ml(net.2012, inter_layer_edges12)
-
-inter_layer_edges23 <- data.frame(
-    actor1 = l2.to.l3,
-    layer1 = rep("layer2", length(l2.to.l3)),
-    actor2 =  l2.to.l3,
-    layer2 = rep("layer3", length(l2.to.l3)))
-
-add_edges_ml(net.2012, inter_layer_edges23)
-
-## inter_layer_edges34 <- data.frame(
-##     actor1 = l3.to.l4,
-##     layer1 = rep("layer3", length(l3.to.l4)),
-##     actor2 =  l3.to.l4,
-##     layer2 = rep("layer4", length(l3.to.l4)))
-
-## add_edges_ml(net.2012, inter_layer_edges34)
-
-## inter_layer_edges45 <- data.frame(
-##     actor1 = l4.to.l5,
-##     layer1 = rep("layer4", length(l4.to.l5)),
-##     actor2 =  l4.to.l5,
-##     layer2 = rep("layer5", length(l4.to.l5)))
-
-## add_edges_ml(net.2012, inter_layer_edges45)
+    set_values_ml(ml.net ,"SpType",
+                  actors=pols[pols %in% actors_ml(ml.net)],
+                  values="Pollinator")
+    set_values_ml(ml.net ,"SpType",
+                  actors=plants[plants %in% actors_ml(ml.net)],
+                  values="Plant")
+    ml.net.all  <- as.igraph(ml.net, merge.actors = FALSE)
+    ml.net.merged  <- as.igraph(ml.net, merge.actors = TRUE)
 
 
-l <- layout_multiforce_ml(net.2012, w_inter = 1, gravity = 1)
-bk <- par("mar")
-par(mar=c(0,0,0,0))
-plot(net.2012, layers=c("layer1", "layer2", "layer3", "layer4",
-                        "layer5"),
-                        layout = l, vertex.labels = "",
-     legend.x = "bottomright", legend.inset = c(.05, .05))
-par(mar=bk)
+    pdf.f(plotMl, sprintf("figures/net%s.pdf", yr),  width=10, height=6)
+
+
+    write_ml(ml.net, file=sprintf("saved/net%s.mpx", yr),
+             merge.actors = FALSE)
+
+    save(ml.net.all, ml.net.merged,
+         file=sprintf("saved/multilayer%s.Rdata", yr))
+
+}
+
+
