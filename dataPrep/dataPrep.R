@@ -14,7 +14,8 @@ source('relational/make_traditional.R')
 setwd("~/Dropbox/skyIslands/dataPrep")
 src.dir <- '../../skyIslands_saved/data/relational/relational/traditional/'
 spec <-
-    read.csv(file.path(src.dir, "specimens-complete.csv"))
+    read.csv(file.path(src.dir, "specimens-complete.csv"),
+             stringsAsFactors=FALSE)
 
 source("src/misc.R")
 source("src/prepNets.R")
@@ -86,8 +87,8 @@ save(spec, file="../data/spec.Rdata")
 write.csv(spec, file="../data/spec.csv", row.names=FALSE)
 
 ## *******************************************************************
-## create a giant network to calculate specialization etc. across all
-## SI
+## create a giant plant-pollinator network to calculate specialization
+## etc. across all SI
 ## *******************************************************************
 agg.spec <- aggregate(list(abund=spec$GenusSpecies),
                       list(GenusSpecies=spec$GenusSpecies,
@@ -117,78 +118,75 @@ rownames(traits) <- NULL
 
 write.csv(traits, file='../data/traits.csv')
 
+## *******************************************************************
+## create a giant pathogen-pollinator network to calculate
+## specialization etc. across all SI
+## *******************************************************************
+parasites <- c("AspergillusSpp", "AscosphaeraSpp",
+                "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi")
+                ## "NosemaBombi", "NosemaCeranae")
+
+agg.spec.sub <- spec[!apply(spec[,parasites], 1, function(x) all(is.na(x))),]
+
+
+## add Nosema when ready
+agg.spec.para <- aggregate(agg.spec.sub[, parasites],
+                      list(GenusSpecies=agg.spec.sub$GenusSpecies),
+                                              sum, na.rm=TRUE)
+
+para.gensp.counts <- table(agg.spec.sub$GenusSpecies)
+
+## proportion of individuals screened
+agg.spec.para[, parasites] <- agg.spec.para[, parasites]/
+    para.gensp.counts[agg.spec.para$GenusSpecies]
+
+nets.para <- agg.spec.para
+rownames(nets.para) <- nets.para$GenusSpecies
+nets.para$GenusSpecies <- NULL
+
+all.traits.para <- specieslevel(nets.para)
+## calculate rarified plant.pol degree
+
+para.traits <- data.frame(GenusSpecies= unlist(sapply(all.traits.para,
+                                                 rownames)),
+                     do.call(rbind, all.traits.para))
+
+rownames(para.traits) <- NULL
+
+write.csv(traits, file='../data/parasitetraits.csv')
 
 ## *******************************************************************
 ##  create site, SR, year level networks
 ## *******************************************************************
 
-###  adj matrices by site, yr, SR
-spec$YearSR <- paste(spec$Year, spec$SampleRound, sep=".")
-nets <- breakNet(spec, 'Site', 'YearSR')
+## plant-pollinator networks
+makeNets(spec, net.type="YrSR")
+makeNets(spec, net.type="Yr", mean.by.year=TRUE)
 
-## graphs
-nets.graph <- lapply(nets, graph_from_incidence_matrix,
-                     weighted =   TRUE, directed = FALSE)
-nets.graph <-  lapply(nets.graph, function(x){
-    vertex_attr(x)$type[vertex_attr(x)$type] <- "Pollinator"
-    vertex_attr(x)$type[vertex_attr(x)$type
-                        != "Pollinator"] <- "Plant"
-    return(x)
-})
 
-## unweighted
-nets.graph.uw <- lapply(nets, graph_from_incidence_matrix,
-                      directed = FALSE)
-nets.graph.uw <-  lapply(nets.graph.uw, function(x){
-    vertex_attr(x)$type[vertex_attr(x)$type] <- "Pollinator"
-    vertex_attr(x)$type[vertex_attr(x)$type
-                        != "Pollinator"] <- "Plant"
-    return(x)
-})
 
-years <- sapply(strsplit(names(nets), "[.]"), function(x) x[[2]])
-sites <- sapply(strsplit(names(nets), "[.]"), function(x) x[[1]])
+spec.sub <- agg.spec.sub %>%
+    select(UniqueID, GenusSpecies, Site, Year, SampleRound, "AspergillusSpp", "AscosphaeraSpp",
+                "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi")
 
-save(nets.graph,nets.graph.uw, nets, years, sites,
-     file="../data/netsYrSR.Rdata")
+prep.para <- spec.sub %>%
+    pivot_longer(cols=c("AspergillusSpp", "AscosphaeraSpp",
+                        "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi"),
+                 names_to = "Parasite", values_to = "count")
 
-## species stats
-sp.lev <- calcSpec(nets)
-save(sp.lev, file='../data/splevYrSR.Rdata')
+prep.para <- as.data.frame(prep.para[prep.para$count == 1,])
 
-## *******************************************************************
-###  adj matrices by site, yr
-nets <- breakNet(spec, 'Site', 'YearSR', TRUE)
+makeNets(prep.para, net.type="YrSR", species=c("Pollinator",
+                                               "Parasite"),
+         lower.level="GenusSpecies",
+         higher.level="Parasite")
 
-## graphs
-nets.graph <- lapply(nets, graph_from_incidence_matrix,
-                     weighted =   TRUE, directed = FALSE)
-nets.graph <-  lapply(nets.graph, function(x){
-    vertex_attr(x)$type[vertex_attr(x)$type] <- "Pollinator"
-    vertex_attr(x)$type[vertex_attr(x)$type
-                        != "Pollinator"] <- "Plant"
-    return(x)
-})
 
-## unweighted
-nets.graph.uw <- lapply(nets, graph_from_incidence_matrix,
-                      directed = FALSE)
-nets.graph.uw <-  lapply(nets.graph.uw, function(x){
-    vertex_attr(x)$type[vertex_attr(x)$type] <- "Pollinator"
-    vertex_attr(x)$type[vertex_attr(x)$type
-                        != "Pollinator"] <- "Plant"
-    return(x)
-})
-
-years <- sapply(strsplit(names(nets), "[.]"), function(x) x[[2]])
-sites <- sapply(strsplit(names(nets), "[.]"), function(x) x[[1]])
-
-save(nets.graph,nets.graph.uw, nets, years, sites,
-     file="../data/netsYr.Rdata")
-
-## species stats
-sp.lev <- calcSpec(nets)
-save(sp.lev, file='../data/splevYr.Rdata')
+makeNets(prep.para, net.type="Yr", species=c("Pollinator",
+                                               "Parasite"),
+         lower.level="GenusSpecies",
+         higher.level="Parasite",
+         mean.by.year=TRUE)
 
 ## *******************************************************************
 ##  checks
