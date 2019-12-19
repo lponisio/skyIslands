@@ -40,7 +40,7 @@ write.csv(res.complete, file='traditional/specimens-complete.csv',
           row.names=FALSE)
 
 ## ## ## generate barcodes
-library(devtools)
+## library(devtools)
 ## devtools::install_github("yihanwu/baRcodeR", build_vignettes = TRUE)
 ## library(baRcodeR)
 

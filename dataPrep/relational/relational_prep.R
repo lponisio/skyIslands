@@ -187,3 +187,34 @@ data.geo <- data.frame(Site=geo$Site,
 ## write unique data to a table
 write.csv(data.geo, file="relational/original/geography.csv",
                    row.names=FALSE)
+
+
+## *******************************************************
+## parasite data prep
+## *******************************************************
+
+screenings <- c("Apidae", "AspergillusSpp", "AscosphaeraSpp",
+                "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi",
+                "NosemaBombi", "NosemaCeranae")
+
+para.data <- read.csv("raw/parasites.csv",  stringsAsFactors=FALSE)
+
+controls <- para.data[grepl("DNActrl", para.data$UniqueID),]
+print("Are DNA extraction controls all zero?")
+print(all(apply(controls[,screenings], 1, sum, na.rm=TRUE) == 0))
+
+## remove controls
+para.data <- para.data[!para.data$UniqueID %in% controls$UniqueID,]
+
+print("before removing species without Apidae positivies")
+print(nrow(para.data))
+
+para.data <- para.data[para.data$Apidae == 1,]
+print("after removing species without Apidae positivies")
+print(nrow(para.data))
+
+para.data$TempID <- NULL
+
+
+write.csv(para.data, file="relational/original/parasites.csv",
+                   row.names=FALSE)

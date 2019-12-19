@@ -9,6 +9,7 @@ source('~/Dropbox/skyIslands/dataPrep/src/misc.R')
 conditions <- read.csv("../original/weather.csv", as.is=TRUE)
 specimens <- read.csv("../original/specimens.csv", as.is=TRUE)
 geo <- read.csv("../original/geography.csv", as.is=TRUE)
+parasites <- read.csv("../original/parasites.csv", as.is=TRUE)
 
 ## *******************************************************
 ## Start by importing the conditions information, from the conditions
@@ -213,6 +214,18 @@ specimens <- specimens[keep]
 specimens <- unique(specimens)
 rownames(specimens) <- NULL
 
+## *******************************************************
+## 8. Add parasite data:
+## *******************************************************
+specimens <- merge(specimens, parasites, by="UniqueID",
+                   all.x=TRUE)
+
+
+## *******************************************************
+## write final specimen table and close connection to database
+## *******************************************************
+
+
 dbWriteTable(con, 'tblSpecimens', specimens, row.names=FALSE)
 
 write.csv(dbReadTable(con, 'tblSpecimens'),
@@ -220,8 +233,6 @@ write.csv(dbReadTable(con, 'tblSpecimens'),
 
 print(paste("before traditional, dim=", nrow(specimens)))
 
-## *******************************************************
-## close connection to database
-## *******************************************************
+
 dbDisconnect(con)
 

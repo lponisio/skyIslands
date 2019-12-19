@@ -46,11 +46,12 @@ spec$Date <- as.Date(spec$Date, format='%m/%d/%y')
 spec$Doy <- as.numeric(strftime(spec$Date, format='%j'))
 spec$Year <- as.numeric(format(spec$Date,'%Y'))
 
-## drop non-bee, non-Syrphids
+## drop non-bees but keep syrphids
 spec <- spec[spec$Family %in% c("Andrenidae", "Apidae",
                                 "Colletidae", "Halictidae",
                                 "Megachilidae", "Syrphidae"),]
 
+## drop non-bees
 ## spec <- spec[spec$Family %in% c("Andrenidae", "Apidae",
 ##                                 "Colletidae", "Halictidae",
 ##                                 "Megachilidae"),]
@@ -85,7 +86,7 @@ save(spec, file="../data/spec.Rdata")
 write.csv(spec, file="../data/spec.csv", row.names=FALSE)
 
 ## *******************************************************************
-## create a giant network to calculate specialization etc. acorss all
+## create a giant network to calculate specialization etc. across all
 ## SI
 ## *******************************************************************
 agg.spec <- aggregate(list(abund=spec$GenusSpecies),
@@ -116,23 +117,83 @@ rownames(traits) <- NULL
 
 write.csv(traits, file='../data/traits.csv')
 
-### site-level networks
+
+## *******************************************************************
+##  create site, SR, year level networks
+## *******************************************************************
+
+###  adj matrices by site, yr, SR
 spec$YearSR <- paste(spec$Year, spec$SampleRound, sep=".")
-
 nets <- breakNet(spec, 'Site', 'YearSR')
-graphs <- lapply(nets, graph.incidence, weighted=TRUE)
-save(graphs, nets, file="../data/nets.Rdata")
 
+## graphs
+nets.graph <- lapply(nets, graph_from_incidence_matrix,
+                     weighted =   TRUE, directed = FALSE)
+nets.graph <-  lapply(nets.graph, function(x){
+    vertex_attr(x)$type[vertex_attr(x)$type] <- "Pollinator"
+    vertex_attr(x)$type[vertex_attr(x)$type
+                        != "Pollinator"] <- "Plant"
+    return(x)
+})
 
+## unweighted
+nets.graph.uw <- lapply(nets, graph_from_incidence_matrix,
+                      directed = FALSE)
+nets.graph.uw <-  lapply(nets.graph.uw, function(x){
+    vertex_attr(x)$type[vertex_attr(x)$type] <- "Pollinator"
+    vertex_attr(x)$type[vertex_attr(x)$type
+                        != "Pollinator"] <- "Plant"
+    return(x)
+})
+
+years <- sapply(strsplit(names(nets), "[.]"), function(x) x[[2]])
+sites <- sapply(strsplit(names(nets), "[.]"), function(x) x[[1]])
+
+save(nets.graph,nets.graph.uw, nets, years, sites,
+     file="../data/netsYrSR.Rdata")
+
+## species stats
 sp.lev <- calcSpec(nets)
+save(sp.lev, file='../data/splevYrSR.Rdata')
 
+## *******************************************************************
+###  adj matrices by site, yr
+nets <- breakNet(spec, 'Site', 'YearSR', TRUE)
 
+## graphs
+nets.graph <- lapply(nets, graph_from_incidence_matrix,
+                     weighted =   TRUE, directed = FALSE)
+nets.graph <-  lapply(nets.graph, function(x){
+    vertex_attr(x)$type[vertex_attr(x)$type] <- "Pollinator"
+    vertex_attr(x)$type[vertex_attr(x)$type
+                        != "Pollinator"] <- "Plant"
+    return(x)
+})
 
+## unweighted
+nets.graph.uw <- lapply(nets, graph_from_incidence_matrix,
+                      directed = FALSE)
+nets.graph.uw <-  lapply(nets.graph.uw, function(x){
+    vertex_attr(x)$type[vertex_attr(x)$type] <- "Pollinator"
+    vertex_attr(x)$type[vertex_attr(x)$type
+                        != "Pollinator"] <- "Plant"
+    return(x)
+})
 
-save(sp.lev, file='../data/splev.Rdata')
+years <- sapply(strsplit(names(nets), "[.]"), function(x) x[[2]])
+sites <- sapply(strsplit(names(nets), "[.]"), function(x) x[[1]])
 
+save(nets.graph,nets.graph.uw, nets, years, sites,
+     file="../data/netsYr.Rdata")
 
-##
+## species stats
+sp.lev <- calcSpec(nets)
+save(sp.lev, file='../data/splevYr.Rdata')
+
+## *******************************************************************
+##  checks
+## *******************************************************************
+
 
 print(paste("Pollinator species", length(unique(spec$GenusSpecies))))
 print(paste("Plant species", length(unique(spec$PlantGenusSpecies))))
