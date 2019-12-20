@@ -173,8 +173,9 @@ prep.para <- spec.sub %>%
     pivot_longer(cols=c("AspergillusSpp", "AscosphaeraSpp",
                         "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi"),
                  names_to = "Parasite", values_to = "count")
+prep.para <- as.data.frame(prep.para)
 
-prep.para <- as.data.frame(prep.para[prep.para$count == 1,])
+## prep.para <- as.data.frame(prep.para[prep.para$count == 1,])
 
 makeNets(prep.para, net.type="YrSR", species=c("Pollinator",
                                                "Parasite"),
@@ -199,15 +200,13 @@ print(paste("Pollinator genera", length(unique(spec$Genus))))
 print(paste("Interactions", length(unique(spec$Int))))
 print(paste("Specimens", nrow(spec)))
 
+## table(spec$GenusSpecies)
 
+## ## tab <- table(spec$GenusSpecies, spec$Site)
+## ## tab2 <- table(spec$PlantGenusSpecies, spec$Site)
 
-table(spec$GenusSpecies)
+## ## table(spec$PlantGenusSpecies)
+## ## table(spec$PlantGenusSpecies, spec$Site)
+## ## table(spec$PlantGenusSpecies, spec$Year)
 
-## tab <- table(spec$GenusSpecies, spec$Site)
-## tab2 <- table(spec$PlantGenusSpecies, spec$Site)
-
-## table(spec$PlantGenusSpecies)
-## table(spec$PlantGenusSpecies, spec$Site)
-## table(spec$PlantGenusSpecies, spec$Year)
-
-## table(spec$PlantGenusSpecies, spec$Family)
+## ## table(spec$PlantGenusSpecies, spec$Family)
