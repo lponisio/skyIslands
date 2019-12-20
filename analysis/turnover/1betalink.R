@@ -8,8 +8,6 @@ source("src/betaNet.R")
 plants <- unique(spec$PlantGenusSpecies)
 pols <- unique(spec$GenusSpecies)
 
-nets.graph <- prepare_networks(nets)
-
 beta.net <- network_betadiversity(nets.graph,
                                   plants=plants, pols=pols,
                                   geo.dist=geo.dist)
