@@ -16,12 +16,12 @@ plotMl <- function(){
     bk <- par("mar")
     par(mar=c(0,0,0,0))
     plot(ml.net, layers=spatial.order[[yr]],
-         layout = l, vertex.labels = "",
+         layout = l,  vertex.labels = "",
          edge.col="grey",
          vertex.color = gr$color)
     par(mar=bk)
 
-    legend("topright",
+    legend("bottomright",
            legend = gr$legend.text,
            col = gr$legend.col,
            pt.bg = gr$legend.col,

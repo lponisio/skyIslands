@@ -1,26 +1,26 @@
-setwd('~/Dropbox/skyIslands')
+## setwd('~/Dropbox/skyIslands')
 rm(list=ls())
 setwd('analysis/multilayer')
 
 library(multinet)
-library(igraph)
 source("src/misc.R")
 source("src/plotting.R")
 
-load('../../data/spec.Rdata')
-load('../../data/netsYr.Rdata')
+net.type <- "Yr"
+## species <- c("Plant", "Pollinator")
+species <- c("Pollinator", "Parasite")
+
+source('../turnover/src/initialize.R')
 
 same.year <- split(nets.graph.uw, years)
-
-pols <- unique(spec$GenusSpecies)
-plants <- unique(spec$PlantGenusSpecies)
 
 spatial.order <- list('2012'=c("JC", "SC", "MM", "PL", "CH"),
                  '2017'= c("JC", "SC", "SM", "MM", "HM", "CH"),
                  '2018'= c("JC", "SC", "SM", "MM", "HM", "PL", "CH"))
-years <- c("2012", "2017", "2018")
 
-for(yr in years){
+yrs <- unique(years)
+
+for(yr in yrs){
     print(yr)
     ml.net <- ml_empty()
     site.yr <- paste(spatial.order[[yr]], yr, sep=".")
@@ -48,23 +48,27 @@ for(yr in years){
                       target="actor")
 
     set_values_ml(ml.net ,"SpType",
-                  actors=pols[pols %in% actors_ml(ml.net)],
-                  values="Pollinator")
+                  actors=higher.level[higher.level %in% actors_ml(ml.net)],
+                  values="higher.level")
     set_values_ml(ml.net ,"SpType",
-                  actors=plants[plants %in% actors_ml(ml.net)],
-                  values="Plant")
+                  actors=lower.level[lower.level %in% actors_ml(ml.net)],
+                  values="lower.level")
     ml.net.all  <- as.igraph(ml.net, merge.actors = FALSE)
     ml.net.merged  <- as.igraph(ml.net, merge.actors = TRUE)
 
 
-    pdf.f(plotMl, sprintf("figures/net%s.pdf", yr),  width=10, height=6)
+    pdf.f(plotMl, sprintf("figures/net%s%s.pdf", yr,
+                          paste(species, collapse="")),
+          width=10, height=6)
 
 
-    write_ml(ml.net, file=sprintf("saved/net%s.mpx", yr),
+    write_ml(ml.net, file=sprintf("saved/net%s%s.mpx", yr,
+                                   paste(species, collapse="")),
              merge.actors = FALSE)
 
     save(ml.net.all, ml.net.merged,
-         file=sprintf("saved/multilayer%s.Rdata", yr))
+         file=sprintf("saved/multilayer%s%s.Rdata", yr,
+                       paste(species, collapse="")))
 
 }
 
