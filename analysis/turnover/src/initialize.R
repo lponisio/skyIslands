@@ -5,10 +5,12 @@ library(ggplot2)
 library(gridExtra)
 
 source('src/misc.R')
-
 load('../../data/spec.Rdata')
-load('../../data/netsYrSR.Rdata')
 
+
+load(file=sprintf("../../data/nets%s%s.Rdata", net.type,
+                      paste(species, collapse="")
+                      ))
 
 ##distance dissimilarity
 geo <- unique(spec[, c("Site", "Lat", "Long")])

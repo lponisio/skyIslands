@@ -1,15 +1,32 @@
 ## setwd("~/Dropbox/skyIslands/")
 rm(list=ls())
 setwd("analysis/turnover")
+net.type <- "Yr"
+## net.type <- "Yr"
+## species <- c("Plant", "Pollinator")
+species <- c("Pollinator", "Parasite")
 source("src/initialize.R")
 source("src/chao.R")
 source("src/betaNet.R")
 
 plants <- unique(spec$PlantGenusSpecies)
 pols <- unique(spec$GenusSpecies)
+parasites <- c("AspergillusSpp", "AscosphaeraSpp",
+               "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi")
+## "NosemaBombi", "NosemaCeranae")
 
-beta.net <- network_betadiversity(nets.graph,
-                                  plants=plants, pols=pols,
+if(species[2] == "Pollinator"){
+    lower.level  <- plants
+    higher.level <- pols
+} else if(species[2] == "Parasite"){
+    lower.level  <- pols
+    higher.level <- parasites
+}
+
+
+beta.net <- networkBetadiversity(nets.graph,
+                                  lower.level=lower.level,
+                                  higher.level=higher.level,
                                   geo.dist=geo.dist)
 
 ## Bs: Dissimilarity in the species composition of communities
@@ -31,18 +48,21 @@ beta.same.year <- beta.net[apply(beta.net, 1,
                                              x["Site1"] !=
                                              x["Site2"]),]
 
-save(beta.same.site, beta.same.year, file="saved/SpIntTurnover.Rdata")
+save(beta.same.site, beta.same.year,
+     file=sprintf("saved/Beta%s%s.Rdata", net.type,
+                      paste(species, collapse="")
+                      ))
 
 
 ## ******************************************************************
 ## plotting
 ## ******************************************************************
 
-yvars <- c("S", "WN", "S_Plants", "S_Pols", "PropST", "OS")
+yvars <- c("S", "WN", "S_lower.level", "S_higher.level", "PropST", "OS")
+
 
 ylabs <- c("Species turnover", "Interaction Turnover",
-           "Plant turnover",
-           "Pollinator turnover",
+           paste(species, "turnover"),
            "Interaction turnover due to species turnover",
            "Interaction turnover due to rewiring")
 
@@ -52,10 +72,10 @@ for(i in 1:length(yvars)){
     this.beta <- beta.same.year
     colnames(this.beta)[colnames(this.beta) == yvars[i]] <- "y"
     panels[[i]] <- ggplot(this.beta,
-       aes(x=GeoDist, y=y,
-           color=Year1)) + geom_point() + geom_smooth() +
-    labs(x="Geographic Distance", y=ylabs[i]) +
-    lims(y=c(0,1))
+                          aes(x=GeoDist, y=y,
+                              color=Year1)) + geom_point() + geom_smooth(method="lm") +
+        labs(x="Geographic Distance", y=ylabs[i]) +
+        lims(y=c(0,1))
 }
 
 do.call(grid.arrange, panels)

@@ -1,17 +1,17 @@
 
-betalinkPP <- function (n1, n2, bf = B01, plants, pols) {
+betalinkPP <- function (n1, n2, bf = B01, lower.level, higher.level) {
     ## From Poisot et
     ## al. 2012 https://doi.org/10.1111/ele.12002
     ## function modified from betalink packages that including
-    ## calculating turnover of plants and pollinators seperatly
+    ## calculating turnover of lower.level and pollinators seperatly
     v1 <- igraph::V(n1)$name
     v2 <- igraph::V(n2)$name
     vs <- v1[v1 %in% v2]
     beta_S <- bf(betapart(v1, v2))
-    beta_S_plant <- bf(betapart(v1[v1 %in% plants], v2[v2 %in%
-                                                       plants]))
-    beta_S_pol <- bf(betapart(v1[v1 %in% pols], v2[v2 %in%
-                                                   pols]))
+    beta_S_lower.level <- bf(betapart(v1[v1 %in% lower.level], v2[v2 %in%
+                                                       lower.level]))
+    beta_S_higher.level <- bf(betapart(v1[v1 %in% higher.level], v2[v2 %in%
+                                                   higher.level]))
     e1 <- plyr::aaply(igraph::get.edgelist(n1), 1,
                       function(x) stringr::str_c(x,
                                                  collapse = "--", paste = "_"))
@@ -39,16 +39,18 @@ betalinkPP <- function (n1, n2, bf = B01, plants, pols) {
         beta_RW <- NaN
     }
     return(list(S = beta_S,
-                S_Plants=beta_S_plant,
-                S_Pols=beta_S_pol,
+                S_lower.level=beta_S_lower.level,
+                S_higher.level=beta_S_higher.level,
                 OS = beta_OS,
                 WN = beta_WN,
                 ST = beta_ST))
 }
 
 
-network_betadiversity <- function (N, complete = FALSE,
-                                   plants, pols, geo.dist,...) {
+networkBetadiversity <- function (N, complete = FALSE,
+                                   lower.level, higher.level,
+                                  geo.dist,
+                                  nets.by.SR=FALSE, ...) {
     ## modified function from betalink package. From Poisot et
     ## al. 2012 https://doi.org/10.1111/ele.12002
 
@@ -72,7 +74,7 @@ network_betadiversity <- function (N, complete = FALSE,
         inner_steps <- inner_steps[which(inner_steps != i)]
         for (j in inner_steps) {
             b <- betalinkPP(N[[i]], N[[j]],
-                            plants=plants, pols=pols, ...)
+                            lower.level=lower.level, higher.level=higher.level, ...)
             b$i <- names(N)[i]
             b$j <- names(N)[j]
             beta <- rbind(beta, rbind(unlist(b)))
@@ -80,16 +82,16 @@ network_betadiversity <- function (N, complete = FALSE,
     }
     if (NROW(beta) == 1) {
         beta <- data.frame(t(beta[, c("i", "j", "S", "OS", "WN",
-                                      "ST",  "S_Plants", "S_Pols")]))
+                                      "ST",  "S_lower.level", "S_higher.level")]))
     }
     else {
         beta <- data.frame(beta[, c("i", "j", "S", "OS", "WN",
-                                    "ST", "S_Plants", "S_Pols")])
+                                    "ST", "S_lower.level", "S_higher.level")])
     }
     beta$OS <- as.numeric(as.vector(beta$OS))
     beta$S <- as.numeric(as.vector(beta$S))
-    beta$S_Pols <- as.numeric(as.vector(beta$S_Pol))
-    beta$S_Plants <- as.numeric(as.vector(beta$S_Plant))
+    beta$S_higher.level <- as.numeric(as.vector(beta$S_higher.level))
+    beta$S_lower.level <- as.numeric(as.vector(beta$S_lower.level))
     beta$WN <- as.numeric(as.vector(beta$WN))
     beta$ST <- as.numeric(as.vector(beta$ST))
     beta$PropST <- beta$ST/beta$WN
@@ -97,17 +99,20 @@ network_betadiversity <- function (N, complete = FALSE,
     ## site and years names
     beta$Site1 <- sapply(strsplit(as.character(beta$i), "\\."),
                          function(x) x[[1]])
-    beta$Year1 <- sapply(strsplit(as.character(beta$i), "\\."),
-                         function(x) x[[2]])
-    beta$SR1 <- sapply(strsplit(as.character(beta$i), "\\."),
-                       function(x) x[[3]])
-
     beta$Site2 <- sapply(strsplit(as.character(beta$j), "\\."),
                          function(x) x[[1]])
+    beta$Year1 <- sapply(strsplit(as.character(beta$i), "\\."),
+                         function(x) x[[2]])
     beta$Year2 <- sapply(strsplit(as.character(beta$j), "\\."),
                          function(x) x[[2]])
-    beta$SR2 <- sapply(strsplit(as.character(beta$j), "\\."),
-                       function(x) x[[3]])
+
+    if(nets.by.SR){
+        beta$SR1 <- sapply(strsplit(as.character(beta$i), "\\."),
+                           function(x) x[[3]])
+        beta$SR2 <- sapply(strsplit(as.character(beta$j), "\\."),
+                           function(x) x[[3]])
+    }
+
 
     beta$GeoDist <- apply(beta, 1, function(x){
         geo.dist[x["Site1"],  x["Site2"]]
