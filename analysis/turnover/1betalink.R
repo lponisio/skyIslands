@@ -1,8 +1,8 @@
 ## setwd("~/Dropbox/skyIslands/")
 rm(list=ls())
 setwd("analysis/turnover")
+## net.type <- "YrSR"
 net.type <- "Yr"
-## net.type <- "Yr"
 ## species <- c("Plant", "Pollinator")
 species <- c("Pollinator", "Parasite")
 source("src/initialize.R")
@@ -58,26 +58,31 @@ save(beta.same.site, beta.same.year,
 ## plotting
 ## ******************************************************************
 
-yvars <- c("S", "WN", "S_lower.level", "S_higher.level", "PropST", "OS")
+plotTurnover <- function(){
+    yvars <- c("S", "WN", "S_lower.level", "S_higher.level", "PropST", "OS")
 
+    ylabs <- c("Species turnover", "Interaction Turnover",
+               paste(species, "turnover"),
+               "Interaction turnover: species turnover",
+               "Interaction turnover: rewiring")
 
-ylabs <- c("Species turnover", "Interaction Turnover",
-           paste(species, "turnover"),
-           "Interaction turnover due to species turnover",
-           "Interaction turnover due to rewiring")
+    panels <- vector("list", length(yvars))
 
-panels <- vector("list", length(yvars))
+    for(i in 1:length(yvars)){
+        this.beta <- beta.same.year
+        colnames(this.beta)[colnames(this.beta) == yvars[i]] <- "y"
+        panels[[i]] <- ggplot(this.beta,
+                              ## aes(x=GeoDist, y=y, color=Year1)) +
+                              aes(x=GeoDist, y=y)) +
+            geom_point() + geom_smooth(method="lm") +
+            labs(x="Geographic Distance", y=ylabs[i]) +
+            lims(y=c(0,1))
+    }
 
-for(i in 1:length(yvars)){
-    this.beta <- beta.same.year
-    colnames(this.beta)[colnames(this.beta) == yvars[i]] <- "y"
-    panels[[i]] <- ggplot(this.beta,
-                          aes(x=GeoDist, y=y,
-                              color=Year1)) + geom_point() + geom_smooth(method="lm") +
-        labs(x="Geographic Distance", y=ylabs[i]) +
-        lims(y=c(0,1))
+    do.call(grid.arrange, panels)
 }
 
-do.call(grid.arrange, panels)
-
-
+pdf.f(plotTurnover,  file=sprintf("figures/Beta%s%s.pdf", net.type,
+                      paste(species, collapse="")
+                      ),
+      height=8, width=8)
