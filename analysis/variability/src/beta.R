@@ -88,10 +88,13 @@ makeBetaDataPretty <- function(){
     } else if(net.type == "Site"){
         dats$Site <- rep(names(nrep.site.date), nrep.site.date)
         dats$Year <- unlist(name.site.date)
+        dats$SampleRound <- "all"
     } else if(net.type == "Year"){
         dats$Year <- rep(names(nrep.site.date), nrep.site.date)
         dats$Site <- unlist(name.site.date)
+        dats$SampleRound <- "all"
     }
+    dats$Type <- net.type
     rownames(dats) <- NULL
     return(dats)
 }

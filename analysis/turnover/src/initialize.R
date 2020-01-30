@@ -1,5 +1,6 @@
 library(vegan)
 library(fields)
+library(igraph)
 library(betalink)
 library(ggplot2)
 library(gridExtra)
@@ -9,6 +10,11 @@ load('../../data/spec.Rdata')
 
 
 load(file=sprintf("../../data/nets%s%s.Rdata", net.type,
+                  paste(species, collapse="")
+                  ))
+
+
+load(file=sprintf('../../data/splev%s%s.Rdata', net.type,
                   paste(species, collapse="")
                   ))
 
@@ -24,4 +30,18 @@ if(net.type == "YrSR"){
     nets.by.SR  <-  TRUE
 } else{
     nets.by.SR  <-  FALSE
+}
+
+plants <- unique(spec$PlantGenusSpecies)
+pols <- unique(spec$GenusSpecies)
+parasites <- c("AspergillusSpp", "AscosphaeraSpp",
+               "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi")
+## "NosemaBombi", "NosemaCeranae")
+
+if(species[2] == "Pollinator"){
+    lower.level  <- plants
+    higher.level <- pols
+} else if(species[2] == "Parasite"){
+    lower.level  <- pols
+    higher.level <- parasites
 }

@@ -13,10 +13,6 @@ sp.level <- "lower.level"
 
 source('src/initialize.R')
 
-load(file=sprintf('../../data/splev%s%s.Rdata', net.type,
-                  paste(species, collapse="")
-                  ))
-
 species.roles <- sp.lev
 
 ## vector of pca loadings of interest

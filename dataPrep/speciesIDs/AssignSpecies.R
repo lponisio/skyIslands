@@ -34,6 +34,13 @@ add.to.data(sp.ids=sp.ids,
             case='bee', "Megachilidae","2019",
             data.file=spec.data.file)
 
+source(file.path(save.dir, 'IDs/2018/Sphecidae.R'))
+add.to.data(sp.ids=sp.ids,
+            case='wasp', "Sphecidae","2020",
+            data.file=spec.data.file)
+
+
+
 ## 2017 field season
 source(file.path(save.dir, 'IDs/2017/Syrphidae.R'))
 add.to.data(sp.ids=sp.ids,
@@ -59,6 +66,12 @@ add.to.data(sp.ids=sp.ids,
 source(file.path(save.dir, 'IDs/2017/Megachilidae.R'))
 add.to.data(sp.ids=sp.ids,
             case='bee', "Megachilidae","2018",
+            data.file=spec.data.file)
+
+
+source(file.path(save.dir, 'IDs/2017/Sphecidae.R'))
+add.to.data(sp.ids=sp.ids,
+            case='wasp', "Sphecidae","2020",
             data.file=spec.data.file)
 
 ## 2012 field season
@@ -95,4 +108,10 @@ add.to.data(sp.ids=sp.ids,
 source(file.path(save.dir, 'IDs/2012/Syrphidae.R'))
 add.to.data(sp.ids=sp.ids,
             case='fly',"Syrphidae", "2012",
+            data.file=spec.data.file)
+
+
+source(file.path(save.dir, 'IDs/2012/Sphecidae.R'))
+add.to.data(sp.ids=sp.ids,
+            case='wasp', "Sphecidae","2020",
             data.file=spec.data.file)

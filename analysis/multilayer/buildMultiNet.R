@@ -53,8 +53,8 @@ for(yr in yrs){
     set_values_ml(ml.net ,"SpType",
                   actors=lower.level[lower.level %in% actors_ml(ml.net)],
                   values="lower.level")
-    ml.net.all  <- as.igraph(ml.net, merge.actors = FALSE)
-    ml.net.merged  <- as.igraph(ml.net, merge.actors = TRUE)
+    ## ml.net.all  <- as.igraph(ml.net, merge.actors = FALSE)
+    ## ml.net.merged  <- as.igraph(ml.net, merge.actors = TRUE)
 
 
     pdf.f(plotMl, sprintf("figures/net%s%s.pdf", yr,
@@ -66,9 +66,9 @@ for(yr in yrs){
                                    paste(species, collapse="")),
              merge.actors = FALSE)
 
-    save(ml.net.all, ml.net.merged,
-         file=sprintf("saved/multilayer%s%s.Rdata", yr,
-                       paste(species, collapse="")))
+    ## save(ml.net.all, ml.net.merged,
+    ##      file=sprintf("saved/multilayer%s%s.Rdata", yr,
+    ##                    paste(species, collapse="")))
 
 }
 

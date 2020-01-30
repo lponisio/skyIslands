@@ -9,9 +9,9 @@ betalinkPP <- function (n1, n2, bf = B01, lower.level, higher.level) {
     vs <- v1[v1 %in% v2]
     beta_S <- bf(betapart(v1, v2))
     beta_S_lower.level <- bf(betapart(v1[v1 %in% lower.level], v2[v2 %in%
-                                                       lower.level]))
+                                                                  lower.level]))
     beta_S_higher.level <- bf(betapart(v1[v1 %in% higher.level], v2[v2 %in%
-                                                   higher.level]))
+                                                                    higher.level]))
     e1 <- plyr::aaply(igraph::get.edgelist(n1), 1,
                       function(x) stringr::str_c(x,
                                                  collapse = "--", paste = "_"))
@@ -48,7 +48,7 @@ betalinkPP <- function (n1, n2, bf = B01, lower.level, higher.level) {
 
 
 networkBetadiversity <- function (N, complete = FALSE,
-                                   lower.level, higher.level,
+                                  lower.level, higher.level,
                                   geo.dist,
                                   nets.by.SR=FALSE, ...) {
     ## modified function from betalink package. From Poisot et
@@ -111,6 +111,14 @@ networkBetadiversity <- function (N, complete = FALSE,
                            function(x) x[[3]])
         beta$SR2 <- sapply(strsplit(as.character(beta$j), "\\."),
                            function(x) x[[3]])
+        beta$Date1 <- spec$Date[match(paste0(beta$SR1, beta$Year1),
+                                      paste0(spec$SampleRound, spec$Year))]
+        beta$Date2 <- spec$Date[match(paste0(beta$SR2, beta$Year2),
+                                      paste0(spec$SampleRound,
+                                             spec$Year))]
+        beta$SRDist <- apply(beta, 1, function(x){
+            as.numeric(as.Date(x["Date2"]) -  as.Date(x["Date1"]))
+        })
     }
 
 

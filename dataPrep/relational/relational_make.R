@@ -29,7 +29,8 @@ keep <- c("SiteSubSite", "Site", "Country", "State", "County",
 
 geography <- unique(geo[keep])
 ## next sort into alphabetical order
-geography <- geography[match(sort(geography$SiteSubSite), geography$SiteSubSite),]
+geography <- geography[match(sort(geography$SiteSubSite),
+                             geography$SiteSubSite),]
 
 ## generate primary geography key
 geography <- cbind(GeographyPK=seq_len(nrow(geography)), geography)
@@ -56,12 +57,13 @@ dbListTables(con)
 ## *******************************************************
 
 ## Temporarily identify unique combinations:
-keep <- c("GeographyFK", "Date", "Method", "NetNumber", "Collector")
+keep <- c("GeographyFK", "Date", "Method", "NetNumber")
 conditions$cond.code <- apply(conditions[keep], 1, paste, collapse=";")
 specimens$cond.code <- apply(specimens[keep], 1, paste, collapse=";")
 
 ## make table
-keep <- c("Date", "Collector", "SampleRound", "NetNumber", "Method", "StartTime", "EndTime",
+keep <- c("Date", "SampleRound", "NetNumber", "Method",
+          "StartTime", "EndTime",
           "TempStart", "TempEnd", "WindStart", "WindEnd", "SkyStart",
           "SkyEnd","GeographyFK", "cond.code")
 
@@ -80,10 +82,8 @@ conditions$ConditionsFK <-
 specimens$ConditionsFK <-
     cond$ConditionsPK[match(specimens$cond.code, cond$cond.code)]
 
-print(paste("specimen without condition keys", specimens$TempID[is.na(specimens$ConditionsFK)]))
-
-specimens[specimens$TempID == "12123",]
-conditions[conditions$Date == "8/2/18",]
+print(paste("specimen without condition keys",
+            specimens$TempID[is.na(specimens$ConditionsFK)]))
 
 write.csv(dbReadTable(con, "tblConditions"),
           file="tables/conditions.csv", row.names=FALSE)
@@ -93,7 +93,7 @@ write.csv(dbReadTable(con, "tblConditions"),
 ## *******************************************************
 
 keep <- c("Order", "Family", "Genus", "SubGenus", "Species",
-          "SubSpecies", "Determiner", "Author")
+          "SubSpecies", "Determiner", "Author", "Sex")
 
 insects <- specimens[keep]
 insects <- unique(insects)
@@ -104,6 +104,7 @@ insects$gen.sp <- paste(insects$Order,
                         insects$SubGenus,
                         insects$Species,
                         insects$SubSpecies,
+                        insects$Sex,
                         insects$Determiner,
                         sep=";")
 insects <- cbind(InsectPK=seq_len(nrow(insects)), insects)
@@ -119,6 +120,7 @@ specimens$gen.sp <- paste(specimens$Order,
                           specimens$SubGenus,
                           specimens$Species,
                           specimens$SubSpecies,
+                          specimens$Sex,
                           specimens$Determiner,
                           sep=";")
 specimens$InsectFK <- insects$InsectPK[match(specimens$gen.sp,

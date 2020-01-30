@@ -9,24 +9,93 @@ dropNet <- function(z){
 }
 
 
+###  adj matrices by site, yr, SR
+makeNets <- function(spec.dat, net.type,
+                     species=c("Plant", "Pollinator"), ...){
+    spec.dat$YearSR <- paste(spec.dat$Year, spec.dat$SampleRound, sep=".")
+    nets <- breakNet(spec.dat, 'Site', 'YearSR', ...)
+    nets <- lapply(nets, bipartite::empty)
 
-breakNet <- function(spec.dat, site, year){
+    ## graphs
+    nets.graph <- lapply(nets, graph_from_incidence_matrix,
+                         weighted =   TRUE, directed = FALSE)
+    nets.graph <-  lapply(nets.graph, function(x){
+        vertex_attr(x)$type[vertex_attr(x)$type] <- species[2]
+        vertex_attr(x)$type[vertex_attr(x)$type
+                            != species[2]] <- species[1]
+        return(x)
+    })
+
+    ## unweighted
+    nets.graph.uw <- lapply(nets, graph_from_incidence_matrix,
+                            directed = FALSE)
+    nets.graph.uw <-  lapply(nets.graph.uw, function(x){
+        vertex_attr(x)$type[vertex_attr(x)$type] <- species[2]
+        vertex_attr(x)$type[vertex_attr(x)$type
+                            != species[2]] <- species[1]
+        return(x)
+    })
+
+    years <- sapply(strsplit(names(nets), "[.]"), function(x) x[[2]])
+    sites <- sapply(strsplit(names(nets), "[.]"), function(x) x[[1]])
+
+    save(nets.graph,nets.graph.uw, nets, years, sites,
+         file=sprintf("../data/nets%s%s.Rdata", net.type,
+                      paste(species, collapse="")
+                      ))
+
+    ## species stats
+    sp.lev <- calcSpec(nets)
+    save(sp.lev, file=sprintf('../data/splev%s%s.Rdata', net.type,
+                      paste(species, collapse="")
+                      ))
+}
+
+
+
+breakNet <- function(spec.dat, site, year,
+                     higher.level="GenusSpecies",
+                     lower.level="PlantGenusSpecies",
+                     mean.by.year=FALSE ){
+    ## breaks network by site and year, and if mean.by.year=TRUE,
+    ## takes the mean across sampling rounds
     ## puts data together in a list and removes empty matrices
-    agg.spec <- aggregate(list(abund=spec.dat$GenusSpecies),
-                          list(GenusSpecies=spec.dat$GenusSpecies,
+    if(lower.level == "PlantGenusSpecies"){
+    agg.spec <- aggregate(list(abund=spec.dat[, higher.level]),
+                          list(HigherLevel=spec.dat[, higher.level],
                                Site=spec.dat[,site],
                                Year=spec.dat[,year],
-                               PlantGenusSpecies=
-                                   spec.dat$PlantGenusSpecies),
+                               LowerLevel=
+                                   spec.dat[, lower.level]),
                           length)
-    sites <- split(agg.spec, agg.spec[,site])
+    } else if(higher.level == "Parasite"){
+          agg.spec <- aggregate(list(abund=spec.dat[, "count"]),
+                          list(HigherLevel=spec.dat[, higher.level],
+                               Site=spec.dat[,site],
+                               Year=spec.dat[,year],
+                               LowerLevel=
+                                   spec.dat[, lower.level]),
+                          mean, na.rm=TRUE)
+    }
+
+    if(mean.by.year){
+        yrs <- sapply(strsplit(agg.spec$Year, "[.]"), function(x){x[[1]]})
+        agg.spec <- aggregate(list(abund=agg.spec$abund),
+                              list(HigherLevel=agg.spec$HigherLevel,
+                                   Site=agg.spec$Site,
+                                   Year=yrs,
+                                   LowerLevel=
+                                       agg.spec$LowerLevel),
+                              mean)
+    }
+    sites <- split(agg.spec, agg.spec$Site)
     networks <- lapply(sites, function(x){
         split(x, f=x[,"Year"])
     })
     ## formats data matrices appropriate for network analysis
     comms <- lapply(unlist(networks, recursive=FALSE), function(y){
-        samp2site.spp(site=y[,"PlantGenusSpecies"],
-                      spp=y[,"GenusSpecies"],
+        samp2site.spp(site=y[,"LowerLevel"],
+                      spp=y[,"HigherLevel"],
                       abund=y[,"abund"])
     })
     return(comms)

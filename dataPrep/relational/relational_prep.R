@@ -3,6 +3,7 @@
 ## *******************************************************
 rm(list=ls())
 setwd("~/Dropbox/skyIslands_saved/data")
+library(tidyverse)
 
 ## load data
 spec.data <- read.csv("raw/specimens.csv",  stringsAsFactors=FALSE,
@@ -52,7 +53,8 @@ spec.data$SampleRound <-
            function(x) x[1])
 
 spec.data$Method <- "Net"
-spec.data$Method[is.na(spec.data$FieldPlantID)] <- "Pan"
+spec.data$Method[is.na(spec.data$FieldPlantID) |
+                 spec.data$FieldPlantID == ""] <- "Pan"
 spec.data$Method[spec.data$SampleRound == 0] <- "Vane"
 
 check.data.spec <- aggregate(spec.data$Date,
@@ -68,7 +70,8 @@ bbsl <- read.csv("raw/BBSLSpecimens.csv", stringsAsFactors=FALSE)
 
 
 ## only time this will happen is when we get the labels form Terry
-spec.data$UniqueID[spec.data$Year == "2017"] <- bbsl$BarcodeID
+spec.data$UniqueID[spec.data$Year == "2017"] <-
+    bbsl$BarcodeID[1:sum(spec.data$Year == "2017")]
 
 spec.data$TempID <- 1:nrow(spec.data)
 spec.data$UniqueID[is.na(spec.data$UniqueID)] <-  ""
@@ -214,7 +217,7 @@ print("after removing species without Apidae positivies")
 print(nrow(para.data))
 
 para.data$TempID <- NULL
-
+para.data$Apidae <- NULL
 
 write.csv(para.data, file="relational/original/parasites.csv",
                    row.names=FALSE)

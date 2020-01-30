@@ -126,7 +126,8 @@ parasites <- c("AspergillusSpp", "AscosphaeraSpp",
                 "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi")
                 ## "NosemaBombi", "NosemaCeranae")
 
-agg.spec.sub <- spec[!apply(spec[,parasites], 1, function(x) all(is.na(x))),]
+agg.spec.sub <- spec[!apply(spec[,parasites], 1,
+                            function(x) all(is.na(x))),]
 
 
 ## add Nosema when ready
@@ -166,7 +167,8 @@ makeNets(spec, net.type="Yr", mean.by.year=TRUE)
 
 
 spec.sub <- agg.spec.sub %>%
-    select(UniqueID, GenusSpecies, Site, Year, SampleRound, "AspergillusSpp", "AscosphaeraSpp",
+    select(UniqueID, GenusSpecies, Site, Year, SampleRound,
+           "AspergillusSpp", "AscosphaeraSpp",
                 "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi")
 
 prep.para <- spec.sub %>%

@@ -1,9 +1,8 @@
 add.to.data <- function(sp.ids, case, family, date, data.file) {
 
     spec.dat <- read.csv(file=data.file, as.is=TRUE)
-
     lengths <- sapply(sp.ids, function(x) length(x$temp.id))
-    cats <- names(sp.ids[[1]])[-length(sp.ids[[1]])]
+    cats <- names(sp.ids[[1]])[names(sp.ids[[1]]) != "temp.id"]
 
     ## make into data-frame
     dd <- sapply(cats, function(cat)

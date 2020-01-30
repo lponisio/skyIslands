@@ -22,12 +22,17 @@ if(species[2] == "Pollinator"){
     lower.level  <- pols
     higher.level <- parasites
 }
-
+if(net.type == "YrSR"){
+    nets.by.SR  <- TRUE
+} else {
+    nets.by.SR  <- FALSE
+}
 
 beta.net <- networkBetadiversity(nets.graph,
-                                  lower.level=lower.level,
-                                  higher.level=higher.level,
-                                  geo.dist=geo.dist)
+                                 lower.level=lower.level,
+                                 higher.level=higher.level,
+                                 geo.dist=geo.dist,
+                                 nets.by.SR=nets.by.SR)
 
 ## Bs: Dissimilarity in the species composition of communities
 ## Bwn: Dissimilarity of interactions
@@ -39,7 +44,9 @@ beta.net <- networkBetadiversity(nets.graph,
 ## turnover though time
 beta.same.site <- beta.net[apply(beta.net, 1,
                                  function(x) x["Site1"] ==
-                                             x["Site2"]),]
+                                             x["Site2"] &
+                                             x["Year1"] !=
+                                             x["Year2"]),]
 
 ## turnover through space
 beta.same.year <- beta.net[apply(beta.net, 1,
@@ -48,31 +55,40 @@ beta.same.year <- beta.net[apply(beta.net, 1,
                                              x["Site1"] !=
                                              x["Site2"]),]
 
-save(beta.same.site, beta.same.year,
+## ## turnover though time within a year
+beta.same.site.year <- beta.net[apply(beta.net, 1,
+                                      function(x) x["Site1"] ==
+                                                  x["Site2"] &
+                                                  x["Year1"] ==
+                                                  x["Year2"]),]
+
+
+
+save(beta.same.site, beta.same.year, same.site.year,
      file=sprintf("saved/Beta%s%s.Rdata", net.type,
-                      paste(species, collapse="")
-                      ))
+                  paste(species, collapse="")
+                  ))
 
 
 ## ******************************************************************
 ## plotting
 ## ******************************************************************
 
-plotTurnover <- function(){
-    yvars <- c("S", "WN", "S_lower.level", "S_higher.level", "PropST", "OS")
+yvars <- c("S", "WN", "S_lower.level", "S_higher.level", "PropST",
+           "OS")
 
-    ylabs <- c("Species turnover", "Interaction Turnover",
-               paste(species, "turnover"),
-               "Interaction turnover: species turnover",
-               "Interaction turnover: rewiring")
+ylabs <- c("Species Turnover", "Interaction Turnover",
+           paste("Species Turnover:", species),
+           "Interaction Turnover: Species Composition",
+           "Interaction Turnover: Rewiring")
 
-    panels <- vector("list", length(yvars))
+panels <- vector("list", length(yvars))
 
+plotGeoTurnover <- function(){
     for(i in 1:length(yvars)){
         this.beta <- beta.same.year
         colnames(this.beta)[colnames(this.beta) == yvars[i]] <- "y"
         panels[[i]] <- ggplot(this.beta,
-                              ## aes(x=GeoDist, y=y, color=Year1)) +
                               aes(x=GeoDist, y=y)) +
             geom_point() + geom_smooth(method="lm") +
             labs(x="Geographic Distance", y=ylabs[i]) +
@@ -82,7 +98,48 @@ plotTurnover <- function(){
     do.call(grid.arrange, panels)
 }
 
-pdf.f(plotTurnover,  file=sprintf("figures/Beta%s%s.pdf", net.type,
-                      paste(species, collapse="")
-                      ),
-      height=8, width=8)
+pdf.f(plotGeoTurnover,  file=sprintf("figures/GeoBeta%s%s.pdf", net.type,
+                                     paste(species, collapse="")
+                                     ),
+      height=9, width=8)
+
+plotYrTurnover <- function(){
+    for(i in 1:length(yvars)){
+        this.beta <- beta.same.site
+        colnames(this.beta)[colnames(this.beta) == yvars[i]] <- "y"
+
+        panels[[i]] <- ggplot(this.beta) +
+            geom_boxplot(aes(factor(YrDist), y=y)) +
+            scale_x_discrete(labels = c("1", "5", "6")) +
+            labs(x="Years between surveys", y=ylabs[i]) +
+            lims(y=c(0,1))
+    }
+
+    do.call(grid.arrange, panels)
+}
+
+pdf.f(plotYrTurnover,  file=sprintf("figures/YrBeta%s%s.pdf", net.type,
+                                    paste(species, collapse="")
+                                    ),
+      height=9, width=8)
+
+if(nets.by.SR){
+    plotSRTurnover <- function(){
+        for(i in 1:length(yvars)){
+            this.beta <- beta.same.site.year
+            colnames(this.beta)[colnames(this.beta) == yvars[i]] <- "y"
+            panels[[i]] <- ggplot(this.beta,
+                                  aes(x=SRDist, y=y)) +
+                geom_point() + geom_smooth(method="lm") +
+                labs(x="Days", y=ylabs[i]) +
+                lims(y=c(0,1))
+        }
+
+        do.call(grid.arrange, panels)
+    }
+
+    pdf.f(plotSRTurnover,  file=sprintf("figures/SRBeta%s%s.pdf", net.type,
+                                        paste(species, collapse="")
+                                        ),
+          height=9, width=8)
+}
