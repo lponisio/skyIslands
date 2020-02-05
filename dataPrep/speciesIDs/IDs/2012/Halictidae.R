@@ -126,7 +126,7 @@ sp.ids <- list(
 
     Halictus_tripartitus = list(Genus="Halictus", SubGenus ="Seladonia",
                                 Species="tripartitus", SubSpecies="",
-                                Sex="",
+                                Sex="f",
                                 Author = "Cockerell",
                                 Determiner = "J.S. Ascher",
                                 temp.id= c("SC_072312_31",
@@ -139,7 +139,7 @@ sp.ids <- list(
 
     Halictus_ligatus = list(Genus="Halictus", SubGenus ="Odontalictus",
                             Species="ligatus", SubSpecies="",
-                            Sex="", Author = "Say",
+                            Sex="f", Author = "Say",
                             Determiner = "J.S. Ascher",
                             temp.id= c("SC_072712_98", "PL_080912_87",
                                        "PL_081012_231",
@@ -148,24 +148,29 @@ sp.ids <- list(
 
     Halictus_farinosus = list(Genus="Halictus", SubGenus ="Nealictus",
                               Species="farinosus",
-                              SubSpecies="", Sex="",
+                              SubSpecies="", Sex="f",
                               Author = "Smith",
                               Determiner = "J.S. Ascher",
                               temp.id= c("SC_072612_9",
                                          "SC_072312_247",
                                          "SC_072012_311")),
 
-    Halictus_rubicundus = list(Genus="Halictus", SubGenus ="Protohalictus",
-                               Species="rubicundus", SubSpecies="", Sex="", Author = "Christ",
+    Halictus_rubicundus_f = list(Genus="Halictus", SubGenus ="Protohalictus",
+                               Species="rubicundus", SubSpecies="", Sex="f", Author = "Christ",
                                Determiner = "J.S. Ascher",
                                temp.id= c("JC_071612_56",
                                           "JC_071512_134",
-                                          "JC_071512_77", "JC_071412_6",
-                                          "JC_071512_159",
-                                          "JC_071612_25")),
+                                          "JC_071512_77")),
+
+Halictus_rubicundus_m = list(Genus="Halictus", SubGenus ="Protohalictus",
+                           Species="rubicundus", SubSpecies="", Sex="m", Author = "Christ",
+                           Determiner = "J.S. Ascher",
+                           temp.id= c("JC_071412_6",
+                                      "JC_071512_159",
+                                      "JC_071612_25")),
 
     Lasioglossum_sisymbrii = list(Genus="Lasioglossum", SubGenus
-                                  ="Lasioglossum", Species="sisymbrii", SubSpecies="", Sex="f",
+                                  ="Lasioglossum", Species="sisymbrii", SubSpecies="", Sex="m",
                                   Author = "Cockerell",
                                   Determiner = "J.S. Ascher",
                                   temp.id= c( "SC_072612_244",
@@ -251,7 +256,7 @@ sp.ids <- list(
                                              "SC_072312_17",
                                              "SC_072012_294",
                                              "SC_072612_195",
-                                             "SC_072012_200",
+                                         
                                              "SC_072612_191",
                                              "SC_072112_84",
                                              "SC_072012_17",
@@ -289,10 +294,6 @@ sp.ids <- list(
                                              "SC_072312_174",
                                              "SC_072312_201",
                                              "SC_072612_37",
-                                             "SC_072612_200",
-                                             "SC_072112_153",
-                                             "SC_072012_194",
-                                             "PL_081012_227",
                                              "SC_072612_137",
                                              "SC_072012_39",
                                              "SC_072912_28",
@@ -334,9 +335,17 @@ sp.ids <- list(
                                              "SC_072612_147",
                                              "SC_072612_149",
                                              "SC_072612_140",
-                                             "SC_072612_136")),
+                                             "SC_072612_136",
+                                            "SC_072012_200")),
 
     ## "MM_073112_3" duplicated with bombus huntii
+
+
+Lasioglossum_sisymbrii = list(Genus="Lasioglossum", SubGenus
+                              ="Lasioglossum", Species="sisymbrii", SubSpecies="", Sex="f",
+                              Author = "Cockerell",
+                              Determiner = "J.S. Ascher",
+                              temp.id= c( "SC_072112_153", "SC_072612_200", "SC_072012_194", "PL_081012_227")),
 
     Dufourea_fimbriata_f= list(Genus="Dufourea", SubGenus ="",
                                Species="fimbriata", SubSpecies="", Sex="f", Author = "Cresson",

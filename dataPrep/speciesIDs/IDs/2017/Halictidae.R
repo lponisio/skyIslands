@@ -889,11 +889,11 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                       Determiner = "T. Griswold",
                                       temp.id= c("BBSL1058701")),
 
-               Lasioglossum_sisymbrii_f = list(Genus="Lasioglossum", SubGenus
+               Lasioglossum_sisymbrii_m = list(Genus="Lasioglossum", SubGenus
                                                ="Lasioglossum",
                                                Species="sisymbrii",
                                                SubSpecies="",
-                                               Sex="f",
+                                               Sex="m",
                                                Author = "Cockerell",
                                                Determiner = "T. Griswold",
                                                temp.id=
@@ -942,19 +942,19 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                                      "BBSL1074074",
                                                      "BBSL1073055",
                                                      "BBSL1058698",
-                                                     "BBSL1072778",
+                                                   
                                                      "BBSL1072914",
                                                      "BBSL1059265",
-                                                     "BBSL1074043",
-                                                     "BBSL1074039",
-                                                     "BBSL1074042",
-                                                     "BBSL1074071",
+                                                 
+                                                
+                                       
+                                          
                                                      "BBSL1074118",
                                                      "BBSL1074079",
                                                      "BBSL1074017",
                                                      "BBSL1074015",
-                                                     "BBSL1074005",
-                                                     "BBSL1074028",
+                                                  
+                                                   
                                                      "BBSL1073933",
                                                      "BBSL1059849",
                                                      "BBSL1073942",
@@ -981,7 +981,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                                      "BBSL1058928",
                                                      "BBSL1058935",
                                                      "BBSL1058934",
-                                                     "BBSL1058938",
+                                                 
                                                      "BBSL1058936",
                                                      "BBSL1058947",
                                                      "BBSL1058946",
@@ -1033,59 +1033,55 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                                      "BBSL1059148",
                                                      "BBSL1059437",
                                                      "BBSL1059041",
-                                                     "BBSL1059062",
-                                                     "BBSL1059637",
-                                                     "BBSL1059669",
-                                                     "BBSL1059636",
-                                                     "BBSL1059869",
+                                           
+                                                  
+                                               
                                                      "BBSL1074253",
-                                                     "BBSL1059412",
-                                                     "BBSL1058878",
-                                                     "BBSL1059852",
-                                                     "BBSL1059277",
-                                                     "BBSL1059818",
+                                    
+                                                  
+                                                    
+                                                   
+                                                
                                                      "BBSL1074258",
-                                                     "BBSL1059893",
-                                                     "BBSL1059508",
+                                                  
+                                                    
                                                      "BBSL1058943",
                                                      "BBSL1074199",
                                                      "BBSL1070548",
                                                      "BBSL1070552",
                                                      "BBSL1070528",
-                                                     "BBSL1074195",
+                                                   
                                                      "BBSL1074198",
-                                                     "BBSL1074175",
+                                                   
                                                      "BBSL1074200",
                                                      "BBSL1074294",
                                                      "BBSL1074201",
-                                                     "BBSL1074251",
-                                                     "BBSL1074282",
+                                                    
+                                                    
                                                      "BBSL1074291",
                                                      "BBSL1074283",
                                                      "BBSL1074391",
                                                      "BBSL1074246",
                                                      "BBSL1074257",
                                                      "BBSL1074256",
-                                                     "BBSL1059712",
+                                                    
                                                      "BBSL1074090",
                                                      "BBSL1074126",
                                                      "BBSL1074125",
                                                      "BBSL1071872",
-                                                     "BBSL1059444",
+                                             
                                                      "BBSL1074131",
                                                      "BBSL1070313",
-                                                     "BBSL1074378",
+                                                "BBSL1074379",
                                                      "BBSL1074295",
-                                                     "BBSL1074394",
-                                                     "BBSL1074379",
-                                                     "BBSL1074395",
+                                                     
                                                      "BBSL1074424",
                                                      "BBSL1059295",
-                                                     "BBSL1074442",
+                                                 
                                                      "BBSL1073953",
-                                                     "BBSL1070997",
+                                                   
                                                      "BBSL1074142",
-                                                     "BBSL1073360",
+                                                  
                                                      "BBSL1073957",
                                                      "BBSL1071876",
                                                      "BBSL1059415",
@@ -1096,7 +1092,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                                      "BBSL1074197",
                                                      "BBSL1074440",
                                                      "BBSL1074433",
-                                                     "BBSL1073359",
+                                                
                                                      "BBSL1059775",
                                                      "BBSL1059766",
                                                      "BBSL1059776",
@@ -1220,7 +1216,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                                      "BBSL1059479",
                                                      "BBSL1059900",
                                                      "BBSL1059140",
-                                                     "BBSL1059870",
+                                                  
                                                      "BBSL1059228",
                                                      "BBSL1058469",
                                                      "BBSL1059817",
@@ -1244,25 +1240,25 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                                      "BBSL1073067",
                                                      "BBSL1074393",
                                                      "BBSL1085207",
-                                                     "BBSL1084377",
-                                                     "BBSL1085930",
+                                                     
+                                                   
                                                      "BBSL1085103",
                                                      "BBSL1085132",
-                                                     "BBSL1086056",
-                                                     "BBSL1085901",
-                                                     "BBSL1085959",
-                                                     "BBSL1085981",
-                                                     "BBSL1085900",
+                                                    
+                                                     
+                                                   
+                                                  
+                                                 
                                                      "BBSL1085036",
                                                      "BBSL1084833",
                                                      "BBSL1087170",
-                                                     "BBSL1086911",
+                                                
                                                      "BBSL1084565",
                                                      "BBSL1084448",
                                                      "BBSL1086903",
                                                      "BBSL1084409",
                                                      "BBSL1084654",
-                                                     "BBSL1086050",
+                                                   
                                                      "BBSL1086103",
                                                      "BBSL1059475",
                                                      "BBSL1070262",
@@ -1281,13 +1277,25 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                                      "BBSL1085208",
                                                      "BBSL1085187",
                                                      "BBSL1085124",
-                                                     "BBSL1073939",
-                                                     "BBSL1073938",
-                                                     "BBSL1074196",
-                                                     "BBSL1073934",
-                                                     "BBSL1074432",
-                                                     "BBSL1086104",
-                                                     "BBSL1059885")),
+                                                   
+                                                 
+                                                    
+                                                 
+                                                   
+                                                
+                                                     )),
+
+Lasioglossum_sisymbrii_m = list(Genus="Lasioglossum", SubGenus
+                                              ="Lasioglossum",
+                                              Species="sisymbrii",
+                                              SubSpecies="",
+                                              Sex="",
+                                              Author = "Cockerell",
+                                              Determiner = "T. Griswold",
+                                              temp.id=
+                                                  c(    "BBSL1074043",
+     "BBSL1086911",      "BBSL1073359",   "BBSL1074028",      "BBSL1074039",            "BBSL1074071",    "BBSL1059893",     "BBSL1058938",   "BBSL1074432",     "BBSL1073934",   "BBSL1073939",  "BBSL1086056",               "BBSL1074042",    "BBSL1074005",     "BBSL1073938",    "BBSL1085981",   "BBSL1085959",  "BBSL1059508", "BBSL1085901",      "BBSL1074378",    "BBSL1059870",           "BBSL1059062",          "BBSL1059669",    "BBSL1059637", "BBSL1059636",       "BBSL1059869",    "BBSL1058878",                  "BBSL1059412",  "BBSL1059852",   "BBSL1059277",      "BBSL1059818",   "BBSL1074195",   "BBSL1074175",  "BBSL1074251",  "BBSL1074282",  "BBSL1059712",     "BBSL1074442",   "BBSL1070997",
+   "BBSL1073360", "BBSL1074394", "BBSL1074395",         "BBSL1059444",   "BBSL1085930",  "BBSL1074196",      "BBSL1086104", "BBSL1059885",   "BBSL1086050",     "BBSL1085900", "BBSL1084377",   "BBSL1072778")),
 
                Nomia_spa = list(Genus="Nomia", SubGenus="",
                                 Species="sp", SubSpecies="a",
