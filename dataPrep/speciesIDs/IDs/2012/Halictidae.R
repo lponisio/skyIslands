@@ -139,7 +139,7 @@ sp.ids <- list(
 
     Halictus_ligatus = list(Genus="Halictus", SubGenus ="Odontalictus",
                             Species="ligatus", SubSpecies="",
-                            Sex="f", Author = "Say",
+                            Sex="", Author = "Say",
                             Determiner = "J.S. Ascher",
                             temp.id= c("SC_072712_98", "PL_080912_87",
                                        "PL_081012_231",
@@ -148,7 +148,7 @@ sp.ids <- list(
 
     Halictus_farinosus = list(Genus="Halictus", SubGenus ="Nealictus",
                               Species="farinosus",
-                              SubSpecies="", Sex="f",
+                              SubSpecies="", Sex="",
                               Author = "Smith",
                               Determiner = "J.S. Ascher",
                               temp.id= c("SC_072612_9",
@@ -156,7 +156,7 @@ sp.ids <- list(
                                          "SC_072012_311")),
 
     Halictus_rubicundus = list(Genus="Halictus", SubGenus ="Protohalictus",
-                               Species="rubicundus", SubSpecies="", Sex="f", Author = "Christ",
+                               Species="rubicundus", SubSpecies="", Sex="", Author = "Christ",
                                Determiner = "J.S. Ascher",
                                temp.id= c("JC_071612_56",
                                           "JC_071512_134",
