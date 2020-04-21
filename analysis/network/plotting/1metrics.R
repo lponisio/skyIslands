@@ -8,28 +8,40 @@ source("plotting/src/CIplotting.R")
 source("plotting/src/diagnostics.R")
 source("plotting/src/plotNetworkMets.R")
 
-xvars <- c("Lat")
+species <- c("Plant", "Pollinator")
+## species <- c("Pollinator", "Parasite")
+
+xvar <- c("Lat")
 xlabel <- "Latitude"
+
+load(file=file.path(save.path,
+                    sprintf('mods/metrics_%s_%s.Rdata',
+                            paste(species, collapse=""),
+                            xvar)))
 
 ## ************************************************************
 ## network metrics
 ## ************************************************************
 
-load('saved/mods/metrics.Rdata')
-
 ys <- names(mods.div)
-ylabs <- c("Plant \n complementarity",
-           "Pollinatator \n complementarity",
-           "Reciprocal \n specialization",
-           "Niche breadth",
-           "Plant \n niche overlap", "Pollinator \n niche overlap",
-           "Plant \n richness", "Pollinator \n richness")
+
+ylabs <- c("Plant \n niche overlap",
+           "Pollinatator \n niche overlap",
+           "Plant clustering",
+           "Pollinator clustering",
+           "Plant richness",
+           "Pollinator richness",
+           "Nestedness (z)",
+           "Reciprocal specialization (H2)")
 names(ylabs) <- ys
 
-x <- xvars
+
+x <- xvar
 
 
-pdf.f(plotNetworkMets, file=file.path("figures",
-                                      sprintf("%s.pdf", xlabel)),
+pdf.f(plotNetworkMets,
+      file=file.path("figures",
+                     sprintf("%s_%s.pdf", xvar,
+                             paste(species, collapse=""))),
       width=8.5, height=11)
 

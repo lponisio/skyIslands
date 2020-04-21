@@ -1,10 +1,13 @@
-## seated````('~/Dropbox/skyIslands/')
+## setwd('~/Dropbox/skyIslands/')
 rm(list=ls())
 setwd('analysis/network')
 source('src/initialize.R')
 source('src/vaznull2.R')
-load('../../data/nets.Rdata')
-load('../../data/spec.Rdata')
+net.type <- "YrSR"
+## species <- c("Plant", "Pollinator")
+species <- c("Pollinator", "Parasite")
+
+source('../turnover/src/initialize.R')
 
 args <- commandArgs(trailingOnly=TRUE)
 if(length(args) != 0){
@@ -17,43 +20,36 @@ if(length(args) != 0){
 ## calculate metrics and zscores ## beware this takes a while!
 ## ************************************************************
 
-## mets <- lapply(nets, calcNetworkMetrics,
-##                N=N,   index= c("H2",
-##                                "partner diversity",
-##                                "functional complementarity",
-##                                "links per species",
-##                                "number of species",
-##                                "niche overlap"))
+nets <- nets[apply(sapply(nets, dim) > 3, 2, all))]
 
-## cor.dats <- prepDat(mets,  spec)
-## save(cor.dats, file='saved/corMets.Rdata')
+mets <- lapply(nets, calcNetworkMetrics,
+               N=N)
+
+cor.dats <- prepDat(mets,  spec, net.type=net.type)
+save(cor.dats, file=sprintf('saved/corMets_%s.Rdata',
+                            paste(species, collapse="")))
 
 ## ************************************************************
-load(file='saved/corMets.Rdata')
-cor.dats$Year  <- as.factor(cor.dats$Year)
+load(file=sprintf('saved/corMets_%s.Rdata',
+                  paste(species, collapse="")))
 
-## cor.dats$ppRatio <- log(cor.dats$"number.of.species.LL"/
-##     cor.dats$"number.of.species.HL")
-
-
-ys <- c("functional.complementarity.LL",
-        "functional.complementarity.HL",
-        "pH2",
-        "links.per.species",
-        "niche.overlap.LL",
+ys <- c("niche.overlap.LL",
         "niche.overlap.HL",
+        "cluster.coefficient.LL",
+        "cluster.coefficient.HL",
         "number.of.species.LL",
-        "number.of.species.HL")
+        "number.of.species.HL",
+        "zweighted.NODF",
+        "H2")
 
-
-cor.dats$Year <- as.factor(cor.dats$Year)
+xvar <- "Lat"
 
 ## create formulas for site characteristics
 formulas.div <-lapply(ys, function(x) {
     as.formula(paste(x, "~",
-                     paste("scale(Lat)",
-                           ## "scale(I(Lat)^2)",
-                           ## "Year",
+                     paste("scale(DoyPoly1)*scale(Lat)",
+                           "scale(DoyPoly2)*scale(Lat)",
+                           "Year",
                            "(1|Site)",
                            sep="+")))
 })
@@ -70,4 +66,7 @@ lapply(mods.div, summary)
 lapply(mods.div, anova)
 
 save(mods.div, cor.dats,
-     file=file.path(save.path, 'mods/metrics.Rdata'))
+     file=file.path(save.path,
+                    sprintf('mods/metrics_%s_%s.Rdata',
+                            paste(species, collapse=""),
+                            xvar)))
