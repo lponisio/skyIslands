@@ -25,7 +25,7 @@ con <- dbConnect(dbDriver("SQLite"), dbname='si.db')
 
 keep <- c("SiteSubSite", "Site", "Country", "State", "County",
           "Meadow", "Forest",
-          "MtRange", "Lat", "Long", "Elev")
+          "MtRange", "Lat", "Long", "Elev", "Area")
 
 geography <- unique(geo[keep])
 ## next sort into alphabetical order

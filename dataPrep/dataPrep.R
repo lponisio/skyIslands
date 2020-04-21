@@ -4,6 +4,8 @@ library(vegan)
 library(fields)
 library(fossil)
 library(bipartite)
+library(tidyverse)
+library(RSQLite)
 setwd("~/Dropbox/skyIslands/dataPrep")
 source('relational/relational_prep.R')
 setwd("~/Dropbox/skyIslands/dataPrep")
@@ -124,7 +126,7 @@ write.csv(traits, file='../data/traits.csv')
 ## *******************************************************************
 parasites <- c("AspergillusSpp", "AscosphaeraSpp",
                 "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi")
-                ## "NosemaBombi", "NosemaCeranae")
+               "NosemaBombi", "NosemaCeranae")
 
 agg.spec.sub <- spec[!apply(spec[,parasites], 1,
                             function(x) all(is.na(x))),]

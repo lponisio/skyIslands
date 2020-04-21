@@ -79,6 +79,7 @@ spec.data$UniqueID[is.na(spec.data$UniqueID)] <-  ""
 spec.data$UniqueID[spec.data$UniqueID == ""] <-
     spec.data$TempID[spec.data$UniqueID == ""]
 
+## spec.data$UniqueID[20794:nrow(spec.data)] <- 20794:nrow(spec.data)
 
 write.csv(spec.data, file="relational/original/specimens.csv",
           row.names=FALSE)
@@ -106,16 +107,6 @@ write.csv(unique(data.weather), file="relational/original/weather.csv",
 
 
 geo <- read.csv("raw/geography.csv")
-
-## data.geo <- data.frame(Site=geo$site,
-##                    Meadow=geo$meadow,
-##                    MtRange=geo$MtRange,
-##                    Forest=geo$forest,
-##                    County=geo$county,
-##                    State=geo$state,
-##                    Country=geo$country,
-##                    Lat=geo$lat,
-##                    Long=geo$long)
 
 colnames(geo) <- gsub("\\.", "", colnames(geo))
 
@@ -170,7 +161,8 @@ data.geo <- data.frame(Site=geo$Site,
                        Country=geo$Country,
                        Lat=geo$DecimalLat,
                        Long=geo$DecimalLon,
-                       Elev=geo$Elev0)
+                       Elev=geo$Elev0,
+                       Area=geo$Area)
 
 ##Note: when comparing data.geo to H's geography csv:
 ##  data.geo -> H's Datasheet
