@@ -26,3 +26,4 @@ rownames(betas) <- NULL
 mod.beta <- lmer(dist~BetaType + (1|Site) +
          (1|Year) + (1|GenusSpecies),
      data=betas)
+summary(mod.beta)
