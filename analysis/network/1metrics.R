@@ -3,9 +3,8 @@ rm(list=ls())
 setwd('analysis/network')
 source('src/initialize.R')
 source('src/vaznull2.R')
-net.type <- "YrSR"
-## species <- c("Plant", "Pollinator")
-species <- c("Pollinator", "Parasite")
+net.type <- "Yr"
+species <- c("Plant", "Pollinator")
 
 source('../turnover/src/initialize.R')
 
@@ -20,7 +19,7 @@ if(length(args) != 0){
 ## calculate metrics and zscores ## beware this takes a while!
 ## ************************************************************
 
-nets <- nets[apply(sapply(nets, dim) > 3, 2, all))]
+nets <- nets[apply(sapply(nets, dim) > 2, 2, all)]
 
 mets <- lapply(nets, calcNetworkMetrics,
                N=N)
@@ -57,6 +56,7 @@ formulas.div <-lapply(ys, function(x) {
 mods.div <- lapply(formulas.div, function(x){
     lmer(x, data=cor.dats)
 })
+
 names(mods.div) <- ys
 
 ## results

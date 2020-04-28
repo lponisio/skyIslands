@@ -21,31 +21,34 @@ plot.panel <- function(dats,
             pred.dats <- new.dd[new.dd$Year == yr,]
             ys <- data.frame(y=these.dats[,y1], x=these.dats[,xs])
 
-            ## add fill from ci.up to ci.lb
-            polygon(c(pred.dats[,xs],
-                      rev(pred.dats[,xs])),
-                    c(pred.dats$phi,
-                      rev(pred.dats$plo)),
-                    col=col.fill, border=NA)
             ## plots means
             points(x=ys$x,
                    y=ys$y,
-                   pch=pchs,
-                   col=col.lines,
+                   pch=pchs[yr],
+                   col=col.lines[y1],
                    cex=1.2)
-            ## plots CI
-            lines(x=pred.dats[,xs],
-                  y=pred.dats[,y1],
-                  col=col.lines,
-                  lwd=2)
-            lines(x=pred.dats[,xs],
-                  y=pred.dats$plo,
-                  col=col.lines,
-                  lty="dashed")
-            lines(x=pred.dats[,xs],
-                  y=pred.dats$phi,
-                  col=col.lines,
-                  lty="dashed")
+
+            if(nrow(pred.dats) > 1){
+                ## add fill from ci.up to ci.lb
+                polygon(c(pred.dats[,xs],
+                          rev(pred.dats[,xs])),
+                        c(pred.dats$phi,
+                          rev(pred.dats$plo)),
+                        col=col.fill[y1], border=NA)
+                ## plots CI
+                lines(x=pred.dats[,xs],
+                      y=pred.dats[,y1],
+                      col=col.lines[y1],
+                      lwd=2)
+                lines(x=pred.dats[,xs],
+                      y=pred.dats$plo,
+                      col=col.lines[y1],
+                      lty="dashed")
+                lines(x=pred.dats[,xs],
+                      y=pred.dats$phi,
+                      col=col.lines[y1],
+                      lty="dashed")
+            }
         }
     }
     plot(NA, xlim=range(dats[, xs], na.rm=TRUE),
