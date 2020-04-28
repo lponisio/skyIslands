@@ -4,12 +4,15 @@ setwd('analysis/multilayer')
 library(multinet)
 
 net.type <- "Yr"
-## species <- c("Plant", "Pollinator")
-species <- c("Pollinator", "Parasite")
+species <- c("Plant", "Pollinator")
+## species <- c("Pollinator", "Parasite")
 
 source('../turnover/src/initialize.R')
 
 ml.nets.files <-  list.files("saved", "mpx")
+
+## this has stopped working because the mpx files will no longer load
+## even though there is no error when you write them
 
 ml.nets <- lapply(file.path("saved", ml.nets.files), read_ml)
 names(ml.nets) <- sapply(strsplit(ml.nets.files, "[.]"), function(x) x[[1]])

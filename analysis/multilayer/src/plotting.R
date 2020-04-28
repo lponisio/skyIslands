@@ -16,7 +16,8 @@ plotMl <- function(){
     bk <- par("mar")
     par(mar=c(0,0,0,0))
     plot(ml.net, layers=spatial.order[[yr]],
-         layout = l,  vertex.labels = "",
+         layout = l, # vertex.labels = "",
+         vertex.labels.cex =0.5,
          edge.col="grey",
          vertex.color = gr$color)
     par(mar=bk)
