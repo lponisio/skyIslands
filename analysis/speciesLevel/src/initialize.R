@@ -1,14 +1,55 @@
+library(vegan)
+library(fields)
 library(igraph)
-library(bipartite)
+library(betalink)
+library(ggplot2)
+library(gridExtra)
 library(lme4)
 library(lmerTest)
-library(RColorBrewer)
-source('../../dataPrep/src/prepNets.R')
-source('src/CalcMetrics.R')
+library(effects)
+library(tidyverse)
+
 source('src/misc.R')
-source("src/specialization.R")
+load('../../data/spec.Rdata')
 
-traits <- read.csv("../../data/traits.csv")
-load('../../data/networks/allSpecimens.Rdata')
 
-save.path <- 'saved'
+load(file=sprintf("../../data/nets%s%s.Rdata", net.type,
+                  paste(species, collapse="")
+                  ))
+
+
+load(file=sprintf('../../data/splev%s%s.Rdata', net.type,
+                  paste(species, collapse="")
+                  ))
+
+##distance dissimilarity
+geo <- unique(spec[, c("Site", "Lat", "Long")])
+geo <- geo[!duplicated(geo$Site),]
+
+geo.dist <- rdist.earth(cbind(geo$Long, geo$Lat),
+                        cbind(geo$Long, geo$Lat))
+colnames(geo.dist) <- rownames(geo.dist) <- geo$Site
+
+
+
+plants <- unique(spec$PlantGenusSpecies)
+pols <- unique(spec$GenusSpecies)
+parasites <- c("AspergillusSpp", "AscosphaeraSpp", "ApicystisSpp",
+               "CrithidiaExpoeki", "CrithidiaBombi", "NosemaBombi",
+               "NosemaCeranae")
+
+if(species[1] == "Plant"){
+    lower.level  <- plants
+    higher.level <- pols
+} else if(species[2] == "Parasite"){
+    lower.level  <- pols
+    higher.level <- parasites
+}
+if(net.type == "YrSR"){
+    nets.by.SR  <- TRUE
+} else {
+    nets.by.SR  <- FALSE
+}
+
+
+species.roles <- sp.lev
