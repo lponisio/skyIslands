@@ -25,7 +25,6 @@ source("src/specialization.R")
 
 ## did not complete full sampling rounds in any of these sites. Was
 ## just scouting.  can keep UK and SS when more species are IDed
-## site.2.drop <- c("JM", "CC", "UK", "SS")
 site.2.drop <- c("JM", "CC", "SS", "UK")
 spec <- spec[!spec$Site %in% site.2.drop,]
 spec <- droplevels(spec)
@@ -42,8 +41,6 @@ spec$PlantGenusSpecies <-  fix.white.space(paste(spec$PlantGenus,
 
 spec$Int <-  fix.white.space(paste(spec$GenusSpecies,
                                    spec$PlantGenusSpecies))
-spec$IntGen <-  fix.white.space(paste(spec$Genus,
-                                      spec$PlantGenus))
 
 spec$Date <- as.Date(spec$Date, format='%m/%d/%y')
 spec$Doy <- as.numeric(strftime(spec$Date, format='%j'))
@@ -51,17 +48,14 @@ spec$Year <- as.numeric(format(spec$Date,'%Y'))
 
 ## drop non-bees but keep syrphids
 spec <- spec[spec$Family %in% c("Andrenidae", "Apidae",
-                                "Colletidae", "Halictidae",
-                                "Megachilidae", "Syrphidae"),]
+                                 "Colletidae", "Halictidae",
+                                 "Megachilidae", "Syrphidae"),]
 
 ## drop non-bees
 ## spec <- spec[spec$Family %in% c("Andrenidae", "Apidae",
 ##                                 "Colletidae", "Halictidae",
 ##                                 "Megachilidae"),]
 
-
-## drop lasioglossum until we get 2017, 2018 IDs back from Joel
-## spec <- spec[spec$Genus != "Lasioglossum",]
 
 
 ## for networks, drop specimens withoutplant IDs
@@ -71,7 +65,7 @@ spec <- spec[spec$GenusSpecies != "",]
 ## drop the the 2017 sample of PL because it was on fire for other
 ## sampling rounds and there was basically nothing blooming the first
 ## round
-spec <- spec[!(spec$Site == "PL" & spec$Year == "2017"),]
+## spec <- spec[!(spec$Site == "PL" & spec$Year == "2017"),]
 
 ## calculate orthoganol polynomials for doy
 spec$DoyPoly <- poly(spec$Doy, degree=2)
@@ -125,14 +119,12 @@ write.csv(traits, file='../data/traits.csv')
 ## specialization etc. across all SI
 ## *******************************************************************
 parasites <- c("AspergillusSpp", "AscosphaeraSpp",
-                "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi")
+                "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi",
                "NosemaBombi", "NosemaCeranae")
 
 agg.spec.sub <- spec[!apply(spec[,parasites], 1,
                             function(x) all(is.na(x))),]
 
-
-## add Nosema when ready
 agg.spec.para <- aggregate(agg.spec.sub[, parasites],
                       list(GenusSpecies=agg.spec.sub$GenusSpecies),
                                               sum, na.rm=TRUE)
@@ -171,11 +163,14 @@ makeNets(spec, net.type="Yr", mean.by.year=TRUE)
 spec.sub <- agg.spec.sub %>%
     select(UniqueID, GenusSpecies, Site, Year, SampleRound,
            "AspergillusSpp", "AscosphaeraSpp",
-                "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi")
+           "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi",
+            "NosemaBombi", "NosemaCeranae")
 
 prep.para <- spec.sub %>%
     pivot_longer(cols=c("AspergillusSpp", "AscosphaeraSpp",
-                        "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi"),
+                        "ApicystisSpp", "CrithidiaExpoeki",
+                        "CrithidiaBombi",
+                         "NosemaBombi", "NosemaCeranae"),
                  names_to = "Parasite", values_to = "count")
 prep.para <- as.data.frame(prep.para)
 
