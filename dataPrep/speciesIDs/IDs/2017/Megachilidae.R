@@ -63,10 +63,12 @@ sp.ids <- list(
                                SubSpecies="", Sex="f",
                                Author = "Michener",
                                Determiner = "T. Griswold",
-                               temp.id= c("BBSL1060070", "BBSL1074238")),
+                               temp.id= c("BBSL1060070",
+                                          "BBSL1074238")),
 
     Heriades_cressoni_m = list(Genus="Heriades",
-                               SubGenus ="Neotrypetes", Species="cressoni",
+                               SubGenus ="Neotrypetes",
+                               Species="cressoni",
                                SubSpecies="", Sex="m",
                                Author = "Michener",
                                Determiner = "T. Griswold",
@@ -74,37 +76,42 @@ sp.ids <- list(
 
     Heriades_crucifer_m = list(Genus="Heriades",
                                SubGenus ="", Species="crucifer",
-                               SubSpecies="", Sex="m", Author =
-                                                           "Cockerell",
+                               SubSpecies="", Sex="m",
+                               Author = "Cockerell",
                                Determiner = "T. Griswold",
                                temp.id= c("BBSL1073194")),
 
     Hoplitis_producta_m = list(Genus="Hoplitis",
-                               SubGenus ="Alcidamea", Species="producta",
-                               SubSpecies="", Sex="m", Author =
-                                                           "Cresson",
+                               SubGenus ="Alcidamea",
+                               Species="producta",
+                               SubSpecies="", Sex="m",
+                               Author = "Cresson",
                                Determiner = "T. Griswold",
                                temp.id= c("BBSL1058250")),
 
     Hoplitis_albifrons_m = list(Genus="Hoplitis",
-                                SubGenus ="Alcidamea", Species="albifrons",
-                                SubSpecies="", Sex="m", Author =
-                                                            "Kirby",
+                                SubGenus ="Alcidamea",
+                                Species="albifrons",
+                                SubSpecies="", Sex="m",
+                                Author = "Kirby",
                                 Determiner = "T. Griswold",
-                                temp.id= c("BBSL1059785")),
+                                temp.id= c("BBSL1059785", "20951")),
 
     Hoplitis_albifrons_f = list(Genus="Hoplitis",
-                                SubGenus ="Alcidamea", Species="albifrons",
-                                SubSpecies="", Sex="f", Author =
-                                                            "Kirby",
+                                SubGenus ="Alcidamea",
+                                Species="albifrons",
+                                SubSpecies="", Sex="f",
+                                Author = "Kirby",
                                 Determiner = "T. Griswold",
                                 temp.id= c("BBSL1072040",
-                                "BBSL1059786", "BBSL1087003")),
+                                           "BBSL1059786", "BBSL1087003",
+                                           "22327", "23158", "22331")),
 
     Hoplitis_fulgida_m = list(Genus="Hoplitis",
-                              SubGenus ="Alcidamea", Species="fulgida",
-                              SubSpecies="", Sex="m", Author =
-                                                          "Cresson",
+                              SubGenus ="Alcidamea",
+                              Species="fulgida",
+                              SubSpecies="", Sex="m",
+                              Author =  "Cresson",
                               Determiner = "T. Griswold",
                               temp.id= c("BBSL1060036", "BBSL1085035",
                               "BBSL1084487")),
@@ -121,13 +128,15 @@ sp.ids <- list(
                                            "BBSL1072252",
                                            "BBSL1087227")),
 
-    Megachile_comata_f = list(Genus="Megachile", SubGenus ="Xanthosarus",
+    Megachile_comata_f = list(Genus="Megachile",
+                              SubGenus ="Xanthosarus",
                               Species="comata", SubSpecies="",
                               Sex="f",
-                              Author = "Cresson", Determiner = "T. Griswold",
+                              Author = "Cresson",
+                              Determiner = "T. Griswold",
                               temp.id= c("BBSL1059284", "BBSL1071517",
                                          "BBSL1059648", "BBSL1059744",
-                                         "BBSL1074139")),
+                                         "BBSL1074139", "BBSL1084327")),
 
     Megachile_comata_m = list(Genus="Megachile", SubGenus ="Xanthosarus",
                               Species="comata", SubSpecies="",
@@ -135,7 +144,8 @@ sp.ids <- list(
                               Author = "Cresson", Determiner = "T. Griswold",
                               temp.id= c("BBSL1058094", "BBSL1058095",
                                          "BBSL1074096", "BBSL1074320",
-                                         "BBSL1074321", "BBSL1070323")),
+                                         "BBSL1074321", "BBSL1070323",
+                                         "BBSL1085690")),
 
     Megachile_fidelis_f = list(Genus="Megachile", SubGenus ="Sayapis",
                                Species="fidelis", SubSpecies="",
@@ -176,7 +186,8 @@ sp.ids <- list(
                                            "BBSL1059184",
                                            "BBSL1084337",
                                            "BBSL1084403",
-                                           "BBSL1084402")),
+                                           "BBSL1084402",
+                                           "BBSL1086633")),
 
     Megachile_frigida_m = list(Genus="Megachile", SubGenus ="Xanthosarus",
                                Species="frigida", SubSpecies="",
@@ -285,7 +296,7 @@ sp.ids <- list(
                                               "BBSL1086088",
                                               "BBSL1084741",
                                               "BBSL1084974",
-                                              "BBSL1086633",
+
                                               "BBSL1084996")),
 
     Megachile_melanophaea_m = list(Genus="Megachile",
@@ -308,7 +319,7 @@ sp.ids <- list(
     Megachile_melanophaea_rohweri_f = list(Genus="Megachile",
                                            SubGenus ="Xanthosarus", Species="melanophaea",
                                            SubSpecies="rohweri",
-                                           Sex="f", Author = "",
+                                           Sex="f", Author = "Smith",
                                            Determiner = "T. Griswold",
                                            temp.id= c("BBSL1073304",
                                                       "BBSL1073305",
@@ -372,13 +383,14 @@ sp.ids <- list(
                                                       "BBSL1060040",
                                                       "BBSL1071046",
                                                       "BBSL1058987",
-                                                      "BBSL1072889",
-                                                      "BBSL1059035")),
+                                                      "BBSL1059035",
+                                                      "BBSL1084401",
+                                                      "BBSL1072889")),
 
     Megachile_melanophaea_rohweri_m = list(Genus="Megachile",
                                            SubGenus ="Xanthosarus", Species="melanophaea",
                                            SubSpecies="rohweri",
-                                           Sex="m", Author = "",
+                                           Sex="m", Author = "Smith",
                                            Determiner = "T. Griswold",
                                            temp.id= c("BBSL1070919",
                                                       "BBSL1070992",
@@ -414,7 +426,12 @@ sp.ids <- list(
                                                       "BBSL1070978",
                                                       "BBSL1073025",
                                                       "BBSL1073051",
-                                                      "BBSL1059894")),
+                                                      "BBSL1059894",
+                                                      "BBSL1086955",
+                                                      "BBSL1087254",
+                                                      "BBSL1085600",
+                                                      "BBSL1084939",
+                                                      "BBSL1087301")),
 
     Megachile_mellitarsis_f = list(Genus="Megachile",
                                    SubGenus ="Sayapis", Species="mellitarsis",
@@ -456,7 +473,15 @@ sp.ids <- list(
                                            "BBSL1058482", "BBSL1058488",
                                            "BBSL1058506", "BBSL1059442",
                                            "BBSL1059455", "BBSL1060075",
-                                           "BBSL1071058")),
+                                           "BBSL1071058", "BBSL1084605")),
+
+
+    Megachile_relativa_m = list(Genus="Megachile",
+                                SubGenus ="Megachile", Species="relativa",
+                                SubSpecies="", Sex="m",
+                                Author = "Cresson", Determiner = "T. Griswold",
+                                temp.id= c("BBSL1085402",
+                                           "BBSL1087177")),
 
     Megachile_subexilis_f = list(Genus="Megachile",
                                  SubGenus ="Chelostomoides", Species="subexilis",
@@ -471,18 +496,14 @@ sp.ids <- list(
                                 temp.id= c("BBSL1071134",
                                            "BBSL1071142", "BBSL1071248")),
 
-    Megachile_gentilis_f = list(Genus="Megachile",
-                                SubGenus ="Litomegachile", Species="gentilis",
-                                SubSpecies="", Sex="f",
-                                Author = "Cresson", Determiner = "K. Watrous",
-                                temp.id= c("BBSL1086791")),
-
 
     Osmia_albolateralis_f = list(Genus="Osmia",
                                  SubGenus ="Melanosmia", Species="albolateralis",
                                  SubSpecies="", Sex="f",
                                  Author = "Cockerell", Determiner = "T. Griswold",
-                                 temp.id= c("BBSL1059782", "BBSL1071030")),
+                                 temp.id= c("BBSL1059782", "BBSL1071030", "BBSL1086090",
+                                            "BBSL1086089",
+                                            "BBSL1085023")),
 
     Osmia_brevis_f = list(Genus="Osmia",
                           SubGenus ="Melanosmia", Species="brevis",
@@ -501,7 +522,7 @@ sp.ids <- list(
                              SubSpecies="", Sex="f",
                              Author = "Cresson",
                              Determiner = "T. Griswold",
-                             temp.id= c("BBSL1071060", "BBSL1071031", "BBSL1071128")),
+                             temp.id= c("BBSL1071060", "BBSL1071031", "BBSL1071128", "22602")),
 
     Osmia_inurbana_f = list(Genus="Osmia",
                             SubGenus ="Melanosmia", Species="inurbana",
@@ -514,7 +535,7 @@ sp.ids <- list(
                          SubGenus ="Melanosmia", Species="juxta",
                          SubSpecies="", Sex="f",
                          Author = "Cresson", Determiner = "T. Griswold",
-                         temp.id= c("BBSL1073864", "BBSL1058730")),
+                         temp.id= c("BBSL1073864", "BBSL1058730", "BBSL1084779")),
 
     Osmia_longula_f = list(Genus="Osmia",
                            SubGenus ="Melanosmia", Species="longula",
@@ -528,11 +549,17 @@ sp.ids <- list(
                                    Sex="f", Author = "Cresson", Determiner = "T. Griswold",
                                    temp.id= c("BBSL1058332")),
 
+    Osmia_simillima_f = list(Genus="Osmia",
+                             SubGenus ="Melanosmia", Species="simillima",
+                             SubSpecies="", Sex="f",
+                             Author = "Smith", Determiner = "T. Griswold",
+                             temp.id= c("BBSL1085586")),
+
     Osmia_simillima_m = list(Genus="Osmia",
                              SubGenus ="Melanosmia", Species="simillima",
                              SubSpecies="", Sex="m",
                              Author = "Smith", Determiner = "T. Griswold",
-                             temp.id= c("BBSL1070804")),
+                             temp.id= c("BBSL1070804", "BBSL1084433")),
 
     Osmia_texana_f = list(Genus="Osmia",
                           SubGenus ="Helicosmia", Species="texana",
@@ -540,10 +567,78 @@ sp.ids <- list(
                           Author = "Cresson", Determiner = "T. Griswold",
                           temp.id= c("BBSL1072577")),
 
-    Osmia_sp.1 = list(Genus="Osmia",
+    Osmia_sp_1 = list(Genus="Osmia",
                       SubGenus ="", Species="sp.",
                       SubSpecies="1", Sex="f",
                       Author = "", Determiner = "T. Griswold",
-                      temp.id= c("BBSL1071888"))
+                      temp.id= c("BBSL1071888")),
+
+    Osmia_subaustralis = list(Genus="Osmia",
+                      SubGenus ="Cephalosmia", Species="subaustralis",
+                      SubSpecies="", Sex="f",
+                      Author = "Cockerell", Determiner = "T. Griswold",
+                      temp.id= c("BBSL1084688")),
+
+    Megachile_subexilis_f = list(Genus="Megachile",
+                                 SubGenus ="Chelostomoides",
+                                 Species="subexilis",
+                                 SubSpecies="",
+                                 Sex="f", Author = "Cockerell",
+                                 Determiner = "T. Griswold",
+                                 temp.id=  c("BBSL1086805")),
+
+
+    Megachile_parallela_f = list(Genus="Megachile",
+                                 SubGenus ="Argyropile",
+                                 Species="parallela",
+                                 SubSpecies="",
+                                 Sex="f", Author = "Smith",
+                                 Determiner = "T. Griswold",
+                                 temp.id=  c("BBSL1073260")),
+
+    Megachile_inimica_f = list(Genus="Megachile",
+                                 SubGenus ="Sayapis",
+                                 Species="inimica",
+                                 SubSpecies="sayi",
+                                 Sex="f", Author = "Cresson",
+                                 Determiner = "T. Griswold",
+                                 temp.id=  c("BBSL1086791")),
+
+
+    Stelis_elegans_f = list(Genus="Stelis",
+                               SubGenus ="Stelis",
+                               Species="elegans",
+                               SubSpecies="",
+                               Sex="f", Author = "Cresson",
+                               Determiner = "T. Griswold",
+                               temp.id=  c("BBSL1058116")),
+
+    Osmia_pentstemonis = list(Genus="Osmia",
+                            SubGenus ="Melanosmia",
+                            Species="pentstemonis",
+                            SubSpecies="",
+                            Sex="f", Author = "Cockerell",
+                            Determiner = "T. Griswold",
+                            temp.id=  c("BBSL1085025")),
+
+
+    Ashmeadiella_occipitalis = list(Genus="Ashmeadiella",
+                              SubGenus ="Ashmeadiella",
+                              Species="occipitalis",
+                              SubSpecies="",
+                              Sex="f", Author = "Michener",
+                              Determiner = "T. Griswold",
+                              temp.id=  c("BBSL1086798")),
+
+    Ashmeadiella_californica = list(Genus="Ashmeadiella",
+                                    SubGenus ="Ashmeadiella",
+                                    Species="californica",
+                                    SubSpecies="",
+                                    Sex="f", Author = "Ashmead",
+                                    Determiner = "T. Griswold",
+                                    temp.id=  c("BBSL1087194"))
+
+
+
 
 )

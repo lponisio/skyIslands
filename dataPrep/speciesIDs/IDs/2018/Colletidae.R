@@ -4,10 +4,61 @@ sp.ids <- list(
  Colletes_slevini_m= list(Genus="Colletes", SubGenus ="",
     Species="slevini", SubSpecies="", Sex="m", Author = "Cockerell",
     Determiner="D. Yanega", 
-    temp.id= c("18598"))
-
-  )
-
+    temp.id= c("18598")), 
+ 
+ 
+ Colletes_bryanti_m= list(Genus="Colletes", SubGenus ="",
+                          Species="bryanti", SubSpecies="", Sex="m", Author = "Timberlake",
+                          Determiner="T. Griswold", 
+                          temp.id= c("18466",
+                                     "18473",
+                                     "18464",
+                                     "18467",
+                                     "17718",
+                                     "18475",
+                                     "18465",
+                                     "18451")), 
+ 
+ Colletes_bryanti_f= list(Genus="Colletes", SubGenus ="",
+                          Species="bryanti", SubSpecies="", Sex="f", Author = "Timberlake",
+                          Determiner="T. Griswold", 
+                          temp.id= c("17865")), 
+ 
+ 
+ Colletes_sp4= list(Genus="Colletes", SubGenus ="",
+                          Species="sp.", SubSpecies="4", Sex="f", Author = "Timberlake",
+                          Determiner="T. Griswold", 
+                          temp.id= c("18298")), 
+ 
+ Hylaeus_wootoni = list(Genus="Hylaeus", SubGenus ="Hylaeus",
+                        Species="wootoni", SubSpecies="",
+                        Sex="f",
+                        Author = "Cockerell",
+                        Determiner="T. Griswold",
+                        temp.id= c("18700",
+                                   "18309",
+                                   "18569",
+                                   "18565",
+                                   "18299",
+                                   "18094",
+                                   "18300",
+                                   "18062",
+                                   "18115")),
+ 
+ Hylaeus_verticalis = list(Genus="Hylaeus", SubGenus ="Hylaeus",
+                        Species="verticalis", SubSpecies="",
+                        Sex="f",
+                        Author = "Cresson",
+                        Determiner="T. Griswold",
+                        temp.id= c("18672")),
+ 
+ 
+ Hylaeus_mesillae = list(Genus="Hylaeus", SubGenus ="Hylaeus",
+                           Species="mesillae", SubSpecies="",
+                           Sex="f",
+                           Author = "Cockerell",
+                           Determiner="T. Griswold",
+                           temp.id= c("18570")),
 
 
     Colletes_skinneri_f= list(Genus="Colletes", SubGenus ="",
@@ -18,7 +69,7 @@ sp.ids <- list(
                               Determiner="D. Yanega",
                               temp.id= c("18177", "18586", "18587",
                                          "18453", "18219", "17986",
-                                         "18454")),
+                                         "18454", "20612")),
 
     Colletes_skinneri_m= list(Genus="Colletes", SubGenus ="",
                               Species="skinneri",

@@ -161,5 +161,65 @@ sp.ids <- list(
               SubSpecies="", Sex="", Author = "Cresson",
               Determiner="J. Carpenter", temp.id
               =c("PL_081312_106", "JC_071612_109", "JC_071712_106",
-                 "JC_071512_135", "JC_071712_50")) )
+                 "JC_071512_135", "JC_071712_50")),
+                  
+        Triscolia = list(Genus="Triscolia", SubGenus ="", Species="ardens",
+              SubSpecies="", Sex="f", Author = "",
+              Determiner="M. van Dam", temp.id
+              =c("CH_082112_78", "CH_082012_93", "CH_082012_95", "CH_082012_80", "CH_082212_20", "CH_082112_77", "CH_082112_19", "CH_082112_18", "CH_082112_102", "CH_082112_96", "CH_082112_167", "CH_081812_15", "PL_081312_56", "PL_081212_63", "CH_082012_19", "CH_082012_74", "CH_082012_21", "CH_082012_18", "CH_082012_66", "CH_082012_78", "CH_082112_103", "CH_082012_155", "CH_082012_97", "CH_082012_20", "CH_082212_18", "CH_082112_94", "CH_082012_81", "CH_082012_79", "CH_082012_153")),
+              
+              
+                 Scolia = list(Genus="Scolia", SubGenus ="", Species="dubia",
+              SubSpecies="haematodes", Sex="f", Author = "",
+              Determiner="M. van Dam", temp.id
+              =c("PL_081312_7", "PL_081312_127", "PL_081312_58", "PL_081312_96","PL_081312_192","PL_081312_140", "PL_081312_55", "PL_081212_38")), 
+              
+              ## pompilids
+                            
+               Pepsis =  list(Genus="Pepsis", SubGenus ="", Species="formosa",
+              SubSpecies="formosa", Sex="f", Author = "",
+              Determiner="M. van Dam", temp.id
+              =c("PL_081212_32", "CH_082112_95", "CH_082012_162", "CH_082112_76", "CH_082012_6")), 
+              
+               Pepsis =  list(Genus="Pepsis", SubGenus ="", Species="formosa",
+              SubSpecies="formosa", Sex="f", Author = "",
+              Determiner="M. van Dam", temp.id
+              =c("CH_082112_2", "PL_081212_29", "CH_082012_91", "CH_082112_1", "CH_082112_172", "PL_081212_30")), 
+                 
+                 
+                     Pepsis =  list(Genus="Pepsis", SubGenus ="", Species="formosa",
+              SubSpecies="formosa", Sex="f", Author = "",
+              Determiner="M. van Dam", temp.id
+              =c("PL_081212_32", "CH_082112_95", "CH_082012_162", "CH_082112_76", "CH_082012_6")), 
+              
+               Pepsis =  list(Genus="Pepsis", SubGenus ="", Species="formosa",
+              SubSpecies="formosa", Sex="m", Author = "",
+              Determiner="M. van Dam", temp.id
+              =c("CH_082012_92", "CH_082012_123")),
+              
+              
+               Pepsis =  list(Genus="Pepsis", SubGenus ="", Species="formosa",
+              SubSpecies="pattoni", Sex="f", Author = "",
+              Determiner="M. van Dam", temp.id
+              =c("CH_082012_5", "PL_081212_31")), 
+              
+              
+                    
+              
+               Cryptocheilus =  list(Genus="Cryptocheilus", SubGenus ="", Species="severini",
+              SubSpecies="pattoni", Sex="f", Author = "",
+              Determiner="M. van Dam", temp.id
+              =c("PL_081012_50")), 
+                     
+                     
+                     
+                         
+               Chirodamus =  list(Genus="Chirodamus", SubGenus ="", Species="sp.",
+              SubSpecies="a", Sex="m", Author = "",
+              Determiner="M. van Dam", temp.id
+              =c("CH_082012_8"))
+                     
+                 
+                 
+                 )
 

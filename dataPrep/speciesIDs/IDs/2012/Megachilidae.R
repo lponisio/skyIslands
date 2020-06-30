@@ -6,6 +6,14 @@ sp.ids <- list(
     SubSpecies="", Sex="", Author = "Cresson",
     Determiner="J.S. Ascher",
     temp.id= c("MM_080212_166", "MM_080212_198", "MM_080112_16")),
+  
+  Anthidium_tenuiflorae_m = list(Genus="Anthidium",
+                               SubGenus ="Anthidium",
+                               Species="tenuiflorae",
+                               SubSpecies="", Sex="m",
+                               Author = "Cockerell",
+                               Determiner = "T. Griswold",
+                               temp.id= c("JC_071712_21")),
 
   Megachile_frigida_f = list(Genus="Megachile", SubGenus ="Xanthosarus",
     Species="frigida", SubSpecies="", Sex="f", Author = "Smith",
@@ -70,7 +78,6 @@ sp.ids <- list(
                                           "JC_071612_92",
                                           "JC_071712_16",
                                           "JC_071512_157",
-                                          "JC_071712_149",
                                           "JC_071512_125")),
 
   Megachile_fidelis = list(Genus="Megachile", SubGenus ="Sayapis",
@@ -92,7 +99,7 @@ sp.ids <- list(
                                          SubGenus ="Xanthosarus",
                                          Species="melanophaea",
                                          SubSpecies="rohweri",
-                                         Sex="f", Author = "",
+                                         Sex="f", Author = "Smith",
                                          Determiner = "T. Griswold",
                                          temp.id= c("JC_071712_114",
                                                     "PL_081212_269",
@@ -112,8 +119,23 @@ sp.ids <- list(
                             Determiner = "T. Griswold",
                             temp.id= c("MM_080312_193",
                                        "MM_080212_263",
-                                       "SC_072712_163"))
+                                       "SC_072712_163")),
 
+  
+  Megachile_gemula_f = list(Genus="Megachile", SubGenus ="Xanthosarus",
+                            Species="gemula", SubSpecies="fulvogemula",
+                            Sex="f",
+                            Author = "Cresson",
+                            Determiner = "T. Griswold",
+                            temp.id= c("JC_071712_149")),
+  
+  Dianthidium_cressonii = list(Genus="Dianthidium",
+                             SubGenus ="Dianthidium",
+                             Species="cressonii",
+                             SubSpecies="", Sex="f",
+                             Author = "Dalla Torre",
+                             Determiner = "T. Griswold",
+                             temp.id= c("SC_072912_50"))
 
 
 )

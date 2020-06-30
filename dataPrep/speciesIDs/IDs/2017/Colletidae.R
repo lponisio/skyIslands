@@ -1,10 +1,86 @@
 
 sp.ids <- list(
+    
+    
+    Hylaeus_mesillae = list(Genus="Hylaeus", SubGenus ="Hylaeus",
+                            Species="mesillae", SubSpecies="",
+                            Sex="m",
+                            Author = "Cockerell",
+                            Determiner="T. Griswold",
+                            temp.id= c("BBSL1087259")),
+    
+    
+    Hylaeus_wootoni = list(Genus="Hylaeus", SubGenus ="Hylaeus",
+                           Species="wootoni", SubSpecies="",
+                           Sex="f",
+                           Author = "Cockerell",
+                           Determiner="T. Griswold",
+                           temp.id= c("BBSL1071450",
+                                      "BBSL1071440",
+                                      "BBSL1071332",
+                                      "BBSL1071420",
+                                      "BBSL1071335",
+                                      "BBSL1071572",
+                                      "BBSL1070661",
+                                      "BBSL1070659",
+                                      "BBSL1071233",
+                                      "BBSL1071571",
+                                      "BBSL1071449",
+                                      "BBSL1071448",
+                                      "BBSL1071503",
+                                      "BBSL1071504",
+                                      "BBSL1058525",
+                                      "BBSL1059158",
+                                      "BBSL1058478",
+                                      "BBSL1058553",
+                                      "BBSL1086436",
+                                      "BBSL1085606",
+                                      "BBSL1086502")),
+    
+    Hylaeus_wootoni = list(Genus="Hylaeus", SubGenus ="Hylaeus",
+                           Species="wootoni", SubSpecies="",
+                           Sex="m",
+                           Author = "Cockerell",
+                           Determiner="T. Griswold",
+                           temp.id= c("BBSL1058518",
+                                      "BBSL1085324")),
+    
+    Hylaeus_personatellus = list(Genus="Hylaeus", SubGenus ="Hylaeus",
+                           Species="personatellus", SubSpecies="",
+                           Sex="m",
+                           Author = "Cockerell",
+                           Determiner="T. Griswold",
+                           temp.id= c("BBSL1071161")),
 
+    
+    Colletes_hyalinus = list(Genus="Colletes", SubGenus ="",
+                                 Species="hyalinus", SubSpecies="hyalinus",
+                                 Sex="m",
+                                 Author = "Provancher",
+                                 Determiner="T. Griswold",
+                                 temp.id= c("BBSL1085803")),
+    
+
+    Colletes_sp1_m= list(Genus="Colletes", SubGenus ="",
+                             Species="sp.", SubSpecies="1", Sex="m", Author = "",
+                             Determiner="T. Griswold",
+                             temp.id= c("BBSL1071075")),
+    
+    Colletes_sp2_m= list(Genus="Colletes", SubGenus ="",
+                         Species="sp.", SubSpecies="2", Sex="m", Author = "",
+                         Determiner="T. Griswold",
+                         temp.id= c("BBSL1073355", "BBSL1084432")),
+    
+    Colletes_sp3_m= list(Genus="Colletes", SubGenus ="",
+                         Species="sp.", SubSpecies="3", Sex="m", Author = "",
+                         Determiner="T. Griswold",
+                         temp.id= c("BBSL1072880")),
+    
+    
  Colletes_slevini_m= list(Genus="Colletes", SubGenus ="",
     Species="slevini", SubSpecies="", Sex="m", Author = "Cockerell",
     Determiner="T. Griswold",
-    temp.id= c("BBSL1058839")),
+    temp.id= c("BBSL1058839", "BBSL1073216")),
 
 
     Colletes_skinneri_m= list(Genus="Colletes", SubGenus ="",
@@ -144,31 +220,9 @@ sp.ids <- list(
                           Species="basalis", SubSpecies="", Sex="f",
                           Author = "Smith",
                           Determiner = "T. Griswold",
-                          temp.id= c("BBSL1058725", "BBSL1058671")),
+                          temp.id= c("BBSL1058725", "BBSL1058671"))
 
- Hylaeus_morphoa_m = list(Genus="Hylaeus", SubGenus ="Hylaeus",
-                          Species="sp.", SubSpecies="a",
-                          Sex="m",
-                          Author = "Linnaeus",
-                          Determiner = "D. Yanega",
-                          temp.id= c("BBSL1087259")),
 
- Hylaeus_morphoc_f = list(Genus="Hylaeus", SubGenus ="Hylaeus",
-                          Species="sp.", SubSpecies="c",
-                          Sex="f",
-                          Author = "Linnaeus",
-                          Determiner = "D. Yanega",
-                          temp.id= c(
-                              "BBSL1086502",
-                              "BBSL1085606",
-                              "BBSL1086436")),
 
- Hylaeus_morphoc_m = list(Genus="Hylaeus", SubGenus ="Hylaeus",
-                          Species="sp.", SubSpecies="c",
-                          Sex="m",
-                          Author = "Linnaeus",
-                          Determiner = "D. Yanega",
-                          temp.id= c(
-                              "BBSL1085324"))
 
 )

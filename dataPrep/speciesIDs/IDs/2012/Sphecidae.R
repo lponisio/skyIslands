@@ -54,11 +54,182 @@ sp.ids <- list(
        "SC_072012_65","SC_072012_302","SC_072012_85","SC_072012_86",
        "SC_072012_108","SC_072012_68")),
 
-#ammophila 2012
-ammophila= list(Genus="Ammophila", SubGenus ="",
-                 Species="", SubSpecies="", Sex="",
-                 Author = "Kirby",
-                Determiner="J. Schlauch",
-                temp.id =c("SC_072712_260"))
+  podalonia_spp = list(Genus="Podalonia", SubGenus ="",
+    Species="spp.", SubSpecies="", Sex="", Author = "",
+    Determiner="J. Schlauch", temp.id=c("JC_071712_44",
+                                        "JC_071612_34",
+                                        "JC_071612_31",
+                                        "JC_071612_65",
+                                        "JC_071612_108",
+                                        "JC_071712_23",
+                                        "JC_071712_79",
+                                        "JC_071412_49",
+                                        "JC_071712_31", "PL_081112_1",
+                                        "PL_081012_224",
+                                        "PL_081012_13",
+                                        "JC_071712_67",
+                                        "MM_080212_73",
+                                        "JC_071712_118",
+                                        "JC_071712_122",
+                                        "JC_071712_90",
+                                        "SC_072712_25",
+                                        "SC_072612_226",
+                                        "PL_081012_14",
+                                        "SC_072012_83",
+                                        "MM_080312_201",
+                                        "MM_080112_222",
+                                        "JC_071412_54",
+                                        "JC_071412_57",
+                                        "JC_071612_119",
+                                        "JC_071212_4", "JC_071412_4",
+                                        "JC_071212_81",
+                                        "JC_071212_79",
+                                        "JC_071212_55",
+                                        "JC_071212_11",
+                                        "JC_071212_132",
+                                        "JC_071612_118",
+                                        "JC_071612_41",
+                                        "JC_071612_21",
+                                        "JC_071612_55",
+                                        "JC_071612_42",
+                                        "JC_071612_59",
+                                        "JC_071612_68",
+                                        "JC_071212_78",
+                                        "JC_071412_68",
+                                        "JC_071412_99",
+                                        "JC_071512_26","JC_071512_46",
+                                        "JC_071512_116",
+                                        "JC_071512_88",
+                                        "JC_071212_19",
+                                        "JC_071712_169",
+                                        "JC_071412_140",
+                                        "JC_071412_141",
+                                        "JC_071512_49",
+                                        "JC_071512_47",
+                                        "JC_071512_48",
+                                        "JC_071512_143")),
+
+
+                                        #ammophila 2012
+ ammophila= list(Genus="Ammophila", SubGenus ="",
+                 Species="sp.", SubSpecies="a", Sex="",
+                 Author = "",
+                 Determiner="J. Schlauch",
+                 temp.id =c("SC_072712_260")),
+
+
+ ammophila= list(Genus="Ammophila", SubGenus ="",
+                 Species="spp.", SubSpecies="", Sex="",
+                 Author = "",
+                 Determiner="J. Schlauch",
+                 temp.id =c("SC_072712_260",
+                            "CH_082012_101",
+                            "CH_082012_202",
+                            "CH_082012_147",
+                            "MM_080212_268",
+                            "CH_082012_24",
+                            "MM_080212_210", "CH_082212_85", "PL_081112_223", "PL_081212_117", "PL_081112_36", "MM_080412_208", "PL_081312_1", "PL_081312_4", "PL_081312_215", "MM_080312_200")),
+
+
+
+ Philanthus = list(Genus="Philanthus", SubGenus ="",
+                   Species="ventilubril",
+                   SubSpecies="", Sex="f",
+                   Author = "",
+                   Determiner="J.S. Ascher",
+                   temp.id =c("SC_072012_182",
+                              "JC_071512_20"
+                              )),
+
+
+ Ectemnius = list(Genus="Ectemnius", SubGenus ="",
+                  Species="sonorensis",
+                  SubSpecies="", Sex="f",
+                  Author = "",
+                  Determiner="J.S. Ascher",
+                  temp.id =c("PL_081012_243",
+                             "PL_081312_135",
+                             "PL_081312_98",
+                             "SC_072012_91"
+                             )),
+
+ Crabro = list(Genus="Crabro", SubGenus ="",
+               Species="sp.",
+               SubSpecies="a", Sex="f",
+               Author = "",
+               Determiner="J.S. Ascher",
+               temp.id =c("SC_072312_243",
+                          "PL_080912_291",
+                          "SC_072312_238"
+                          )),
+
+
+ Crabro = list(Genus="Crabro", SubGenus ="",
+               Species="sp.",
+               SubSpecies="b", Sex="f",
+               Author = "",
+               Determiner="J.S. Ascher",
+               temp.id =c("JC_071712_73"
+                          )),
+
+
+ Tachytes = list(Genus="Tachytes", SubGenus ="",
+                 Species="sp.",
+                 SubSpecies="a", Sex="f",
+                 Author = "",
+                 Determiner="J.S. Ascher",
+                 temp.id =c("CH_081812_14", "CH_082012_73"
+                            )),
+
+ Tachytes = list(Genus="Tachytes", SubGenus ="",
+                 Species="sp.",
+                 SubSpecies="b", Sex="f",
+                 Author = "",
+                 Determiner="J.S. Ascher",
+                 temp.id =c("CH_082012_145"
+                            )),
+
+
+ Tachytes = list(Genus="Tachytes", SubGenus ="",
+                 Species="sp.",
+                 SubSpecies="c", Sex="f",
+                 Author = "",
+                 Determiner="J.S. Ascher",
+                 temp.id =c("CH_082012_12"
+                            )),
+
+ Bembix = list(Genus="Bembix", SubGenus ="",
+               Species="sp.",
+               SubSpecies="a", Sex="f",
+               Author = "",
+               Determiner="J.S. Ascher",
+               temp.id =c("PL_081212_180", "PL_080912_165", "PL_081312_194",
+                          "PL_080912_85", "PL_081112_213", "SC_072012_212",
+                          "SC_072012_122")),
+
+
+
+
+ Sphex = list(Genus="Sphex", SubGenus ="",
+              Species="sp.",
+              SubSpecies="a", Sex="f",
+              Author = "",
+              Determiner="J.S. Ascher",
+              temp.id =c("CH_082112_14")),
+
+ Sphex = list(Genus="Sphex", SubGenus ="",
+              Species="sp.",
+              SubSpecies="b", Sex="f",
+              Author = "",
+              Determiner="J.S. Ascher",
+              temp.id =c("CH_082112_3"))
+
+
+
+
+
+
+
+
 )
 

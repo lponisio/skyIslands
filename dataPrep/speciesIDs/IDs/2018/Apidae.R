@@ -164,10 +164,18 @@ sp.ids <- list(
                                 Determiner="L.C. Ponisio",
                                 temp.id= c("18599", "18237", "18101",
                                            "18102", "20565", "20519",
-                                           "20516", "20518", "20610", "20692",
-                                           "20559", "20564", "20780", "20776",
-                                           "20777", "20701", "20700", "20783",
-                                           "20766", "20772", "20778", "20789")),
+                                           "20516", "20518", "20610",
+                                           "20692", "20559", "20564",
+                                           "20780", "20776", "20777",
+                                           "20701", "20700", "20783",
+                                           "20766", "20772", "20778",
+                                           "20789",
+                                           "19062", "19796", "19794",
+                                           "19815", "19790", "19838",
+                                           "19806", "19597", "22203",
+                                           "22216", "22134", "22197",
+                                           "22152", "22149", "25018",
+                                           "25150", "25157", "22135")),
 
     Anthophora_montana_m = list(Genus="Anthophora",
                                 SubGenus="Mystacanthophora",
@@ -175,8 +183,15 @@ sp.ids <- list(
                                 Sex="m", Author = "Cresson",
                                 Determiner="L.C. Ponisio",
                                 temp.id= c("18607", "20774", "20696",
-                                           "20695", "20703", "20699", "20786",
-                                           "20784", "20782", "20775", "20790")),
+                                           "20695", "20703", "20699",
+                                           "20786", "20784", "20782",
+                                           "20775", "20790", "19755",
+                                           "19789", "19795", "19792",
+                                           "19801", "19745", "19804",
+                                           "19805", "22118", "19917",
+                                           "22119", "22120", "22133",
+                                           "22138", "22157", "22202",
+                                           "19619", "19598", "19137")),
 
 
     Anthophora_terminalis_f = list(Genus="Anthophora",
@@ -232,7 +247,7 @@ sp.ids <- list(
                                        "20663", "20664", "20665", "20676",
                                        "20677", "20678", "20679", "20680",
                                        "20681", "20682", "20687", "20688",
-                                       "20668"
+                                       "20668", "19136", "19138", "19872"
                                        )),
 
 
@@ -442,11 +457,11 @@ sp.ids <- list(
                                      Determiner="D. Yanega",
                                      temp.id= c("18579")),
 
-    Triepeolus_sp_a_f= list(Genus="Triepeolus",
+    Triepeolus_sp_a_m= list(Genus="Triepeolus",
                             SubGenus="",
                             Species="sp.",
                             SubSpecies="a",
-                            Sex="f",
+                            Sex="m",
                             Author = "",
                             Determiner="D. Yanega",
                             temp.id= c("18384",
@@ -460,11 +475,11 @@ sp.ids <- list(
 
 
 
-    Triepeolus_sp_a_m= list(Genus="Triepeolus",
+    Triepeolus_sp_a_f= list(Genus="Triepeolus",
                             SubGenus="",
                             Species="sp.",
                             SubSpecies="a",
-                            Sex="m",
+                            Sex="f",
                             Author = "",
                             Determiner="D. Yanega",
                             temp.id= c("18401",
@@ -479,7 +494,7 @@ sp.ids <- list(
                                        "18421",
                                        "18357",
                                        "18389",
-                                       "17901" )),
+                                       "17901", "17772", "17768", "30619" )),
 
     Triepeolus_sp_b_f= list(Genus="Triepeolus",
                             SubGenus="",
@@ -488,8 +503,10 @@ sp.ids <- list(
                             Sex="f",
                             Author = "",
                             Determiner="D. Yanega",
-                            temp.id= c("18059",
-                                       "18092")),
+                            temp.id= c("18059", "18092", "22308",
+                                       "22309", "22515", "21222",
+                                       "23415", "22935", "22937",
+                                       "20924")),
 
 
     Andrena_apacheorum_f= list(Genus="Andrena", SubGenus ="Cnemidandrena",

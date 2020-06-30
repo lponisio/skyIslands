@@ -20,6 +20,34 @@ sp.ids <- list(
                                          "18140", "18119", "18109",
                                          "18025", "17948", "17932",
                                          "17979", "18029", "18031",
-                                         "18493", "18596", "18718"))
+                                         "18493", "18596", "18718", "17760", "25147")),
+
+
+    Crabro = list(Genus="Crabro", SubGenus ="",
+       Species="sp.",
+       SubSpecies="b", Sex="f",
+                 Author = "",
+                Determiner="L.C. Ponisio",
+       temp.id =c("18394"
+                  )),
+
+    ammophila= list(Genus="Ammophila", SubGenus ="",
+                 Species="spp.", SubSpecies="", Sex="",
+                 Author = "",
+                Determiner="J. Schlauch",
+                temp.id =c("18405", "17900")),
+
+    podalonia_spp = list(Genus="Podalonia",
+                         SubGenus ="",
+    Species="spp.", SubSpecies="", Sex="", Author = "",
+    Determiner="J. Schlauch",
+    temp.id=c("18311",
+              "18715",
+              "18544",
+              "17678",
+              "18162",
+              "18014",
+              "18127",
+              "18032"))
 )
 
