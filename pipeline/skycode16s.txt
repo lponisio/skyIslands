@@ -83,6 +83,10 @@ qiime tools view sky2018map16s.qzv
 
 #you want to specify a file path (instead of just the working directory) for qiime tool imports because the argument works on everything in a directory, 
 
+## rename the files
+mv reads1.fastq.gz  forward.fastq.gz
+mv reads2.fastq.gz  reverse.fastq.gz
+
 #so just setting the working directory will make it work on everything inside of it
 qiime tools import --type EMPPairedEndSequences --input-path /mnt/SI_pipeline/16sRBCL/parsed_barcodes/ --output-path seqs.qza
 
@@ -151,10 +155,10 @@ qiime tools import --type EMPPairedEndSequences --input-path /Users/melittology/
 
 #DEMULTIPLEX
 
-This step splits data into individual, per-sample fastq files.
+# This step splits data into individual, per-sample fastq files.
 
 
-qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file ffar2018map16s.txt --m-barcodes-category barcodesequence --o-per-sample-sequences demux16s.qza
+qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file ../sky2018map16s.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza --p-no-golay-error-correction --output-dir error
 
 
 #to visualize results:
