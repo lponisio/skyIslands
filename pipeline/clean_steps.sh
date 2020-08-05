@@ -12,7 +12,7 @@ ls
 
 #3: If your reads are in *fasta.gz format, unzip them with qiime, then rename them "forward.fastq" and "reverse.fastq"
 
-gunzip *.fasta.gz
+gunzip *.gz
 
 mv [file name] forward.fastq
 mv [file name] reverse.fastq
