@@ -1,7 +1,7 @@
 ## setwd('~/Dropbox/skyIslands')
 setwd('analysis/speciesLevel')
-net.type <- "YrSR"
-## net.type <- "Yr"
+## net.type <- "YrSR"
+net.type <- "Yr"
 species <- c("Plant", "Pollinator")
 ## species <- c("Pollinator", "Parasite")
 source('src/initialize.R')
@@ -35,7 +35,7 @@ if(species[1] == "Plant"){
     formulas.pv <-lapply(paste(metrics, "pv", sep="."),
                          function(y) {
                              as.formula(paste(y, "~",
-                                              "scale(maxN) + GenusSpecies"))
+                                              "scale(maxN)"))
                          })
     formulas.mean <-lapply(metrics,
                            function(y) {
@@ -74,26 +74,25 @@ mods.pv.higher <- mods.pv.higher[!sapply(mods.pv.higher, function(x)
     inherits(x, "try-error"))]
 
 ## results
-lapply(mods.pv.higher, summary)
+## lapply(mods.pv.higher, summary)
 ## check sig levels with method other than wald CI
 lapply(mods.pv.higher, anova)
 
-## plant pollinator
+##  pollinator
 ## most variable in rare.degree, + with occurrence
-## most variable in niche overlap, + with occurrence
 
-## pollinator parasite
-## most variable in closeness, + occurrence
+##  parasite
+## nothing sig
 
-lapply(mods.mean.higher, summary)
+## lapply(mods.mean.higher, summary)
 ## check sig levels with method other than wald CI
 lapply(mods.mean.higher, anova)
 
-## plant pollinator
+##  pollinator
 ## all sig with occurrence
 
-## pollinator parasite
-## mean closeness  + with occurrence
+##  parasite
+## species strength, niche overlap, closeness + with occurrence
 
 ## lower
 mods.pv.lower <- lapply(formulas.pv, function(x){
@@ -109,20 +108,27 @@ mods.pv.lower <- mods.pv.lower[!sapply(mods.pv.lower, function(x)
     inherits(x, "try-error"))]
 
 ## results
-lapply(mods.pv.lower, summary)
+## lapply(mods.pv.lower, summary)
 ## check sig levels with method other than wald CI
 lapply(mods.pv.lower, anova)
 
-## plant pollinator
+## plant
 ## no sig relationships with occurrence
 
-lapply(mods.mean.lower, summary)
+## pollinator
+## rare.degree +  occurrence
+
+## lapply(mods.mean.lower, summary)
 ## check sig levels with method other than wald CI
 lapply(mods.mean.lower, anova)
+
+## plant
 ## species strength
 ## d
-## rare.degree (marginal)
 ## niche overlap
+
+## pollinator
+## none sig
 
 plotAllGeo()
 
@@ -130,59 +136,59 @@ plotAllGeo()
 ## *****************************************************************
 ## mean/variability between years within a site
 ## *****************************************************************
-if(species[1] == "Plant"){
-    by.site <- split(sp.lev, sp.lev$Site)
-    by.sp.site <- lapply(by.site, function(x) {split(x, x$GenusSpecies)})
-    by.sp.site <- unlist(by.sp.site, recursive=FALSE)
+## if(species[1] == "Plant"){
+##     by.site <- split(sp.lev, sp.lev$Site)
+##     by.sp.site <- lapply(by.site, function(x) {split(x, x$GenusSpecies)})
+##     by.sp.site <- unlist(by.sp.site, recursive=FALSE)
 
-    yr.met <- calcVar(by.sp.site, PV)
+##     yr.met <- calcVar(by.sp.site, PV)
 
-    ## pollinators
-    mods.pv.higher <- lapply(formulas.pv, function(x){
-        lmer(x, data=yr.met[yr.met$speciesType == "higher.level",])
-    })
-    mods.mean.higher <- lapply(formulas.mean, function(x){
-        lmer(x, data=yr.met[yr.met$speciesType == "higher.level",])
-    })
+##     ## pollinators
+##     mods.pv.higher <- lapply(formulas.pv, function(x){
+##         lmer(x, data=yr.met[yr.met$speciesType == "higher.level",])
+##     })
+##     mods.mean.higher <- lapply(formulas.mean, function(x){
+##         lmer(x, data=yr.met[yr.met$speciesType == "higher.level",])
+##     })
 
-    names(mods.pv.higher) <- names(mods.mean.higher) <- metrics
-    ## results
-    lapply(mods.pv.higher, summary)
-    ## check sig levels with method other than wald CI
-    lapply(mods.pv.higher, anova)
-    ## most variable in betweenness + number of years detected at a site
-    ## most variable in degree + number of years detected at a site
+##     names(mods.pv.higher) <- names(mods.mean.higher) <- metrics
+##     ## results
+##     lapply(mods.pv.higher, summary)
+##     ## check sig levels with method other than wald CI
+##     lapply(mods.pv.higher, anova)
+##     ## most variable in betweenness + number of years detected at a site
+##     ## most variable in degree + number of years detected at a site
 
-    lapply(mods.mean.higher, summary)
-    ## check sig levels with method other than wald CI
-    lapply(mods.mean.higher, anova)
-    ##  all metrics + number of years detected at a site
+##     lapply(mods.mean.higher, summary)
+##     ## check sig levels with method other than wald CI
+##     lapply(mods.mean.higher, anova)
+##     ##  all metrics + number of years detected at a site
 
 
-    ## lowers
-    mods.pv.lower <- lapply(formulas.pv, function(x){
-        mod.FUN(x, data=yr.met[yr.met$speciesType == "lower.level",])
-    })
-    mods.mean.lower <- lapply(formulas.mean, function(x){
-        mod.FUN(x, data=yr.met[yr.met$speciesType == "lower.level",])
-    })
-    names(mods.pv.lower) <- names(mods.mean.lower) <- metrics
-    ## results
-    lapply(mods.pv.lower, summary)
-    ## check sig levels with method other than wald CI
-    lapply(mods.pv.lower, anova)
-    ## most variable in species strength + number of years detected at a site
-    ## most variable in betweenness  + number of years detected at a site
+##     ## lowers
+##     mods.pv.lower <- lapply(formulas.pv, function(x){
+##         mod.FUN(x, data=yr.met[yr.met$speciesType == "lower.level",])
+##     })
+##     mods.mean.lower <- lapply(formulas.mean, function(x){
+##         mod.FUN(x, data=yr.met[yr.met$speciesType == "lower.level",])
+##     })
+##     names(mods.pv.lower) <- names(mods.mean.lower) <- metrics
+##     ## results
+##     lapply(mods.pv.lower, summary)
+##     ## check sig levels with method other than wald CI
+##     lapply(mods.pv.lower, anova)
+##     ## most variable in species strength + number of years detected at a site
+##     ## most variable in betweenness  + number of years detected at a site
 
-    lapply(mods.mean.lower, summary)
-    ## check sig levels with method other than wald CI
-    lapply(mods.mean.lower, anova)
-    ## betweenness
-    ## closeness
-    ## niche overlap
+##     lapply(mods.mean.lower, summary)
+##     ## check sig levels with method other than wald CI
+##     lapply(mods.mean.lower, anova)
+##     ## betweenness
+##     ## closeness
+##     ## niche overlap
 
-    plotAllYr()
-}
+##     plotAllYr()
+## }
 
-## variability for between years maybe doesn't make any sense with
-## only three years of data.
+## ## variability for between years maybe doesn't make any sense with
+## ## only three years of data.

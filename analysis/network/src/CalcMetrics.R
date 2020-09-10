@@ -4,6 +4,9 @@ library(SYNCSA, quietly = TRUE)
 
 calcMetric <- function(dat.web, ...) {
     mets <-  my.networklevel(dat.web, ...)
+    mets.group <- grouplevel(dat.web, index=c("mean number of links",
+                                         "weighted cluster coefficient"))
+    mets <- c(mets, mets.group)
     ## the functional redundancy function takes a matrix of sites and
     ## species, and a trait matrix whwere the rownames of the traits
     ## match the column names of the site by species matric. In our
@@ -65,11 +68,7 @@ calcNetworkMetrics <- function(dat.web, N,
                                index= c("niche overlap",
                                         "functional complementarity",
                                         "weighted NODF",
-                                        "ISA",
-                                        "SA",
-                                        "vulnerability",
                                         "number of species",
-                                        "cluster coefficient",
                                         "H2")) {
     ## calculate pvalues
     pvals <- function(stats, nnull){
@@ -116,7 +115,8 @@ calcNetworkMetrics <- function(dat.web, N,
 
 prepDat <- function(cor.stats, spec.dat,
                     cols.to.keep= c("Site", "Lat", "LatPoly1",
-                                    "LatPoly2", "Elev", "Area"), net.type){
+                                    "LatPoly2", "Elev", "Area"),
+                    net.type){
     dats <- do.call(rbind, cor.stats)
     out <- data.frame(dats)
     out$Site <- sapply(strsplit(names(cor.stats), "\\."),
@@ -135,7 +135,7 @@ prepDat <- function(cor.stats, spec.dat,
     site.dats <- unique(spec[, c(cols.to.keep)])
     site.dats$Site  <- as.character(site.dats$Site)
     site.dats <- apply(site.dats[, cols.to.keep[-1]], 2, function(x)
-        tapply(x, site.dats$Site, mean, na.rm=TRUE))
+        tapply(as.numeric(x), site.dats$Site, mean, na.rm=TRUE))
     site.dats <- as.data.frame(site.dats)
     site.dats$Site <- rownames(site.dats)
     out <- merge(out, site.dats, by="Site", all.x=TRUE)

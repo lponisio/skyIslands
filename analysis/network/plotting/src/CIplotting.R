@@ -73,3 +73,41 @@ plot.panel <- function(dats,
     }
     plotting.loop()
 }
+
+
+
+plot.panel_nofill <- function(dats,
+                       new.dd,
+                       y1,
+                       y2,
+                       xs,
+                       col.lines,
+                       pchs=c(16),
+                       years){
+    plotting.loop <- function(){
+        for(yr in years){
+            ## take means of ys for each plot
+
+            these.dats <- dats[dats$Year == yr,]
+            pred.dats <- new.dd[new.dd$Year == yr,]
+            ys <- data.frame(y=these.dats[,y1], x=these.dats[,xs])
+
+            ## plots means
+            points(x=ys$x,
+                   y=ys$y,
+                   pch=pchs[yr],
+                   col="black",
+                   cex=1.2)
+
+            if(nrow(pred.dats) > 1){
+                ## add fill from ci.up to ci.lb
+                ## plots CI
+                lines(x=pred.dats[,xs],
+                      y=pred.dats[,y1],
+                      col=col.lines[y1],
+                      lwd=2)
+            }
+        }
+    }
+    plotting.loop()
+}

@@ -4,11 +4,6 @@ rm(list=ls())
 ## differences across sites/years
 setwd('analysis/turnover')
 source('src/calcPca.R')
-## net.type <- "YrSR"
-net.type <- "Yr"
-## species <- c("Plant", "Pollinator")
-species <- c("Pollinator", "Parasite")
-sp.level <- "lower.level"
 
 source('src/initialize.R')
 

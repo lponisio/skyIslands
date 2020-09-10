@@ -3,59 +3,76 @@ rm(list=ls())
 setwd('analysis/network')
 source('src/initialize.R')
 source('src/vaznull2.R')
-net.type <- "Yr"
-species <- c("Plant", "Pollinator")
-
-source('../turnover/src/initialize.R')
 
 args <- commandArgs(trailingOnly=TRUE)
 if(length(args) != 0){
-    N <- as.numeric(args[1])
+    N <- as.numeric(args[3])
 } else{
-    N <- 99
+    N <- 9
 }
 
 ## ************************************************************
 ## calculate metrics and zscores ## beware this takes a while!
 ## ************************************************************
 
-nets <- nets[apply(sapply(nets, dim) > 2, 2, all)]
+## nets <- nets[apply(sapply(nets, dim) > 2, 2, all)]
 
-mets <- lapply(nets, calcNetworkMetrics,
-               N=N)
+## mets <- lapply(nets, calcNetworkMetrics,
+##                N=N)
 
-cor.dats <- prepDat(mets,  spec, net.type=net.type)
-save(cor.dats, file=sprintf('saved/corMets_%s.Rdata',
-                            paste(species, collapse="")))
+## cor.dats <- prepDat(mets,  spec, net.type=net.type)
+
+## save(cor.dats, file=sprintf('saved/corMets_%s_%s.Rdata',
+##                             paste(species, collapse=""),
+##                             net.type))
 
 ## ************************************************************
-load(file=sprintf('saved/corMets_%s.Rdata',
-                  paste(species, collapse="")))
+load(file=sprintf('saved/corMets_%s_%s.Rdata',
+                            paste(species, collapse=""), net.type))
 
 ys <- c("niche.overlap.LL",
         "niche.overlap.HL",
-        "cluster.coefficient.LL",
-        "cluster.coefficient.HL",
+        "weighted.cluster.coefficient.LL",
+        "weighted.cluster.coefficient.HL",
+        "mean.number.of.links.LL",
+        "mean.number.of.links.HL",
         "number.of.species.LL",
         "number.of.species.HL",
         "zweighted.NODF",
-        "H2")
+        "zH2")
 
 xvar <- "Lat"
 
 ## create formulas for site characteristics
-formulas.div <-lapply(ys, function(x) {
-    as.formula(paste(x, "~",
-                     paste("scale(DoyPoly1)*scale(Lat)",
-                           "scale(DoyPoly2)*scale(Lat)",
-                           "Year",
-                           "(1|Site)",
-                           sep="+")))
-})
+if(species[1] == "Plant"){
+    formulas.div <-lapply(ys, function(x) {
+        as.formula(paste(x, "~",
+                         paste("scale(Doy)*scale(Lat)",
+                               "scale(I(Doy^2))*scale(Lat)",
+                               ## "scale(Area)",
+                               "Year",
+                               "(1|Site)",
+                               sep="+")))
+    })
+    mods.div <- lapply(formulas.div, function(x){
+        lmer(x, data=cor.dats)
+    })
+} else if(species[2] == "Parasite"){
+    formulas.div <-lapply(ys, function(x) {
+        as.formula(paste(x, "~",
+                         paste(
+                             ## "scale(Area)",
+                             "scale(Doy)*scale(Lat)",
+                             "scale(I(Doy^2))*scale(Lat)",
+                             "(1|Site)",
+                             sep="+")))
+    })
 
-mods.div <- lapply(formulas.div, function(x){
-    lmer(x, data=cor.dats)
-})
+    mods.div <- lapply(formulas.div, function(x){
+        lmer(x, data=cor.dats)
+    })
+
+}
 
 names(mods.div) <- ys
 
@@ -70,3 +87,12 @@ save(mods.div, cor.dats,
                     sprintf('mods/metrics_%s_%s.Rdata',
                             paste(species, collapse=""),
                             xvar)))
+
+
+## are area and latitude correlated?
+geo.test <- unique(data.frame(Lat=cor.dats$Lat,
+                              Site=cor.dats$Site,
+                              Area=cor.dats$Area))
+
+cor.test(geo.test$Lat, log(geo.test$Area))
+plot(geo.test$Lat ~log(geo.test$Area))

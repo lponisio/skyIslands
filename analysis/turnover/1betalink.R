@@ -1,10 +1,6 @@
 ## setwd("~/Dropbox/skyIslands/")
 rm(list=ls())
 setwd("analysis/turnover")
-## net.type <- "YrSR"
-net.type <- "Yr"
-## species <- c("Plant", "Pollinator")
-species <- c("Pollinator", "Parasite")
 source("src/initialize.R")
 source("src/chao.R")
 source("src/betaNet.R")
