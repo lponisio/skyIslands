@@ -44,7 +44,7 @@ qiime --help
 ls
 
 #7: Import your parser barcodes into an object you can demultiplex in Qiime 2. Make sure working directory is set correctly.
-qiime tools import --type EMPPairedEndSequences --input-path /mnt/SI_pipeline/16sRBCL/parsed_barcodes/ --output-path seqs.qza
+qiime tools import --type EMPPairedEndSequences --input-path /mnt/SI_pipeline/16sRBCL/parsed_barcodes/ --output-path /mnt/SI_pipeline/16sRBCL/seqs.qza
 
 #8: Examine your mapping file, which is metadata you create associated with the project. Use qiime to make it into a qzv object.
 #If you are examining multiple amplicon types, pick a map associated with one to start with (e.g. 16s)
@@ -52,12 +52,61 @@ qiime tools import --type EMPPairedEndSequences --input-path /mnt/SI_pipeline/16
 qiime metadata tabulate --m-input-file sky2018map16s.txt --o-visualization sky2018map16s.qzv
 qiime tools view sky2018map16s.qzv
 
-#9: Demultiplex 16s reads
+#9: Demultiplex 16s reads. Only works in version Qiime2 2019.1
+exit 
+docker run -itv ~/Dropbox/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
 
-qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file sky2018map16s.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza --p-no-golay-error-correction --output-dir error
+cd ../mnt/SI_pipeline/16sRBCL
+
+# qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file sky2018map16s.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza --p-golay-error-correction FALSE --output-dir error
+
+
+qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file sky2018map16s.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza 
+
 
 #9a: Visualize Results
 
 qiime demux summarize --i-data demux16s.qza --o-visualization demux16s.qzv
 qiime tools view demux16s.qzv
+
+## when interpretating the quality boxes, you can use the bottom of
+## the black box as a conservative measure for the phred score (not the
+## whiskers and not the middleo f the box)
+
+qiime dada2 denoise-paired  \
+--i-demultiplexed-seqs demux16s.qza  \
+--p-trunc-len-f 180  \
+--p-trunc-len-r 220  \
+--p-trim-left-f 0  \
+--p-n-threads 2  \
+--output-dir mnt/SI_pipeline/16sRBCL/dada2-16s  \
+ --o-representative-sequences rep-seqs-dada2-16s.qza  \
+ --o-table table16s.qza
+
+qiime feature-table tabulate-seqs --i-data dada2-16s/rep-seqs-dada2-16s.qza --o-visualization dada2-16s/rep-seqs-dada2-16s.qzv
+
+qiime feature-table summarize --i-table dada2-16s/table16s.qza --o-visualization dada2-16s/table16s.qzv
+
+## repeate the steps for RBCL
+
+qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file sky2018mapRBCL.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demuxRBCL.qza 
+
+#9a: Visualize Results
+
+qiime demux summarize --i-data demuxRBCL.qza --o-visualization demuxRBCL.qzv
+qiime tools view demuxRBCL.qzv
+
+qiime dada2 denoise-paired  \
+--i-demultiplexed-seqs demuxRBCL.qza  \
+--p-trunc-len-f 180  \
+--p-trunc-len-r 218  \
+--p-trim-left-f 0  \
+--p-n-threads 2  \
+--output-dir /mnt/SI_pipeline/16sRBCLdada2-RBCLs  \
+ --o-representative-sequences rep-seqs-dada2-RBCL.qza  \
+ --o-table tableRBCL.qza
+
+qiime feature-table tabulate-seqs --i-data dada2-RBCL/rep-seqs-dada2-RBCL.qza --o-visualization dada2-RBCL/rep-seqs-dada2-RBCL.qzv
+
+qiime feature-table summarize --i-table dada2-RBCL/tableRBCL.qza --o-visualization dada2-RBCL/tableRBCL.qzv
 
