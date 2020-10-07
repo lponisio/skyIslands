@@ -110,3 +110,54 @@ qiime feature-table tabulate-seqs --i-data dada2-RBCL/rep-seqs-dada2-RBCL.qza --
 
 qiime feature-table summarize --i-table dada2-RBCL/tableRBCL.qza --o-visualization dada2-RBCL/tableRBCL.qzv
 
+#check outputs to make sure you didn't lose too many samples. If you did, you may want to retruncate. 
+
+#10. ASSIGN TAXONOMY
+
+#We need reference sequences and their taxonomic classifications.
+#Use a information-rich database that is clustered at 99% sequence similarity at least (In our case, using Silva for 16s) 
+#we have to "train" the classifier dataset just once.
+
+#10a. Download the newest silva 132 database into a new working directory from https://www.arb-silva.de/download/archive/qiime
+
+# use 99_otus_16S.fasta and  consensus_taxonomy_7_levels.txt to create the training set.
+mkdir 16s-trainingclassifier
+cd 16s-trainingclassifier
+wget https://www.arb-silva.de/fileadmin/silva_databases/qiime/Silva_132_release.zip
+unzip Silva_132_release.zip
+rm Silva_132_release.zip
+cd SILVA_132_QIIME_release (edited) 
+
+#10b. Train feature classifier
+#import reference sequences from silva data as a qiime2 artifact
+
+qiime tools import \
+--type 'FeatureData[Sequence]' \
+--input-path rep_set/rep_set_16S_only/99/silva_132_99_16S.fna \
+--output-path 99_otus_16S.qza
+
+#import taxonomy strings. Check and see if your taxonomy file is a tab-seperated file without a header.
+#if it doesnt have a header, specify "headerlessTSVTaxonomyFormat" since the default source formats usually have headers
+
+qiime tools import \
+--type 'FeatureData[Taxonomy]' \
+--source-format HeaderlessTSVTaxonomyFormat \
+--input-path taxonomy/16S_only/99/majority_taxonomy_7_levels.txt \
+--output-path 99_otus_16S_taxonomy.qza
+
+#We now have two Qiime2 artifacts, 99_otus_16s.qza (reference sequences) and 99_otus_16s_taxonomy.qza (taxonomic names)
+#trim silva to my region using my sequencing primers. We tell the algorithm our genomic primer forward and reverse sequences
+#we do this because taxonomic classification is more accurate when a naive bayes classifier is trained on the region
+#of the 16s sequence that we sequenced (Werner et al. 2012).
+qiime feature-classifier extract-reads --i-sequences 99_otus_16S.qza --p-f-primer CMGGATTAGATACCCKGG --p-r-primer AGGGTTGCGCTCGTTG --o-reads ref-seqs16s.qza
+#visualize:
+qiime feature-table tabulate-seqs --i-data ref-seqs16s.qza --o-visualization ref-seqs16s.qzv
+qiime tools view ref-seqs.qzv (but this is big and took forever to load...).
+#Train the classifier:
+qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads ref-seqs16s.qza --i-reference-taxonomy 99_otus_16S_taxonomy.qza  --o-classifier classifier16s.qza
+
+#10c. classify rep seqs and put the resulting taxonomic ids into the training classifier folder
+# cd ../ until you get into your main folder
+
+qiime feature-classifier classify-sklearn --i-classifier 16s-trainingclassifier/SILVA_132_QIIME_release/classifier16s.qza --i-reads  dada2-16s/rep-seqs-dada2-16s.qza --o-classification  16s-trainingclassifier/taxonomy16s.qza
+
