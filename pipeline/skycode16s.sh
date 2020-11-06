@@ -278,10 +278,10 @@ qiime feature-classifier classify-sklearn --i-classifier 16s-trainingclassifier/
 #And make a file that I can view…
 qiime metadata tabulate --m-input-file taxonomy16s.qza --o-visualization taxonomy16s.qzv
 
-Visualize taxonomy:
+# Visualize taxonomy:
 cd ../ until you get to the right directory
 
-qiime taxa barplot --i-table dada2-16s.output/table16s.qza --i-taxonomy 16s-trainingclassifier/taxonomy16s.qza --m-metadata-file ffar2018map16s.txt --o-visualization dada2-16s.output/taxa-bar-plots.qzv
+qiime taxa barplot --i-table dada2-16s/table16s.qza --i-taxonomy 16s-trainingclassifier/taxonomy16s.qza --m-metadata-file ffar2018map16s.txt --o-visualization dada2-16s.output/taxa-bar-plots.qzv
 
 
 #FILTERING STEPS. Go through and filter and THEN subsample and THEN remake trees. Go back and fix the order of things. 
@@ -289,13 +289,15 @@ qiime taxa barplot --i-table dada2-16s.output/table16s.qza --i-taxonomy 16s-trai
 #filter 1: out the chloroplast and mitochondria reads for now, I will then look at the blanks and decide whether to filter out Halomonas and Shewanella reads as well. 
 
 qiime taxa filter-table --i-table dada2-16s.output/table16s.qza --i-taxonomy 16s-trainingclassifier/taxonomy16s.qza --p-exclude mitochondria,chloroplast --o-filtered-table dada2-16s.output/tablefilt1.qza
+
 qiime feature-table summarize --i-table dada2-16s.output/tablefilt1.qza --o-visualization dada2-16s.output/tablefilt1.qzv --m-sample-metadata-file ffar2018map16s.txt 
 
 
 #filter 2: remove sequences only found in one sample 
 
 qiime feature-table filter-features --i-table dada2-16s.output/tablefilt1.qza --p-min-samples 2 --o-filtered-table dada2-16s.output/tablefilt2.qza
-qiime feature-table summarize --i-table dada2-16s.output/tablefilt2.qza --o-visualization dada2-16s.output/tablefilt2.qzv
+
+qiime feature-table summarize --i-table dada2-16s.output/tablefilt2.qza --o-visualization dada2-16s.output/tablefilt2.qzv 
 
 #filter 3/4: look at controls and remove the bacteria that are in them. These bacteria are often salt-loving and thats why theyre found in buffers. they include 
 #Halomonas, Shewanella, Oceanospirillales, and the acne bacteria Propionibacterium
