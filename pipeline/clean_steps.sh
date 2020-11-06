@@ -179,7 +179,7 @@ cd ../../
 qiime feature-classifier classify-sklearn --i-classifier 16s-trainingclassifier/SILVA_132_QIIME_release/classifier16s.qza --i-reads  dada2-16s/rep-seqs-dada2-16s.qza --o-classification  16s-trainingclassifier/taxonomy16s.qza
 
 ## switch to the newest version of qiime
-bash-3.2$ docker run -itv ~/Dropbox/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
+docker run -itv ~/Dropbox/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
 
 # 10c visualize
 cd ../mnt/SI_pipeline/16sRBCL/16s-trainingclassifier/
@@ -192,21 +192,83 @@ qiime taxa barplot --i-table dada2-16s/table16s.qza --i-taxonomy 16s-trainingcla
 
 # 11 FILTERING STEPS. Go through and filter and THEN subsample and THEN remake trees. Go back and fix the order of things. 
 
+#HAVENT DONT THIS YET BUT NEED TO DISCUSS
+# prefilter step: The silva database does not have Lactobacillus michnerii, so our reads for Lactobacillus kunkeei are likely wrong. 
+#blast Lactobacillus kunkeii against NCBI database by first finding the feature ID from taxonomy16s.tsv (which you can download when you visualize taxonomy16s.qzv)
+# we manually made a copy of taxonomy16s.tsv and called it taxonomy16sfixed.tsv, and in this document we made corrections. 
+#Then visualize repseqs16sfiltered.qzv in qiime2view and select the sequence corresponding with the feature id.  
+
+qiime feature-table tabulate-seqs --i-data dada2-16s/rep-seqs-dada2-16s.qza --o-visualization dada2-16s/rep-seqs-dada2-16s.qzv
+
+#Make correctionss to taxonomy16s.txt, which we've renamed taxonomy16sfixed.csv convert it to txt manually on your computer, 
+#then into qza using qiime, then reassign in the final steps below
+
+#here's the code to convert txt to qza
+
+qiime tools import \
+--type 'FeatureData[Taxonomy]' \
+--input-path taxonomy16s.qza/taxonomy16sfixed.txt \
+--output-path taxonomy16s.qza/taxonomy16sfixed.qza
+
+#DID THIS
 #filter 1: out the chloroplast and mitochondria reads for now, I will then look at the blanks and decide whether to filter out Halomonas and Shewanella reads as well. 
 
 qiime taxa filter-table --i-table dada2-16s/table16s.qza --i-taxonomy 16s-trainingclassifier/taxonomy16s.qza --p-exclude mitochondria,chloroplast --o-filtered-table dada2-16s/tablefilt1.qza
 
 qiime feature-table summarize --i-table dada2-16s/tablefilt1.qza --o-visualization dada2-16s/tablefilt1.qzv --m-sample-metadata-file sky2018map16s.txt
 
+#DID THIS
 #filter 2: remove sequences only found in one sample 
 
 qiime feature-table filter-features --i-table dada2-16s/tablefilt1.qza --p-min-samples 2 --o-filtered-table dada2-16s/tablefilt2.qza
 
 qiime feature-table summarize --i-table dada2-16s/tablefilt2.qza --o-visualization dada2-16s/tablefilt2.qzv  --m-sample-metadata-file sky2018map16s.txt 
 
+#HAVENT DONT THIS YET BUT FOUND WHAT WE NEED TO FILTER
+#filter 3/4: look at controls and remove the bacteria that are in them. We don't want to remove any contaminant bacteria that is a real bee bacterial, but 
+#there are known bacteria are salt-loving and often found in buffers. they include 
+#Halomonas, Shewanella, Oceanospirillales, and the acne bacteria Propionibacterium. 
+#visualize taxabarplot.qzv (level 7) and download as .csv from the visualization to see whats in your controls
 
-#filter 3/4: look at controls and remove the bacteria that are in them. These bacteria are often salt-loving and thats why theyre found in buffers. they include 
-#Halomonas, Shewanella, Oceanospirillales, and the acne bacteria Propionibacterium
+#we want to remove the following:
+D_0__Bacteria;D_1__Actinobacteria;D_2__Actinobacteria;D_3__Frankiales;D_4__Nakamurellaceae;D_5__Nakamurella;D_6__uncultured Nakamurellaceae bacterium
+D_0__Bacteria;D_1__Actinobacteria;D_2__Actinobacteria;D_3__Kineosporiales;D_4__Kineosporiaceae;D_5__Kineococcus;__
+REVISIT D_0__Bacteria;D_1__Actinobacteria;D_2__Actinobacteria;D_3__Kineosporiales;D_4__Kineosporiaceae;D_5__Kineosporia;D_6__uncultured bacterium
+D_0__Bacteria;D_1__Actinobacteria;D_2__Actinobacteria;D_3__Micrococcales;__;__;__
+D_0__Bacteria;D_1__Actinobacteria;D_2__Actinobacteria;D_3__Propionibacteriales;D_4__Propionibacteriaceae;D_5__Cutibacterium;__
+REVISIT D_0__Bacteria;D_1__Actinobacteria;D_2__Actinobacteria;__;__;__;__
+REVISIT D_0__Bacteria;D_1__Actinobacteria;D_2__Thermoleophilia;D_3__Gaiellales;D_4__uncultured;__;__
+REVISIT D_0__Bacteria;D_1__Bacteroidetes;D_2__Bacteroidia;D_3__Chitinophagales;D_4__Chitinophagaceae;D_5__Segetibacter;__
+D_0__Bacteria;D_1__Bacteroidetes;D_2__Bacteroidia;D_3__Cytophagales;D_4__Hymenobacteraceae;D_5__Hymenobacter;__
+D_0__Bacteria;D_1__Chloroflexi;D_2__Ktedonobacteria;D_3__Ktedonobacterales;D_4__Ktedonobacteraceae;D_5__1959-1;D_6__uncultured bacterium
+D_0__Bacteria;D_1__Firmicutes;D_2__Bacilli;D_3__Bacillales;D_4__Staphylococcaceae;D_5__Staphylococcus;__
+REVISIT D_0__Bacteria;D_1__Firmicutes;D_2__Bacilli;D_3__Lactobacillales;D_4__Enterococcaceae;D_5__Enterococcus;__
+D_0__Bacteria;D_1__Firmicutes;D_2__Bacilli;D_3__Lactobacillales;D_4__Leuconostocaceae;D_5__Leuconostoc;__
+D_0__Bacteria;D_1__Firmicutes;D_2__Bacilli;D_3__Lactobacillales;D_4__Streptococcaceae;D_5__Lactococcus;__
+D_0__Bacteria;D_1__Proteobacteria;D_2__Alphaproteobacteria;D_3__Acetobacterales;D_4__Acetobacteraceae;__;__
+D_0__Bacteria;D_1__Proteobacteria;D_2__Alphaproteobacteria;D_3__Rhizobiales;D_4__Beijerinckiaceae;D_5__Methylobacterium;__
+D_0__Bacteria;D_1__Proteobacteria;D_2__Alphaproteobacteria;D_3__Rhizobiales;D_4__Beijerinckiaceae;D_5__Microvirga;__
+D_0__Bacteria;D_1__Proteobacteria;D_2__Alphaproteobacteria;D_3__Rhizobiales;D_4__Rhizobiaceae;D_5__Aureimonas;__
+D_0__Bacteria;D_1__Proteobacteria;D_2__Alphaproteobacteria;D_3__Rhodobacterales;D_4__Rhodobacteraceae;D_5__Paracoccus;__
+D_0__Bacteria;D_1__Proteobacteria;D_2__Alphaproteobacteria;D_3__Sphingomonadales;D_4__Sphingomonadaceae;D_5__Sphingomonas;__
+D_0__Bacteria;D_1__Proteobacteria;D_2__Alphaproteobacteria;D_3__Sphingomonadales;D_4__Sphingomonadaceae;D_5__uncultured;__
+D_0__Bacteria;D_1__Proteobacteria;D_2__Gammaproteobacteria;D_3__Pseudomonadales;D_4__Pseudomonadaceae;D_5__Pseudomonas;__
+D_0__Bacteria;D_1__Actinobacteria;D_2__Actinobacteria;D_3__Micrococcales;D_4__Microbacteriaceae;D_5__Galbitalea;__
+D_0__Bacteria;D_1__Actinobacteria;D_2__Actinobacteria;D_3__Propionibacteriales;D_4__Nocardioidaceae;D_5__Nocardioides;D_6__Nocardioides sp. kmb27
+D_0__Bacteria;D_1__Firmicutes;D_2__Bacilli;D_3__Bacillales;D_4__Bacillaceae;__;__
+D_0__Bacteria;D_1__Proteobacteria;D_2__Alphaproteobacteria;D_3__Rhodobacterales;D_4__Rhodobacteraceae;D_5__Rubellimicrobium;__
+D_0__Bacteria;D_1__Proteobacteria;D_2__Alphaproteobacteria;D_3__Sphingomonadales;D_4__Sphingomonadaceae;D_5__Novosphingobium;__
+D_0__Bacteria;D_1__Proteobacteria;D_2__Alphaproteobacteria;D_3__Sphingomonadales;D_4__Sphingomonadaceae;__;__
+D_0__Bacteria;D_1__Firmicutes;D_2__Bacilli;D_3__Bacillales;D_4__Bacillaceae;D_5__Oceanobacillus;__
+
+Get out everything under "D_3__Oceanospirillales"
+
+
+Make sure the other filter steps got these out
+D_0__Bacteria;D_1__Proteobacteria;D_2__Alphaproteobacteria;D_3__Rickettsiales;D_4__Mitochondria;__;__
+D_0__Bacteria;D_1__Cyanobacteria;D_2__Oxyphotobacteria;D_3__Chloroplast;__;__;__
+
+
 
 #filter out whole taxonimc groups that don't need to be in there (e.g. Propionibacterium)
 #filter out specific strains that came up in our controls. for example, there is an uncultured species of lactobacillus that is likely showing up
