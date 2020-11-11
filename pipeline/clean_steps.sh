@@ -190,20 +190,22 @@ cd ../
 qiime taxa barplot --i-table dada2-16s/table16s.qza --i-taxonomy 16s-trainingclassifier/taxonomy16s.qza --m-metadata-file sky2018map16s.txt --o-visualization dada2-16s/taxa-bar-plots.qzv
 
 
-# 11 FILTERING STEPS. Go through and filter and THEN subsample and THEN remake trees. Go back and fix the order of things. 
+# 11 FILTERING STEPS. Go through and filter out unwanted reads. THEN subsample and THEN remake trees.  
 
-#HAVENT DONT THIS YET BUT NEED TO DISCUSS
-# prefilter step: The silva database does not have Lactobacillus michnerii, so our reads for Lactobacillus kunkeei are likely wrong. 
-#blast Lactobacillus kunkeii against NCBI database by first finding the feature ID from taxonomy16s.tsv (which you can download when you visualize taxonomy16s.qzv)
-# we manually made a copy of taxonomy16s.tsv and called it taxonomy16sfixed.tsv, and in this document we made corrections. 
-#Then visualize repseqs16sfiltered.qzv in qiime2view and select the sequence corresponding with the feature id.  
+# HAVENT DONT THIS YET, BUT NEED TO DISCUSS WHY WE DON'T HAVE A TON OF SPECIFICITY
 
+# 11a. Prefilter step: The silva database does not have Lactobacillus michnerii, so our reads for Lactobacillus kunkeei are likely wrong. 
+
+# first visualize taxonomy16s.qzv. from the visualizer, download taxonomy16s.tsv. 
+# make a copy of taxonomy16s.tsv and rename it taxonomy16sfixed.tsv - we will make corrections here
+# then visualize repseqs16sfiltered.qzv in qiime2view 
 qiime feature-table tabulate-seqs --i-data dada2-16s/rep-seqs-dada2-16s.qza --o-visualization dada2-16s/rep-seqs-dada2-16s.qzv
 
-#Make correctionss to taxonomy16s.txt, which we've renamed taxonomy16sfixed.csv convert it to txt manually on your computer, 
-#then into qza using qiime, then reassign in the final steps below
+# using these two documents, select the sequence corresponding with the feature ids for L. kunkeei
 
-#here's the code to convert txt to qza
+
+# Make correctionss to taxonomy16sfixed.tsv. convert it to txt manually on your computer.
+# Convert this text file back into a qza object using qiime
 
 qiime tools import \
 --type 'FeatureData[Taxonomy]' \
@@ -211,24 +213,33 @@ qiime tools import \
 --output-path taxonomy16s.qza/taxonomy16sfixed.qza
 
 #DID THIS
-#filter 1: out the chloroplast and mitochondria reads for now, I will then look at the blanks and decide whether to filter out Halomonas and Shewanella reads as well. 
+#11b. filter 1: out the chloroplast and mitochondria reads 
 
 qiime taxa filter-table --i-table dada2-16s/table16s.qza --i-taxonomy 16s-trainingclassifier/taxonomy16s.qza --p-exclude mitochondria,chloroplast --o-filtered-table dada2-16s/tablefilt1.qza
 
 qiime feature-table summarize --i-table dada2-16s/tablefilt1.qza --o-visualization dada2-16s/tablefilt1.qzv --m-sample-metadata-file sky2018map16s.txt
 
 #DID THIS
-#filter 2: remove sequences only found in one sample 
+#11c. filter 2: remove sequences only found in one sample 
 
 qiime feature-table filter-features --i-table dada2-16s/tablefilt1.qza --p-min-samples 2 --o-filtered-table dada2-16s/tablefilt2.qza
 
 qiime feature-table summarize --i-table dada2-16s/tablefilt2.qza --o-visualization dada2-16s/tablefilt2.qzv  --m-sample-metadata-file sky2018map16s.txt 
 
 #HAVENT DONT THIS YET BUT FOUND WHAT WE NEED TO FILTER
-#filter 3/4: look at controls and remove the bacteria that are in them. We don't want to remove any contaminant bacteria that is a real bee bacterial, but 
+#11d. filter 3: look at DNA and Illumina PCR controls and remove the bacteria that are in them. 
+#We don't want to remove any contaminant bacteria that are real bee bacterial, so make decisions based on what you know are contaminants 
 #there are known bacteria are salt-loving and often found in buffers. they include 
 #Halomonas, Shewanella, Oceanospirillales, and the acne bacteria Propionibacterium. 
-#visualize taxabarplot.qzv (level 7) and download as .csv from the visualization to see whats in your controls
+#visualize taxabarplot.qzv (level 7) and download the .csv from the visualization to see whats in your controls. 
+
+#filtering rationale
+# look at what bacteria show up our control samples. we then, for each one of these
+#bacteria, look up if it is in all the samples or just that control and made a call about whether or not to remove it
+#if bacteria is present in just the control sample, you want to remove it
+#h owever, some are also present in a lot of other samples! we don't want to lose data. if bacteria is in the control AND in more than 30 samples just leave it and don't filter it out (10% of samples)
+# you may want to make an exception if the bacterial contaminant is obviously present in one just one plate, because even though its in a lot of samples its likely a contaminant
+# another exception is if you have the contaminant in a lot of samples BUT also in a lot of the controls, get rid of it
 
 #we want to remove the following:
 D_0__Bacteria;D_1__Actinobacteria;D_2__Actinobacteria;D_3__Frankiales;D_4__Nakamurellaceae;D_5__Nakamurella;D_6__uncultured Nakamurellaceae bacterium
@@ -263,33 +274,76 @@ D_0__Bacteria;D_1__Firmicutes;D_2__Bacilli;D_3__Bacillales;D_4__Bacillaceae;D_5_
 
 Get out everything under "D_3__Oceanospirillales"
 
-
 Make sure the other filter steps got these out
 D_0__Bacteria;D_1__Proteobacteria;D_2__Alphaproteobacteria;D_3__Rickettsiales;D_4__Mitochondria;__;__
 D_0__Bacteria;D_1__Cyanobacteria;D_2__Oxyphotobacteria;D_3__Chloroplast;__;__;__
 
+# NOT DONE YET: make a removal list called "contaminants.txt" which has the bacteria we want to remove
 
 
-#filter out whole taxonimc groups that don't need to be in there (e.g. Propionibacterium)
-#filter out specific strains that came up in our controls. for example, there is an uncultured species of lactobacillus that is likely showing up
-#in a plate of our samples and in the dna control. remove it. (need to check)
-#filter out samples that are control samples so that we don't include them in analyses
+
+# NOT DONE YET
+# 11d. fitler 4: remove samples that are control samples (DNA controls and Illumina PCR controls) so that we don't include them in analyses
+# make a txt file with the list of IDs for samples you want to keep, where you remove control IDs. called "samplestokeep.txt"
+
+qiime feature-table filter-samples --i-table dada2-16s/tablefilt3.qza --m-metadata-file dada2-16s/samplestokeep.txt --o-filtered-table dada2-16s/tablefilt4.qza
+
+#check it worked
+qiime taxa barplot --i-table dada2-16s/tablefilt4.qza --i-taxonomy 16s-trainingclassifier/taxonomy16s.qza --m-metadata-file ffar2018ctrlmap16s.txt --o-visualization dada2-16s/taxa-bar-plotsNoCtrl.qzv
+
+#Filter rep seqs file so that you can see what samples you have left after filtering and subsampling
+
+qiime feature-table filter-seqs --i-data dada2-16s/rep-seqs-dada2-16s.qza --i-table dada2-16s/tablefilt4.qza --o-filtered-data dada2-16s/rep-seqs-dada2-16s-filtered.qza
+
+qiime feature-table tabulate-seqs --i-data dada2-16s/rep-seqs-dada2-16s-filtered.qza --o-visualization dada2-16s/rep-seqs-dada2-16s-filtered.qzv
+qiime tools view dada2-16s/rep-seqs-dada2-16s-filtered.qzv
 
 
-#To look at contaminants: we made a copy of our metadata map and added in a column that indicated if the sample was not a control, a dna control, or a field control
-#then we visualized our taxonomic IDs with this file as the metadata file
-#We also looked at the filtered taxonomy file as a csv and looked at what bacteria showed up our control samples. we then, for each one of these
-#bacteria, looked up if it shows up in all the samples or just that control and made a call about whether or not to remove it
-#if bacteria is present in just the control sample, you want to remove it
-#however, some are also present in a lot of other samples! we don't want to lose data. if bacteria is in the control AND in more than 30 samples just leave it and don't filter it out (10% of samples)
-#you may want to make an exception if the bacterial contaminant is obviously present in one just one plate, because even though its in a lot of samples its likely a contaminant
-#another exception is if you have the contaminant in a lot of samples BUT also in a lot of the controls, get rid of it
-#We made a removal list called "contaminants.txt" which has the bacteria we want to remove
 
-#run this code and visualize the taxa barplot results. drop down the "taxonomic level" menu to level 7 and then "download csv" 
-#use excel to check out and summarize the bacterial reads that are your control samples 
+NOT DONE YET, CODE ISNT FIXED. DO WE SUBSAMPLE OR MAKE PHYLOGENY FIRST
 
-qiime taxa barplot --i-table dada2-16s/table16s.qza --i-taxonomy 16s-trainingclassifier/taxonomy16s.qza --m-metadata-file sky2018ctrlmap16s.txt --o-visualization dada2-16s/taxa-bar-plotsCTRl.qzv
+# 12. DETERMINE SUBSAMPLE DEPTH - CHECK THIS TO MAKE SURE WE STILL WANT THESE DEPTHS
+
+# make a rarefaction curve to see how subsampling depths influence my alpha diversity metrics. 
+
+qiime diversity alpha-rarefaction \
+--i-table dada2-16s/tablefilt4.qza \
+--i-phylogeny dada2-16s/rooted-tree16s.qza \
+--p-max-depth 14000 \
+--m-metadata-file ffar2018map16s.txt \
+--o-visualization dada2-16s/alphararefaction16s.qzv
+
+#Open visualization in Qiime2 View
+
+#For subsampling I will use 3,100 reads based on where the rarefaction curve peters off
+
+qiime feature-table summarize --i-table dada2-16s.output/tablefilt5.qza --o-visualization dada2-16s.output/tablefilt5.qzv
+
+When I visualize the table (go to "interactive sample detail", I can see this allows me to keep X NUMBER OF samples (X%)
+
+#13 GENERATE TREE FOR PHYLOGENETIC DIVERSITY ANALYSES
+
+# align of the reads using MAFFT.
+
+qiime alignment mafft --i-sequences dada2-16s/rep-seqs-dada2-16s.qza --o-alignment dada2-16s/aligned_repseqs16s.qza
+
+#Then filter out the unconserved, highly gapped columns from alignment
+qiime alignment mask --i-alignment dada2-16/aligned_repseqs16s.qza --o-masked-alignment dada2-16s/masked_aligned_repseqs16s.qza
+
+#And make a tree with Fasttree which creates a maximum likelihood phylogenetic trees from aligned sequences 
+#for more information on fastree, http://www.microbesonline.org/fasttree/
+qiime phylogeny fasttree --i-alignment dada2-16s/masked_aligned_repseqs16s.qza --o-tree dada2-16s/unrooted_tree16s.qza
+
+#now root it
+qiime phylogeny midpoint-root --i-tree dada2-16s/unrooted_tree16s.qza --o-rooted-tree dada2-16s/rooted-tree16s.qza
+
+
+
+
+
+
+
+
 
 
 ## *****************************************************************************
