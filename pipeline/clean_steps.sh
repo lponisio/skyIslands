@@ -241,6 +241,32 @@ qiime feature-table summarize --i-table dada2-16s/tablefilt2.qza --o-visualizati
 # you may want to make an exception if the bacterial contaminant is obviously present in one just one plate, because even though its in a lot of samples its likely a contaminant
 # another exception is if you have the contaminant in a lot of samples BUT also in a lot of the controls, get rid of it
 
+## *****************************************************************************
+## move into R to choose bacteria in controls to filter out
+## *****************************************************************************
+## load in bacteria csv
+bact <- read.csv("~/Desktop/taxa-bar-plots.csv")
+control.names <- c("DNActrl1", "DNActrl2", "16SIlluminaCtrl1", "16SIlluminaCtrl2", "16SIlluminaCtrl3")
+
+primer.names <- c("forwardbarcode", "revbarcode", "barcodesequence", "forwardgenomicprimer", "revgenomicprimer")
+
+control.bact <- bact[bact$index %in% control.names, !colnames(bact) %in% primer.names]
+rownames(control.bact) <- control.bact$index
+control.bact$index <- NULL
+control.bact <- as.matrix(control.bact)
+bact.count <- colSums(control.bact)
+bacteria.in.controls <- names(bact.count[bact.count > 0])
+
+sample.bact <- bact[!bact$index %in% control.names, !colnames(bact) %in% primer.names]
+rownames(sample.bact) <- sample.bact$index
+sample.bact$index <- NULL
+sample.bact <- as.matrix(sample.bact)
+bact.count.samples <- apply(sample.bact, 2, function(x) sum(x > 0))
+hist(bact.count.samples, breaks=100)
+bacteria.in.samples <- names(bact.count.samples[bact.count.samples > 0])
+
+bacteria.in.controls[bacteria.in.controls %in% bacteria.in.samples]
+
 #we want to remove the following:
 D_0__Bacteria;D_1__Actinobacteria;D_2__Actinobacteria;D_3__Frankiales;D_4__Nakamurellaceae;D_5__Nakamurella;D_6__uncultured Nakamurellaceae bacterium
 D_0__Bacteria;D_1__Actinobacteria;D_2__Actinobacteria;D_3__Kineosporiales;D_4__Kineosporiaceae;D_5__Kineococcus;__
@@ -272,9 +298,9 @@ D_0__Bacteria;D_1__Proteobacteria;D_2__Alphaproteobacteria;D_3__Sphingomonadales
 D_0__Bacteria;D_1__Proteobacteria;D_2__Alphaproteobacteria;D_3__Sphingomonadales;D_4__Sphingomonadaceae;__;__
 D_0__Bacteria;D_1__Firmicutes;D_2__Bacilli;D_3__Bacillales;D_4__Bacillaceae;D_5__Oceanobacillus;__
 
-Get out everything under "D_3__Oceanospirillales"
+# Get out everything under "D_3__Oceanospirillales"
 
-Make sure the other filter steps got these out
+# Make sure the other filter steps got these out
 D_0__Bacteria;D_1__Proteobacteria;D_2__Alphaproteobacteria;D_3__Rickettsiales;D_4__Mitochondria;__;__
 D_0__Bacteria;D_1__Cyanobacteria;D_2__Oxyphotobacteria;D_3__Chloroplast;__;__;__
 
