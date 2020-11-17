@@ -571,6 +571,8 @@ ids$FinalGenusInVeg[ids$FinalGenus %in% veg.genera] <- 1
 ids$FinalGenusInVeg[!ids$FinalGenus %in% veg.genera & !is.na(ids$FinalGenus)] <- 0
 unique(ids$FinalGenus[ids$FinalGenusInVeg == 0])
 
+## make a final call 
+
 ## IDs that have a solid match but are not in the hand collected veg dats 
 unique(ids$FinalGenus[ids$FinalGenusInVeg == 0][ids$GenusRDPMatch > 0.8])
 ## "Swertia"      "Scrophularia" "Rubus"        "Ziziphus"   "Glycine"      "Garrya"    
@@ -641,6 +643,24 @@ unique(ids$FinalGenus[ids$FinalGenusInVeg == 0][ids$GenusRDPMatch >0.6 & ids$Gen
 ## Ascolepis NOT POSSIBLE, not found in NA
 
 
+acceptable <- c("Garrya", "Swertia", "Rubus", "Scrophularia", "Cichorium", "Astragalus", "Tanacetum", "Alnus", "Symphoricarpos", "Fragaria", "Mentzelia", "Veronica", "Quercus", "Carex", "Stenorrhynchos", "Gleditsia", "Lotus")
+
+not.possible <- c("Glycine", "Strychnos", "Ascolepis" ,"Cercis", "Ziziphus")
+
+## if acceptable, gets final genus check
+ids$FinalGenusConfirmed  <- NA
+
+## confirmed if matches veg
+ids$FinalGenusConfirmed[ids$FinalGenusInVeg == 1] <- TRUE
+
+## confirmed if hand checked
+ids$FinalGenusConfirmed[ids$FinalGenus %in% acceptable] <- TRUE
+
+ids$FinalGenus[ids$FinalGenus %in% not.possible] <- paste("Unknown near", ids$FinalGenus[ids$FinalGenus %in% not.possible])
+
+ids$FinalGenusConfirmed[ids$FinalGenus %in% not.possible] <- TRUE
+
+## ************************************************************************************
 ## species that match between RDP and NCBI
 ids$FinalGenusSpecies[ids$SpeciesRDP_NCBI_match & !is.na(ids$SpeciesRDP_NCBI_match)]  <- ids$GenusSpeciesRDP[ids$SpeciesRDP_NCBI_match & !is.na(ids$SpeciesRDP_NCBI_match)]
 
@@ -653,8 +673,34 @@ ids$FinalGenusSpeciesInVeg[!ids$FinalGenusSpecies %in% veg.sp & !is.na(ids$Final
 unique(ids$FinalGenusSpecies[ids$FinalGenusSpeciesInVeg == 0])
 unique(ids$FinalGenusSpecies[ids$FinalGenusSpeciesInVeg == 0][ids$GenusRDPMatch >0.8])
 
-## "Vicia cirrhosa"        "Chlorophytum nimmonii"  "Rubus idaeus" ## none of these are at all likely
+## "Vicia cirrhosa"        "Chlorophytum nimmonii"  "Rubus idaeus"
+## none of these are at all likely
 
 ## where NCBI didn't have a match, if RDP is > 50%
 ids$FinalGenus[is.na(ids$GenusRDP_NCBI_match) & ids$GenusRDPMatch > 0.5] <- ids$GenusRDP[is.na(ids$GenusRDP_NCBI_match) & ids$GenusRDPMatch > 0.5]
 ## this never happens
+
+not.possible <- c("Vicia cirrhosa", "Chlorophytum nimmonii", "Rubus idaeus")
+####
+
+## if acceptable, gets final species check
+ids$FinalGenusSpeciesConfirmed  <- NA
+
+## confirmed if matches veg
+ids$FinalGenusSpeciesConfirmed[ids$FinalGenusSpeciesInVeg == 1] <- TRUE
+
+
+## confirmed if hand checked
+
+ids$FinalGenusSpecies[ids$FinalGenusSpecies %in% not.possible] <- paste("Unknown near", ids$FinalGenusSpecies[ids$FinalGenusSpecies %in% not.possible])
+
+ids$FinalGenusSpeciesConfirmed[ids$FinalGenusSpecies %in% not.possible] <- TRUE
+
+## ***********************************************************************************
+
+
+
+ids$FinalGenusSpeciesInVeg <- NULL
+ids$FinalGenusInVeg <- NULL
+
+write.csv(ids, "~/Dropbox/skyIslands_saved/data/raw/RBCL_16s/final_rbcl.csv", row.names=FALSE)
