@@ -716,8 +716,14 @@ final <- read.csv("~/Dropbox/skyIslands_saved/data/raw/RBCL_16s/final_rbcl.csv",
 
 ## ***********************************************************************************
 
-## MANUALLY MAKE THE REST OF THE CALLS. #HC ADD IN WHAT PROTOCOL USED TO MAKE CALLS. 
-
+## MANUALLY MAKE THE REST OF THE CALLS. I used the final .csv from above to help guide my decisions but ultimately had to
+## manually blast most samples. to do this i looked at the taxonomy file and visualized rep seqs and cross referenced between them, blasting from repseqs.qzv
+## i followed a set of rules and wrote calls in "ManualCalls" in RBCLclassifierRDP Folder. The rules are:
+## if species match, and in region or field veg data, call
+## if species don't match but both in veg data, go to shared family if possible
+## if species don't match but one in veg data, go with which species match region or field veg data
+## if species don't match and not in veg data, blast NCBI for top hits. if any hits match field veg data, call it. 
+		##  if multiple within the top hits match veg data, go to family
 
 ##save our final determinations into our skyislands folder as a .txt called "taxonomyRBCLfixed.txt" inside "RBCLclassifierRDP" folder
 
