@@ -725,7 +725,7 @@ final <- read.csv("~/Dropbox/skyIslands_saved/data/raw/RBCL_16s/final_rbcl.csv",
 ##Label the first column "Feature ID" and the second column "Taxon". Feature ID is the same as the query
 
 
-#FILTERING STEPS
+#FILTERING STEPS (NEED TO DO THESE STEPS STILL) 
 
 #make sure to enter back into the qiime environment using Docker
 
