@@ -1,5 +1,9 @@
+# Pipeline Code for Processing 16s and RBCL reads from fastq files
 
-#1: On whatever computer will be running the tasks, innitiate a docker container for qiime1
+#1: Download docker on your computer, allows you to run qiime and other software without downloading them. 
+
+# On whatever computer you will be running the tasks, innitiate a docker container for qiime1
+# Recommend a computer with lots of processing power. 
 
 docker run -itv ~/Dropbox/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline sglim2/qiime-1.9.1
 
@@ -11,7 +15,7 @@ ls
 
 
 #3: If your reads are in *fasta.gz format, unzip them with qiime, then
-#rename them "forward.fastq" and "reverse.fastq". Quinn designed the
+#rename them "forward.fastq" and "reverse.fastq". Quinn accidentally designed the
 #barcodes in reverse so flowcell1 is the reverse and flowcell2 is the
 #forward
 
@@ -52,17 +56,19 @@ qiime tools import --type EMPPairedEndSequences --input-path /mnt/SI_pipeline/16
 qiime metadata tabulate --m-input-file sky2018map16s.txt --o-visualization sky2018map16s.qzv
 qiime tools view sky2018map16s.qzv
 
-#9: Demultiplex 16s reads. Only works in version Qiime2 2019.1
+qiime metadata tabulate --m-input-file sky2018mapRBCL.txt --o-visualization sky2018mapRBCL.qzv
+qiime tools view sky2018mapRBCL.qzv
+
+
+#9: Demultiplex 16s and RBCL reads. Only works in version Qiime2 2019.1.
 exit 
 docker run -itv ~/Dropbox/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
 
 cd ../mnt/SI_pipeline/16sRBCL
 
-# qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file sky2018map16s.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza --p-golay-error-correction FALSE --output-dir error
-
+# start with 16s
 
 qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file sky2018map16s.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza 
-
 
 #9a: Visualize Results
 
@@ -71,7 +77,7 @@ qiime tools view demux16s.qzv
 
 ## when interpretating the quality boxes, you can use the bottom of
 ## the black box as a conservative measure for the phred score (not the
-## whiskers and not the middleo f the box)
+## whiskers and not the middle of the box)
 
 qiime dada2 denoise-paired  \
 --i-demultiplexed-seqs demux16s.qza  \
@@ -113,16 +119,16 @@ qiime feature-table summarize --i-table dada2-RBCL/tableRBCL.qza --o-visualizati
 #check outputs to make sure you didn't lose too many samples. If you did, you may want to retruncate.
 
 ## *****************************************************************************
-## 16s
+##        16s
 ## *****************************************************************************
 
-#10. ASSIGN TAXONOMY 16s
+#1. ASSIGN TAXONOMY 16s
 
 #We need reference sequences and their taxonomic classifications.
 #Use a information-rich database that is clustered at 99% sequence similarity at least (In our case, using Silva for 16s) 
 #we have to "train" the classifier dataset just once.
 
-#10a. Download the newest silva 132 database into a new working directory from https://www.arb-silva.de/download/archive/qiime
+#1a. Download the newest silva 132 database into a new working directory from https://www.arb-silva.de/download/archive/qiime
 
 # use 99_otus_16S.fasta and  consensus_taxonomy_7_levels.txt to create the training set.
 mkdir 16s-trainingclassifier
@@ -130,13 +136,13 @@ cd 16s-trainingclassifier
 wget https://www.arb-silva.de/fileadmin/silva_databases/qiime/Silva_132_release.zip
 unzip Silva_132_release.zip
 rm SILVA_132_release.zip
-#10b. Train feature classifier
+
+#1b. Train feature classifier
 #import reference sequences from silva data as a qiime2 artifact
 
 ## go back into qiime
 docker run -itv ~/Dropbox/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
 cd ../mnt/SI_pipeline/16sRBCL/16s-trainingclassifier/SILVA_132_QIIME_release
-
 
 ## 99 is 99% match between our seq and the database
 qiime tools import \
@@ -168,7 +174,7 @@ docker system prune
 #Train the classifier:
 qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads ref-seqs16s.qza --i-reference-taxonomy 99_otus_16S_taxonomy.qza  --o-classifier classifier16s.qza
 
-#10c. classify rep seqs and put the resulting taxonomic ids into the training classifier folder
+#1c. classify rep seqs and put the resulting taxonomic ids into the training classifier folder
 # cd ../ until you get into your main folder
 
 ## may need to install older version of scikit learn
@@ -181,7 +187,7 @@ qiime feature-classifier classify-sklearn --i-classifier 16s-trainingclassifier/
 ## switch to the newest version of qiime
 docker run -itv ~/Dropbox/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
 
-# 10c visualize
+# visualize
 cd ../mnt/SI_pipeline/16sRBCL/16s-trainingclassifier/
 
 qiime metadata tabulate --m-input-file taxonomy16s.qza --o-visualization taxonomy16s.qzv
@@ -190,11 +196,11 @@ cd ../
 qiime taxa barplot --i-table dada2-16s/table16s.qza --i-taxonomy 16s-trainingclassifier/taxonomy16s.qza --m-metadata-file sky2018map16s.txt --o-visualization dada2-16s/taxa-bar-plots.qzv
 
 
-# 11 FILTERING STEPS. Go through and filter out unwanted reads. THEN subsample and THEN remake trees.  
+# 2 FILTERING STEPS. Go through and filter out unwanted reads. THEN subsample and THEN remake trees.  
 
 # HAVENT DONT THIS YET, BUT NEED TO DISCUSS WHY WE DON'T HAVE A TON OF SPECIFICITY
 
-# 11a. Prefilter step: The silva database does not have Lactobacillus michnerii, so our reads for Lactobacillus kunkeei are likely wrong. 
+# 2a. Prefilter step: The silva database does not have Lactobacillus michnerii, so our reads for Lactobacillus kunkeei are likely wrong. 
 
 # first visualize taxonomy16s.qzv. from the visualizer, download taxonomy16s.tsv. 
 # make a copy of taxonomy16s.tsv and rename it taxonomy16sfixed.tsv - we will make corrections here
@@ -213,21 +219,21 @@ qiime tools import \
 --output-path taxonomy16s.qza/taxonomy16sfixed.qza
 
 #DID THIS
-#11b. filter 1: out the chloroplast and mitochondria reads 
+#2b. filter 1: out the chloroplast and mitochondria reads 
 
 qiime taxa filter-table --i-table dada2-16s/table16s.qza --i-taxonomy 16s-trainingclassifier/taxonomy16s.qza --p-exclude mitochondria,chloroplast --o-filtered-table dada2-16s/tablefilt1.qza
 
 qiime feature-table summarize --i-table dada2-16s/tablefilt1.qza --o-visualization dada2-16s/tablefilt1.qzv --m-sample-metadata-file sky2018map16s.txt
 
 #DID THIS
-#11c. filter 2: remove sequences only found in one sample 
+#2c. filter 2: remove sequences only found in one sample 
 
 qiime feature-table filter-features --i-table dada2-16s/tablefilt1.qza --p-min-samples 2 --o-filtered-table dada2-16s/tablefilt2.qza
 
 qiime feature-table summarize --i-table dada2-16s/tablefilt2.qza --o-visualization dada2-16s/tablefilt2.qzv  --m-sample-metadata-file sky2018map16s.txt 
 
 #HAVENT DONT THIS YET BUT FOUND WHAT WE NEED TO FILTER
-#11d. filter 3: look at DNA and Illumina PCR controls and remove the bacteria that are in them. 
+#2d. filter 3: look at DNA and Illumina PCR controls and remove the bacteria that are in them. 
 #We don't want to remove any contaminant bacteria that are real bee bacterial, so make decisions based on what you know are contaminants 
 #there are known bacteria are salt-loving and often found in buffers. they include 
 #Halomonas, Shewanella, Oceanospirillales, and the acne bacteria Propionibacterium. 
@@ -307,9 +313,8 @@ D_0__Bacteria;D_1__Cyanobacteria;D_2__Oxyphotobacteria;D_3__Chloroplast;__;__;__
 # NOT DONE YET: make a removal list called "contaminants.txt" which has the bacteria we want to remove
 
 
-
 # NOT DONE YET
-# 11d. fitler 4: remove samples that are control samples (DNA controls and Illumina PCR controls) so that we don't include them in analyses
+# 2d. fitler 4: remove samples that are control samples (DNA controls and Illumina PCR controls) so that we don't include them in analyses
 # make a txt file with the list of IDs for samples you want to keep, where you remove control IDs. called "samplestokeep.txt"
 
 qiime feature-table filter-samples --i-table dada2-16s/tablefilt3.qza --m-metadata-file dada2-16s/samplestokeep.txt --o-filtered-table dada2-16s/tablefilt4.qza
@@ -328,7 +333,7 @@ qiime tools view dada2-16s/rep-seqs-dada2-16s-filtered.qzv
 
 NOT DONE YET, CODE ISNT FIXED. DO WE SUBSAMPLE OR MAKE PHYLOGENY FIRST
 
-# 12. DETERMINE SUBSAMPLE DEPTH - CHECK THIS TO MAKE SURE WE STILL WANT THESE DEPTHS
+# 3. DETERMINE SUBSAMPLE DEPTH - CHECK THIS TO MAKE SURE WE STILL WANT THESE DEPTHS
 
 # make a rarefaction curve to see how subsampling depths influence my alpha diversity metrics. 
 
@@ -347,7 +352,7 @@ qiime feature-table summarize --i-table dada2-16s.output/tablefilt5.qza --o-visu
 
 When I visualize the table (go to "interactive sample detail", I can see this allows me to keep X NUMBER OF samples (X%)
 
-#13 GENERATE TREE FOR PHYLOGENETIC DIVERSITY ANALYSES
+#4 GENERATE TREE FOR PHYLOGENETIC DIVERSITY ANALYSES
 
 # align of the reads using MAFFT.
 
@@ -376,21 +381,24 @@ qiime phylogeny midpoint-root --i-tree dada2-16s/unrooted_tree16s.qza --o-rooted
 ## RBCL
 ## *****************************************************************************
 
-## 12 classify RBCL
+The next steps are to classify taxonomy with a trained RBCL classifier. But Qiime2 does not have a rbcl classifier for download. 
 
-
-#The next steps are to classify taxonomy with a trained RBCL classifier. But Qiime2 does not have a rbcl classifier for download. 
-
-#We will use the Bell et al. RBCL RDP classifier, described here:
+#1. PREP RDP CLASSIFIER
+We will use the Bell et al. RBCL RDP classifier, described here:
 #https://github.com/KarenBell/rbcL-dual-index-metabarcoding
 
-#This tutorial describes how to train and apply their RBCL classifier. However, we won't use their entire pipeline because their script processes raw files, then joins them, demultiplexes them, etc, and only assigns taxonomy at the end. All we need to do is use the classifier they developed. Follow the script below, which we modified. 
+#This tutorial describes how to train and apply their RBCL classifier. 
+#However, we won't use their entire pipeline because their script processes raw files, 
+#then joins them, demultiplexes them, etc, and only assigns taxonomy at the end. 
+#All we need to do is use the classifier they developed. Follow the script below, which we modified. 
 
-#we downloaded the classifier, which is already trained, from https://gitlab.umiacs.umd.edu/derek/qiime/tree/master/rdp_classifier_2.2
+#Downloaded the classifier, which is already trained,
+#from https://gitlab.umiacs.umd.edu/derek/qiime/tree/master/rdp_classifier_2.2
 
 #go to Bell and Brosi's rbcl reference library: https://figshare.com/collections/rbcL_reference_library/3466311/1
 
-#and download "rbcl_utax_trained.zip" and "rbcl_rdp_trained_reference_database" into a folder called RBCLclassifierRDP in your local working directory. unzip the files.
+#Download "rbcl_utax_trained.zip" and "rbcl_rdp_trained_reference_database" 
+#into a folder called RBCLclassifierRDP in your local working directory. unzip the files.
 
 mkdir RBCLclassifierRDP
 cd ../RBCLclassifierRDP
@@ -401,7 +409,8 @@ unzip rbcL_rdp_trained_reference_database.zip
 
 unzip rbcL_utax_trained.zip
 
-#we will work on the rep-seqs object which is a qiime artifact currently, so export it to a fasta file. first cd back to the main ffarsunflower folder. NOTE: use syntax below; online docs for qiime tools export have different syntax that doesnt work. 
+#we will work on the rep-seqs object which is a qiime artifact currently, so export it to a fasta file. 
+#first cd back to the main ffarsunflower folder. NOTE: use syntax below; online docs for qiime tools export have different syntax that doesnt work. 
 
 docker run -itv ~/Dropbox/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
 
@@ -415,9 +424,7 @@ mv dna-sequences.fasta rep-seqs-dada2RBCL.fasta
 
 exit
 
-
-#CLASSIFY TAXONOMY WITH RDP
-
+#2. CLASSIFY TAXONOMY WITH RDP
 #First make sure you have java installed
 #exit qiime2 with "exit" command
 
@@ -427,21 +434,18 @@ exit
 
 cd ../ 
 
-#this one gives taxonomy to species (we ended up only using this one after all)
+#this one gives taxonomy to species (we ended up only using this one)
 java -Xmx2g -jar RBCLclassifierRDP/qiime-master-rdp_classifier_2.2/rdp_classifier_2.2/rdp_classifier-2.2.jar classify -t RBCLclassifierRDP/rbcL_rdp_trained/rbcL.properties -o RBCLclassifierRDP/rbcl_classified_rdp.txt -q dada2-RBCL/rep-seqs-dada2RBCL.fasta
-
 
 #Our resulting taxonomic IDs are found in two sheets in the RBCL classifier folder
 
-#CLASSIFY TAXONOMY WITH BLAST / NCBI
+#3. CLASSIFY TAXONOMY WITH BLAST / NCBI
 
-#Let's compare sequences we get when using the RDP Classifier and BLAST.  We are going to use BioPerl
+#Let's compare sequences we get when using the RDP Classifier and NCBI (NCBI generated by BLAST tool).  
 
-#to blast against NCBI, you need to get a package installer that has python arguments and stuff from
-
+#We are going to use BioPerl to blast against NCBI, you need to get a package installer that has python arguments and stuff 
 ## install package installer for your computer from 
 ## ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/
-
 
 mkdir RBCLclassifierNCBI
 
@@ -485,12 +489,13 @@ perl RBCLclassifierNCBI/BlastToTableexistingdb.pl dada2-RBCL/rep-seqs-dada2RBCL.
 
 #We looked at the RBCL taxonomic determinations generated by RDP and BLAST and compared the. We generated a set of rules to determine which classifier to use for each query. The rules we used were
 
-#1	If genus matches on NCI and RDP, use that genus, but still check if its the region. if not, done use
-#2	If genus does not match, look up samples in cal flora. If one sample is present in calflora and other is abset, use that genus
-#3	If both samples are present in calflora, use the genus that occurs in Yolo County (based off Calflora maps and our veg data from our sites)
-#4	if both are present in Yolo county, use NCBI unless the RDP classifier is over .75 confidence or if either is already present previously and confirmed
-#5	If neither are present in Yolo county, leave blank, use family level ID if it's the same
-# 8	There are a couple species that bees were caught on, but their pollen rbcL matched with something else as the top hit. What they had been caught on did match in NCBI though, with only a single snp difference causing the known species to not be the first hit (e.g., 176/179 bp matches for Ipomoea wrightii vs 175/179 for Convolvulus arvensis). We manually changed I. wrightii to Con arv, and Arctotheca calendula to H. annuus.   
+#1	If genus matches on NBCI and RDP, use that genus.
+#2  If species matches on NCBI and RDP, use that species
+#2	If genus/sp do not match, look up samples in veg data. If one sample is present in sky islands and other is absent, use that genus
+#4	if both are present in veg data, use NCBI unless the RDP classifier is over .75 confidence, in which case, use your best judgement
+#5	If neither are present in veg, leave blank, use family level ID if it's the same and feasible for the region
+# 8	There are a couple species that bees were caught on, but their pollen rbcL matched with something else as the top hit. 
+# What they had been caught on did match in NCBI though, with only a single snp difference causing the known species to not be the first hit (e.g., 176/179 bp matches for Ipomoea wrightii vs 175/179 for Convolvulus arvensis). We manually changed I. wrightii to Con arv, and Arctotheca calendula to H. annuus.   
 
 
 #We saved our final determinations into our ffarunsflower folder as a .txt called "taxonomyRBCL.txt" inside "RBCLclassifierRDP" folder
@@ -504,6 +509,7 @@ perl RBCLclassifierNCBI/BlastToTableexistingdb.pl dada2-RBCL/rep-seqs-dada2RBCL.
 rm(list=ls())
 ncbi <- read.table("~/Dropbox/skyIslands_saved/data/raw/RBCL_16s/rbcl_classified_NCBI.txt",
 		   sep="\t", header=TRUE)
+
 
 rdp <- read.table("~/Dropbox/skyIslands_saved/data/raw/RBCL_16s/rbcl_classified_rdp.txt",
 		 sep="\t", header=TRUE)
@@ -696,11 +702,77 @@ ids$FinalGenusSpecies[ids$FinalGenusSpecies %in% not.possible] <- paste("Unknown
 
 ids$FinalGenusSpeciesConfirmed[ids$FinalGenusSpecies %in% not.possible] <- TRUE
 
-## ***********************************************************************************
-
-
-
 ids$FinalGenusSpeciesInVeg <- NULL
 ids$FinalGenusInVeg <- NULL
 
 write.csv(ids, "~/Dropbox/skyIslands_saved/data/raw/RBCL_16s/final_rbcl.csv", row.names=FALSE)
+
+
+## editing final csv
+final <- read.csv("~/Dropbox/skyIslands_saved/data/raw/RBCL_16s/final_rbcl.csv",
+		   sep="\t", header=TRUE)
+		   
+		    
+
+## ***********************************************************************************
+
+## MANUALLY MAKE THE REST OF THE CALLS. #HC ADD IN WHAT PROTOCOL USED TO MAKE CALLS. 
+
+
+##save our final determinations into our skyislands folder as a .txt called "taxonomyRBCLfixed.txt" inside "RBCLclassifierRDP" folder
+
+###We need to make sure this file is in the right format for the next steps in qiime to process. 
+##Label the first column "Feature ID" and the second column "Taxon". Feature ID is the same as the query
+
+
+#FILTERING STEPS
+
+#make sure to enter back into the qiime environment using Docker
+
+docker run -itv ~/Dropbox/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
+
+#check paths and working directory are correct
+
+#before filtering, convert our .txt file that has final taxonomic determinations into a qza file called "taxonomyRBCLfixed.qza"
+
+qiime tools import --type 'FeatureData[Taxonomy]' --input-path RBCLclassifierRDP/taxonomyRBCLfixed.txt --output-path RBCLclassifierRDP/taxonomyRBCLfixed.qza
+
+##FILTER 1
+
+##We obtained RDP reads for some samples that actually that had non RBCL amplicons because RDP contains nucleotides 
+##for multiple different amplicons. So filter our all reads from sequences that do not have NCBI matches. 
+##(In our NCBI database, we locally downloaded ONLY RBCL reads, so these reads are reliable). 
+
+##We manually created a metadata file that contains all the query numbers (aka feature IDs) for samples that have both RDP and NCBI reads. 
+##We called this file "featurestokeep.txt" inside "RBCLclassifierRDP" folder
+
+qiime feature-table filter-features --i-table dada2-RBCL/tableRBCL.qza --m-metadata-file dada2-RBCL/featurestokeep.txt --o-filtered-table dada2-RBCL/tablefilt1.qza
+
+ 
+## FILTER 2: filter out all sequences that came out in less than 2 samples
+
+
+qiime feature-table filter-features --i-table dada2-RBCL/tablefilt1.qza --p-min-samples 2 --o-filtered-table dada2-RBCL/tablefilt2.qza
+
+#FILTER  3:
+#remove control samples. Refer to your sample map and journal notes (e.g. sky2018map.txt) 
+#Make a metadata file called "samplestokeep.txt" with the sample IDs you want to keep
+
+qiime feature-table filter-samples --i-table dada2-RBCL/tablefilt2.qza --m-metadata-file dada2-RBCL/samplestokeep.txt --o-filtered-table dada2-RBCL/tablefilt3.qza
+
+#REFILTER REPSEQS
+
+qiime feature-table filter-seqs --i-data dada2-RBCL/rep-seqs-dada2RBCL.qza --i-table dada2-RBCL/tablefilt3.qza --o-filtered-data dada2-RBCL/rep-seqs-dada2RBCL-filtered.qza
+
+qiime feature-table tabulate-seqs --i-data dada2-RBCL/rep-seqs-dada2RBCL-filtered.qza --o-visualization dada2-RBCL/rep-seqs-dada2RBCL-filtered.qzv
+qiime tools view dada2-RBCL/rep-seqs-dada2RBCL-filtered.qzv
+
+
+
+
+
+
+
+
+
+
