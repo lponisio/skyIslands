@@ -377,6 +377,9 @@ qiime phylogeny midpoint-root --i-tree dada2-16s/unrooted_tree16s.qza --o-rooted
 
 
 
+
+
+
 ## *****************************************************************************
 ## RBCL
 ## *****************************************************************************
@@ -768,10 +771,79 @@ qiime feature-table filter-samples --i-table dada2-RBCL/tablefilt2.qza --m-metad
 
 #REFILTER REPSEQS
 
-qiime feature-table filter-seqs --i-data dada2-RBCL/rep-seqs-dada2RBCL.qza --i-table dada2-RBCL/tablefilt3.qza --o-filtered-data dada2-RBCL/rep-seqs-dada2RBCL-filtered.qza
+qiime feature-table filter-seqs --i-data dada2-RBCL/rep-seqs-dada2-RBCL.qza --i-table dada2-RBCL/tablefilt3.qza --o-filtered-data dada2-RBCL/rep-seqs-dada2-RBCL-filtered.qza
 
-qiime feature-table tabulate-seqs --i-data dada2-RBCL/rep-seqs-dada2RBCL-filtered.qza --o-visualization dada2-RBCL/rep-seqs-dada2RBCL-filtered.qzv
-qiime tools view dada2-RBCL/rep-seqs-dada2RBCL-filtered.qzv
+qiime feature-table tabulate-seqs --i-data dada2-RBCL/rep-seqs-dada2-RBCL-filtered.qza --o-visualization dada2-RBCL/rep-seqs-dada2-RBCL-filtered.qzv
+qiime tools view dada2-RBCL/rep-seqs-dada2-RBCL-filtered.qzv
+
+
+#GENERATE TREE FOR PHYLOGENETIC DIVERSITY ANALYSES
+
+
+#Now alignment of the reads using MAFFT.
+
+qiime alignment mafft --i-sequences dada2-RBCL/rep-seqs-dada2-RBCL-filtered.qza --o-alignment dada2-RBCL/aligned_repseqsRBCL.qza
+
+#Then filter out the unconserved, highly gapped columns from alignment
+qiime alignment mask --i-alignment dada2-RBCL/aligned_repseqsRBCL.qza --o-masked-alignment dada2-RBCL/masked_aligned_repseqsRBCL.qza
+
+#And make a tree with Fasttree which creates a maximum likelihood phylogenetic trees from aligned sequences 
+#for more information on fastree, http://www.microbesonline.org/fasttree/
+qiime phylogeny fasttree --i-alignment dada2-RBCL/masked_aligned_repseqsRBCL.qza --o-tree dada2-RBCL/unrooted_treeRBCL.qza
+
+#now root it
+qiime phylogeny midpoint-root --i-tree dada2-RBCL/unrooted_treeRBCL.qza --o-rooted-tree dada2-RBCL/rooted-treeRBCL.qza
+
+
+
+#DETERMINE SUBSAMPLE DEPTH
+
+#We want to make a rarefaction curve to see how subsampling depths influence our alpha diversity metrics. 
+
+qiime diversity alpha-rarefaction --i-table dada2-RBCL/tablefilt3.qza --i-phylogeny dada2-RBCL/rooted-treeRBCL.qza --p-max-depth 10000 --m-metadata-file sky2018mapRBCL.txt --o-visualization alphararefactionRBCL.qzv
+
+#Open visualization in Qiime2 View (THIS IS WHERE I STOPPED 1/12/2021)
+
+#For subsampling I will use 1,350 reads based on where the rarefaction curve peters off
+#When I visualize tablefilt3 (go to "interactive sample detail", I can see this allows me to keep 205 samples (83.67%):
+
+qiime feature-table summarize --i-table dada2-RBCL/tablefilt3.qza --o-visualization dada2-RBCL/tablefilt3.qzv
+
+
+# If you want to visualize the taxonomy:
+qiime metadata tabulate --m-input-file taxonomyRBCL.qza --o-visualization taxonomyRBCL.qzv
+
+
+#Visualize taxonomy together with the samples (taxa bar plots) after all the filtering etc:
+qiime taxa barplot --i-table dada2-RBCL/tablefilt3.qza --i-taxonomy RBCLclassifierRDP/taxonomyRBCL.qza --m-metadata-file ffar2018mapRBCL.txt --o-visualization dada2-RBCL/taxa-bar-plots.qzv
+
+
+
+
+
+#ALPHA AND BETA DIVERSITY
+
+
+#1. Generate core metrics folder. This creates a folder and creates a lot of different summary output files in this folder
+
+qiime diversity core-metrics-phylogenetic --i-phylogeny dada2-RBCL/rooted-treeRBCL.qza --i-table dada2-RBCL/tablefilt3.qza --p-sampling-depth 1300 --m-metadata-file dada2-RBCL/samplestokeep.txt --output-dir core_metricsRBCL --verbose 
+
+#if you want to specify the number of parallel cores running, add this to the code
+--p-n-jobs 8
+
+#2. now we have lots of files in that core_metrics directory. gotta export rarefied_table.qza so we can get a qzv and convert to a csv
+
+qiime taxa barplot --i-table core_metricsRBCL/rarefied_table.qza --i-taxonomy RBCLclassifierRDP/taxonomyRBCL.qza --m-metadata-file dada2-RBCL/samplestokeep.txt --o-visualization core_metricsRBCL/rarefiedtableRBCL.qzv
+
+#3. drag the new qzv into qiime 2 view, and download a csv!
+
+
+
+
+
+
+
+
 
 
 
