@@ -62,3 +62,27 @@ make.mats <- function(pollinator.id,
 }
 
 
+catchDups <- function(indiv.comm){
+    ## this function combine columns with duplicate names in the
+    ## community matrix
+    dups  <-
+        unique(colnames(indiv.comm)[(duplicated(colnames(indiv.comm)))])
+    print(length(dups))
+    for(dup in dups){
+        columnstomerge <- indiv.comm[,colnames(indiv.comm) == dup]
+        indiv.comm <- indiv.comm[,!colnames(indiv.comm) == dup]
+        indiv.comm <- cbind(indiv.comm, apply(columnstomerge, 1, sum))
+        colnames(indiv.comm)[colnames(indiv.comm) == ""] <- dup
+    }
+    return(indiv.comm)
+}
+
+
+makeComm <- function(taxonomy, features, feature.col="Feature.ID"){
+    ## this function make a specimne by species matrix
+    rownames(taxonomy) <- features$Taxon[match(rownames(taxonomy),
+                                                           features[, feature.col])]
+
+    indiv.comm <- t(taxonomy)
+    return(indiv.comm)
+}

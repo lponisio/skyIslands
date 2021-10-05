@@ -73,7 +73,7 @@ spec <- spec[spec$GenusSpecies != "",]
 
 ## drop the the 2017 sample of PL because it was on fire for other
 ## sampling rounds and there was basically nothing blooming the first
-## round
+## round, or leave it for phenology?
 ## spec <- spec[!(spec$Site == "PL" & spec$Year == "2017"),]
 
 ## calculate orthoganol polynomials for doy
@@ -263,42 +263,42 @@ print(paste("Specimens", nrow(spec)))
 ## table(spec$PlantGenusSpecies, spec$Family)
 
 ## drop non-bees
-spec <- spec[spec$Family %in% c("Andrenidae", "Apidae",
-                                "Colletidae", "Halictidae",
-                                "Megachilidae"),]
+## spec <- spec[spec$Family %in% c("Andrenidae", "Apidae",
+##                                 "Colletidae", "Halictidae",
+##                                 "Megachilidae"),]
 
-spec <- spec[spec$Sex == "f",]
+## spec <- spec[spec$Sex == "f",]
 
-tab <- table(spec$GenusSpecies, spec$Site, spec$Year)
+## tab <- table(spec$GenusSpecies, spec$Site, spec$Year)
 
-all.occ <- apply(tab, 1, sum)
+## all.occ <- apply(tab, 1, sum)
 
-sp.too.few <- names(all.occ)[all.occ < 5]
-
-
-sp.possible <- names(all.occ)[all.occ > 5]
-
-cleptos <-  c("Sphecodes sp. a", "Sphecodes sp. b", "Triepeolus sp. a")
-
-sp.possible <- sp.possible[!sp.possible %in% cleptos]
-
-sp.sub <- spec[spec$GenusSpecies %in% sp.possible,]
-
-tab.sub <- sp.sub  %>%
-    group_by(GenusSpecies, Site, Year, SampleRound) %>%
-    summarise(n = n())
+## sp.too.few <- names(all.occ)[all.occ < 5]
 
 
- tab.sub$n30p <- ceiling(tab.sub$n*0.3)
- tab.sub$n20p <- ceiling(tab.sub$n*0.2)
+## sp.possible <- names(all.occ)[all.occ > 5]
 
-sum(tab.sub$n30p)
-sum(tab.sub$n20p)
+## cleptos <-  c("Sphecodes sp. a", "Sphecodes sp. b", "Triepeolus sp. a")
 
-tab.sub.cutoff <- tab.sub
+## sp.possible <- sp.possible[!sp.possible %in% cleptos]
 
-tab.sub.cutoff$n[tab.sub.cutoff$n > 5] <- 5
-sum(tab.sub.cutoff$n)
+## sp.sub <- spec[spec$GenusSpecies %in% sp.possible,]
+
+## tab.sub <- sp.sub  %>%
+##     group_by(GenusSpecies, Site, Year, SampleRound) %>%
+##     summarise(n = n())
+
+
+##  tab.sub$n30p <- ceiling(tab.sub$n*0.3)
+##  tab.sub$n20p <- ceiling(tab.sub$n*0.2)
+
+## sum(tab.sub$n30p)
+## sum(tab.sub$n20p)
+
+## tab.sub.cutoff <- tab.sub
+
+## tab.sub.cutoff$n[tab.sub.cutoff$n > 5] <- 5
+## sum(tab.sub.cutoff$n)
 
 ## *******************************************************************
 ##  Veg and bloom
