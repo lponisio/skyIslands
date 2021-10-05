@@ -234,7 +234,8 @@ sp.ids <- list(
                                 Author = "Christ",
                                 Determiner = "D. Yanega",
                                 temp.id= c("18708", "17807",
-                                           "18307", "17660", "19652")),
+                                           "18307", "17660", "19652",
+                                           "18705")),
 
     Lasioglossum_ruidosense_f= list(Genus="Lasioglossum",
                                     SubGenus ="Dialictus",
@@ -329,10 +330,27 @@ sp.ids <- list(
                                       SubSpecies="", Sex="m",
                                       Author = "Cockerell, 1908",
                                       Determiner = "J. Gardener",
-                                      temp.id=  c("18748"))
+                                      temp.id=  c("18748")),
+
+
+
+       Lasioglossum_lusorium_f= list(Genus="Lasioglossum", SubGenus
+                                  ="Sphecodogastra", Species="lusorium",
+                                  SubSpecies="", Sex="f",
+                                  Author = "Cresson, 1872",
+                                  Determiner = "J. Gardener",
+                                  temp.id=  c("17942")),
+
+         Lasioglossum_sp_m= list(Genus="Lasioglossum", SubGenus
+                                  ="Sphecodogastra", Species="sp.",
+                                  SubSpecies="s", Sex="m",
+                                  Author = "",
+                                  Determiner = "J. Gardener",
+                                  temp.id=  c("18707"))
 
 
 
 
 )
+
 

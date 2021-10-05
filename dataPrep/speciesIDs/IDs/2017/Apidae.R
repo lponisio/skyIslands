@@ -1243,7 +1243,7 @@ sp.ids <- list(
 
     Ceratina_nanula= list(Genus="Ceratina", SubGenus="",
                           Species="nanula",
-                          SubSpecies="a",
+                          SubSpecies="",
                           Sex="f",
                           Author = "",
                           Determiner="L.C. Ponisio",
@@ -1587,7 +1587,9 @@ sp.ids <- list(
                                           "BBSL1074435",
                                           "BBSL1071360",
                                           "BBSL1070212",
-                                          "BBSL1059274")),
+                                          "BBSL1059274",
+                                          "BBSL1071316",
+                                          "BBSL1073290")),
 
 
     Heterosarus_bakeri_m= list(Genus="Heterosarus",

@@ -749,7 +749,7 @@ sp.ids <- list(
                             Determiner="M.Hauser",
                             temp.id = c("CH_082112_15")),
 
-    Eristalis_hirta = list(Genus = "Eristalis",
+    Eristalis_hirta = list(Genus = "Eristalis",
                            SubGenus="",
                            Species =  "hirta",
                            SubSpecies="", Sex = "",
