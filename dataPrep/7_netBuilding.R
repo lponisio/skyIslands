@@ -3,10 +3,10 @@
 
 rm(list=ls())
 ## setwd('~')
-setwd('sunflower_saved')
+setwd('skyIslands_saved')
 library(bipartite)
 library(parallel)
-source('../sunflower/dataPrep/src/nets_init.R')
+source('../skyIslands/dataPrep/src/nets_init.R')
 
 ndim.func <- 10
 options(cores=12)
@@ -14,7 +14,7 @@ options(cores=12)
 ## ********************************************************
 ## pollinator abundance by site to multiple interactions by
 ## ********************************************************
-pol.abund <- read.csv(file.path(mainDir, "spSiteYear.csv"))
+pol.abund <- read.csv(file.path(mainDir, "spstats.csv"))
 
 ## prep for making a vector of bee abund at each site
 pol.abund.site <- split(pol.abund, pol.abund$Site)
@@ -66,23 +66,27 @@ save(indivNet_rbcl, spNet_rbcl, pol.sp.rbcl,
 ## number of zeros, and "traits"
 ## see https://stat.ethz.ch/pipermail/r-sig-ecology/2016-January/005264.html
 
-indivNetSums_rbcl  <-  netSums(indivNet_rbcl,
+nindiv.rbcl <- sapply(indivNet_rbcl, ncol) > 1
+
+nsp.rbcl <- sapply(spNet_rbcl, ncol) > 1
+
+indivNetSums_rbcl  <-  netSums(indivNet_rbcl[nindiv.rbcl],
                                binary=FALSE,
                                spec=spec, FUN=mclapply,
                                m=ndim.func)
 
-indivNetSums_rbclBinary  <-  netSums(indivNet_rbcl,
+indivNetSums_rbclBinary  <-  netSums(indivNet_rbcl[nindiv.rbcl],
                                      binary=TRUE,
                                      spec=spec,
                                      FUN=mclapply,
                                      m=ndim.func)
 
-spNetSums_rbcl  <-  netSums(spNet_rbcl,
+spNetSums_rbcl  <-  netSums(spNet_rbcl[nsp.rbcl],
                             binary=FALSE,
                             spec=spec,
                             type="sp")
 
-spNetSums_rbclBinary  <-  netSums(spNet_rbcl,
+spNetSums_rbclBinary  <-  netSums(spNet_rbcl[nsp.rbcl],
                                   binary=TRUE,
                                   spec=spec,
                                   type="sp")
@@ -163,9 +167,11 @@ save(indivNetSums_micro, indivNetSums_microBinary,
 
 #get columns of parasite presence to feed into illumSplit
 
-names.Para <- c("Ascosphaera","Apicystis",
-                "CrithidiaSpp", "CrithidiaBombi", "CrithidiaExpoeki",
+names.Para <- c("AscosphaeraSpp","ApicystisSpp", "AspergillusSpp",
+                "CrithidiaBombi", "CrithidiaExpoeki",
                 "NosemaCeranae", "NosemaBombi" )
+
+## no       "CrithidiaSpp",
 
 spec[, names.Para] <- apply(spec[, names.Para], 2, as.numeric)
 seq.para <- spec[apply(spec[, names.Para], 1, function(x) !all(is.na(x))),]
@@ -278,19 +284,19 @@ all.sp.mets.binary <- merge(all.sp.mets.binary, spNetSums_para, all=TRUE)
 
 
 ## merge with specimen data at individual level
-load('../sunflower/data/spec_traits.Rdata')
+load('../skyIslands/data/spec_traits.Rdata')
 
-names.Para <- c("Ascosphaera","Apicystis",
-                "CrithidiaSpp", "CrithidiaBombi", "CrithidiaExpoeki",
-                "NosemaCeranae", "NosemaBombi" )
+## names.Para <- c("Ascosphaera","Apicystis",
+##                 "CrithidiaSpp", "CrithidiaBombi", "CrithidiaExpoeki",
+##                 "NosemaCeranae", "NosemaBombi" )
 
 spec[, names.Para] <- NULL
 all.indiv.mets <- merge(all.indiv.mets, spec)
-all.indiv.mets.binary <- merge(all.indiv.mets.binary, spec)
+## all.indiv.mets.binary <- merge(all.indiv.mets.binary, spec)
 
 
 ## species level merge
-sp.by.site <- read.csv("../sunflower/data/SpbySite.csv")
+sp.by.site <- read.csv("../skyIslands/data/spstats.csv")
 
 all.sp.mets <- merge(all.sp.mets, sp.by.site)
 all.sp.mets.binary <- merge(all.sp.mets.binary, sp.by.site)
