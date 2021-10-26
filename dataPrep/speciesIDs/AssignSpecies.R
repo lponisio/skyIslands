@@ -4,7 +4,7 @@ save.dir <- "../../skyIslands/dataPrep/speciesIDs"
 source(file.path(save.dir, 'src/AddData.R'))
 
 
-spec.data.file <- "~/Dropbox/skyIslands_saved/data/relational/original/specimens.csv"
+spec.data.file <- "relational/original/specimens.csv"
 
 spec <- read.csv(file=spec.data.file, as.is=TRUE)
 
