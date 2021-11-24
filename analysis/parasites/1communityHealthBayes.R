@@ -1,6 +1,6 @@
-## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
+setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
 
-setwd('~/Dropbox (University of Oregon)/skyislands')
+## setwd('~/Dropbox (University of Oregon)/skyislands')
 
 setwd("analysis/parasites")
 rm(list=ls())
@@ -10,7 +10,7 @@ source("src/writeResultsTable.R")
 source("src/makeMultiLevelData.R")
 source("src/misc.R")
 
-ncores <- 1
+ncores <- 10
 
 ## **********************************************************
 ## formula for site effects on the bee community
@@ -23,9 +23,9 @@ spec <- spec[order(spec$Site),]
 ## all of the variables that are explanatory variables and thus need
 ## to be centered
 vars <- c("FloralAbundance",
-          "FloralRichness",
-          "TotalAbundance",
-          "Richness",
+          "FloralDiversity",
+          "PollAbundance",
+          "PollDiversity",
           "Elev",
           "Lat")
 
@@ -52,14 +52,12 @@ spec$WeightsPar[is.na(spec$ParasitePresence) | spec$Apidae != 1] <- 0
 
 spec$ParasitePresence[is.na(spec$ParasitePresence | spec$Apidae != 1)] <- 0
 
-
+## define all the formulas for the different parts of the models
 ## **********************************************************
 ## Model 1.1: formula for forest effects on floral community
 ## **********************************************************
-## define all the formulas for the different parts of the models
-
 ## flower diversity
-formula.flower.div <- formula(FloralRichness | weights(Weights) ~
+formula.flower.div <- formula(FloralDiversity | weights(Weights) ~
                                   Elev + Lat
                               )
 ## flower abund
@@ -70,31 +68,27 @@ formula.flower.abund <- formula(FloralAbundance | weights(Weights) ~
 ## **********************************************************
 ## Model 1.2: formula for forest effects on bee community
 ## **********************************************************
-
 ## bee diversity
-formula.bee.div <- formula(Richness | weights(Weights)~
+formula.bee.div <- formula(PollDiversity | weights(Weights)~
                                FloralAbundance +
-                               FloralRichness +
+                               FloralDiversity +
                                Lat)
 
 
 
 ## bee abund
-formula.bee.abund <- formula(TotalAbundance | weights(Weights)~
+formula.bee.abund <- formula(PollAbundance | weights(Weights)~
                                  FloralAbundance +
-                                 FloralRichness +
+                                 FloralDiversity +
                                  Lat)
-
-
 
 ## **********************************************************
 ## Model 1.3: formula for bee community effects on parasitism
 ## **********************************************************
-
 formula.parasite <- formula(ParasitePresence | weights(WeightsPar) ~
-                                TotalAbundance +
-                                FloralRichness +
-                                Richness +
+                                PollAbundance +
+                                FloralDiversity +
+                                PollDiversity +
                                 FloralAbundance +
                                 (1|Site)
                             )
@@ -103,7 +97,6 @@ formula.parasite <- formula(ParasitePresence | weights(WeightsPar) ~
 ## Community models
 ## **********************************************************
 ## convert to brms format
-
 bf.fabund <- bf(formula.flower.abund)
 bf.fdiv <- bf(formula.flower.div)
 bf.babund <- bf(formula.bee.abund)
@@ -112,7 +105,6 @@ bf.bdiv <- bf(formula.bee.div)
 ## **********************************************************
 ## Model 1 community effects on bee parasitism
 ## **********************************************************
-
 bf.par <- bf(formula.parasite, family="bernoulli")
 
 ## full model
@@ -122,7 +114,7 @@ bform <- bf.fabund + bf.fdiv + bf.babund + bf.bdiv + bf.par +
 ## run model
 fit <- brm(bform, spec,
            cores=ncores,
-           iter = 10^2,
+           iter = 10^4,
            chains = 2,
            thin=1,
            inits=0,
@@ -130,10 +122,42 @@ fit <- brm(bform, spec,
 
 write.ms.table(fit, "parasitism")
 
-save(fit, site.data, spec,
+save(fit, spec,
      file="saved/parasiteFitMod.Rdata")
 
 ## dignostic figures
 mcmc_trace(fit)
 ggsave("figures/diagnostics/parasite.pdf",
        height=11, width=8.5)
+
+
+## bombles only
+fit.bombus <- brm(bform, spec[spec$Genus == "Bombus",],
+           cores=ncores,
+           iter = 10^4,
+           chains = 2,
+           thin=1,
+           inits=0,
+           control = list(adapt_delta = 0.99))
+
+write.ms.table(fit.bombus, "parasitism_bombus")
+
+save(fit.bombus, spec,
+     file="saved/parasiteBombusFitMod.Rdata")
+
+
+
+## colonial only
+fit.colonial <- brm(bform, spec[spec$Genus == "Bombus" |
+                             spec$Genus == "Apis",],
+           cores=ncores,
+           iter = 10^4,
+           chains = 2,
+           thin=1,
+           inits=0,
+           control = list(adapt_delta = 0.99))
+
+write.ms.table(fit.colonial, "parasitism_colonial")
+
+save(fit.colonial, spec,
+     file="saved/parasiteColonialFitMod.Rdata")
