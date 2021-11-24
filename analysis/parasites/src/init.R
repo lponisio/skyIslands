@@ -22,5 +22,8 @@ parasites <- c("AspergillusSpp",
 ##              !is.na(spec$Apidae),]
 
 spec <- merge(spec, site.sum)
-
 spec <- merge(spec, veg, all.x=TRUE)
+
+
+dir.create(path="saved", showWarnings = FALSE)
+dir.create(path="saved/tables", showWarnings = FALSE)
