@@ -76,8 +76,18 @@ boxplot(para.gensp$CrithidiaExpoeki)
 
 ## some preliminary models to check out data
 
-bomb.mod <- glm(ParasitePresence ~ scale(TotalAbundance) +
-                    scale(Richness) + scale(FloralRichness) +
+library(lmer)
+library(lmerTest)
+
+all.mod <- lmer(FloralDiversity ~ scale(Elev) +
+                    scale(Lat) + (1|Site),
+                data=spec)
+
+summary(all.mod)
+vif(all.mod)
+
+bomb.mod <- glm(ParasitePresence ~ scale(PollAbundance) +
+                    scale(PollDiversity) + scale(FloralDiversity) +
                     scale(FloralAbundance),
     data=bombus, family="binomial")
 summary(bomb.mod)
@@ -85,23 +95,23 @@ summary(bomb.mod)
 vif(bomb.mod)
 
 
-apis.mod <- glm(ParasitePresence ~ scale(TotalAbundance) +
-                    scale(Richness)  + scale(FloralRichness) +
+apis.mod <- glm(ParasitePresence ~ scale(PollAbundance) +
+                    scale(PollDiversity)  + scale(FloralDiversity) +
                     scale(FloralAbundance),
     data=apis, family="binomial")
 summary(apis.mod)
 
 vif(apis.mod)
 
-anthophora.mod <- glm(ParasitePresence ~ TotalAbundance +
-                          Richness  + scale(FloralRichness) +
+anthophora.mod <- glm(ParasitePresence ~ PollAbundance +
+                          PollDiversity  + scale(FloralDiversity) +
                     scale(FloralAbundance) ,
     data=anthophora, family="binomial")
 summary(anthophora.mod)
 vif(anthophora.mod)
 
-megachile.mod <- glm(ParasitePresence ~ TotalAbundance +
-                         Richness + scale(FloralRichness) +
+megachile.mod <- glm(ParasitePresence ~ PollAbundance +
+                         PollDiversity + scale(FloralDiversity) +
                     scale(FloralAbundance),
     data=megachile, family="binomial")
 summary(megachile.mod)
@@ -109,8 +119,8 @@ vif(megachile.mod)
 
 
 
-all.mod <- glm(ParasitePresence ~ TotalAbundance + Richness +
-                   scale(FloralRichness) +
+all.mod <- glm(ParasitePresence ~ PollAbundance + PollDiversity +
+                   scale(FloralDiversity) +
                     scale(FloralAbundance),
     data=spec, family="binomial")
 summary(all.mod)

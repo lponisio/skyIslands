@@ -27,7 +27,8 @@ vars <- c("FloralAbundance",
           "PollAbundance",
           "PollDiversity",
           "Elev",
-          "Lat")
+          "Lat",
+          "Area")
 
 ##  center all of the x variables across the datasets
 spec[, vars] <- apply(spec[, vars], 2, standardize)
@@ -58,11 +59,11 @@ spec$ParasitePresence[is.na(spec$ParasitePresence | spec$Apidae != 1)] <- 0
 ## **********************************************************
 ## flower diversity
 formula.flower.div <- formula(FloralDiversity | weights(Weights) ~
-                                  Elev + Lat
+                                  Elev + Lat + Area +  (1|Site)
                               )
 ## flower abund
 formula.flower.abund <- formula(FloralAbundance | weights(Weights) ~
-                                    Lat + Elev
+                                    Elev + Area + (1|Site)
                                 )
 
 ## **********************************************************
@@ -71,26 +72,27 @@ formula.flower.abund <- formula(FloralAbundance | weights(Weights) ~
 ## bee diversity
 formula.bee.div <- formula(PollDiversity | weights(Weights)~
                                FloralAbundance +
-                               FloralDiversity +
-                               Lat)
-
-
+                                   FloralDiversity +
+                                   Lat + Area +
+                                   (1|Site)
+                           )
 
 ## bee abund
 formula.bee.abund <- formula(PollAbundance | weights(Weights)~
                                  FloralAbundance +
-                                 FloralDiversity +
-                                 Lat)
+                                     FloralDiversity +
+                                     + Area +
+                                     (1|Site)
+                             )
 
 ## **********************************************************
 ## Model 1.3: formula for bee community effects on parasitism
 ## **********************************************************
 formula.parasite <- formula(ParasitePresence | weights(WeightsPar) ~
-                                PollAbundance +
-                                FloralDiversity +
-                                PollDiversity +
-                                FloralAbundance +
-                                (1|Site)
+                                PollAbundance*FloralDiversity +
+                                    PollDiversity +
+                                    FloralAbundance +
+                                    (1|Site)
                             )
 
 ## **********************************************************
@@ -131,7 +133,7 @@ ggsave("figures/diagnostics/parasite.pdf",
        height=11, width=8.5)
 
 
-## bombles only
+## bumbles only
 fit.bombus <- brm(bform, spec[spec$Genus == "Bombus",],
            cores=ncores,
            iter = 10^4,
@@ -147,8 +149,8 @@ save(fit.bombus, spec,
 
 
 
-## colonial only
-fit.colonial <- brm(bform, spec[spec$Genus == "Bombus" |
+## social only
+fit.social <- brm(bform, spec[spec$Genus == "Bombus" |
                              spec$Genus == "Apis",],
            cores=ncores,
            iter = 10^4,
@@ -157,7 +159,18 @@ fit.colonial <- brm(bform, spec[spec$Genus == "Bombus" |
            inits=0,
            control = list(adapt_delta = 0.99))
 
-write.ms.table(fit.colonial, "parasitism_colonial")
+write.ms.table(fit.social, "parasitism_social")
 
-save(fit.colonial, spec,
-     file="saved/parasiteColonialFitMod.Rdata")
+save(fit.social, spec,
+     file="saved/parasiteSocialFitMod.Rdata")
+
+
+
+## Model checks
+mod.floral <- lmer(FloralDiversity ~ Elev + Lat +   (1|Site),
+                   data=spec[spec$Weights == 1,])
+vif(mod.floral)
+
+mod.floral.abund <- lmer(FloralAbundance ~ Elev + Lat +  (1|Site),
+                   data=spec[spec$Weights == 1,])
+vif(mod.floral.abund)
