@@ -59,11 +59,11 @@ spec$ParasitePresence[is.na(spec$ParasitePresence | spec$Apidae != 1)] <- 0
 ## **********************************************************
 ## flower diversity
 formula.flower.div <- formula(FloralDiversity | weights(Weights) ~
-                                  Elev + Lat + Area +  (1|Site)
+                                    Lat + Area +  (1|Site)
                               )
 ## flower abund
 formula.flower.abund <- formula(FloralAbundance | weights(Weights) ~
-                                    Elev + Area + (1|Site)
+                                      Area + (1|Site)
                                 )
 
 ## **********************************************************
@@ -167,10 +167,12 @@ save(fit.social, spec,
 
 
 ## Model checks
-mod.floral <- lmer(FloralDiversity ~ Elev + Lat +   (1|Site),
+mod.floral <- lmer(FloralDiversity ~   Lat + Area +   (1|Site),
                    data=spec[spec$Weights == 1,])
 vif(mod.floral)
 
-mod.floral.abund <- lmer(FloralAbundance ~ Elev + Lat +  (1|Site),
+## including elevation is very colinear
+
+mod.floral.abund <- lmer(FloralAbundance ~ Area + Lat +  (1|Site),
                    data=spec[spec$Weights == 1,])
 vif(mod.floral.abund)
