@@ -1,6 +1,6 @@
-setwd('C:/Users/rah10/Documents/skyIslands')
+setwd('C:/Users/na_ma/Dropbox (University of Oregon)/Rotation/skyIslands')
 ## setwd('~/Dropbox (University of Oregon)/skyislands')
-
+## setwd('C:/Users/rah10/Documents/skyIslands')
 
 setwd("analysis/microbiome")
 
@@ -10,6 +10,10 @@ rm(list=ls())
 source("src/init.R")
 
 source("src/misc.R")
+
+source("../microbiome/src/writeResultsTable.R")
+
+source("../microbiome/src/makeMultiLevelData.R")
 
 ncores <- 1
 
@@ -34,6 +38,9 @@ PD <- do.call(rbind, PD)
 
 spec.microbes <- cbind(spec.microbes, PD)
 
+spec <- merge(spec, spec.microbes, all.x=TRUE)
+
+
 ##copying over code from communityHealthBayes and changing
 ##parasite for microbiome data
 
@@ -47,8 +54,10 @@ vars <- c("FloralAbundance",
           "Area")
 
 ##  center all of the x variables across the datasets
-spec.microbes[, vars] <- apply(spec.microbes[, vars], 2, standardize)
+spec[, vars] <- apply(spec[, vars], 2, standardize)
 
+## will need to modify when we have multiple years
+spec <- makeDataMultiLevel(spec, "Site", "Year")
 
 ## **********************************************************
 ## Model 1.1: formula for forest effects on floral community
@@ -109,9 +118,9 @@ bform <- bf.fabund + bf.fdiv + bf.babund + bf.bdiv + bf.microbes +
   set_rescor(FALSE)
 
 ## run model
-fit <- brm(bform, spec.microbes,
+fit <- brm(bform, spec,
            cores=ncores,
-           iter = 10^4,
+           iter = 10^2,
            chains = 2,
            thin=1,
            inits=0,
@@ -120,6 +129,7 @@ fit <- brm(bform, spec.microbes,
 
 
 write.ms.table(fit, "microbes")
+
 
 save(fit, spec,
      file="saved/microbesFitMod.Rdata")
