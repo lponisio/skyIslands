@@ -77,8 +77,8 @@ sp.ids <- list(
     Dufourea_maura_f= list(Genus="Dufourea", SubGenus ="",
                            Species="maura", SubSpecies="",
                            Sex="f", Author = "Cresson",
-                           Determiner = "",
-                           temp.id= c()),
+                           Determiner = "L. Best",
+                           temp.id= c(33448, 33449)),
 
     Dufourea_maura_m= list(Genus="Dufourea", SubGenus ="",
                            Species="maura", SubSpecies="",
@@ -90,7 +90,7 @@ sp.ids <- list(
     Halictus_ligatus_f= list(Genus="Halictus", SubGenus ="Odontalictus",
                              Species="ligatus", SubSpecies="",
                              Sex="f", Author = "Say",
-                             Determiner = "D. Yanega",
+                             Determiner = "",
                              temp.id= c()),
 
 
@@ -99,8 +99,8 @@ sp.ids <- list(
                                  Species="tripartitus",
                                  SubSpecies="", Sex="f",
                                  Author = "Cockerell",
-                                 Determiner = "D. Yanega",
-                                 temp.id= c()),
+                                 Determiner = "L. Best",
+                                 temp.id= c(33460, 33468)),
 
 
       Halictus_farinosus = list(Genus="Halictus", SubGenus ="Nealictus",
@@ -109,6 +109,14 @@ sp.ids <- list(
                               Author = "Smith",
                               Determiner = "L. Best",
                               temp.id= c(30797)),
+
+
+      Halictus_confusus = list(Genus="Halictus", SubGenus ="Seladonia",
+                              Species="confusus",
+                              SubSpecies="", Sex="f",
+                              Author = "",
+                              Determiner = "L. Best",
+                              temp.id= c(31677)),
 
     Lasioglossum_sisymbrii_f = list(Genus="Lasioglossum",
                                     SubGenus ="Lasioglossum",
@@ -119,7 +127,10 @@ sp.ids <- list(
                                     Determiner = "D. Yanega",
                                     temp.id=
                                         c(30777,
-                                          30778
+                                          30778,
+31788, 31790
+
+
                                           )),
 
 
@@ -129,9 +140,16 @@ sp.ids <- list(
                                     SubSpecies="",
                                     Sex="m",
                                     Author = "Cockerell",
-                                    Determiner = "D. Yanega",
+                                    Determiner = "L. Best",
                                     temp.id=
-                                        c(
+                                        c(31602, 31604, 31674, 31675, 31676, 31789,
+ 31791, 31792
+
+
+
+
+
+
                                           )),
 
     Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
