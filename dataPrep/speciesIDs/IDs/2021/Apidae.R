@@ -170,7 +170,13 @@ sp.ids <- list(
                                        31090,31091,31092,31093,31094,
                                        31095,31096,31097,31098,31099,
                                        31100,31101,31102,31103,31104,
-                                       31353, )),
+                                       31353, 33392, 33393, 33394, 33395,
+ 33396
+
+
+
+
+)),
 
 
     Anthophora_urbana_f = list(Genus="Anthophora",
@@ -220,6 +226,15 @@ sp.ids <- list(
                             Author = "Say",
                             Determiner="",
                             temp.id = c()),
+
+ Bombus_fervidus_f = list(Genus = "Bombus", SubGenus="Thoracobombus",
+                             Species =
+                                 "fervidus", SubSpecies = "", Sex ="f",
+                             Author = "Fabricius",
+                             Determiner="L. Best",
+                             temp.id = c(33402, 33403, 33404, 33421, 33435
+)),
+
 
     Bombus_mixtus_f = list(Genus = "Bombus", SubGenus="Thoracobombus",
                            Species = "mixtus",
@@ -282,7 +297,26 @@ sp.ids <- list(
                                           30637, 30646, 31044, 31045,
                                           31046, 31047, 31177, 31179,
                                           31330, 31331, 31332, 31340,
-                                          31351,  )),
+                                          31351,  31502, 31503, 31505,
+ 31506, 31508, 31509, 31510, 31511, 31512, 31513, 31514, 31651, 31652, 31654, 31655,
+31656, 31657, 31658, 31658, 31659, 31695, 31696, 31698, 31699, 31700, 31701, 31702, 31704, 31704
+31705,
+31706,
+31707,
+31708,
+31709,
+31710,
+31711,
+31750,
+33399,
+33401,
+33405, 
+33406, 33414, 33419, 33424, 33425, 33426
+
+
+
+
+ )),
 
     Bombus_centralis_m = list(Genus = "Bombus",
                               SubGenus="Pyrobombus",
@@ -290,7 +324,15 @@ sp.ids <- list(
                               SubSpecies = "", Sex ="m",
                               Author = "Cresson",
                               Determiner="",
-                              temp.id = c(30738, 30890,
+                              temp.id = c(30738, 30890, 33400,
+ 33407, 33408, 33409, 33410, 33411, 33413, 33415, 33427, 33429, 33430
+
+
+
+  
+
+
+ 
 
 
                                           )),
@@ -331,7 +373,27 @@ sp.ids <- list(
                                  30867, 30868, 30872, 30873, 30874,
                                  30875, 30878, 30880, 30881, 30884,
                                  30886, 30892, 30895, 30896, 30897,
-                                 30898, 30912, 30913,  )),
+                                 30898, 30912, 30913, 31504, 31507, 
+31703, 33417, 33422, 33436, 33439
+
+
+
+
+ )),
+
+    Bombus_huntii_m = list(Genus = "Bombus",
+                           SubGenus="Pyrobombus",
+                           Species = "huntii",
+                           SubSpecies = "", Sex ="m", Author = "Greene",
+                           Determiner="L. Best",
+                           temp.id =
+                               c(33397, 33412, 33416, 33418, 33423, 
+33432, 33433, 33437
+
+
+
+
+ )),
 
     Bombus_bifarius_f = list(Genus = "Bombus",
                              SubGenus="Pyrobombus",
@@ -355,6 +417,16 @@ sp.ids <- list(
                                Author = "Cresson",
                                Determiner="",
                                temp.id = c()),
+
+    Bombus_flavifrons_m = list(Genus = "Bombus",
+                               SubGenus="Pyrobombus",
+                               Species = "flavifrons",
+                               SubSpecies = "", Sex ="m",
+                               Author = "Cresson",
+                               Determiner="",
+                               temp.id = c(33420, 33428, 33431, 33438
+
+)),
 
     Heterosarus_bakeri_f= list(Genus="Heterosarus",
                                SubGenus ="",
