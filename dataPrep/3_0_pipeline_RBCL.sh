@@ -138,6 +138,9 @@ mkdir RBCLclassifierNCBI
 
 cd classifiers/
 
+## KAYE THINKS WE CAN SUBSET THE FASTA FILE TO THE SPECIES WE ARE
+## INTERESTED IN AND THEN USE THAT IN SUBSEQENT STEPS
+
 makeblastdb -in -taxid_map gi_taxid_nucl.dmp RBCLclassifierNCBI/rbcL_only_NCBI.fasta -out RBCLclassifierNCBI/rbcL_only_DB -parse_seqids -dbtype nucl
 
 ## if this all worked, you should get a series of files called
@@ -223,7 +226,10 @@ perl classifiers/RBCLclassifierNCBI/BlastToTableexistingdb_top_10.pl merged/RBCL
 
 #make sure to enter back into the qiime environment using Docker
 
-docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
+docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)\/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
+
+
+# docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline/merged/RBCL quay.io/qiime2/core:2021.11 qiime
 
 
 #check paths and working directory are correct
@@ -234,6 +240,8 @@ cd ../mnt/SI_pipeline/merged/RBCL
 
 qiime tools import --type 'FeatureData[Taxonomy]' --input-path taxonomyRBCL.txt --output-path taxonomyRBCL.qza
 
+
+qiime metadata tabulate --m-input-file taxonomyRBCL.qza --o-visualization taxonomyRBCL.qzv
 
 ## FILTER 1: Remove all samples that didn't have an NCBI match 
 
