@@ -20,17 +20,26 @@ spec.data <- spec.data[rep(seq_len(nrow(spec.data)),
                            spec.data$SpecimenCount),]
 
 spec.data$SpecimenCount <- NULL
-spec.data$SiteSubSite <-  spec.data$Site
-spec.data$Site <- gsub("[0-9]", "", spec.data$Site)
+
+spec.data$SiteSubSite <-  paste0(spec.data$Site, spec.data$SubSite)
+## spec.data$Site <- gsub("[0-9]", "", spec.data$Site)
 
 print(paste("original number of specimens", nrow(spec.data)))
 
-## add subsite one to all 2012 data
-spec.2012 <- as.Date(spec.data$Date, "%m/%d/%y") < "2013-01-01"
-spec.2017.2018 <- as.Date(spec.data$Date, "%m/%d/%y") > "2013-01-01"
+## CHECK DATE FORMAT
+spec.data$Date <- as.Date(spec.data$Date, "%m/%d/%y")
 
-spec.data$SiteSubSite[spec.2012] <-
-    paste0(spec.data$SiteSubSite[spec.2012], "1")
+## add subsite one to all 2012 data
+spec.2012 <- spec.data$Date < "2013-01-01"
+spec.after.2012 <- spec.data$Date > "2013-01-01"
+
+## spec.data$SiteSubSite[spec.2012] <-
+##     paste0(spec.data$SiteSubSite[spec.2012], "1")
+
+spec.data$Method <- "Net"
+spec.data$Method[is.na(spec.data$FieldPlantID) |
+                 spec.data$FieldPlantID == ""] <- "Pan"
+spec.data$Method[spec.data$SampleRound == 0] <- "Vane"
 
 plant.keys <- read.csv("raw/plants.csv", stringsAsFactors=FALSE)
 
@@ -41,26 +50,30 @@ spec.data$FinalPlantSp <-
 ## spec.data$UniqueID[spec.2017] <- spec.data$TempID[spec.2017] <-
 ##     1:length(spec.data$UniqueID[spec.2017])
 
+
 spec.data$FinalPlantSp[is.na(spec.data$FinalPlantSp)] <- ""
 
-spec.data$NetNumber <-
-    sapply(strsplit(spec.data$SampleRound, ".", fixed=TRUE),
-           function(x) x[2])
+## spec.data$NetNumber <-
+##     sapply(strsplit(spec.data$SampleRound, ".", fixed=TRUE),
+##            function(x) x[2])
 
-spec.data$SampleRound <-
-    sapply(strsplit(spec.data$SampleRound, ".", fixed=TRUE),
-           function(x) x[1])
+## spec.data$SampleRound <-
+##     sapply(strsplit(spec.data$SampleRound, ".", fixed=TRUE),
+##            function(x) x[1])
 
-spec.data$Method <- "Net"
-spec.data$Method[is.na(spec.data$FieldPlantID) |
-                 spec.data$FieldPlantID == ""] <- "Pan"
-spec.data$Method[spec.data$SampleRound == 0] <- "Vane"
 
 check.data.spec <- aggregate(spec.data$Date,
                              list(site = spec.data$Site,
                                   date =
-                                      spec.data$Date),
+                                      spec.data$Date,
+                                  subsite=spec.data$SubSite,
+                                  netnumber=spec.data$NetNumber,
+                                  sampleround=spec.data$SampleRound
+                                  ),
                              length)
+
+check.data.spec <- check.data.spec[order(check.data.spec$date),]
+write.csv(check.data.spec, file="spec_counts.csv", row.names=FALSE)
 
 ## manually add BBSL numbers - should only need to do this for 2017
 ## data - will add at point of data entry for future specimens
@@ -89,18 +102,22 @@ source('../../skyIslands/dataPrep/speciesIDs/AssignSpecies.R')
 ## *******************************************************
 ## create conditions file
 
-data.weather <- read.csv("raw/weather.csv")
+weather.data <- read.csv("raw/weather.csv")
 
-data.weather$SiteSubSite <-  paste0(data.weather$Site,
-                                    data.weather$SubSite)
+weather.data$SiteSubSite <-  paste0(weather.data$Site,
+                                    weather.data$SubSite)
 
-check.data.weather <- aggregate(data.weather$StartTime,
-                                list(site = data.weather$Site,
-                                     day = data.weather$SampleRound,
-                                     date = data.weather$Date), length)
+
+weather.data$Date <- as.Date(weather.data$Date, "%m/%d/%Y")
+
+
+check.weather.data <- aggregate(weather.data$StartTime,
+                                list(site = weather.data$Site,
+                                     day = weather.data$SampleRound,
+                                     date = weather.data$Date), length)
 
 ## write unique data to a table
-write.csv(unique(data.weather), file="relational/original/weather.csv",
+write.csv(unique(weather.data), file="relational/original/weather.csv",
                    row.names=FALSE)
 ## *******************************************************
 
@@ -109,9 +126,9 @@ geo <- read.csv("raw/geography.csv")
 
 colnames(geo) <- gsub("\\.", "", colnames(geo))
 
-geo$Site <- gsub("[0-9]", "", geo$Location_Name)
+## geo$Site <- gsub("[0-9]", "", geo$Site)
 
-geo$SubSite <- substr(geo$Location_Name, 3, 3)
+geo$SubSite <- substr(geo$SiteSubSite, 3, 3)
 
 highergeog <- data.frame(Site = c("JC", "VC", "JM", "SC", "MM", "SM",
                                   "CC", "UK", "SS", "CH", "RP", "PL",
@@ -151,7 +168,7 @@ geo <- merge(geo, highergeog, key="Site", all.x=TRUE)
 
 data.geo <- data.frame(Site=geo$Site,
                        SubSite=geo$SubSite,
-                       SiteSubSite=geo$Location_Name,
+                       SiteSubSite=geo$SiteSubSite,
                        MtRange=geo$MtRange,
                        Forest=geo$Forest,
                        Meadow=geo$Meadow,
@@ -223,32 +240,32 @@ veg.data <- read.csv("raw/quadratveg.csv",  stringsAsFactors=FALSE)
 ## not possible. We only had 3 subsites, so subsite 4-5 are not
 ## possible.
 
-## veg.data$Quadrat[veg.data$Quadrat == "C4"]  <- "C3"
-## veg.data$Quadrat[veg.data$Quadrat == "C5"]  <- "C3"
+veg.data$Quadrat[veg.data$Quadrat == "C4"]  <- "C3"
+veg.data$Quadrat[veg.data$Quadrat == "C5"]  <- "C3"
 
-## veg.data$Quadrat[veg.data$Quadrat == "E4"]  <- "E3"
-## veg.data$Quadrat[veg.data$Quadrat == "E5"]  <- "E3"
+veg.data$Quadrat[veg.data$Quadrat == "E4"]  <- "E3"
+veg.data$Quadrat[veg.data$Quadrat == "E5"]  <- "E3"
 
-## veg.data$Quadrat[veg.data$Quadrat == "N4"]  <- "N3"
-## veg.data$Quadrat[veg.data$Quadrat == "N5"]  <- "N3"
+veg.data$Quadrat[veg.data$Quadrat == "N4"]  <- "N3"
+veg.data$Quadrat[veg.data$Quadrat == "N5"]  <- "N3"
 
-## veg.data$Quadrat[veg.data$Quadrat == "W4"]  <- "W3"
-## veg.data$Quadrat[veg.data$Quadrat == "W5"]  <- "W3"
+veg.data$Quadrat[veg.data$Quadrat == "W4"]  <- "W3"
+veg.data$Quadrat[veg.data$Quadrat == "W5"]  <- "W3"
 
-## veg.data$Quadrat[veg.data$Quadrat == "S4"]  <- "S3"
-## veg.data$Quadrat[veg.data$Quadrat == "S5"]  <- "S3"
+veg.data$Quadrat[veg.data$Quadrat == "S4"]  <- "S3"
+veg.data$Quadrat[veg.data$Quadrat == "S5"]  <- "S3"
 
-## veg.data$Quadrat[veg.data$Quadrat == "ME4"]  <- "ME3"
-## veg.data$Quadrat[veg.data$Quadrat == "ME5"]  <- "ME3"
+veg.data$Quadrat[veg.data$Quadrat == "ME4"]  <- "ME3"
+veg.data$Quadrat[veg.data$Quadrat == "ME5"]  <- "ME3"
 
-## veg.data$Quadrat[veg.data$Quadrat == "MN4"]  <- "ME3"
-## veg.data$Quadrat[veg.data$Quadrat == "MN5"]  <- "ME3"
+veg.data$Quadrat[veg.data$Quadrat == "MN4"]  <- "ME3"
+veg.data$Quadrat[veg.data$Quadrat == "MN5"]  <- "ME3"
 
-## veg.data$Quadrat[veg.data$Quadrat == "MS4"]  <- "MS3"
-## veg.data$Quadrat[veg.data$Quadrat == "MS5"]  <- "MS3"
+veg.data$Quadrat[veg.data$Quadrat == "MS4"]  <- "MS3"
+veg.data$Quadrat[veg.data$Quadrat == "MS5"]  <- "MS3"
 
-## veg.data$Quadrat[veg.data$Quadrat == "MW4"]  <- "MW3"
-## veg.data$Quadrat[veg.data$Quadrat == "MW5"]  <- "MW3"
+veg.data$Quadrat[veg.data$Quadrat == "MW4"]  <- "MW3"
+veg.data$Quadrat[veg.data$Quadrat == "MW5"]  <- "MW3"
 
 
 veg.data$Quadrat[veg.data$Quadrat == "CW2"]  <- "MC2"
@@ -280,6 +297,9 @@ veg.data$PlantGenusSpecies <-
 
 veg.data$PlantGenusSpecies[veg.data$PlantGenusSpecies == "NA"] <- ""
 
+## CHECK DATE FORMAT
+veg.data$Date <- as.Date(veg.data$Date, "%m/%d/%Y")
+
 write.csv(veg.data, file="relational/original/veg.csv",
                    row.names=FALSE)
 
@@ -303,6 +323,11 @@ bloom.data$PlantGenusSpecies[bloom.data$PlantGenusSpecies == "NA"] <-
 
 bloom.data$NumBlooms <- bloom.data$NumFlower
 bloom.data$NumFlower <- NULL
+
+
+
+## CHECK DATE FORMAT
+bloom.data$Date <- as.Date(bloom.data$Date, "%m/%d/%Y")
 
 ## sort(unique(bloom.data$PlantGenusSpecies))
 

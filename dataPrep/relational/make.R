@@ -22,14 +22,14 @@ con <- dbConnect(dbDriver("SQLite"), dbname='si.db')
 ## 1. Geographic infomation
 ## *******************************************************
 
-keep <- c("SiteSubSite", "Site", "Country", "State", "County",
+keep <- c("Site", "Country", "State", "County",
           "Meadow", "Forest",
           "MtRange", "Lat", "Long", "Elev", "Area")
 
 geography <- unique(geo[keep])
 ## next sort into alphabetical order
-geography <- geography[match(sort(geography$SiteSubSite),
-                             geography$SiteSubSite),]
+geography <- geography[match(sort(geography$Site),
+                             geography$Site),]
 
 ## generate primary geography key
 geography <- cbind(GeographyPK=seq_len(nrow(geography)), geography)
@@ -38,33 +38,33 @@ dbWriteTable(con, "tblGeography", geography, row.names=FALSE)
 
 ## Propagate geography key to the conditions table.
 conditions$GeographyFK <-
-    geography$GeographyPK[match(conditions$SiteSubSite,
-                                geography$SiteSubSite)]
+    geography$GeographyPK[match(conditions$Site,
+                                geography$Site)]
 
 print(paste("conditions without site matches",
             unique(conditions$Site[is.na(conditions$GeographyFK)])))
 
 ## Propagate geography key to the specimens table.
-specimens$GeographyFK <- geography$GeographyPK[match(specimens$SiteSubSite,
-                                                     geography$SiteSubSite)]
+specimens$GeographyFK <- geography$GeographyPK[match(specimens$Site,
+                                                     geography$Site)]
 
 print(paste("specimens without site matches",
-            unique(specimens$Site[is.na(specimens$GeographyFK)])))
+            unique(specimens$UniqueID[is.na(specimens$GeographyFK)])))
 
 ## Propagate geography key to the veg table.
-veg$GeographyFK <- geography$GeographyPK[match(veg$SiteSubSite,
-                                               geography$SiteSubSite)]
+veg$GeographyFK <- geography$GeographyPK[match(veg$Site,
+                                               geography$Site)]
 
 print(paste("veg quads without site matches",
             unique(veg$Site[is.na(veg$GeographyFK)])))
 
 
 ## Propagate geography key to the bloom table.
-bloom$GeographyFK <- geography$GeographyPK[match(bloom$SiteSubSite,
-                                               geography$SiteSubSite)]
+bloom$GeographyFK <- geography$GeographyPK[match(bloom$Site,
+                                               geography$Site)]
 
 print(paste("bloom data without site matches",
-            unique(bloom$SiteSubSite[is.na(bloom$GeographyFK)])))
+            unique(bloom$Site[is.na(bloom$GeographyFK)])))
 
 
 ## write a .csv version of this table (just for ease of viewing)
@@ -73,11 +73,74 @@ write.csv(dbReadTable(con, "tblGeography"),
 
 dbListTables(con)
 
+
+## keep <- c("SiteSubSite", "Site", "Country", "State", "County",
+##           "Meadow", "Forest",
+##           "MtRange", "Lat", "Long", "Elev", "Area", "SubSite")
+
+## geography <- unique(geo[keep])
+## ## next sort into alphabetical order
+## geography <- geography[match(sort(geography$SiteSubSite),
+##                              geography$SiteSubSite),]
+
+## ## generate primary geography key
+## geography <- cbind(GeographyPK=seq_len(nrow(geography)), geography)
+## rownames(geography) <- NULL
+## dbWriteTable(con, "tblGeography", geography, row.names=FALSE)
+
+## ## Propagate geography key to the conditions table.
+## conditions$GeographyFK <-
+##     geography$GeographyPK[match(conditions$SiteSubSite,
+##                                 geography$SiteSubSite)]
+
+## print(paste("conditions without site matches",
+##             unique(conditions$SiteSubSite[is.na(conditions$GeographyFK)])))
+
+## ## Propagate geography key to the specimens table.
+## specimens$GeographyFK <- geography$GeographyPK[match(specimens$SiteSubSite,
+##                                                      geography$SiteSubSite)]
+
+## print(paste("specimens without site matches",
+##             unique(specimens$UniqueID[is.na(specimens$GeographyFK)])))
+
+## ## Propagate geography key to the veg table.
+## veg$GeographyFK <- geography$GeographyPK[match(veg$SiteSubSite,
+##                                                geography$SiteSubSite)]
+
+## print(paste("veg quads without site matches",
+##             unique(veg$Site[is.na(veg$GeographyFK)])))
+
+
+## ## Propagate geography key to the bloom table.
+## bloom$GeographyFK <- geography$GeographyPK[match(bloom$SiteSubSite,
+##                                                geography$SiteSubSite)]
+
+## print(paste("bloom data without site matches",
+##             unique(bloom$SiteSubSite[is.na(bloom$GeographyFK)])))
+
+
+## ## write a .csv version of this table (just for ease of viewing)
+## write.csv(dbReadTable(con, "tblGeography"),
+##           file="tables/geography.csv", row.names=FALSE)
+
+## dbListTables(con)
+
 ## *******************************************************
 ## 2. Conditions
 ## *******************************************************
 ## 2.1 for insect specimens
 ## *******************************************************
+
+## CHECK DATE FORMAT
+conditions$Date <- as.Date(conditions$Date, format = "%Y-%m-%d")
+specimens$Date <- as.Date(specimens$Date, format = "%Y-%m-%d")
+veg$Date <- as.Date(veg$Date, format = "%Y-%m-%d")
+bloom$Date <- as.Date(bloom$Date, format = "%Y-%m-%d")
+
+conditions$Date  <- as.character(conditions$Date)
+specimens$Date  <- as.character(specimens$Date)
+veg$Date  <- as.character(veg$Date)
+bloom$Date  <- as.character(bloom$Date)
 
 
 ## Temporarily identify unique combinations:
@@ -107,7 +170,21 @@ specimens$ConditionsFK <-
     cond$ConditionsPK[match(specimens$cond.code, cond$cond.code)]
 
 print(paste("specimen without condition keys",
-            specimens$TempID[is.na(specimens$ConditionsFK)]))
+            specimens$UniqueID[is.na(specimens$ConditionsFK)]))
+
+bad <- (specimens[, c("Site", "Date",
+                            "NetNumber", "SubSite")][is.na(specimens$ConditionsFK),])
+
+write.csv(bad, file="weather_problems.csv", row.names=FALSE)
+
+
+bad.spec <- (specimens[, c("UniqueID", "Site", "Date",
+                            "NetNumber", "SubSite")][is.na(specimens$ConditionsFK),])
+
+unique(specimens$cond.code[is.na(specimens$ConditionsFK)])
+
+write.csv(bad.spec, file="spec_weather_problems.csv", row.names=FALSE)
+
 
 write.csv(dbReadTable(con, "tblConditions"),
           file="tables/conditions.csv", row.names=FALSE)
@@ -304,7 +381,7 @@ veg$QuadFK <- quads$QuadPK[match(veg$Quadrat, quads$Quadrat)]
 
 keep <- c('UniqueID',
           'TempID',
-          'EventID',
+    #      'EventID',
           'Collector',
           'InsectFK',
           'PlantFK',
