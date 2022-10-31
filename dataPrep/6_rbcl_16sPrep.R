@@ -113,7 +113,9 @@ mega16sdata <- read_qza("SI_pipeline/merged/16s/rooted-tree16s.qza")
 
 tree.16s <- mega16sdata$data
 
-drop_dupes <- function(tree,thres=1e-5){
+## function from: https://stackoverflow.com/questions/38570074/phylogenetics-in-r-collapsing-descendant-tips-of-an-internal-node
+
+drop_dupes <- function(tree, thres=1e-5){
   tips <- which(tree$edge[,2] %in% 1:Ntip(tree))
   toDrop <- tree$edge.length[tips] < thres
   drop.tip(tree,tree$tip.label[toDrop])
@@ -121,7 +123,8 @@ drop_dupes <- function(tree,thres=1e-5){
 
 ## tree.16s <- tip_glom(tree.16s, h=0.05)
 
-tree.16s <- drop_dupes(tree.16s, thres=1e-5)
+## what is a good cutoff?
+tree.16s <- drop_dupes(tree.16s, thres=1e-3)
 
 
 # make distance matrix
@@ -129,6 +132,7 @@ tree.16s <- drop_dupes(tree.16s, thres=1e-5)
 tree.16s$tip.label  <-  feature.2.tax.16s$Taxon[match(tree.16s$tip.label,
                                            feature.2.tax.16s$Feature.ID)]
 
+tree.16s <- drop.tip(tree.16s, which(duplicated(tree.16s$tip.label)))
 
 ## ***********************************************************************
 ## RBCL
@@ -302,6 +306,4 @@ write.csv(spec, file= "../skyIslands/data/spec_RBCL_16s.csv",
 
 save(tree.16s, tree.rbcl, file="../skyIslands/data/trees.Rdata")
 
-## save(wphylo.dist.16s, phylo.dist.16s, wphylo.dist.rbcl, phylo.dist.rbcl,
-##      file="~/Dropbox/sunflower/data/phyloDistanceMats.Rdata")
 

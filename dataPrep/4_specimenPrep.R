@@ -4,13 +4,20 @@ library(vegan)
 library(fields)
 library(fossil)
 library(bipartite)
-library(tidyverse)
+library(dplyr)
 library(RSQLite)
+library(tidyr)
+library(readr)
 
 dir.bombus <-
     '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
 
+## dir.bombus <-
+##      '~/Dropbox (University of Oregon)/skyIslands'
+
+
 setwd(dir.bombus)
+
 source('dataPrep/relational/prep.R')
 
 setwd(dir.bombus)
@@ -18,6 +25,9 @@ source('dataPrep/relational/make.R')
 
 setwd(dir.bombus)
 source('dataPrep/relational/traditional.R')
+
+## dir.bombus <-
+##     '~/Dropbox (University of Oregon)/skyIslands'
 
 
 dir.bombus <-
@@ -42,9 +52,9 @@ source("src/specialization.R")
 
 ## did not complete full sampling rounds in any of these sites. Was
 ## just scouting.  can keep UK and SS when more species are IDed
-site.2.drop <- c("JM", "CC", "SS", "UK")
-spec <- spec[!spec$Site %in% site.2.drop,]
-spec <- droplevels(spec)
+## site.2.drop <- c("JM", "CC", "SS", "UK")
+## spec <- spec[!spec$Site %in% site.2.drop,]
+## spec <- droplevels(spec)
 
 ## get specimen data ready
 spec$GenusSpecies <- fix.white.space(paste(spec$Genus,
@@ -58,7 +68,7 @@ spec$PlantGenusSpecies <-  fix.white.space(paste(spec$PlantGenus,
 spec$Int <-  fix.white.space(paste(spec$GenusSpecies,
                                    spec$PlantGenusSpecies))
 
-spec$Date <- as.Date(spec$Date, format='%m/%d/%y')
+spec$Date <- as.Date(spec$Date, format='%Y-%m-%d')
 spec$Doy <- as.numeric(strftime(spec$Date, format='%j'))
 spec$Year <- as.numeric(format(spec$Date,'%Y'))
 
@@ -123,8 +133,10 @@ site.sp <- spec %>%
 
 site.sum <- spec %>%
     group_by(Site, Year, SampleRound) %>%
-    summarise(TotalAbundance = length(GenusSpecies),
-              Richness= length(unique(GenusSpecies)),
+    summarise(PollAbundance = length(GenusSpecies),
+              PollRichness= length(unique(GenusSpecies)),
+              PollDiversity=vegan:::diversity(table(GenusSpecies),
+                                              index="shannon"),
               SiteParasitismRate=mean(ParasitePresence, na.rm=TRUE))
 
 hb <- spec[spec$GenusSpecies == "Apis mellifera",]
@@ -137,6 +149,14 @@ hb.site.sum <- hb %>%
 
 site.sum  <- merge(site.sum, hb.site.sum, all.x=TRUE)
 
+site.sp.yr <- spec %>%
+    group_by(Site, Year, GenusSpecies, Genus) %>%
+    summarise(Abundance = length(GenusSpecies))
+
+bombus <- site.sp.yr[site.sp.yr$Genus == "Bombus",]
+
+write.csv(bombus, file='../data/bombus_year_site.csv', row.names=FALSE)
+write.csv(site.sp.yr, file='../data/sp_year_site.csv', row.names=FALSE)
 write.csv(site.sum, file='../data/sitestats.csv', row.names=FALSE)
 write.csv(site.sp, file='../data/spstats.csv', row.names=FALSE)
 
@@ -211,8 +231,6 @@ write.csv(traits, file='../data/parasitetraits.csv', row.names=FALSE)
 makeNets(spec, net.type="YrSR")
 makeNets(spec, net.type="Yr", mean.by.year=TRUE)
 
-
-
 spec.sub <- agg.spec.sub %>%
     select(UniqueID, GenusSpecies, Site, Year, SampleRound,
            "AspergillusSpp", "AscosphaeraSpp",
@@ -240,9 +258,6 @@ makeNets(prep.para, net.type="Yr", species=c("Pollinator",
          lower.level="GenusSpecies",
          higher.level="Parasite",
          mean.by.year=TRUE)
-
-
-
 
 ## *******************************************************************
 ##  checks
@@ -345,10 +360,18 @@ floral.div <- tapply(veg.bloom.sum.sp$FloralAbundance,
                      veg.bloom.sum.sp$SampleRound,
        vegan:::diversity)
 
-veg.bloom.sum <- veg.blooming %>%
+veg.bloom.sum.sp <- veg.blooming %>%
+    group_by(Site, Year, SampleRound, PlantGenusSpecies) %>%
+    summarise(SpFloralAbundance = sum(NumBloomsNum))
+
+veg.bloom.sum <- veg.bloom.sum.sp %>%
     group_by(Site, Year, SampleRound) %>%
-    summarise(FloralAbundance = sum(NumBloomsNum),
-              FloralRichness= length(unique(PlantGenusSpecies)))
+    summarise(FloralAbundance = sum(SpFloralAbundance),
+              FloralRichness= length(unique(PlantGenusSpecies)),
+              FloralDiversity=vegan:::diversity(SpFloralAbundance,
+                                                 index="shannon"))
+
+
 
 veg.bloom.sum$SiteSR <- paste(veg.bloom.sum$Site,
                                veg.bloom.sum$SampleRound)
@@ -361,7 +384,10 @@ veg.bloom.sum$SiteSR <- NULL
 write.csv(veg.bloom.sum, file="../data/veg.csv", row.names=FALSE)
 
 
+## *******************************************************************
 ## checking data between years
+## *******************************************************************
+
 to.sample <- c("CH", "HM", "JC", "MM", "PL", "RP", "SC", "SM")
 
 veg.prep <- veg[veg$Site %in% to.sample,]

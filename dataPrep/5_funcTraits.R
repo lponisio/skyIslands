@@ -11,7 +11,7 @@ source("src/misc.R")
 
 load('../data/spec.Rdata')
 
-traits <- read.csv("../../skyIslands_saved/data/raw/traits.csv")
+traits <- read.csv("../../skyIslands_saved/data/raw/bee_traits.csv")
 traits$GenusSpecies <- fix.white.space(traits$GenusSpecies)
 
 traits <- traits[traits$GenusSpecies %in% spec$GenusSpecies,]
