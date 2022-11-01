@@ -1,13 +1,13 @@
-setwd('C:/Users/na_ma/Dropbox (University of Oregon)/Rotation/skyIslands')
+## setwd('C:/Users/na_ma/Dropbox (University of Oregon)/Rotation/skyIslands')
 ## setwd('~/Dropbox (University of Oregon)/skyislands')
-## setwd('C:/Users/rah10/Documents/skyIslands')
+setwd('~/Dropbox (University of Oregon)/skyIslands/analysis/microbiome')
 
 setwd("analysis/microbiome")
 
 rm(list=ls())
 
-
 source("src/init.R")
+
 
 source("src/misc.R")
 
@@ -22,11 +22,19 @@ library(picante)
 library(bayesplot)
 
 
-microbes <- colnames(spec)[grepl("16s:", colnames(spec))]
+microbes <- colnames(spec)[grepl("16s:", colnames(spec))] 
+
+## write a function to running the model
+## change spec to something else
+## instead of subsetted by genus dataset, pass in the name of the genus to the function
+
 
 screened.microbes <- apply(spec, 1, function(x) all(is.na(x[microbes])))
 
 spec.microbes <- spec[!screened.microbes, ]
+
+#then filter to genus
+
 
 PD <- apply(spec.microbes[,microbes], 1, function(x){
   this.bee <- x[x > 0]
@@ -126,6 +134,8 @@ fit <- brm(bform, spec,
            inits=0,
            control = list(adapt_delta = 0.99))
 
+## function returns fit
+
 
 
 write.ms.table(fit, "microbes")
@@ -137,7 +147,7 @@ save(fit, spec,
 mcmc_trace(fit)
 ggsave("figures_diagnostics_microbes.pdf",
        height=11, width=8.5)
-Collapse
+
 
 
 
