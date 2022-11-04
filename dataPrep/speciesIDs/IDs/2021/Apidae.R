@@ -571,6 +571,16 @@ sp.ids <- list(
                                    "Viereck \\& Cockerell",
                                Determiner="",
                                temp.id= c())
+                                
+    Xylocopa_californica= list(Genus="Xylocopa",
+                               SubGenus ="Xylocopoides",
+                               Species="californica",
+                               SubSpecies="",
+                               Sex="f",
+                               Author =
+                                   "Cresson",
+                               Determiner="",
+                               temp.id= c(33995))
 
 
 
