@@ -134,7 +134,7 @@ sp.ids <- list(
                                 Species="montana", SubSpecies="",
                                 Sex="m", Author = "Cresson",
                                 Determiner="",
-                                temp.id= c()),
+                                temp.id= c(33751,34156,36875,36793,38024,38256,36828)),
 
 
     Anthophora_terminalis_f = list(Genus="Anthophora",
