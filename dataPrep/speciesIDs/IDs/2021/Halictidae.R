@@ -158,8 +158,22 @@ sp.ids <- list(
                                   Species="aquilae",
                                   SubSpecies="",
                                   Sex="f", Author = "Cockerell",
-                                  Determiner = "",
-                                  temp.id= c(
+                                  Determiner = "L. Best \\& J. Zorn",
+                                  temp.id= c(31389, 31396, 31397, 34397, 31227, 
+                                             31242, 31479, 31480, 31226, 32587, 
+                                             34326, 34274, 34283, 34281, 34284, 
+                                             34322, 33467, 33469, 33477, 33478, 
+                                             33480, 33481, 33485, 33488, 33493, 
+                                             33580, 33587, 33604, 33489, 34325
+                                      )),
+    
+    Lasioglossum_aquilae_m = list(Genus="Lasioglossum",
+                                  SubGenus ="Dialictus",
+                                  Species="aquilae",
+                                  SubSpecies="",
+                                  Sex="m", Author = "Cockerell",
+                                  Determiner = "L. Best \\& J. Zorn",
+                                  temp.id= c(34400, 34324, 33626, 33450, 34323
                                       )),
     
     Lasioglossum_potosi?_m = list(Genus="Lasioglossum",
@@ -185,7 +199,7 @@ sp.ids <- list(
                              Species="M2",
                              SubSpecies="",
                              Sex="f", Author = "",
-                             Determiner = "J. Gardener",
+                             Determiner = "",
                              temp.id= c()),
 
 
