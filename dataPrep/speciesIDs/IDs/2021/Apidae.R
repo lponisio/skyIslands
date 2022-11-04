@@ -77,7 +77,7 @@ sp.ids <- list(
                            Species="sp.",
                            SubSpecies="d",
                            Sex="m", Author = "",
-                           Determiner="D. Yanega",
+                           Determiner="",
                            temp.id= c()),
 
       Protandrena_sp_d= list(Genus="Protandrena", SubGenus ="",
@@ -126,15 +126,15 @@ sp.ids <- list(
                                 SubSpecies="",
                                 Sex="f",
                                 Author = "Cresson",
-                                Determiner="",
-                                temp.id= c()),
+                                Determiner="J. Zorn",
+                                temp.id= c(33751,34156,36875,36793,38024,38256,36828)),
 
     Anthophora_montana_m = list(Genus="Anthophora",
                                 SubGenus="Mystacanthophora",
                                 Species="montana", SubSpecies="",
                                 Sex="m", Author = "Cresson",
                                 Determiner="",
-                                temp.id= c(33751,34156,36875,36793,38024,38256,36828)),
+                                temp.id= c()),
 
 
     Anthophora_terminalis_f = list(Genus="Anthophora",
@@ -142,14 +142,14 @@ sp.ids <- list(
                                    Species="terminalis",
                                    SubSpecies="", Sex="f",
                                    Author = "Cresson",
-                                   Determiner="",
+                                   Determiner="L. Best",
                                    temp.id= c(30638)),
 
     Apis_mellifera_f = list(Genus="Apis", SubGenus = "Apis",
                             Species="mellifera",
                             SubSpecies="", Sex="f",
                             Author = "Linnaeus",
-                            Determiner="",
+                            Determiner="J. Zorn",
                             temp.id= c(30654,30655,30656,30657,30658,
                                        30659,30660,30661,30662,30663,
                                        30664,30665,30666,30667,30668,
@@ -224,7 +224,7 @@ sp.ids <- list(
                                SubSpecies="",
                                Sex="f",
                                Author = "Cresson",
-                               Determiner="L. Ponisio",
+                               Determiner="",
                                temp.id= c()),
 
     Anthophora_urbana_m = list(Genus="Anthophora",
@@ -233,7 +233,7 @@ sp.ids <- list(
                                SubSpecies="",
                                Sex="m",
                                Author = "Cresson",
-                               Determiner="L. Ponisio",
+                               Determiner="",
                                temp.id= c()),
 
     Nomada_spc= list(Genus="Nomada", SubGenus="",
@@ -323,7 +323,7 @@ sp.ids <- list(
                               Species = "centralis",
                               SubSpecies = "", Sex ="f",
                               Author = "Cresson",
-                              Determiner="",
+                              Determiner="L. Best",
                               temp.id = c(30735, 30733, 30732, 30739,
                                           30741, 30743, 30747, 30759,
                                           30748, 30750, 30753, 30754,
@@ -362,7 +362,7 @@ sp.ids <- list(
                               Species = "centralis",
                               SubSpecies = "", Sex ="m",
                               Author = "Cresson",
-                              Determiner="",
+                              Determiner="L. Best",
                               temp.id = c(30738, 30890, 33400,
  33407, 33408, 33409, 33410, 33411, 33413, 33415, 33427, 33429, 33430
 
@@ -381,7 +381,7 @@ sp.ids <- list(
                                 Species ="rufocinctus",
                                 SubSpecies = "", Sex ="f",
                                 Author = "Cresson",
-                                Determiner="",
+                                Determiner="L. Best",
                                 temp.id =
                                     c(31170,31171,31173,31174,31178,
                                       31181, 31182,31186,31188,31193,
@@ -394,7 +394,7 @@ sp.ids <- list(
                                 Species ="rufocinctus",
                                 SubSpecies = "", Sex ="f",
                                 Author = "Cresson",
-                                Determiner="",
+                                Determiner="L. Best",
                                 temp.id = c(31172))
 
 
@@ -488,7 +488,7 @@ sp.ids <- list(
                                Species = "flavifrons",
                                SubSpecies = "", Sex ="m",
                                Author = "Cresson",
-                               Determiner="",
+                               Determiner="L. Best",
                                temp.id = c(33420, 33428, 33431, 33438
 
 )),
@@ -605,7 +605,7 @@ sp.ids <- list(
                                Sex="f",
                                Author =
                                    "Cresson",
-                               Determiner="",
+                               Determiner="L. Ponisio",
                                temp.id= c(33995))
                              
     Brachymelecta_californica_f= list(Genus="Brachymelecta",
@@ -615,7 +615,7 @@ sp.ids <- list(
                                Sex="f",
                                Author =
                                    "Cresson",
-                               Determiner="",
+                               Determiner="L. Best",
                                temp.id= c(31131))
 
 
