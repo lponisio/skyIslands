@@ -162,6 +162,26 @@ sp.ids <- list(
                                 Author = "Cresson",
                                 Determiner = "",
                                 temp.id= c())
-
+    Hoplitus_albifrons_m = list(Genus="Hoplitus",
+                                SubGenus ="",
+                                Species="albifrons",
+                                SubSpecies="", Sex="m",
+                                Author = "Kirby",
+                                Determiner = "",
+                                temp.id= c(30941, 30918))
+   Hoplitus_albifrons_f = list(Genus="Hoplitus",
+                                SubGenus ="",
+                                Species="albifrons",
+                                SubSpecies="", Sex="f",
+                                Author = "Kirby",
+                                Determiner = "",
+                                temp.id= c(30919))
+    Hoplitus_fulgida_f = list(Genus="Hoplitus",
+                                SubGenus ="",
+                                Species="fulgida",
+                                SubSpecies="", Sex="f",
+                                Author = "Cronquist",
+                                Determiner = "",
+                                temp.id= c(31360))
 
 )
