@@ -96,8 +96,8 @@ sp.ids <- list(
     Halictus_ligatus_f= list(Genus="Halictus", SubGenus ="Odontalictus",
                              Species="ligatus", SubSpecies="",
                              Sex="f", Author = "Say",
-                             Determiner = "",
-                             temp.id= c()),
+                             Determiner = "L. Best",
+                             temp.id= c(34321, 32776)),
 
 
     Halictus_tripartitus_f= list(Genus="Halictus",
@@ -106,7 +106,7 @@ sp.ids <- list(
                                  SubSpecies="", Sex="f",
                                  Author = "Cockerell",
                                  Determiner = "L. Best",
-                                 temp.id= c(33460, 33468)),
+                                 temp.id= c(31913, 31128, 33460, 33468)),
 
 
     Halictus_farinosus_f = list(Genus="Halictus", SubGenus ="Nealictus",
@@ -134,8 +134,8 @@ sp.ids <- list(
                               Species="confusus",
                               SubSpecies="", Sex="f",
                               Author = "",
-                              Determiner = "",
-                              temp.id= c()),
+                              Determiner = "L. Best",
+                              temp.id= c(33468, 33460, 33599, 33608, 33598, 33589)),
 
     Lasioglossum_sisymbrii_f = list(Genus="Lasioglossum",
                                     SubGenus ="Lasioglossum",
