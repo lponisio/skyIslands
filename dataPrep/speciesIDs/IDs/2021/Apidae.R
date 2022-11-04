@@ -401,7 +401,7 @@ sp.ids <- list(
                                       31181, 31182,31186,31188,31193,
                                       31195, 31323, 31325, 31334,
                                       31335, 31343, 31345, 31348,
-                                      31349, 31350, 31352, )),
+                                      31349, 31350, 31352, 32381, 32502, 31462, 32367, 32386, 32507, 32639, 31461)),
 
     Bombus_rufocinctus_m = list(Genus = "Bombus",
                                 SubGenus="Cullumanobombus",
@@ -409,7 +409,7 @@ sp.ids <- list(
                                 SubSpecies = "", Sex ="f",
                                 Author = "Cresson",
                                 Determiner="L. Best",
-                                temp.id = c(31172))
+                                temp.id = c(31172, 32512, 31466))
 
 
 
