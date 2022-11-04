@@ -598,7 +598,7 @@ sp.ids <- list(
                                Determiner="",
                                temp.id= c())
                                 
-    Xylocopa_californica= list(Genus="Xylocopa",
+    Xylocopa_californica_f= list(Genus="Xylocopa",
                                SubGenus ="Xylocopoides",
                                Species="californica",
                                SubSpecies="",
@@ -607,6 +607,16 @@ sp.ids <- list(
                                    "Cresson",
                                Determiner="",
                                temp.id= c(33995))
+                             
+    Brachymelecta_californica_f= list(Genus="Brachymelecta",
+                               SubGenus ="",
+                               Species="californica",
+                               SubSpecies="",
+                               Sex="f",
+                               Author =
+                                   "Cresson",
+                               Determiner="",
+                               temp.id= c(31131))
 
 
 
