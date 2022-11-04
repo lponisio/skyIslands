@@ -258,11 +258,18 @@ sp.ids <- list(
                                Sex="m", Author = "Cockerell",
                                Determiner="",
                                temp.id= c()),
-
-    Bombus_sonorus_f = list(Genus = "Bombus", SubGenus="Thoracobombus",
+                                
+  Bombus_sonorus_f = list(Genus = "Bombus", SubGenus="Thoracobombus",
                             Species = "sonorus",
                             SubSpecies = "", Sex ="f",
                             Author = "Say",
+                            Determiner="L. Best",
+                            temp.id = c(31187, 32483, 32511)),
+
+    Bombus_appositus_f = list(Genus = "Bombus", SubGenus="Subterraneobombus",
+                            Species = "sonorus",
+                            SubSpecies = "", Sex ="f",
+                            Author = "Cresson",
                             Determiner="",
                             temp.id = c()),
 
@@ -271,8 +278,15 @@ sp.ids <- list(
                                  "fervidus", SubSpecies = "", Sex ="f",
                              Author = "Fabricius",
                              Determiner="L. Best",
-                             temp.id = c(33402, 33403, 33404, 33421, 33435
-)),
+                             temp.id = c(33402, 33403, 33404, 33421, 33435, 34259, 34260, 34263, 33588)),
+                                
+     Bombus_fervidus_m = list(Genus = "Bombus", SubGenus="Thoracobombus",
+                             Species =
+                                 "fervidus", SubSpecies = "", Sex ="m",
+                             Author = "Fabricius",
+                             Determiner="L. Best",
+                             temp.id = c(33568, 33556, 34296, 34381
+                         )),
 
 
     Bombus_mixtus_f = list(Genus = "Bombus", SubGenus="Thoracobombus",
@@ -280,7 +294,7 @@ sp.ids <- list(
                            SubSpecies = "", Sex ="f",
                            Author = "Cresson, 1878",
                            Determiner="L. Best",
-                           temp.id = c(31346)),
+                           temp.id = c(31346, 32642, 32365, 32437)),
 
 
     Bombus_nevadensis_f = list(Genus = "Bombus", SubGenus="Bombias",
@@ -289,7 +303,7 @@ sp.ids <- list(
                                Author = "Cresson",
                                Determiner="",
                                temp.id = c(30740,30742,30749, 30783,
-                                           30876, 30879, 30911,
+                                           30876, 30879, 30911, 30805, 31980, 32030, 32263, 34449
 
                                            )),
 
@@ -314,8 +328,8 @@ sp.ids <- list(
                               SubGenus="Cullumanobombus",
                               Species = "morrisoni",
                               SubSpecies = "", Sex ="m", Author = "Cresson",
-                              Determiner="",
-                              temp.id = c()),
+                              Determiner="L. Best",
+                              temp.id = c(32005)),
 
 
     Bombus_centralis_f = list(Genus = "Bombus",
@@ -480,8 +494,8 @@ sp.ids <- list(
                                Species = "flavifrons",
                                SubSpecies = "", Sex ="f",
                                Author = "Cresson",
-                               Determiner="",
-                               temp.id = c()),
+                               Determiner="L. Best",
+                               temp.id = c(32485, 32366, 32490, 32356, 32509, 32646)),
 
     Bombus_flavifrons_m = list(Genus = "Bombus",
                                SubGenus="Pyrobombus",
@@ -489,9 +503,7 @@ sp.ids <- list(
                                SubSpecies = "", Sex ="m",
                                Author = "Cresson",
                                Determiner="L. Best",
-                               temp.id = c(33420, 33428, 33431, 33438
-
-)),
+                               temp.id = c(33420, 33428, 33431, 33438)),
 
     Heterosarus_bakeri_f= list(Genus="Heterosarus",
                                SubGenus ="",
