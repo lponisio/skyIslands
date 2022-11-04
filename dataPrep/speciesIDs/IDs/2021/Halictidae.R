@@ -109,20 +109,26 @@ sp.ids <- list(
                                  temp.id= c(33460, 33468)),
 
 
-      Halictus_farinosus = list(Genus="Halictus", SubGenus ="Nealictus",
+    Halictus_farinosus_f = list(Genus="Halictus", SubGenus ="Nealictus",
                               Species="farinosus",
                               SubSpecies="", Sex="f",
                               Author = "Smith",
                               Determiner = "L. Best",
                               temp.id= c(30797)),
     
-    Halictus_farinosus = list(Genus="Halictus", SubGenus ="Nealictus",
+    Halictus_farinosus_f = list(Genus="Halictus", SubGenus ="Nealictus",
                               Species="farinosus",
                               SubSpecies="", Sex="f",
                               Author = "Smith",
                               Determiner = "J. Zorn",
                               temp.id= c(30915)),
-
+    
+    Halictus_farinosus_m = list(Genus="Halictus", SubGenus ="Nealictus",
+                              Species="farinosus",
+                              SubSpecies="", Sex="m",
+                              Author = "Smith",
+                              Determiner = "L. Best",
+                              temp.id= c(32291,32292)),
 
     Halictus_confusus = list(Genus="Halictus", SubGenus ="Seladonia",
                               Species="confusus",
@@ -220,13 +226,13 @@ sp.ids <- list(
                                         Determiner = "",
                                         temp.id= c()),
 
-    Halictus_rubicundus_m= list(Genus="Halictus",
+    Halictus_rubicundus_f= list(Genus="Halictus",
                                 SubGenus ="Protohalictus",
                                 Species="rubicundus",
-                                SubSpecies="", Sex="m",
+                                SubSpecies="", Sex="f",
                                 Author = "Christ",
-                                Determiner = "D. Yanega",
-                                temp.id= c()),
+                                Determiner = "L. Best",
+                                temp.id= c(31366, 31368, 31414)),
 
     Lasioglossum_ruidosense_f= list(Genus="Lasioglossum",
                                     SubGenus ="Dialictus",
@@ -234,14 +240,14 @@ sp.ids <- list(
                                     SubSpecies="cf.",
                                     Sex="f",
                                     Author = "Cockerell",
-                                    Determiner = "J. Gardener",
+                                    Determiner = "",
                                     temp.id=c()),
 
     Lasioglossum_ruidosense_m= list(Genus="Lasioglossum", SubGenus
                                     ="Dialictus", Species="ruidosense",
                                     SubSpecies="cf.", Sex="m",
                                     Author = "Cockerell",
-                                    Determiner = "J. Gardener",
+                                    Determiner = "",
                                     temp.id=c()),
 
 
