@@ -14,15 +14,7 @@ sp.ids <- list(
                                  Species="maculosum",
                                  SubSpecies="", Sex="m",
                                  Author = "Cresson",
-                                 Determiner = "",
-                                 temp.id= c()),
-    
-    Lithurgopsis_apicalis_m = list(Genus="Lithurgopsis",
-                                 SubGenus ="",
-                                 Species="apicalis",
-                                 SubSpecies="", Sex="m",
-                                 Author = "Cresson",
-                                 Determiner = "L. Best",
+                                 Determiner = "K. Watrous",
                                  temp.id= c()),
 
     Megachile_fidelis_f = list(Genus="Megachile",
@@ -32,7 +24,7 @@ sp.ids <- list(
                                Sex="f",
                                Author = "Cresson",
                                Determiner = "",
-                               temp.id= c(33057, 33115)),
+                               temp.id= c()),
 
     Megachile_fidelis_m = list(Genus="Megachile",
                                SubGenus ="Sayapis",
@@ -48,8 +40,8 @@ sp.ids <- list(
                                Species="frigida",
                                SubSpecies="",
                                Sex="f", Author = "Smith",
-                               Determiner = "L. Best",
-                               temp.id=  c(33201, 30641, 30640, 31042, 31041, 31039, 30648)),
+                               Determiner = "",
+                               temp.id=  c()),
 
     Megachile_frigida_m = list(Genus="Megachile",
                                SubGenus ="Xanthosarus",
@@ -65,7 +57,7 @@ sp.ids <- list(
                                Species="gemula",
                                SubSpecies="fulvogemula",
                               Sex="f", Author = "Cresson",
-                               Determiner = "",
+                               Determiner = "T. Griswold",
                                temp.id=  c()),
 
     Megachile_subexilis_f = list(Genus="Megachile",
@@ -107,11 +99,8 @@ sp.ids <- list(
                                            Species="melanophaea",
                                            SubSpecies="rohweri",
                                            Sex="f", Author = "Smith",
-                                           Determiner = "L. Best",
-                                           temp.id= c(30765,
-                                                      30766,
-                                                      30761,
-                                                      30762, 31457, 31355, 31204, 31194, 31458, 31978, 31185
+                                           Determiner = "",
+                                           temp.id= c(
                                                       )),
 
     Megachile_zapoteca_m = list(Genus="Megachile",
@@ -127,7 +116,7 @@ sp.ids <- list(
                                Species="inimica",
                                SubSpecies="sayi",
                                Sex="m", Author = "Cresson",
-                               Determiner = "",
+                               Determiner = "T. Griswold",
                                temp.id=  c()),
 
 
@@ -136,7 +125,7 @@ sp.ids <- list(
                                    Species="mellitarsis",
                                    SubSpecies="", Sex="f",
                                    Author = "Cresson",
-                                   Determiner = "",
+                                   Determiner = "T. Griswold",
                                    temp.id= c()),
 
     Megachile_mellitarsis_m = list(Genus="Megachile",
@@ -152,16 +141,16 @@ sp.ids <- list(
                               Species="comata",
                               SubSpecies="",
                               Sex="f",
-                              Author = "Cresson", Determiner = "L. Best",
-                              temp.id= c(30903, 33142, 33178, 33179, 33224, 33442, 33843, 33933)),
+                              Author = "Cresson", Determiner = "",
+                              temp.id= c()),
 
     Megachile_comata_m = list(Genus="Megachile",
                               SubGenus ="Xanthosarus",
                               Species="comata", SubSpecies="",
                               Sex="m",
                               Author = "Cresson",
-                              Determiner = "L. Best",
-                              temp.id= c(30793)),
+                              Determiner = "",
+                              temp.id= c()),
 
     Megachile_relativa_f = list(Genus="Megachile",
                                 SubGenus ="Megachile",
@@ -170,29 +159,6 @@ sp.ids <- list(
                                 Author = "Cresson",
                                 Determiner = "",
                                 temp.id= c())
-    
-    Hoplitus_albifrons_m = list(Genus="Hoplitus",
-                                SubGenus ="",
-                                Species="albifrons",
-                                SubSpecies="", Sex="m",
-                                Author = "Kirby",
-                                Determiner = "L. Best",
-                                temp.id= c(30941, 30918))
-    
-   Hoplitus_albifrons_f = list(Genus="Hoplitus",
-                                SubGenus ="",
-                                Species="albifrons",
-                                SubSpecies="", Sex="f",
-                                Author = "Kirby",
-                                Determiner = "L. Best",
-                                temp.id= c(30919))
-    
-    Hoplitus_fulgida_f = list(Genus="Hoplitus",
-                                SubGenus ="",
-                                Species="fulgida",
-                                SubSpecies="", Sex="f",
-                                Author = "Cronquist",
-                                Determiner = "L. Best",
-                                temp.id= c(31360))
+
 
 )
