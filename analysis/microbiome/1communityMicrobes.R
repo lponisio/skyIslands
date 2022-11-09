@@ -1,6 +1,6 @@
 ## setwd('C:/Users/na_ma/Dropbox (University of Oregon)/Rotation/skyIslands')
 ## setwd('~/Dropbox (University of Oregon)/skyislands')
-setwd('~/Dropbox (University of Oregon)/skyIslands/analysis/microbiome')
+setwd('~/Dropbox (University of Oregon)/skyIslands')
 
 setwd("analysis/microbiome")
 
@@ -22,21 +22,21 @@ library(picante)
 library(bayesplot)
 
 
-microbes <- colnames(spec)[grepl("16s:", colnames(spec))] 
-
-## write a function to running the model
-## change spec to something else
-## instead of subsetted by genus dataset, pass in the name of the genus to the function
 
 
-screened.microbes <- apply(spec, 1, function(x) all(is.na(x[microbes])))
 
-spec.microbes <- spec[!screened.microbes, ]
+genus_pd_fit <- function(all_bees, this_genus, num_iter){
+  
+  microbes <- colnames(all_bees)[grepl("16s:", colnames(all_bees))] 
+  
+  screened.microbes <- apply(all_bees, 1, function(x) all(is.na(x[microbes])))
+  
+  spec.microbes <- all_bees[!screened.microbes, ]
+  
+  genus.microbes <- spec.microbes[spec.microbes$Genus == this_genus, ]
+  
 
-#then filter to genus
-
-
-PD <- apply(spec.microbes[,microbes], 1, function(x){
+PD <- apply(genus.microbes[,microbes], 1, function(x){
   this.bee <- x[x > 0]
   this.tree <- prune.sample(t(this.bee), tree.16s)
   pd(t(this.bee), this.tree, include.root = FALSE)
@@ -44,9 +44,9 @@ PD <- apply(spec.microbes[,microbes], 1, function(x){
 
 PD <- do.call(rbind, PD)
 
-spec.microbes <- cbind(spec.microbes, PD)
+genus.microbes <- cbind(genus.microbes, PD)
 
-spec <- merge(spec, spec.microbes, all.x=TRUE)
+all_bees <- merge(all_bees, genus.microbes, all.x=TRUE)
 
 
 ##copying over code from communityHealthBayes and changing
@@ -62,10 +62,10 @@ vars <- c("FloralAbundance",
           "Area")
 
 ##  center all of the x variables across the datasets
-spec[, vars] <- apply(spec[, vars], 2, standardize)
+all_bees[, vars] <- apply(all_bees[, vars], 2, standardize)
 
 ## will need to modify when we have multiple years
-spec <- makeDataMultiLevel(spec, "Site", "Year")
+all_bees <- makeDataMultiLevel(all_bees, "Site", "Year")
 
 ## **********************************************************
 ## Model 1.1: formula for forest effects on floral community
@@ -126,27 +126,42 @@ bform <- bf.fabund + bf.fdiv + bf.babund + bf.bdiv + bf.microbes +
   set_rescor(FALSE)
 
 ## run model
-fit <- brm(bform, spec,
+fit <- brm(bform, all_bees,
            cores=ncores,
-           iter = 10^2,
+           iter = num_iter,
            chains = 2,
            thin=1,
-           inits=0,
+           init=0,
            control = list(adapt_delta = 0.99))
 
-## function returns fit
+return(fit) ## function returns fit
+}
+
+#Apis
+apis_fit <- genus_pd_fit(spec, 'Apis', 10^3)
+write.ms.table(apis_fit, "apis")
+
+#Bombus
+bombus_fit <- genus_pd_fit(spec, 'Bombus', 10^3)
+write.ms.table(bombus_fit, "bombus")
+
+#Megachile
+megachile_fit <- genus_pd_fit(spec, 'Megachile', 10^3)
+write.ms.table(megachile_fit, "megachile")
+
+#Anthophora
+anthophora_fit <- genus_pd_fit(spec, 'Anthophora', 10^3)
+write.ms.table(anthophora_fit, "anthophora")
+
+#write.ms.table(fit, "microbes")
 
 
-
-write.ms.table(fit, "microbes")
-
-
-save(fit, spec,
-     file="saved/microbesFitMod.Rdata")
+#save(fit, spec,
+#     file="saved/microbesFitMod.Rdata")
 ## dignostic figures
-mcmc_trace(fit)
-ggsave("figures_diagnostics_microbes.pdf",
-       height=11, width=8.5)
+#mcmc_trace(fit)
+#ggsave("figures_diagnostics_microbes.pdf",
+#       height=11, width=8.5)
 
 
 
