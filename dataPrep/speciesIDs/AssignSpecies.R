@@ -14,6 +14,41 @@ spec$Order <- spec$Family <- spec$Genus <- spec$SubGenus <- spec$Species <-
 
 write.csv(spec, file=spec.data.file, row.names=FALSE)
 
+
+## 2021 field season
+## source(file.path(save.dir, 'IDs/2021/Syrphidae.R'))
+## add.to.data(sp.ids=sp.ids,
+##             case='fly',"Syrphidae", "2021",
+##             data.file=spec.data.file)
+
+source(file.path(save.dir, 'IDs/2021/Apidae.R'))
+add.to.data(sp.ids=sp.ids, case='bee', "Apidae","2021",
+data.file=spec.data.file)
+
+source(file.path(save.dir, 'IDs/2021/Halictidae.R'))
+add.to.data(sp.ids=sp.ids,
+            case='bee', "Halictidae","2021",
+            data.file=spec.data.file)
+
+source(file.path(save.dir, 'IDs/2021/Megachilidae.R'))
+add.to.data(sp.ids=sp.ids,
+            case='bee', "Megachilidae","2021",
+            data.file=spec.data.file)
+
+source(file.path(save.dir, 'IDs/2021/Colletidae.R'))
+add.to.data(sp.ids=sp.ids,
+            case='bee', "Colletidae","2021",
+            data.file=spec.data.file)
+
+
+## source(file.path(save.dir, 'IDs/2021/Sphecidae.R'))
+## add.to.data(sp.ids=sp.ids,
+##             case='wasp', "Sphecidae","2021",
+##             data.file=spec.data.file)
+
+
+
+
 ## 2018 field season
 source(file.path(save.dir, 'IDs/2018/Syrphidae.R'))
 add.to.data(sp.ids=sp.ids,
@@ -22,6 +57,11 @@ add.to.data(sp.ids=sp.ids,
 
 source(file.path(save.dir, 'IDs/2018/Apidae.R'))
 add.to.data(sp.ids=sp.ids, case='bee', "Apidae","2019",
+data.file=spec.data.file)
+
+
+source(file.path(save.dir, 'IDs/2018/Colletidae.R'))
+add.to.data(sp.ids=sp.ids, case='bee', "Colletidae","2019",
 data.file=spec.data.file)
 
 source(file.path(save.dir, 'IDs/2018/Halictidae.R'))
@@ -37,6 +77,12 @@ add.to.data(sp.ids=sp.ids,
 source(file.path(save.dir, 'IDs/2018/Sphecidae.R'))
 add.to.data(sp.ids=sp.ids,
             case='wasp', "Sphecidae","2020",
+            data.file=spec.data.file)
+
+
+source(file.path(save.dir, 'IDs/2018/Bombyliidae.R'))
+add.to.data(sp.ids=sp.ids,
+            case='fly', "Bombyliidae","2020",
             data.file=spec.data.file)
 
 
@@ -73,6 +119,13 @@ source(file.path(save.dir, 'IDs/2017/Sphecidae.R'))
 add.to.data(sp.ids=sp.ids,
             case='wasp', "Sphecidae","2020",
             data.file=spec.data.file)
+
+source(file.path(save.dir, 'IDs/2017/Bombyliidae.R'))
+add.to.data(sp.ids=sp.ids,
+            case='fly', "Bombyliidae","2020",
+            data.file=spec.data.file)
+
+
 
 ## 2012 field season
 source(file.path(save.dir, 'IDs/2012/Apidae.R'))
@@ -115,3 +168,10 @@ source(file.path(save.dir, 'IDs/2012/Sphecidae.R'))
 add.to.data(sp.ids=sp.ids,
             case='wasp', "Sphecidae","2020",
             data.file=spec.data.file)
+
+source(file.path(save.dir, 'IDs/2012/Bombyliidae.R'))
+add.to.data(sp.ids=sp.ids,
+            case='fly', "Bombyliidae","2020",
+            data.file=spec.data.file)
+
+

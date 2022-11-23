@@ -9,11 +9,11 @@ library(RSQLite)
 library(tidyr)
 library(readr)
 
-dir.bombus <-
-    '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
-
 ## dir.bombus <-
-##      '~/Dropbox (University of Oregon)/skyIslands'
+##     '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
+
+dir.bombus <-
+     '~/Dropbox (University of Oregon)/skyIslands'
 
 
 setwd(dir.bombus)
@@ -26,12 +26,12 @@ source('dataPrep/relational/make.R')
 setwd(dir.bombus)
 source('dataPrep/relational/traditional.R')
 
-## dir.bombus <-
-##     '~/Dropbox (University of Oregon)/skyIslands'
-
-
 dir.bombus <-
-    '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
+    '~/Dropbox (University of Oregon)/skyIslands'
+
+
+## dir.bombus <-
+##     '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
 
 setwd(file.path(dir.bombus, "dataPrep"))
 

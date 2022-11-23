@@ -7,4 +7,5 @@ sp.ids <- list(
                              SubSpecies="", Sex="f",
                              Author = "",
                              Determiner="L. Best",
-                             temp.id= c(31369, 31372)),
+                             temp.id= c(31369, 31372))
+    )
