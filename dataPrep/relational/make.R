@@ -193,8 +193,8 @@ write.csv(dbReadTable(con, "tblConditions"),
 ## 2.1 sample dates  for veg datasets
 ## *******************************************************
 
-keep <- c("Site", "Date")
-conditions$samp.code <- apply(conditions[keep], 1, paste, collapse=";")
+keep <- c("Site", "Year", "SampleRound")
+conditions$samp.code <- gsub(" ", "", apply(conditions[keep], 1, paste, collapse=";"))
 veg$samp.code <- apply(veg[keep], 1, paste, collapse=";")
 bloom$samp.code <- apply(bloom[keep], 1, paste, collapse=";")
 
@@ -217,13 +217,13 @@ veg$SampleFK <-
 bloom$SampleFK <-
     samp$SamplePK[match(bloom$samp.code, samp$samp.code)]
 
-print(paste("quadrat without condition key",
+print(paste("site, round in quadrat data without condition key",
             unique(paste(veg$Site,
-                         veg$SampleRound)[is.na(veg$SampleFK)])))
+                         veg$SampleRound, veg$Date)[is.na(veg$SampleFK)])))
 
-print(paste("bloom data without condition key",
-            unique(paste(bloom$SiteSubSite,
-                         bloom$Date)[is.na(bloom$SampleFK)])))
+print(paste("site, round in bloom data without condition key",
+            unique(paste(bloom$Site,
+                         bloom$Date, veg$Date)[is.na(bloom$SampleFK)])))
 
 
 ## *******************************************************
@@ -419,7 +419,7 @@ keep <- c('QuadFK',
           'PlantFK',
           'SampleFK',
           'BloomStatus',
-          'Count',
+          'PlantCount',
           'NumBlooms',
           'Notes')
 

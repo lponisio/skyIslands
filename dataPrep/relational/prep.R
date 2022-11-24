@@ -108,7 +108,7 @@ weather.data$SiteSubSite <-  paste0(weather.data$Site,
                                     weather.data$SubSite)
 
 
-weather.data$Date <- as.Date(weather.data$Date, "%m/%d/%Y")
+weather.data$Date <- as.Date(weather.data$Date, "%m/%d/%y")
 
 
 check.weather.data <- aggregate(weather.data$StartTime,
@@ -210,6 +210,32 @@ screenings <- c("Apidae", "AspergillusSpp", "AscosphaeraSpp",
 
 para.data <- read.csv("raw/parasites.csv",  stringsAsFactors=FALSE)
 
+
+source('parasite_postivies/all_2021.R', chdir = TRUE)
+
+parasites.2021 <- data.frame(UniqueID=Apidae,
+                             TempID=NA,
+                             Apidae=1,
+                             AspergillusSpp=NA,
+                             AscosphaeraSpp=0,
+                             ApicystisSpp=0,
+                             CrithidiaExpoeki=0,
+                             CrithidiaBombi=0,
+                             NosemaCeranae=NA, ## change to 0 after
+                             ## the screenings are completed
+                             NosemaBombi=NA)
+
+parasites.2021$AscosphaeraSpp[parasites.2021$UniqueID %in%
+                              AscosphaeraSpp] <- 1
+parasites.2021$ApicystisSpp[parasites.2021$UniqueID %in%
+                              ApicystisSpp] <- 1
+parasites.2021$CrithidiaExpoeki[parasites.2021$UniqueID %in%
+                              CrithidiaExpoeki] <- 1
+parasites.2021$CrithidiaBombi[parasites.2021$UniqueID %in%
+                              CrithidiaBombi] <- 1
+
+para.data <- rbind(para.data, parasites.2021)
+
 controls <- para.data[grepl("DNActrl", para.data$UniqueID),]
 print("Are DNA extraction controls all zero?")
 print(all(apply(controls[,screenings], 1, sum, na.rm=TRUE) == 0))
@@ -298,7 +324,7 @@ veg.data$PlantGenusSpecies <-
 veg.data$PlantGenusSpecies[veg.data$PlantGenusSpecies == "NA"] <- ""
 
 ## CHECK DATE FORMAT
-veg.data$Date <- as.Date(veg.data$Date, "%m/%d/%Y")
+veg.data$Date <- as.Date(veg.data$Date, "%m/%d/%y")
 
 write.csv(veg.data, file="relational/original/veg.csv",
                    row.names=FALSE)
@@ -327,7 +353,7 @@ bloom.data$NumFlower <- NULL
 
 
 ## CHECK DATE FORMAT
-bloom.data$Date <- as.Date(bloom.data$Date, "%m/%d/%Y")
+bloom.data$Date <- as.Date(bloom.data$Date, "%m/%d/%y")
 
 ## sort(unique(bloom.data$PlantGenusSpecies))
 
