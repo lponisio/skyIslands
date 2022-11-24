@@ -37,8 +37,10 @@ spec[, vars] <- apply(spec[, vars], 2, standardize)
 ## different levels to get around the issue of having to pass in one
 ## data set into brms
 
+spec$YearSR <- paste(spec$Year, spec$SampleRound, sep=";")
+
 ## will need to modify when we have multiple years
-spec <- makeDataMultiLevel(spec, "Site", "Year")
+spec <- makeDataMultiLevel(spec, "Site", "YearSR")
 
 ## create a dumby varaible "WeightPar" for the parasite data. The
 ## original intention was to keep stan from dropping data for
@@ -59,11 +61,11 @@ spec$ParasitePresence[is.na(spec$ParasitePresence | spec$Apidae != 1)] <- 0
 ## **********************************************************
 ## flower diversity
 formula.flower.div <- formula(FloralDiversity | weights(Weights) ~
-                                    Lat + Area +  (1|Site)
+                                    Lat + Area + DoyPoly1 + DoyPoly2 + (1|Site)
                               )
 ## flower abund
 formula.flower.abund <- formula(FloralAbundance | weights(Weights) ~
-                                      Area + (1|Site)
+                                      Area +  DoyPoly1 + DoyPoly2 +  (1|Site)
                                 )
 
 ## **********************************************************
@@ -73,14 +75,14 @@ formula.flower.abund <- formula(FloralAbundance | weights(Weights) ~
 formula.bee.div <- formula(PollDiversity | weights(Weights)~
                                FloralAbundance +
                                    FloralDiversity +
-                                   Lat + Area +
+                                   Lat + Area +  DoyPoly1 + DoyPoly2 +
                                    (1|Site)
                            )
 
 ## bee abund
 formula.bee.abund <- formula(PollAbundance | weights(Weights)~
                                  FloralAbundance +
-                                     FloralDiversity +
+                                     FloralDiversity +  DoyPoly1 + DoyPoly2 +
                                      + Area +
                                      (1|Site)
                              )
@@ -89,8 +91,8 @@ formula.bee.abund <- formula(PollAbundance | weights(Weights)~
 ## Model 1.3: formula for bee community effects on parasitism
 ## **********************************************************
 formula.parasite <- formula(ParasitePresence | weights(WeightsPar) ~
-                                PollAbundance*FloralDiversity +
-                                    PollDiversity +
+                                PollAbundance + FloralDiversity +
+                                    PollDiversity +  DoyPoly1 +
                                     FloralAbundance +
                                     (1|Site)
                             )
@@ -119,7 +121,7 @@ fit <- brm(bform, spec,
            iter = 10^4,
            chains = 2,
            thin=1,
-           inits=0,
+           init=0,
            control = list(adapt_delta = 0.99))
 
 write.ms.table(fit, "parasitism")
