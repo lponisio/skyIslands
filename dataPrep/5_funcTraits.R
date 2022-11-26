@@ -22,12 +22,16 @@ bee.traits <- c("NestLocation", "NestMaterial","NestConstruction","Lecty",
 rownames(traits) <- traits$GenusSpecies
 traits$GenusSpecies <- NULL
 
-## We grouped the traits based on what they discuss. so for exaple, we
-## have 3 nesting traits, so weighted each one by 1/3.
+## We grouped the traits based on what they are related to. For
+## example, we have 3 nesting-related traits, so weighted each one by
+## 1/3. This will avoid overweighting any trait type.
 
 bee.weights <- c(rep(1/2, 3), rep(1, 2))
 
-## calcualtes data for two new columns we are adding to database,
+## *****************************************************************
+## species-level function diversity metrics
+## *****************************************************************
+## calculates data for two new columns we are adding to database,
 ## "originality" and "uniq"
 bee.func <- calcFuncUniqOrig(traits,
                              traits.2.keep=bee.traits,
@@ -58,3 +62,6 @@ write.csv(traits, file="../data/traits.csv",
 save(spec, file="../data/spec_traits.Rdata")
 write.csv(spec, file="../data/spec_traits.csv", row.names=FALSE)
 
+## *****************************************************************
+## site-level function diversity metrics
+## *****************************************************************

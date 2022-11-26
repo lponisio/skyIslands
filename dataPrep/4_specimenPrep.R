@@ -11,13 +11,14 @@ library(readr)
 
 dir.bombus <-
     '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
-
 ## dir.bombus <-
 ##      '~/Dropbox (University of Oregon)/skyIslands'
 
+## *****************************************************************
+## create relational database, add species IDs
+## *****************************************************************
 
 setwd(dir.bombus)
-
 source('dataPrep/relational/prep.R')
 
 setwd(dir.bombus)
@@ -26,9 +27,11 @@ source('dataPrep/relational/make.R')
 setwd(dir.bombus)
 source('dataPrep/relational/traditional.R')
 
+## *****************************************************************
+## prep specimen data
+## *****************************************************************
 ## dir.bombus <-
 ##     '~/Dropbox (University of Oregon)/skyIslands'
-
 
 dir.bombus <-
     '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
@@ -44,9 +47,6 @@ source("src/misc.R")
 source("src/prepNets.R")
 source("src/specialization.R")
 
-## *****************************************************************
-## prep specimen data
-## *****************************************************************
 
 spec$GenusSpecies <- fix.white.space(paste(spec$Genus,
                           spec$Species,
@@ -63,14 +63,19 @@ spec$Date <- as.Date(spec$Date, format='%Y-%m-%d')
 spec$Doy <- as.numeric(strftime(spec$Date, format='%j'))
 spec$Year <- as.numeric(format(spec$Date,'%Y'))
 
+## subset to Net data only, pans have not been IDed from 2021+ as of
+## Nov 2022
 spec <- spec[spec$Method == "Net",]
 
+## all possible sample round, site, combos of net data, used for veg
+## data subsequently
 collections <- data.frame(unique(cbind(spec$Site, spec$Year,
                                        spec$SampleRound)))
-
 colnames(collections) <- c("Site", "Year", "SampleRound")
 
-## drop non-bees
+## drop non-bees, syrphids have been IDed up until 2021 (as of Nov
+## 2022), butterflies, wasps need work
+
 spec <- spec[spec$Family %in% c("Andrenidae", "Apidae",
                                  "Colletidae", "Halictidae",
                                 "Megachilidae"),]
@@ -86,7 +91,9 @@ spec <- spec[spec$GenusSpecies != "",]
 
 ## drop the the 2017 sample of PL because it was on fire for other
 ## sampling rounds and there was basically nothing blooming the first
-## round, or leave it for phenology?
+## round, or leave it for phenology? As of Nov 2022 included because
+## enough species have been IDed and useful as a early season data
+## point
 ## spec <- spec[!(spec$Site == "PL" & spec$Year == "2017"),]
 
 ## calculate orthoganol polynomials for doy
@@ -105,18 +112,20 @@ spec$LatPoly <- NULL
 ## library(Taxonstand)
 ## checked.plant.names <- TPL(id(spec$PlantGenusSpecies))
 
-## write.csv(checked.plant.names, file="../../skyIslands_saved/data/checks/plant_names_check.csv")
+## write.csv(checked.plant.names,
+## file="../../skyIslands_saved/data/checks/plant_names_check.csv")
 
-spec.checked.plant.names <- read.csv(file="../../skyIslands_saved/data/checks/plant_names_check.csv")
+spec.checked.plant.names <-
+    read.csv(file="../../skyIslands_saved/data/checks/plant_names_check.csv")
 
 spec <- fixPlantNames(spec, "PlantGenusSpecies", spec.checked.plant.names)
 
-## really variabile identification fo Erigeron between years, combine
-## to Erigerson spp.
+##  variabile identification fo Erigeron between years, combine
+## to Erigerson spp.?
 ## spec$PlantGenus <- sapply(strsplit(spec$PlantGenusSpecies, " "),
 ##                           function(x) x[1])
 ## spec$PlantGenusSpecies[spec$PlantGenus == "Erigeron"] <-
-##     "Erigeron spp."
+##     "Erigeron spp. NA"
 
 ## *****************************************************************
 ## specimen-level parasite calculations
@@ -177,10 +186,13 @@ site.sp.yr <- spec %>%
 bombus <- site.sp.yr[site.sp.yr$Genus == "Bombus",]
 bombus$Genus  <- NULL
 
+## write species-level sumary data
 write.csv(bombus, file='../data/bombus_year_site.csv', row.names=FALSE)
 write.csv(site.sp.yr, file='../data/sp_year_site.csv', row.names=FALSE)
-write.csv(site.sum, file='../data/sitestats.csv', row.names=FALSE)
 write.csv(site.sp, file='../data/spstats.csv', row.names=FALSE)
+
+## write the site, year, sampling round summary data after merging
+## with plant data
 
 ## *******************************************************************
 ## create a giant plant-pollinator network to calculate specialization
@@ -268,8 +280,6 @@ prep.para <- spec.sub %>%
                  names_to = "Parasite", values_to = "count")
 prep.para <- as.data.frame(prep.para)
 
-## prep.para <- as.data.frame(prep.para[prep.para$count == 1,])
-
 makeNets(prep.para, net.type="YrSR", species=c("Pollinator",
                                                "Parasite"),
          lower.level="GenusSpecies",
@@ -353,11 +363,12 @@ bloom <- bloom[bloom$PlantGenusSpecies != "",]
 ## check plant names, run Nov 2022
 ## library(Taxonstand)
 ## bloom.checked.plant.names <- TPL(id(bloom$PlantGenusSpecies))
-## write.csv(bloom.checked.plant.names, file="../../skyIslands_saved/data/checks/bloom_plant_names_check.csv")
+## write.csv(bloom.checked.plant.names,
+## file="../../skyIslands_saved/data/checks/bloom_plant_names_check.csv")
 
 ## veg.checked.plant.names <- TPL(id(veg$PlantGenusSpecies))
-## write.csv(veg.checked.plant.names, file="../../skyIslands_saved/data/checks/veg_plant_names_check.csv")
-
+## write.csv(veg.checked.plant.names,
+## file="../../skyIslands_saved/data/checks/veg_plant_names_check.csv")
 
 ## update plant names
 veg.checked.plant.names <-
@@ -370,7 +381,6 @@ veg <- fixPlantNames(veg, "PlantGenusSpecies",
                      veg.checked.plant.names)
 bloom <- fixPlantNames(bloom, "PlantGenusSpecies",
                      bloom.checked.plant.names)
-
 
 id(veg$PlantGenusSpecies)
 id(bloom$PlantGenusSpecies)
@@ -389,7 +399,8 @@ quads.2012 <- unique(veg$Quadrat[veg$Year == 2012])
 not.in.2012 <- quads.2017.2022[!quads.2017.2022 %in% quads.2012]
 
 ## prep a matrix of all the quads for site richness etc.
-combos <- collections[rep(seq_len(nrow(collections)), each = length(quads.2017.2022)), ]
+combos <- collections[rep(seq_len(nrow(collections)),
+                          each = length(quads.2017.2022)), ]
 combos$Quadrat <- quads.2017.2022
 ## drop the quads not done in 2012
 combos <- combos[!(combos$Year == 2012 & combos$Quad %in%
@@ -441,23 +452,29 @@ veg.bloom.sum.quad <- veg.bloom.quad.sp %>%
 
 veg.name <-   names(veg.div.quad)
 names(veg.div.quad) <- NULL
-veg.bloom.sum.quad$FloralDiversity <-  veg.div.quad[match(paste(veg.bloom.sum.quad$Site,
-                                                                veg.bloom.sum.quad$Quadrat,
-                                                                veg.bloom.sum.quad$Year,
-                                                                veg.bloom.sum.quad$SampleRound),
-                                                          veg.name)]
 
-veg.bloom.sum.quad$FloweringPlantDiversity <-  veg.plant.div.quad[match(paste(veg.bloom.sum.quad$Site,
-                                                                veg.bloom.sum.quad$Quadrat,
-                                                                veg.bloom.sum.quad$Year,
-                                                                veg.bloom.sum.quad$SampleRound),
-                                                          veg.name)]
+## add div data into site summary data
+veg.bloom.sum.quad$FloralDiversity <-  veg.div.quad[match(
+    paste(veg.bloom.sum.quad$Site,
+          veg.bloom.sum.quad$Quadrat,
+          veg.bloom.sum.quad$Year,
+          veg.bloom.sum.quad$SampleRound),
+    veg.name)]
+
+veg.bloom.sum.quad$FloweringPlantDiversity <-
+    veg.plant.div.quad[match(
+        paste(veg.bloom.sum.quad$Site,
+              veg.bloom.sum.quad$Quadrat,
+              veg.bloom.sum.quad$Year,
+              veg.bloom.sum.quad$SampleRound),
+        veg.name)]
 
 ## merge together quad combos and quad level data
 combos <- merge(combos, veg.bloom.sum.quad, all.x=TRUE)
 
 cols.to.fill <-  c("FloralAbundance", "FloralRichness",
-                   "FloralDiversity", "FloweringPlantAbundance", "FloweringPlantDiversity")
+                   "FloralDiversity", "FloweringPlantAbundance",
+                   "FloweringPlantDiversity")
 ## set NAs to zero
 combos[, cols.to.fill][is.na(combos[, cols.to.fill])] <- 0
 
@@ -474,6 +491,9 @@ veg.bloom.mean[order(veg.bloom.mean$MeanFloralRichness), ]
 
 write.csv(veg.bloom.mean, file="../data/veg.csv", row.names=FALSE)
 
+## merge with specimen summary data
+site.sum <- merge(site.sum, veg.bloom.mean, all.x=TRUE)
+write.csv(site.sum, file='../data/sitestats.csv', row.names=FALSE)
 
 ## floral richness across the entire meadow across sampling rounds
 veg.year.sum <- veg.blooming %>%
@@ -486,60 +506,60 @@ write.csv(veg.year.sum, file="../data/veg_species_richness.csv", row.names=FALSE
 ## over as of Nov 2022
 
 ## *******************************************************************
-## checking data between years
+## checking veg data between years
 ## *******************************************************************
 
-to.sample <- c("CH", "HM", "JC", "MM", "PL", "RP", "SC", "SM")
+## to.sample <- c("CH", "HM", "JC", "MM", "PL", "RP", "SC", "SM")
 
-veg.prep <- veg[veg$Site %in% to.sample,]
-veg.split <- split(veg.prep, veg.prep$Site)
+## veg.prep <- veg[veg$Site %in% to.sample,]
+## veg.split <- split(veg.prep, veg.prep$Site)
 
-spec.veg <- spec[spec$Site %in% to.sample,]
-spec.split <- split(spec.veg, spec.veg$Site)
+## spec.veg <- spec[spec$Site %in% to.sample,]
+## spec.split <- split(spec.veg, spec.veg$Site)
 
-checkveg <- function(x){
-    print(unique(x$Site))
-    years <- tapply(x$PlantGenusSpecies, x$Year, unique)
-    if(length(years) == 2){
-        badmatch12 <- years[[1]][!years[[1]] %in% years[[2]]]
-        badmatch21 <- years[[2]][!years[[2]] %in% years[[1]]]
-        return(list(badmatch12=badmatch12,
-                    badmatch21=badmatch21))
-    } else if(length(years) == 3){
-        badmatch12 <- years[[1]][!years[[1]] %in% years[[2]]]
-        badmatch21 <- years[[2]][!years[[2]] %in% years[[1]]]
+## checkveg <- function(x){
+##     print(unique(x$Site))
+##     years <- tapply(x$PlantGenusSpecies, x$Year, unique)
+##     if(length(years) == 2){
+##         badmatch12 <- years[[1]][!years[[1]] %in% years[[2]]]
+##         badmatch21 <- years[[2]][!years[[2]] %in% years[[1]]]
+##         return(list(badmatch12=badmatch12,
+##                     badmatch21=badmatch21))
+##     } else if(length(years) == 3){
+##         badmatch12 <- years[[1]][!years[[1]] %in% years[[2]]]
+##         badmatch21 <- years[[2]][!years[[2]] %in% years[[1]]]
 
-        badmatch13 <- years[[1]][!years[[1]] %in% years[[3]]]
-        badmatch31 <- years[[3]][!years[[3]] %in% years[[1]]]
+##         badmatch13 <- years[[1]][!years[[1]] %in% years[[3]]]
+##         badmatch31 <- years[[3]][!years[[3]] %in% years[[1]]]
 
-        badmatch23 <- years[[2]][!years[[2]] %in% years[[3]]]
-        badmatch32 <- years[[3]][!years[[3]] %in% years[[2]]]
+##         badmatch23 <- years[[2]][!years[[2]] %in% years[[3]]]
+##         badmatch32 <- years[[3]][!years[[3]] %in% years[[2]]]
 
-        return(list(badmatch12=badmatch12,
-                    badmatch21=badmatch21,
-                    badmatch13= badmatch13,
-                    badmatch31=badmatch31,
-                    badmatch23=badmatch23,
-                    badmatch32=badmatch32))
-    } else{
-        return(NULL)
-    }
-}
+##         return(list(badmatch12=badmatch12,
+##                     badmatch21=badmatch21,
+##                     badmatch13= badmatch13,
+##                     badmatch31=badmatch31,
+##                     badmatch23=badmatch23,
+##                     badmatch32=badmatch32))
+##     } else{
+##         return(NULL)
+##     }
+## }
 
-badmatches.veg <- lapply(veg.split, checkveg)
+## badmatches.veg <- lapply(veg.split, checkveg)
 
-badmatches.spec <- lapply(spec.split, checkveg)
+## badmatches.spec <- lapply(spec.split, checkveg)
 
 
-all.plant.sp <- rbind(data.frame(Site=veg.prep$Site,
-                                 PlantGenusSpecies=
-                                     veg.prep$PlantGenusSpecies),
-                      data.frame(Site=spec.veg$Site,
-                                 PlantGenusSpecies=
-                                     spec.veg$PlantGenusSpecies))
+## all.plant.sp <- rbind(data.frame(Site=veg.prep$Site,
+##                                  PlantGenusSpecies=
+##                                      veg.prep$PlantGenusSpecies),
+##                       data.frame(Site=spec.veg$Site,
+##                                  PlantGenusSpecies=
+##                                      spec.veg$PlantGenusSpecies))
 
-all.plant.sp <- unique(all.plant.sp)
-all.plant.sp <- sort(all.plant.sp)
+## all.plant.sp <- unique(all.plant.sp)
+## all.plant.sp <- sort(all.plant.sp)
 
-write.csv(all.plant.sp, row.names=FALSE,
-          file="../data/vegbySite.csv")
+## write.csv(all.plant.sp, row.names=FALSE,
+##           file="../data/vegbySite.csv")
