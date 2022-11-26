@@ -101,6 +101,22 @@ spec$LatPoly1 <- spec$LatPoly[,'1']
 spec$LatPoly2 <- spec$LatPoly[,'2']
 spec$LatPoly <- NULL
 
+## check plant names
+## library(Taxonstand)
+## checked.plant.names <- TPL(id(spec$PlantGenusSpecies))
+
+## write.csv(checked.plant.names, file="../../skyIslands_saved/data/checks/plant_names_check.csv")
+
+spec.checked.plant.names <- read.csv(file="../../skyIslands_saved/data/checks/plant_names_check.csv")
+
+spec <- fixPlantNames(spec, "PlantGenusSpecies", spec.checked.plant.names)
+
+## really variabile identification fo Erigeron between years, combine
+## to Erigerson spp.
+## spec$PlantGenus <- sapply(strsplit(spec$PlantGenusSpecies, " "),
+##                           function(x) x[1])
+## spec$PlantGenusSpecies[spec$PlantGenus == "Erigeron"] <-
+##     "Erigeron spp."
 
 ## *****************************************************************
 ## specimen-level parasite calculations
@@ -284,32 +300,21 @@ print(paste("Specimens", nrow(spec)))
 ## table(spec$PlantGenusSpecies, spec$Year)
 ## table(spec$PlantGenusSpecies, spec$Family)
 
-## drop non-bees
-## spec <- spec[spec$Family %in% c("Andrenidae", "Apidae",
-##                                 "Colletidae", "Halictidae",
-##                                 "Megachilidae"),]
-
 ## spec <- spec[spec$Sex == "f",]
-
 ## tab <- table(spec$GenusSpecies, spec$Site, spec$Year)
 
 ## all.occ <- apply(tab, 1, sum)
-
 ## sp.too.few <- names(all.occ)[all.occ < 5]
 
-
 ## sp.possible <- names(all.occ)[all.occ > 5]
-
 ## cleptos <-  c("Sphecodes sp. a", "Sphecodes sp. b", "Triepeolus sp. a")
 
 ## sp.possible <- sp.possible[!sp.possible %in% cleptos]
-
 ## sp.sub <- spec[spec$GenusSpecies %in% sp.possible,]
 
 ## tab.sub <- sp.sub  %>%
 ##     group_by(GenusSpecies, Site, Year, SampleRound) %>%
 ##     summarise(n = n())
-
 
 ##  tab.sub$n30p <- ceiling(tab.sub$n*0.3)
 ##  tab.sub$n20p <- ceiling(tab.sub$n*0.2)
@@ -333,7 +338,6 @@ veg <-
     read.csv(file.path(src.dir, "veg-complete.csv"),
              stringsAsFactors=FALSE)
 
-
 veg$PlantGenusSpecies <-  fix.white.space(paste(veg$PlantGenus,
                                           veg$PlantSpecies,
                                           veg$PlantVar))
@@ -346,9 +350,32 @@ bloom$PlantGenusSpecies <-  fix.white.space(paste(bloom$PlantGenus,
                                           bloom$PlantVar))
 bloom <- bloom[bloom$PlantGenusSpecies != "",]
 
-sort(unique(veg$PlantGenusSpecies))
-sort(unique(bloom$PlantGenusSpecies))
+## check plant names, run Nov 2022
+## library(Taxonstand)
+## bloom.checked.plant.names <- TPL(id(bloom$PlantGenusSpecies))
+## write.csv(bloom.checked.plant.names, file="../../skyIslands_saved/data/checks/bloom_plant_names_check.csv")
 
+## veg.checked.plant.names <- TPL(id(veg$PlantGenusSpecies))
+## write.csv(veg.checked.plant.names, file="../../skyIslands_saved/data/checks/veg_plant_names_check.csv")
+
+
+## update plant names
+veg.checked.plant.names <-
+    read.csv(file="../../skyIslands_saved/data/checks/veg_plant_names_check.csv")
+
+bloom.checked.plant.names <-
+    read.csv(file="../../skyIslands_saved/data/checks/bloom_plant_names_check.csv")
+
+veg <- fixPlantNames(veg, "PlantGenusSpecies",
+                     veg.checked.plant.names)
+bloom <- fixPlantNames(bloom, "PlantGenusSpecies",
+                     bloom.checked.plant.names)
+
+
+id(veg$PlantGenusSpecies)
+id(bloom$PlantGenusSpecies)
+
+## fix dates
 veg$Date <- as.Date(veg$Date,  "%Y-%m-%d")
 veg$Year <- format(veg$Date,  "%Y")
 
@@ -368,16 +395,16 @@ combos$Quadrat <- quads.2017.2022
 combos <- combos[!(combos$Year == 2012 & combos$Quad %in%
                    not.in.2012),]
 
-
 ## blooming flowers
 veg.blooming <- veg[veg$NumBlooms != "" &
                     veg$NumBlooms != "0",]
 
-## didn't count the exacpt number of flowers in 2017-2018
+## didn't count the exact number of flowers in 2017-2018, use
+## midpoints of bins
 veg.blooming$NumBloomsNum <- veg.blooming$NumBlooms
-veg.blooming$NumBloomsNum[veg.blooming$NumBlooms == "<10"] <- 1
-veg.blooming$NumBloomsNum[veg.blooming$NumBlooms == "10-100"] <- 10
-veg.blooming$NumBloomsNum[veg.blooming$NumBlooms == "100-1000"] <- 100
+veg.blooming$NumBloomsNum[veg.blooming$NumBlooms == "<10"] <- 5
+veg.blooming$NumBloomsNum[veg.blooming$NumBlooms == "10-100"] <- 50
+veg.blooming$NumBloomsNum[veg.blooming$NumBlooms == "100-1000"] <- 500
 
 veg.blooming$NumBloomsNum <- as.numeric(veg.blooming$NumBloomsNum)
 
@@ -388,7 +415,8 @@ veg.blooming$NumBloomsNum <- as.numeric(veg.blooming$NumBloomsNum)
 ## by quadrat for a site average
 veg.bloom.quad.sp <- veg.blooming %>%
     group_by(Quadrat, Site, Year, PlantGenusSpecies, SampleRound) %>%
-    summarise(FloralAbundance = sum(NumBloomsNum))
+    summarise(FloralAbundance = sum(NumBloomsNum),
+              FloweringPlantAbundance= sum(PlantCount, na.rm=TRUE))
 
 veg.bloom.quad.sp$KeyQuad <- paste(veg.bloom.quad.sp$Site,
                               veg.bloom.quad.sp$Quadrat,
@@ -399,10 +427,17 @@ veg.div.quad <- tapply(veg.bloom.quad.sp$FloralAbundance,
                   veg.bloom.quad.sp$KeyQuad,
                   vegan::diversity)
 
+veg.plant.div.quad <- tapply(veg.bloom.quad.sp$FloweringPlantAbundance,
+                  veg.bloom.quad.sp$KeyQuad,
+                  vegan::diversity)
+
+
 veg.bloom.sum.quad <- veg.bloom.quad.sp %>%
     group_by(Quadrat, Site, Year, SampleRound) %>%
     summarise(FloralAbundance = sum(FloralAbundance),
-              FloralRichness= length(unique(PlantGenusSpecies)))
+              FloralRichness= length(unique(PlantGenusSpecies)),
+              FloweringPlantAbundance = sum(FloweringPlantAbundance)
+              )
 
 veg.name <-   names(veg.div.quad)
 names(veg.div.quad) <- NULL
@@ -412,58 +447,43 @@ veg.bloom.sum.quad$FloralDiversity <-  veg.div.quad[match(paste(veg.bloom.sum.qu
                                                                 veg.bloom.sum.quad$SampleRound),
                                                           veg.name)]
 
+veg.bloom.sum.quad$FloweringPlantDiversity <-  veg.plant.div.quad[match(paste(veg.bloom.sum.quad$Site,
+                                                                veg.bloom.sum.quad$Quadrat,
+                                                                veg.bloom.sum.quad$Year,
+                                                                veg.bloom.sum.quad$SampleRound),
+                                                          veg.name)]
+
 ## merge together quad combos and quad level data
 combos <- merge(combos, veg.bloom.sum.quad, all.x=TRUE)
 
+cols.to.fill <-  c("FloralAbundance", "FloralRichness",
+                   "FloralDiversity", "FloweringPlantAbundance", "FloweringPlantDiversity")
 ## set NAs to zero
-combos[, c("FloralAbundance", "FloralRichness", "FloralDiversity")][
-    is.na(combos[, c("FloralAbundance", "FloralRichness",
-                     "FloralDiversity")])] <- 0
+combos[, cols.to.fill][is.na(combos[, cols.to.fill])] <- 0
 
 veg.bloom.mean <- combos %>%
     group_by(Site, Year, SampleRound) %>%
     summarise(MeanFloralAbundance = mean(FloralAbundance),
               MeanFloralRichness= mean(FloralRichness),
-              MeanFloralDiversity =mean(FloralDiversity))
+              MeanFloralDiversity =mean(FloralDiversity),
+              MeanFloweringPlantDiversity =mean(FloweringPlantDiversity),
+              MeanFloweringPlantAbundance =mean(FloweringPlantAbundance)
+              )
 
-## *******************************************************************
-##  Veg site summaries site-wide
-## *******************************************************************
+veg.bloom.mean[order(veg.bloom.mean$MeanFloralRichness), ]
 
-veg.bloom.sum.sp.site <- veg.blooming %>%
-    group_by(Site, Year, PlantGenusSpecies, SampleRound) %>%
-    summarise(FloralAbundance = sum(NumBloomsNum))
-
-veg.bloom.sum.sp$KeySite <- paste(veg.bloom.sum.sp$Site,
-                              veg.bloom.sum.sp$Year,
-                              veg.bloom.sum.sp$SampleRound)
-
-veg.div.quad <- tapply(veg.bloom.sum.sp$FloralAbundance,
-                  veg.bloom.sum.sp$KeyQuad,
-                  vegan::diversity)
-
-veg.div.quad <- tapply(veg.bloom.sum.sp$FloralAbundance,
-                  veg.bloom.sum.sp$KeyQuad,
-                  vegan::diversity)
-
-veg.bloom.sum <- veg.bloom.sum.sp %>%
-    group_by(Quadrat, Site, Year, SampleRound) %>%
-    summarise(FloralAbundance = sum(FloralAbundance),
-              FloralRichness= length(unique(PlantGenusSpecies)))
+write.csv(veg.bloom.mean, file="../data/veg.csv", row.names=FALSE)
 
 
+## floral richness across the entire meadow across sampling rounds
+veg.year.sum <- veg.blooming %>%
+    group_by(Site, Year) %>%
+    summarise(TotalFloralRichness= length(unique(PlantGenusSpecies)))
 
+write.csv(veg.year.sum, file="../data/veg_species_richness.csv", row.names=FALSE)
 
-veg.bloom.sum$SiteSR <- paste(veg.bloom.sum$Site,
-                               veg.bloom.sum$SampleRound)
-
-veg.bloom.sum$FloralDiv <- floral.div[match(veg.bloom.sum$SiteSR,
-                                            names(floral.div))]
-
-veg.bloom.sum$SiteSR <- NULL
-
-write.csv(veg.bloom.sum, file="../data/veg.csv", row.names=FALSE)
-
+## not using site-level bloom data currently, has not been checked
+## over as of Nov 2022
 
 ## *******************************************************************
 ## checking data between years
