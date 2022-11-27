@@ -25,18 +25,18 @@ library(bayesplot)
 
 
 
-genus_pd_fit <- function(all_bees, this_genus, num_iter){
+#genus_pd_fit <- function(spec, this_genus, num_iter){
   
-  microbes <- colnames(all_bees)[grepl("16s:", colnames(all_bees))] 
+microbes <- colnames(spec)[grepl("16s:", colnames(spec))] 
   
-  screened.microbes <- apply(all_bees, 1, function(x) all(is.na(x[microbes])))
+screened.microbes <- apply(spec, 1, function(x) all(is.na(x[microbes])))
   
-  spec.microbes <- all_bees[!screened.microbes, ]
+spec.microbes <- spec[!screened.microbes, ]
   
-  genus.microbes <- spec.microbes[spec.microbes$Genus == this_genus, ]
+#genus.microbes <- spec.microbes[spec.microbes$Genus == this_genus, ]
   
 
-PD <- apply(genus.microbes[,microbes], 1, function(x){
+PD <- apply(spec.microbes[,microbes], 1, function(x){
   this.bee <- x[x > 0]
   this.tree <- prune.sample(t(this.bee), tree.16s)
   pd(t(this.bee), this.tree, include.root = FALSE)
@@ -44,9 +44,9 @@ PD <- apply(genus.microbes[,microbes], 1, function(x){
 
 PD <- do.call(rbind, PD)
 
-genus.microbes <- cbind(genus.microbes, PD)
+spec.microbes <- cbind(spec.microbes, PD)
 
-all_bees <- merge(all_bees, genus.microbes, all.x=TRUE)
+spec <- merge(spec, spec.microbes, all.x=TRUE)
 
 
 ##copying over code from communityHealthBayes and changing
@@ -62,10 +62,10 @@ vars <- c("FloralAbundance",
           "Area")
 
 ##  center all of the x variables across the datasets
-all_bees[, vars] <- apply(all_bees[, vars], 2, standardize)
+spec[, vars] <- apply(spec[, vars], 2, standardize)
 
 ## will need to modify when we have multiple years
-all_bees <- makeDataMultiLevel(all_bees, "Site", "Year")
+spec <- makeDataMultiLevel(spec, "Site", "Year")
 
 ## **********************************************************
 ## Model 1.1: formula for forest effects on floral community
@@ -98,12 +98,41 @@ formula.bee.abund <- formula(PollAbundance ~
 ## **********************************************************
 ## Model 1.3: formula for bee community effects on parasitism
 ## **********************************************************
-formula.microbes <- formula(PD ~
+
+get_genus_PD_formula <- function(input.df, genus){
+  genus.microbes <- input.df[input.df$Genus == genus, ]
+  
+  
+  genus.PD <- apply(genus.microbes[,microbes], 1, function(x){
+    this.bee <- x[x > 0]
+    this.tree <- prune.sample(t(this.bee), tree.16s)
+    pd(t(this.bee), this.tree, include.root = FALSE)
+  })
+  
+  genus.PD <- do.call(rbind, genus.PD)
+  
+  genus.microbes <- cbind(genus.microbes, genus.PD)
+  
+  input.df <- merge(input.df, genus.microbes, all.x=TRUE)
+
+  formula.microbes <- formula(genus.PD ~
                                 PollAbundance*FloralDiversity +
                                 PollDiversity +
                                 FloralAbundance +
                                 (1|Site)
-)
+  )
+}
+
+#Apis
+apis.formula <- get_genus_PD_formula(spec, 'Apis')
+#Bombus
+bombus.formula <- get_genus_PD_formula(spec, 'Bombus')
+#Megachile
+megachile.formula <- get_genus_PD_formula(spec, 'Megachile')
+#Anthophora
+anthophora.formula <- get_genus_PD_formula(spec, 'Anthophora')
+
+
 
 ## **********************************************************
 ## Community models
@@ -113,44 +142,78 @@ bf.fabund <- bf(formula.flower.abund)
 bf.fdiv <- bf(formula.flower.div)
 bf.babund <- bf(formula.bee.abund)
 bf.bdiv <- bf(formula.bee.div)
-bf.microbes <- bf(formula.microbes)
+bf.apis <- bf(apis.formula)
+bf.bombus <- bf(bombus.formula)
+bf.megachile <- bf(megachile.formula)
+bf.anthophora <- bf(anthophora.formula)
 
 ## **********************************************************
 ## Model 1 community effects on gut microbe phylo distance
 ## **********************************************************
 
 
-## full model
 
-bform <- bf.fabund + bf.fdiv + bf.babund + bf.bdiv + bf.microbes +
+#Apis model
+
+apis_bform <- bf.fabund + bf.fdiv + bf.babund + bf.bdiv + bf.apis +
   set_rescor(FALSE)
 
 ## run model
-fit <- brm(bform, all_bees,
+apis_fit <- brm(apis_bform, spec,
            cores=ncores,
-           iter = num_iter,
+           iter = 10^3,
            chains = 2,
            thin=1,
            init=0,
            control = list(adapt_delta = 0.99))
 
-return(fit) ## function returns fit
-}
-
-#Apis
-apis_fit <- genus_pd_fit(spec, 'Apis', 10^3)
 write.ms.table(apis_fit, "apis")
 
-#Bombus
-bombus_fit <- genus_pd_fit(spec, 'Bombus', 10^3)
+#Bombus model
+bombus_bform <- bf.fabund + bf.fdiv + bf.babund + bf.bdiv + bf.bombus +
+  set_rescor(FALSE)
+
+## run model
+bombus_fit <- brm(bombus_bform, spec,
+                cores=ncores,
+                iter = 10^3,
+                chains = 2,
+                thin=1,
+                init=0,
+                control = list(adapt_delta = 0.99))
+
+
 write.ms.table(bombus_fit, "bombus")
 
 #Megachile
-megachile_fit <- genus_pd_fit(spec, 'Megachile', 10^3)
+
+megachile_bform <- bf.fabund + bf.fdiv + bf.babund + bf.bdiv + bf.megachile +
+  set_rescor(FALSE)
+
+## run model
+megachile_fit <- brm(megachile_bform, spec,
+                cores=ncores,
+                iter = 10^3,
+                chains = 2,
+                thin=1,
+                init=0,
+                control = list(adapt_delta = 0.99))
+
 write.ms.table(megachile_fit, "megachile")
 
 #Anthophora
-anthophora_fit <- genus_pd_fit(spec, 'Anthophora', 10^3)
+anthophora_bform <- bf.fabund + bf.fdiv + bf.babund + bf.bdiv + bf.anthophora +
+  set_rescor(FALSE)
+
+## run model
+anthophora_fit <- brm(anthophora_bform, spec,
+                cores=ncores,
+                iter = 10^3,
+                chains = 2,
+                thin=1,
+                init=0,
+                control = list(adapt_delta = 0.99))
+
 write.ms.table(anthophora_fit, "anthophora")
 
 #write.ms.table(fit, "microbes")
