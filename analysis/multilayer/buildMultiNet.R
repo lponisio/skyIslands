@@ -1,4 +1,6 @@
-## setwd('~/Dropbox/skyIslands')
+setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
+
+## setwd('~/Dropbox (University of Oregon)/skyislands')
 rm(list=ls())
 setwd('analysis/multilayer')
 

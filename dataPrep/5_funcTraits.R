@@ -5,9 +5,13 @@ library(vegan)
 setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyIslands')
 setwd('dataPrep')
 
-#calculate trait uniqueness and originality based on Coux et al. 2016
-source("src/calcFuncUniqOrig.R")
-source("src/misc.R")
+## calculate trait uniqueness and originality based on Coux et al. 2016
+## currently traits are across all SI, need to update to be meadow
+## specific
+
+## also many bees are missing traits, need to fill in
+
+source("src/calcFuncUniqOrig.R") source("src/misc.R")
 
 load('../data/spec.Rdata')
 

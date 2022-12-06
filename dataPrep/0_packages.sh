@@ -21,5 +21,5 @@
  Rscript -e 'install.packages("tidyr", repos="http://cran.r-project.org")'
 Rscript -e 'install.packages("dplyr", repos="http://cran.r-project.org")'
 Rscript -e 'install.packages("devtools", repos="http://cran.r-project.org")'
-
+Rscript -e 'install.packages("brms", repos="http://cran.r-project.org")'
 

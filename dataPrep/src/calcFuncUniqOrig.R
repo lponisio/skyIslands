@@ -26,8 +26,13 @@ calcFuncUniqOrig <- function(traits, traits.2.keep,
             print(paste("numeric", this.trait))
         }
     }
-    coords <- dbFD(these.traits, w=weights,
-                   corr="lingoes", print.pco=T, ...)$x.axes
+    ## *********************
+    ## eventually have meadow-level data here, vs. across all SI, can
+    ## save site-level data here as well
+
+    site.func.mets <- dbFD(these.traits, w=weights,
+                           corr="lingoes", print.pco=T, ...)
+    coords <- site.func.mets$x.axes
     centr <- apply(coords, 2, mean)
 
     ## add centroid coords as last row in dataframe

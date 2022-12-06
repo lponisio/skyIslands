@@ -18,14 +18,14 @@ dir.bombus <-
 ## create relational database, add species IDs
 ## *****************************************************************
 
-setwd(dir.bombus)
-source('dataPrep/relational/prep.R')
+## setwd(dir.bombus)
+## source('dataPrep/relational/prep.R')
 
-setwd(dir.bombus)
-source('dataPrep/relational/make.R')
+## setwd(dir.bombus)
+## source('dataPrep/relational/make.R')
 
-setwd(dir.bombus)
-source('dataPrep/relational/traditional.R')
+## setwd(dir.bombus)
+## source('dataPrep/relational/traditional.R')
 
 ## *****************************************************************
 ## prep specimen data
@@ -168,7 +168,11 @@ site.sum <- spec %>%
               PollRichness= length(unique(GenusSpecies)),
               PollDiversity=vegan:::diversity(table(GenusSpecies),
                                               index="shannon"),
-              SiteParasitismRate=mean(ParasitePresence, na.rm=TRUE))
+              SiteParasitismRate=mean(ParasitePresence, na.rm=TRUE),
+              MeanParasiteRichness=mean(ParasiteRichness, na.rm=TRUE),
+              SRDoyPoly1=mean(DoyPoly1),
+              SRDoyPoly2=mean(DoyPoly2),
+              SRDoy=mean(Doy))
 
 hb <- spec[spec$GenusSpecies == "Apis mellifera",]
 
@@ -185,6 +189,13 @@ site.sp.yr <- spec %>%
 
 bombus <- site.sp.yr[site.sp.yr$Genus == "Bombus",]
 bombus$Genus  <- NULL
+
+## add site characteristics
+sites <- unique(data.frame(Site=spec$Site,
+                           Lat= spec$Lat,
+                           Area=spec$Area))
+site.sum <- merge(site.sum, sites)
+site.sum$Year <- as.factor(site.sum$Year)
 
 ## write species-level sumary data
 write.csv(bombus, file='../data/bombus_year_site.csv', row.names=FALSE)

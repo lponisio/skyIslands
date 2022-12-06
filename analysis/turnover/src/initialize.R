@@ -1,13 +1,10 @@
 library(vegan)
 library(fields)
 library(igraph)
-library(betalink)
+## library(betalink)
 library(ggplot2)
 library(gridExtra)
-library(lme4)
-library(lmerTest)
-library(effects)
-library(tidyverse)
+## library(effects)
 
 source('src/misc.R')
 load('../../data/spec.Rdata')
@@ -25,7 +22,7 @@ if(length(args) != 0){
 
 plants <- unique(spec$PlantGenusSpecies)
 pols <- unique(spec$GenusSpecies)
-parasites <- c("AspergillusSpp", "AscosphaeraSpp", "ApicystisSpp",
+parasites <- c("AscosphaeraSpp", "ApicystisSpp",
                "CrithidiaExpoeki", "CrithidiaBombi", "NosemaBombi",
                "NosemaCeranae")
 
