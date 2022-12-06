@@ -1,15 +1,12 @@
 library(ggplot2)
 library(brms)
-## library(tidybayes)
-library(tidyverse)
+library(dplyr)
 
 
-load('../../data/spec_RBCL_16s.Rdata')
+load('../../data/spec.Rdata')
 site.sum <- read.csv("../../data/sitestats.csv")
-veg <- read.csv("../../data/veg.csv")
 
-
-parasites <- c("AspergillusSpp",
+parasites <- c(#"AspergillusSpp", ## problematic parasite!
                "AscosphaeraSpp",
                "ApicystisSpp",
                "CrithidiaExpoeki",
@@ -21,9 +18,19 @@ parasites <- c("AspergillusSpp",
 ## spec <- spec[spec$Apidae == 1 &
 ##              !is.na(spec$Apidae),]
 
-spec <- merge(spec, site.sum)
-spec <- merge(spec, veg, all.x=TRUE)
+spec <- merge(spec, site.sum, all.x=TRUE)
 
+traits <-
+    read.csv("../../../skyIslands_saved/data/raw/bee_traits.csv")
+traits$GenusSpecies <- fix.white.space(traits$GenusSpecies)
+traits <- traits[, c("GenusSpecies", "Sociality", "Lecty", "MeanITD"),]
+
+net.traits <- read.csv("../../data/traits.csv")
+net.traits <- net.traits[, c("GenusSpecies", "r.degree"),]
+
+traits <- merge(traits, net.traits, by="GenusSpecies", all.x=TRUE)
+
+spec <- merge(spec, traits, all.x=TRUE, by="GenusSpecies")
 
 dir.create(path="saved", showWarnings = FALSE)
 dir.create(path="saved/tables", showWarnings = FALSE)

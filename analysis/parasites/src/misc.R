@@ -27,3 +27,31 @@ unstandardize <- function(x, orig){
 
 standardize.axis <- function(x, orig)
 (x-mean(orig, na.rm=TRUE))/sd(orig, na.rm=TRUE)
+
+
+plot.res <- function(mod, mod.name){
+    ## function tp plot diagnostic figures for mcmc
+    pdf(sprintf("figures/diagnostics/%s_Diag.pdf", mod.name),
+        height=11, width=8.5)
+    plot(mod,  N = 4, ask = FALSE)
+    dev.off()
+}
+
+## function to clean up white-space in a column of data (replaces all
+## instances of white-space with " " and empty cells with ""
+fix.white.space <- function(d) {
+  d <- as.character(d)
+  remove.first <- function(s) substr(s, 2, nchar(s))
+  d <- gsub("      ", " ", d, fixed=TRUE)
+  d <- gsub("     ", " ", d, fixed=TRUE)
+  d <- gsub("    ", " ", d, fixed=TRUE)
+  d <- gsub("   ", " ", d, fixed=TRUE)
+  d <- gsub("  ", " ", d, fixed=TRUE)
+
+  tmp <- strsplit(as.character(d), " ")
+  d <- sapply(tmp, function(x) paste(x, collapse=" "))
+
+  first <- substr(d, 1, 1)
+  d[first==" "] <- remove.first(d[first==" "])
+  d
+}
