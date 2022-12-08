@@ -1758,9 +1758,9 @@ sp.ids <- list(
                                    "BBSL1072863",
                                    "BBSL1072910")),
 
-    Melissodes_confusa= list(Genus="Melissodes",
+    Melissodes_confusus= list(Genus="Melissodes",
                              SubGenus="Eumelissodes",
-                             Species="confusa",
+                             Species="confusus",
                              SubSpecies="", Sex="f",
                              Author = "Cresson",
                              Determiner="T.  Griswold",
