@@ -1,7 +1,7 @@
 
 sp.ids <- list(
 
-    ## Agapostemen_angelicus_f =
+    ## Agapostemon_angelicus_f =
     ##     list(Genus="Agapostemon",
     ##                                SubGenus ="Agapostemon",
     ##                                Species="angelicus", SubSpecies="",
