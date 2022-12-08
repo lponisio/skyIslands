@@ -1,17 +1,17 @@
 
 sp.ids <- list(
 
-    ## Melissodes_confusa= list(Genus="Melissodes",
+    ## Melissodes_confusus= list(Genus="Melissodes",
     ##                          SubGenus="Eumelissodes",
-    ##                          Species="confusa",
+    ##                          Species="confusus",
     ##                          SubSpecies="", Sex="f",
     ##                          Author = "Cresson",
     ##                          Determiner="L. Best",
     ##                          temp.id= c()),
 
-    ##  Melissodes_confusa_m= list(Genus="Melissodes",
+    ##  Melissodes_confusus_m= list(Genus="Melissodes",
     ##                          SubGenus="Eumelissodes",
-    ##                          Species="confusa",
+    ##                          Species="confusus",
     ##                          SubSpecies="", Sex="m",
     ##                          Author = "Cresson",
     ##                          Determiner="L. Best",
