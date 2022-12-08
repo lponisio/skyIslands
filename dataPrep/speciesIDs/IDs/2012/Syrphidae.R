@@ -428,9 +428,9 @@ sp.ids <- list(
                                             "MM_080412_41")),
 
 
-    Copestylum_mexicana = list(Genus = "Copestylum",
+    Copestylum_mexicanum = list(Genus = "Copestylum",
                                SubGenus="",
-                               Species = "mexicana",
+                               Species = "mexicanum",
                                SubSpecies="", Sex = "",
                                Author = "Macquart",
                                Determiner="M.Hauser",
