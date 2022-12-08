@@ -580,8 +580,8 @@ sp.ids <- list(
                                         "BBSL1058601", "BBSL1058595",
                                         "BBSL1058619", "BBSL1058600")),
 
-    Copestylum_mexicana = list(Genus = "Copestylum", SubGenus="",
-                               Species   = "mexicana",
+    Copestylum_mexicanum = list(Genus = "Copestylum", SubGenus="",
+                               Species   = "mexicanum",
                                SubSpecies="",
                                Sex = "", Author = "Macquart",
                                Determiner="M.Hauser",
