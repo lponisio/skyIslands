@@ -116,7 +116,7 @@ sp.ids <- list(
                               temp.id= c("BBSL1060036", "BBSL1085035",
                               "BBSL1084487")),
 
-    Lithurgus_apicalis_m = list(Genus="Lithurgus",
+    Lithurgopsis_apicalis_m = list(Genus="Lithurgopsis",
                                 SubGenus ="", Species="apicalis",
                                 SubSpecies="", Sex="m",
                                 Author = "Cresson",
