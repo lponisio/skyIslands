@@ -59,8 +59,8 @@ sp.ids <- list(
                                               "BBSL1070965",
                                               "BBSL1073006")),
 
-    Eristalis_bellardii_m= list(Genus = "Belllardi", SubGenus="",
-                                Species = "bellardi", SubSpecies="",
+    Eristalis_bellardii_m= list(Genus = "Eristalis", SubGenus="",
+                                Species = "bellardii", SubSpecies="",
                                 Sex = "",
                                 Author =   "",
                                 Determiner="M.Hauser",
@@ -79,8 +79,8 @@ sp.ids <- list(
                                             "BBSL1071321",
                                             "BBSL1071607")),
 
-    Eristalis_bellardii_f= list(Genus = "Belllardi", SubGenus="",
-                                Species = "bellardi", SubSpecies="",
+    Eristalis_bellardii_f= list(Genus = "Eristalis", SubGenus="",
+                                Species = "bellardii", SubSpecies="",
                                 Sex = "",
                                 Author =  "",
                                 Determiner="M.Hauser",
