@@ -1,6 +1,6 @@
 
 sp.ids <- list(
-    Agapostemen_angelicus_f =
+    Agapostemon_angelicus_f =
         list(Genus="Agapostemon",
                                    SubGenus ="Agapostemon",
                                    Species="angelicus", SubSpecies="",
@@ -22,7 +22,7 @@ sp.ids <- list(
                                          "19562", "19723", "19150",
                                          "25182", "19828")),
 
-    Agapostemen_angelicus_m = list(Genus="Agapostemon", SubGenus
+    Agapostemon_angelicus_m = list(Genus="Agapostemon", SubGenus
                                    ="Agapostemon",
                                    Species="angelicus", SubSpecies="",
                                    Sex="m", Author = "Cockerell",
