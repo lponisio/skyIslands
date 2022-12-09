@@ -999,7 +999,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                            "BBSL1071235")),
 
 
-    Agapostemen_angelicus_f = list(
+    Agapostemon_angelicus_f = list(
         Genus="Agapostemon",
         SubGenus ="Agapostemon",
         Species="angelicus",
@@ -1071,7 +1071,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                    "30467", "21092")),
 
 
-    Agapostemen_angelicus_m = list(
+    Agapostemon_angelicus_m = list(
         Genus="Agapostemon",
         SubGenus ="Agapostemon",
         Species="angelicus",
