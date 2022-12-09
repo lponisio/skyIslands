@@ -68,7 +68,7 @@ sp.ids <- list(
 
                                         # "JC_071212_38" duplicated with bombus ruf
 
-    Agapostemen_angelicus_m = list(Genus="Agapostemon", SubGenus ="Agapostemon",
+    Agapostemon_angelicus_m = list(Genus="Agapostemon", SubGenus ="Agapostemon",
                                    Species="angelicus", SubSpecies="",
                                    Sex="m", Author = "Cockerell",
                                    Determiner = "J.S. Ascher",
