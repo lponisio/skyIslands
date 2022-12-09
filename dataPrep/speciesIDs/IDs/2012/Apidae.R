@@ -146,9 +146,9 @@ sp.ids <- list(
                                           "JC_071412_40",
                                           "SC_072812_157")),
 
-    Melissodes_pallidisignata= list(Genus="Melissodes",
+    Melissodes_pallidisignatus= list(Genus="Melissodes",
                                     SubGenus="Eumelissodes",
-                                    Species="pallidisignata",
+                                    Species="pallidisignatus",
                                     SubSpecies="",
                                     Sex="f", Author = "Cockerell",
                                     Determiner="Karen Wright",
