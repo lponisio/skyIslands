@@ -40,43 +40,37 @@ meta <- spec16s %>%
 ##create lists of unique IDs for each species to filter
 ######################################################
 
+install.packages("remotes")
+remotes::install_github("xiangpin/MicrobiotaProcess")
+
 #apis
 apis_subset <- meta %>%
   filter(Genus == 'Apis') 
 apis_ids <- apis_subset %>%
   select(UniqueID) 
-apis_taxonomy <- taxonomy16sR0 %>%
-  t() 
-apis_taxonomy <- apis_taxonomy[row.names(apis_taxonomy) %in% apis_ids$UniqueID == TRUE,] %>%
-  t()
-  
+apis_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% apis_ids$UniqueID == TRUE,] 
+
+apis_phylo <- as.phyloseq(apis_taxonomy)
+
+ggtree(as.data.frame(apis_taxonomy), branch.length='none', layout='circular')
 
 #bombus
 bombus_subset <- meta %>%
   filter(Genus == 'Bombus') 
 bombus_ids <- bombus_subset %>%
   select(UniqueID) 
-bombus_taxonomy <- taxonomy16sR0 %>%
-  t() 
-bombus_taxonomy <- bombus_taxonomy[row.names(bombus_taxonomy) %in% bombus_ids$UniqueID == TRUE,] %>%
-  t()
+bombus_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% bombus_ids$UniqueID == TRUE,]
 
 #megachile
 megachile_subset <- meta %>%
   filter(Genus == 'Megachile') 
 megachile_ids <- megachile_subset %>%
   select(UniqueID) 
-megachile_taxonomy <- taxonomy16sR0 %>%
-  t() 
-megachile_taxonomy <- megachile_taxonomy[row.names(megachile_taxonomy) %in% megachile_ids$UniqueID == TRUE,] %>%
-  t()
+megachile_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% megachile_ids$UniqueID == TRUE,] 
 
 #anthophora
 anthophora_subset <- meta %>%
   filter(Genus == 'Anthophora') 
 anthophora_ids <- anthophora_subset %>%
   select(UniqueID) 
-anthophora_taxonomy <- taxonomy16sR0 %>%
-  t() 
-anthophora_taxonomy <- anthophora_taxonomy[row.names(anthophora_taxonomy) %in% anthophora_ids$UniqueID == TRUE,] %>%
-  t()
+anthophora_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% anthophora_ids$UniqueID == TRUE,] 
