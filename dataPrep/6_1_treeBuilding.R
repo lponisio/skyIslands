@@ -9,6 +9,9 @@ library(geiger)
 library(devtools)
 install_github("liamrevell/phytools")
 
+
+taxonomy.table <- physeq16sR0@tax_table
+
 plotTree(tree.16sR0,type="fan",fsize=0.7,lwd=1,
          ftype="off") ##not great
 
@@ -19,7 +22,20 @@ plotTree(tree.16sR0,type="fan",fsize=0.7,lwd=1,
 library(treeio)
 library(ggtree)
 
-ggtree(tree.16sR0, aes(color=meta$Site), branch.length='none', layout='circular')
+tree.16s$tip.label <- gsub("16s:", "", tree.16s$tip.label)
+bees.16s
+
+ggtree(tree.16sR0, branch.length='none', layout='circular')
+
+groupInfo <- data.frame(physeq16sR0@tax_table)
+
+ggtree(tree.16s, layout='circular', branch.length = 'none')
+
+data(chiroptera, package="ape")
+groupInfo <- split(chiroptera$tip.label, gsub("_///w+", "", chiroptera$tip.label))
+chiroptera <- groupOTU(chiroptera, groupInfo)
+ggtree(chiroptera, aes(color=group), layout='circular') + geom_tiplab(size=1, aes(angle=angle))
+
 
 ## import metadata
 
@@ -74,3 +90,26 @@ anthophora_subset <- meta %>%
 anthophora_ids <- anthophora_subset %>%
   select(UniqueID) 
 anthophora_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% anthophora_ids$UniqueID == TRUE,] 
+
+################## 12/27/22
+## tutorial: https://bioconductor.org/packages/devel/bioc/vignettes/ggtreeExtra/inst/doc/ggtreeExtra.html
+
+library(ggtreeExtra)
+library(ggstar)
+library(ggplot2)
+library(ggtree)
+library(treeio)
+library(ggnewscale)
+
+## what we need to do:
+# 1. make tree object from 6_rbcl_16sPrep.R
+# 2. get metadata
+## use bees.16s and spec_16s_rbcl or whatever
+####a. we want site, genus, species(?)
+## tips in indiv.comm.16sR0
+## make a table of presence and absence in indiv.comm.16sR0 for each unique ID
+## then for each metadata (site and bee genus) attach those to the unique ID
+## the dimensions are not the same, so will have to account somehow for 
+## duplicate features (strains) so that the metadata dimensions are the 
+## same and # of tree.16s tips
+
