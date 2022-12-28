@@ -87,9 +87,7 @@ sp.ids <- list(
                            Determiner = "J. Zorn",
                            temp.id= c(33571, 33572, 33573, 33574,
                                       33575, 33576, 33588, 33708,
-                                      33753, 33495, 37762, 37763,
-                                      37457, 37363, 38404, 37962,
-                                      37961)),
+                                      33753, 33495)),
 
     ## Dufourea_maura_m= list(Genus="Dufourea", SubGenus ="",
     ##                        Species="maura", SubSpecies="",
