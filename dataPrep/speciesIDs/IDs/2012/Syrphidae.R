@@ -1,7 +1,7 @@
 
 sp.ids <- list(
 
-    hammerschmidtia_f = list(Genus="Hammerschmidtia", SubGenus="",
+    Hammerschmidtia_f = list(Genus="Hammerschmidtia", SubGenus="",
                              Species="rufa", SubSpecies="", Sex="f",
                              Author = "",
                              Determiner="M.Hauser",
@@ -428,9 +428,9 @@ sp.ids <- list(
                                             "MM_080412_41")),
 
 
-    Copestylum_mexicana = list(Genus = "Copestylum",
+    Copestylum_mexicanum = list(Genus = "Copestylum",
                                SubGenus="",
-                               Species = "mexicana",
+                               Species = "mexicanum",
                                SubSpecies="", Sex = "",
                                Author = "Macquart",
                                Determiner="M.Hauser",
@@ -861,7 +861,7 @@ sp.ids <- list(
                                 Determiner="M.Hauser",
                                 temp.id = c("SC_072812_66", "JC_071612_51")),
 
-    Arctophila_flagrans = list(Genus = "Arctophila", SubGenus="",
+    Sericomyia_flagrans = list(Genus = "Sericomyia", SubGenus="",
                                Species= "flagrans", SubSpecies="", Sex = "",
                                Author="Osten Sacken",
                                Determiner="M.Hauser",

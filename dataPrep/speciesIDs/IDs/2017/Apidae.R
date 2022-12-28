@@ -1258,10 +1258,10 @@ sp.ids <- list(
 
     Ceratina_nanula= list(Genus="Ceratina", SubGenus="",
                           Species="nanula",
-                          SubSpecies="a",
+                          SubSpecies="",
                           Sex="m",
                           Author = "",
-                          Determiner="L. Griswold",
+                          Determiner="T. Griswold",
                           temp.id= c("BBSL1071302")),
 
     Protandrena_sp_b= list(Genus="Protandrena", SubGenus ="",
@@ -1758,9 +1758,9 @@ sp.ids <- list(
                                    "BBSL1072863",
                                    "BBSL1072910")),
 
-    Melissodes_confusa= list(Genus="Melissodes",
+    Melissodes_confusus= list(Genus="Melissodes",
                              SubGenus="Eumelissodes",
-                             Species="confusa",
+                             Species="confusus",
                              SubSpecies="", Sex="f",
                              Author = "Cresson",
                              Determiner="T.  Griswold",

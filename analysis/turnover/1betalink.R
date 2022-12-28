@@ -1,4 +1,5 @@
 ## setwd("~/Dropbox/skyIslands/")
+setwd('~/Dropbox (University of Oregon)/skyIslands') ## Rebecca wd
 rm(list=ls())
 setwd("analysis/turnover")
 source("src/initialize.R")

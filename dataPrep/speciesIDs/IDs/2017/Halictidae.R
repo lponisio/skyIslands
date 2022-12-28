@@ -935,9 +935,9 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                               "BBSL1073525", "BBSL1070633",
                                               "BBSL1071308")),
 
-    Lasioglossum_deludens_f= list(Genus="Lasioglossum",
+    Lasioglossum_perparvum_f= list(Genus="Lasioglossum",
                                   SubGenus ="Dialictus",
-                                  Species="n. sp. (deludens MS)",
+                                  Species="aff. perparvum",
                                   SubSpecies="",
                                   Sex="f",
                                   Author = "",
@@ -963,9 +963,9 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                              "BBSL1073364", "BBSL1071282",
                                              "BBSL1071204")),
 
-    Lasioglossum_deludens_m= list(Genus="Lasioglossum",
+    Lasioglossum_perparvum_m= list(Genus="Lasioglossum",
                                   SubGenus ="Dialictus",
-                                  Species="n. sp. (deludens MS)",
+                                  Species="aff. perparvum",
                                   SubSpecies="",
                                   Sex="m",
                                   Author = "",
@@ -999,7 +999,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                            "BBSL1071235")),
 
 
-    Agapostemen_angelicus_f = list(
+    Agapostemon_angelicus_f = list(
         Genus="Agapostemon",
         SubGenus ="Agapostemon",
         Species="angelicus",
@@ -1071,7 +1071,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                    "30467", "21092")),
 
 
-    Agapostemen_angelicus_m = list(
+    Agapostemon_angelicus_m = list(
         Genus="Agapostemon",
         SubGenus ="Agapostemon",
         Species="angelicus",
