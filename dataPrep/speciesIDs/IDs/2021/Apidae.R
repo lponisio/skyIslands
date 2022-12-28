@@ -127,8 +127,7 @@ sp.ids <- list(
                                 Sex="f",
                                 Author = "Cresson",
                                 Determiner="J. Zorn",
-                                temp.id= c(33751,34156,36875,36793,
-                                           38024,38256,36828)),
+                                temp.id= c(33751,34156)),
 
     ## Anthophora_montana_m = list(Genus="Anthophora",
     ##                             SubGenus="Mystacanthophora",
