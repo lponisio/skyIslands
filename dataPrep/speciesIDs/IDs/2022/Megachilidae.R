@@ -14,7 +14,7 @@ sp.ids <- list(
                                  Species="maculosum",
                                  SubSpecies="", Sex="m",
                                  Author = "Cresson",
-                                 Determiner = "K. Watrous",
+                                 Determiner = "",
                                  temp.id= c()),
 
     Megachile_fidelis_f = list(Genus="Megachile",
@@ -57,7 +57,7 @@ sp.ids <- list(
                                Species="gemula",
                                SubSpecies="fulvogemula",
                               Sex="f", Author = "Cresson",
-                               Determiner = "T. Griswold",
+                               Determiner = "",
                                temp.id=  c()),
 
     Megachile_subexilis_f = list(Genus="Megachile",
@@ -116,7 +116,7 @@ sp.ids <- list(
                                Species="inimica",
                                SubSpecies="sayi",
                                Sex="m", Author = "Cresson",
-                               Determiner = "T. Griswold",
+                               Determiner = "",
                                temp.id=  c()),
 
 
@@ -125,7 +125,7 @@ sp.ids <- list(
                                    Species="mellitarsis",
                                    SubSpecies="", Sex="f",
                                    Author = "Cresson",
-                                   Determiner = "T. Griswold",
+                                   Determiner = "",
                                    temp.id= c()),
 
     Megachile_mellitarsis_m = list(Genus="Megachile",
