@@ -29,7 +29,7 @@ ggtree(tree.16sR0, branch.length='none', layout='circular')
 
 groupInfo <- data.frame(physeq16sR0@tax_table)
 
-ggtree(tree.16s, layout='circular', branch.length = 'none')
+ggtree(tree.16sR0, layout='circular')
 
 data(chiroptera, package="ape")
 groupInfo <- split(chiroptera$tip.label, gsub("_///w+", "", chiroptera$tip.label))
@@ -112,4 +112,96 @@ library(ggnewscale)
 ## the dimensions are not the same, so will have to account somehow for 
 ## duplicate features (strains) so that the metadata dimensions are the 
 ## same and # of tree.16s tips
+
+
+spec16s <- read.csv('spec_RBCL_16s.csv')
+
+meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'Sex', 'GeographyFK', 'Site', 'Meadow')
+
+microbes <- spec16s %>%
+  select(UniqueID, Site, Genus, starts_with('X16s')) %>%
+  filter(!Genus == 'Agapostemon') %>%
+  na.omit()
+
+meta <- spec16s %>%
+  select(all_of(meta_cols), Apidae) %>%
+  filter(Apidae == 1)
+
+
+##########################
+
+##match unique IDs
+match_shared_ID <- function(first_df, second_df){
+  shared <- first_df$UniqueID[first_df$UniqueID %in% second_df$UniqueID]
+  matched_df <- first_df %>%
+  filter(UniqueID %in% shared)
+  matched_df
+}
+
+match_shared_tiplabels <- function(tree, pres_abs_table){
+  tree_tips <- tree$tip.label
+  #browser()
+  all_cols <- pres_abs_table %>%
+    select(-UniqueID) 
+  #browser()
+  match_cols <- all_cols[colnames(all_cols) %in% tree_tips]
+  #browser()
+  match_cols$UniqueID <- pres_abs_table$UniqueID
+  match_cols
+}
+
+matched_presabs <- match_shared_tiplabels(tree.16s, comm_presabs)
+matched_pres_meta <- match_shared_ID(matched_presabs, meta)
+
+#hmm rn there are more tip.labels in the tree than feature columns
+# in the metadata... why???
+#want to compare tree.16s$tip.label(265) to colnames in comm_presabs(254)
+
+#trying to find the step that makes the numbers not match
+#tree.16sR0
+p <- ggtree(tree.16sR0, layout='circular')
+n_occur <- data.frame(table(tree.16sR0$tip.label))
+
+#253 features but some features have multiple occurences
+# need to figure out a way to pair up the unique features
+# with metadata -- ideally i want rows as tip.names
+# with each column as metadata
+# will need a column of presence and absence for
+# each site
+# each genus
+comm_presabs <- as.data.frame(indiv.comm.16sR0) 
+comm_presabs[comm_presabs > 0] <- 1 #converts from abundance to P/A
+library(tibble)
+comm_presabs <- tibble::rownames_to_column(comm_presabs, "UniqueID")
+matched_pres_meta <- match_shared_ID(comm_presabs, meta)
+matched_id <- matched_pres_meta$UniqueID
+row.names(matched_pres_meta) <- matched_id
+#matched_matrix <- matched_pres_meta %>% 
+#  select(-UniqueID) %>%
+#  t()
+
+#making presence/abs columns in metadata
+meta_match_sites <- match_shared_ID(meta, matched_pres_meta) %>%
+  select(UniqueID, Site) %>%
+  mutate(Site = as.factor(Site)) %>%
+  group_by(UniqueID, Site) %>%
+  count() %>%
+  pivot_wider(UniqueID, 
+              names_from=Site, 
+              values_from = n, 
+              values_fill=0,
+              names_expand = TRUE,
+              id_expand=TRUE)
+
+meta_match_genus <- match_shared_ID(meta, matched_pres_meta) %>%
+  select(UniqueID, Genus) %>%
+  mutate(Site = as.factor(Genus)) %>%
+  group_by(UniqueID, Genus) %>%
+  count() %>%
+  pivot_wider(UniqueID, 
+              names_from=Genus, 
+              values_from = n, 
+              values_fill=0,
+              names_expand = TRUE,
+              id_expand=TRUE)
 
