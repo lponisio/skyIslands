@@ -188,10 +188,14 @@ meta_match_sites <- match_shared_ID(meta, matched_pres_meta) %>%
   count() %>%
   pivot_wider(UniqueID, 
               names_from=Site, 
-              values_from = n, 
+              values_from = freq, 
               values_fill=0,
               names_expand = TRUE,
-              id_expand=TRUE)
+              id_expand=TRUE) %>%
+  pivot_longer(cols=CH:SM,
+               names_to='Site', 
+               values_to='Site_present')
+  
 
 meta_match_genus <- match_shared_ID(meta, matched_pres_meta) %>%
   select(UniqueID, Genus) %>%
@@ -200,8 +204,44 @@ meta_match_genus <- match_shared_ID(meta, matched_pres_meta) %>%
   count() %>%
   pivot_wider(UniqueID, 
               names_from=Genus, 
-              values_from = n, 
+              values_from = freq, 
               values_fill=0,
               names_expand = TRUE,
-              id_expand=TRUE)
+              id_expand=TRUE) %>%
+  pivot_longer(cols=Agapostemon:Megachile,
+               names_to='Genus', 
+               values_to='Genus_present')
 
+## now need to figure out how to incorporate
+## the tip labels so that the features are 
+## tied to the metadata -- features as rows
+## columns for metadata
+
+##matched_pres_meta is a table with unique ID 
+## as rows and features as columns while both meta_match
+## have unique ID as rows and metadata as columns
+## need to create an item that has features as rows
+## and metadata as columns
+
+
+
+features_site_metadata <- match_shared_ID(matched_pres_meta, meta_match_sites) %>%
+  right_join(meta_match_sites, by='UniqueID') %>%
+  pivot_longer(cols = starts_with('16s'), names_to = 'bacteria', values_to = 'bact_pres')
+
+## probs want to use trimmed tree for final
+## visualization but right now will retain
+## duplicates
+p <- ggtree(tree.16sR0, layout="fan")
+
+
+
+p2 <- p + 
+  geom_fruit(
+    data=features_site_metadata,
+    geom=geom_tile,
+    mapping=aes(y=UniqueID, 
+                x=Site, 
+                fill=Site_present)) +
+  scale_fill_manual(
+  values=c("#F8766D", "#C49A00", "#53B400", "#00C094", "#00B6EB", "#A58AFF", "#FB61D7"))
