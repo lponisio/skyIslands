@@ -31,11 +31,6 @@ groupInfo <- data.frame(physeq16sR0@tax_table)
 
 ggtree(tree.16sR0, layout='circular')
 
-data(chiroptera, package="ape")
-groupInfo <- split(chiroptera$tip.label, gsub("_///w+", "", chiroptera$tip.label))
-chiroptera <- groupOTU(chiroptera, groupInfo)
-ggtree(chiroptera, aes(color=group), layout='circular') + geom_tiplab(size=1, aes(angle=angle))
-
 
 ## import metadata
 
@@ -193,9 +188,9 @@ meta_match_sites <- match_shared_ID(meta, matched_pres_meta) %>%
               names_expand = TRUE,
               id_expand=TRUE) %>%
   pivot_longer(cols=CH:SM,
-               names_to='Site', 
+               names_to='Site',
                values_to='Site_present')
-  
+
 
 meta_match_genus <- match_shared_ID(meta, matched_pres_meta) %>%
   select(UniqueID, Genus) %>%
@@ -207,10 +202,10 @@ meta_match_genus <- match_shared_ID(meta, matched_pres_meta) %>%
               values_from = freq, 
               values_fill=0,
               names_expand = TRUE,
-              id_expand=TRUE) %>%
-  pivot_longer(cols=Agapostemon:Megachile,
-               names_to='Genus', 
-               values_to='Genus_present')
+              id_expand=TRUE) #%>%
+  # # pivot_longer(cols=Agapostemon:Megachile,
+  #              names_to='Genus', 
+  #              values_to='Genus_present')
 
 ## now need to figure out how to incorporate
 ## the tip labels so that the features are 
@@ -227,7 +222,12 @@ meta_match_genus <- match_shared_ID(meta, matched_pres_meta) %>%
 
 features_site_metadata <- match_shared_ID(matched_pres_meta, meta_match_sites) %>%
   right_join(meta_match_sites, by='UniqueID') %>%
-  pivot_longer(cols = starts_with('16s'), names_to = 'bacteria', values_to = 'bact_pres')
+  pivot_longer(cols = starts_with('16s'), names_to = 'bacteria', values_to = 'bact_pres') %>%
+  group_by(bacteria) %>%
+  select(!UniqueID) %>%
+  filter(bact_pres == 1) %>%
+  select(!bact_pres) %>%
+  relocate(bacteria)
 
 ## probs want to use trimmed tree for final
 ## visualization but right now will retain
@@ -240,8 +240,8 @@ p2 <- p +
   geom_fruit(
     data=features_site_metadata,
     geom=geom_tile,
-    mapping=aes(y=UniqueID, 
+    mapping=aes(y=bacteria, 
                 x=Site, 
-                fill=Site_present)) +
+                fill=factor(Site_present))) +
   scale_fill_manual(
   values=c("#F8766D", "#C49A00", "#53B400", "#00C094", "#00B6EB", "#A58AFF", "#FB61D7"))
