@@ -2,18 +2,18 @@
 
 ##making phytools phylogeny tutorial http://www.phytools.org/Cordoba2017/ex/2/Intro-to-phylogenies.html
 
-library(ape)
-library(phangorn)
-library(phytools)
-library(geiger)
-library(devtools)
-install_github("liamrevell/phytools")
-
-
-taxonomy.table <- physeq16sR0@tax_table
-
-plotTree(tree.16sR0,type="fan",fsize=0.7,lwd=1,
-         ftype="off") ##not great
+# library(ape)
+# library(phangorn)
+# library(phytools)
+# library(geiger)
+# library(devtools)
+# install_github("liamrevell/phytools")
+# 
+# 
+# taxonomy.table <- physeq16sR0@tax_table
+# 
+# plotTree(tree.16sR0,type="fan",fsize=0.7,lwd=1,
+#          ftype="off") ##not great
 
 ###tutorial https://yulab-smu.top/treedata-book/chapter4.html
 
@@ -22,17 +22,20 @@ plotTree(tree.16sR0,type="fan",fsize=0.7,lwd=1,
 library(treeio)
 library(ggtree)
 
-tree.16s$tip.label <- gsub("16s:", "", tree.16s$tip.label)
-bees.16s
+# tree.16s$tip.label <- gsub("16s:", "", tree.16s$tip.label)
+# bees.16s
+# 
+# ggtree(tree.16sR0, branch.length='none', layout='circular')
+# 
+# groupInfo <- data.frame(physeq16sR0@tax_table)
 
-ggtree(tree.16sR0, branch.length='none', layout='circular')
-
-groupInfo <- data.frame(physeq16sR0@tax_table)
-
-ggtree(tree.16sR0, layout='circular')
+ggtree(tree.16s, layout='circular')
 
 
 ## import metadata
+
+wdpath <- 'C:/Users/rah10/Dropbox (University of Oregon)/PonisioLocal/skyIslands'
+setwd(wdpath)
 
 spec16s <- read.csv('spec_RBCL_16s.csv')
 
@@ -51,40 +54,40 @@ meta <- spec16s %>%
 ##create lists of unique IDs for each species to filter
 ######################################################
 
-install.packages("remotes")
-remotes::install_github("xiangpin/MicrobiotaProcess")
-
-#apis
-apis_subset <- meta %>%
-  filter(Genus == 'Apis') 
-apis_ids <- apis_subset %>%
-  select(UniqueID) 
-apis_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% apis_ids$UniqueID == TRUE,] 
-
-apis_phylo <- as.phyloseq(apis_taxonomy)
-
-ggtree(as.data.frame(apis_taxonomy), branch.length='none', layout='circular')
-
-#bombus
-bombus_subset <- meta %>%
-  filter(Genus == 'Bombus') 
-bombus_ids <- bombus_subset %>%
-  select(UniqueID) 
-bombus_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% bombus_ids$UniqueID == TRUE,]
-
-#megachile
-megachile_subset <- meta %>%
-  filter(Genus == 'Megachile') 
-megachile_ids <- megachile_subset %>%
-  select(UniqueID) 
-megachile_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% megachile_ids$UniqueID == TRUE,] 
-
-#anthophora
-anthophora_subset <- meta %>%
-  filter(Genus == 'Anthophora') 
-anthophora_ids <- anthophora_subset %>%
-  select(UniqueID) 
-anthophora_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% anthophora_ids$UniqueID == TRUE,] 
+# install.packages("remotes")
+# remotes::install_github("xiangpin/MicrobiotaProcess")
+# 
+# #apis
+# apis_subset <- meta %>%
+#   filter(Genus == 'Apis') 
+# apis_ids <- apis_subset %>%
+#   select(UniqueID) 
+# apis_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% apis_ids$UniqueID == TRUE,] 
+# 
+# apis_phylo <- as.phyloseq(apis_taxonomy)
+# 
+# ggtree(as.data.frame(apis_taxonomy), branch.length='none', layout='circular')
+# 
+# #bombus
+# bombus_subset <- meta %>%
+#   filter(Genus == 'Bombus') 
+# bombus_ids <- bombus_subset %>%
+#   select(UniqueID) 
+# bombus_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% bombus_ids$UniqueID == TRUE,]
+# 
+# #megachile
+# megachile_subset <- meta %>%
+#   filter(Genus == 'Megachile') 
+# megachile_ids <- megachile_subset %>%
+#   select(UniqueID) 
+# megachile_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% megachile_ids$UniqueID == TRUE,] 
+# 
+# #anthophora
+# anthophora_subset <- meta %>%
+#   filter(Genus == 'Anthophora') 
+# anthophora_ids <- anthophora_subset %>%
+#   select(UniqueID) 
+# anthophora_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% anthophora_ids$UniqueID == TRUE,] 
 
 ################## 12/27/22
 ## tutorial: https://bioconductor.org/packages/devel/bioc/vignettes/ggtreeExtra/inst/doc/ggtreeExtra.html
@@ -183,7 +186,7 @@ meta_match_sites <- match_shared_ID(meta, matched_pres_meta) %>%
   count() %>%
   pivot_wider(UniqueID, 
               names_from=Site, 
-              values_from = freq, 
+              values_from = n, 
               values_fill=0,
               names_expand = TRUE,
               id_expand=TRUE) %>%
@@ -199,13 +202,13 @@ meta_match_genus <- match_shared_ID(meta, matched_pres_meta) %>%
   count() %>%
   pivot_wider(UniqueID, 
               names_from=Genus, 
-              values_from = freq, 
+              values_from = n, 
               values_fill=0,
               names_expand = TRUE,
-              id_expand=TRUE) #%>%
-  # # pivot_longer(cols=Agapostemon:Megachile,
-  #              names_to='Genus', 
-  #              values_to='Genus_present')
+              id_expand=TRUE) %>%
+  pivot_longer(cols=Agapostemon:Megachile,
+               names_to='Genus',
+               values_to='Genus_present')
 
 ## now need to figure out how to incorporate
 ## the tip labels so that the features are 
@@ -224,17 +227,32 @@ features_site_metadata <- match_shared_ID(matched_pres_meta, meta_match_sites) %
   right_join(meta_match_sites, by='UniqueID') %>%
   pivot_longer(cols = starts_with('16s'), names_to = 'bacteria', values_to = 'bact_pres') %>%
   group_by(bacteria) %>%
-  select(!UniqueID) %>%
   filter(bact_pres == 1) %>%
   select(!bact_pres) %>%
-  relocate(bacteria)
+  relocate(bacteria) %>% 
+  mutate(strain_bee = paste(bacteria,UniqueID,sep="_"))
+
+features_genus_metadata <- match_shared_ID(matched_pres_meta, meta_match_genus) %>%
+  right_join(meta_match_genus, by='UniqueID') %>%
+  pivot_longer(cols = starts_with('16s'), names_to = 'bacteria', values_to = 'bact_pres') %>%
+  group_by(bacteria) %>%
+  filter(bact_pres == 1) %>%
+  select(!bact_pres) %>%
+  relocate(bacteria) %>% 
+  mutate(strain_bee = paste(bacteria,UniqueID,sep="_"))
 
 ## probs want to use trimmed tree for final
 ## visualization but right now will retain
 ## duplicates
-p <- ggtree(tree.16sR0, layout="fan")
+#library(wesanderson)
 
 
+p_rectangular <- ggtree(tree.16s, #layout="fan", open.angle=10, size=0.5)
+            layout='rectangular')
+
+p_fan <- ggtree(tree.16s, layout="fan", open.angle=10, size=0.5)
+
+                p1
 
 p2 <- p + 
   geom_fruit(
@@ -242,6 +260,18 @@ p2 <- p +
     geom=geom_tile,
     mapping=aes(y=bacteria, 
                 x=Site, 
-                fill=factor(Site_present))) +
+                alpha=as.factor(Site_present),
+                fill=Site)) +
   scale_fill_manual(
-  values=c("#F8766D", "#C49A00", "#53B400", "#00C094", "#00B6EB", "#A58AFF", "#FB61D7"))
+    values=c("#F8766D", "#C49A00", "#53B400", "#00C094", "#00B6EB", "#A58AFF", "#FB61D7"))
+p2
+
+p3 <- p + 
+  geom_fruit(
+    data=features_genus_metadata,
+    geom=geom_tile,
+    mapping=aes(y=bacteria, 
+                x=Genus, 
+                alpha=as.factor(Genus_present),
+                fill=Genus)) 
+p3
