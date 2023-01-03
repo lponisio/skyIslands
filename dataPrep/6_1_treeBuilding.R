@@ -21,6 +21,7 @@
 
 library(treeio)
 library(ggtree)
+library(tidyverse)
 
 # tree.16s$tip.label <- gsub("16s:", "", tree.16s$tip.label)
 # bees.16s
@@ -29,7 +30,7 @@ library(ggtree)
 # 
 # groupInfo <- data.frame(physeq16sR0@tax_table)
 
-ggtree(tree.16s, layout='circular')
+#ggtree(tree.16s, layout='circular')
 
 
 ## import metadata
@@ -41,10 +42,10 @@ spec16s <- read.csv('spec_RBCL_16s.csv')
 
 meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'Sex', 'GeographyFK', 'Site', 'Meadow')
 
-microbes <- spec16s %>%
-  select(UniqueID, Site, Genus, starts_with('X16s')) %>%
-  filter(!Genus == 'Agapostemon') %>%
-  na.omit()
+# microbes <- spec16s %>%
+#   select(UniqueID, Site, Genus, starts_with('X16s')) %>%
+#   filter(!Genus == 'Agapostemon') %>%
+#   na.omit()
 
 meta <- spec16s %>%
   select(all_of(meta_cols), Apidae) %>%
@@ -116,10 +117,10 @@ spec16s <- read.csv('spec_RBCL_16s.csv')
 
 meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'Sex', 'GeographyFK', 'Site', 'Meadow')
 
-microbes <- spec16s %>%
-  select(UniqueID, Site, Genus, starts_with('X16s')) %>%
-  filter(!Genus == 'Agapostemon') %>%
-  na.omit()
+# microbes <- spec16s %>%
+#   select(UniqueID, Site, Genus, starts_with('X16s')) %>%
+#   filter(!Genus == 'Agapostemon') %>%
+#   na.omit()
 
 meta <- spec16s %>%
   select(all_of(meta_cols), Apidae) %>%
@@ -230,7 +231,15 @@ features_site_metadata <- match_shared_ID(matched_pres_meta, meta_match_sites) %
   filter(bact_pres == 1) %>%
   select(!bact_pres) %>%
   relocate(bacteria) %>% 
-  mutate(strain_bee = paste(bacteria,UniqueID,sep="_"))
+  mutate(Site = factor(Site, levels=c("JC", ## ordered by latitude north to south
+                                      "SM",
+                                      "SC",
+                                      "MM",
+                                      "HM",
+                                      "PL",
+                                      "CH")))
+
+
 
 features_genus_metadata <- match_shared_ID(matched_pres_meta, meta_match_genus) %>%
   right_join(meta_match_genus, by='UniqueID') %>%
@@ -239,20 +248,21 @@ features_genus_metadata <- match_shared_ID(matched_pres_meta, meta_match_genus) 
   filter(bact_pres == 1) %>%
   select(!bact_pres) %>%
   relocate(bacteria) %>% 
-  mutate(strain_bee = paste(bacteria,UniqueID,sep="_"))
+  mutate(Genus = factor(Genus, levels=c("Apis", ## ordered by relative (eyeballed) PCA microbiome similarity
+                                      "Bombus",
+                                      "Anthophora",
+                                      "Megachile",
+                                      "Agapostemon")))
+  
 
 ## probs want to use trimmed tree for final
 ## visualization but right now will retain
-## duplicates
-#library(wesanderson)
 
 
-p_rectangular <- ggtree(tree.16s, #layout="fan", open.angle=10, size=0.5)
-            layout='rectangular')
+#p <- ggtree(tree.16s, layout='rectangular')
 
-p_fan <- ggtree(tree.16s, layout="fan", open.angle=10, size=0.5)
+p <- ggtree(tree.16s, layout="fan", open.angle=10, size=0.5)
 
-                p1
 
 p2 <- p + 
   geom_fruit(
@@ -261,10 +271,12 @@ p2 <- p +
     mapping=aes(y=bacteria, 
                 x=Site, 
                 alpha=as.factor(Site_present),
-                fill=Site)) +
-  scale_fill_manual(
-    values=c("#F8766D", "#C49A00", "#53B400", "#00C094", "#00B6EB", "#A58AFF", "#FB61D7"))
-p2
+                fill=Site_present)) 
+p2.5 <- p2 + geom_fruit(data=features_genus_metadata,
+  geom=geom_col,
+  mapping=aes(y=bacteria,
+              x=Genus,
+              fill=Genus_present)) #The 'Abundance' of 'dat1' will be mapped to x)  # adjust the horizontal position of text of axis.) # add the grid line of the external bar plot.
 
 p3 <- p + 
   geom_fruit(
