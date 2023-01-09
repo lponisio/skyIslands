@@ -21,14 +21,49 @@ meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'Site', 'Lat', 'Long')
 
 spec16s <- read.csv('spec_RBCL_16s.csv') %>%
   filter(Apidae == 1) %>%
-  select(all_of(meta_cols), starts_with('X16s'))
+  select(all_of(meta_cols), starts_with('X16s')) %>%
+  na.omit()
 
-
+plot.genus.dissim.dist <- function(data, genus){
 #bray curtis dissimilarity matrix
-bray <- spec16s %>%
-  select(UniqueID, starts_with('X16s'))
+abund <- spec16s %>%
+  select(UniqueID, starts_with('X16s')) %>%
+  select(-UniqueID)
 
 #distance matrix
-dist0 <- spec16s %>%
-  select(UniqueID, Lat, Long)
+geo <- spec16s %>%
+  select(UniqueID, Long, Lat) %>%
+  select(-UniqueID) %>%
+  mutate()
 
+#abundance data frame - bray curtis dissimilarity
+dist.abund = vegdist(abund, method = "bray")
+
+#geographic data frame - haversine distance 
+d.geo = distm(geo, fun = distHaversine)
+dist.geo = as.dist(d.geo)
+
+#abundance vs geographic 
+abund_geo  = mantel(dist.abund, dist.geo, method = "spearman", permutations = 9999, na.rm = TRUE)
+abund_geo
+
+aa = as.vector(dist.abund)
+gg = as.vector(dist.geo)
+
+#new data frame with vectorized distance matrices
+mat = data.frame(aa,gg)
+
+#abundance vs geographic distance
+mm = ggplot(mat, aes(y = aa, x = gg/1000)) + 
+  geom_point(size = 3, alpha = 0.5, aes(group=)) + 
+  geom_smooth(method = "lm", colour = "red", alpha = 0.2) + 
+  labs(x = "Physical separation (km)", y = "Bray-Curtis Dissimilarity") + 
+  theme( axis.text.x = element_text(face = "bold",colour = "black", size = 12), 
+         axis.text.y = element_text(face = "bold", size = 11, colour = "black"), 
+         axis.title= element_text(face = "bold", size = 14, colour = "black"), 
+         panel.background = element_blank(), 
+         panel.border = element_rect(fill = NA, colour = "black"))
+mm
+
+}
+##
