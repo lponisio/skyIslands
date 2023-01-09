@@ -1,131 +1,30 @@
 
+## tutorial: https://bioconductor.org/packages/devel/bioc/vignettes/ggtreeExtra/inst/doc/ggtreeExtra.html
 
-##making phytools phylogeny tutorial http://www.phytools.org/Cordoba2017/ex/2/Intro-to-phylogenies.html
-
-# library(ape)
-# library(phangorn)
-# library(phytools)
-# library(geiger)
-# library(devtools)
-# install_github("liamrevell/phytools")
-# 
-# 
-# taxonomy.table <- physeq16sR0@tax_table
-# 
-# plotTree(tree.16sR0,type="fan",fsize=0.7,lwd=1,
-#          ftype="off") ##not great
-
-###tutorial https://yulab-smu.top/treedata-book/chapter4.html
-
-
-
-library(treeio)
+## packages
 library(ggtree)
 library(tidyverse)
+library(ggtreeExtra)
+library(ggstar)
+library(ggplot2)
+library(treeio)
+library(ggnewscale)
+library(tibble)
 
-# tree.16s$tip.label <- gsub("16s:", "", tree.16s$tip.label)
-# bees.16s
-# 
-# ggtree(tree.16sR0, branch.length='none', layout='circular')
-# 
-# groupInfo <- data.frame(physeq16sR0@tax_table)
-
-#ggtree(tree.16s, layout='circular')
-
-
-## import metadata
+## working dir
 
 wdpath <- 'C:/Users/rah10/Dropbox (University of Oregon)/PonisioLocal/skyIslands'
 setwd(wdpath)
 
-spec16s <- read.csv('spec_RBCL_16s.csv')
-
-meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'Sex', 'GeographyFK', 'Site', 'Meadow')
-
-# microbes <- spec16s %>%
-#   select(UniqueID, Site, Genus, starts_with('X16s')) %>%
-#   filter(!Genus == 'Agapostemon') %>%
-#   na.omit()
-
-meta <- spec16s %>%
-  select(all_of(meta_cols), Apidae) %>%
-  filter(Apidae == 1)
-
-#######################################################
-##create lists of unique IDs for each species to filter
-######################################################
-
-# install.packages("remotes")
-# remotes::install_github("xiangpin/MicrobiotaProcess")
-# 
-# #apis
-# apis_subset <- meta %>%
-#   filter(Genus == 'Apis') 
-# apis_ids <- apis_subset %>%
-#   select(UniqueID) 
-# apis_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% apis_ids$UniqueID == TRUE,] 
-# 
-# apis_phylo <- as.phyloseq(apis_taxonomy)
-# 
-# ggtree(as.data.frame(apis_taxonomy), branch.length='none', layout='circular')
-# 
-# #bombus
-# bombus_subset <- meta %>%
-#   filter(Genus == 'Bombus') 
-# bombus_ids <- bombus_subset %>%
-#   select(UniqueID) 
-# bombus_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% bombus_ids$UniqueID == TRUE,]
-# 
-# #megachile
-# megachile_subset <- meta %>%
-#   filter(Genus == 'Megachile') 
-# megachile_ids <- megachile_subset %>%
-#   select(UniqueID) 
-# megachile_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% megachile_ids$UniqueID == TRUE,] 
-# 
-# #anthophora
-# anthophora_subset <- meta %>%
-#   filter(Genus == 'Anthophora') 
-# anthophora_ids <- anthophora_subset %>%
-#   select(UniqueID) 
-# anthophora_taxonomy <- indiv.comm.16sR0[row.names(indiv.comm.16sR0) %in% anthophora_ids$UniqueID == TRUE,] 
-
-################## 12/27/22
-## tutorial: https://bioconductor.org/packages/devel/bioc/vignettes/ggtreeExtra/inst/doc/ggtreeExtra.html
-
-library(ggtreeExtra)
-library(ggstar)
-library(ggplot2)
-library(ggtree)
-library(treeio)
-library(ggnewscale)
-
-## what we need to do:
-# 1. make tree object from 6_rbcl_16sPrep.R
-# 2. get metadata
-## use bees.16s and spec_16s_rbcl or whatever
-####a. we want site, genus, species(?)
-## tips in indiv.comm.16sR0
-## make a table of presence and absence in indiv.comm.16sR0 for each unique ID
-## then for each metadata (site and bee genus) attach those to the unique ID
-## the dimensions are not the same, so will have to account somehow for 
-## duplicate features (strains) so that the metadata dimensions are the 
-## same and # of tree.16s tips
-
+## Data imports
 
 spec16s <- read.csv('spec_RBCL_16s.csv')
 
 meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'Sex', 'GeographyFK', 'Site', 'Meadow')
 
-# microbes <- spec16s %>%
-#   select(UniqueID, Site, Genus, starts_with('X16s')) %>%
-#   filter(!Genus == 'Agapostemon') %>%
-#   na.omit()
-
 meta <- spec16s %>%
   select(all_of(meta_cols), Apidae) %>%
   filter(Apidae == 1)
-
 
 ##########################
 
@@ -152,32 +51,14 @@ match_shared_tiplabels <- function(tree, pres_abs_table){
 matched_presabs <- match_shared_tiplabels(tree.16s, comm_presabs)
 matched_pres_meta <- match_shared_ID(matched_presabs, meta)
 
-#hmm rn there are more tip.labels in the tree than feature columns
-# in the metadata... why???
-#want to compare tree.16s$tip.label(265) to colnames in comm_presabs(254)
 
-#trying to find the step that makes the numbers not match
-#tree.16sR0
-p <- ggtree(tree.16sR0, layout='circular')
-n_occur <- data.frame(table(tree.16sR0$tip.label))
-
-#253 features but some features have multiple occurences
-# need to figure out a way to pair up the unique features
-# with metadata -- ideally i want rows as tip.names
-# with each column as metadata
-# will need a column of presence and absence for
-# each site
-# each genus
 comm_presabs <- as.data.frame(indiv.comm.16sR0) 
-comm_presabs[comm_presabs > 0] <- 1 #converts from abundance to P/A
-library(tibble)
+comm_presabs[comm_presabs > 0] <- 1 #converts from abundance to P/A -- check if needs to actualy do this
+
 comm_presabs <- tibble::rownames_to_column(comm_presabs, "UniqueID")
 matched_pres_meta <- match_shared_ID(comm_presabs, meta)
 matched_id <- matched_pres_meta$UniqueID
 row.names(matched_pres_meta) <- matched_id
-#matched_matrix <- matched_pres_meta %>% 
-#  select(-UniqueID) %>%
-#  t()
 
 #making presence/abs columns in metadata
 meta_match_sites <- match_shared_ID(meta, matched_pres_meta) %>%
@@ -272,11 +153,6 @@ p2 <- p +
                 x=Site, 
                 alpha=as.factor(Site_present),
                 fill=Site_present)) 
-p2.5 <- p2 + geom_fruit(data=features_genus_metadata,
-  geom=geom_col,
-  mapping=aes(y=bacteria,
-              x=Genus,
-              fill=Genus_present)) #The 'Abundance' of 'dat1' will be mapped to x)  # adjust the horizontal position of text of axis.) # add the grid line of the external bar plot.
 
 p3 <- p + 
   geom_fruit(
@@ -287,3 +163,34 @@ p3 <- p +
                 alpha=as.factor(Genus_present),
                 fill=Genus)) 
 p3
+
+############### relative abundance at each site 1/9/23
+
+## tutorial: https://github.com/surh/scip_barplot/blob/a775e0d97b47e8dd40498b6713016bbb7e045003/extended_example.Rmd#L285-L301
+
+##what we want: relative abundance bar charts with:
+## a facet for each bee genus at each site
+## y axis is rel abund
+## x axis is individual bee
+## so 7 sites and four bee genera (rows will be site and cols will be genus)
+## colored by ASV (family probs)
+## maybe will have to subet to each genus then facet only by site but we will see
+
+
+
+
+relabund.dat <- read.csv('spec_RBCL_16s.csv') %>%
+  filter(Apidae == 1) %>%
+  select(UniqueID, Site, Genus, starts_with('X16s')) %>%
+  na.omit() %>%
+  pivot_longer(-c(UniqueID, Site, Genus), names_to = 'Bacteria', values_to = 'Abundance')
+
+#change the column names to just include the bacteria family
+relabund.dat$Bacteria <- gsub(".*D_4__","",relabund.dat$Bacteria)#remove all of the column name before and up to D_4__
+relabund.dat$Bacteria <- gsub('\\.D_5__.*',"",relabund.dat$Bacteria) #remove everything after D_5__ to isolate just the bacteria family
+
+## some issues with resolution: for now to get around this i am filtering out samples that included anything that was not resolved to family
+relabund.dat.clean <- relabund.dat %>%
+  filter(!grepl('X16s', Bacteria))
+
+
