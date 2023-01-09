@@ -12,6 +12,7 @@ setwd("analysis/distanceDecay")
 library(vegan)
 install.packages("geosphere")
 library(geosphere)
+library(tidyverse)
 
 
 wdpath <- 'C:/Users/rah10/Dropbox (University of Oregon)/PonisioLocal/skyIslands'
@@ -26,12 +27,14 @@ spec16s <- read.csv('spec_RBCL_16s.csv') %>%
 
 plot.genus.dissim.dist <- function(data, genus){
 #bray curtis dissimilarity matrix
-abund <- spec16s %>%
+abund <- data %>%
+  filter(Genus == genus) %>%
   select(UniqueID, starts_with('X16s')) %>%
   select(-UniqueID)
 
 #distance matrix
-geo <- spec16s %>%
+geo <- data %>%
+  filter(Genus == genus) %>%
   select(UniqueID, Long, Lat) %>%
   select(-UniqueID) %>%
   mutate()
@@ -45,7 +48,7 @@ dist.geo = as.dist(d.geo)
 
 #abundance vs geographic 
 abund_geo  = mantel(dist.abund, dist.geo, method = "spearman", permutations = 9999, na.rm = TRUE)
-abund_geo
+print(abund_geo)
 
 aa = as.vector(dist.abund)
 gg = as.vector(dist.geo)
@@ -55,7 +58,7 @@ mat = data.frame(aa,gg)
 
 #abundance vs geographic distance
 mm = ggplot(mat, aes(y = aa, x = gg/1000)) + 
-  geom_point(size = 3, alpha = 0.5, aes(group=)) + 
+  geom_point(size = 3, alpha = 0.5) + 
   geom_smooth(method = "lm", colour = "red", alpha = 0.2) + 
   labs(x = "Physical separation (km)", y = "Bray-Curtis Dissimilarity") + 
   theme( axis.text.x = element_text(face = "bold",colour = "black", size = 12), 
@@ -66,4 +69,10 @@ mm = ggplot(mat, aes(y = aa, x = gg/1000)) +
 mm
 
 }
-##
+## by genus plots
+
+plot.genus.dissim.dist(spec16s, 'Apis')
+plot.genus.dissim.dist(spec16s, 'Bombus')
+plot.genus.dissim.dist(spec16s, 'Anthophora')
+plot.genus.dissim.dist(spec16s, 'Megachile')
+
