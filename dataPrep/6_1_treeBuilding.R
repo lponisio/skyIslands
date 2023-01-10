@@ -10,6 +10,7 @@ library(ggplot2)
 library(treeio)
 library(ggnewscale)
 library(tibble)
+library(pals)
 
 ## working dir
 
@@ -183,7 +184,14 @@ relabund.dat <- read.csv('spec_RBCL_16s.csv') %>%
   filter(Apidae == 1) %>%
   select(UniqueID, Site, Genus, starts_with('X16s')) %>%
   na.omit() %>%
-  pivot_longer(-c(UniqueID, Site, Genus), names_to = 'Bacteria', values_to = 'Abundance')
+  pivot_longer(-c(UniqueID, Site, Genus), names_to = 'Bacteria', values_to = 'Abundance') %>% 
+  mutate(Site = factor(Site, levels=c("JC", ## ordered by latitude north to south
+                                      "SM",
+                                      "SC",
+                                      "MM",
+                                      "HM",
+                                      "PL",
+                                      "CH")))
 
 #change the column names to just include the bacteria family
 relabund.dat$Bacteria <- gsub(".*D_4__","",relabund.dat$Bacteria)#remove all of the column name before and up to D_4__
@@ -191,6 +199,44 @@ relabund.dat$Bacteria <- gsub('\\.D_5__.*',"",relabund.dat$Bacteria) #remove eve
 
 ## some issues with resolution: for now to get around this i am filtering out samples that included anything that was not resolved to family
 relabund.dat.clean <- relabund.dat %>%
-  filter(!grepl('X16s', Bacteria))
+  filter(!grepl('X16s', Bacteria)) %>%
+  filter(Abundance > 0.01) ## too many groups -- decide what is the cutoff to show on relabund bars
 
+## good enough for now probs
 
+## now to make prelim plot
+
+# relabund.dat.clean %>%
+#   ggplot(aes(x=UniqueID, y=Abundance)) +
+#   geom_bar(aes(fill=Bacteria), stat='identity', position='fill') +
+#   facet_grid(rows=vars(relabund.dat.clean$Site), cols=vars(relabund.dat.clean$Genus))
+
+## yuck :( okay needs to do each genus separately
+
+plot_genus_by_site_relabund <- function(data, genus){
+
+  genus_subset <- data %>%
+    filter(Genus == genus)
+
+  n.colors <- length(unique(genus_subset$Bacteria))
+
+  ggplot(data=genus_subset, aes(x=UniqueID, y=Abundance)) +
+    geom_bar(aes(fill=Bacteria), stat='identity', position='fill', width=1) +
+    facet_grid(~Site, scales='free_x') +
+    theme_classic() +
+    theme(axis.text.x = element_text(angle = 90),
+          axis.text.y = element_text(color = "black")) +
+    scale_fill_manual(values=as.vector(polychrome(n.colors)), name = "Bacteria Family")
+}
+
+apis_plot <- plot_genus_by_site_relabund(relabund.dat.clean, 'Apis')
+apis_plot
+
+bombus_plot <- plot_genus_by_site_relabund(relabund.dat.clean, 'Bombus')
+bombus_plot
+
+anthophora_plot <- plot_genus_by_site_relabund(relabund.dat.clean, 'Anthophora')
+anthophora_plot
+
+megachile_plot <- plot_genus_by_site_relabund(relabund.dat.clean, 'Megachile')
+megachile_plot
