@@ -200,7 +200,10 @@ relabund.dat$Bacteria <- gsub('\\.D_5__.*',"",relabund.dat$Bacteria) #remove eve
 ## some issues with resolution: for now to get around this i am filtering out samples that included anything that was not resolved to family
 relabund.dat.clean <- relabund.dat %>%
   filter(!grepl('X16s', Bacteria)) %>%
+  filter(Genus != 'Agapostemon') %>%
   filter(Abundance > 0.01) ## too many groups -- decide what is the cutoff to show on relabund bars
+
+bacteria_pal <- polychrome(length(unique(relabund.dat.clean$Bacteria)))
 
 ## good enough for now probs
 
@@ -222,11 +225,13 @@ plot_genus_by_site_relabund <- function(data, genus){
 
   ggplot(data=genus_subset, aes(x=UniqueID, y=Abundance)) +
     geom_bar(aes(fill=Bacteria), stat='identity', position='fill', width=1) +
-    facet_grid(~Site, scales='free_x') +
+    facet_grid(~Site, scales='free_x', space='free_x') +
     theme_classic() +
-    theme(axis.text.x = element_text(angle = 90),
+    theme(axis.text.x=element_blank(),
+          axis.ticks.x=element_blank(),
           axis.text.y = element_text(color = "black")) +
-    scale_fill_manual(values=as.vector(polychrome(n.colors)), name = "Bacteria Family")
+    scale_fill_manual(values=as.vector(polychrome(n.colors)), name = "Bacteria Family") + 
+    labs(x='Individuals', y='Relative Abundance')
 }
 
 apis_plot <- plot_genus_by_site_relabund(relabund.dat.clean, 'Apis')
@@ -240,3 +245,15 @@ anthophora_plot
 
 megachile_plot <- plot_genus_by_site_relabund(relabund.dat.clean, 'Megachile')
 megachile_plot
+
+## lets see how they look combined 
+library(ggpubr)
+
+ggarrange(
+  apis_plot, 
+  bombus_plot,
+  anthophora_plot,
+  megachile_plot,
+  labels = c("Ap", "B", "An", "M"),
+  common.legend = TRUE, legend = "bottom"
+)
