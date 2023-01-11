@@ -26,8 +26,8 @@ spec.data$SiteSubSite <-  paste0(spec.data$Site, spec.data$SubSite)
 
 print(paste("original number of specimens", nrow(spec.data)))
 
-## CHECK DATE FORMAT
-spec.data$Date <- as.Date(spec.data$Date, "%m/%d/%y")
+## BEWARE CHECK DATE FORMAT
+spec.data$Date <- as.Date(spec.data$Date, "%m/%d/%Y")
 
 ## add subsite one to all 2012 data
 spec.2012 <- spec.data$Date < "2013-01-01"
@@ -101,14 +101,13 @@ source('../../skyIslands/dataPrep/speciesIDs/AssignSpecies.R')
 
 ## *******************************************************
 ## create conditions file
-
 weather.data <- read.csv("raw/weather.csv")
 
 weather.data$SiteSubSite <-  paste0(weather.data$Site,
                                     weather.data$SubSite)
 
-
-weather.data$Date <- as.Date(weather.data$Date, "%m/%d/%y")
+## BEWARE CHECK DATE
+weather.data$Date <- as.Date(weather.data$Date, "%m/%d/%Y")
 
 
 check.weather.data <- aggregate(weather.data$StartTime,
@@ -120,7 +119,6 @@ check.weather.data <- aggregate(weather.data$StartTime,
 write.csv(unique(weather.data), file="relational/original/weather.csv",
                    row.names=FALSE)
 ## *******************************************************
-
 
 geo <- read.csv("raw/geography.csv")
 

@@ -18,14 +18,14 @@ dir.bombus <-
 ## create relational database, add species IDs
 ## *****************************************************************
 
-## setwd(dir.bombus)
-## source('dataPrep/relational/prep.R')
+setwd(dir.bombus)
+source('dataPrep/relational/prep.R')
 
-## setwd(dir.bombus)
-## source('dataPrep/relational/make.R')
+setwd(dir.bombus)
+source('dataPrep/relational/make.R')
 
-## setwd(dir.bombus)
-## source('dataPrep/relational/traditional.R')
+setwd(dir.bombus)
+source('dataPrep/relational/traditional.R')
 
 ## *****************************************************************
 ## prep specimen data
@@ -166,22 +166,37 @@ site.sum <- spec %>%
     group_by(Site, Year, SampleRound) %>%
     summarise(PollAbundance = length(GenusSpecies),
               PollRichness= length(unique(GenusSpecies)),
+              VisitedFloralRichness= length(unique(PlantGenusSpecies)),
+              BombusRichness= length(unique(GenusSpecies[Genus == "Bombus"])),
               PollDiversity=vegan:::diversity(table(GenusSpecies),
                                               index="shannon"),
+              VisitedFloralDiversity=vegan:::diversity(table(PlantGenusSpecies),
+                                              index="shannon"),
+              BombusDiversity=vegan:::diversity(table(GenusSpecies[Genus == "Bombus"]),
+                                                index="shannon"),
               SiteParasitismRate=mean(ParasitePresence, na.rm=TRUE),
               MeanParasiteRichness=mean(ParasiteRichness, na.rm=TRUE),
               SRDoyPoly1=mean(DoyPoly1),
               SRDoyPoly2=mean(DoyPoly2),
-              SRDoy=mean(Doy))
+              SRDoy=mean(Doy),
+              HBAbundance = sum(GenusSpecies == "Apis mellifera"),
+              BombusAbundance = sum(Genus == "Bombus"),
+              NonBombusHBAbundance =
+                  sum(Genus != "Bombus" & Genus != "Apis"),
+              HBSiteParasitismRate=mean(
+                  ParasitePresence[GenusSpecies == "Apis mellifera"],
+                  na.rm=TRUE),
+              BombusSiteParasitismRate=mean(
+                  ParasitePresence[Genus == "Bombus"], na.rm=TRUE))
 
-hb <- spec[spec$GenusSpecies == "Apis mellifera",]
+## hb <- spec[spec$GenusSpecies == "Apis mellifera",]
 
-hb.site.sum <- hb %>%
-    group_by(Site, Year, SampleRound) %>%
-    summarise(HBAbundance =n(),
-              HBSiteParasitismRate=mean(ParasitePresence, na.rm=TRUE))
+## hb.site.sum <- hb %>%
+##     group_by(Site, Year, SampleRound) %>%
+##     summarise(HBAbundance =n(),
+##               HBSiteParasitismRate=mean(ParasitePresence, na.rm=TRUE))
 
-site.sum  <- merge(site.sum, hb.site.sum, all.x=TRUE)
+## site.sum  <- merge(site.sum, hb.site.sum, all.x=TRUE)
 
 site.sp.yr <- spec %>%
     group_by(Site, Year, GenusSpecies, Genus) %>%
@@ -193,7 +208,8 @@ bombus$Genus  <- NULL
 ## add site characteristics
 sites <- unique(data.frame(Site=spec$Site,
                            Lat= spec$Lat,
-                           Area=spec$Area))
+                           Area=spec$Area,
+                           Elev=spec$Elev))
 site.sum <- merge(site.sum, sites)
 site.sum$Year <- as.factor(site.sum$Year)
 

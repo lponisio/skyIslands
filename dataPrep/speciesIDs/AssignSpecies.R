@@ -15,6 +15,40 @@ spec$Order <- spec$Family <- spec$Genus <- spec$SubGenus <- spec$Species <-
 write.csv(spec, file=spec.data.file, row.names=FALSE)
 
 
+
+
+## 2022 field season
+## source(file.path(save.dir, 'IDs/2021/Syrphidae.R'))
+## add.to.data(sp.ids=sp.ids,
+##             case='fly',"Syrphidae", "2021",
+##             data.file=spec.data.file)
+
+source(file.path(save.dir, 'IDs/2022/Apidae.R'))
+add.to.data(sp.ids=sp.ids, case='bee', "Apidae","2022",
+data.file=spec.data.file)
+
+## source(file.path(save.dir, 'IDs/2022/Halictidae.R'))
+## add.to.data(sp.ids=sp.ids,
+##             case='bee', "Halictidae","2022",
+##             data.file=spec.data.file)
+
+## source(file.path(save.dir, 'IDs/2022/Megachilidae.R'))
+## add.to.data(sp.ids=sp.ids,
+##             case='bee', "Megachilidae","2022",
+##             data.file=spec.data.file)
+
+## source(file.path(save.dir, 'IDs/2022/Colletidae.R'))
+## add.to.data(sp.ids=sp.ids,
+##             case='bee', "Colletidae","2022",
+##             data.file=spec.data.file)
+
+## source(file.path(save.dir, 'IDs/2022/Sphecidae.R'))
+## add.to.data(sp.ids=sp.ids,
+##             case='wasp', "Sphecidae","2022",
+##             data.file=spec.data.file)
+
+
+
 ## 2021 field season
 ## source(file.path(save.dir, 'IDs/2021/Syrphidae.R'))
 ## add.to.data(sp.ids=sp.ids,

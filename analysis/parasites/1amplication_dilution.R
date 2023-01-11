@@ -1,16 +1,12 @@
 setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
-
 ## setwd('~/Dropbox (University of Oregon)/skyislands')
 
 setwd("analysis/parasites")
 rm(list=ls())
-
 source("src/misc.R")
 source("src/init.R")
 source("src/writeResultsTable.R")
 source("src/makeMultiLevelData.R")
-
-
 ncores <- 10
 
 ## **********************************************************
@@ -21,7 +17,6 @@ spec <- spec[order(spec$Site),]
 
 ## drop 2022 for now because not enough species IDed
 spec <- spec[spec$Year != 2022,]
-
 spec$Lat <- log(spec$Lat)
 spec$Area <- log(spec$Area)
 
@@ -29,11 +24,15 @@ spec$Area <- log(spec$Area)
 ## to be centered
 vars <- c("MeanFloralAbundance",
           "MeanFloralDiversity",
-          "PollAbundance",
+          ## "PollAbundance",
+          ## "HBAbundance",
+          ## "BombusAbundance",
+          ## "NonBombusHBAbundance",
           "PollDiversity",
           "Lat", "SRDoy",
-          "Area", "HBAbundance",
-          "MeanITD", "r.degree")
+          "Area",
+          "MeanITD",
+          "r.degree")
 
 ##  center all of the x variables across the datasets
 spec[, vars] <- apply(spec[, vars], 2, standardize)
@@ -41,7 +40,6 @@ spec[, vars] <- apply(spec[, vars], 2, standardize)
 ## create a dumby varaible "Weight" to deal with the data sets being at
 ## different levels to get around the issue of having to pass in one
 ## data set into brms
-
 spec$YearSR <- paste(spec$Year, spec$SampleRound, sep=";")
 
 ## will need to modify when we have multiple years
@@ -66,7 +64,7 @@ spec$ParasitePresence[is.na(spec$ParasitePresence | spec$Apidae != 1)] <- 0
 ## **********************************************************
 ## flower diversity
 formula.flower.div <- formula(MeanFloralDiversity | weights(Weights) ~
-                                  Lat + Area +
+                                  Lat +
                                       SRDoy + I(SRDoy^2) +
                                       (1|Site)
                               )
@@ -82,14 +80,38 @@ formula.flower.abund <- formula(MeanFloralAbundance | weights(Weights) ~
 ## bee diversity
 formula.bee.div <- formula(PollDiversity | weights(Weights)~
                                    MeanFloralDiversity +
-                                   Lat + Area +
+                                   Lat +  SRDoy +
                                    (1|Site)
                            )
-## bee abund
-formula.bee.abund <- formula(PollAbundance | weights(Weights)~
-                                 MeanFloralAbundance +
+## ## bee abund
+## formula.bee.abund <- formula(PollAbundance | weights(Weights)~
+##                                  MeanFloralAbundance +
+##                                      SRDoy + I(SRDoy^2) +
+##                                      (1|Site)
+##                              )
+
+## bombus abund
+formula.bombus.abund <- formula(BombusAbundance | weights(Weights)~
+                                    MeanFloralAbundance +
+                                        MeanFloralDiversity+
                                      SRDoy + I(SRDoy^2) +
-                                     Area +
+                                     Lat +
+                                     (1|Site)
+                             )
+## HB abund
+formula.HB.abund <- formula(HBAbundance | weights(Weights)~
+                                MeanFloralAbundance +
+                                    MeanFloralDiversity+
+                                     SRDoy + I(SRDoy^2) +
+                                     Lat +
+                                     (1|Site)
+                             )
+## bee abund
+formula.bee.abund <- formula(NonBombusHBAbundance | weights(Weights)~
+                                 MeanFloralAbundance +
+                                     MeanFloralDiversity+
+                                     SRDoy + I(SRDoy^2) +
+                                     Lat +
                                      (1|Site)
                              )
 
@@ -97,9 +119,10 @@ formula.bee.abund <- formula(PollAbundance | weights(Weights)~
 ## Model 1.3: formula for bee community effects on parasitism
 ## **********************************************************
 formula.parasite <- formula(ParasitePresence | weights(WeightsPar) ~
-                                PollAbundance + MeanFloralDiversity +
-                                    PollDiversity +
-                                    MeanFloralAbundance + MeanITD + r.degree +
+                                NonBombusHBAbundance +
+                                    HBAbundance +
+                                    BombusAbundance +
+                                    PollDiversity + MeanITD + r.degree +
                                     (1|Site)
                             )
 
@@ -109,50 +132,33 @@ formula.parasite <- formula(ParasitePresence | weights(WeightsPar) ~
 ## convert to brms format
 bf.fabund <- bf(formula.flower.abund)
 bf.fdiv <- bf(formula.flower.div)
-bf.babund <- bf(formula.bee.abund)
+bf.babund <- bf(formula.bee.abund, family="Poisson")
+bf.bombusabund <- bf(formula.bombus.abund, family="Poisson")
+bf.HBabund <- bf(formula.HB.abund, family="Poisson")
 bf.bdiv <- bf(formula.bee.div)
+bf.par <- bf(formula.parasite, family="bernoulli")
 
 ## **********************************************************
 ## Model 1 community effects on bee parasitism
 ## **********************************************************
-bf.par <- bf(formula.parasite, family="bernoulli")
-
 ## full model
-bform <- bf.fabund + bf.fdiv + bf.babund + bf.bdiv + bf.par +
+bform <- bf.fabund + bf.fdiv +
+    bf.babund + bf.bombusabund + bf.HBabund +
+    bf.bdiv + bf.par +
     set_rescor(FALSE)
-
 ## run model
 fit <- brm(bform, spec,
            cores=ncores,
            iter = 10^4,
-           chains = 2,
+           chains = 1,
            thin=1,
            init=0,
            control = list(adapt_delta = 0.99))
-
 write.ms.table(fit, "parasitism")
-
 save(fit, spec,
      file="saved/parasiteFitMod.Rdata")
-
 ## dignostic figures
 plot.res(fit, "parasite")
-
-
-## bumbles only
-fit.bombus <- brm(bform, spec[spec$Genus == "Bombus",],
-                  cores=ncores,
-                  iter = 10^4,
-                  chains = 1,
-                  thin=1,
-                  init=0,
-                  control = list(adapt_delta = 0.99))
-
-write.ms.table(fit.bombus, "parasitism_bombus")
-
-save(fit.bombus, spec,
-     file="saved/parasiteBombusFitMod.Rdata")
-
 
 
 ## social only
