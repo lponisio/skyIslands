@@ -211,12 +211,20 @@ relabund.dat.clean <- relabund.dat %>%
   filter(Abundance > 0.01) ## too many groups -- decide what is the cutoff to show on relabund bars
 
 
+## commenting out because found a palette i kinda liked 
+# n <- length(unique(relabund.dat.clean$Bacteria))
+# palette <- distinctColorPalette(n)
+# strains <- unique(relabund.dat.clean$Bacteria)
 
-n <- length(unique(relabund.dat.clean$Bacteria))
-palette <- distinctColorPalette(n)
-strains <- unique(relabund.dat.clean$Bacteria)
 
-color_dict <- data.frame(palette, strains)
+#now need to export palette 
+#color_dict <- data.frame(palette, strains)
+
+#write.csv(color_dict, "CustomPalette.csv", row.names=FALSE)
+
+## import color dict
+
+color_dict <- read.csv('CustomPalette.csv')
 
 
 ## good enough for now probs
