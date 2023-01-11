@@ -193,17 +193,31 @@ relabund.dat <- read.csv('spec_RBCL_16s.csv') %>%
                                       "PL",
                                       "CH")))
 
-#change the column names to just include the bacteria family
+# #change the column names to just include the bacteria family
 relabund.dat$Bacteria <- gsub(".*D_4__","",relabund.dat$Bacteria)#remove all of the column name before and up to D_4__
 relabund.dat$Bacteria <- gsub('\\.D_5__.*',"",relabund.dat$Bacteria) #remove everything after D_5__ to isolate just the bacteria family
 
+# #change the column names to just include the bacteria order
+# relabund.dat$Bacteria <- gsub(".*D_3__","",relabund.dat$Bacteria)#remove all of the column name before and up to D_4__
+# relabund.dat$Bacteria <- gsub('\\.D_4__.*',"",relabund.dat$Bacteria) #remove everything after D_5__ to isolate just the bacteria family
+
 ## some issues with resolution: for now to get around this i am filtering out samples that included anything that was not resolved to family
+
+library(randomcoloR)
+
 relabund.dat.clean <- relabund.dat %>%
   filter(!grepl('X16s', Bacteria)) %>%
   filter(Genus != 'Agapostemon') %>%
   filter(Abundance > 0.01) ## too many groups -- decide what is the cutoff to show on relabund bars
 
-bacteria_pal <- polychrome(length(unique(relabund.dat.clean$Bacteria)))
+
+
+n <- length(unique(relabund.dat.clean$Bacteria))
+palette <- distinctColorPalette(n)
+strains <- unique(relabund.dat.clean$Bacteria)
+
+color_dict <- data.frame(palette, strains)
+
 
 ## good enough for now probs
 
@@ -219,18 +233,21 @@ bacteria_pal <- polychrome(length(unique(relabund.dat.clean$Bacteria)))
 plot_genus_by_site_relabund <- function(data, genus){
 
   genus_subset <- data %>%
-    filter(Genus == genus)
+    filter(Genus == genus) %>%
+    arrange(Bacteria)
 
-  n.colors <- length(unique(genus_subset$Bacteria))
+  these_colors <- color_dict %>%
+    filter(strains %in% genus_subset$Bacteria) %>%
+    arrange(strains)
 
   ggplot(data=genus_subset, aes(x=UniqueID, y=Abundance)) +
     geom_bar(aes(fill=Bacteria), stat='identity', position='fill', width=1) +
     facet_grid(~Site, scales='free_x', space='free_x') +
     theme_classic() +
     theme(axis.text.x=element_blank(),
-          axis.ticks.x=element_blank(),
+          #axis.ticks.x=element_blank(),
           axis.text.y = element_text(color = "black")) +
-    scale_fill_manual(values=as.vector(polychrome(n.colors)), name = "Bacteria Family") + 
+    scale_fill_manual(values=as.vector(these_colors$palette), name = "Bacteria Family") + 
     labs(x='Individuals', y='Relative Abundance')
 }
 
@@ -255,5 +272,5 @@ ggarrange(
   anthophora_plot,
   megachile_plot,
   labels = c("Ap", "B", "An", "M"),
-  common.legend = TRUE, legend = "bottom"
+  common.legend = FALSE, legend = "bottom"
 )
