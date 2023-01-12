@@ -68,7 +68,7 @@ mat = data.frame(aa,gg)
 #          panel.border = element_rect(fill = NA, colour = "black"))
 # mm
 
-dist_decay_model <- betapart::decay.model(dist.abund, dist.geo)
+dist_decay_model <- betapart::decay.model(dist.abund, dist.geo, y.type='dissim')
 dist_decay_plot <- plot.decay(dist_decay_model)
 dist_decay_plot
 
