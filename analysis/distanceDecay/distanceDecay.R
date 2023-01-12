@@ -10,8 +10,8 @@ setwd("analysis/distanceDecay")
 #Geographic distance matrix: the physical distance between sites (i.e. Haversine distance)
 
 library(vegan)
-install.packages("geosphere")
 library(geosphere)
+library(betapart)
 library(tidyverse)
 
 
@@ -40,11 +40,11 @@ geo <- data %>%
   mutate()
 
 #abundance data frame - bray curtis dissimilarity
-dist.abund = vegdist(abund, method = "bray")
+dist.abund <- vegdist(abund, method = "bray")
 
 #geographic data frame - haversine distance 
-d.geo = distm(geo, fun = distHaversine)
-dist.geo = as.dist(d.geo)
+d.geo <- distm(geo, fun = distHaversine)
+dist.geo <- as.dist(d.geo)
 
 #abundance vs geographic 
 abund_geo  = mantel(dist.abund, dist.geo, method = "spearman", permutations = 9999, na.rm = TRUE)
@@ -57,16 +57,20 @@ gg = as.vector(dist.geo)
 mat = data.frame(aa,gg)
 
 #abundance vs geographic distance
-mm = ggplot(mat, aes(y = aa, x = gg/1000)) + 
-  geom_point(size = 3, alpha = 0.5) + 
-  geom_smooth(method = "lm", colour = "red", alpha = 0.2) + 
-  labs(x = "Physical separation (km)", y = "Bray-Curtis Dissimilarity") + 
-  theme( axis.text.x = element_text(face = "bold",colour = "black", size = 12), 
-         axis.text.y = element_text(face = "bold", size = 11, colour = "black"), 
-         axis.title= element_text(face = "bold", size = 14, colour = "black"), 
-         panel.background = element_blank(), 
-         panel.border = element_rect(fill = NA, colour = "black"))
-mm
+# #mm = ggplot(mat, aes(y = aa, x = gg/1000)) + 
+#   geom_point(size = 3, alpha = 0.5) + 
+#   geom_smooth(method = "lm", colour = "red", alpha = 0.2) + 
+#   labs(x = "Physical separation (km)", y = "Bray-Curtis Dissimilarity") + 
+#   theme( axis.text.x = element_text(face = "bold",colour = "black", size = 12), 
+#          axis.text.y = element_text(face = "bold", size = 11, colour = "black"), 
+#          axis.title= element_text(face = "bold", size = 14, colour = "black"), 
+#          panel.background = element_blank(), 
+#          panel.border = element_rect(fill = NA, colour = "black"))
+# mm
+
+dist_decay_model <- betapart::decay.model(dist.abund, dist.geo)
+dist_decay_plot <- plot.decay(dist_decay_model)
+dist_decay_plot
 
 }
 ## by genus plots
@@ -75,4 +79,15 @@ plot.genus.dissim.dist(spec16s, 'Apis')
 plot.genus.dissim.dist(spec16s, 'Bombus')
 plot.genus.dissim.dist(spec16s, 'Anthophora')
 plot.genus.dissim.dist(spec16s, 'Megachile')
+
+
+
+##################### 1/11/23 distance decay models using betapart decay.model
+## https://rdrr.io/cran/betapart/man/decay.model.html
+
+library(betapart)
+library(vegan)
+
+dist_decay_model <- betapart::decay.model(dist.abund, dist.geo)
+
 
