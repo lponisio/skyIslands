@@ -138,14 +138,14 @@ features_genus_metadata <- match_shared_ID(matched_pres_meta, meta_match_genus) 
 
 bar_metadata <- features_genus_metadata %>%
   group_by(bacteria, Genus) %>%
-  summarize(count = sum(Genus_present))
+  summarize(Count = sum(Genus_present)) %>%
+  filter(Count>0)
 
 ## probs want to use trimmed tree for final
 ## visualization but right now will retain
 
 
-p <- ggtree(tree.16s, layout='rectangular') + 
-  geom_tiplab(align=TRUE, linesize=.5)
+p <- ggtree(tree.16s, layout='rectangular') 
 p
 
 # p <- ggtree(tree.16s,
@@ -162,18 +162,45 @@ p2 <- p +
     mapping=aes(y=bacteria, 
                 x=Site, 
                 alpha=Site_present,
-                fill=Site)) 
+                fill=Site), 
+    axis.params=list(
+      axis="x",
+      title = "Site",
+      text.size=1.5,
+      vjust=-99,
+      #text.angle=-45
+      ),
+    show.legend=FALSE) 
 p2
 
-p3 <- p + 
-  geom_fruit(
-    data=features_genus_metadata,
-    geom=geom_tile,
-    mapping=aes(y=bacteria, 
-                x=Genus, 
-                alpha=Genus_present,
-                fill=Genus)) 
-p3
+
+p3 <- p2 +
+  #new_scale_fill() +
+  geom_fruit(data = features_genus_metadata, 
+             geom = geom_tile, 
+             mapping=aes(y=bacteria,
+                         x= Genus, 
+                         alpha = Genus_present, 
+                         #fill = Genus
+                         ), 
+             axis.params=list(
+               axis="x",
+               title = "Bee Genus",
+               text.size=1,
+               #text.angle=45,
+               vjust=-125,
+               #hjust=-10
+           ), show.legend=FALSE) 
+
+p3  
+
+
+##heatmap version
+p4 <- p2 + new_scale_fill()
+gheatmap(p4, df2, offset=15, width=.3,
+         colnames_angle=90, colnames_offset_y = .25) +
+  scale_fill_viridis_c(option="A", name="continuous\nvalue")
+
 
 ############### relative abundance at each site 1/9/23
 
