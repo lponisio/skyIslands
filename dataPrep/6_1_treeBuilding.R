@@ -135,16 +135,25 @@ features_genus_metadata <- match_shared_ID(matched_pres_meta, meta_match_genus) 
                                       "Anthophora",
                                       "Megachile",
                                       "Agapostemon")))
-  
+
+bar_metadata <- features_genus_metadata %>%
+  group_by(bacteria, Genus) %>%
+  summarize(count = sum(Genus_present))
 
 ## probs want to use trimmed tree for final
 ## visualization but right now will retain
 
 
-#p <- ggtree(tree.16s, layout='rectangular')
+p <- ggtree(tree.16s, layout='rectangular') + 
+  geom_tiplab(align=TRUE, linesize=.5)
+p
 
-p <- ggtree(tree.16s, layout="fan", open.angle=10, size=0.5)
-
+# p <- ggtree(tree.16s,
+#             layout="fan",
+#             open.angle=10,
+#             size=0.5,
+#             aes(color=features_genus_metadata$Genus[]))
+# 
 
 p2 <- p + 
   geom_fruit(
@@ -152,8 +161,9 @@ p2 <- p +
     geom=geom_tile,
     mapping=aes(y=bacteria, 
                 x=Site, 
-                alpha=as.factor(Site_present),
-                fill=Site_present)) 
+                alpha=Site_present,
+                fill=Site)) 
+p2
 
 p3 <- p + 
   geom_fruit(
@@ -161,7 +171,7 @@ p3 <- p +
     geom=geom_tile,
     mapping=aes(y=bacteria, 
                 x=Genus, 
-                alpha=as.factor(Genus_present),
+                alpha=Genus_present,
                 fill=Genus)) 
 p3
 
