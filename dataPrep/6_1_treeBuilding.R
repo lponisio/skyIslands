@@ -32,6 +32,7 @@ meta <- spec16s %>%
 apis_ids <- meta %>%
               filter(Genus=='Apis') %>%
               select(UniqueID)
+
 bombus_ids <- meta %>%
   filter(Genus=='Bombus') %>%
   select(UniqueID)
@@ -43,6 +44,13 @@ anthophora_ids <- meta %>%
 megachile_ids <- meta %>%
   filter(Genus=='Megachile') %>%
   select(UniqueID)
+
+
+####subsetting tree
+
+apis_phyloseq <- prune_samples(sample_names(physeq16sR0) %in% apis_ids$UniqueID, physeq16sR0)
+  
+##
 
 ##########################
 
