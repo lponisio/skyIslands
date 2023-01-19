@@ -1,6 +1,8 @@
 
 ## tutorial: https://bioconductor.org/packages/devel/bioc/vignettes/ggtreeExtra/inst/doc/ggtreeExtra.html
 
+#run up to line 61 in 6_rbcl_16sPrep.R
+
 ## packages
 library(ggtree)
 library(tidyverse)
@@ -29,6 +31,19 @@ meta <- spec16s %>%
 
 ### Need to filter phylogeny by uniqueID genus
 
+# phylotree_by_genus <- function(tree.object, metadata, genus){
+#   genus_ids <- metadata %>%
+#     filter(Genus==genus) %>%
+#     select(UniqueID)
+#   
+#   trimmed_tree <- prune_samples(sample_names(tree.object) %in% genus_ids$UniqueID, tree.object)
+#   
+#   ggtree(trimmed_tree, layout='rectangular')
+# }
+# 
+# phylotree_by_genus(apis_phyloseq, meta, "Apis")
+# phylotree_by_genus(bom)
+
 apis_ids <- meta %>%
               filter(Genus=='Apis') %>%
               select(UniqueID)
@@ -49,8 +64,35 @@ megachile_ids <- meta %>%
 ####subsetting tree
 
 apis_phyloseq <- prune_samples(sample_names(physeq16sR0) %in% apis_ids$UniqueID, physeq16sR0)
-  
-##
+bombus_phyloseq <- prune_samples(sample_names(physeq16sR0) %in% bombus_ids$UniqueID, physeq16sR0)
+anthophora_phyloseq <- prune_samples(sample_names(physeq16sR0) %in% anthophora_ids$UniqueID, physeq16sR0)
+megachile_phyloseq <- prune_samples(sample_names(physeq16sR0) %in% megachile_ids$UniqueID, physeq16sR0)
+
+###
+#now the sample numbers are correct but it is still plotting the same tree for each genus
+#probs want to use prune_taxa but need to first find out which taxa are still in subsetted genus uniqueID lists
+#will need to access genus_ids and make a list of all remaining X16s files, then use similar code to how we selected 
+#samples to prune filtered by genus
+###
+
+ggtree(anthophora_phyloseq, layout='rectangular')
+
+
+# ##updating features to taxa
+# setwd('../../skyIslands_saved')
+# feature.2.tax.16s <-
+#   read.table("SI_pipeline/merged/16s/taxonomy16s.txt", sep="\t",
+#              header=TRUE)
+# 
+# feature.2.tax.16s$Taxon <- paste("16s", feature.2.tax.16s$Taxon, sep=':')
+# 
+# ## convert to a phylo class which is more useful downstream
+# apis.tree.16sR0 <- phy_tree(apis_phyloseq, errorIfNULL=TRUE)
+# 
+# ## match the tip labs to the table with feature ID and Taxon
+# apis.tree.16sR0$tip.label  <-  feature.2.tax.16s$Taxon[match(apis.tree.16sR0$tip.label,
+#                                                         feature.2.tax.16s$Feature.ID)] 
+# ##
 
 ##########################
 
@@ -74,12 +116,17 @@ match_shared_tiplabels <- function(tree, pres_abs_table){
   match_cols
 }
 
-matched_presabs <- match_shared_tiplabels(tree.16s, comm_presabs)
-matched_pres_meta <- match_shared_ID(matched_presabs, meta)
-
 
 comm_presabs <- as.data.frame(indiv.comm.16sR0) 
 comm_presabs[comm_presabs > 0] <- 1 #converts from abundance to P/A -- check if needs to actualy do this
+
+
+matched_presabs <- match_shared_tiplabels(apis.tree.16sR0, comm_presabs)
+matched_pres_meta <- match_shared_ID(matched_presabs, meta)
+
+
+# comm_presabs <- as.data.frame(indiv.comm.16sR0) 
+# comm_presabs[comm_presabs > 0] <- 1 #converts from abundance to P/A -- check if needs to actualy do this
 
 comm_presabs <- tibble::rownames_to_column(comm_presabs, "UniqueID")
 matched_pres_meta <- match_shared_ID(comm_presabs, meta)
