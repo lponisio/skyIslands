@@ -21,12 +21,17 @@ setwd(wdpath)
 
 ## Data imports
 
-spec16s <- read.csv('spec_RBCL_16s.csv')
+spec16s <- read.csv('spec_RBCL_16s.csv') %>%
+  filter(Apidae==1) 
+
+names(spec16s) <- gsub(x = names(spec16s), pattern = "X1", replacement = "1")  
 
 meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'Sex', 'GeographyFK', 'Site', 'Meadow')
 
 meta <- spec16s %>%
-  select(all_of(meta_cols), Apidae) %>%
+  select(all_of(meta_cols), Apidae, starts_with('16s')) %>%
+  na.omit() %>%
+  select(!starts_with('X16s')) %>%
   filter(Apidae == 1)
 
 ### Need to filter phylogeny by uniqueID genus
@@ -48,25 +53,50 @@ apis_ids <- meta %>%
               filter(Genus=='Apis') %>%
               select(UniqueID)
 
-bombus_ids <- meta %>%
-  filter(Genus=='Bombus') %>%
-  select(UniqueID)
+apis_otus <- spec16s %>%
+  filter(Apidae==1) %>%
+  select(UniqueID, Genus, starts_with('16s')) %>%
+  na.omit() %>%
+  filter(Genus=='Apis') #%>%
+  # select(!c(Genus, UniqueID)) %>%
+  # colnames()
 
-anthophora_ids <- meta %>%
-  filter(Genus=='Anthophora') %>%
-  select(UniqueID)
-
-megachile_ids <- meta %>%
-  filter(Genus=='Megachile') %>%
-  select(UniqueID)
+# bombus_ids <- meta %>%
+#   filter(Genus=='Bombus') %>%
+#   select(UniqueID)
+# 
+# anthophora_ids <- meta %>%
+#   filter(Genus=='Anthophora') %>%
+#   select(UniqueID)
+# 
+# megachile_ids <- meta %>%
+#   filter(Genus=='Megachile') %>%
+#   select(UniqueID)
 
 
 ####subsetting tree
 
-apis_phyloseq <- prune_samples(sample_names(physeq16sR0) %in% apis_ids$UniqueID, physeq16sR0)
-bombus_phyloseq <- prune_samples(sample_names(physeq16sR0) %in% bombus_ids$UniqueID, physeq16sR0)
-anthophora_phyloseq <- prune_samples(sample_names(physeq16sR0) %in% anthophora_ids$UniqueID, physeq16sR0)
-megachile_phyloseq <- prune_samples(sample_names(physeq16sR0) %in% megachile_ids$UniqueID, physeq16sR0)
+apis_phyloseq0 <- prune_samples(sample_names(physeq16sR0) %in% apis_ids$UniqueID, physeq16sR0)
+
+apis_otu_pruned <- prune_taxa(taxa_names(tree.16sR0) %in% colnames(apis_otus), tree.16sR0)
+
+feature.2.tax.16s <-
+  read.table("SI_pipeline/merged/16s/taxonomy16s.txt", sep="\t",
+             header=TRUE)
+
+feature.2.tax.16s$Taxon <- paste("16s", feature.2.tax.16s$Taxon, sep=':')
+
+# ## convert to a phylo class which is more useful downstream
+apistree.16sR0 <- phy_tree(apis_phyloseq0, errorIfNULL=TRUE)
+
+## match the tip labs to the table with feature ID and Taxon
+apistree.16sR0$tip.label  <-  feature.2.tax.16s$Taxon[match(apistree.16sR0$tip.label,
+                                                        feature.2.tax.16s$Feature.ID)]
+
+apis_phyloseq <- prune_taxa(taxa_names(apistree.16sR0) %in% colnames(apis_otus), apistree.16sR0)
+# bombus_phyloseq <- prune_samples(sample_names(physeq16sR0) %in% bombus_ids$UniqueID, physeq16sR0)
+# anthophora_phyloseq <- prune_samples(sample_names(physeq16sR0) %in% anthophora_ids$UniqueID, physeq16sR0)
+# megachile_phyloseq <- prune_samples(sample_names(physeq16sR0) %in% megachile_ids$UniqueID, physeq16sR0)
 
 ###
 #now the sample numbers are correct but it is still plotting the same tree for each genus
@@ -76,6 +106,9 @@ megachile_phyloseq <- prune_samples(sample_names(physeq16sR0) %in% megachile_ids
 ###
 
 ggtree(anthophora_phyloseq, layout='rectangular')
+
+##cant figure out why i can't match the column names of features to the tip labels, it keeps reducing the tree to NULL because the tip labels and colnames don't match
+##however to me they look like they should match....
 
 
 # ##updating features to taxa
