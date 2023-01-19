@@ -27,6 +27,23 @@ meta <- spec16s %>%
   select(all_of(meta_cols), Apidae) %>%
   filter(Apidae == 1)
 
+### Need to filter phylogeny by uniqueID genus
+
+apis_ids <- meta %>%
+              filter(Genus=='Apis') %>%
+              select(UniqueID)
+bombus_ids <- meta %>%
+  filter(Genus=='Bombus') %>%
+  select(UniqueID)
+
+anthophora_ids <- meta %>%
+  filter(Genus=='Anthophora') %>%
+  select(UniqueID)
+
+megachile_ids <- meta %>%
+  filter(Genus=='Megachile') %>%
+  select(UniqueID)
+
 ##########################
 
 ##match unique IDs
