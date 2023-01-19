@@ -7,6 +7,7 @@ library(tidyverse)
 library(igraph)
 library(ggplot2)
 library(Matrix)
+library(ggpubr)
 
 ###bee-microbe network attempt using a plant poll network tutorial
 ### in igraph https://spiesmanecology.com/2017/04/30/network-vis1/

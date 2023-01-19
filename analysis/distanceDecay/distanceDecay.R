@@ -60,8 +60,11 @@ dist.geo <- as.dist(d.geo)
 abund_geo  = mantel(dist.abund, dist.geo, method = "spearman", permutations = 9999, na.rm = TRUE)
 print(abund_geo)
 
-dist_decay_model <- betapart::decay.model(dist.abund, dist.geo, y.type='dissim')
-dist_decay_plot <- plot.decay(dist_decay_model, main=genus)
+dist_decay_model <- betapart::decay.model(dist.abund,
+                                          dist.geo,
+                                          y.type='dissim')
+dist_decay_plot <- plot.decay(dist_decay_model,
+                              main=genus)
 dist_decay_plot
 
 }
