@@ -60,48 +60,15 @@ phylotree_by_genus <- function(tree.object, metadata, genus){
   gentree$tip.label  <-  feature.2.tax.16s$Taxon[match(gentree$tip.label,
                                                         feature.2.tax.16s$Feature.ID)]
 
-  ggtree(gentree, layout='rectangular')
+  p <- ggtree(gentree, layout='rectangular')
+  p
 }
 
-phylotree_by_genus(physeq16sR0, meta, "Apis")
-phylotree_by_genus(physeq16sR0, meta, "Bombus")
-phylotree_by_genus(physeq16sR0, meta, "Anthophora")
-phylotree_by_genus(physeq16sR0, meta, "Megachile")
+apis_tree <- phylotree_by_genus(physeq16sR0, meta, "Apis")
+bombus_tree <- phylotree_by_genus(physeq16sR0, meta, "Bombus")
+anthophora_tree <- phylotree_by_genus(physeq16sR0, meta, "Anthophora")
+megachile_tree <- phylotree_by_genus(physeq16sR0, meta, "Megachile")
 
-
-
-
-
-
-
-#
-#now the sample numbers are correct but it is still plotting the same tree for each genus
-#probs want to use prune_taxa but need to first find out which taxa are still in subsetted genus uniqueID lists
-#will need to access genus_ids and make a list of all remaining X16s files, then use similar code to how we selected 
-#samples to prune filtered by genus
-###
-
-ggtree(anthophora_phyloseq, layout='rectangular')
-
-##cant figure out why i can't match the column names of features to the tip labels, it keeps reducing the tree to NULL because the tip labels and colnames don't match
-##however to me they look like they should match....
-
-
-# ##updating features to taxa
-# setwd('../../skyIslands_saved')
-# feature.2.tax.16s <-
-#   read.table("SI_pipeline/merged/16s/taxonomy16s.txt", sep="\t",
-#              header=TRUE)
-# 
-# feature.2.tax.16s$Taxon <- paste("16s", feature.2.tax.16s$Taxon, sep=':')
-# 
-# ## convert to a phylo class which is more useful downstream
-# apis.tree.16sR0 <- phy_tree(apis_phyloseq, errorIfNULL=TRUE)
-# 
-# ## match the tip labs to the table with feature ID and Taxon
-# apis.tree.16sR0$tip.label  <-  feature.2.tax.16s$Taxon[match(apis.tree.16sR0$tip.label,
-#                                                         feature.2.tax.16s$Feature.ID)] 
-# ##
 
 ##########################
 
@@ -112,7 +79,8 @@ match_shared_ID <- function(first_df, second_df){
   filter(UniqueID %in% shared)
   matched_df
 }
-
+#######################################
+#match tip labels
 match_shared_tiplabels <- function(tree, pres_abs_table){
   tree_tips <- tree$tip.label
   #browser()
@@ -125,75 +93,142 @@ match_shared_tiplabels <- function(tree, pres_abs_table){
   match_cols
 }
 
+####
+#community presence absence df
 
 comm_presabs <- as.data.frame(indiv.comm.16sR0) 
-comm_presabs[comm_presabs > 0] <- 1 #converts from abundance to P/A -- check if needs to actualy do this
+comm_presabs[comm_presabs > 0] <- 1 
+comm_presabs <- tibble::rownames_to_column(comm_presabs, "UniqueID")
 
 
-matched_presabs <- match_shared_tiplabels(apis.tree.16sR0, comm_presabs)
-matched_pres_meta <- match_shared_ID(matched_presabs, meta)
+#
+make_heatmap_tree <- function(tree, presabs_table, metadata){
+  
+  matched_presabs <- match_shared_tiplabels(tree, presabs_table)
+  
+  matched_pres_meta <- match_shared_ID(matched_presabs, metadata)
+  
+  matched_id <- matched_pres_meta$UniqueID
+  
+  row.names(matched_pres_meta) <- matched_id
+  
+  #making presence/abs columns in metadata
+  meta_match_sites <- match_shared_ID(metadata, matched_pres_meta) %>%
+    select(UniqueID, Site) %>%
+    mutate(Site = as.factor(Site)) %>%
+    group_by(UniqueID, Site) %>%
+    count() %>%
+    pivot_wider(UniqueID, 
+                names_from=Site, 
+                values_from = n, 
+                values_fill=0,
+                names_expand = TRUE,
+                id_expand=TRUE) %>%
+    pivot_longer(cols=CH:SM,
+                 names_to='Site',
+                 values_to='Site_present')
+  
+  features_site_metadata <- match_shared_ID(matched_pres_meta, meta_match_sites) %>%
+    right_join(meta_match_sites, by='UniqueID') %>%
+    pivot_longer(cols = starts_with('16s'), names_to = 'bacteria', values_to = 'bact_pres') %>%
+    group_by(bacteria) %>%
+    filter(bact_pres == 1) %>%
+    select(!bact_pres) %>%
+    relocate(bacteria) %>% 
+    mutate(Site = factor(Site, levels=c("JC", ## ordered by latitude north to south
+                                        "SM",
+                                        "SC",
+                                        "MM",
+                                        "HM",
+                                        "PL",
+                                        "CH")))
+  browser()
+  
+  p2 <- tree + 
+    geom_fruit(
+      data=features_site_metadata,
+      geom=geom_tile,
+      mapping=aes(y=bacteria, 
+                  x=Site, 
+                  alpha=Site_present,
+                  fill=Site), 
+      axis.params=list(
+        axis="x",
+        title = "Site",
+        text.size=1.5,
+        vjust=-99,
+        #text.angle=-45
+      ),
+      show.legend=FALSE) 
+  p2
+  
+  
+  
+}
 
 
-# comm_presabs <- as.data.frame(indiv.comm.16sR0) 
-# comm_presabs[comm_presabs > 0] <- 1 #converts from abundance to P/A -- check if needs to actualy do this
+apis_heat_tree <- make_heatmap_tree(apis_tree, comm_presabs, meta)
+apis_heat_tree
 
+
+#
 comm_presabs <- tibble::rownames_to_column(comm_presabs, "UniqueID")
 matched_pres_meta <- match_shared_ID(comm_presabs, meta)
 matched_id <- matched_pres_meta$UniqueID
 row.names(matched_pres_meta) <- matched_id
-
-#making presence/abs columns in metadata
+#
+# #making presence/abs columns in metadata
 meta_match_sites <- match_shared_ID(meta, matched_pres_meta) %>%
   select(UniqueID, Site) %>%
   mutate(Site = as.factor(Site)) %>%
   group_by(UniqueID, Site) %>%
   count() %>%
-  pivot_wider(UniqueID, 
-              names_from=Site, 
-              values_from = n, 
+  pivot_wider(UniqueID,
+              names_from=Site,
+              values_from = n,
               values_fill=0,
               names_expand = TRUE,
               id_expand=TRUE) %>%
   pivot_longer(cols=CH:SM,
                names_to='Site',
                values_to='Site_present')
-
-
-meta_match_genus <- match_shared_ID(meta, matched_pres_meta) %>%
-  select(UniqueID, Genus) %>%
-  mutate(Site = as.factor(Genus)) %>%
-  group_by(UniqueID, Genus) %>%
-  count() %>%
-  pivot_wider(UniqueID, 
-              names_from=Genus, 
-              values_from = n, 
-              values_fill=0,
-              names_expand = TRUE,
-              id_expand=TRUE) %>%
-  pivot_longer(cols=Agapostemon:Megachile,
-               names_to='Genus',
-               values_to='Genus_present')
+#
+#
+# meta_match_genus <- match_shared_ID(meta, matched_pres_meta) %>%
+#   select(UniqueID, Genus) %>%
+#   mutate(Site = as.factor(Genus)) %>%
+#   group_by(UniqueID, Genus) %>%
+#   count() %>%
+#   pivot_wider(UniqueID,
+#               names_from=Genus,
+#               values_from = n,
+#               values_fill=0,
+#               names_expand = TRUE,
+#               id_expand=TRUE) %>%
+#   pivot_longer(cols=Agapostemon:Megachile,
+#                names_to='Genus',
+#                values_to='Genus_present')
 
 ## now need to figure out how to incorporate
-## the tip labels so that the features are 
+## the tip labels so that the features are
 ## tied to the metadata -- features as rows
 ## columns for metadata
 
-##matched_pres_meta is a table with unique ID 
+##matched_pres_meta is a table with unique ID
 ## as rows and features as columns while both meta_match
 ## have unique ID as rows and metadata as columns
 ## need to create an item that has features as rows
 ## and metadata as columns
 
 
-
+#
 features_site_metadata <- match_shared_ID(matched_pres_meta, meta_match_sites) %>%
   right_join(meta_match_sites, by='UniqueID') %>%
   pivot_longer(cols = starts_with('16s'), names_to = 'bacteria', values_to = 'bact_pres') %>%
   group_by(bacteria) %>%
   filter(bact_pres == 1) %>%
   select(!bact_pres) %>%
-  relocate(bacteria) %>% 
+  relocate(bacteria) %>%
   mutate(Site = factor(Site, levels=c("JC", ## ordered by latitude north to south
                                       "SM",
                                       "SC",
@@ -201,26 +236,26 @@ features_site_metadata <- match_shared_ID(matched_pres_meta, meta_match_sites) %
                                       "HM",
                                       "PL",
                                       "CH")))
-
-
-
-features_genus_metadata <- match_shared_ID(matched_pres_meta, meta_match_genus) %>%
-  right_join(meta_match_genus, by='UniqueID') %>%
-  pivot_longer(cols = starts_with('16s'), names_to = 'bacteria', values_to = 'bact_pres') %>%
-  group_by(bacteria) %>%
-  filter(bact_pres == 1) %>%
-  select(!bact_pres) %>%
-  relocate(bacteria) %>% 
-  mutate(Genus = factor(Genus, levels=c("Apis", ## ordered by relative (eyeballed) PCA microbiome similarity
-                                      "Bombus",
-                                      "Anthophora",
-                                      "Megachile",
-                                      "Agapostemon")))
-
-bar_metadata <- features_genus_metadata %>%
-  group_by(bacteria, Genus) %>%
-  summarize(Count = sum(Genus_present)) %>%
-  filter(Count>0)
+#
+#
+#
+# features_genus_metadata <- match_shared_ID(matched_pres_meta, meta_match_genus) %>%
+#   right_join(meta_match_genus, by='UniqueID') %>%
+#   pivot_longer(cols = starts_with('16s'), names_to = 'bacteria', values_to = 'bact_pres') %>%
+#   group_by(bacteria) %>%
+#   filter(bact_pres == 1) %>%
+#   select(!bact_pres) %>%
+#   relocate(bacteria) %>%
+#   mutate(Genus = factor(Genus, levels=c("Apis", ## ordered by relative (eyeballed) PCA microbiome similarity
+#                                       "Bombus",
+#                                       "Anthophora",
+#                                       "Megachile",
+#                                       "Agapostemon")))
+#
+# bar_metadata <- features_genus_metadata %>%
+#   group_by(bacteria, Genus) %>%
+#   summarize(Count = sum(Genus_present)) %>%
+#   filter(Count>0)
 
 ## probs want to use trimmed tree for final
 ## visualization but right now will retain
@@ -232,7 +267,7 @@ p
 
 # 
 
-p2 <- p + 
+p2 <- anthophora_tree + 
   geom_fruit(
     data=features_site_metadata,
     geom=geom_tile,
@@ -246,8 +281,7 @@ p2 <- p +
       text.size=1.5,
       vjust=-99,
       #text.angle=-45
-      ),
-    show.legend=FALSE) 
+      )) 
 p2
 
 
