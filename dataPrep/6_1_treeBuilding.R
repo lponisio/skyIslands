@@ -35,70 +35,46 @@ meta <- spec16s %>%
   filter(Apidae == 1)
 
 ### Need to filter phylogeny by uniqueID genus
+setwd("../../skyIslands_saved")
 
-# phylotree_by_genus <- function(tree.object, metadata, genus){
-#   genus_ids <- metadata %>%
-#     filter(Genus==genus) %>%
-#     select(UniqueID)
-#   
-#   trimmed_tree <- prune_samples(sample_names(tree.object) %in% genus_ids$UniqueID, tree.object)
-#   
-#   ggtree(trimmed_tree, layout='rectangular')
-# }
-# 
-# phylotree_by_genus(apis_phyloseq, meta, "Apis")
-# phylotree_by_genus(bom)
+phylotree_by_genus <- function(tree.object, metadata, genus){
+  genus_ids <- metadata %>%
+    filter(Genus==genus) %>%
+    select(UniqueID)
 
-apis_ids <- meta %>%
-              filter(Genus=='Apis') %>%
-              select(UniqueID)
-
-apis_otus <- spec16s %>%
-  filter(Apidae==1) %>%
-  select(UniqueID, Genus, starts_with('16s')) %>%
-  na.omit() %>%
-  filter(Genus=='Apis') #%>%
-  # select(!c(Genus, UniqueID)) %>%
-  # colnames()
-
-# bombus_ids <- meta %>%
-#   filter(Genus=='Bombus') %>%
-#   select(UniqueID)
-# 
-# anthophora_ids <- meta %>%
-#   filter(Genus=='Anthophora') %>%
-#   select(UniqueID)
-# 
-# megachile_ids <- meta %>%
-#   filter(Genus=='Megachile') %>%
-#   select(UniqueID)
-
-
-####subsetting tree
-
-apis_phyloseq0 <- prune_samples(sample_names(physeq16sR0) %in% apis_ids$UniqueID, physeq16sR0)
-
-apis_otu_pruned <- prune_taxa(taxa_names(tree.16sR0) %in% colnames(apis_otus), tree.16sR0)
-
-feature.2.tax.16s <-
-  read.table("SI_pipeline/merged/16s/taxonomy16s.txt", sep="\t",
-             header=TRUE)
-
-feature.2.tax.16s$Taxon <- paste("16s", feature.2.tax.16s$Taxon, sep=':')
-
-# ## convert to a phylo class which is more useful downstream
-apistree.16sR0 <- phy_tree(apis_phyloseq0, errorIfNULL=TRUE)
-
-## match the tip labs to the table with feature ID and Taxon
-apistree.16sR0$tip.label  <-  feature.2.tax.16s$Taxon[match(apistree.16sR0$tip.label,
+  trimmed_tree <- prune_samples(sample_names(tree.object) %in% genus_ids$UniqueID, tree.object)
+  
+  pruned_tree <- prune_taxa(taxa_sums(trimmed_tree) > 0, trimmed_tree)
+  
+  
+  feature.2.tax.16s <-
+    read.table("SI_pipeline/merged/16s/taxonomy16s.txt", sep="\t",
+               header=TRUE)
+  
+  feature.2.tax.16s$Taxon <- paste("16s", feature.2.tax.16s$Taxon, sep=':')
+  
+  # ## convert to a phylo class which is more useful downstream
+  gentree <- phy_tree(pruned_tree, errorIfNULL=TRUE)
+  
+  ## match the tip labs to the table with feature ID and Taxon
+  gentree$tip.label  <-  feature.2.tax.16s$Taxon[match(gentree$tip.label,
                                                         feature.2.tax.16s$Feature.ID)]
 
-apis_phyloseq <- prune_taxa(taxa_names(apistree.16sR0) %in% colnames(apis_otus), apistree.16sR0)
-# bombus_phyloseq <- prune_samples(sample_names(physeq16sR0) %in% bombus_ids$UniqueID, physeq16sR0)
-# anthophora_phyloseq <- prune_samples(sample_names(physeq16sR0) %in% anthophora_ids$UniqueID, physeq16sR0)
-# megachile_phyloseq <- prune_samples(sample_names(physeq16sR0) %in% megachile_ids$UniqueID, physeq16sR0)
+  ggtree(gentree, layout='rectangular')
+}
 
-###
+phylotree_by_genus(physeq16sR0, meta, "Apis")
+phylotree_by_genus(physeq16sR0, meta, "Bombus")
+phylotree_by_genus(physeq16sR0, meta, "Anthophora")
+phylotree_by_genus(physeq16sR0, meta, "Megachile")
+
+
+
+
+
+
+
+#
 #now the sample numbers are correct but it is still plotting the same tree for each genus
 #probs want to use prune_taxa but need to first find out which taxa are still in subsetted genus uniqueID lists
 #will need to access genus_ids and make a list of all remaining X16s files, then use similar code to how we selected 
@@ -250,14 +226,10 @@ bar_metadata <- features_genus_metadata %>%
 ## visualization but right now will retain
 
 
-p <- ggtree(tree.16s, layout='rectangular') 
+p <- ggtree(apistree, layout='rectangular', tip.label=FALSE) 
 p
 
-# p <- ggtree(tree.16s,
-#             layout="fan",
-#             open.angle=10,
-#             size=0.5,
-#             aes(color=features_genus_metadata$Genus[]))
+
 # 
 
 p2 <- p + 
