@@ -41,6 +41,8 @@ meta <- spec16s %>%
   #                                     "PL",
   #                                     "CH")))
 
+
+##can probs figure out a way to do this automatically but was getting frustrated so hard coded this
 apis_sites <- c('MM', 'HM', 'PL', 'CH')
 bombus_sites <- c('JC', 'SM', 'SC', 'MM', 'HM', 'PL', 'CH')
 anthophora_sites <- c('JC', 'SM', 'SC', 'MM', 'HM')
