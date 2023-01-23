@@ -767,14 +767,14 @@ sp.ids <- list(
     ##                         temp.id= c()),
 
 
-    ## Andrena_apacheorum_f= list(Genus="Andrena",
-    ##                            SubGenus ="Cnemidandrena",
-    ##                            Species="apacheorum",
-    ##                            SubSpecies="",
-    ##                            Sex="f",
-    ##                            Author = "Cockerell",
-    ##                            Determiner="",
-    ##                            temp.id= c()),
+    Andrena_apacheorum_f= list(Genus="Andrena",
+                                SubGenus ="Cnemidandrena",
+                                Species="apacheorum",
+                                SubSpecies="",
+                                Sex="f",
+                                Author = "Cockerell",
+                                Determiner="",
+                                temp.id= c(37693, 36706, 38064, 36481, )),
 
     ## Andrena_apacheorum_m= list(Genus="Andrena",
     ##                            SubGenus ="Cnemidandrena",
