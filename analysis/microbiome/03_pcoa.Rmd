@@ -1,0 +1,277 @@
+---
+title: "SImicrobe_exploration"
+author: "rebecca hayes"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r imports}
+library(tidyverse)
+library(ggplot2)
+
+spec16s <- read.csv('spec_RBCL_16s.csv')
+
+meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'Sex', 'GeographyFK', 'Site', 'Meadow')
+
+microbes <- spec16s %>%
+  select(UniqueID, Site, Genus, Species, starts_with('X16s')) %>%
+  #group_by(Genus) %>%
+  filter(!Genus == 'Agapostemon') %>%
+  mutate(gensp = paste(Genus, Species)) %>%
+  arrange(gensp) %>%
+  na.omit()
+
+meta <- spec16s %>%
+  mutate(gensp = paste(Genus, Species)) %>%
+  # arrange(gensp) %>%
+  select(all_of(meta_cols), gensp)
+
+
+
+```
+
+
+```{r tidying}
+
+
+sitecount <- microbes %>%
+  pivot_longer(cols=starts_with('X16'), names_to = 'BacteriaID', values_to = 'Relabund') %>%
+  group_by(Site, Genus) %>%
+  arrange(BacteriaID) %>%
+  mutate(site_pres = if_else(Relabund>0, 1, 0)) %>%
+  select(-Relabund) %>%
+  pivot_wider(names_from = Site, values_from = site_pres) %>%
+  replace_na(list(CH=0, HM=0, JC=0, MM=0, PL=0, SC=0, SM=0)) %>%
+  ungroup() %>%
+  group_by(BacteriaID) 
+
+
+```
+
+```{r function}
+
+find_genus_count <- function(my_genus){
+  my_sites <- sitecount %>%
+  filter(Genus == my_genus) %>%
+  select(-UniqueID) %>%
+  group_by(BacteriaID) %>%
+  summarize(CHfreq=sum(CH),
+            HMfreq=sum(HM),
+            JCfreq=sum(JC),
+            MMfreq=sum(MM),
+            PLfreq=sum(PL),
+            SCfreq=sum(SC),
+            SMfreq=sum(SM)) %>%
+  mutate(total_count = CHfreq+HMfreq+JCfreq+MMfreq+PLfreq+SCfreq+SMfreq) %>%
+  mutate(site_count=rowSums(select(.,ends_with("freq"))!=0)) %>% 
+    filter(site_count>0) %>%
+  select(where( ~ is.numeric(.x) && sum(.x) != 0), BacteriaID)
+  
+my_sites
+}
+
+```
+
+
+```{r find_sites_genus}
+apis_count <- find_genus_count('Apis')
+bombus_count <- find_genus_count('Bombus')
+megachile_count <- find_genus_count('Megachile')
+anthophora_count <- find_genus_count('Anthophora')
+```
+
+```{r sites_histograms}
+hist(apis_count$site_count, main='Number of sites the same ASV \n was found in Apis', xlab='Number of Sites')
+hist(bombus_count$site_count, main='Number of sites the same ASV \n was found in Bombus', xlab='Number of Sites')
+hist(megachile_count$site_count, main='Number of sites the same ASV \n was found in Megachile', xlab='Number of Sites')
+hist(anthophora_count$site_count, main='Number of sites the same ASV \n was found in Anthophora', xlab='Number of Sites')
+```
+
+```{r num_individuals_hist}
+hist(apis_count$total_count, main='Number of bees the same ASV \n was found in Apis', xlab='Number of bees', breaks=25)
+hist(bombus_count$total_count, main='Number of bees the same ASV \n was found in Bombus', xlab='Number of bees', breaks=25)
+hist(megachile_count$total_count, main='Number of bees the same ASV \n was found in Megachile', xlab='Number of bees', breaks=25)
+hist(anthophora_count$total_count, main='Number of bees the same ASV \n was found in Anthophora', xlab='Number of Bees', breaks=25)
+```
+
+```{r}
+apis_common <- apis_count %>%
+  filter(site_count == 4) %>%
+  mutate(genus = 'Apis')
+bombus_common <- bombus_count %>%
+  filter(site_count == 7)%>%
+  mutate(genus = 'Bombus')
+mega_common <- megachile_count %>%
+  filter(site_count == 6) %>%
+  mutate(genus = 'Megachile')
+antho_common <- anthophora_count %>%
+  filter(site_count == 5) %>%
+  mutate(genus = 'Anthophora')
+
+all_common <- bind_rows(apis_common, bombus_common, mega_common, antho_common) %>%
+  group_by(BacteriaID)
+  
+```
+
+
+
+```{r pcoa_old_way}
+
+rel_abund_assay<- microbes %>%
+  select(starts_with('X16s'))
+
+# Calculates Bray-Curtis distances between samples. 
+bray_curtis_dist <- vegan::vegdist(rel_abund_assay, method = "bray")
+
+# PCoA
+bray_curtis_pcoa <- ecodist::pco(bray_curtis_dist)
+
+# All components could be found here: 
+# bray_curtis_pcoa$vectors
+# But we only need the first two to demonstrate what we can do:
+bray_curtis_pcoa_df <- data.frame(pcoa1 = bray_curtis_pcoa$vectors[,1], 
+                                  pcoa2 = bray_curtis_pcoa$vectors[,2])
+
+
+
+# Create a plot
+bray_curtis_plot <- ggplot(data = bray_curtis_pcoa_df, aes(x=pcoa1, y=pcoa2)) +
+  geom_point(aes(color=microbes$Genus), alpha=0.5) +
+  labs(x = "PC1",
+       y = "PC2", 
+       title = "Bray-Curtis PCoA with color by genus") +
+  theme(title = element_text(size = 10)) + # makes titles smaller
+  theme_classic()
+
+bray_curtis_plot
+
+
+```
+
+
+
+
+```{r pcoa_ABS_way}
+
+# library(devtools)
+# install_github("vqv/ggbiplot")
+# library(ggbiplot)
+# library(factoextra)
+
+rel_abund_assay<- microbes  %>% 
+  select(!Genus) %>%
+  select(starts_with('X16s'))
+
+species_data <- microbes %>%
+  mutate(gensp = paste(microbes$Genus, microbes$Species)) %>%
+  arrange(gensp)
+
+
+#microbe_pca <- prcomp(rel_abund_assay)
+
+rel_abund_assay<- microbes %>%
+  select(starts_with('X16s'))
+
+# Calculates Bray-Curtis distances between samples. 
+bray_curtis_dist <- vegan::vegdist(rel_abund_assay, method = "bray")
+
+# PCoA
+bray_curtis_pcoa <- ecodist::pco(bray_curtis_dist)
+
+pcoa_df <- data.frame(pcoa1 = bray_curtis_pcoa$vectors[,1], 
+                      pcoa2 = bray_curtis_pcoa$vectors[,2])
+
+# 
+# ggbiplot(pcobj=microbe_pca ,
+#          var.axes=FALSE,
+#          obs.scale = 1, 
+#          var.scale = 1,
+#          scale=TRUE,
+#          center=TRUE,
+#          ellipse=TRUE,
+#          groups=species_data$gensp) + #labs(color='Bee Genus') + theme_classic() +
+#           scale_fill_manual(values=c('#deebf7','#9ecae1','#3182bd', '#31a354',
+#                                          '#fff7f3','#fde0dd','#fcc5c0','#fa9fb5','#f768a1','#dd3497','#ae017e','#7a0177',
+#                                          '#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#99000d'),
+#                                 aesthetics = 'fill') +
+#           scale_shape_manual(name="Genus", values=c(15:18)) +
+# geom_point(aes(fill=species_data$gensp, shape=species_data$Genus), size = 3)
+
+
+library(factoextra)
+library(ggplot2)
+
+
+# Create a plot
+bray_curtis_plot <- ggplot(data = pcoa_df, aes(x=pcoa1, y=pcoa2, color=species_data$gensp, shape=species_data$Genus)) +
+  geom_point(aes(size=1)) +
+  stat_ellipse(geom = "polygon",
+               linetype= species_data$Genus) %>%
+  labs(x = "PC1",
+       y = "PC2", 
+       title = "Microbe PCoA") +
+  theme(title = element_text(size = 10)) + # makes titles smaller
+  theme_classic() + #labs(color='Bee Genus') + theme_classic() +
+          scale_color_manual(name='Species', values=c('#6baed6','#3182bd','#08519c', 
+                                                      '#31a354',
+                                                      '#fee6ce','#fdd0a2','#fdae6b','#fd8d3c','#f16913','#d94801','#a63603','#7f2704',
+                                                      '#efedf5','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#54278f','#3f007d'),
+                                aesthetics = 'color') +
+          scale_shape_manual(name="Genus", values=c(15:18)) 
+
+bray_curtis_plot
+
+
+
+#scree plot
+#fviz_eig(microbe_pca)
+
+
+
+
+
+
+
+```  
+
+
+```{r}
+fviz_pca_var(microbe_pca,
+             col.var = "contrib", # Color by contributions to the PC
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE,     # Avoid text overlapping
+             select.var=list(cos2=10)) + labs(title='Top 25 Genes Contributing to PC1 and PC2', color='Relative Contribution')
+
+
+
+
+
+fviz_pca_var(microbe_pca, 
+             geom = "arrow", 
+             col.var="contrib", 
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             alpha.var="contrib")
+
+```  
+
+```{r top_microbes}
+var <- get_pca(microbe_pca)
+head(var_magnitude$c, 20)
+
+var_magnitude <- abs(var$contrib[,1:2]) #absolute value to deal with negative loadings
+
+
+var_magnitude <- var_magnitude[order(var_magnitude[,1], decreasing = TRUE),]  
+imp_rows <- head(row.names(var_magnitude), 20)
+
+
+
+
+```
+
+
+
