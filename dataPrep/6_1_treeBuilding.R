@@ -13,6 +13,7 @@ library(treeio)
 library(ggnewscale)
 library(tibble)
 library(pals)
+library(viridis)
 
 ## working dir
 
@@ -83,8 +84,11 @@ comm_presabs <- tibble::rownames_to_column(comm_presabs, "UniqueID") #make rowna
 #######################################
 
 
+##function that filters a tree object to a certain sample bee genus, generates a presence absence heatmap for whether that tree tip was found 
+## at any given site, then plots the tree with the appended heatmap
 
 
+##probs want to make sure each site in each individual graph is colored uniformly for all graphs 
 
 phylotree_heatmap_byGenus <- function(tree.object, metadata, this.genus, presAbsTable, site.order){
   genus_ids <- metadata %>%
@@ -162,7 +166,9 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, this.genus, presAbs
         #vjust=-110,
         #text.angle=-45
       ),
-      show.legend=FALSE) 
+      show.legend=FALSE) + 
+    scale_fill_viridis(option="plasma", discrete=TRUE) +
+    ggtitle(this.genus)
   p2
 }
 
