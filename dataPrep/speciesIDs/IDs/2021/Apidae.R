@@ -678,16 +678,37 @@ sp.ids <- list(
                                  temp.id= c(33995)),
 
     Brachymelecta_californica_f= list(Genus="Brachymelecta",
-                                      SubGenus ="",
-                                      Species="californica",
-                                      SubSpecies="",
-                                      Sex="f",
-                                      Author =
-                                          "Cresson",
-                                      Determiner="L. Best",
-                                      temp.id= c(31131))
+                                 SubGenus ="",
+                                 Species="californica",
+                                 SubSpecies="",
+                                 Sex="f",
+                                 Author =
+                                     "Cresson",
+                                 Determiner="L. Best",
+                                 temp.id= c(31131))
 
-
+     Andrena_birtwelli= list(Genus="Andrena",
+                                 SubGenus ="",
+                                 Species="birtwelli",
+                                 SubSpecies="",
+                                 Sex="f",
+                                 Author = "Cockerell",
+                                 Determiner="J.L. Neff",
+                                 temp.id= c(31598, 31593, 31596, 31597, 31595,
+                                           31594, 31660, 31662, 31663, 31661,
+                                           31665, 31664, 31666, 31667, 31668,
+                                           31712, 31713, 31716, 31174, 31715,
+                                           31717, 31718, 31719, 31720, 31585, 
+                                           31721, 31722, 31723, 31724, 31584,
+                                           31586, 31588, 31583, 31725, 31728,
+                                           31729, 31731, 31727, 31726, 31736,
+                                           31734, 31735, 31733, 31737, 31732,
+                                           31730, 31738, 31740, 31741, 31739,
+                                           31742, 31743, 31744, 31745, 31746,
+                                           31747, 31748, 31749, 31751, 31753,
+                                           31752, 31754, 31755, 31591, 31756,
+                                           31589, 31757, 31544, 31469, 31543,
+                                           31542, 31541, 31540, 31539, 31538))
 
 
     )
