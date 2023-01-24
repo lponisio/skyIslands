@@ -1,21 +1,24 @@
 
 sp.ids <- list(
 
-    ## Agapostemon_angelicus_f =
-    ##     list(Genus="Agapostemon",
-    ##                                SubGenus ="Agapostemon",
-    ##                                Species="angelicus", SubSpecies="",
-    ##                                Sex="f", Author = "Cockerell",
-    ##                                Determiner = "",
-    ##                                temp.id=
-    ##                                    c()),
+     Agapostemon_angelicus_f = list(Genus="Agapostemon",
+                                    SubGenus ="Agapostemon",
+                                    Species="angelicus", 
+                                    SubSpecies="",
+                                    Sex="f", Author = "Cockerell",
+                                    Determiner = "J.L. Neff",
+                                    temp.id= c(32524, 32293, 31931, 31106, 31516,
+                                              31517, 31518, 31521, 31879, 31890,
+                                              31893, 31794)),
 
-    ## Agapostemon_angelicus_m = list(Genus="Agapostemon", SubGenus
-    ##                                ="Agapostemon",
-    ##                                Species="angelicus", SubSpecies="",
-    ##                                Sex="m", Author = "Cockerell",
-    ##                                Determiner = "L.C. Ponisio",
-    ##                                temp.id= c()),
+    Agapostemon_angelicus_m = list(Genus="Agapostemon", 
+                                   SubGenus ="Agapostemon",
+                                   Species="angelicus", 
+                                   SubSpecies="",
+                                   Sex="m", Author = "Cockerell",
+                                   Determiner = "J.L. Neff",
+                                   temp.id= c(31522, 31519, 31520, 31258, 31515,
+                                             31796, 31795, 31672, 31523, 30801)),
 
 
     ## Lasioglossum_trizonatum_m = list(Genus="Lasioglossum",
