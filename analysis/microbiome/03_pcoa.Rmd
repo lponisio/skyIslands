@@ -121,33 +121,33 @@ all_common <- bind_rows(apis_common, bombus_common, mega_common, antho_common) %
 
 ```{r pcoa_old_way}
 
-rel_abund_assay<- microbes %>%
-  select(starts_with('X16s'))
-
-# Calculates Bray-Curtis distances between samples. 
-bray_curtis_dist <- vegan::vegdist(rel_abund_assay, method = "bray")
-
-# PCoA
-bray_curtis_pcoa <- ecodist::pco(bray_curtis_dist)
-
-# All components could be found here: 
-# bray_curtis_pcoa$vectors
-# But we only need the first two to demonstrate what we can do:
-bray_curtis_pcoa_df <- data.frame(pcoa1 = bray_curtis_pcoa$vectors[,1], 
-                                  pcoa2 = bray_curtis_pcoa$vectors[,2])
-
-
-
-# Create a plot
-bray_curtis_plot <- ggplot(data = bray_curtis_pcoa_df, aes(x=pcoa1, y=pcoa2)) +
-  geom_point(aes(color=microbes$Genus), alpha=0.5) +
-  labs(x = "PC1",
-       y = "PC2", 
-       title = "Bray-Curtis PCoA with color by genus") +
-  theme(title = element_text(size = 10)) + # makes titles smaller
-  theme_classic()
-
-bray_curtis_plot
+# rel_abund_assay<- microbes %>%
+#   select(starts_with('X16s'))
+# 
+# # Calculates Bray-Curtis distances between samples. 
+# bray_curtis_dist <- vegan::vegdist(rel_abund_assay, method = "bray")
+# 
+# # PCoA
+# bray_curtis_pcoa <- ecodist::pco(bray_curtis_dist)
+# 
+# # All components could be found here: 
+# # bray_curtis_pcoa$vectors
+# # But we only need the first two to demonstrate what we can do:
+# bray_curtis_pcoa_df <- data.frame(pcoa1 = bray_curtis_pcoa$vectors[,1], 
+#                                   pcoa2 = bray_curtis_pcoa$vectors[,2])
+# 
+# 
+# 
+# # Create a plot
+# bray_curtis_plot <- ggplot(data = bray_curtis_pcoa_df, aes(x=pcoa1, y=pcoa2)) +
+#   geom_point(aes(color=microbes$Genus), alpha=0.5) +
+#   labs(x = "PC1",
+#        y = "PC2", 
+#        title = "Bray-Curtis PCoA with color by genus") +
+#   theme(title = element_text(size = 10)) + # makes titles smaller
+#   theme_classic()
+# 
+# bray_curtis_plot
 
 
 ```
@@ -207,21 +207,26 @@ library(ggplot2)
 
 
 # Create a plot
-bray_curtis_plot <- ggplot(data = pcoa_df, aes(x=pcoa1, y=pcoa2, color=species_data$gensp, shape=species_data$Genus)) +
-  geom_point(aes(size=1)) +
-  stat_ellipse(geom = "polygon",
-               linetype= species_data$Genus) %>%
+bray_curtis_plot <- ggplot(data = pcoa_df, aes(x=pcoa1,
+                                               y=pcoa2,
+                                               shape=species_data$Genus)) +
+  geom_point() +
+  stat_ellipse(aes(linetype= species_data$Genus)) + 
+  scale_linetype_manual("Genus", values=c("longdash", "solid", "dotted", "twodash")) +
   labs(x = "PC1",
-       y = "PC2", 
+       y = "PC2",
        title = "Microbe PCoA") +
   theme(title = element_text(size = 10)) + # makes titles smaller
-  theme_classic() + #labs(color='Bee Genus') + theme_classic() +
+  theme_classic() + 
+  labs(shape='Bee Genus', color='Bee Species') + 
+  theme_classic() +
+  geom_point(aes(color=species_data$gensp, shape=species_data$Genus, size=1.6)) +
           scale_color_manual(name='Species', values=c('#6baed6','#3182bd','#08519c', #3 anothophora sp -- blue
                                                       '#31a354', #1 apis sp -- green
                                                       '#fee6ce','#fdd0a2','#fdae6b','#fd8d3c','#f16913','#d94801','#a63603','#7f2704', #8 bombus sp -- orange
                                                       '#efedf5','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#54278f','#3f007d'), #8 megachile sp -- purple
                                 aesthetics = 'color') +
-          scale_shape_manual(name="Genus", values=c(15:18)) 
+         scale_shape_manual(name="Genus", values=c(15:18)) 
 
 bray_curtis_plot
 
@@ -237,6 +242,27 @@ bray_curtis_plot
 
 
 ```  
+```{r}
+# Create a plot
+bray_curtis_plot2 <- ggplot(data = pcoa_df, aes(x=pcoa1,
+                                               y=pcoa2,
+                                               shape=species_data$Genus)) +
+  geom_point() +
+  #scale_linetype_manual("Genus", values=c("longdash", "solid", "dotted", "twodash")) +
+  labs(x = "PC1",
+       y = "PC2",
+       title = "Microbe PCoA") +
+  theme(title = element_text(size = 10)) + # makes titles smaller
+  theme_classic() + 
+  labs(shape='Bee Genus', color='Site') + 
+  theme_classic() +
+  geom_point(aes(color=factor(species_data$Site), shape=species_data$Genus, size=1.6)) +
+          scale_color_viridis(discrete=TRUE) +
+         scale_shape_manual(name="Genus", values=c(15:18)) +
+  stat_ellipse(aes(color=factor(species_data$Site))) 
+
+bray_curtis_plot2
+```
 
 
 ```{r}
