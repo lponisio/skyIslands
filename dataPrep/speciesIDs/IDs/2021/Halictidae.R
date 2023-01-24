@@ -112,7 +112,7 @@ sp.ids <- list(
                                  SubSpecies="", Sex="f",
                                  Author = "Cockerell",
                                  Determiner = "L. Best",
-                                 temp.id= c(31913, 31128, 33460, 33468)),
+                                 temp.id= c(31913, 31128)),
 
 
     Halictus_farinosus_f = list(Genus="Halictus", SubGenus ="Nealictus",
