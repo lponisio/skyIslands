@@ -168,7 +168,14 @@ rel_abund_assay<- microbes  %>%
 
 species_data <- microbes %>%
   mutate(gensp = paste(microbes$Genus, microbes$Species)) %>%
-  arrange(gensp)
+  arrange(gensp) %>%
+  mutate(Site = factor(Site, levels=c("JC", ## ordered by latitude north to south
+                                      "SM",
+                                      "SC",
+                                      "MM",
+                                      "HM",
+                                      "PL",
+                                      "CH")))
 
 
 #microbe_pca <- prcomp(rel_abund_assay)
@@ -210,28 +217,40 @@ library(ggplot2)
 bray_curtis_plot <- ggplot(data = pcoa_df, aes(x=pcoa1,
                                                y=pcoa2,
                                                shape=species_data$Genus)) +
-  geom_point() +
+  geom_point(alpha=0) +
   stat_ellipse(aes(linetype= species_data$Genus)) + 
   scale_linetype_manual("Genus", values=c("longdash", "solid", "dotted", "twodash")) +
   labs(x = "PC1",
        y = "PC2",
        title = "Microbe PCoA") +
   theme(title = element_text(size = 10)) + # makes titles smaller
-  theme_classic() + 
-  labs(shape='Bee Genus', color='Bee Species') + 
   theme_classic() +
-  geom_point(aes(color=species_data$gensp, shape=species_data$Genus, size=1.6)) +
-          scale_color_manual(name='Species', values=c('#6baed6','#3182bd','#08519c', #3 anothophora sp -- blue
+  geom_point(aes(fill=species_data$gensp,
+                 color=species_data$Site, 
+                 shape=species_data$Genus, 
+                 stroke=1.5)) +
+          scale_fill_manual(name='Species',
+                            values=c('#6baed6','#3182bd','#08519c', #3 anothophora sp -- blue
                                                       '#31a354', #1 apis sp -- green
                                                       '#fee6ce','#fdd0a2','#fdae6b','#fd8d3c','#f16913','#d94801','#a63603','#7f2704', #8 bombus sp -- orange
                                                       '#efedf5','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#54278f','#3f007d'), #8 megachile sp -- purple
-                                aesthetics = 'color') +
-         scale_shape_manual(name="Genus", values=c(15:18)) 
+                                aesthetics = 'fill') +
+         scale_shape_manual(name="Genus", values=c(21:24)) +
+  scale_color_manual(name='Species', values=c('#f7f7f7','#d9d9d9','#bdbdbd','#969696','#737373','#525252','#252525'), aesthetics = 'color') +
+  guides(size='none', alpha='none') + theme(legend.position = 'none') 
 
 bray_curtis_plot
 
+##legend stuff
 
+bray_curtis_leg <-  bray_curtis_plot +
+  guides(size='none', alpha='none', fill='none', shape='none')
 
+bray_curtis_leg%>%
+  ggpubr::get_legend() %>%
+  ggpubr::as_ggplot()
+
+legend <- ggpubr::as_ggplot(plot_legend)
 #scree plot
 #fviz_eig(microbe_pca)
 
