@@ -149,27 +149,27 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, this.genus, presAbs
     relocate(bacteria)
   
   
-  p <- ggtree(gentree, layout='rectangular')
-  
-  p2 <- p +
-    geom_fruit(
-      data=features_site_metadata,
-      geom=geom_tile,
-      mapping=aes(y=bacteria,
-                  x=Site,
-                  alpha=Site_present,
-                  fill=Site),
-      axis.params=list(
-        axis="x",
-        title = "Site",
-        text.size=2,
-        #vjust=-110,
-        #text.angle=-45
-      ),
-      show.legend=FALSE) + 
-    scale_fill_viridis(option="plasma", discrete=TRUE) +
-    ggtitle(this.genus)
-  p2
+  p <- ggtree(gentree, layout='rectangular') + geom_tiplab(align=TRUE, linetype = 'dashed')
+  p
+  # p2 <- p +
+  #   geom_fruit(
+  #     data=features_site_metadata,
+  #     geom=geom_tile,
+  #     mapping=aes(y=bacteria,
+  #                 x=Site,
+  #                 alpha=Site_present,
+  #                 fill=Site),
+  #     axis.params=list(
+  #       axis="x",
+  #       title = "Site",
+  #       text.size=2,
+  #       #vjust=-110,
+  #       #text.angle=-45
+  #     ),
+  #     show.legend=FALSE) + 
+  #   scale_fill_viridis(option="plasma", discrete=TRUE) +
+  #   ggtitle(this.genus)
+  # p2
 }
 
 apis_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", comm_presabs, apis_sites)
@@ -187,5 +187,6 @@ megachile_tree
 
 ##########################
 
+##getting clade labels ready
 
 
