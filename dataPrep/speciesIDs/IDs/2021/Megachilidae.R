@@ -49,7 +49,7 @@ sp.ids <- list(
                                SubSpecies="",
                                Sex="f", Author = "Smith",
                                Determiner = "L. Best",
-                               temp.id=  c(33201, 30641, 30640, 31042,
+                               temp.id=  c(33021, 30641, 30640, 31042,
                                            31041, 31039, 30648)),
 
     ## Megachile_frigida_m = list(Genus="Megachile",
