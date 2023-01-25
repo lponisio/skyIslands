@@ -646,16 +646,16 @@ sp.ids <- list(
                                          33157, 33335, 33382, 33939, 33940,
                                          33944, 33946, 33947, 33334, 31244,
                                          30931, 31374, 32287, 31920, 31897,
-                                         31903, 32289, 32529)),
+                                         31903, 32289, 32529, 31228)),
 
-    ## Andrena_apacheorum_m= list(Genus="Andrena",
-    ##                            SubGenus ="Cnemidandrena",
-    ##                            Species="apacheorum",
-    ##                            SubSpecies="",
-    ##                            Sex="m",
-    ##                            Author = "Cockerell",
-    ##                            Determiner="",
-    ##                            temp.id= c()),
+     Andrena_apacheorum_m= list(Genus="Andrena",
+                                SubGenus ="Cnemidandrena",
+                                Species="apacheorum",
+                                SubSpecies="",
+                                Sex="m",
+                                Author = "Cockerell",
+                                Determiner="J.L. Neff",
+                                temp.id= c(31525, 31218, 33861)),
 
     ## Andrena_costillensis= list(Genus="Andrena",
     ##                            SubGenus ="Cnemidandrena",
@@ -767,5 +767,32 @@ sp.ids <- list(
                                  Author = "Cockerell",
                                  Determiner="J.L. Neff",
                                  temp.id= c(31974))
+    
+     Andrena_pecosana_f= list(Genus="Andrena",
+                                 SubGenus ="",
+                                 Species="pecosana",
+                                 SubSpecies="",
+                                 Sex="f",
+                                 Author = "Cockerell",
+                                 Determiner="J.L. Neff",
+                                 temp.id= c(34093, 34101))
+    
+     Andrena_pecosana_m= list(Genus="Andrena",
+                                 SubGenus ="",
+                                 Species="pecosana",
+                                 SubSpecies="",
+                                 Sex="m",
+                                 Author = "Cockerell",
+                                 Determiner="J.L. Neff",
+                                 temp.id= c(34014, 34096, 33240))
+    
+     Andrena_segregans_f= list(Genus="Andrena",
+                                 SubGenus ="",
+                                 Species="segregans",
+                                 SubSpecies="",
+                                 Sex="f",
+                                 Author = "Cockerell",
+                                 Determiner="J.L. Neff",
+                                 temp.id= c(32301, 32290, 31916, 31912, 31882, 31895))
     
     )
