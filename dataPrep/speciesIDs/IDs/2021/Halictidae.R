@@ -201,15 +201,6 @@ sp.ids <- list(
                                   Determiner = "L. Best",
                                   temp.id= c(31677)),
 
-
-    Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
-                                  SubGenus ="Dialictus",
-                                  Species="aquilae",
-                                  SubSpecies="",
-                                  Sex="m", Author = "Cockerell",
-                                  Determiner = "J. Zorn",
-                                  temp.id= c(18064, 18704)),
-
     ## Lasioglossum_M2_f = list(Genus="Lasioglossum",
     ##                          SubGenus ="Dialictus",
     ##                          Species="M2",
