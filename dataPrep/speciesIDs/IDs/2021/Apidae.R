@@ -737,4 +737,35 @@ sp.ids <- list(
                                  Determiner="J.L. Neff",
                                  temp.id= c(31379, 31224, 31571))    
 
+    
+     Andrena_tegularis_f= list(Genus="Andrena",
+                                 SubGenus ="",
+                                 Species="tegularis",
+                                 SubSpecies="",
+                                 Sex="f",
+                                 Author = "LaBerge",
+                                 Determiner="J.L. Neff",
+                                 temp.id= c(34064, 34016, 34230, 34227, 34171,
+                                           34086, 34170, 34062, 34099, 34165,
+                                           34169))
+    
+     Andrena_tegularis_m= list(Genus="Andrena",
+                                 SubGenus ="",
+                                 Species="tegularis",
+                                 SubSpecies="",
+                                 Sex="m",
+                                 Author = "LaBerge",
+                                 Determiner="J.L. Neff",
+                                 temp.id= c(34222, 34197))
+    
+    
+     Andrena_hitei_f= list(Genus="Andrena",
+                                 SubGenus ="",
+                                 Species="hitei",
+                                 SubSpecies="",
+                                 Sex="f",
+                                 Author = "Cockerell",
+                                 Determiner="J.L. Neff",
+                                 temp.id= c(31974))
+    
     )
