@@ -280,7 +280,7 @@ sp.ids <- list(
                              Determiner="L. Best",
                              temp.id = c(33402, 33403, 33404, 33421,
                                          33435, 34259, 34260, 34263,
-                                         33588)),
+                                         33558)),
 
     Bombus_fervidus_m = list(Genus = "Bombus", SubGenus="Thoracobombus",
                              Species =
