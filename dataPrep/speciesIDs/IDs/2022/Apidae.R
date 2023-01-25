@@ -824,6 +824,16 @@ sp.ids <- list(
                                          37224, 37223, 37222, 37221, 37312,
                                          37298, 37297, 37296, 37269, 37294,
                                          37293, 37291, 37159, 37157, 37158))
+    
+
+     Andrena_hitei_f= list(Genus="Andrena",
+                                 SubGenus ="",
+                                 Species="hitei",
+                                 SubSpecies="",
+                                 Sex="f",
+                                 Author = "Cockerell",
+                                 Determiner="J.L. Neff",
+                                 temp.id= c(36498, 36499))
 
 
 )
