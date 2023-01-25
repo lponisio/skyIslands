@@ -234,7 +234,7 @@ sp.ids <- list(
                                 Author = "Christ",
                                 Determiner = "D. Yanega",
                                 temp.id= c("18708", "17807",
-                                           "18307", "17660", "19652",
+                                           "17660", "19652",
                                            "18705")),
 
     Lasioglossum_ruidosense_f= list(Genus="Lasioglossum",
