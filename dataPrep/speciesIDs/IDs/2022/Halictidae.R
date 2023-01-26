@@ -233,8 +233,8 @@ sp.ids <- list(
              Species="pacatum/viridatulum",
              SubSpecies="", Sex="f",
              Author = "",
-             Determiner="",
-             temp.id=c()),
+             Determiner="J.L. Neff",
+             temp.id=c(37831)),
 
     Lasioglossum_pacatum_viridatulum_m=
         list(Genus="Lasioglossum",
