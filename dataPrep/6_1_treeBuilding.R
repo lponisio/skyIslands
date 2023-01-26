@@ -204,3 +204,30 @@ apis_with_clades <- apis_tree +
 apis_with_clades
 
 ###
+bombus_table <- bombus_tree%>% as.treedata %>% as_tibble
+
+
+bombus_with_clades <- bombus_tree + 
+  geom_cladelab(node=679, label="Bifidobacteriaceae", angle=270, hjust='center', offset=.6, align=TRUE, offset.text = .1, textcolor='red', barcolor='red') +
+  #geom_cladelab(node=236, label="Lactobacillaceae", angle=270, hjust='center', offset=.6, align=TRUE, offset.text = .1, textcolor='orange', barcolor='orange') +
+  #geom_cladelab(node=277, label="Neisseriaceae", angle=270, hjust='center', offset=.6, align=TRUE, offset.text = .1, textcolor='gold', barcolor='gold') +
+  #geom_cladelab(node=285, label="Orbaceae", angle=270, hjust='center', offset=.6, align=TRUE, offset.text = .1, textcolor='green', barcolor='green')  +
+  #geom_cladelab(node=312, label="Enterobacteriaceae", angle=270, offset=.6, hjust='center', align=TRUE, offset.text = .1, textcolor='blue', barcolor='blue')+
+  geom_cladelab(node=1167, label="Bartonella", angle=270, hjust='center', offset=.6, align=TRUE, offset.text = .2, textcolor='violet', barcolor='violet') +
+  #geom_cladelab(node=364, label="Acetobacteriaceae", angle=270, offset=.6, hjust='center', align=TRUE, offset.text = .3, textcolor='purple', barcolor='purple') 
+
+bombus_with_clades
+
+##maybe use geom_strip for non monophyletic groups --
+##can i write a function that searches tip labels for D_4 or D_5 string pattern for correct family or genus of interest,
+##returns the node numbers or tip numbers/labels based on a list of correct labels
+## probs need a for loop to do this, input will be a list of labels
+## 1. for loop
+## 2. 1:length of list of clades
+## 3. first need to search tip labels for pattern matches
+## 4. return either tipnumbers or node numbers 
+## then need to add geom)cladelab with the node
+## if not monophyletic then need to add a second bar based on the tip numbers/labels with matched color
+
+
+
