@@ -252,23 +252,32 @@ sp.ids <- list(
     ##                                 temp.id=c()),
 
 
-    ## Lasioglossum_pacatum_viridatulum_f=
-    ##     list(Genus="Lasioglossum",
-    ##          SubGenus="Dialictus",
-    ##          Species="pacatum/viridatulum",
-    ##          SubSpecies="", Sex="f",
-    ##          Author = "",
-    ##          Determiner="J. Gardener",
-    ##          temp.id=c()),
+     Lasioglossum_pacatum_viridatulum_f=
+         list(Genus="Lasioglossum",
+              SubGenus="Dialictus",
+              Species="pacatum/viridatulum",
+              SubSpecies="", Sex="f",
+              Author = "",
+              Determiner="J.L. Neff",
+              temp.id=c(34356, 31420, 34339, 34286, 34276,
+                       33609, 33474, 34336, 34271, 34402,
+                       34408, 34354, 34360, 34337, 34338,
+                       34417, 34273, 34422, 34432, 34435,
+                       34267, 34446, 34280, 34275, 34411,
+                       34445, 34442, 34268, 33620, 37901,
+                       33597, 34345, 33607, 34349, 34353, 
+                       33618, 34340, 34332, 34334, 32711, 
+                       34436)),
 
-    ## Lasioglossum_pacatum_viridatulum_m=
-    ##     list(Genus="Lasioglossum",
-    ##          SubGenus="Dialictus",
-    ##          Species="pacatum/viridatulum",
-    ##          SubSpecies="", Sex="m",
-    ##          Author = "",
-    ##          Determiner="J. Gardener",
-    ##          temp.id=c()),
+     Lasioglossum_pacatum_viridatulum_m=
+         list(Genus="Lasioglossum",
+              SubGenus="Dialictus",
+              Species="pacatum/viridatulum",
+              SubSpecies="", Sex="m",
+              Author = "",
+              Determiner="J. Gardener",
+              temp.id=c(33605, 33591, 33454, 34329, 33625
+                       33593, )),
 
     ## Lasioglossum_obnubilum_f= list(Genus="Lasioglossum",
     ##                                SubGenus ="Dialictus",
