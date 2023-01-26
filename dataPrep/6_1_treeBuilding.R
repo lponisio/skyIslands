@@ -163,7 +163,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, this.genus, presAbs
         axis="x",
         title = "Site",
         text.size=2,
-        #vjust=-110,
+        vjust=-110,
         #text.angle=-45
       ),
       show.legend=FALSE) +
@@ -193,14 +193,14 @@ apis_table <- apis_tree%>% as.treedata %>% as_tibble
 
 
 apis_with_clades <- apis_tree + 
-  geom_cladelab(node=209, label="Bifidobacteriaceae", angle=270, hjust='center', align=TRUE, offset.text = .1, textcolor='red', barcolor='red') +
-  geom_cladelab(node=236, label="Lactobacillaceae", angle=270, hjust='center', align=TRUE, offset.text = .1, textcolor='orange', barcolor='orange') +
-  geom_cladelab(node=277, label="Neisseriaceae", angle=270, hjust='center', align=TRUE, offset.text = .2, textcolor='gold', barcolor='gold') +
-  geom_cladelab(node=285, label="Orbaceae", angle=270, hjust='center', align=TRUE, offset.text = .1, textcolor='green', barcolor='green')  +
-  geom_cladelab(node=312, label="Enterobacteriaceae", angle=270, hjust='center', align=TRUE, offset.text = .1, textcolor='blue', barcolor='blue')+
-  geom_cladelab(node=357, label="Bartonella", angle=270, hjust='center', align=TRUE, offset.text = .1, textcolor='lightblue', barcolor='lightblue') +
-  geom_cladelab(node=364, label="Acetobacteriaceae", angle=270, hjust='center', align=TRUE, offset.text = .2, textcolor='purple', barcolor='purple') 
+  geom_cladelab(node=209, label="Bifidobacteriaceae", angle=270, hjust='center', offset=.6, align=TRUE, offset.text = .1, textcolor='red', barcolor='red') +
+  geom_cladelab(node=236, label="Lactobacillaceae", angle=270, hjust='center', offset=.6, align=TRUE, offset.text = .1, textcolor='orange', barcolor='orange') +
+  geom_cladelab(node=277, label="Neisseriaceae", angle=270, hjust='center', offset=.6, align=TRUE, offset.text = .1, textcolor='gold', barcolor='gold') +
+  geom_cladelab(node=285, label="Orbaceae", angle=270, hjust='center', offset=.6, align=TRUE, offset.text = .1, textcolor='green', barcolor='green')  +
+  geom_cladelab(node=312, label="Enterobacteriaceae", angle=270, offset=.6, hjust='center', align=TRUE, offset.text = .1, textcolor='blue', barcolor='blue')+
+  geom_cladelab(node=357, label="Bartonella", angle=270, hjust='center', offset=.6, align=TRUE, offset.text = .2, textcolor='violet', barcolor='violet') +
+  geom_cladelab(node=364, label="Acetobacteriaceae", angle=270, offset=.6, hjust='center', align=TRUE, offset.text = .3, textcolor='purple', barcolor='purple') 
   
 apis_with_clades
 
-
+###
