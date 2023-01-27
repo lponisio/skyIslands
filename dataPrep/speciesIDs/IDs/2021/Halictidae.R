@@ -211,13 +211,17 @@ sp.ids <- list(
 
 
 
-    ## Lasioglossum_semicaeruleum_f = list(Genus="Lasioglossum",
-    ##                                     SubGenus ="Dialictus",
-    ##                                     Species="semicaeruleum",
-    ##                                     SubSpecies="", Sex="f",
-    ##                                     Author ="Cockerell",
-    ##                                     Determiner = "J. Gardener",
-    ##                                     temp.id= c()),
+     Lasioglossum_semicaeruleum_f = list(Genus="Lasioglossum",
+                                         SubGenus ="Dialictus",
+                                         Species="semicaeruleum",
+                                         SubSpecies="", Sex="f",
+                                         Author ="Cockerell",
+                                         Determiner = "J. Gardener",
+                                         temp.id= c(33456,
+                       30939, 31673, 34426, 34430, 33966, 
+                       34335, 34025, 34412, 34416, 34418,
+                       31883, 32401, 30917, 31117, 34343,
+                       32676, 34421, 32570, 34425)),
 
     ## Lasioglossum_semicaeruleum_m = list(Genus="Lasioglossum",
     ##                                     SubGenus ="Dialictus",
@@ -277,7 +281,11 @@ sp.ids <- list(
               Author = "",
               Determiner="J. Gardener",
               temp.id=c(33605, 33591, 33454, 34329, 33625
-                       33593, )),
+                       33593, 33492, 33463, 34355, 34358, 
+                       34359, 33584, 33496, 34266, 34420,
+                       34285, 34415, 33486, 33601, 33615,
+                       33600, 33491, 34444, 34327, 34333,
+                       33616, 34439, 33596, 33487)),
 
     ## Lasioglossum_obnubilum_f= list(Genus="Lasioglossum",
     ##                                SubGenus ="Dialictus",
