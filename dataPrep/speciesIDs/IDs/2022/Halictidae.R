@@ -216,8 +216,9 @@ sp.ids <- list(
                                     SubSpecies="cf.",
                                     Sex="f",
                                     Author = "Cockerell",
-                                    Determiner = "",
-                                    temp.id=c()),
+                                    Determiner = "J.L. Neff",
+                                    temp.id=c(36523, 37110, 36469, 37049, 37498,
+                                             37512, 36785, 37106, 37112)),
 
     Lasioglossum_ruidosense_m= list(Genus="Lasioglossum", SubGenus
                                     ="Dialictus", Species="ruidosense",
