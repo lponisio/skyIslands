@@ -1,7 +1,7 @@
 
 ## tutorial: https://bioconductor.org/packages/devel/bioc/vignettes/ggtreeExtra/inst/doc/ggtreeExtra.html
 
-#run up to line 61 in 6_rbcl_16sPrep.R
+
 
 ## packages
 library(ggtree)
@@ -268,16 +268,33 @@ apis_table <- apis_tree%>% as.treedata %>% as_tibble
 apis_nodes <- apis_table$node[apis_table$label %in% fam_tips == TRUE]
 
 ## have found the correct nodes need to figure out how to segment them
+## want to:
+# 1. make a list of every sequential combo (index1-index2, index2-index3 etc)
 
+#Create nested list (3 lists inside)
+my_nested_list <- list(taxa1=apis_nodes[1:(length(apis_nodes)-1)],
+                       taxa2=apis_nodes[2:length(apis_nodes)])
 
+# Convert nested list to the dataframe by columns
+node_comparisons <- as.data.frame(do.call(cbind, my_nested_list))
+node_comparisons
 
-##find tip node numbers of most recent common ancestor
+#now have appropriate list of node segments, need to 
+#find a way to draw segments between each or otherwise figure
+#out how to annotate the polyphyletic groups 
 
-node_of_interest <- MRCA(gentree, apis_nodes[1], apis_nodes[length(apis_nodes)]) #find the most recent common ancestor node to plug into cladelab
+##this below for loop isnt working properly yet
 
+# for (i in seq_along(node_comparisons)){
+#   apis_with_clades <- apis_tree + 
+#     geom_strip(taxa1=node_comparisons$taxa1[i],
+#                taxa2=node_comparisons$taxa2[i],
+#                label="")
+# }
+# apis_with_clades
 
 apis_with_clades <- apis_tree + 
-  geom_cladelab(node=node_of_interest, label="Lactobacillaceae", angle=270, hjust='center', offset=.6, align=TRUE, offset.text = .1, textcolor='red', barcolor='red')
+  geom_strip(apis_nodes, label="Lactobacillaceae", angle=270, hjust='center', offset=.6, align=TRUE, offset.text = .1, textcolor='red', barcolor='red')
 
 ####working right now for monophyletic genera but breaking for orbaceae -- not monophyletic?
 
