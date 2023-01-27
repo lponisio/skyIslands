@@ -216,7 +216,7 @@ sp.ids <- list(
                                          Species="semicaeruleum",
                                          SubSpecies="", Sex="f",
                                          Author ="Cockerell",
-                                         Determiner = "J. Gardener",
+                                         Determiner = "J.L. Neff",
                                          temp.id= c(33456,
                        30939, 31673, 34426, 34430, 33966, 
                        34335, 34025, 34412, 34416, 34418,
@@ -239,21 +239,29 @@ sp.ids <- list(
                                 Determiner = "L. Best",
                                 temp.id= c(31366, 31368, 31414))
 
-    ## Lasioglossum_ruidosense_f= list(Genus="Lasioglossum",
-    ##                                 SubGenus ="Dialictus",
-    ##                                 Species="ruidosense",
-    ##                                 SubSpecies="cf.",
-    ##                                 Sex="f",
-    ##                                 Author = "Cockerell",
-    ##                                 Determiner = "",
-    ##                                 temp.id=c()),
+     Lasioglossum_ruidosense_f= list(Genus="Lasioglossum",
+                                     SubGenus ="Dialictus",
+                                     Species="ruidosense",
+                                     SubSpecies="cf.",
+                                     Sex="f",
+                                     Author = "Cockerell",
+                                     Determiner = "J.L. Neff",
+                                     temp.id=c(30922, 34375, 31112, 31253, 34238,
+                                              33624, 32704, 34347, 34348, 31122,
+                                              31409, 34357, 34433, 31408, 31407,
+                                              32731, 31475, 34277, 34409, 31129,
+                                              33044, 31240, 34404, 31121, 34346,
+                                              31126, 32296, 33061, 34437, 33466,
+                                              31209, 31213, 34344, 31119, 31384,
+                                              31382, 30652, 31110)),
 
-    ## Lasioglossum_ruidosense_m= list(Genus="Lasioglossum", SubGenus
-    ##                                 ="Dialictus", Species="ruidosense",
-    ##                                 SubSpecies="cf.", Sex="m",
-    ##                                 Author = "Cockerell",
-    ##                                 Determiner = "",
-    ##                                 temp.id=c()),
+     Lasioglossum_ruidosense_m= list(Genus="Lasioglossum", SubGenus
+                                     ="Dialictus", Species="ruidosense",
+                                     SubSpecies="cf.", Sex="m",
+                                     Author = "Cockerell",
+                                     Determiner = "J.L. Neff",
+                                     temp.id=c(34438, 31793, 34440, 31127, 31124,
+                                              31125, 34330, 32698, 32699)),
 
 
      Lasioglossum_pacatum_viridatulum_f=
@@ -279,7 +287,7 @@ sp.ids <- list(
               Species="pacatum/viridatulum",
               SubSpecies="", Sex="m",
               Author = "",
-              Determiner="J. Gardener",
+              Determiner="J.L. Neff",
               temp.id=c(33605, 33591, 33454, 34329, 33625
                        33593, 33492, 33463, 34355, 34358, 
                        34359, 33584, 33496, 34266, 34420,
