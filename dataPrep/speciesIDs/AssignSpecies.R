@@ -27,10 +27,10 @@ source(file.path(save.dir, 'IDs/2022/Apidae.R'))
 add.to.data(sp.ids=sp.ids, case='bee', "Apidae","2022",
 data.file=spec.data.file)
 
-## source(file.path(save.dir, 'IDs/2022/Halictidae.R'))
-## add.to.data(sp.ids=sp.ids,
-##             case='bee', "Halictidae","2022",
-##             data.file=spec.data.file)
+source(file.path(save.dir, 'IDs/2022/Halictidae.R'))
+add.to.data(sp.ids=sp.ids,
+            case='bee', "Halictidae","2022",
+            data.file=spec.data.file)
 
 ## source(file.path(save.dir, 'IDs/2022/Megachilidae.R'))
 ## add.to.data(sp.ids=sp.ids,
