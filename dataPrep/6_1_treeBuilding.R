@@ -231,3 +231,103 @@ bombus_with_clades
 
 
 
+
+####################### copying down apis function as practice example
+
+genus_ids <- meta %>%
+  filter(Genus=='Apis') %>%
+  select(UniqueID)
+
+my_sites <- unique(meta$Site[meta$Genus=='Apis'])
+
+trimmed_tree <- prune_samples(sample_names(physeq16sR0) %in% genus_ids$UniqueID, physeq16sR0)
+
+pruned_tree <- prune_taxa(taxa_sums(trimmed_tree) > 0, trimmed_tree)
+
+
+feature.2.tax.16s <-
+  read.table("SI_pipeline/merged/16s/taxonomy16s.txt", sep="\t",
+             header=TRUE)
+
+feature.2.tax.16s$Taxon <- paste("16s", feature.2.tax.16s$Taxon, sep=':')
+
+# ## convert to a phylo class which is more useful downstream
+gentree <- phy_tree(pruned_tree, errorIfNULL=TRUE)
+
+## match the tip labs to the table with feature ID and Taxon
+gentree$tip.label  <-  feature.2.tax.16s$Taxon[match(gentree$tip.label,
+                                                     feature.2.tax.16s$Feature.ID)]
+
+##for one fam of interest 
+
+true_tips <- grepl('D_4__Lactobacillaceae', gentree$tip.label) #boolean to determine which tip labels match the fam of interest
+
+fam_tips <- gentree$tip.label[true_tips] #filter to just those labels
+
+##find tip node numbers of most recent common ancestor
+
+node_of_interest <- MRCA(gentree, fam_tips) #find the most recent common ancestor node to plug into cladelab
+
+
+apis_with_clades <- apis_tree + 
+  geom_cladelab(node=node_of_interest, label="Lactobacillaceae", angle=270, hjust='center', offset=.6, align=TRUE, offset.text = .1, textcolor='red', barcolor='red')
+
+####working right now for monophyletic genera but breaking for orbaceae -- not monophyletic? 
+
+# 
+# 
+# matched_presabs <- match_shared_tiplabels(gentree, comm_presabs)
+# 
+# matched_pres_meta <- match_shared_ID(matched_presabs, meta)
+# 
+# matched_id <- matched_pres_meta$UniqueID
+# row.names(matched_pres_meta) <- matched_id
+# 
+# meta_match_sites <- match_shared_ID(meta, matched_pres_meta) %>%
+#   select(UniqueID, Site, Genus) %>%
+#   mutate(Site = factor(Site)) %>%
+#   filter(Genus=='Apis') %>%
+#   select(!Genus) %>%
+#   group_by(UniqueID, Site) %>%
+#   count() %>%
+#   pivot_wider(names_from=Site,
+#               values_from = n,
+#               names_expand = TRUE,
+#               id_expand=TRUE) %>%
+#   pivot_longer(cols=2:length(colnames(.)),
+#                names_to='Site',
+#                values_to='Site_present') %>%
+#   filter(Site_present > 0) %>%
+#   mutate(Site = factor(Site, levels=apis_sites))
+# 
+# features_site_metadata <- match_shared_ID(matched_pres_meta, meta_match_sites) %>%
+#   right_join(meta_match_sites, by='UniqueID') %>%
+#   pivot_longer(cols = starts_with('16s'), names_to = 'bacteria', values_to = 'bact_pres') %>%
+#   group_by(bacteria) %>%
+#   filter(bact_pres == 1) %>%
+#   select(!bact_pres) %>%
+#   relocate(bacteria)
+# 
+# 
+# p <- ggtree(gentree, layout='rectangular') 
+# p
+# p2 <- p +
+#   geom_fruit(
+#     data=features_site_metadata,
+#     geom=geom_tile,
+#     mapping=aes(y=bacteria,
+#                 x=Site,
+#                 alpha=Site_present,
+#                 fill=Site),
+#     axis.params=list(
+#       axis="x",
+#       title = "Site",
+#       text.size=2,
+#       vjust=-110,
+#       #text.angle=-45
+#     ),
+#     show.legend=FALSE) +
+#   scale_fill_viridis(option="plasma", discrete=TRUE) +
+#   ggtitle('Apis')
+# p2
+# 
