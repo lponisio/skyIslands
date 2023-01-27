@@ -201,7 +201,7 @@ apis_with_clades <- apis_tree +
   geom_cladelab(node=357, label="Bartonella", angle=270, hjust='center', offset=.6, align=TRUE, offset.text = .2, textcolor='violet', barcolor='violet') +
   geom_cladelab(node=364, label="Acetobacteriaceae", angle=270, offset=.6, hjust='center', align=TRUE, offset.text = .3, textcolor='purple', barcolor='purple') 
   
-apis_with_clades
+apis_with_clades 
 
 ###
 bombus_table <- bombus_tree%>% as.treedata %>% as_tibble
@@ -229,10 +229,9 @@ bombus_with_clades
 ## then need to add geom)cladelab with the node
 ## if not monophyletic then need to add a second bar based on the tip numbers/labels with matched color
 
-
-
-
 ####################### copying down apis function as practice example
+
+
 
 genus_ids <- meta %>%
   filter(Genus=='Apis') %>%
@@ -264,15 +263,23 @@ true_tips <- grepl('D_4__Lactobacillaceae', gentree$tip.label) #boolean to deter
 
 fam_tips <- gentree$tip.label[true_tips] #filter to just those labels
 
+apis_table <- apis_tree%>% as.treedata %>% as_tibble
+
+apis_nodes <- apis_table$node[apis_table$label %in% fam_tips == TRUE]
+
+## have found the correct nodes need to figure out how to segment them
+
+
+
 ##find tip node numbers of most recent common ancestor
 
-node_of_interest <- MRCA(gentree, fam_tips) #find the most recent common ancestor node to plug into cladelab
+node_of_interest <- MRCA(gentree, apis_nodes[1], apis_nodes[length(apis_nodes)]) #find the most recent common ancestor node to plug into cladelab
 
 
 apis_with_clades <- apis_tree + 
   geom_cladelab(node=node_of_interest, label="Lactobacillaceae", angle=270, hjust='center', offset=.6, align=TRUE, offset.text = .1, textcolor='red', barcolor='red')
 
-####working right now for monophyletic genera but breaking for orbaceae -- not monophyletic? 
+####working right now for monophyletic genera but breaking for orbaceae -- not monophyletic?
 
 # 
 # 
