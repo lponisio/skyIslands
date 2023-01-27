@@ -726,7 +726,7 @@ sp.ids <- list(
                                            32398, 32388, 31549, 31762, 31548,
                                            31761, 31582, 31760, 31547, 31759,
                                            31546, 31545, 31758, 32661, 32663,
-                                           31786, 31785, 31581, 31580, 31579))
+                                           31786, 31785, 31581, 31580, 31579)),
 
      Andrena_birtwelli_m= list(Genus="Andrena",
                                  SubGenus ="",
@@ -735,9 +735,9 @@ sp.ids <- list(
                                  Sex="m",
                                  Author = "Cockerell",
                                  Determiner="J.L. Neff",
-                                 temp.id= c(31379, 31224, 31571))    
+                                 temp.id= c(31379, 31224, 31571)),
 
-    
+
      Andrena_tegularis_f= list(Genus="Andrena",
                                  SubGenus ="",
                                  Species="tegularis",
@@ -747,8 +747,8 @@ sp.ids <- list(
                                  Determiner="J.L. Neff",
                                  temp.id= c(34064, 34016, 34230, 34227, 34171,
                                            34086, 34170, 34062, 34099, 34165,
-                                           34169))
-    
+                                           34169)),
+
      Andrena_tegularis_m= list(Genus="Andrena",
                                  SubGenus ="",
                                  Species="tegularis",
@@ -756,9 +756,9 @@ sp.ids <- list(
                                  Sex="m",
                                  Author = "LaBerge",
                                  Determiner="J.L. Neff",
-                                 temp.id= c(34222, 34197))
-    
-    
+                                 temp.id= c(34222, 34197)),
+
+
      Andrena_hitei_f= list(Genus="Andrena",
                                  SubGenus ="",
                                  Species="hitei",
@@ -766,8 +766,8 @@ sp.ids <- list(
                                  Sex="f",
                                  Author = "Cockerell",
                                  Determiner="J.L. Neff",
-                                 temp.id= c(31974))
-    
+                                 temp.id= c(31974)),
+
      Andrena_pecosana_f= list(Genus="Andrena",
                                  SubGenus ="",
                                  Species="pecosana",
@@ -775,8 +775,8 @@ sp.ids <- list(
                                  Sex="f",
                                  Author = "Cockerell",
                                  Determiner="J.L. Neff",
-                                 temp.id= c(34093, 34101))
-    
+                                 temp.id= c(34093, 34101)),
+
      Andrena_pecosana_m= list(Genus="Andrena",
                                  SubGenus ="",
                                  Species="pecosana",
@@ -784,8 +784,8 @@ sp.ids <- list(
                                  Sex="m",
                                  Author = "Cockerell",
                                  Determiner="J.L. Neff",
-                                 temp.id= c(34014, 34096, 33240))
-    
+                                 temp.id= c(34014, 34096, 33240)),
+
      Andrena_segregans_f= list(Genus="Andrena",
                                  SubGenus ="",
                                  Species="segregans",
@@ -794,5 +794,5 @@ sp.ids <- list(
                                  Author = "Cockerell",
                                  Determiner="J.L. Neff",
                                  temp.id= c(32301, 32290, 31916, 31912, 31882, 31895))
-    
+
     )
