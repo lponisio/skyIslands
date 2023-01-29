@@ -259,75 +259,64 @@ gentree <- phy_tree(pruned_tree, errorIfNULL=TRUE)
 gentree$tip.label  <-  feature.2.tax.16s$Taxon[match(gentree$tip.label,
                                                      feature.2.tax.16s$Feature.ID)]
 
-##for one fam of interest 
+p <- ggtree(gentree, layout='rectangular') 
+p
+
 
 true_tips <- grepl('D_4__Orbaceae', gentree$tip.label) #boolean to determine which tip labels match the fam of interest
 
 fam_tips <- gentree$tip.label[true_tips] #filter to just those labels
 
-apis_table <- apis_tree%>% as.treedata %>% as_tibble
+tree_table <- p %>% as.treedata %>% as_tibble
 
-apis_nodes <- apis_table$node[apis_table$label %in% fam_tips == TRUE]
+family_nodes <- tree_table$node[tree_table$label %in% fam_tips == TRUE]
 
-apis_with_clades <- apis_tree + 
-  geom_tippoint(aes(subset=apis_tree$data$node %in% apis_nodes), color='red', size=0.5)
-apis_with_clades
-####working right now for monophyletic genera but breaking for orbaceae -- not monophyletic?
+p1 <- p + 
+  geom_tippoint(aes(subset=p$data$node %in% family_nodes), color='red', size=0.5)
+p1
 
-# 
-# 
-# matched_presabs <- match_shared_tiplabels(gentree, comm_presabs)
-# 
-# matched_pres_meta <- match_shared_ID(matched_presabs, meta)
-# 
-# matched_id <- matched_pres_meta$UniqueID
-# row.names(matched_pres_meta) <- matched_id
-# 
-# meta_match_sites <- match_shared_ID(meta, matched_pres_meta) %>%
-#   select(UniqueID, Site, Genus) %>%
-#   mutate(Site = factor(Site)) %>%
-#   filter(Genus=='Apis') %>%
-#   select(!Genus) %>%
-#   group_by(UniqueID, Site) %>%
-#   count() %>%
-#   pivot_wider(names_from=Site,
-#               values_from = n,
-#               names_expand = TRUE,
-#               id_expand=TRUE) %>%
-#   pivot_longer(cols=2:length(colnames(.)),
-#                names_to='Site',
-#                values_to='Site_present') %>%
-#   filter(Site_present > 0) %>%
-#   mutate(Site = factor(Site, levels=apis_sites))
-# 
-# features_site_metadata <- match_shared_ID(matched_pres_meta, meta_match_sites) %>%
-#   right_join(meta_match_sites, by='UniqueID') %>%
-#   pivot_longer(cols = starts_with('16s'), names_to = 'bacteria', values_to = 'bact_pres') %>%
-#   group_by(bacteria) %>%
-#   filter(bact_pres == 1) %>%
-#   select(!bact_pres) %>%
-#   relocate(bacteria)
-# 
-# 
-# p <- ggtree(gentree, layout='rectangular') 
-# p
-# p2 <- p +
-#   geom_fruit(
-#     data=features_site_metadata,
-#     geom=geom_tile,
-#     mapping=aes(y=bacteria,
-#                 x=Site,
-#                 alpha=Site_present,
-#                 fill=Site),
-#     axis.params=list(
-#       axis="x",
-#       title = "Site",
-#       text.size=2,
-#       vjust=-110,
-#       #text.angle=-45
-#     ),
-#     show.legend=FALSE) +
-#   scale_fill_viridis(option="plasma", discrete=TRUE) +
-#   ggtitle('Apis')
-# p2
-# 
+##########
+## 1-28 struggling to functionize this... maybe just add one by one in 
+## the function? I think i would like the tips to be colored 
+## and there to be bars showing labs... maybe bring back code
+## from the other day that kinda clunkily did this?
+
+## pasted below
+
+##really what i want is:
+## add to the function the ability to
+## input a list of bacteria tips labels of interest
+## for each, color only tips with labels that include that family
+## need to add a legend or clade label
+## clade label bar can be imperfect since we are 
+## coloring actual tips -- hope this will be a workaround
+## for weirdness with nonmonophyletic taxa
+
+## have found the correct nodes need to figure out how to segment them
+## want to:
+# 1. make a list of every sequential combo (index1-index2, index2-index3 etc)
+
+#Create nested list (3 lists inside)
+my_nested_list <- list(taxa1=apis_nodes[1:(length(apis_nodes)-1)],
+                       taxa2=apis_nodes[2:length(apis_nodes)])
+
+# Convert nested list to the dataframe by columns
+node_comparisons <- as.data.frame(do.call(cbind, my_nested_list))
+node_comparisons
+
+#now have appropriate list of node segments, need to 
+#find a way to draw segments between each or otherwise figure
+#out how to annotate the polyphyletic groups 
+
+##this below for loop isnt working properly yet
+
+# for (i in seq_along(node_comparisons)){
+#   apis_with_clades <- apis_tree + 
+#     geom_strip(taxa1=node_comparisons$taxa1[i],
+#                taxa2=node_comparisons$taxa2[i],
+#                label="")
+# }
+# apis_with_clades
+
+# apis_with_clades <- apis_tree + 
+#   geom_strip(apis_nodes, label="Lactobacillaceae", angle=270, hjust='center', offset=.6, align=TRUE, offset.text = .1, textcolor='red', barcolor='red')
