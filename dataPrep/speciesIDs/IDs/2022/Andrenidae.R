@@ -222,17 +222,14 @@ sp.ids <- list(
                                           33881, 33391, 33162, 32300,
                                           33155)),
 
-
-
-    ## Heterosarus_bakeri_m= list(Genus="Heterosarus",
-    ##                            SubGenus ="",
-    ##                            Species="bakeri",
-    ##                            SubSpecies="",
-    ##                            Sex="m",
-    ##                            Author = "Cockerell",
-    ##                            Determiner="",
-    ##                            temp.id= c(
-    ##                            )),
+     Heterosarus_bakeri_m= list(Genus="Heterosarus",
+                                SubGenus ="",
+                                Species="bakeri",
+                                SubSpecies="",
+                                Sex="m",
+                                Author = "Cockerell",
+                                Determiner="J.L. Neff",
+                                temp.id= c(36977)),
 
 
     ## Heterosarus_neomex_f= list(Genus="Heterosarus",
