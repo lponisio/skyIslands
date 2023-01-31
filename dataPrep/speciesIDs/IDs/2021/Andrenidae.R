@@ -188,16 +188,25 @@ sp.ids <- list(
     ##                            temp.id= c()),
 
 
-    ## Heterosarus_bakeri_f= list(Genus="Heterosarus",
-    ##                            SubGenus ="",
-    ##                            Species="bakeri",
-    ##                            SubSpecies="",
-    ##                            Sex="f",
-    ##                            Author = "Cockerell",
-    ##                            Determiner="",
-    ##                            temp.id= c()),
-
-
+     Heterosarus_bakeri_f= list(Genus="Heterosarus",
+                                SubGenus ="",
+                                Species="bakeri",
+                                SubSpecies="",
+                                Sex="f",
+                                Author = "Cockerell",
+                                Determiner="",
+                                temp.id= c(31888, 32408, 32400, 32299,
+                                          32577, 33869, 33363,
+                                          31927, 32567, 33864, 33858,
+                                          32579, 33972, 33955, 33288,
+                                          33981, 32543, 33977, 32574,
+                                          33954, 33956, 33959, 33964,
+                                          33171, 33206, 33210, 33949,
+                                          33856, 33378, 32531, 31412,
+                                          31900, 31925, 33870, 33166,
+                                          32535, 32298, 34068, 33883,
+                                          33881, 33391, 33162, 32300,
+                                          33155)),
 
     ## Heterosarus_bakeri_m= list(Genus="Heterosarus",
     ##                            SubGenus ="",
@@ -234,36 +243,6 @@ sp.ids <- list(
     ##                                  Determiner="",
     ##                                  temp.id= c()),
 
-    ## Triepeolus_sp_a_m= list(Genus="Triepeolus",
-    ##                         SubGenus="",
-    ##                         Species="sp.",
-    ##                         SubSpecies="a",
-    ##                         Sex="m",
-    ##                         Author = "",
-    ##                         Determiner="",
-    ##                         temp.id= c(
-    ##                         )),
-
-
-
-    ## Triepeolus_sp_a_f= list(Genus="Triepeolus",
-    ##                         SubGenus="",
-    ##                         Species="sp.",
-    ##                         SubSpecies="a",
-    ##                         Sex="f",
-    ##                         Author = "",
-    ##                         Determiner="",
-    ##                         temp.id= c( )),
-
-    ## Triepeolus_sp_b_f= list(Genus="Triepeolus",
-    ##                         SubGenus="",
-    ##                         Species="sp.",
-    ##                         SubSpecies="b",
-    ##                         Sex="f",
-    ##                         Author = "",
-    ##                         Determiner="",
-    ##                         temp.id= c()),
-
 
     Andrena_apacheorum_f= list(Genus="Andrena",
                                SubGenus ="Cnemidandrena",
@@ -298,16 +277,6 @@ sp.ids <- list(
     ##                                "Viereck \\& Cockerell",
     ##                            Determiner="",
     ##                            temp.id= c())
-
-    Xylocopa_californica_f= list(Genus="Xylocopa",
-                                 SubGenus ="Xylocopoides",
-                                 Species="californica",
-                                 SubSpecies="",
-                                 Sex="f",
-                                 Author =
-                                     "Cresson",
-                                 Determiner="L. Ponisio",
-                                 temp.id= c(33995)),
 
 
      Andrena_birtwelli_f= list(Genus="Andrena",
