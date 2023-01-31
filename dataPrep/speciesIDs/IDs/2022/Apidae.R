@@ -20,8 +20,16 @@ sp.ids <- list(
                               Determiner="J.L. Neff",
                               temp.id= c(38334, 38379, 38338, 37309, 37254, 
                                         37189, 37415, 37462, 37506, 37505, 
-                                        37289, 38300),
+                                        37289, 38300)),
 
+      Melissodes_agilis_f= list(Genus="Melissodes",
+                              SubGenus="Eumelissodes",
+                              Species="agilis",
+                              SubSpecies="", Sex="f",
+                              Author = "Cresson",
+                              Determiner="K.W. Wright",
+                              temp.id= c(38402)),
+                                  
     Xylocopa_californica_f= list(Genus="Xylocopa",
                                  SubGenus="Xylocopoides",
                                  Species="californica",
