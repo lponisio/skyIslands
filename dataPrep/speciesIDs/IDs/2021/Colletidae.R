@@ -8,4 +8,73 @@ sp.ids <- list(
                              Author = "",
                              Determiner="L. Best",
                              temp.id= c(31369, 31372))
+    
+    Colletes_skinneri_f= list(Genus="Colletes",
+                             SubGenus="",
+                             Species="skinneri",
+                             SubSpecies="", Sex="f",
+                             Author = "Viereck",
+                             Determiner="J.L. Neff",
+                             temp.id= c(34159, 31896, 31919, 34453, 34166,
+                                       34098))
+    
+    Colletes_skinneri_m= list(Genus="Colletes",
+                             SubGenus="",
+                             Species="skinneri",
+                             SubSpecies="", Sex="m",
+                             Author = "Viereck",
+                             Determiner="J.L. Neff",
+                             temp.id= c(34200, 34094, 34097, 34103, 34095,
+                                       34183, 34063, 34191, 34199, 34196,
+                                       34192, 34450, 34190, 34017, 34193,
+                                       34451, 34452, 34194, 34195, 34189,
+                                       34455))
+    
+    Colletes_gilensis_f= list(Genus="Colletes",
+                             SubGenus="",
+                             Species="gilensis",
+                             SubSpecies="", Sex="f",
+                             Author = "Cockerell",
+                             Determiner="J.L. Neff",
+                             temp.id= c(33192, 33195, 33196, 33197, 33198, 
+                                       33250, 33156, 33941, 33942, 33943,
+                                       33945, 33844, 33846, 34396, 34015,
+                                       33249, 33191, 33248, 33246, 33247,
+                                       32883, 33330, 33149, 33245, 33244,
+                                       33242, 33241, 33151, 33150, 33243,
+                                       33329, 33193, 33331, 33332, 33333,
+                                       33849))
+    
+    Colletes_gilensis_m= list(Genus="Colletes",
+                             SubGenus="",
+                             Species="gilensis",
+                             SubSpecies="", Sex="m",
+                             Author = "Cockerell",
+                             Determiner="J.L. Neff",
+                             temp.id= c(33194))
+    
+    Colletes_compactus_f= list(Genus="Colletes",
+                             SubGenus="",
+                             Species="compactus",
+                             SubSpecies="", Sex="f",
+                             Author = "Cresson",
+                             Determiner="J.L. Neff",
+                             temp.id= c(33451))
+    
+    
+    Colletes_compactus_m= list(Genus="Colletes",
+                             SubGenus="",
+                             Species="compactus",
+                             SubSpecies="", Sex="m",
+                             Author = "Cresson",
+                             Determiner="J.L. Neff",
+                             temp.id= c(33706, 34398))
+    
+    Colletes_eulophi_m= list(Genus="Colletes",
+                             SubGenus="",
+                             Species="eulophi",
+                             SubSpecies="", Sex="m",
+                             Author = "Robertson",
+                             Determiner="J.L. Neff",
+                             temp.id= c(34401, 30776))
     )
