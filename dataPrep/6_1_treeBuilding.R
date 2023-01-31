@@ -81,6 +81,18 @@ comm_presabs <- as.data.frame(indiv.comm.16sR0) #load in the pres/abs table
 comm_presabs[comm_presabs > 0] <- 1 #change all rel abund to 1
 comm_presabs <- tibble::rownames_to_column(comm_presabs, "UniqueID") #make rownames (UniqueID) into column
 
+library(randomcoloR)
+
+bact_fam_of_interest <- c("D_4__Bifidobacteriaceae",
+                          "D_4__Lactobacillaceae",
+                          "D_4__Neisseriaceae",
+                          "D_4__Orbaceae",
+                          "D_4__Enterobacteriaceae",
+                          "D_5__Bartonella")
+                          #"D_4__Acetobacteriaceae")
+
+
+
 #######################################
 
 
@@ -90,7 +102,7 @@ comm_presabs <- tibble::rownames_to_column(comm_presabs, "UniqueID") #make rowna
 
 ##probs want to make sure each site in each individual graph is colored uniformly for all graphs 
 
-phylotree_heatmap_byGenus <- function(tree.object, metadata, this.genus, presAbsTable, site.order){
+phylotree_heatmap_byGenus <- function(tree.object, metadata, this.genus, presAbsTable, site.order, bact_fam_list){
   genus_ids <- metadata %>%
     filter(Genus==this.genus) %>%
     select(UniqueID)
@@ -151,6 +163,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, this.genus, presAbs
   
   p <- ggtree(gentree, layout='rectangular') 
   p
+  
   p2 <- p +
     geom_fruit(
       data=features_site_metadata,
@@ -172,7 +185,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, this.genus, presAbs
   p2
 }
 
-apis_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", comm_presabs, apis_sites)
+apis_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", comm_presabs, apis_sites, bact_fam_of_interest)
 apis_tree
 
 
@@ -270,6 +283,43 @@ p
 ## from the other day that kinda clunkily did this?
 
 ## pasted below
+
+## 1-30 works below by hand... struggling to turn into function, probs will have to do by
+## hand in the interest of time
+
+node_list <- list() #initialize list for nodes
+
+for (fam.name in bact_fam_list){
+  
+  true_tips <- grepl(fam.name, gentree$tip.label) #boolean to determine which tip labels match the fam of interest
+  
+  fam_tips <- gentree$tip.label[true_tips] #filter to just those labels
+  
+  tree_table <- p %>% as.treedata %>% as_tibble
+  
+  family_nodes <- tree_table$node[tree_table$label %in% fam_tips == TRUE]
+  
+  family_nodes <- list(family_nodes)
+  
+  node_list <- append(node_list, family_nodes)
+  
+}
+
+node_list
+
+for (i in 1:length(node_list)){
+  
+  these_nodes <- p$data$node %in% unlist(node_list[[i]])
+  
+  tip_plot <- p + geom_tippoint(aes(subset=these_nodes),
+                                color=randomColor(),
+                                size=0.7)
+  
+  tip_plot
+  
+  p <- tip_plot
+}
+
 
 ##really what i want is:
 ## add to the function the ability to
