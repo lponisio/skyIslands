@@ -483,15 +483,15 @@ sp.ids <- list(
                                temp.id = c(33420, 33428, 33431, 33438)),
 
 
-    ## Triepeolus_sp_a_m= list(Genus="Triepeolus",
-    ##                         SubGenus="",
-    ##                         Species="sp.",
-    ##                         SubSpecies="a",
-    ##                         Sex="m",
-    ##                         Author = "",
-    ##                         Determiner="",
-    ##                         temp.id= c(
-    ##                         )),
+     Triepeolus_sp_a_m= list(Genus="Triepeolus",
+                             SubGenus="",
+                             Species="sp.",
+                             SubSpecies="a",
+                             Sex="m",
+                             Author = "",
+                             Determiner="J.L. Neff",
+                             temp.id= c(33997, 34178, 34179, 34177, 34176,
+                                       34112)),
 
 
 
