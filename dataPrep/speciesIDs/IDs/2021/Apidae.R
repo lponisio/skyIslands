@@ -38,7 +38,7 @@ sp.ids <- list(
 
    Melissodes_grindeliae_m= list(Genus="Melissodes",
                              SubGenus="",
-                             Species="confusus",
+                             Species="grindeliae",
                              SubSpecies="", Sex="m",
                              Author = "Cockerell",
                              Determiner="KW Wright",
@@ -46,7 +46,7 @@ sp.ids <- list(
                                  
    Melissodes_montanus_m= list(Genus="Melissodes",
                              SubGenus="",
-                             Species="confusus",
+                             Species="montanus",
                              SubSpecies="", Sex="m",
                              Author = "Cresson",
                              Determiner="KW Wright",
