@@ -77,4 +77,14 @@ sp.ids <- list(
                              Author = "Robertson",
                              Determiner="J.L. Neff",
                              temp.id= c(34401, 30776))
+    
+    Hylaeus_annulatus_f= list(Genus="Hylaeus",
+                             SubGenus="",
+                             Species="annulatus",
+                             SubSpecies="", Sex="f",
+                             Author = "Linnaeus",
+                             Determiner="J.L. Neff",
+                             temp.id= c(33455, 33446, 33445, 33443, 32664,
+                                       31603, 34423, 33613, 32395, 32713))
+    
     )
