@@ -52,6 +52,14 @@ sp.ids <- list(
                              Determiner="KW Wright",
                              temp.id= c(33707)), 
 
+    Syntrichalonia_exquisita_f= list(Genus="Syntrichalonia",
+                             SubGenus="",
+                             Species="exquisita",
+                             SubSpecies="", Sex="f",
+                             Author = "Cresson",
+                             Determiner="J.L. Neff",
+                             temp.id= c(34012, 34106)), 
+    
     ## Diadasia_diminuta_f = list(Genus="Diadasia",
     ##                            SubGenus="Coquillettapis",
     ##                            Species="diminuta",
@@ -83,8 +91,9 @@ sp.ids <- list(
                                    Species="terminalis",
                                    SubSpecies="", Sex="f",
                                    Author = "Cresson",
-                                   Determiner="L. Best",
-                                   temp.id= c(30638)),
+                                   Determiner="L. Best, J.L. Neff",
+                                   temp.id= c(30638, 32273, 30638)),
+    
 
     Apis_mellifera_f = list(Genus="Apis", SubGenus = "Apis",
                             Species="mellifera",
@@ -491,18 +500,20 @@ sp.ids <- list(
                              Author = "",
                              Determiner="J.L. Neff",
                              temp.id= c(33997, 34178, 34179, 34177, 34176,
-                                       34112)),
+                                       34112, 33998, 33999, 34001, 34002,
+                                       34003, 33996, 34107, 34108, 34181,
+                                       34184, 34188, 34226, 34228, 32773,
+                                       31799, 34110, 34180, 34109)),
 
 
-
-    ## Triepeolus_sp_a_f= list(Genus="Triepeolus",
-    ##                         SubGenus="",
-    ##                         Species="sp.",
-    ##                         SubSpecies="a",
-    ##                         Sex="f",
-    ##                         Author = "",
-    ##                         Determiner="",
-    ##                         temp.id= c( )),
+     Triepeolus_sp_a_f= list(Genus="Triepeolus",
+                             SubGenus="",
+                             Species="sp.",
+                             SubSpecies="a",
+                             Sex="f",
+                             Author = "",
+                             Determiner="J.L. Neff",
+                             temp.id= c(34000, 34175, 34229)),
 
     ## Triepeolus_sp_b_f= list(Genus="Triepeolus",
     ##                         SubGenus="",
