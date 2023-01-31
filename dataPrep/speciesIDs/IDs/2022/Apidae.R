@@ -505,8 +505,7 @@ sp.ids <- list(
     ##                         Sex="m",
     ##                         Author = "",
     ##                         Determiner="",
-    ##                         temp.id= c(
-    ##                         )),
+    ##                         temp.id= c()),
 
 
 
