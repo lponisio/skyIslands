@@ -263,18 +263,6 @@ p <- ggtree(gentree, layout='rectangular')
 p
 
 
-true_tips <- grepl('D_4__Orbaceae', gentree$tip.label) #boolean to determine which tip labels match the fam of interest
-
-fam_tips <- gentree$tip.label[true_tips] #filter to just those labels
-
-tree_table <- p %>% as.treedata %>% as_tibble
-
-family_nodes <- tree_table$node[tree_table$label %in% fam_tips == TRUE]
-
-p1 <- p + 
-  geom_tippoint(aes(subset=p$data$node %in% family_nodes), color='red', size=0.5)
-p1
-
 ##########
 ## 1-28 struggling to functionize this... maybe just add one by one in 
 ## the function? I think i would like the tips to be colored 
