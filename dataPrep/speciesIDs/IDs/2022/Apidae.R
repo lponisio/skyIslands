@@ -65,13 +65,13 @@ sp.ids <- list(
     ##                             temp.id= c()),
 
 
-    ## Anthophora_terminalis_f = list(Genus="Anthophora",
-    ##                                SubGenus="Clisodon",
-    ##                                Species="terminalis",
-    ##                                SubSpecies="", Sex="f",
-    ##                                Author = "Cresson",
-    ##                                Determiner="",
-    ##                                temp.id= c()),
+     Anthophora_terminalis_f = list(Genus="Anthophora",
+                                    SubGenus="Clisodon",
+                                    Species="terminalis",
+                                    SubSpecies="", Sex="f",
+                                    Author = "Cresson",
+                                    Determiner="J.L. Neff",
+                                    temp.id= c(38131, 37730)),
 
     Apis_mellifera_f = list(Genus="Apis", SubGenus = "Apis",
                             Species="mellifera",
@@ -498,14 +498,14 @@ sp.ids <- list(
     ##                            temp.id = c()),
 
 
-    ## Triepeolus_sp_a_m= list(Genus="Triepeolus",
-    ##                         SubGenus="",
-    ##                         Species="sp.",
-    ##                         SubSpecies="a",
-    ##                         Sex="m",
-    ##                         Author = "",
-    ##                         Determiner="",
-    ##                         temp.id= c()),
+     Triepeolus_sp_a_m= list(Genus="Triepeolus",
+                             SubGenus="",
+                             Species="sp.",
+                             SubSpecies="a",
+                             Sex="m",
+                             Author = "",
+                             Determiner="J.L. Neff",
+                             temp.id= c(38392)),
 
 
 
