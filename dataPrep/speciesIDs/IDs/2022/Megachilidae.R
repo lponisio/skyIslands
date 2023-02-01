@@ -36,6 +36,24 @@ sp.ids <- list(
                                      temp.id= c(36688)),
     
 
+    Coelioxys_moesta_f = list(Genus="Coelioxys",
+                                     SubGenus ="",
+                                     Species="moesta",
+                                     SubSpecies="", Sex="f",
+                                     Author = "Cresson",
+                                     Determiner = "J.L. Neff",
+                                     temp.id= c(37738)),
+    
+    
+     Coelioxys_sodalis_f = list(Genus="Coelioxys",
+                                     SubGenus ="",
+                                     Species="sodalis",
+                                     SubSpecies="", Sex="f",
+                                     Author = "Cresson",
+                                     Determiner = "J.L. Neff",
+                                     temp.id= c(36468)),
+    
+    
     Megachile_fidelis_f = list(Genus="Megachile",
                                SubGenus ="Sayapis",
                                Species="fidelis",
@@ -45,6 +63,7 @@ sp.ids <- list(
                                Determiner = "",
                                temp.id= c()),
 
+    
     Megachile_fidelis_m = list(Genus="Megachile",
                                SubGenus ="Sayapis",
                                Species="fidelis",
