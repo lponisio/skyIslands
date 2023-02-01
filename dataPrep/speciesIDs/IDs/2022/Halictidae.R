@@ -16,8 +16,8 @@ sp.ids <- list(
 ##                                   Sex="m", Author = "Cockerell",
 ##                                   Determiner = "",
 ##                                   temp.id= c()),
-
-
+    
+    
     Lasioglossum_trizonatum_m = list(Genus="Lasioglossum",
                                      SubGenus ="Lasioglossum",
                                      Species="trizonatum",
