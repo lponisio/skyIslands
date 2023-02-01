@@ -35,8 +35,8 @@ sp.ids <- list(
                                   temp.id=  c()),
 
 
-    Lasioglossum_desertum_m= list(Genus="Lasioglossum", SubGenus
-                                  ="Lasioglossum", Species="desertum",
+    Lasioglossum_desertum_m= list(Genus="Lasioglossum",
+                                  Subgenus="Lasioglossum", Species="desertum",
                                   SubSpecies="", Sex="m",
                                   Author = "Smith",
                                   Determiner = "",
