@@ -22,7 +22,7 @@ sp.ids <- list(
                                               31258, 31515, 31796,
                                               31795, 31672, 31523,
                                               30801)),
-
+   
 
     ## Lasioglossum_trizonatum_m = list(Genus="Lasioglossum",
     ##                                  SubGenus ="Lasioglossum",
