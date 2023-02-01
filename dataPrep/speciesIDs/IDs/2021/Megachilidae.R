@@ -1,14 +1,15 @@
 
 sp.ids <- list(
 
-    ## Anthidium_maculosum_f = list(Genus="Anthidium",
-    ##                              SubGenus ="Anthidium",
-    ##                              Species="maculosum",
-    ##                              SubSpecies="", Sex="f",
-    ##                              Author = "Cresson",
-    ##                              Determiner = "",
-    ##                              temp.id= c()),
+    Anthidium_maculosum_f = list(Genus="Anthidium",
+                                     SubGenus ="",
+                                     Species="maculosum",
+                                     SubSpecies="", Sex="f",
+                                     Author = "Cresson",
+                                     Determiner = "J.L. Neff",
+                                     temp.id= c(34317, 34174)),
 
+    
     ## Anthidium_maculosum_m = list(Genus="Anthidium",
     ##                              SubGenus ="Anthidium",
     ##                              Species="maculosum",
@@ -16,6 +17,34 @@ sp.ids <- list(
     ##                              Author = "Cresson",
     ##                              Determiner = "",
     ##                              temp.id= c()),
+    
+    
+    Anthidium_manicatum_m = list(Genus="Anthidium",
+                                     SubGenus ="",
+                                     Species="manicatum",
+                                     SubSpecies="", Sex="m",
+                                     Author = "Linnaeus",
+                                     Determiner = "J.L. Neff",
+                                     temp.id= c(30643)),
+
+    
+    Paranthidium_jugatorium_f = list(Genus="Paranthidium",
+                                     SubGenus ="",
+                                     Species="jugatorium",
+                                     SubSpecies="", Sex="f",
+                                     Author = "Say",
+                                     Determiner = "J.L. Neff",
+                                     temp.id= c(34065, 34018, 34128, 34020, 34019,
+                                               34129, 34127)),
+     
+     
+     Paranthidium_jugatorium_m = list(Genus="Paranthidium",
+                                     SubGenus ="",
+                                     Species="jugatorium",
+                                     SubSpecies="", Sex="m",
+                                     Author = "Say",
+                                     Determiner = "J.L. Neff",
+                                     temp.id= c(34130, 34182, 32772)),
 
     ## Lithurgopsis_apicalis_m = list(Genus="Lithurgopsis",
     ##                              SubGenus ="",
@@ -175,7 +204,7 @@ sp.ids <- list(
     ##                             Determiner = "",
     ##                             temp.id= c())
 
-    Hoplitus_albifrons_m = list(Genus="Hoplitus",
+    Hoplitis_albifrons_m = list(Genus="Hoplitis",
                                 SubGenus ="",
                                 Species="albifrons",
                                 SubSpecies="", Sex="m",
@@ -183,7 +212,7 @@ sp.ids <- list(
                                 Determiner = "L. Best",
                                 temp.id= c(30941, 30918)),
 
-    Hoplitus_albifrons_f = list(Genus="Hoplitus",
+    Hoplitis_albifrons_f = list(Genus="Hoplitis",
                                 SubGenus ="",
                                 Species="albifrons",
                                 SubSpecies="", Sex="f",
@@ -191,7 +220,7 @@ sp.ids <- list(
                                 Determiner = "L. Best",
                                 temp.id= c(30919)),
 
-    Hoplitus_fulgida_f = list(Genus="Hoplitus",
+    Hoplitis_fulgida_f = list(Genus="Hoplitis",
                               SubGenus ="",
                               Species="fulgida",
                               SubSpecies="", Sex="f",
