@@ -144,14 +144,15 @@ sp.ids <- list(
 
 
 
-    ##   Heterosarus_bakeri_f= list(Genus="Heterosarus",
-    ##                           SubGenus ="",
-    ##                           Species="bakeri",
-    ##                           SubSpecies="",
-    ##                           Sex="f",
-    ##                           Author = "Cockerell",
-    ##                           Determiner="J.L. Neff",
-    ##                           temp.id= c()),
+       Heterosarus_bakeri_f= list(Genus="Heterosarus",
+                               SubGenus ="",
+                               Species="bakeri",
+                               SubSpecies="",
+                               Sex="f",
+                               Author = "Cockerell",
+                               Determiner="J.L. Neff",
+                               temp.id= c(37365, 38339, 37652, 38332, 38333,
+                                         38383, 38384, 38354)),
 
      Heterosarus_bakeri_m= list(Genus="Heterosarus",
                                 SubGenus ="",
@@ -160,7 +161,7 @@ sp.ids <- list(
                                 Sex="m",
                                 Author = "Cockerell",
                                 Determiner="J.L. Neff",
-                                temp.id= c(36977)),
+                                temp.id= c(36977, 37366)),
 
 
     ## Heterosarus_neomex_f= list(Genus="Heterosarus",
