@@ -12,13 +12,15 @@ sp.ids <- list(
     ##                                   temp.id= c()),
 
 
-    ##   Pseudopanurgus_atricornis_f= list(Genus="Pseudopanurgus",
-    ##                                  SubGenus ="",
-    ##                                  Species="atricornis",
-    ##                                  SubSpecies="",
-    ##                                  Sex="f", Author = "Cresson",
-    ##                                  Determiner="J.L. Neff",
-    ##                                  temp.id= c()),
+       Pseudopanurgus_atricornis_f= list(Genus="Pseudopanurgus",
+                                      SubGenus ="",
+                                      Species="atricornis",
+                                      SubSpecies="",
+                                      Sex="f", Author = "Cresson",
+                                      Determiner="J.L. Neff",
+                                      temp.id= c(37976, 37871, 37872, 37874, 37388,
+                                                37697, 37694, 37185, 37736, 38342,
+                                                37643)),
 
 
     Pseudopanurgus_atricornis_m= list(Genus="Pseudopanurgus",
