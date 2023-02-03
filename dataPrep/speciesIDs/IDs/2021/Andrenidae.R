@@ -101,7 +101,8 @@ sp.ids <- list(
                                                  33354, 33279, 33465,
                                                  33376, 33380, 33208,
                                                  33282, 33269, 33852,
-                                                 33475, 33161, 33851)),
+                                                 33475, 33161, 33851,
+                                                 33961)),
     
     Pseudopanurgus_albitarsis_f= list(Genus="Pseudopanurgus", SubGenus ="",
                                       Species="albitarsis",
@@ -181,6 +182,13 @@ sp.ids <- list(
                                       temp.id= c(32404, 31232, 32778, 31250, 33581,
                                                 32580, 31234, 32560, 31251, 31402,
                                                 31245, 32417, 31254, 31256)),
+    
+     Protandrena_stathamae_m= list(Genus="Protandrena", SubGenus ="Pterosarus",
+                            Species="stathamae",
+                            SubSpecies="",
+                            Sex="m", Author = "Timberlake",
+                            Determiner="J.L. Neff",
+                            temp.id= c(38340, 38296, 34115)),
     
     ## Protandrena_sp_a= list(Genus="Protandrena", SubGenus ="",
     ##                        Species="sp.",
