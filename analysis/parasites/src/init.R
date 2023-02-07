@@ -1,6 +1,9 @@
 library(ggplot2)
 library(brms)
 library(dplyr)
+library(tidyr)
+library(tidybayes)
+library(ggthemes)
 
 
 load('../../data/spec.Rdata')
@@ -25,7 +28,7 @@ traits <-
 traits$GenusSpecies <- fix.white.space(traits$GenusSpecies)
 traits <- traits[, c("GenusSpecies", "Sociality", "Lecty", "MeanITD"),]
 
-net.traits <- read.csv("../../data/traits.csv")
+net.traits <- read.csv("../../data/networks_traits.csv")
 net.traits <- net.traits[, c("GenusSpecies", "r.degree"),]
 
 traits <- merge(traits, net.traits, by="GenusSpecies", all.x=TRUE)

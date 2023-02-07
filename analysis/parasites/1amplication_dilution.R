@@ -7,6 +7,7 @@ source("src/misc.R")
 source("src/init.R")
 source("src/writeResultsTable.R")
 source("src/makeMultiLevelData.R")
+
 ncores <- 10
 
 ## **********************************************************
@@ -16,7 +17,7 @@ ncores <- 10
 spec <- spec[order(spec$Site),]
 
 ## drop 2022 for now because not enough species IDed
-spec <- spec[spec$Year != 2022,]
+## spec <- spec[spec$Year != 2022,]
 spec$Lat <- log(spec$Lat)
 spec$Area <- log(spec$Area)
 
@@ -53,9 +54,7 @@ spec$WeightsPar <- 1
 spec$WeightsPar[is.na(spec$ParasitePresence) | spec$Apidae != 1] <- 0
 
 ## stan drops all NA data, so can set ParasitePresence to 0 with WeightsPar
-## to keep it in the models, this is commented out because we don't
-## want to use the entire dataset in this publication
-
+## to keep it in the models
 spec$ParasitePresence[is.na(spec$ParasitePresence | spec$Apidae != 1)] <- 0
 
 ## define all the formulas for the different parts of the models
@@ -132,9 +131,9 @@ formula.parasite <- formula(ParasitePresence | weights(WeightsPar) ~
 ## convert to brms format
 bf.fabund <- bf(formula.flower.abund)
 bf.fdiv <- bf(formula.flower.div)
-bf.babund <- bf(formula.bee.abund, family="Poisson")
-bf.bombusabund <- bf(formula.bombus.abund, family="Poisson")
-bf.HBabund <- bf(formula.HB.abund, family="Poisson")
+bf.babund <- bf(formula.bee.abund, family="negbinomial")
+bf.bombusabund <- bf(formula.bombus.abund, family="negbinomial")
+bf.HBabund <- bf(formula.HB.abund, family="negbinomial")
 bf.bdiv <- bf(formula.bee.div)
 bf.par <- bf(formula.parasite, family="bernoulli")
 
@@ -142,6 +141,7 @@ bf.par <- bf(formula.parasite, family="bernoulli")
 ## Model 1 community effects on bee parasitism
 ## **********************************************************
 ## full model
+
 bform <- bf.fabund + bf.fdiv +
     bf.babund + bf.bombusabund + bf.HBabund +
     bf.bdiv + bf.par +
@@ -161,20 +161,20 @@ save(fit, spec,
 plot.res(fit, "parasite")
 
 
-## social only
-fit.social <- brm(bform, spec[spec$Genus == "Bombus" |
-                              spec$Genus == "Apis",],
-                  cores=ncores,
-                  iter = 10^4,
-                  chains = 1,
-                  thin=1,
-                  init=0,
-                  control = list(adapt_delta = 0.99))
+## ## social only
+## fit.social <- brm(bform, spec[spec$Genus == "Bombus" |
+##                               spec$Genus == "Apis",],
+##                   cores=ncores,
+##                   iter = 10^4,
+##                   chains = 1,
+##                   thin=1,
+##                   init=0,
+##                   control = list(adapt_delta = 0.99))
 
-write.ms.table(fit.social, "parasitism_social")
+## write.ms.table(fit.social, "parasitism_social")
 
-save(fit.social, spec,
-     file="saved/parasiteSocialFitMod.Rdata")
+## save(fit.social, spec,
+##      file="saved/parasiteSocialFitMod.Rdata")
 
 
 

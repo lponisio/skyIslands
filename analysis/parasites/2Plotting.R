@@ -1,6 +1,6 @@
-setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
+## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
 
-## setwd('~/Dropbox (University of Oregon)/skyislands')
+setwd('~/Dropbox (University of Oregon)/skyislands')
 ## Script for plotting all of the important explanatory variables.
 
 setwd("analysis/parasites")
@@ -65,82 +65,44 @@ axis.bee.div <-  standardize.axis(labs.bee.div,
 ## bee community diversity and abundance and parasitism
 ## ***********************************************************************
 
-spec$SiteParasitismRate <-
-    site.sum$SiteParasitismRate[match(paste(spec$Site,
-                                            spec$SampleRound,
-                                            spec$Year),
-                                      paste(site.sum$Site,
-                                            site.sum$SampleRound,
-                                            site.sum$Year))]
-
-par.coeffs <- names(fit$fit)
-par.coeffs <- par.coeffs[grepl("b_", par.coeffs)]
-
 par.data <- spec[spec$WeightsPar == 1,]
 
+
+## https://www.rensvandeschoot.com/tutorials/generalised-linear-models-with-brms/
+
 p1.parasite  <- fit %>%
-    spread_draws(b_MeanFloralAbundance_Intercept,
-                 b_MeanFloralDiversity_Intercept
-                 b_HBAbundance_Intercept,
-                 b_BombusAbundance_Intercept,
-                 b_NonBombusHBAbundance_Intercept,
-                 b_PollDiversity_Intercept,
+    spread_draws(b_PollDiversity_Intercept,
                  b_ParasitePresence_Intercept,
-                 b_MeanFloralAbundance_SRDoy,
-                 b_MeanFloralAbundance_ISRDoyE2,
-                 b_MeanFloralDiversity_Lat,
-                 b_MeanFloralDiversity_Area,
-                 b_MeanFloralDiversity_SRDoy,
-                 b_MeanFloralDiversity_ISRDoyE2,
-                 b_HBAbundance_MeanFloralAbundance
-                 b_HBAbundance_SRDoy,
-                 b_HBAbundance_ISRDoyE2,
-                 b_BombusAbundance_MeanFloralAbundance
-                 b_BombusAbundance_SRDoy,
-                 b_BombusAbundance_ISRDoyE2,
-                 b_NonBombusHBAbundance_MeanFloralAbundance
-                 b_NonBombusHBAbundance_SRDoy,
-                 b_NonBombusHBAbundance_ISRDoyE2,
-                 b_PollDiversity_MeanFloralDiversity,
-                 b_PollDiversity_Lat,
+                 b_NonBombusHBAbundance_Intercept,
                  b_ParasitePresence_NonBombusHBAbundance,
                  b_ParasitePresence_HBAbundance,
+                 b_HBAbundance_Intercept,
                  b_ParasitePresence_BombusAbundance,
-                 b_ParasitePresence_MeanFloralDiversity,
+                 b_BombusAbundance_Intercept,
                  b_ParasitePresence_PollDiversity,
-                 b_ParasitePresence_MeanFloralAbundance,
                  b_ParasitePresence_MeanITD,
-                 b_ParasitePresence_r.degree) %>%
+                 b_ParasitePresence_r.degree,
+                 ) %>%
     mutate(PollDiversity =
-               list(seq(min(par.data$PollDiversity),
-                        max(par.data$PollDiversity),
-                        0.1)),
-           NonBombusHBAbundance =mean(par.data$NonBombusHBAbundance),
-           HBAbundance =mean(par.data$HBAbundance),
-           BombusAbundance =mean(par.data$BombusAbundance),
-           PollDiversity =mean(par.data$PollDiversity),
-           MeanFloralAbundance =mean(par.data$MeanFloralAbundance),
-           MeanITD =mean(par.data$MeanITD),
-           r.degree =mean(par.data$r.degree)
-           ) %>%
+               list(seq(min(site.sum$PollDiversity, na.rm=TRUE),
+                        max(site.sum$PollDiversity, na.rm=TRUE),
+                        0.1))) %>%
     unnest(PollDiversity) %>%
     mutate(pred = exp(
-                 b_ParasitePresence_Intercept,
-                 b_ParasitePresence_NonBombusHBAbundance*NonBombusHBAbundance,
-                 b_ParasitePresence_HBAbundance*HBAbundance,
-                 b_ParasitePresence_BombusAbundance*BombusAbundance,
-                 b_ParasitePresence_PollDiversity*PollDiversity,
-                 b_ParasitePresence_MeanFloralAbundance*MeanFloralAbundance,
-                 b_ParasitePresence_MeanITD*MeanITD,
-                 b_ParasitePresence_r.degree*r.degree)/
-               (1+exp(b_ParasitePresence_Intercept,
-                 b_ParasitePresence_NonBombusHBAbundance*NonBombusHBAbundance,
-                 b_ParasitePresence_HBAbundance*HBAbundance,
-                 b_ParasitePresence_BombusAbundance*BombusAbundance,
-                 b_ParasitePresence_PollDiversity*PollDiversity,
-                 b_ParasitePresence_MeanFloralAbundance*MeanFloralAbundance,
-                 b_ParasitePresence_MeanITD*MeanITD,
-                 b_ParasitePresence_r.degree*r.degree))) %>%
+               b_PollDiversity_Intercept +
+               b_ParasitePresence_Intercept +
+               ## b_NonBombusHBAbundance_Intercept+
+               ## b_HBAbundance_Intercept+
+               ## b_BombusAbundance_Intercept+
+                 b_ParasitePresence_PollDiversity*PollDiversity)/
+               (1+exp( b_PollDiversity_Intercept +
+               b_ParasitePresence_Intercept +
+               ## b_NonBombusHBAbundance_Intercept+
+               ## b_HBAbundance_Intercept+
+               ## b_BombusAbundance_Intercept+
+                 b_ParasitePresence_PollDiversity*PollDiversity
+                 )
+               )) %>%
     group_by(PollDiversity) %>%
     summarise(pred_m = mean(pred, na.rm = TRUE),
               pred_low_95 = quantile(pred, prob = 0.025),
@@ -167,45 +129,53 @@ p1.parasite  <- fit %>%
           text = element_text(size=16)) +
     #    #theme_classic() +
     theme_dark_black() +
-    geom_point(data=par.data[par.data$Weights == 1 &
-                               par.data$WeightsPar == 1,],
+    geom_point(data=site.sum,
                aes(y=SiteParasitismRate, x=PollDiversity),
                color="dodgerblue")
 
 ##
 
 
+p1.parasite <- site.sum %>%
+    ggplot(aes(x = Lat, y = SiteParasitismRate)) +
+    ylab("Parasite Prevalence") +
+    xlab("Latitude") +
+    scale_x_continuous(
+        breaks = axis.lat.x,
+        labels =  labs.lat.x) +
+    theme(axis.title.x = element_text(size=16),
+          axis.title.y = element_text(size=16),
+          text = element_text(size=16)) +
+    #    #theme_classic() +
+    theme_dark_black() +
+    geom_point(data=site.sum,
+               aes(y=SiteParasitismRate, x=Lat),
+               color="dodgerblue")
+
+ggsave(p1.parasite, file="figures/parasite_lat.pdf",
+       height=4, width=5)
+
 
 
 p2.parasite  <- fit %>%
-    spread_draws(b_PollAbundance_Intercept,
-                 b_PollDiversity_Intercept,
-                 b_ParasitePresence_Intercept,
-                 b_ParasitePresence_PollAbundance,
-                 b_ParasitePresence_PollDiversity,
-                 b_ParasitePresence_MeanITD,
-                 b_ParasitePresence_r.degree) %>%
-    mutate(PollAbundance =
-               list(seq(min(spec$PollAbundance[
-                                           spec$WeightsPar == 1]),
-                        max(spec$PollAbundance[
-                                           spec$WeightsPar == 1]),
+    spread_draws(b_ParasitePresence_Intercept,
+                 b_ParasitePresence_BombusAbundance) %>%
+    mutate(BombusAbundance =
+               list(seq(min(site.sum$BombusAbundance),
+                        max(site.sum$BombusAbundance),
                         0.1))) %>%
-    unnest(PollAbundance) %>%
-    mutate(pred = exp(b_PollAbundance_Intercept +
-                      b_PollDiversity_Intercept +
+    unnest(BombusAbundance) %>%
+    mutate(pred = exp(b_BombusAbundance_Intercept +
+                      b_ParasitePresence_Intercept +
+                      b_ParasitePresence_BombusAbundance*BombusAbundance)/
+               (1+exp(b_BombusAbundance_Intercept +
                       b_ParasitePresence_Intercept +
                       b_ParasitePresence_r.degree*mean(spec$r.degree, na.rm=TRUE) +
                       b_ParasitePresence_MeanITD*mean(spec$MeanITD, na.rm=TRUE) +
-                      b_ParasitePresence_PollDiversity*mean(spec$PollDiversity, na.rm=TRUE) +
-                      b_ParasitePresence_PollAbundance*PollAbundance)/
-               (1+exp(b_PollAbundance_Intercept +
-                      b_ParasitePresence_Intercept +
-                      b_ParasitePresence_r.degree*mean(spec$r.degree, na.rm=TRUE) +
-                      b_ParasitePresence_MeanITD*mean(spec$MeanITD, na.rm=TRUE) +
-                      b_ParasitePresence_PollDiversity*mean(spec$PollDiversity, na.rm=TRUE) +
-                      b_ParasitePresence_PollAbundance*PollAbundance))) %>%
-    group_by(PollAbundance) %>%
+                      b_ParasitePresence_PollDiversity*mean(spec$PollDiversity,
+                                                            na.rm=TRUE) +
+                      b_ParasitePresence_BombusAbundance*BombusAbundance))) %>%
+    group_by(BombusAbundance) %>%
     summarise(pred_m = mean(pred, na.rm = TRUE),
               pred_low_95 = quantile(pred, prob = 0.025),
               pred_high_95 = quantile(pred, prob = 0.975),
@@ -213,7 +183,7 @@ p2.parasite  <- fit %>%
               pred_high_90 = quantile(pred, prob = 0.95),
               pred_low_85 = quantile(pred, prob = 0.075),
               pred_high_85 = quantile(pred, prob = 0.925)) %>%
-    ggplot(aes(x = PollAbundance, y = pred_m)) +
+    ggplot(aes(x = BombusAbundance, y = pred_m)) +
     geom_line(color="white") +
     geom_ribbon(aes(ymin = pred_low_95, ymax = pred_high_95), alpha=0.2,
                 fill="grey80") +
@@ -234,7 +204,7 @@ p2.parasite  <- fit %>%
     theme_dark_black()+
     geom_point(data=spec[spec$Weights == 1 &
                               spec$WeightsPar == 1,],
-               aes(y=SiteParasitismRate, x=PollAbundance, colour="white"))
+               aes(y=SiteParasitismRate, x=BombusAbundance, colour="white"))
 
 ggsave(p1.parasite, file="figures/parasite_beeDiv.pdf",
        height=4, width=5)

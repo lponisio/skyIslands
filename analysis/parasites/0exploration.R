@@ -1,6 +1,6 @@
-setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
+## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
 
-## setwd('~/Dropbox (University of Oregon)/skyislands')
+setwd('~/Dropbox (University of Oregon)/skyislands')
 
 setwd("analysis/parasites")
 rm(list=ls())
@@ -15,7 +15,7 @@ source("src/ggplotThemes.R")
 
 
 site.sum$Year <- as.factor(site.sum$Year)
-site.sum <- site.sum[site.sum$Year != 2022,]
+## site.sum <- site.sum[site.sum$Year != 2022,]
 
 ## ********************************************
 ## Bombus abundance relationships
@@ -32,7 +32,7 @@ bombus.nonbombusHB <- ggplot(site.sum, aes(x=BombusAbundance,
                                            shape=Year, color=Site)) +
     geom_point() + theme_article() +
     xlab("Bombus abundance") +
-    ylab("Apis abundance") +
+    ylab("Non-Apis abundance") +
     theme(legend.position =  "none")
 bombus.polldiv <- ggplot(site.sum, aes(x=BombusAbundance,
                                        y=PollDiversity,
