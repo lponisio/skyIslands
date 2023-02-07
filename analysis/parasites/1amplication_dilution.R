@@ -25,6 +25,7 @@ spec$Area <- log(spec$Area)
 ## to be centered
 vars <- c("MeanFloralAbundance",
           "MeanFloralDiversity",
+## not centering abudance variables in order to use negative binomial
           ## "PollAbundance",
           ## "HBAbundance",
           ## "BombusAbundance",

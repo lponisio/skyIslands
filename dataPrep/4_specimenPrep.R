@@ -120,7 +120,7 @@ spec.checked.plant.names <-
 
 spec <- fixPlantNames(spec, "PlantGenusSpecies", spec.checked.plant.names)
 
-##  variabile identification fo Erigeron between years, combine
+## ##  variabile identification fo Erigeron between years, combine
 ## to Erigerson spp.?
 ## spec$PlantGenus <- sapply(strsplit(spec$PlantGenusSpecies, " "),
 ##                           function(x) x[1])
@@ -251,7 +251,7 @@ traits$r.degree[is.na(traits$r.degree)] <-
 
 rownames(traits) <- NULL
 
-write.csv(traits, file='../data/traits.csv', row.names=FALSE)
+write.csv(traits, file='../data/networks_traits.csv', row.names=FALSE)
 
 ## *******************************************************************
 ## create a giant pathogen-pollinator network to calculate
@@ -379,7 +379,9 @@ veg$PlantGenusSpecies <-  fix.white.space(paste(veg$PlantGenus,
                                           veg$PlantSpecies,
                                           veg$PlantVar))
 
-## people in the field put NA as a placehold where there were no flowers
+## people in the field put NA as a placehold where there were no
+## flowers to express data was collected, just nothing was
+## there. Not needed for site level calculations.
 veg <- veg[veg$PlantGenusSpecies != "",]
 
 bloom$PlantGenusSpecies <-  fix.white.space(paste(bloom$PlantGenus,

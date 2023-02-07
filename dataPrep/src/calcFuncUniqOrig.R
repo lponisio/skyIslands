@@ -29,7 +29,7 @@ calcFuncUniqOrig <- function(traits, traits.2.keep,
     ## *********************
     ## eventually have meadow-level data here, vs. across all SI, can
     ## save site-level data here as well
-
+    browser()
     site.func.mets <- dbFD(these.traits, w=weights,
                            corr="lingoes", print.pco=T, ...)
     coords <- site.func.mets$x.axes

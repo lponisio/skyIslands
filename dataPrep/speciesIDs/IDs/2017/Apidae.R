@@ -1201,7 +1201,7 @@ sp.ids <- list(
                           Determiner="T. Griswold",
                           temp.id= c("BBSL1071302")),
 
-    
+
 
     Triepeolus_sp_a_m= list(Genus="Triepeolus",
                             SubGenus="",
@@ -1283,9 +1283,9 @@ sp.ids <- list(
                                         "BBSL1073899",
                                         "BBSL1071519",
                                         "BBSL1073227",
-                                        "BBSL1073407")),
+                                        "BBSL1073407"))
 
-    
+
 
 
 

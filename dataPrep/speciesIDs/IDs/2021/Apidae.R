@@ -9,7 +9,7 @@ sp.ids <- list(
                              Determiner="L. Best, J.L. Neff",
                              temp.id= c(30763, 33116, 33117, 33158, 33120,
                                        33336, 33337, 32880, 33050, 33053,
-                                       32768, 33936, 32766, 32767, 33937, 
+                                       32768, 33936, 32766, 32767, 33937,
                                        32769, 34007, 34089, 34157, 33054,
                                        32725, 32764, 32765, 34087, 34223,
                                        34158, 34160, 34161, 34162, 34163,
@@ -43,14 +43,14 @@ sp.ids <- list(
                              Author = "Cockerell",
                              Determiner="KW Wright",
                              temp.id= c(30916)),
-                                 
+
    Melissodes_montanus_m= list(Genus="Melissodes",
                              SubGenus="",
                              Species="montanus",
                              SubSpecies="", Sex="m",
                              Author = "Cresson",
                              Determiner="KW Wright",
-                             temp.id= c(33707)), 
+                             temp.id= c(33707)),
 
     Syntrichalonia_exquisita_f= list(Genus="Syntrichalonia",
                              SubGenus="",
@@ -58,8 +58,8 @@ sp.ids <- list(
                              SubSpecies="", Sex="f",
                              Author = "Cresson",
                              Determiner="J.L. Neff",
-                             temp.id= c(34012, 34106)), 
-    
+                             temp.id= c(34012, 34106)),
+
     ## Diadasia_diminuta_f = list(Genus="Diadasia",
     ##                            SubGenus="Coquillettapis",
     ##                            Species="diminuta",
@@ -93,7 +93,7 @@ sp.ids <- list(
                                    Author = "Cresson",
                                    Determiner="L. Best, J.L. Neff",
                                    temp.id= c(30638, 32273, 30638)),
-    
+
 
     Apis_mellifera_f = list(Genus="Apis", SubGenus = "Apis",
                             Species="mellifera",
@@ -535,8 +535,8 @@ sp.ids <- list(
                                      "Cresson",
                                  Determiner="L. Ponisio",
                                  temp.id= c(33995)),
-    
-    
+
+
     Ceratina_nanula_f= list(Genus="Ceratina",
                                  SubGenus ="",
                                  Species="nanula",
@@ -554,8 +554,8 @@ sp.ids <- list(
                                  Author =
                                      "Cresson",
                                  Determiner="L. Best",
-                                 temp.id= c(31131)),
+                                 temp.id= c(31131))
 
-     
+
 
     )

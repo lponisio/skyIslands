@@ -18,10 +18,10 @@ sp.ids <- list(
                               SubSpecies="", Sex="m",
                               Author = "Cresson",
                               Determiner="J.L. Neff",
-                              temp.id= c(38334, 38379, 38338, 37309, 37254, 
-                                        37189, 37415, 37462, 37506, 37505, 
+                              temp.id= c(38334, 38379, 38338, 37309, 37254,
+                                        37189, 37415, 37462, 37506, 37505,
                                         37289, 38300)),
-     
+
 
       Melissodes_agilis_f= list(Genus="Melissodes",
                               SubGenus="Eumelissodes",
@@ -30,8 +30,8 @@ sp.ids <- list(
                               Author = "Cresson",
                               Determiner="K.W. Wright",
                               temp.id= c(38402)),
-     
-                                  
+
+
     Xylocopa_californica_f= list(Genus="Xylocopa",
                                  SubGenus="Xylocopoides",
                                  Species="californica",
@@ -40,7 +40,7 @@ sp.ids <- list(
                                  Determiner="L. Best",
                                  temp.id= c(38396)),
 
-     
+
     Ceratina_nanula_f= list(Genus="Ceratina",
                                  SubGenus ="",
                                  Species="nanula",
@@ -516,7 +516,7 @@ sp.ids <- list(
                              Sex="m",
                              Author = "",
                              Determiner="J.L. Neff",
-                             temp.id= c(38392)),
+                             temp.id= c(38392))
 
 
 
