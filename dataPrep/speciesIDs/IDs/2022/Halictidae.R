@@ -16,8 +16,8 @@ sp.ids <- list(
 ##                                   Sex="m", Author = "Cockerell",
 ##                                   Determiner = "",
 ##                                   temp.id= c()),
-
-
+    
+    
     Lasioglossum_trizonatum_m = list(Genus="Lasioglossum",
                                      SubGenus ="Lasioglossum",
                                      Species="trizonatum",
@@ -27,16 +27,16 @@ sp.ids <- list(
                                      temp.id= c()),
 
 
-    Lasioglossum_desertum_f= list(Genus="Lasioglossum", SubGenus
-                                  ="Lasioglossum", Species="desertum",
+    Lasioglossum_desertum_f= list(Genus="Lasioglossum", 
+                                  SubGenus="Lasioglossum", Species="desertum",
                                   SubSpecies="", Sex="f",
                                   Author = "Smith",
                                   Determiner = "",
                                   temp.id=  c()),
 
 
-    Lasioglossum_desertum_m= list(Genus="Lasioglossum", SubGenus
-                                  ="Lasioglossum", Species="desertum",
+    Lasioglossum_desertum_m= list(Genus="Lasioglossum",
+                                  Subgenus="Lasioglossum", Species="desertum",
                                   SubSpecies="", Sex="m",
                                   Author = "Smith",
                                   Determiner = "",

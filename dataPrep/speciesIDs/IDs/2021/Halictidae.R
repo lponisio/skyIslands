@@ -22,7 +22,7 @@ sp.ids <- list(
                                               31258, 31515, 31796,
                                               31795, 31672, 31523,
                                               30801)),
-
+   
 
     ## Lasioglossum_trizonatum_m = list(Genus="Lasioglossum",
     ##                                  SubGenus ="Lasioglossum",
@@ -114,13 +114,33 @@ sp.ids <- list(
                                       32601, 32668, 32674, 32667, 32680,
                                       32608, 32603, 32592, 32593, 32595,
                                       32597, 32599, 32584, 32585, 32556,
-                                      32569, 32679, 32682)),
+                                      32569, 32679, 32682, 32685, 32692,
+                                      32688, 32705, 32701, 32706, 31236,
+                                      31252, 31411, 31419, 31237, 31241,
+                                      31415, 32396, 31473, 31471, 31208)),
 
+    Dufourea_fimbriata_m= list(Genus="Dufourea", SubGenus ="",
+                            Species="maura", SubSpecies="",
+                            Sex="m", Author = "Cresson",
+                            Determiner = "J.L. Neff",
+                            temp.id= c(31235, 31207, 31416, 32665, 32552,
+                                       32415, 31377, 31243)),
+     
     Dufourea_tinsley_f= list(Genus="Dufourea", SubGenus ="",
                             Species="tinsley", SubSpecies="",
                             Sex="f", Author = "Cockerell",
                             Determiner = "J.L. Neff",
-                            temp.id= c()),
+                            temp.id= c(34114, 34029, 34026, 34027, 34117,
+                                      34118, 34126, 34121, 34237, 34187,
+                                      34120, 34021)),
+    
+    Dufourea_tinsley_m= list(Genus="Dufourea", SubGenus ="",
+                            Species="tinsley", SubSpecies="",
+                            Sex="f", Author = "Cockerell",
+                            Determiner = "J.L. Neff",
+                            temp.id= c(34067, 34186, 34066, 34236, 34125,
+                                      32700, 34124, 34119, 34116, 34113,
+                                      34069, 34028, 34033, 34034, 34032)),
      
     Halictus_ligatus_f= list(Genus="Halictus", SubGenus ="Odontalictus",
                              Species="ligatus", SubSpecies="",
@@ -321,7 +341,11 @@ sp.ids <- list(
                        34432, 34435, 34267, 34446, 34280, 34275,
                        34411, 34445, 34442, 34268, 33620, 37901,
                        33597, 34345, 33607, 34349, 34353, 33618,
-                       34340, 34332, 34334, 32711, 34436)),
+                       34340, 34332, 34334, 32711, 34436, 34350,
+                       34407, 34405, 34443, 34427, 34431, 34429, 
+                       34428, 31383, 32394, 34410, 34406, 34351,
+                       34352, 33623, 34413, 32675, 32562, 34403, 
+                       34279, 34282, 34424, 34447, 34414)),
 
     Lasioglossum_pacatum_viridatulum_m=
         list(Genus="Lasioglossum",
@@ -334,7 +358,7 @@ sp.ids <- list(
                        33492, 33463, 34355, 34358, 34359, 33584,
                        33496, 34266, 34420, 34285, 34415, 33486,
                        33601, 33615, 33600, 33491, 34444, 34327,
-                       34333, 33616, 34439, 33596, 33487))
+                       34333, 33616, 34439, 33596, 33487)),
 
     ## Lasioglossum_obnubilum_f= list(Genus="Lasioglossum",
     ##                                SubGenus ="Dialictus",

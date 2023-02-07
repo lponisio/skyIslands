@@ -10,7 +10,10 @@
 ## colored by ASV (family probs)
 ## maybe will have to subet to each genus then facet only by site but we will see
 
+wdpath <- 'C:/Users/rah10/Dropbox (University of Oregon)/PonisioLocal/skyIslands'
+setwd(wdpath)
 
+library(tidyverse)
 
 
 relabund.dat <- read.csv('spec_RBCL_16s.csv') %>%
@@ -115,3 +118,33 @@ ggarrange(
   labels = c("Ap", "B", "An", "M"),
   common.legend = FALSE, legend = "bottom"
 )
+
+
+## venn diagram
+library(ggVennDiagram)
+
+genus_filter <- function(dataframe, genus){
+  new_df <- dataframe %>%
+    filter(Genus == genus) %>%
+    filter(Abundance > 0) %>%
+    select(Bacteria)
+  unique(new_df$Bacteria)
+}
+
+apis_subset <- genus_filter(relabund.dat, 'Apis')
+bombus_subset <- genus_filter(relabund.dat, 'Bombus')
+anthophora_subset <- genus_filter(relabund.dat, 'Anthophora')
+megachile_subset <- genus_filter(relabund.dat, 'Megachile')
+
+
+venn_data <- list(Apis = apis_subset,
+                  Bombus = bombus_subset,
+                  Anthophora = anthophora_subset,
+                  Megachile = megachile_subset)
+
+ggVennDiagram(venn_data,
+              edge_size = 2,
+              label_alpha = 0,
+              set_color = c("black","grey","blue","green")) + 
+  scale_color_manual(values = c("black","grey","blue","green")) +
+  ggplot2::scale_fill_gradient(low="white",high = "red")
