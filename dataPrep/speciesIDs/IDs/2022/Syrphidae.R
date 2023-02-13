@@ -2,6 +2,31 @@
 
 sp.ids <- list(
 
+    
+    Sericomyia_flagrans_f = list(Genus = "Sericomyia", SubGenus="",
+                               Species = "flagrans", SubSpecies = "",
+                               Sex = "f",
+                               Author = "Osten Sacken",
+                               Determiner="M.Hauser",
+                               temp.id = c(31440, 32423, 32446, 32447)),
+    
+    
+    Helophilus_latifrons_m = list(Genus = "Helophilus", SubGenus="",
+                               Species = "latifrons", SubSpecies = "",
+                               Sex = "m",
+                               Author = "Loew",
+                               Determiner="M.Hauser",
+                               temp.id = c(31265)),
+    
+    
+    Helophilus_latifrons_f = list(Genus = "Helophilus", SubGenus="",
+                               Species = "latifrons", SubSpecies = "",
+                               Sex = "f",
+                               Author = "Loew",
+                               Determiner="M.Hauser",
+                               temp.id = c(34486, 34626, 31296, 30947)),
+    
+    
 ##    Dasysyrphus_morpho1 = list(Genus = "Dasysyrphus", SubGenus="",
 ##                               Species = "sp.", SubSpecies = "a",
 ##                               Sex = "",
