@@ -90,20 +90,20 @@ sp.ids <- list(
 
     Eristalis_stipator_f = list(Genus = "Eristalis", SubGenus="",
                                 Species = "stipator",
-                                SubSpecies="", Sex = "",
+                                SubSpecies="", Sex = "f",
                                 Author = "Osten Sacken",
                                 Determiner="M.Hauser",
                                 temp.id = c("18020","18007","18225")),
 
     Eristalis_stipator_m = list(Genus = "Eristalis", SubGenus="",
                                 Species = "stipator",
-                                SubSpecies="", Sex = "",
+                                SubSpecies="", Sex = "m",
                                 Author = "Osten Sacken",
                                 Determiner="M.Hauser",
                                 temp.id = c("18169","17727","18046",
-                                            "17991","18012","18233")),
-
-
+                                            "17991","18012","18233",
+                                            "24704","23103","23276",
+                                            "22764","24703","24711")),
 
     Eristalis_bellardii_f= list(Genus = "Eristalis", SubGenus="",
                                 Species = "bellardii", SubSpecies="",
@@ -220,31 +220,33 @@ sp.ids <- list(
                      Determiner="M.Hauser",
                      temp.id= c( "17669")),
 
-    scaeva_f= list(Genus="Scaeva", SubGenus="",
+    scaeva_affinis_f= list(Genus="Scaeva", SubGenus="",
                    Species="affinis", SubSpecies="", Sex="f", Author = "",
                    Determiner="M.Hauser",
                    temp.id= c("18208","17804","18217","18061","18603",
                               "18180", "18620","18714","18211",
-                              "18206","17837","17672", "17878",
-                              "18044","18040")),
+                              "18206","17837","17672","17878",
+                              "18044","18040","17644","17639",
+                              "18632","30621","18632")),
 
-    scaeva_m= list(Genus="Scaeva", SubGenus="",
+    scaeva_affinis_m= list(Genus="Scaeva", SubGenus="",
                    Species="affinis", SubSpecies="", Sex="m", Author = "",
                    Determiner="M.Hauser",
                    temp.id= c("18479","18239")),
 
-    lapposyrphus_m= list(Genus="Lapposyrphus", SubGenus="",
+    lapposyrphus_lapponicus_m= list(Genus="Lapposyrphus", SubGenus="",
                          Species="lapponicus", SubSpecies="",
                          Sex="m", Author = "",
                          Determiner="M.Hauser",
-                         temp.id= c("18264","18181","17178", "17638")),
+                         temp.id= c("18264","18181","17178")),
 
-    lapposyrphus_f= list(Genus="Lapposyrphus", SubGenus="",
+    lapposyrphus_lapponicus_f= list(Genus="Lapposyrphus", SubGenus="",
                          Species="lapponicus", SubSpecies="",
                          Sex="f", Author = "",
                          Determiner="M.Hauser",
                          temp.id= c("18706","17843","18250","17703",
-                                    "18609","18602"))
+                                    "18609","18602", "17638")),
+
 
 )
 
