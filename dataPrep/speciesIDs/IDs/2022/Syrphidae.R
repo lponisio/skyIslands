@@ -27,14 +27,119 @@ sp.ids <- list(
                                temp.id = c(34486, 34626, 31296, 30947)),
     
     
-##    Dasysyrphus_morpho1 = list(Genus = "Dasysyrphus", SubGenus="",
-##                               Species = "sp.", SubSpecies = "a",
-##                               Sex = "",
-##                               Author = "",
-##                               Determiner="M.Hauser",
-##                               temp.id = c()),
+    Asemosyrphus_polygrammus_f = list(Genus = "Asemosyrphus", SubGenus="",
+                               Species = "polygrammus", SubSpecies = "",
+                               Sex = "f",
+                               Author = "Loew",
+                               Determiner="M.Hauser",
+                               temp.id = c(31422, 33754, 33712, 33757, 33762,
+                                          32091, 34575, 30994, 35003, 35027,
+                                          35346)),
+    
 
+    Asemosyrphus_polygrammus_m = list(Genus = "Asemosyrphus", SubGenus="",
+                               Species = "polygrammus", SubSpecies = "",
+                               Sex = "m",
+                               Author = "Loew",
+                               Determiner="M.Hauser",
+                               temp.id = c(34592, 35261, 35311, 35329, 35330,
+                                          36152, 32309, 35292, 33715, 33758,
+                                          31442, 31617, 31642, 31643, 31644,
+                                          34520, 31809, 34507, 34777)),
+    
+    
+    Scaeva_affinis_f= list(Genus="Scaeva", SubGenus="",
+                   Species="affinis", SubSpecies="", Sex="f", Author = "",
+                   Determiner="M.Hauser",
+                   temp.id= c(34469, 33295, 33501, 37780)),
+    
+    
+    Didea_fuscipes_f  = list(Genus = "Didea", SubGenus="",
+                             Species = "fuscipes",
+                             SubSpecies="", Sex = "f",
+                             Author = "Loew",
+                             Determiner="M.Hauser",
+                             temp.id = c(31683, 36515, 36529, 37465, 37123,
+                                        37103, 36506, 37024)),
+    
+    
+    Didea_fuscipes_m  = list(Genus = "Didea", SubGenus="",
+                             Species = "fuscipes",
+                             SubSpecies="", Sex = "m",
+                             Author = "Loew",
+                             Determiner="M.Hauser",
+                             temp.id = c(36504, 37446, 37460, 37467, 36569,
+                                        36530, 37074)),    
+    
+    
+    Allograpta_obliqua_f  = list(Genus = "Allograpta", SubGenus="",
+                             Species = "obliqua",
+                             SubSpecies="", Sex = "f",
+                             Author = "Say",
+                             Determiner="M.Hauser",
+                             temp.id = c(31423, 34075, 34210, 34208, 35083)),    
+    
+    
+    Allograpta_obliqua_m  = list(Genus = "Allograpta", SubGenus="",
+                             Species = "obliqua",
+                             SubSpecies="", Sex = "m",
+                             Author = "Say",
+                             Determiner="M.Hauser",
+                             temp.id = c(37083, 35006, 34201, 33122)),  
+    
+    
+    Dasysyrphus_spp = list(Genus = "Dasysyrphus", SubGenus="",
+                               Species = "spp.", SubSpecies = "",
+                               Sex = "",
+                               Author = "",
+                               Determiner="M.Hauser",
+                               temp.id = c(35228)),
+    
+ 
+    Toxomerus_marginatus_f = list(Genus = "Toxomerus",SubGenus="",
+                                  Species
+                                  = "marginatus", SubSpecies="",
+                                  Sex = "f",
+                                  Author ="Meigen",
+                                  Determiner="M.Hauser",
+                                  temp.id = c(38314)),
+    
 
+    Sphaerophoria_spp_m = list(Genus = "Sphaerophoria",SubGenus="",
+                                  Species
+                                  = "spp", SubSpecies="",
+                                  Sex = "m",
+                                  Author ="",
+                                  Determiner="M.Hauser",
+                                  temp.id = c(33499, 32784)),
+    
+    
+    Sphaerophoria_spp_f = list(Genus = "Sphaerophoria",SubGenus="",
+                                  Species
+                                  = "spp", SubSpecies="",
+                                  Sex = "f",
+                                  Author ="",
+                                  Determiner="M.Hauser",
+                                  temp.id = c(31649, 33889, 34133, 31141)),
+    
+    
+    Eristalis_stipator_m = list(Genus = "Eristalis", SubGenus="",
+                                Species = "stipator",
+                                SubSpecies="", Sex = "m",
+                                Author = "Osten Sacken",
+                                Determiner="M.Hauser",
+                                temp.id = c(37104, 36457, 37107, 37542, 36871,
+                                           37056, 36679, 36666, 36778, 36751,
+                                           31300, 31292, 31291, 31289, 31138,
+                                           31272, 31274, 31277, 31281, 31282,
+                                           31293, 31298, 31137, 31429, 31144,
+                                           31142, 31140, 31145, 30983, 30984,
+                                           31002, 31134, 30820, 30828, 30712,
+                                           30711, 30708, 30705, 30714, 30807, 
+                                           30809, 30814, 31428, 30704, 312662, 
+                                           31261, 34990, 34997, 35031)),
+    
+    
 ##    Copestylum_avidum_f = list(Genus="Copestylum", SubGenus="",
 ##                               Species="avidum",
 ##                               SubSpecies="", Sex="f",
@@ -85,13 +190,6 @@ sp.ids <- list(
 ##                               Determiner="M.Hauser",
 ##                               temp.id =  c()),
 
-##    Toxomerus_marginatus_m = list(Genus = "Toxomerus",SubGenus="",
-##                                  Species
-##                                  = "marginatus", SubSpecies="",
-##                                  Sex = "m",
-##                                  Author ="Meigen",
-##                                  Determiner="M.Hauser",
-##                                  temp.id = c()),
 
 ##    Eristalis_hirta_f= list(Genus = "Eristalis",
 ##                             SubGenus="",
@@ -121,23 +219,7 @@ sp.ids <- list(
                              temp.id =  c(33713, 33714, 32116, 36879, 36563,
                                          36902, 36572, 36612, 36656, 37161,
                                          37195)),
-   
-
-##    Eristalis_stipator_f = list(Genus = "Eristalis", SubGenus="",
-##                                Species = "stipator",
-##                                SubSpecies="", Sex = "",
-##                                Author = "Osten Sacken",
-##                                Determiner="M.Hauser",
-##                                temp.id = c()),
-
-##    Eristalis_stipator_m = list(Genus = "Eristalis", SubGenus="",
-##                                Species = "stipator",
-##                                SubSpecies="", Sex = "",
-##                                Author = "Osten Sacken",
-##                                Determiner="M.Hauser",
-##                                temp.id = c()),
-
-
+  
 
 ##    Eristalis_bellardii_f= list(Genus = "Eristalis", SubGenus="",
 ##                                Species = "bellardii", SubSpecies="",
@@ -145,19 +227,6 @@ sp.ids <- list(
 ##                                Determiner="M.Hauser",
 ##                                temp.id = c()),
 
-
-
-##    Didea_f = list(Genus = "Didea", SubGenus="", Species = "",
-##                   SubSpecies="", Sex = "f", Author = "",
-##                   Determiner="M.Hauser",
-##                   temp.id = c()),
-
-##    Didea_fuscipes_m  = list(Genus = "Didea", SubGenus="",
-##                             Species = "fuscipes",
-##                             SubSpecies="", Sex = "m",
-##                             Author = "Loew",
-##                             Determiner="M.Hauser",
-##                             temp.id = c()),
 
 ##    Syrphus_sonorensis_m =list(Genus = "Syrphus",
 ##                               SubGenus="", Species = "sonorensis",
@@ -193,11 +262,6 @@ sp.ids <- list(
 ##                             Author = "", Determiner="M.Hauser",
 ##                             temp.id  =c()),
 
-##    Asemosyrphus_polygrammus_f = list(Genus="Asemosyrphus", SubGenus="",
-##                                      Species="polygrammus", SubSpecies="",
-##                                      Sex="f", Author = "",
-##                                      Determiner="M.Hauser",
-##                                      temp.id= c()),
 
 ##    Asemosyrphus_crandialli_f = list(Genus="Asemosyrphus", SubGenus="",
 ##                                     Species="crandialli", SubSpecies="",
@@ -253,11 +317,6 @@ sp.ids <- list(
 ##                     Author = "",
 ##                     Determiner="M.Hauser",
 ##                     temp.id= c()),
-
-##    Scaeva_f= list(Genus="Scaeva", SubGenus="",
-##                   Species="affinis", SubSpecies="", Sex="f", Author = "",
-##                   Determiner="M.Hauser",
-##                   temp.id= c()),
 
 ##    Scaeva_m= list(Genus="Scaeva", SubGenus="",
 ##                   Species="affinis", SubSpecies="", Sex="m", Author = "",
