@@ -16,8 +16,6 @@ ncores <- 10
 ## order data by stand for ease of viewing
 spec <- spec[order(spec$Site),]
 
-## drop 2022 for now because not enough species IDed
-## spec <- spec[spec$Year != 2022,]
 spec$Lat <- log(spec$Lat)
 spec$Area <- log(spec$Area)
 
@@ -25,7 +23,7 @@ spec$Area <- log(spec$Area)
 ## to be centered
 vars <- c("MeanFloralAbundance",
           "MeanFloralDiversity",
-## not centering abudance variables in order to use negative binomial
+          ## not centering abudance variables in order to use negative binomial
           ## "PollAbundance",
           ## "HBAbundance",
           ## "BombusAbundance",
@@ -121,7 +119,7 @@ formula.bee.abund <- formula(NonBombusHBAbundance | weights(Weights)~
 formula.parasite <- formula(ParasitePresence | weights(WeightsPar) ~
                                 NonBombusHBAbundance +
                                     HBAbundance +
-                                    BombusAbundance +
+                                    BombusAbundance + Lat +
                                     PollDiversity + MeanITD + r.degree +
                                     (1|Site)
                             )
@@ -162,30 +160,44 @@ save(fit, spec,
 plot.res(fit, "parasite")
 
 
-## ## social only
-## fit.social <- brm(bform, spec[spec$Genus == "Bombus" |
-##                               spec$Genus == "Apis",],
-##                   cores=ncores,
-##                   iter = 10^4,
-##                   chains = 1,
-##                   thin=1,
-##                   init=0,
-##                   control = list(adapt_delta = 0.99))
+## bombus only
+fit.bombus <- brm(bform, spec[spec$Genus == "Bombus",],
+                  cores=ncores,
+                  iter = 10^4,
+                  chains = 1,
+                  thin=1,
+                  init=0,
+                  control = list(adapt_delta = 0.99))
 
-## write.ms.table(fit.social, "parasitism_social")
+write.ms.table(fit.bombus, "parasitism_bombus")
 
-## save(fit.social, spec,
-##      file="saved/parasiteSocialFitMod.Rdata")
+save(fit.social, spec,
+     file="saved/parasiteFitBombusMod.Rdata")
 
+## apis only
+fit.apis <- brm(bform, spec[spec$Genus == "Apis",],
+                  cores=ncores,
+                  iter = 10^4,
+                  chains = 1,
+                  thin=1,
+                  init=0,
+                  control = list(adapt_delta = 0.99))
 
+write.ms.table(fit.apis, "parasitism_apis")
 
-## Model checks
-mod.floral <- lmer(MeanFloralDiversity ~   Lat + Area +   (1|Site),
-                   data=spec[spec$Weights == 1,])
-vif(mod.floral)
+save(fit.apis, spec,
+     file="saved/parasiteFitApisMod.Rdata")
 
-## including elevation is very colinear
+## Melissodes only
+fit.melissodes <- brm(bform, spec[spec$Genus == "Melissodes",],
+                  cores=ncores,
+                  iter = 10^4,
+                  chains = 1,
+                  thin=1,
+                  init=0,
+                  control = list(adapt_delta = 0.99))
 
-mod.floral.abund <- lmer(MeanFloralAbundance ~ Area + Lat +  (1|Site),
-                         data=spec[spec$Weights == 1,])
-vif(mod.floral.abund)
+write.ms.table(fit.melissodes, "parasitism_melissodes")
+
+save(fit.melissodes, spec,
+     file="saved/parasiteFitMelissodesMod.Rdata")

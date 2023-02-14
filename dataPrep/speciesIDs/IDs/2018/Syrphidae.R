@@ -55,6 +55,15 @@ sp.ids <- list(
                                              "18175")),
 
 
+    Copestylum_haagii_f = list(Genus ="Copestylum",
+                               SubGenus="",
+                               Species =
+                                   "haagii", SubSpecies="", Sex="f",
+                               Author ="Jaennicke",
+                               Determiner="M.Hauser",
+                               temp.id = c("22700")),
+    
+    
     Chrysotoxum_morpho1 = list(Genus="Chrysotoxum",SubGenus="", Species
                                = "sp.", SubSpecies = "a",
                                Sex = "", Author = "",
