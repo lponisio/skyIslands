@@ -93,7 +93,10 @@ sp.ids <- list(
                                Sex = "",
                                Author = "",
                                Determiner="M.Hauser",
-                               temp.id = c(35228)),
+                               temp.id = c(35228, 33507, 33709, 32142,
+                                           31287, 32337, 32911, 33308,
+                                           33764, 32962, 33498, 38051,
+                                           37994, 37476)),
     
  
     Toxomerus_marginatus_f = list(Genus = "Toxomerus",SubGenus="",
@@ -168,7 +171,23 @@ sp.ids <- list(
                                            34516, 34517, 34531, 34532, 34533, 
                                            34571, 34596, 34612, 34776, 34832, 
                                            34994, 34999, 35002, 35018, 35312, 
-                                           36546, 36534)),
+                                           36546, 36534, 38399)),
+    
+    
+    Eristalis_bellardii_m = list(Genus = "Eristalis", SubGenus="",
+                                Species = "bellardii",
+                                SubSpecies="", Sex = "m",
+                                Author = "Jeannicke",
+                                Determiner="M.Hauser",
+                                temp.id = c(37897, 37786)),
+    
+    
+    Eristalis_spp = list(Genus = "Eristalis", SubGenus="",
+                                Species = "spp.",
+                                SubSpecies="", Sex = "",
+                                Author = "",
+                                Determiner="M.Hauser",
+                                temp.id = c(37194)),
     
     
     Lapposyrphus_lapponicus_f= list(Genus="Lapposyrphus", SubGenus="",
@@ -190,6 +209,46 @@ sp.ids <- list(
                                     31802, 31806, 32931, 34556, 30817,
                                     30811, 30819, 30842, 31273, 32914,
                                     33175, 37362)),
+ 
+    
+    Lapposyrphus_aberrantis_f= list(Genus="Lapposyrphus", SubGenus="",
+                         Species="aberrantis", SubSpecies="",
+                         Sex="f", Author = "Curran",
+                         Determiner="M.Hauser",
+                         temp.id= c(31818)),
+    
+    
+    Eupeodes_spp_f= list(Genus="Eupeodes", SubGenus="",
+                     Species="spp.", SubSpecies="", Sex="f",
+                     Author = "",
+                     Determiner="M.Hauser",
+                     temp.id= c(33760, 33309)),
+    
+    
+    Platycheirus_spp = list(Genus = "Platycheirus", SubGenus="",
+                                Species = "spp.",
+                                SubSpecies="", Sex = "m",
+                                Author = "",
+                                Determiner="M.Hauser",
+                                temp.id = c(34465)),
+    
+    
+    Spilomyia_crandalli_f = list(Genus = "Spilomyia", SubGenus="",
+                                Species = "crandalli",
+                                SubSpecies="", Sex = "f",
+                                Author = "Curran",
+                                Determiner="M.Hauser",
+                                temp.id = c(38319)),
+    
+    
+     Palpada_mexicana_f = list(Genus = "Palpada", SubGenus="",
+                                Species = "mexicana",
+                                SubSpecies="", Sex = "f",
+                                Author = "Macquart",
+                                Determiner="M.Hauser",
+                                temp.id = c(34074)),
+    
+    
     
 ##    Copestylum_avidum_f = list(Genus="Copestylum", SubGenus="",
 ##                               Species="avidum",
@@ -351,11 +410,7 @@ sp.ids <- list(
 ##                     temp.id= c()),
 
 
-##    Eupeodes_m= list(Genus="Eupeodes", SubGenus="",
-##                     Species="fumipennis", SubSpecies="", Sex="m",
-##                     Author = "",
-##                     Determiner="M.Hauser",
-##                     temp.id= c()),
+
 
 ##    Eupeodes_f= list(Genus="Eupeodes", SubGenus="",
 ##                     Species="fumipennis", SubSpecies="", Sex="f",
