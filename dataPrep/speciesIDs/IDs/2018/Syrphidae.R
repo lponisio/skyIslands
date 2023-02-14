@@ -6,7 +6,7 @@ sp.ids <- list(
                                Sex = "",
                                Author = "",
                                Determiner="M.Hauser",
-                               temp.id = c("18472","18470","22662","23171")),
+                               temp.id = c("18472","18470","22662","23171","23285")),
 
 
     Copestylum_avidum_f = list(Genus="Copestylum", SubGenus="",
@@ -14,13 +14,13 @@ sp.ids <- list(
                                SubSpecies="", Sex="f",
                                Author = "Sacken",
                                Determiner="M.Hauser",
-                               temp.id= c("18229")),
+                               temp.id= c("18229","22799","22402","22413","22394","22362","20931")),
 
     Copestylum_avidum_m = list(Genus="Copestylum", SubGenus="",
                                Species="avidum", SubSpecies="",
                                Sex="m", Author = "Sacken",
                                Determiner="M.Hauser",
-                               temp.id= c("18006","17980")),
+                               temp.id= c("18006","17980","21090","21044","22411")),
 
 
     Copestylum_lentum_f = list(Genus ="Copestylum",
