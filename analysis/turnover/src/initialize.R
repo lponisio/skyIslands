@@ -4,6 +4,7 @@ library(igraph)
 library(betalink)
 library(ggplot2)
 library(gridExtra)
+library(bipartite)
 ## library(effects)
 
 source('src/misc.R')
