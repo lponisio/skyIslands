@@ -324,14 +324,33 @@ sp.ids <- list(
                                           32076)),
 
 
-##    Copestylum_lentum_f = list(Genus ="Copestylum",
-##                               SubGenus="",
-##                               Species =
-##                                   "lentum", SubSpecies="", Sex="",
-##                               Author ="Williston",
-##                               Determiner="M.Hauser",
-##                               temp.id = c()),
+    Copestylum_haagii_f = list(Genus ="Copestylum",
+                               SubGenus="",
+                               Species =
+                                   "haagii", SubSpecies="", Sex="f",
+                               Author ="Jaennicke",
+                               Determiner="M.Hauser",
+                               temp.id = c(31015, 30831, 30953, 34448)),
 
+    
+    Copestylum_haagii_m = list(Genus ="Copestylum",
+                               SubGenus="",
+                               Species =
+                                   "haagii", SubSpecies="", Sex="m",
+                               Author ="Jaennicke",
+                               Determiner="M.Hauser",
+                               temp.id = c(30954)),
+    
+    
+    Copestylum_apiciferum_f = list(Genus ="Copestylum",
+                               SubGenus="",
+                               Species =
+                                   "apiciferum", SubSpecies="", Sex="f",
+                               Author ="Townsend",
+                               Determiner="M.Hauser",
+                               temp.id = c(31143)),
+    
+    
 ##    Copestylum_lentum_m = list(Genus ="Copestylum",
 ##                               SubGenus="",
 ##                               Species =
