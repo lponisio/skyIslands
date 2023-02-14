@@ -111,7 +111,7 @@ sp.ids <- list(
                                 Species = "bellardii", SubSpecies="",
                                 Sex = "", Author = "",
                                 Determiner="M.Hauser",
-                                temp.id = c("18087","18682")),
+                                temp.id = c("18087","18682","25176")),
 
 
 ## issue with duplicate ID
@@ -204,23 +204,29 @@ sp.ids <- list(
                      temp.id= c("18539")),
 
 
-    eupeodes_m= list(Genus="Eupeodes", SubGenus="",
+    eupeodes_fumipennis_m= list(Genus="Eupeodes", SubGenus="",
                      Species="fumipennis", SubSpecies="", Sex="m",
                      Author = "",
                      Determiner="M.Hauser",
                      temp.id= c("18434")),
 
-    eupeodes_f= list(Genus="Eupeodes", SubGenus="",
+    eupeodes_fumipennis_f= list(Genus="Eupeodes", SubGenus="",
                      Species="fumipennis", SubSpecies="", Sex="f",
                      Author = "",
                      Determiner="M.Hauser",
                      temp.id= c("18550")),
 
-    eupeodes_f= list(Genus="Eupeodes", SubGenus="",
+    eupeodes_volucris_f= list(Genus="Eupeodes", SubGenus="",
                      Species="volucris", SubSpecies="", Sex="f",
                      Author = "",
                      Determiner="M.Hauser",
                      temp.id= c( "17669")),
+    
+    eupeodes_snowi_f= list(Genus="Eupeodes", SubGenus="",
+                     Species="snowi", SubSpecies="", Sex="f",
+                     Author = "Wehr",
+                     Determiner="M.Hauser",
+                     temp.id= c(19878)),
 
     scaeva_affinis_f= list(Genus="Scaeva", SubGenus="",
                    Species="affinis", SubSpecies="", Sex="f", Author = "",
@@ -248,6 +254,13 @@ sp.ids <- list(
                          Determiner="M.Hauser",
                          temp.id= c("18706","17843","18250","17703",
                                     "18609","18602", "17638")),
+    
+    Melanostoma_mellium_f= list(Genus="Melanostoma", SubGenus="",
+                         Species="mellium", SubSpecies="",
+                         Sex="f", Author = "Linnaeus",
+                         Determiner="M.Hauser",
+                         temp.id= c("22676")),
+    
 
 
 )
