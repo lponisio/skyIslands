@@ -1,7 +1,7 @@
 library(vegan)
 library(fields)
 library(igraph)
-## library(betalink)
+library(betalink)
 library(ggplot2)
 library(gridExtra)
 ## library(effects)
