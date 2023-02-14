@@ -895,7 +895,16 @@ sp.ids <- list(
                                             "BBSL1059906",
                                             "BBSL1058993",
                                             "BBSL1060082"
-                                            ))
+                                            )),
+    
+    
+    Copestylum_marginatum_group_f = list(Genus ="Copestylum",
+                               SubGenus="",
+                               Species =
+                                   "marginatum group", SubSpecies="", Sex="f",
+                               Author ="",
+                               Determiner="M.Hauser",
+                               temp.id = c("30179","23018"))
 
 )
 
