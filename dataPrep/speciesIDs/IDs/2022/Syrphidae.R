@@ -51,7 +51,7 @@ sp.ids <- list(
     Scaeva_affinis_f= list(Genus="Scaeva", SubGenus="",
                    Species="affinis", SubSpecies="", Sex="f", Author = "",
                    Determiner="M.Hauser",
-                   temp.id= c(34469, 33295, 33501, 37780)),
+                   temp.id= c(34469, 33295, 33501, 37780, 32060, 32106)),
     
     
     Didea_fuscipes_f  = list(Genus = "Didea", SubGenus="",
@@ -351,6 +351,28 @@ sp.ids <- list(
                                temp.id = c(31143)),
     
     
+    Scaeva_affinis_f= list(Genus="Scaeva", SubGenus="",
+                   Species="affinis", SubSpecies="", Sex="f", Author = "Say",
+                   Determiner="M.Hauser",
+                   temp.id= c()),
+    
+    
+    Eupeodes_volucris_f= list(Genus="Eupeodes", SubGenus="",
+                     Species="volucris", SubSpecies="", Sex="f",
+                     Author = "Osten Sacken",
+                     Determiner="M.Hauser",
+                     temp.id= c(31484, 31489, 35382, 31280, 32734, 
+                                31286, 32617, 32336, 32930, 34812, 
+                                35037, 33985, 33890, 33759, 30709)),
+    
+    
+    Eupeodes_volucris_m= list(Genus="Eupeodes", SubGenus="",
+                     Species="volucris", SubSpecies="", Sex="m",
+                     Author = "Osten Sacken",
+                     Determiner="M.Hauser",
+                     temp.id= c(32966, 34888, 34613, 31821, 30825, 35042, 31822, 34649)),
+    
+    
 ##    Copestylum_lentum_m = list(Genus ="Copestylum",
 ##                               SubGenus="",
 ##                               Species =
@@ -512,11 +534,6 @@ sp.ids <- list(
 ##                     Determiner="M.Hauser",
 ##                     temp.id= c()),
 
-##    Eupeodes_f= list(Genus="Eupeodes", SubGenus="",
-##                     Species="volucris", SubSpecies="", Sex="f",
-##                     Author = "",
-##                     Determiner="M.Hauser",
-##                     temp.id= c()),
 
 ##    Scaeva_m= list(Genus="Scaeva", SubGenus="",
 ##                   Species="affinis", SubSpecies="", Sex="m", Author = "",
