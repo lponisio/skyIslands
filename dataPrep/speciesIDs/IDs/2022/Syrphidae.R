@@ -171,6 +171,26 @@ sp.ids <- list(
                                            36546, 36534)),
     
     
+    Lapposyrphus_lapponicus_f= list(Genus="Lapposyrphus", SubGenus="",
+                         Species="lapponicus", SubSpecies="",
+                         Sex="f", Author = "Zetterstedt",
+                         Determiner="M.Hauser",
+                         temp.id= c(32441, 31819, 31678, 31646, 31645,
+                                    31636, 31620, 31619, 30833, 31816,
+                                    31812, 31803, 31681, 30837, 32428,
+                                    32424, 32836, 33311, 33305, 33310,
+                                    33174)),
+    
+    
+    Lapposyrphus_lapponicus_m= list(Genus="Lapposyrphus", SubGenus="",
+                         Species="lapponicus", SubSpecies="",
+                         Sex="m", Author = "Zetterstedt",
+                         Determiner="M.Hauser",
+                         temp.id= c(33506, 33508, 31800, 31823, 31488,
+                                    31802, 31806, 32931, 34556, 30817,
+                                    30811, 30819, 30842, 31273, 32914,
+                                    33175, 37362)),
+    
 ##    Copestylum_avidum_f = list(Genus="Copestylum", SubGenus="",
 ##                               Species="avidum",
 ##                               SubSpecies="", Sex="f",
@@ -359,11 +379,5 @@ sp.ids <- list(
 ##                         Sex="m", Author = "",
 ##                         Determiner="M.Hauser",
 ##                         temp.id= c()),
-
-##    Lapposyrphus_f= list(Genus="Lapposyrphus", SubGenus="",
-##                         Species="lapponicus", SubSpecies="",
-##                         Sex="f", Author = "",
-##                         Determiner="M.Hauser",
-##                         temp.id= c())
 
 )
