@@ -6,7 +6,7 @@ sp.ids <- list(
                                Sex = "",
                                Author = "",
                                Determiner="M.Hauser",
-                               temp.id = c("18472", "18470")),
+                               temp.id = c("18472","18470","22662","23171")),
 
 
     Copestylum_avidum_f = list(Genus="Copestylum", SubGenus="",
