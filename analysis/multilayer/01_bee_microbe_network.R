@@ -54,6 +54,7 @@ megachile_net <- plot_beegenus_network(bee.microbes, 'Megachile')
 
 ##### trying now to make igraph objects for each site
 
+
 find_site_network <- function(data, site){
   bee.microbe.abund <- data %>%
     filter(Apidae == 1) %>%
@@ -77,26 +78,33 @@ find_site_network <- function(data, site){
   V(i_net)$size <- degree(i_net)
   V(i_net)$label.cex <- degree(i_net) * 0.1
   plot(i_net, layout = layout.circle) + title(main=site)
-  return(i_net)
+  as_adjacency_matrix(i_net)
 }
 
 site_list <- c('JC', 'SM', 'SC', 'MM', 'HM', 'PL', 'CH')
 
-#network_list <- array() ##make a list of all networks
-
-for (i in site_list){
-  this_network <- find_site_network(bee.microbes, i)
-}
+network_list <- c() ##make a list of all networks
 
 
-## put several webs into an array, blowing the dimensions up to the union of species -- not working need to use for loop to generate 7 distinct webs then add them in a list
-all_nets <- webs2array(network_list[1],
-                       network_list[2],
-                       network_list[3])
+JCnet <- find_site_network(bee.microbes, 'JC')
+SMnet <- find_site_network(bee.microbes, 'SM')
+
+network_array <- bipartite::webs2array(JCnet, SMnet) #for comparison of turnover between two sites
+
+# for (i in site_list){
+#   this_network <- find_site_network(bee.microbes, i)
+#   network_list <- append(network_list, this_network)
+# }
+# 
+# network_matrix <- lapply(network_list, find_site_network)
+
+network_array <- bipartite::webs2array(network_list[[1]], network_list[[2]]) #for comparison of turnover between two sites
 
 ##use betalinkr_multi once list is fixed
 
 
+bipartite::betalinkr(JCnet, SMnet)
 
-
+##okay so need to figure out how to get the igraph objects into the correct webs2array format
+##so that betalinkr can work (getting subscript out of bounds) read more about webs2array and betapart
 
