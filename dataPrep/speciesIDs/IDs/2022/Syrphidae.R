@@ -373,13 +373,38 @@ sp.ids <- list(
                      temp.id= c(32966, 34888, 34613, 31821, 30825, 35042, 31822, 34649)),
     
     
-##    Copestylum_lentum_m = list(Genus ="Copestylum",
-##                               SubGenus="",
-##                               Species =
-##                                   "lentum", SubSpecies="", Sex="",
-##                               Author ="Williston",
-##                               Determiner="M.Hauser",
-##                               temp.id = c()),
+    Copestylum_lentum_m = list(Genus ="Copestylum",
+                               SubGenus="",
+                               Species =
+                                   "lentum", SubSpecies="", Sex="m",
+                               Author ="Williston",
+                               Determiner="M.Hauser",
+                               temp.id = c(30838, 36471, 36779, 36456, 36795, 36827)),
+    
+    
+    Copestylum_marginatum_group_m = list(Genus ="Copestylum",
+                               SubGenus="",
+                               Species =
+                                   "marginatum group", SubSpecies="", Sex="m",
+                               Author ="",
+                               Determiner="M.Hauser",
+                               temp.id = c(36911, 36573, 36788, 36739, 36605, 
+                                           36870, 36835, 36839, 36829, 31009, 
+                                           36813, 36810, 31869, 36671, 36801, 
+                                           32067, 31811, 30810, 36650, 32310, 
+                                           36725, 36759, 36626, 36653, 36568, 
+                                           36695, 36698, 36480)),
+    
+    
+    Copestylum_marginatum_group_f = list(Genus ="Copestylum",
+                               SubGenus="",
+                               Species =
+                                   "marginatum group", SubSpecies="", Sex="f",
+                               Author ="",
+                               Determiner="M.Hauser",
+                               temp.id = c(32139, 35001, 35321, 34545, 34576, 
+                                           32112, 36772, 30821, 32140, 32342, 
+                                           32065, 35323, 35362)),
 
 
 ##    Copestylum_violaceum_f = list(Genus ="Copestylum",SubGenus="", Species
