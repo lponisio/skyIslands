@@ -79,6 +79,14 @@ sp.ids <- list(
                                   Author ="Meigen",
                                   Determiner="M.Hauser",
                                   temp.id = c("17971","17891","19750","19623","19817")),
+    
+     Toxomerus_marginatus = list(Genus = "Toxomerus",SubGenus="",
+                                  Species
+                                  = "marginatus", SubSpecies="",
+                                  Sex = "",
+                                  Author ="Meigen",
+                                  Determiner="M.Hauser",
+                                  temp.id = c(21868)),
 
     Eristalis_hirta_f= list(Genus = "Eristalis",
                              SubGenus="",
