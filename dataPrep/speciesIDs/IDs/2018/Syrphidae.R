@@ -78,7 +78,7 @@ sp.ids <- list(
                                   Sex = "m",
                                   Author ="Meigen",
                                   Determiner="M.Hauser",
-                                  temp.id = c("17971","17891")),
+                                  temp.id = c("17971","17891","19750","19623","19817")),
 
     Eristalis_hirta_f= list(Genus = "Eristalis",
                              SubGenus="",
@@ -121,6 +121,20 @@ sp.ids <- list(
                                 Sex = "", Author = "",
                                 Determiner="M.Hauser",
                                 temp.id = c("18087","18682","25176")),
+    
+    
+    Paragus_sp_a_f = list(Genus = "Paragus", SubGenus="",
+                             Species = "sp.",
+                             SubSpecies="a", Sex = "f",
+                             Author = "", Determiner="M.Hauser",
+                             temp.id  =c(23910)),
+    
+    
+    Platycheirus_sp_a_m = list(Genus = "Platycheirus", SubGenus="",
+                             Species = "sp.",
+                             SubSpecies="a", Sex = "m",
+                             Author = "", Determiner="M.Hauser",
+                             temp.id  =c(17758)),
 
 
 ## issue with duplicate ID
