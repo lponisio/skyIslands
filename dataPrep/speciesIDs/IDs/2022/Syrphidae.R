@@ -478,6 +478,36 @@ sp.ids <- list(
                              temp.id  =c(37666, 36734, 36814, 36812, 36821)),
     
     
+    Paragus_sp_a_f = list(Genus = "Paragus", SubGenus="",
+                             Species = "sp.",
+                             SubSpecies="a", Sex = "f",
+                             Author = "", Determiner="M.Hauser",
+                             temp.id  =c(32920, 32960, 30702, 30703, 34707)),
+    
+    
+    Paragus_sp_a_m = list(Genus = "Paragus", SubGenus="",
+                             Species = "sp.",
+                             SubSpecies="a", Sex = "m",
+                             Author = "", Determiner="M.Hauser",
+                             temp.id  =c(32838, 32918, 32923, 34631, 34632, 34634)),
+    
+    
+    Platycheirus_sp_a_f = list(Genus = "Platycheirus", SubGenus="",
+                             Species = "sp.",
+                             SubSpecies="a", Sex = "f",
+                             Author = "", Determiner="M.Hauser",
+                             temp.id  =c(37367, 31263, 32913, 34269, 31810, 32621, 34364, 32343, 31641, 31490, 34998, 38311, 34594)),
+    
+    
+    Platycheirus_sp_a_m = list(Genus = "Platycheirus", SubGenus="",
+                             Species = "sp.",
+                             SubSpecies="a", Sex = "m",
+                             Author = "", Determiner="M.Hauser",
+                             temp.id  =c(30824, 30970, 30996, 31000, 34461, 
+                                         31279, 31285, 34459, 31425, 30818, 
+                                         31297, 31295, 31288, 31433, 31485)),
+    
+    
 ##    Eristalis_bellardii_f= list(Genus = "Eristalis", SubGenus="",
 ##                                Species = "bellardii", SubSpecies="",
 ##                                Sex = "", Author = "",
