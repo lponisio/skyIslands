@@ -47,7 +47,7 @@ sp.ids <- list(
                                               "BBSL1073354",
                                               "BBSL1087184",
                                               "BBSL1071149",
-                                              "BBSL1084419")),
+                                              "BBSL1084419","21787","20795","20794","24626")),
 
 
     Eristalis_arbustorum_m = list(Genus = "Eristalis", SubGenus="",
