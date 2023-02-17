@@ -453,17 +453,33 @@ sp.ids <- list(
                                            32065, 35323, 35362)),
 
 
-##    Copestylum_violaceum_f = list(Genus ="Copestylum",SubGenus="", Species
-##                                  = "violaceum", SubSpecies="", Sex ="",
-##                                  Author ="Say",
-##                                  Determiner="M.Hauser",
-##                                  temp.id = c()),
+    Copestylum_violaceum_f = list(Genus ="Copestylum",SubGenus="", Species
+                                  = "violaceum", SubSpecies="", Sex ="",
+                                  Author ="Say",
+                                  Determiner="M.Hauser",
+                                  temp.id = c(37674, 38015, 37964)),
+    
 
-##    Copestylum_violaceum_m = list(Genus ="Copestylum",SubGenus="", Species
-##                                  = "violaceum", SubSpecies="", Sex ="",
-##                                  Author ="Say",
-##                                  Determiner="M.Hauser",
-##                                  temp.id =c()),
+    Copestylum_violaceum_m = list(Genus ="Copestylum",SubGenus="", Species
+                                  = "violaceum", SubSpecies="", Sex ="",
+                                  Author ="Say",
+                                  Determiner="M.Hauser",
+                                  temp.id =c(33891, 37596, 34242)),
+    
+    
+    Copestylum_anna_f = list(Genus ="Copestylum",SubGenus="", Species
+                                  = "anna", SubSpecies="", Sex ="f",
+                                  Author ="Williston",
+                                  Determiner="M.Hauser",
+                                  temp.id =c(32415, 36461, 30944, 31037, 32151, 
+                                             32146, 35103, 32144, 34213, 34081)),
+    
+    
+    Copestylum_anna_m = list(Genus ="Copestylum",SubGenus="", Species
+                                  = "anna", SubSpecies="", Sex ="m",
+                                  Author ="Williston",
+                                  Determiner="M.Hauser",
+                                  temp.id =c(34217, 32338)),
 
 
 ##    Chrysotoxum_morpho1 = list(Genus="Chrysotoxum",SubGenus="", Species
@@ -667,18 +683,8 @@ sp.ids <- list(
 ##                     Species="fumipennis", SubSpecies="", Sex="f",
 ##                     Author = "",
 ##                     Determiner="M.Hauser",
-##                     temp.id= c()),
+##                     temp.id= c())
 
 
-##    Scaeva_m= list(Genus="Scaeva", SubGenus="",
-##                   Species="affinis", SubSpecies="", Sex="m", Author = "",
-##                   Determiner="M.Hauser",
-##                   temp.id= c()),
-
-##    Lapposyrphus_m= list(Genus="Lapposyrphus", SubGenus="",
-##                         Species="lapponicus", SubSpecies="",
-##                         Sex="m", Author = "",
-##                         Determiner="M.Hauser",
-##                         temp.id= c()),
 
 )
