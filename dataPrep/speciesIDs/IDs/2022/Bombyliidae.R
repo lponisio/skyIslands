@@ -54,12 +54,25 @@ sp.ids <- list(
                       Determiner="L. Ponisio",
                       temp.id= c(34205)),
 
-    hemipenthes_sp =
-
-    list(Genus="Hemipenthes", SubGenus ="", Species="sp.",
-         SubSpecies="", Sex="", Author = "",
-         Determiner="L. Ponisio",
-         temp.id= c()),
+    hemipenthes_sp = list(Genus="Hemipenthes", SubGenus ="", Species="sp.",
+                      SubSpecies="", Sex="", Author = "",
+                      Determiner="L. Ponisio",
+                      temp.id= c(36630, 36548, 36571, 36748, 36737, 
+                                 36771, 36860, 36976, 36979, 36980, 
+                                 37018, 37050, 37053, 37144, 36808, 
+                                 36819, 36904, 36908, 36912, 38394, 
+                                 38389, 35255, 35310, 35316, 35380, 
+                                 36511, 36508, 35393, 35276, 35415, 
+                                 35397, 31161, 31163, 31164, 31315, 
+                                 32156, 32429, 32434, 32435, 32449, 
+                                 32456, 32457, 32460, 32458, 32625, 
+                                 32791, 34053, 33301, 34079, 34080, 
+                                 34243, 34245, 34049, 34248, 34253, 
+                                 34251, 33522, 31447, 31448, 
+                                 31449, 31450, 31451, 31452, 31453, 
+                                 31454, 31685, 31686, 31687, 31824, 
+                                 31825, 31826, 31827, 31828, 30721, 
+                                 31830, 31613, 31496, 34828, 34840)),
 
     bombylius_sp_a = list(Genus="Bombylius",
                           SubGenus ="Bombylius",
@@ -68,7 +81,17 @@ sp.ids <- list(
                           Sex="",
                           Author =  "",
                           Determiner="L. Ponisio",
-                          temp.id= c()),
+                          temp.id= c(32451, 31317, 34793)),
+    
+    
+    bombylius_sp_a = list(Genus="Bombylius",
+                          SubGenus ="Bombylius",
+                          Species="sp.",
+                          SubSpecies="a",
+                          Sex="",
+                          Author =  "",
+                          Determiner="L. Ponisio",
+                          temp.id= c(35227, 34141, 34289, 33525, 34288, 33765)),
 
 
     Antrax_sp_a = list(Genus="Antrax",
@@ -78,6 +101,19 @@ sp.ids <- list(
                        Sex="",
                        Author =  "",
                        Determiner="L. Ponisio",
-                       temp.id= c())
+                       temp.id= c()),
+    
+    
+        Chrysotoxum_sp_a = list(Genus="Chrysotoxum",
+                       SubGenus ="",
+                       Species="sp.",
+                       SubSpecies="a",
+                       Sex="",
+                       Author =  "",
+                       Determiner="M. Hauser",
+                       temp.id= c(19101, 38310, 38312, 38265, 37995, 
+                                  37120, 37000, 33756, 34072, 32958, 
+                                  22004, 19035, 19158, 38307, 38325, 
+                                  37277, 37282, 31650, 31688))
     
     )
