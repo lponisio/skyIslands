@@ -134,8 +134,8 @@ sp.ids <- list(
                                       34118, 34126, 34121, 34237, 34187,
                                       34120, 34021)),
 
-    Dufourea_tinsley_m= list(Genus="Dufourea", SubGenus ="",
-                            Species="tinsley", SubSpecies="",
+    Dufourea_tinsleyi_m= list(Genus="Dufourea", SubGenus ="",
+                            Species="tinsleyi", SubSpecies="",
                             Sex="f", Author = "Cockerell",
                             Determiner = "J.L. Neff",
                             temp.id= c(34067, 34186, 34066, 34236, 34125,
