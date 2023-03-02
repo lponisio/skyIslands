@@ -1,51 +1,60 @@
 ## setwd("~/Dropbox/skyIslands/")
 setwd('~/Dropbox (University of Oregon)/skyIslands/') ## Rebecca wd
-rm(list=ls())
+#rm(list=ls())
 setwd("analysis/turnover")
 source("src/initialize.R")
 source("src/chao.R")
 source("src/betaNet.R")
 
+library(lme4)
+
 
 
 ##adapted from Lauren's 1betalink in skyIslands folder
 
-## need to make cooccurrence network of bees and microbes at each site
-## then use betalinkPP function to find the betadiversity between each site
-## betalinkPP <- function (n1, n2, bf = B01, lower.level, higher.level)
-## do we need to do this for each combination?
-## what is lower.level and higher.level?
-##      i think higher level will be bees and lower level will be microbes?
-## what is nets.graph?
+
+
+##make igraph object from indivNet_micro
+## i think only one year of microbe data so can ignore the things about time for now
+
+microbe_igraph_list <- lapply(indivNet_micro, graph_from_incidence_matrix)
+
 
 ## ******************************************************************
 ## calculate different breakdowns of turnover
 ## ******************************************************************
 
 
-beta.net <- networkBetadiversity(nets.graph,
+beta.net <- networkBetadiversity(microbe_igraph_list,
                                  lower.level=lower.level,
                                  higher.level=higher.level,
                                  geo.dist=geo.dist,
                                  nets.by.SR=nets.by.SR)
+
+## beta.net is formed BUT -- OS, ST, S.lower level, S. higher level, prop ST are induced NaNs
+# need to examine function more to understand why this is happening
+# ALSO check geo.dist to make sure the distance between the same sites are zero,
+# it looks like rn JC, SM, HM, and MM are not 0 distance between themselves :( WHYYYYY
+
+
 ## turnover though time
-beta.same.site <- beta.net[apply(beta.net, 1,
-                                 function(x) x["Site1"] ==
-                                             x["Site2"] &
-                                             x["Year1"] !=
-                                             x["Year2"]),]
+# beta.same.site <- beta.net[apply(beta.net, 1,
+#                                  function(x) x["Site1"] ==
+#                                              x["Site2"] &
+#                                              x["Year1"] !=
+#                                              x["Year2"]),]
 ## turnover through space
 beta.same.year <- beta.net[apply(beta.net, 1,
                                  function(x) x["Year1"] ==
                                              x["Year2"] &
                                              x["Site1"] !=
                                              x["Site2"]),]
-## ## turnover though time within a year
-beta.same.site.year <- beta.net[apply(beta.net, 1,
-                                      function(x) x["Site1"] ==
-                                                  x["Site2"] &
-                                                  x["Year1"] ==
-                                                  x["Year2"]),]
+# ## ## turnover though time within a year
+# beta.same.site.year <- beta.net[apply(beta.net, 1,
+#                                       function(x) x["Site1"] ==
+#                                                   x["Site2"] &
+#                                                   x["Year1"] ==
+#                                                   x["Year2"]),]
 
 ## ******************************************************************
 ## plotting/models
