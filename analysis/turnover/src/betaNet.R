@@ -106,20 +106,20 @@ networkBetadiversity <- function (N, complete = FALSE,
     # beta$Year2 <- sapply(strsplit(as.character(beta$j), "\\."),
     #                      function(x) x[[2]])
 
-    if(nets.by.SR){
-        beta$SR1 <- sapply(strsplit(as.character(beta$i), "\\."),
-                           function(x) x[[3]])
-        beta$SR2 <- sapply(strsplit(as.character(beta$j), "\\."),
-                           function(x) x[[3]])
-        beta$Date1 <- spec$Date[match(paste0(beta$SR1, beta$Year1),
-                                      paste0(spec$SampleRound, spec$Year))]
-        beta$Date2 <- spec$Date[match(paste0(beta$SR2, beta$Year2),
-                                      paste0(spec$SampleRound,
-                                             spec$Year))]
-        beta$SRDist <- apply(beta, 1, function(x){
-            as.numeric(as.Date(x["Date2"]) -  as.Date(x["Date1"]))
-        })
-    }
+    # if(nets.by.SR){
+    #     beta$SR1 <- sapply(strsplit(as.character(beta$i), "\\."),
+    #                        function(x) x[[3]])
+    #     beta$SR2 <- sapply(strsplit(as.character(beta$j), "\\."),
+    #                        function(x) x[[3]])
+    #     beta$Date1 <- spec$Date[match(paste0(beta$SR1, beta$Year1),
+    #                                   paste0(spec$SampleRound, spec$Year))]
+    #     beta$Date2 <- spec$Date[match(paste0(beta$SR2, beta$Year2),
+    #                                   paste0(spec$SampleRound,
+    #                                          spec$Year))]
+    #     beta$SRDist <- apply(beta, 1, function(x){
+    #         as.numeric(as.Date(x["Date2"]) -  as.Date(x["Date1"]))
+    #     })
+    # }
 
 
     beta$GeoDist <- apply(beta, 1, function(x){
