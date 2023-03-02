@@ -114,8 +114,8 @@ sp.ids <- list(
 ##                                   Species="mellitarsis",
 ##                                   SubSpecies="", Sex="f",
 ##                                   Author = "Cresson",
-##                                   Determiner = "",
-##                                   temp.id= c()),
+##                                   Determiner = "J.L. Neff",
+##                                   temp.id= c(31932, 36994)),
 
 ##    Heriades_cressoni_f = list(Genus="Heriades",
 ##                               SubGenus ="Neotrypetes",
@@ -173,8 +173,8 @@ sp.ids <- list(
 ##                                   Species="mellitarsis",
 ##                                   SubSpecies="", Sex="m",
 ##                                   Author = "Cresson",
-##                                   Determiner = "",
-##                                   temp.id= c()),
+##                                   Determiner = "J.L. Neff",
+##                                   temp.id= c(32770, 34105, 32771, 37731)),
 
 ##    Megachile_comata_f = list(Genus="Megachile",
 ##                              SubGenus ="Xanthosarus",
