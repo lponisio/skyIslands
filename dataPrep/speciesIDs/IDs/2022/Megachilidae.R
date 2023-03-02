@@ -174,23 +174,23 @@ sp.ids <- list(
 ##                                   SubSpecies="", Sex="m",
 ##                                   Author = "Cresson",
 ##                                   Determiner = "J.L. Neff",
-##                                   temp.id= c(32770, 34105, 32771, 37731)),
+##                                   temp.id= c(32770, 34105, 32771)),
 
 ##    Megachile_comata_f = list(Genus="Megachile",
 ##                              SubGenus ="Xanthosarus",
 ##                              Species="comata",
 ##                              SubSpecies="",
 ##                              Sex="f",
-##                              Author = "Cresson", Determiner = "",
-##                              temp.id= c()),
+##                              Author = "Cresson", Determiner = "J.L. Neff",
+##                              temp.id= c(33141, 33934)),
 
 ##    Megachile_comata_m = list(Genus="Megachile",
 ##                              SubGenus ="Xanthosarus",
 ##                              Species="comata", SubSpecies="",
 ##                              Sex="m",
 ##                              Author = "Cresson",
-##                              Determiner = "",
-##                              temp.id= c()),
+##                              Determiner = "J.L. Neff",
+##                              temp.id= c(33222, 30793, 33932, 36451, 31935, 30901, 31936)),
 
 ##    Megachile_relativa_f = list(Genus="Megachile",
 ##                                SubGenus ="Megachile",
@@ -200,5 +200,28 @@ sp.ids <- list(
 ##                                Determiner = "",
 ##                                temp.id= c())
 
+##    Megachile_perihirta_f = list(Genus="Megachile",
+##                                SubGenus ="Xanthosarus",
+##                                Species="",
+##                                SubSpecies="", Sex="f",
+##                                Author = "Cockerell",
+##                                Determiner = "J.L. Neff",
+##                                temp.id= c(36527))
+
+##    Megachile_lippiae_f = list(Genus="Megachile",
+##                                SubGenus ="Litomegachile",
+##                                Species="",
+##                                SubSpecies="", Sex="f",
+##                                Author = "Cockerell",
+##                                Determiner = "J.L. Neff",
+##                                temp.id= c(33056))
+
+##    Megachile_onobrychidis_m = list(Genus="Megachile",
+##                                SubGenus ="Litomegachile",
+##                                Species="",
+##                                SubSpecies="", Sex="m",
+##                                Author = "Cockerell",
+##                                Determiner = "J.L. Neff",
+##                                temp.id= c(36705, 30779))
 
 )
