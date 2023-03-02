@@ -130,8 +130,8 @@ sp.ids <- list(
 ##                                           Species="melanophaea",
 ##                                           SubSpecies="rohweri",
 ##                                           Sex="m", Author = "Smith",
-##                                           Determiner = "",
-##                                           temp.id= c()),
+##                                           Determiner = "J.L. Neff",
+##                                           temp.id= c(31356, 31465, 31569, 37105, 30794, 36796, 31049, 30906)),
 
 
 ##    Megachile_melanophaea_rohweri_f = list(Genus="Megachile",
@@ -139,8 +139,8 @@ sp.ids <- list(
 ##                                           Species="melanophaea",
 ##                                           SubSpecies="rohweri",
 ##                                           Sex="f", Author = "Smith",
-##                                           Determiner = "",
-##                                           temp.id= c(
+##                                           Determiner = "J.L. Neff",
+##                                           temp.id= c(36946, 30900, 36646, 36681, 38214, 38032, 38205, 36869, 36699, 36549, 30905, 30904, 31048, 30765, 36645, 34264, 30899, 31043, 31934, 30766, 31797, 30902, 36647, 31500, 33225, 36638, 30762, 36889, 36747, 33223, 36608, 36868
 ##                                                      )),
 
 ##    Megachile_zapoteca_m = list(Genus="Megachile",
