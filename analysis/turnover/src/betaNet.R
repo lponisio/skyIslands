@@ -101,10 +101,10 @@ networkBetadiversity <- function (N, complete = FALSE,
                          function(x) x[[1]])
     beta$Site2 <- sapply(strsplit(as.character(beta$j), "\\."),
                          function(x) x[[1]])
-    beta$Year1 <- sapply(strsplit(as.character(beta$i), "\\."),
-                         function(x) x[[2]])
-    beta$Year2 <- sapply(strsplit(as.character(beta$j), "\\."),
-                         function(x) x[[2]])
+    # beta$Year1 <- sapply(strsplit(as.character(beta$i), "\\."),
+    #                      function(x) x[[2]])
+    # beta$Year2 <- sapply(strsplit(as.character(beta$j), "\\."),
+    #                      function(x) x[[2]])
 
     if(nets.by.SR){
         beta$SR1 <- sapply(strsplit(as.character(beta$i), "\\."),
