@@ -30,6 +30,15 @@ sp.ids <- list(
                               Author = "Cresson",
                               Determiner="K.W. Wright",
                               temp.id= c(38402)),
+     
+     
+   Melissodes_verbesinarum_f= list(Genus="Melissodes",
+                              SubGenus="Eumelissodes",
+                              Species="verbesinarum",
+                              SubSpecies="", Sex="f",
+                              Author = "Cockerell",
+                              Determiner="J.L. Neff",
+                              temp.id= c(30914)),
 
 
     Xylocopa_californica_f= list(Genus="Xylocopa",
