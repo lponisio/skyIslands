@@ -26,6 +26,30 @@ sp.ids <- list(
                                      Determiner = "J.L. Neff",
                                      temp.id= c(37249)),    
     
+    Ashmeadiella_timberlakei_f = list(Genus="Ashmeadiella",
+                                     SubGenus ="",
+                                     Species="timberlakei",
+                                     SubSpecies="", Sex="f",
+                                     Author = "Michener",
+                                     Determiner = "",
+                                     temp.id= c()),   
+    
+        Ashmeadiella_cactorum_f = list(Genus="Ashmeadiella",
+                                     SubGenus ="",
+                                     Species="cactorum",
+                                     SubSpecies="", Sex="f",
+                                     Author = "",
+                                     Determiner = "",
+                                     temp.id= c()),
+    
+        Ashmeadiella_opuntiae_f = list(Genus="Ashmeadiella",
+                                     SubGenus ="Ashmeadiella",
+                                     Species="opuntiae",
+                                     SubSpecies="", Sex="f",
+                                     Author = "Cockerell",
+                                     Determiner = "J.L. Neff",
+                                     temp.id= c(36800, 36951, 36940)),
+    
     
     Hoplitis_albifrons_f = list(Genus="Hoplitis",
                                      SubGenus ="",
@@ -35,6 +59,13 @@ sp.ids <- list(
                                      Determiner = "J.L. Neff",
                                      temp.id= c(36688)),
     
+     Heriades_cruciferae_m = list(Genus="Heriades",
+                                     SubGenus ="",
+                                     Species="cruciferae",
+                                     SubSpecies="", Sex="m",
+                                     Author = "Cockerell",
+                                     Determiner = "J.L. Neff",
+                                     temp.id= c(33583)),
 
     Coelioxys_moesta_f = list(Genus="Coelioxys",
                                      SubGenus ="",
@@ -223,5 +254,31 @@ sp.ids <- list(
 ##                                Author = "Cockerell",
 ##                                Determiner = "J.L. Neff",
 ##                                temp.id= c(36705, 30779))
+
+##    Osmia_coloradensis_f = list(Genus="Osmia",
+##                                SubGenus ="Helicosmia",
+##                                Species="coloradensis",
+##                                SubSpecies="", Sex="f",
+##                                Author = "Cresson",
+##                                Determiner = "J.L. Neff",
+##                                temp.id= c(31040, 30647, 30650))
+
+##    Osmia_gaudiosa_f = list(Genus="Osmia",
+##                                SubGenus ="Melanosmia",
+##                                Species="gaudiosa",
+##                                SubSpecies="", Sex="f",
+##                                Author = "Cockerell",
+##                                Determiner = "J.L. Neff",
+##                                temp.id= c(30921))
+
+##    Osmia_subaustralis_f = list(Genus="Osmia",
+##                                SubGenus ="Cephalosmia",
+##                                Species="subaustralis",
+##                                SubSpecies="", Sex="f",
+##                                Author = "Cockerell",
+##                                Determiner = "J.L. Neff",
+##                                temp.id= c(31501, 31566))
+
+
 
 )
