@@ -10,22 +10,23 @@ library(bipartite)
 source('src/misc.R')
 load('../../data/spec.Rdata')
 
-args <- commandArgs(trailingOnly=TRUE)
-if(length(args) != 0){
-    net.type <- args[1]
-    species <- args[2]
-    sp.level <- args[3]
-} else{
-    net.type <- "YrSR"
-    species <- "Plant"
-    sp.level <- "lower.level"
-}
+# args <- commandArgs(trailingOnly=TRUE)
+# if(length(args) != 0){
+#     net.type <- args[1]
+#     species <- args[2]
+#     sp.level <- args[3]
+# } else{
+#     net.type <- "YrSR"
+#     species <- "Plant"
+#     sp.level <- "lower.level"
+# }
 
 plants <- unique(spec$PlantGenusSpecies)
 pols <- unique(spec$GenusSpecies)
 parasites <- c("AscosphaeraSpp", "ApicystisSpp",
                "CrithidiaExpoeki", "CrithidiaBombi", "NosemaBombi",
                "NosemaCeranae")
+microbes <- names(spec)[grepl("16s", names(spec))]
 
 if(species == "Plant"){
     species <- c("Plant", "Pollinator")
@@ -35,7 +36,12 @@ if(species == "Plant"){
     species <- c("Pollinator", "Parasite")
     lower.level  <- pols
     higher.level <- parasites
+} else if(species == "16s"){
+  species <- c("Pollinator", "16s")
+  lower.level  <- pols
+  higher.level <- microbes
 }
+
 if(net.type == "YrSR"){
     nets.by.SR  <- TRUE
 } else {
