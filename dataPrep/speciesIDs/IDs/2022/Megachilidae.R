@@ -287,10 +287,10 @@ sp.ids <- list(
 ##                                Determiner = "J.L. Neff",
 ##                                temp.id= c(31501, 31566))
 
-##    Osmia_sp_a = list(Genus="Osmia",
+##    Osmia_sp_a_f = list(Genus="Osmia",
 ##                                SubGenus ="",
-##                                Species="sp_a",
-##                                SubSpecies="", Sex="f",
+##                                Species="sp.",
+##                                SubSpecies="a", Sex="f",
 ##                                Author = "",
 ##                                Determiner = "J.L. Neff",
 ##                                temp.id= c(36789, 36584, 32272))
