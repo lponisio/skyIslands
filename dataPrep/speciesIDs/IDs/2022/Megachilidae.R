@@ -271,6 +271,14 @@ sp.ids <- list(
 ##                                Determiner = "J.L. Neff",
 ##                                temp.id= c(30921))
 
+##    Osmia_penstemonis_f = list(Genus="Osmia",
+##                                SubGenus ="Melanosmia",
+##                                Species="penstemonis",
+##                                SubSpecies="", Sex="f",
+##                                Author = "Cockerell",
+##                                Determiner = "J.L. Neff",
+##                                temp.id= c(36823, 30924, 30929, 30770, 36683, 30933, 36651, 30940))
+
 ##    Osmia_subaustralis_f = list(Genus="Osmia",
 ##                                SubGenus ="Cephalosmia",
 ##                                Species="subaustralis",
@@ -278,6 +286,14 @@ sp.ids <- list(
 ##                                Author = "Cockerell",
 ##                                Determiner = "J.L. Neff",
 ##                                temp.id= c(31501, 31566))
+
+##    Osmia_sp_a = list(Genus="Osmia",
+##                                SubGenus ="",
+##                                Species="sp_a",
+##                                SubSpecies="", Sex="f",
+##                                Author = "",
+##                                Determiner = "J.L. Neff",
+##                                temp.id= c(36789, 36584, 32272))
 
 
 
