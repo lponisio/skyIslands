@@ -31,8 +31,8 @@ sp.ids <- list(
     ##                               SubGenus="Lasioglossum", Species="desertum",
     ##                               SubSpecies="", Sex="f",
     ##                               Author = "Smith",
-    ##                               Determiner = "",
-    ##                               temp.id=  c()),
+    ##                               Determiner = "J.L. Neff",
+    ##                               temp.id=  c(34320, 31787, 31120, 32885, 31118, 36974, 36521, 37030)),
 
 
     ## Lasioglossum_desertum_m= list(Genus="Lasioglossum",
@@ -50,8 +50,17 @@ sp.ids <- list(
     ##                                SubSpecies="", Sex="f",
     ##                                Author = "Vachal, 1904",
     ##                                Determiner =
-    ##                                    "",
-    ##                                temp.id= c()),
+    ##                                    "J.L. Neff",
+    ##                                temp.id= c(30639, 37051, 34399, 31111)),
+    
+    ## Lasioglossum_egregium_m = list(Genus="Lasioglossum",
+    ##                                SubGenus ="Lasioglossum",
+    ##                                Species="egregium",
+    ##                                SubSpecies="", Sex="m",
+    ##                                Author = "Vachal, 1904",
+    ##                                Determiner =
+    ##                                    "J.L. Neff",
+    ##                                temp.id= c(37792, 37848, 33614, 33619, 33453, 38039)),
 
     ## Sphecodes_morphoa_f= list(Genus="Sphecodes", SubGenus ="",
     ##                           Species="sp.",
@@ -182,8 +191,8 @@ sp.ids <- list(
                                   Species="aquilae",
                                   SubSpecies="",
                                   Sex="f", Author = "Cockerell",
-                                  Determiner = "D. Yanega",
-                                  temp.id= c(
+                                  Determiner = "J.L. Neff",
+                                  temp.id= c(33582, 37737
                                   )),
 
 
@@ -307,8 +316,8 @@ sp.ids <- list(
     ##                               ="Sphecodogastra", Species="lusorium",
     ##                               SubSpecies="", Sex="f",
     ##                               Author = "Cresson, 1872",
-    ##                               Determiner = "",
-    ##                               temp.id=  c()),
+    ##                               Determiner = "J.L. Neff",
+    ##                               temp.id=  c(32695)),
 
     ## Lasioglossum_sp_m= list(Genus="Lasioglossum", SubGenus
     ##                         ="Sphecodogastra", Species="sp.",
@@ -316,8 +325,28 @@ sp.ids <- list(
     ##                         Author = "",
     ##                         Determiner = "",
     ##                         temp.id=  c())
+    
+    ## Lasioglossum_rupticristum_m= list(Genus="Lasioglossum", SubGenus
+    ##                         ="", Species="rupticristum",
+    ##                         SubSpecies="", Sex="m",
+    ##                         Author = "McGinley",
+    ##                         Determiner = "J.L. Neff",
+    ##                         temp.id=  c(38345, 38376, 38378, 30645, 32884, 31130, 31113, 37077, 33590, 33476, 30651))
 
-
+    ## Lasioglossum_rupticristum_f= list(Genus="Lasioglossum", SubGenus
+    ##                         ="", Species="rupticristum",
+    ##                         SubSpecies="", Sex="f",
+    ##                         Author = "McGinley",
+    ##                         Determiner = "J.L. Neff",
+    ##                         temp.id=  c(38355, 38371, 38344, 38388, 38347, 38324, 38386, 38377))
+    
+    
+    ## Lasioglossum_cooleyi_f= list(Genus="Lasioglossum", SubGenus
+    ##                         ="Sphecodogastra", Species="cooleyi",
+    ##                         SubSpecies="", Sex="f",
+    ##                         Author = "Crawford",
+    ##                         Determiner = "J.L. Neff",
+    ##                         temp.id=  c(30935, 36744, 30781))
 
 
 
