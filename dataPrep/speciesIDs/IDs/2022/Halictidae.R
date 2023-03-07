@@ -73,7 +73,27 @@ sp.ids <- list(
     ##                           Author = "",
     ##                           Determiner ="",
     ##                           temp.id= c()),
+    
+     ##     Sphecodes_sp_b_m= list(Genus="Sphecodes", SubGenus ="",
+    ##                           Species="sp.",
+    ##                           SubSpecies="b", Sex="m",
+    ##                           Author = "",
+    ##                           Determiner ="J.L. Neff",
+    ##                           temp.id= c(31928)),
 
+      ##     Sphecodes_sp_b_f= list(Genus="Sphecodes", SubGenus ="",
+    ##                           Species="sp.",
+    ##                           SubSpecies="b", Sex="f",
+    ##                           Author = "",
+    ##                           Determiner ="J.L. Neff",
+    ##                           temp.id= c(33979, 34341, 33274)),
+    
+      ##     Sphecodes_sp_a_f= list(Genus="Sphecodes", SubGenus ="",
+    ##                           Species="sp.",
+    ##                           SubSpecies="a", Sex="f",
+    ##                           Author = "",
+    ##                           Determiner ="J.L. Neff",
+    ##                           temp.id= c(30936, 30938, 31600, 30771, 30802, 31259)),
 
     Dufourea_maura_f= list(Genus="Dufourea", SubGenus ="",
                            Species="maura", SubSpecies="",
