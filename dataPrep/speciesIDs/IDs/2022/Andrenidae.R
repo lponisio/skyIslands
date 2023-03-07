@@ -128,6 +128,12 @@ sp.ids <- list(
     ##                        Determiner="",
     ##                        temp.id= c()),
 
+    ##   Protandrena_atricornis_f= list(Genus="Protandrena", SubGenus ="Pterosarus",
+    ##                        Species="atricornis",
+    ##                        SubSpecies="",
+    ##                        Sex="f", Author = "Cresson",
+    ##                        Determiner="J.L. Neff",
+    ##                        temp.id= c(33342)),
 
 
     ## Pseudopanurgus_porterae_f= list(Genus="Pseudopanurgus",
