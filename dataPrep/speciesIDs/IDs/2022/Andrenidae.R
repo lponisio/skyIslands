@@ -255,6 +255,51 @@ sp.ids <- list(
     ##                            Determiner="",
     ##                            temp.id= c())
 
+    Andrena_livida_f= list(Genus="Andrena",
+                               SubGenus ="Thysandrena",
+                               Species="livida",
+                               SubSpecies="",
+                               Sex="f",
+                               Author = "LaBerge",
+                               Determiner="J.L. Neff",
+                               temp.id= c(30923, 31477, 32557, 32687, 32409, 30803, 31365)),
+    
+    Andrena_livida_m= list(Genus="Andrena",
+                               SubGenus ="Thysandrena",
+                               Species="livida",
+                               SubSpecies="",
+                               Sex="m",
+                               Author = "LaBerge",
+                               Determiner="J.L. Neff",
+                               temp.id= c(30923, 31477, 32557, 32687, 32409, 30803, 31365)),
+    
+        Andrena_livida_m= list(Genus="Andrena",
+                               SubGenus ="Thysandrena",
+                               Species="livida",
+                               SubSpecies="",
+                               Sex="m",
+                               Author = "LaBerge",
+                               Determiner="J.L. Neff",
+                               temp.id= c(30923, 31477, 32557, 32687, 32409, 30803, 31365)),
+    
+       Andrena_cerasifolii_f= list(Genus="Andrena",
+                               SubGenus ="Trachandrena",
+                               Species="Cerasifolii",
+                               SubSpecies="",
+                               Sex="f",
+                               Author = "Cockerell",
+                               Determiner="J.L. Neff",
+                               temp.id= c(37278)),
+    
+    Andrena_cyanophila_f= list(Genus="Andrena",
+                               SubGenus ="",
+                               Species="Cyanophila",
+                               SubSpecies="",
+                               Sex="f",
+                               Author = "Cockerell",
+                               Determiner="J.L. Neff",
+                               temp.id= c(31470, 31205)),
+    
     Andrena_birtwelli_f= list(Genus="Andrena",
                               SubGenus ="",
                               Species="birtwelli",
@@ -276,7 +321,7 @@ sp.ids <- list(
                                          37381, 37228, 37377, 37226, 37225,
                                          37224, 37223, 37222, 37221, 37312,
                                          37298, 37297, 37296, 37269, 37294,
-                                         37293, 37291, 37159, 37157, 37158)),
+                                         37293, 37291, 37159, 37157, 37158, 32288)),
 
      Andrena_hitei_f= list(Genus="Andrena",
                                  SubGenus ="",
@@ -295,5 +340,15 @@ sp.ids <- list(
                                  Author = "Cockerell",
                                  Determiner="J.L. Neff",
                                  temp.id= c(37066))
+    
+    
+     Andrena_thaspii_f= list(Genus="Andrena",
+                                 SubGenus ="Andrena",
+                                 Species="thaspii",
+                                 SubSpecies="",
+                                 Sex="f",
+                                 Author = "Graenicher",
+                                 Determiner="J.L. Neff",
+                                 temp.id= c(31219, 31216, 30942, 31363, 31367, 31371, 30927, 30932, 31220, 31468, 30782, 31223, 36867, 30774, 31386))
 
 )
