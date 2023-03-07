@@ -1,7 +1,30 @@
 
 sp.ids <- list(
 
+    ##   Perdita_albipennis_m= list(Genus="Perdita",
+    ##                                   SubGenus ="Cockerellia",
+    ##                                   Species="",
+    ##                                   SubSpecies="",
+    ##                                   Sex="m", Author = "Cresson",
+    ##                                   Determiner="J.L. Neff",
+    ##                                   temp.id= c(36831, 31030)),
  
+    ##   Perdita_ignota_f= list(Genus="Perdita",
+    ##                                   SubGenus ="Hexaperdita",
+    ##                                   Species="ignota",
+    ##                                   SubSpecies="",
+    ##                                   Sex="f", Author = "Cockerell",
+    ##                                   Determiner="J.L Neff",
+    ##                                   temp.id= c(30926)),
+ 
+    ##   Perdita_foveata_f= list(Genus="Perdita",
+    ##                                   SubGenus ="hexaperdita",
+    ##                                   Species="foveata",
+    ##                                   SubSpecies="",
+    ##                                   Sex="f", Author = "Timberlake",
+    ##                                   Determiner="J.L. Neff",
+    ##                                   temp.id= c(36689)),
+
 
     ##   Pseudopanurgus_piercei_f= list(Genus="Pseudopanurgus",
     ##                                   SubGenus ="",
