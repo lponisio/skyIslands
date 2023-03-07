@@ -1,5 +1,5 @@
 #Network building for 16s and rbcL FFAR 2019
- setwd('/Volumes/bombus/Dropbox (University of Oregon)')
+ setwd('~/Dropbox (University of Oregon)')
 
 rm(list=ls())
 ## setwd('~')
@@ -9,7 +9,7 @@ library(parallel)
 source('../skyIslands/dataPrep/src/nets_init.R')
 
 ndim.func <- 10
-options(cores=12)
+options(cores=1)
 
 ## ********************************************************
 ## pollinator abundance by site to multiple interactions by
