@@ -20,10 +20,9 @@ sp.ids <- list(
                                           "BBSL1085303",
                                           "BBSL1084460",
                                           "BBSL1084461",
-                                          "BBSL1087202",
-                                          "20820",
-                                          "22885",
-                                          "22926", "20814", "21401")),
+                                          "BBSL1087202", "20820",
+                                          "22885", "22926", "20814",
+                                          "21401")),
 
     Anthophora_urbana_m = list(Genus="Anthophora",
                                SubGenus="Mystacanthophora",
@@ -1272,23 +1271,18 @@ sp.ids <- list(
                                    "BBSL1072910")),
 
     Melissodes_confusus= list(Genus="Melissodes",
-                             SubGenus="Eumelissodes",
-                             Species="confusus",
-                             SubSpecies="", Sex="f",
-                             Author = "Cresson",
-                             Determiner="T.  Griswold",
-                             temp.id= c("BBSL1073889",
-                                        "BBSL1073229",
-                                        "BBSL1073264",
-                                        "BBSL1073899",
-                                        "BBSL1071519",
-                                        "BBSL1073227",
-                                        "BBSL1073407")),
-
-
-
-
-
+                              SubGenus="Eumelissodes",
+                              Species="confusus",
+                              SubSpecies="", Sex="f",
+                              Author = "Cresson",
+                              Determiner="T.  Griswold",
+                              temp.id= c("BBSL1073889",
+                                         "BBSL1073229",
+                                         "BBSL1073264",
+                                         "BBSL1073899",
+                                         "BBSL1071519",
+                                         "BBSL1073227",
+                                         "BBSL1073407"))
 
 
 )

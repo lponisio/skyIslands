@@ -6,7 +6,8 @@ sp.ids <- list(
                                Sex = "",
                                Author = "",
                                Determiner="M.Hauser",
-                               temp.id = c("18472","18470","22662","23171","23285")),
+                               temp.id = c("18472","18470","22662",
+                                           "23171","23285")),
 
 
     Copestylum_avidum_f = list(Genus="Copestylum", SubGenus="",
@@ -14,13 +15,16 @@ sp.ids <- list(
                                SubSpecies="", Sex="f",
                                Author = "Sacken",
                                Determiner="M.Hauser",
-                               temp.id= c("18229","22799","22402","22413","22394","22362","20931")),
+                               temp.id= c("18229","22799","22402",
+                                          "22413","22394","22362",
+                                          "20931")),
 
     Copestylum_avidum_m = list(Genus="Copestylum", SubGenus="",
                                Species="avidum", SubSpecies="",
                                Sex="m", Author = "Sacken",
                                Determiner="M.Hauser",
-                               temp.id= c("18006","17980","21090","21044","22411")),
+                               temp.id= c("18006","17980","21090",
+                                          "21044","22411")),
 
 
     Copestylum_lentum_f = list(Genus ="Copestylum",
@@ -62,8 +66,8 @@ sp.ids <- list(
                                Author ="Jaennicke",
                                Determiner="M.Hauser",
                                temp.id = c("22700")),
-    
-    
+
+
     Chrysotoxum_morpho1 = list(Genus="Chrysotoxum",SubGenus="", Species
                                = "sp.", SubSpecies = "a",
                                Sex = "", Author = "",
@@ -78,23 +82,24 @@ sp.ids <- list(
                                   Sex = "m",
                                   Author ="Meigen",
                                   Determiner="M.Hauser",
-                                  temp.id = c("17971","17891","19750","19623","19817")),
-    
-     Toxomerus_marginatus = list(Genus = "Toxomerus",SubGenus="",
-                                  Species
-                                  = "marginatus", SubSpecies="",
-                                  Sex = "",
-                                  Author ="Meigen",
-                                  Determiner="M.Hauser",
-                                  temp.id = c(21868)),
+                                  temp.id = c("17971","17891","19750",
+                                              "19623","19817")),
+
+    Toxomerus_marginatus = list(Genus = "Toxomerus",SubGenus="",
+                                Species
+                                = "marginatus", SubSpecies="",
+                                Sex = "",
+                                Author ="Meigen",
+                                Determiner="M.Hauser",
+                                temp.id = c(21868)),
 
     Eristalis_hirta_f= list(Genus = "Eristalis",
-                             SubGenus="",
-                             Species = "hirta",
-                             SubSpecies="",
-                             Sex = "f", Author = "Loew",
-                             Determiner="M.Hauser",
-                             temp.id = c("18590")),
+                            SubGenus="",
+                            Species = "hirta",
+                            SubSpecies="",
+                            Sex = "f", Author = "Loew",
+                            Determiner="M.Hauser",
+                            temp.id = c("18590")),
 
 
     Eristalis_tenax_m = list(Genus = "Eristalis",
@@ -129,27 +134,27 @@ sp.ids <- list(
                                 Sex = "", Author = "",
                                 Determiner="M.Hauser",
                                 temp.id = c("18087","18682","25176")),
-    
-    
+
+
     Paragus_sp_a_f = list(Genus = "Paragus", SubGenus="",
-                             Species = "sp.",
-                             SubSpecies="a", Sex = "f",
-                             Author = "", Determiner="M.Hauser",
-                             temp.id  =c(23910)),
-    
-    
+                          Species = "sp.",
+                          SubSpecies="a", Sex = "f",
+                          Author = "", Determiner="M.Hauser",
+                          temp.id  =c(23910)),
+
+
     Platycheirus_sp_a_m = list(Genus = "Platycheirus", SubGenus="",
-                             Species = "sp.",
-                             SubSpecies="a", Sex = "m",
-                             Author = "", Determiner="M.Hauser",
-                             temp.id  =c(17758)),
+                               Species = "sp.",
+                               SubSpecies="a", Sex = "m",
+                               Author = "", Determiner="M.Hauser",
+                               temp.id  =c(17758)),
 
 
-## issue with duplicate ID
-    # Didea_f = list(Genus = "Didea", SubGenus="", Species = "",
-                   # SubSpecies="", Sex = "f", Author = "",
-                   # Determiner="M.Hauser",
-                   # temp.id = c("18163")),
+    ## issue with duplicate ID
+                                        # Didea_f = list(Genus = "Didea", SubGenus="", Species = "",
+                                        # SubSpecies="", Sex = "f", Author = "",
+                                        # Determiner="M.Hauser",
+                                        # temp.id = c("18163")),
 
     Didea_fuscipes_m  = list(Genus = "Didea", SubGenus="",
                              Species = "fuscipes",
@@ -236,69 +241,69 @@ sp.ids <- list(
 
 
     eupeodes_fumipennis_m= list(Genus="Eupeodes", SubGenus="",
-                     Species="fumipennis", SubSpecies="", Sex="m",
-                     Author = "",
-                     Determiner="M.Hauser",
-                     temp.id= c("18434")),
+                                Species="fumipennis", SubSpecies="", Sex="m",
+                                Author = "",
+                                Determiner="M.Hauser",
+                                temp.id= c("18434")),
 
     eupeodes_fumipennis_f= list(Genus="Eupeodes", SubGenus="",
-                     Species="fumipennis", SubSpecies="", Sex="f",
-                     Author = "",
-                     Determiner="M.Hauser",
-                     temp.id= c("18550")),
+                                Species="fumipennis", SubSpecies="", Sex="f",
+                                Author = "",
+                                Determiner="M.Hauser",
+                                temp.id= c("18550")),
 
     eupeodes_volucris_f= list(Genus="Eupeodes", SubGenus="",
-                     Species="volucris", SubSpecies="", Sex="f",
-                     Author = "Osten Sacken",
-                     Determiner="M.Hauser",
-                     temp.id= c( "17669","22634","19445")),
-    
+                              Species="volucris", SubSpecies="", Sex="f",
+                              Author = "Osten Sacken",
+                              Determiner="M.Hauser",
+                              temp.id= c( "17669","22634","19445")),
+
     eupeodes_volucris_m= list(Genus="Eupeodes", SubGenus="",
-                     Species="volucris", SubSpecies="", Sex="m",
-                     Author = "Osten Sacken",
-                     Determiner="M.Hauser",
-                     temp.id= c("22107")),
-    
+                              Species="volucris", SubSpecies="", Sex="m",
+                              Author = "Osten Sacken",
+                              Determiner="M.Hauser",
+                              temp.id= c("22107")),
+
     eupeodes_snowi_f= list(Genus="Eupeodes", SubGenus="",
-                     Species="snowi", SubSpecies="", Sex="f",
-                     Author = "Wehr",
-                     Determiner="M.Hauser",
-                     temp.id= c(19878)),
+                           Species="snowi", SubSpecies="", Sex="f",
+                           Author = "Wehr",
+                           Determiner="M.Hauser",
+                           temp.id= c(19878)),
 
     scaeva_affinis_f= list(Genus="Scaeva", SubGenus="",
-                   Species="affinis", SubSpecies="", Sex="f", Author = "",
-                   Determiner="M.Hauser",
-                   temp.id= c("18208","17804","18217","18061","18603",
-                              "18180", "18620","18714","18211",
-                              "18206","17837","17672","17878",
-                              "18044","18040","17644","17639",
-                              "18632","30621","18632")),
+                           Species="affinis", SubSpecies="", Sex="f", Author = "",
+                           Determiner="M.Hauser",
+                           temp.id= c("18208","17804","18217","18061","18603",
+                                      "18180", "18620","18714","18211",
+                                      "18206","17837","17672","17878",
+                                      "18044","18040","17644","17639",
+                                      "18632","30621","18632")),
 
     scaeva_affinis_m= list(Genus="Scaeva", SubGenus="",
-                   Species="affinis", SubSpecies="", Sex="m", Author = "",
-                   Determiner="M.Hauser",
-                   temp.id= c("18479","18239")),
+                           Species="affinis", SubSpecies="", Sex="m", Author = "",
+                           Determiner="M.Hauser",
+                           temp.id= c("18479","18239")),
 
     lapposyrphus_lapponicus_m= list(Genus="Lapposyrphus", SubGenus="",
-                         Species="lapponicus", SubSpecies="",
-                         Sex="m", Author = "",
-                         Determiner="M.Hauser",
-                         temp.id= c("18264","18181","17178")),
+                                    Species="lapponicus", SubSpecies="",
+                                    Sex="m", Author = "",
+                                    Determiner="M.Hauser",
+                                    temp.id= c("18264","18181","17178")),
 
     lapposyrphus_lapponicus_f= list(Genus="Lapposyrphus", SubGenus="",
-                         Species="lapponicus", SubSpecies="",
-                         Sex="f", Author = "",
-                         Determiner="M.Hauser",
-                         temp.id= c("18706","17843","18250","17703",
-                                    "18609","18602", "17638")),
-    
+                                    Species="lapponicus", SubSpecies="",
+                                    Sex="f", Author = "",
+                                    Determiner="M.Hauser",
+                                    temp.id= c("18706","17843","18250","17703",
+                                               "18609","18602", "17638")),
+
     Melanostoma_mellium_f= list(Genus="Melanostoma", SubGenus="",
-                         Species="mellium", SubSpecies="",
-                         Sex="f", Author = "Linnaeus",
-                         Determiner="M.Hauser",
-                         temp.id= c("22676")),
-    
+                                Species="mellium", SubSpecies="",
+                                Sex="f", Author = "Linnaeus",
+                                Determiner="M.Hauser",
+                                temp.id= c("22676"))
 
 
-)
+
+    )
 

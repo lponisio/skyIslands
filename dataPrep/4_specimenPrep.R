@@ -85,10 +85,6 @@ spec <- spec[spec$Family %in% c("Andrenidae", "Apidae",
 ##                                  "Colletidae", "Halictidae",
 ##                                  "Megachilidae", "Syrphidae"),]
 
-## for networks, drop specimens withoutplant IDs
-spec <- spec[spec$PlantGenusSpecies != "",]
-spec <- spec[spec$GenusSpecies != "",]
-
 ## drop the the 2017 sample of PL because it was on fire for other
 ## sampling rounds and there was basically nothing blooming the first
 ## round, or leave it for phenology? As of Nov 2022 included because
@@ -131,6 +127,8 @@ spec <- fixPlantNames(spec, "PlantGenusSpecies", spec.checked.plant.names)
 ## specimen-level parasite calculations
 ## *****************************************************************
 
+dir.create("../data", showWarnings = FALSE)
+
 parasites <- c( "AscosphaeraSpp",
                 "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi",
                "NosemaBombi", "NosemaCeranae")
@@ -150,8 +148,16 @@ spec$ParasitePresence <- (spec$ParasiteRichness >= 1)*1
 spec[spec$Apidae != 1  | is.na(spec$Apidae), "ParasiteRichness"] <- NA
 spec[spec$Apidae != 1  | is.na(spec$Apidae), "ParasitePresence"] <- NA
 
-save(spec, file="../data/spec.Rdata")
-write.csv(spec, file="../data/spec.csv", row.names=FALSE)
+save(spec, file="../data/spec_all_methods.Rdata")
+write.csv(spec, file="../data/spec_all_methods.csv", row.names=FALSE)
+
+
+## for networks, drop specimens withoutplant IDs, which will also drop
+## pans and vanes
+spec <- spec[spec$PlantGenusSpecies != "",]
+spec <- spec[spec$GenusSpecies != "",]
+save(spec, file="../data/spec_net.Rdata")
+write.csv(spec, file="../data/spec_net.csv", row.names=FALSE)
 
 ## ***********************************************************************
 ## site/species level insect data
