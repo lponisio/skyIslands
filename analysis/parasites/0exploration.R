@@ -1,6 +1,6 @@
-## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
+setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
 
-setwd('~/Dropbox (University of Oregon)/skyislands')
+## setwd('~/Dropbox (University of Oregon)/skyislands')
 
 setwd("analysis/parasites")
 rm(list=ls())
@@ -384,3 +384,80 @@ site <- grid_arrange_shared_legend(elev.lat,
 
 ggsave(site, file="../../../skyIslands_saved/figures/site_char.pdf",
         height=3, width=6)
+
+
+## ***************************************************************
+## parasite summaries
+## ***************************************************************
+
+sick.totals <- spec %>%
+    group_by(Site) %>%
+    summarise(TestedTotals = length(UniqueID[!is.na(ParasitePresence)]),
+              ParasitismRate=round(mean(ParasitePresence, na.rm=TRUE),2),
+              InfectedIndividuals=round(sum(ParasitePresence, na.rm=TRUE),2),
+              InfectedApicystisSpp=round(mean(ApicystisSpp, na.rm=TRUE),2),
+              InfectedAscosphaeraSpp=round(mean(AscosphaeraSpp, na.rm=TRUE),2),
+              InfectedCrithidiaBombi=round(mean(CrithidiaBombi, na.rm=TRUE),2),
+              InfectedCrithidiaExpoeki=round(mean(CrithidiaExpoeki,
+                                         na.rm=TRUE), 2),
+              InfectedNosemaBombi=round(mean(NosemaBombi,
+                                      na.rm=TRUE), 2),
+              InfectedNosemaCeranae=round(mean(NosemaCeranae,
+                                         na.rm=TRUE), 2))
+
+
+sick.totals <- sick.totals[order(sick.totals$ParasitismRate),]
+
+p1 <- ggplot(sick.totals, aes(x=Site, y=TestedTotals)) +
+  geom_bar(stat="identity") + theme_minimal() + coord_flip()
+p1
+
+p2 <- ggplot(sick.totals, aes(x=Site, y=ParasitismRate)) +
+  geom_bar(stat="identity") + theme_minimal() + coord_flip()
+p2
+
+all.sums <- grid.arrange(p1, p2)
+
+ggsave(all.sums, file="../../../skyIslands_saved/figures/sum_parasites.pdf",
+       width = 8.5,
+       height = 15)
+
+
+p3 <- ggplot(sick.totals, aes(x=Site, y=InfectedNosemaBombi)) +
+    geom_bar(stat="identity") + theme_minimal() + coord_flip() +
+    theme(legend.position = "none")
+
+p4 <- ggplot(sick.totals, aes(x=Site, y=InfectedNosemaCeranae)) +
+    geom_bar(stat="identity") + theme_minimal() + coord_flip() +
+    theme(legend.position = "none")
+
+p5 <- ggplot(sick.totals, aes(x=Site, y=InfectedCrithidiaExpoeki )) +
+    geom_bar(stat="identity") + theme_minimal() + coord_flip() +
+    theme(legend.position = "none")
+
+p6 <- ggplot(sick.totals, aes(x=Site, y=InfectedCrithidiaBombi)) +
+    geom_bar(stat="identity") + theme_minimal() + coord_flip() +
+    theme(legend.position = "none")
+
+p7 <- ggplot(sick.totals, aes(x=Site, y=InfectedApicystisSpp)) +
+    geom_bar(stat="identity") + theme_minimal() + coord_flip() +
+    theme(legend.position = "none")
+
+p8 <- ggplot(sick.totals, aes(x=Site, y=InfectedAscosphaeraSpp)) +
+    geom_bar(stat="identity") + theme_minimal() + coord_flip() +
+       theme(legend.position = "none")
+
+all1 <- grid.arrange(p3, p4, p5 , nrow = 1,
+                                  ncol=3)
+
+all2 <- grid.arrange(p6, p7, p8 , nrow = 1,
+                                  ncol=3)
+
+ggsave(all1, file="../../../skyIslands_saved/figures/indiv_parasites_1.pdf",
+       width = 10,
+       height = 10)
+
+
+ggsave(all2, file="../../../skyIslands_saved/figures/indiv_parasites_2.pdf",
+       width = 10,
+       height = 10)
