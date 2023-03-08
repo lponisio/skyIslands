@@ -21,7 +21,7 @@ sp.ids <- list(
 
   adiabatus = list(Genus="Ancistrocerus", SubGenus ="",
           Species="adiabatus", SubSpecies="", Sex="f", Author =
-          "Saussure", Determiner="J. Carpenter", temp.id =c("BBSL1059834")),
+          "Saussure", Determiner="J. Carpenter", temp.id =c("BBSL1059834","BBSL1084979","BBSL1086114")),
 
   tuberculocephalus = list(Genus="Ancistrocerus", SubGenus ="",
                            Species="tuberculocephalus", SubSpecies="", Sex="f",
