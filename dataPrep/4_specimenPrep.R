@@ -154,7 +154,7 @@ write.csv(spec, file="../data/spec_all_methods.csv", row.names=FALSE)
 
 ## for networks, drop specimens withoutplant IDs, which will also drop
 ## pans and vanes
-spec <- spec[spec$PlantGenusSpecies != "",]
+spec <- spec[spec $PlantGenusSpecies != "",]
 spec <- spec[spec$GenusSpecies != "",]
 save(spec, file="../data/spec_net.Rdata")
 write.csv(spec, file="../data/spec_net.csv", row.names=FALSE)
@@ -195,15 +195,6 @@ site.sum <- spec %>%
               BombusSiteParasitismRate=mean(
                   ParasitePresence[Genus == "Bombus"], na.rm=TRUE))
 
-## hb <- spec[spec$GenusSpecies == "Apis mellifera",]
-
-## hb.site.sum <- hb %>%
-##     group_by(Site, Year, SampleRound) %>%
-##     summarise(HBAbundance =n(),
-##               HBSiteParasitismRate=mean(ParasitePresence, na.rm=TRUE))
-
-## site.sum  <- merge(site.sum, hb.site.sum, all.x=TRUE)
-
 site.sp.yr <- spec %>%
     group_by(Site, Year, GenusSpecies, Genus) %>%
     summarise(Abundance = length(GenusSpecies))
@@ -230,7 +221,7 @@ write.csv(site.sp, file='../data/spstats.csv', row.names=FALSE)
 ## *******************************************************************
 ## create a giant plant-pollinator network to calculate specialization
 ## etc. across all SI
-## *******************************************************************
+## ***************************************** **************************
 agg.spec <- aggregate(list(abund=spec$GenusSpecies),
                       list(GenusSpecies=spec$GenusSpecies,
                            PlantGenusSpecies=spec$PlantGenusSpecies),
@@ -263,13 +254,14 @@ write.csv(traits, file='../data/networks_traits.csv', row.names=FALSE)
 ## create a giant pathogen-pollinator network to calculate
 ## specialization etc. across all SI
 ## *******************************************************************
-agg.spec.sub <- spec[spec$Apidae == 1,]
+agg.spec.sub <- spec[spec$Apidae == 1 & !is.na(spec$Apidae),]
 
 agg.spec.para <- aggregate(agg.spec.sub[, parasites],
                       list(GenusSpecies=agg.spec.sub$GenusSpecies),
                                               sum, na.rm=TRUE)
 
 para.gensp.counts <- table(agg.spec.sub$GenusSpecies)
+para.gensp.counts
 
 ## proportion of individuals screened
 agg.spec.para[, parasites] <- agg.spec.para[, parasites]/
