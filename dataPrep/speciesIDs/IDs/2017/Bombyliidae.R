@@ -4,7 +4,7 @@ sp.ids <- list(
     hemipenthes = list(Genus="Hemipenthes",
                        SubGenus ="",
                        Species="sp.",
-                       SubSpecies="a",
+                       SubSpecies="",
                        Sex="",
                        Author =  "",
                        Determiner="L. Ponisio",
