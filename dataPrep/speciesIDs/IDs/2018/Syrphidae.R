@@ -199,7 +199,7 @@ sp.ids <- list(
 
     asemosyrphus_polygrammus_f = list(Genus="Asemosyrphus", SubGenus="",
                                       Species="polygrammus", SubSpecies="",
-                                      Sex="f", Author = "",
+                                      Sex="f", Author = "Loew",
                                       Determiner="M.Hauser",
                                       temp.id= c("17733")),
 
