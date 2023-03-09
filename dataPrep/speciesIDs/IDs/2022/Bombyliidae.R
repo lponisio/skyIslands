@@ -94,14 +94,14 @@ sp.ids <- list(
                           temp.id= c(35227, 34141, 34289, 33525, 34288, 33765)),
 
 
-    Antrax_sp_a = list(Genus="Antrax",
-                       SubGenus ="",
-                       Species="sp.",
-                       SubSpecies="a",
-                       Sex="",
-                       Author =  "",
-                       Determiner="L. Ponisio",
-                       temp.id= c()),
+    ##  Antrax_sp_a = list(Genus="Antrax",
+    ##                   SubGenus ="",
+    ##                   Species="sp.",
+    ##                   SubSpecies="a",
+    ##                   Sex="",
+    ##                   Author =  "",
+    ##                   Determiner="L. Ponisio",
+    ##                   temp.id= c()),
 
 
         Chrysotoxum_sp_a = list(Genus="Chrysotoxum",
