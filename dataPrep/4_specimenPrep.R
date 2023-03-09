@@ -19,13 +19,13 @@ dir.bombus <-
 ## *****************************************************************
 
 setwd(dir.bombus)
-source('dataPrep/relational/prep.R')
+source('dataPrep/relational/1prep.R')
 
 setwd(dir.bombus)
-source('dataPrep/relational/make.R')
+source('dataPrep/relational/2make.R')
 
 setwd(dir.bombus)
-source('dataPrep/relational/traditional.R')
+source('dataPrep/relational/3join.R')
 
 ## *****************************************************************
 ## prep specimen data
@@ -63,34 +63,17 @@ spec$Date <- as.Date(spec$Date, format='%Y-%m-%d')
 spec$Doy <- as.numeric(strftime(spec$Date, format='%j'))
 spec$Year <- as.numeric(format(spec$Date,'%Y'))
 
-## subset to Net data only, pans have not been IDed from 2021+ as of
-## Nov 2022
-spec <- spec[spec$Method == "Net",]
-
 ## all possible sample round, site, combos of net data, used for veg
 ## data subsequently
 collections <- data.frame(unique(cbind(spec$Site, spec$Year,
                                        spec$SampleRound)))
 colnames(collections) <- c("Site", "Year", "SampleRound")
 
-## drop non-bees, syrphids have been IDed up until 2021 (as of Nov
-## 2022), butterflies, wasps need work
+bee.families <- c("Andrenidae", "Apidae", "Colletidae", "Halictidae",
+                  "Megachilidae")
 
-spec <- spec[spec$Family %in% c("Andrenidae", "Apidae",
-                                 "Colletidae", "Halictidae",
-                                "Megachilidae"),]
-
-## ## drop non bees but keep the syrphids
-## spec <- spec[spec$Family %in% c("Andrenidae", "Apidae",
-##                                  "Colletidae", "Halictidae",
-##                                  "Megachilidae", "Syrphidae"),]
-
-## drop the the 2017 sample of PL because it was on fire for other
-## sampling rounds and there was basically nothing blooming the first
-## round, or leave it for phenology? As of Nov 2022 included because
-## enough species have been IDed and useful as a early season data
-## point
-## spec <- spec[!(spec$Site == "PL" & spec$Year == "2017"),]
+## DECISION POINT: drop non bees but keep the syrphids
+spec <- spec[spec$Family %in% c(bee.families, "Syrphidae"),]
 
 ## calculate orthoganol polynomials for doy
 spec$DoyPoly <- poly(spec$Doy, degree=2)
@@ -116,18 +99,18 @@ spec.checked.plant.names <-
 
 spec <- fixPlantNames(spec, "PlantGenusSpecies", spec.checked.plant.names)
 
-## ##  variabile identification fo Erigeron between years, combine
-## to Erigerson spp.?
-## spec$PlantGenus <- sapply(strsplit(spec$PlantGenusSpecies, " "),
-##                           function(x) x[1])
-## spec$PlantGenusSpecies[spec$PlantGenus == "Erigeron"] <-
-##     "Erigeron spp. NA"
+## DECISION POINT:  variabile identification fo Erigeron between years,
+##  combine to Erigerson spp.
+
+spec$PlantGenusSpecies[spec$PlantGenus == "Erigeron"] <-
+    "Erigeron spp."
 
 ## *****************************************************************
 ## specimen-level parasite calculations
 ## *****************************************************************
 
-dir.create("../data", showWarnings = FALSE)
+dir.create("../data/networks", showWarnings = FALSE)
+dir.create("../data/splevel_network_metrics", showWarnings = FALSE)
 
 parasites <- c( "AscosphaeraSpp",
                 "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi",
@@ -148,72 +131,150 @@ spec$ParasitePresence <- (spec$ParasiteRichness >= 1)*1
 spec[spec$Apidae != 1  | is.na(spec$Apidae), "ParasiteRichness"] <- NA
 spec[spec$Apidae != 1  | is.na(spec$Apidae), "ParasitePresence"] <- NA
 
-save(spec, file="../data/spec_all_methods.Rdata")
 write.csv(spec, file="../data/spec_all_methods.csv", row.names=FALSE)
 
+spec.net <- spec[spec$Method == "Net",]
+spec.pan <- spec[spec$Method == "Pan",]
+spec <- spec[spec$Method != "Vane",]
 
-## for networks, drop specimens withoutplant IDs, which will also drop
-## pans and vanes
-spec <- spec[spec $PlantGenusSpecies != "",]
-spec <- spec[spec$GenusSpecies != "",]
-save(spec, file="../data/spec_net.Rdata")
-write.csv(spec, file="../data/spec_net.csv", row.names=FALSE)
+## net.only.columns <- c("PlantGenus", "PlantGenusSpecies",
+##                       "PlantSpecies", "PlantSubSpecies", "PlantVar",
+##                       "NetNumber", parasites, "Apidae",
+##                       "AspergillusSpp", "PlantFamily",
+##                       "ParasiteRichness", "PossibleParasite",
+##                       "ParasitePresence")
+
+## pan.only.columns <- c("PanColor", "PanLocation")
+
+## spec.pan <- spec.pan[, !colnames(spec.pan) %in% net.only.columns]
+## spec.net <- spec.net[, !colnames(spec.net) %in% pan.only.columns]
+
+## write.csv(spec.net, file="../data/spec_net.csv", row.names=FALSE)
+## write.csv(spec.pan, file="../data/spec_pan.csv", row.names=FALSE)
 
 ## ***********************************************************************
 ## site/species level insect data
 ## ***********************************************************************
 
-site.sp <- spec %>%
-    group_by(Site, Year, SampleRound, GenusSpecies) %>%
-    summarise(Abundance = length(GenusSpecies),
-              SpParasitismRate=mean(ParasitePresence, na.rm=TRUE))
+calcSummaryStats <- function(spec.method, method){
+    site.sp <- spec.method %>%
+        group_by(Site, Year, SampleRound, GenusSpecies) %>%
+        summarise(Abundance = length(GenusSpecies),
+                  SpParasitismRate=mean(ParasitePresence, na.rm=TRUE))
 
-site.sum <- spec %>%
-    group_by(Site, Year, SampleRound) %>%
-    summarise(PollAbundance = length(GenusSpecies),
-              PollRichness= length(unique(GenusSpecies)),
-              VisitedFloralRichness= length(unique(PlantGenusSpecies)),
-              BombusRichness= length(unique(GenusSpecies[Genus == "Bombus"])),
-              PollDiversity=vegan:::diversity(table(GenusSpecies),
-                                              index="shannon"),
-              VisitedFloralDiversity=vegan:::diversity(table(PlantGenusSpecies),
-                                              index="shannon"),
-              BombusDiversity=vegan:::diversity(table(GenusSpecies[Genus == "Bombus"]),
-                                                index="shannon"),
-              SiteParasitismRate=mean(ParasitePresence, na.rm=TRUE),
-              MeanParasiteRichness=mean(ParasiteRichness, na.rm=TRUE),
-              SRDoyPoly1=mean(DoyPoly1),
-              SRDoyPoly2=mean(DoyPoly2),
-              SRDoy=mean(Doy),
-              HBAbundance = sum(GenusSpecies == "Apis mellifera"),
-              BombusAbundance = sum(Genus == "Bombus"),
-              NonBombusHBAbundance =
-                  sum(Genus != "Bombus" & Genus != "Apis"),
-              HBSiteParasitismRate=mean(
-                  ParasitePresence[GenusSpecies == "Apis mellifera"],
-                  na.rm=TRUE),
-              BombusSiteParasitismRate=mean(
-                  ParasitePresence[Genus == "Bombus"], na.rm=TRUE))
+    site.sum <- spec.method %>%
+        group_by(Site, Year, SampleRound) %>%
+        summarise(PollAbundance = length(GenusSpecies),
+                  BeeAbundance = length(GenusSpecies[Family %in%
+                                                     bee.families]),
+                  SyrphidAbundance =
+                      length(GenusSpecies[Family == "Syrphidae"]),
+                  HBAbundance = sum(GenusSpecies == "Apis mellifera"),
+                  BombusAbundance = sum(Genus == "Bombus"),
+                  NonBombusHBAbundance =
+                      sum(Genus != "Bombus" &
+                          Genus != "Apis" &
+                          Family %in% bee.families),
 
-site.sp.yr <- spec %>%
-    group_by(Site, Year, GenusSpecies, Genus) %>%
-    summarise(Abundance = length(GenusSpecies))
+                  PollRichness= length(unique(GenusSpecies)),
+                  BeeRichness= length(unique(GenusSpecies[Family %in%
+                                                          bee.families])),
+                  SyrphidRichness= length(unique(
+                    GenusSpecies[Family  == "Syrphidae"])),
+                  BombusRichness= length(unique(
+                    GenusSpecies[Genus == "Bombus"])),
 
-bombus <- site.sp.yr[site.sp.yr$Genus == "Bombus",]
-bombus$Genus  <- NULL
+                  PollDiversity=vegan:::diversity(table(GenusSpecies),
+                                                  index="shannon"),
+                  BeeDiversity=vegan:::diversity(table(
+                    GenusSpecies[Family %in% bee.families]),
+                                                 index="shannon"),
+                  SyrphidDiversity=vegan:::diversity(table(
+                    GenusSpecies[Family  == "Syrphidae"]),
+                                                     index="shannon"),
+                  BombusDiversity=vegan:::diversity(table(
+                    GenusSpecies[Genus == "Bombus"]),
+                                                    index="shannon"),
 
-## add site characteristics
+                  VisitedFloralRichness= length(unique(PlantGenusSpecies)),
+                  VisitedFloralDiversity=vegan:::diversity(table(
+                    PlantGenusSpecies),  index="shannon"),
+
+                  SiteParasitismRate=mean(ParasitePresence, na.rm=TRUE),
+                  MeanParasiteRichness=mean(ParasiteRichness, na.rm=TRUE),
+                  HBSiteParasitismRate=mean(
+                      ParasitePresence[GenusSpecies == "Apis mellifera"],
+                      na.rm=TRUE),
+                  BombusSiteParasitismRate=mean(
+                      ParasitePresence[Genus == "Bombus"],
+                    na.rm=TRUE),
+                  SRDoyPoly1=mean(DoyPoly1),
+                  SRDoyPoly2=mean(DoyPoly2),
+                  SRDoy=mean(Doy))
+
+    site.sp.yr <- spec %>%
+        group_by(Site, Year, GenusSpecies, Genus) %>%
+        summarise(Abundance = length(GenusSpecies))
+
+    bombus <- site.sp.yr[site.sp.yr$Genus == "Bombus",]
+    bombus$Genus  <- NULL
+
+    ## write species-level sumary data
+    write.csv(bombus, file=sprintf('../data/bombus_year_site_%s.csv',
+                                   method),
+              row.names=FALSE)
+    write.csv(site.sp.yr, file=sprintf('../data/sp_year_site_%s.csv',
+                                       method),
+              row.names=FALSE)
+    write.csv(site.sp, file=sprintf('../data/spstats_%s.csv', method),
+              row.names=FALSE)
+    return(site.sum)
+}
+
+net.site.sum <- calcSummaryStats(spec.net, "net")
+pan.site.sum <- calcSummaryStats(spec.pan, "pan")
+all.site.sum <- calcSummaryStats(spec, "all")
+
+table(all.site.sum$Site)
+table(net.site.sum$Site)
+table(pan.site.sum$Site)
+
+sum.cols <- c("PollAbundance", "BeeAbundance", "SyrphidAbundance",
+              "HBAbundance", "BombusAbundance",
+              "NonBombusHBAbundance", "PollRichness", "BeeRichness",
+              "SyrphidRichness", "BombusRichness", "PollDiversity",
+              "BeeDiversity", "SyrphidDiversity", "BombusDiversity",
+              "VisitedFloralRichness", "VisitedFloralDiversity",
+              "SiteParasitismRate", "MeanParasiteRichness",
+              "HBSiteParasitismRate", "BombusSiteParasitismRate")
+
+colnames(net.site.sum)[colnames(net.site.sum) %in% sum.cols] <-
+  paste0("Net_", sum.cols)
+colnames(pan.site.sum)[colnames(pan.site.sum) %in% sum.cols] <-
+  paste0("Pan_", sum.cols)
+
+
+pan.site.sum[, grepl("Parasit", colnames(pan.site.sum))] <- NULL
+
+dup.cols <- c("SRDoyPoly1", "SRDoyPoly2", "SRDoy")
+
+pan.site.sum[, dup.cols] <- NULL
+net.site.sum[, dup.cols] <- NULL
+
+dim(all.site.sum)
+site.sum <- merge(all.site.sum, net.site.sum, all.x=TRUE)
+dim(site.sum)
+site.sum <- merge(site.sum, pan.site.sum, all.x=TRUE)
+dim(site.sum)
+
+
+## add back site characteristics
 sites <- unique(data.frame(Site=spec$Site,
                            Lat= spec$Lat,
                            Area=spec$Area,
                            Elev=spec$Elev))
 site.sum <- merge(site.sum, sites)
 site.sum$Year <- as.factor(site.sum$Year)
-
-## write species-level sumary data
-write.csv(bombus, file='../data/bombus_year_site.csv', row.names=FALSE)
-write.csv(site.sp.yr, file='../data/sp_year_site.csv', row.names=FALSE)
-write.csv(site.sp, file='../data/spstats.csv', row.names=FALSE)
 
 ## write the site, year, sampling round summary data after merging
 ## with plant data
@@ -222,9 +283,11 @@ write.csv(site.sp, file='../data/spstats.csv', row.names=FALSE)
 ## create a giant plant-pollinator network to calculate specialization
 ## etc. across all SI
 ## ***************************************** **************************
-agg.spec <- aggregate(list(abund=spec$GenusSpecies),
-                      list(GenusSpecies=spec$GenusSpecies,
-                           PlantGenusSpecies=spec$PlantGenusSpecies),
+spec.net.nets <- spec.net[!is.na(spec.net$PlantGenusSpecies),]
+
+agg.spec <- aggregate(list(abund=spec.net.nets$GenusSpecies),
+                      list(GenusSpecies=spec.net.nets$GenusSpecies,
+                           PlantGenusSpecies=spec.net.nets$PlantGenusSpecies),
                       length)
 
 nets.all <- samp2site.spp(agg.spec$PlantGenusSpecies,
@@ -288,8 +351,15 @@ write.csv(traits, file='../data/parasitetraits.csv', row.names=FALSE)
 ## *******************************************************************
 
 ## plant-pollinator networks
-makeNets(spec, net.type="YrSR")
-makeNets(spec, net.type="Yr", mean.by.year=TRUE)
+makeNets(spec.net.nets, net.type="YrSR", poll.group="BeesSyrphids")
+makeNets(spec.net.nets, net.type="Yr", mean.by.year=TRUE,
+         poll.group="BeesSyrphids")
+
+makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
+         net.type="YrSR",
+         poll.group="Bees")
+makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
+         net.type="Yr", mean.by.year=TRUE, poll.group="Bees")
 
 spec.sub <- agg.spec.sub %>%
     select(UniqueID, GenusSpecies, Site, Year, SampleRound,
@@ -308,20 +378,27 @@ prep.para <- as.data.frame(prep.para)
 makeNets(prep.para, net.type="YrSR", species=c("Pollinator",
                                                "Parasite"),
          lower.level="GenusSpecies",
-         higher.level="Parasite")
+         higher.level="Parasite",
+         poll.group="Bees")
 
 
 makeNets(prep.para, net.type="Yr", species=c("Pollinator",
                                                "Parasite"),
          lower.level="GenusSpecies",
          higher.level="Parasite",
-         mean.by.year=TRUE)
+         mean.by.year=TRUE,
+         poll.group="Bees")
 
 ## *******************************************************************
 ##  Data checks
 ## *******************************************************************
 
 print(paste("Pollinator species", length(unique(spec$GenusSpecies))))
+print(paste("Bee species", length(unique(spec$GenusSpecies[
+                                                spec$Family %in%
+                                                bee.families]))))
+print(paste("Syrphid species", length(unique(spec$GenusSpecies[
+                                                spec$Family == "Syrphidae"]))))
 print(paste("Plant species", length(unique(spec$PlantGenusSpecies))))
 print(paste("Pollinator genera", length(unique(spec$Genus))))
 print(paste("Interactions", length(unique(spec$Int))))

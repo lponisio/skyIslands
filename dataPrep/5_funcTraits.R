@@ -2,7 +2,8 @@ rm(list=ls())
 library(FD)
 library(vegan)
 
-setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyIslands')
+setwd('~/Dropbox (University of Oregon)/skyIslands')
+## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyIslands')
 
 setwd('dataPrep')
 
@@ -21,8 +22,8 @@ traits$GenusSpecies <- fix.white.space(traits$GenusSpecies)
 
 traits <- traits[traits$GenusSpecies %in% spec$GenusSpecies,]
 
-bee.traits <- c("NestLocation", "NestMaterial","NestConstruction","Lecty",
-                 "MeanITD")
+bee.traits <- c("NestLocation", "PrimaryNestMaterial","NestConstruction","Lecty",
+                 "MeanITD", "Sociality")
 
 rownames(traits) <- traits$GenusSpecies
 traits$GenusSpecies <- NULL
@@ -31,7 +32,7 @@ traits$GenusSpecies <- NULL
 ## example, we have 3 nesting-related traits, so weighted each one by
 ## 1/3. This will avoid overweighting any trait type.
 
-bee.weights <- c(rep(1/2, 3), rep(1, 2))
+bee.weights <- c(rep(1/2, 3), rep(1, 3))
 
 ## *****************************************************************
 ## species-level function diversity metrics
