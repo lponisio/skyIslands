@@ -46,7 +46,7 @@ sp.ids <- list(
                                 c("MM_073112_118")),
 
 
-    Colletes_gilensis= list(Genus="Colletes", SubGenus ="Productus",
+    Colletes_gilensis= list(Genus="Colletes", SubGenus ="",
                             Species="gilensis", SubSpecies="", Sex="m",
                             Author = "Cockerell",
                             Determiner="J.S. Ascher",
