@@ -409,12 +409,6 @@ sp.ids <- list(
                                    temp.id = c(31143)),
 
 
-    Scaeva_affinis_f= list(Genus="Scaeva", SubGenus="",
-                           Species="affinis", SubSpecies="", Sex="f", Author = "Say",
-                           Determiner="M.Hauser",
-                           temp.id= c()),
-
-
     Eupeodes_volucris_f= list(Genus="Eupeodes", SubGenus="",
                               Species="volucris", SubSpecies="", Sex="f",
                               Author = "Osten Sacken",
