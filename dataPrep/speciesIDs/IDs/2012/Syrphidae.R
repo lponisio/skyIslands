@@ -158,9 +158,9 @@ sp.ids <- list(
                                         "SC_072312_53",
                                         "SC_072712_211")),
 
-    Copestylum_marginatum = list(Genus = "Copestylum",
+    Copestylum_marginatum_group = list(Genus = "Copestylum",
                                  SubGenus="",
-                                 Species = "marginatum",
+                                 Species = "marginatum group",
                                  SubSpecies="", Sex="",
                                  Author = "Say",
                                  Determiner="M.Hauser",
