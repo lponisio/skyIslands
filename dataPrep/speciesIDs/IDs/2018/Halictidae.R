@@ -337,7 +337,7 @@ sp.ids <- list(
        Lasioglossum_lusorium_f= list(Genus="Lasioglossum", SubGenus
                                   ="Sphecodogastra", Species="lusorium",
                                   SubSpecies="", Sex="f",
-                                  Author = "Cresson, 1872",
+                                  Author = "Cresson",
                                   Determiner = "J. Gardener",
                                   temp.id=  c("17942")),
 
