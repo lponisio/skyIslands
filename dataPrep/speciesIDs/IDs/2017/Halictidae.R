@@ -141,7 +141,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
        Lasioglossum_lusorium_f= list(Genus="Lasioglossum", SubGenus
                                   ="Sphecodogastra", Species="lusorium",
                                   SubSpecies="", Sex="f",
-                                  Author = "Cresson, 1872",
+                                  Author = "Cresson",
                                   Determiner = "J. Gardener",
                                   temp.id=  c("BBSL1086975", "BBSL1084519", "BBSL1059609", "BBSL1071040", "BBSL1084558", "BBSL1085248", "BBSL1074392", "BBSL1072063", "BBSL1072711", "BBSL1072081", "BBSL1060004", "BBSL1074048", "BBSL1071121", "BBSL1084512", "BBSL1087228", "BBSL1085984", "BBSL1071053", "BBSL1071994")),
 
@@ -149,7 +149,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
      Lasioglossum_lusorium_m= list(Genus="Lasioglossum", SubGenus
                                   ="Sphecodogastra", Species="lusorium",
                                   SubSpecies="", Sex="m",
-                                  Author = "Cresson, 1872",
+                                  Author = "Cresson",
                                   Determiner = "J. Gardener",
                                   temp.id=  c("BBSL1072837",
                                               "BBSL1072847",
