@@ -1181,7 +1181,7 @@ sp.ids <- list(
                           Species="nanula",
                           SubSpecies="",
                           Sex="f",
-                          Author = "",
+                          Author = "Cockerell",
                           Determiner="L.C. Ponisio",
                           temp.id= c("BBSL1084394", "BBSL1084395",
                                      "BBSL1084405", "BBSL1084410",
@@ -1196,7 +1196,7 @@ sp.ids <- list(
                           Species="nanula",
                           SubSpecies="",
                           Sex="m",
-                          Author = "",
+                          Author = "Cockerell",
                           Determiner="T. Griswold",
                           temp.id= c("BBSL1071302")),
 
