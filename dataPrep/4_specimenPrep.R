@@ -137,6 +137,8 @@ spec.net <- spec[spec$Method == "Net",]
 spec.pan <- spec[spec$Method == "Pan",]
 spec <- spec[spec$Method != "Vane",]
 
+save(spec, file="../data/spec.Rdata")
+
 ## net.only.columns <- c("PlantGenus", "PlantGenusSpecies",
 ##                       "PlantSpecies", "PlantSubSpecies", "PlantVar",
 ##                       "NetNumber", parasites, "Apidae",
@@ -253,9 +255,11 @@ colnames(net.site.sum)[colnames(net.site.sum) %in% sum.cols] <-
 colnames(pan.site.sum)[colnames(pan.site.sum) %in% sum.cols] <-
   paste0("Pan_", sum.cols)
 
-
+## remove parasite columns from pan data because there will never be
+## anything but NAs
 pan.site.sum[, grepl("Parasit", colnames(pan.site.sum))] <- NULL
 
+## drop day columns that might cause merge issues
 dup.cols <- c("SRDoyPoly1", "SRDoyPoly2", "SRDoy")
 
 pan.site.sum[, dup.cols] <- NULL

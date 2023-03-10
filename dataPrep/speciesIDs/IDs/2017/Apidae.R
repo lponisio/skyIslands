@@ -1128,17 +1128,17 @@ sp.ids <- list(
                                  temp.id= c("BBSL1073833")),
 
 
-    Xeromelecta_californica_f = list(Genus="Xeromelecta",
+    Brachymelecta_californica_f = list(Genus="Brachymelecta",
                                      SubGenus="Melectomorpha",
                                      Species="californica",
                                      SubSpecies="", Sex="f",
-                                     Author = "Cresson",
+                                     Author = "Cresson, 1878)",
                                      Determiner="T. Griswold",
 
                                      temp.id= c("BBSL1073307")),
 
 
-    Xeromelecta_californica_m = list(Genus="Xeromelecta",
+    Brachymelecta_californica_m = list(Genus="Xeromelecta",
                                      SubGenus="Melectomorpha",
                                      Species="californica",
                                      SubSpecies="",
