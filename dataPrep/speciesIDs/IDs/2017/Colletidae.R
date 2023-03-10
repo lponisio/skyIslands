@@ -175,7 +175,7 @@ sp.ids <- list(
                            Author = "Robertson", Determiner = "T. Griswold",
                            temp.id= c("BBSL1072848", "BBSL1074423")),
 
- Colletes_wootoni_f = list(Genus="Colletes", SubGenus ="Simulans",
+ Colletes_wootoni_f = list(Genus="Colletes", SubGenus ="",
                            Species="wootoni", SubSpecies="", Sex="f",
                            Author = "Cockerell",
                            Determiner = "T. Griswold",
