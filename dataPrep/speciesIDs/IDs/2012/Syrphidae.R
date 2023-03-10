@@ -162,7 +162,7 @@ sp.ids <- list(
                                  SubGenus="",
                                  Species = "marginatum group",
                                  SubSpecies="", Sex="",
-                                 Author = "Say",
+                                 Author = "",
                                  Determiner="M.Hauser",
                                  temp.id = c("PL_081112_231",
                                              "PL_081312_104",
