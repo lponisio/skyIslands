@@ -228,7 +228,7 @@ sp.ids <- list(
     Bombus_mixtus_f = list(Genus = "Bombus", SubGenus="Thoracobombus",
                            Species = "mixtus",
                            SubSpecies = "", Sex ="f",
-                           Author = "Cresson, 1878",
+                           Author = "Cresson",
                            Determiner="L. Best",
                            temp.id = c(31346, 32642, 32365, 32437)),
 
