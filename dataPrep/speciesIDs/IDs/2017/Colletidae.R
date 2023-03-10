@@ -170,7 +170,7 @@ sp.ids <- list(
                            Determiner = "T. Griswold",
                            temp.id= c("BBSL1070592")),
 
- Colletes_eulophi_f = list(Genus="Colletes", SubGenus ="Simulans",
+ Colletes_eulophi_f = list(Genus="Colletes", SubGenus ="",
                            Species="eulophi", SubSpecies="", Sex="f",
                            Author = "Robertson", Determiner = "T. Griswold",
                            temp.id= c("BBSL1072848", "BBSL1074423")),
