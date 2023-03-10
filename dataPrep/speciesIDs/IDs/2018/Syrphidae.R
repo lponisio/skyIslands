@@ -131,7 +131,7 @@ sp.ids <- list(
 
     Eristalis_bellardii_f= list(Genus = "Eristalis", SubGenus="",
                                 Species = "bellardii", SubSpecies="",
-                                Sex = "", Author = "",
+                                Sex = "", Author = "Jeannicke",
                                 Determiner="M.Hauser",
                                 temp.id = c("18087","18682","25176")),
 
