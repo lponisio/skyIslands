@@ -159,8 +159,7 @@ sp.ids <- list(
 
 
     Toxomerus_marginatus = list(Genus = "Toxomerus",SubGenus="",
-                                Species
-                                = "marginatus", SubSpecies="",
+                                Species = "marginatus", SubSpecies="",
                                 Sex = "",
                                 Author ="Meigen",
                                 Determiner="M.Hauser",
@@ -168,8 +167,7 @@ sp.ids <- list(
 
 
     Sphaerophoria_spp_m = list(Genus = "Sphaerophoria",SubGenus="",
-                               Species
-                               = "spp", SubSpecies="",
+                               Species = "spp", SubSpecies="",
                                Sex = "m",
                                Author ="",
                                Determiner="M.Hauser",
