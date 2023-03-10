@@ -218,13 +218,13 @@ sp.ids <- list(
 
     paragus_m = list(Genus="Paragus", SubGenus="",
                      Species="haemorrhous", SubSpecies="", Sex="m",
-                     Author = "",
+                     Author = "Meigen",
                      Determiner="M.Hauser",
                      temp.id= c( "17732")),
 
     paragus_f= list(Genus="Paragus", SubGenus="",
                     Species="haemorrhous", SubSpecies="", Sex="f",
-                    Author = "",
+                    Author = "Meigen",
                     Determiner="M.Hauser",
                     temp.id= c("17699","17779")),
 
