@@ -90,7 +90,7 @@ sp.ids <- list(
                                          "18375", "17894", "18414", "18418",
                                          "18419", "18417", "18385", "18374")),
 
-    Colletes_gilensis_f= list(Genus="Colletes", SubGenus ="Productus",
+    Colletes_gilensis_f= list(Genus="Colletes", SubGenus ="",
                               Species="gilensis", SubSpecies="",
                               Sex="f",
                               Author = "Cockerell",
