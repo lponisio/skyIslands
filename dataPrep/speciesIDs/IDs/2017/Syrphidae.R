@@ -262,7 +262,7 @@ sp.ids <- list(
                      Species="snowi",
                      SubSpecies="",
                      Sex="f",
-                     Author = "",
+                     Author = "Wehr",
                      Determiner="M.Hauser",
                      temp.id= c("BBSL1071709")),
 
