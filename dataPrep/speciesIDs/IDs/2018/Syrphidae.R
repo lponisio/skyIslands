@@ -242,13 +242,13 @@ sp.ids <- list(
 
     eupeodes_fumipennis_m= list(Genus="Eupeodes", SubGenus="",
                                 Species="fumipennis", SubSpecies="", Sex="m",
-                                Author = "",
+                                Author = "Thomson",
                                 Determiner="M.Hauser",
                                 temp.id= c("18434")),
 
     eupeodes_fumipennis_f= list(Genus="Eupeodes", SubGenus="",
                                 Species="fumipennis", SubSpecies="", Sex="f",
-                                Author = "",
+                                Author = "Thomson",
                                 Determiner="M.Hauser",
                                 temp.id= c("18550")),
 
