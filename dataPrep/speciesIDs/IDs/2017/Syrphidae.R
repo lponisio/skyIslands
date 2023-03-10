@@ -164,7 +164,7 @@ sp.ids <- list(
 
     volucella_facialis_f =list(Genus = "Volucella", SubGenus="",
                                Species =  "facialis", SubSpecies="",
-                               Sex = "", Author = "",
+                               Sex = "", Author = "Williston",
                                Determiner="M.Hauser",
                                temp.id =c("BBSL1071107", "BBSL1058772")),
 
