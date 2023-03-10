@@ -88,8 +88,8 @@ sp.ids <- list(
                                  temp.id = c(37083, 35006, 34201, 33122)),
 
 
-    Dasysyrphus_spp = list(Genus = "Dasysyrphus", SubGenus="",
-                           Species = "spp.", SubSpecies = "",
+    Dasysyrphus_morpho1 = list(Genus = "Dasysyrphus", SubGenus="",
+                           Species = "sp.", SubSpecies = "a",
                            Sex = "",
                            Author = "",
                            Determiner="M.Hauser",
