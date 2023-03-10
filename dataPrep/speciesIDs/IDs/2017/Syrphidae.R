@@ -307,7 +307,7 @@ sp.ids <- list(
                    SubGenus="",
                    Species="affinis",
                    SubSpecies="",
-                   Sex="f", Author = "",
+                   Sex="f", Author = "Say",
                    Determiner="M.Hauser",
                    temp.id= c("BBSL1059966",
                               "BBSL1074014")),
