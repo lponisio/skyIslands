@@ -286,13 +286,13 @@ sp.ids <- list(
 
     lapposyrphus_lapponicus_m= list(Genus="Lapposyrphus", SubGenus="",
                                     Species="lapponicus", SubSpecies="",
-                                    Sex="m", Author = "",
+                                    Sex="m", Author = "Zetterstedt",
                                     Determiner="M.Hauser",
                                     temp.id= c("18264","18181","17178")),
 
     lapposyrphus_lapponicus_f= list(Genus="Lapposyrphus", SubGenus="",
                                     Species="lapponicus", SubSpecies="",
-                                    Sex="f", Author = "",
+                                    Sex="f", Author = "Zetterstedt",
                                     Determiner="M.Hauser",
                                     temp.id= c("18706","17843","18250","17703",
                                                "18609","18602", "17638")),
