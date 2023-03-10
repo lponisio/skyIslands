@@ -229,7 +229,7 @@ sp.ids <- list(
                      Species="haemorrhous",
                      SubSpecies="",
                      Sex="m",
-                     Author = "",
+                     Author = "Meigen",
                      Determiner="M.Hauser",
                      temp.id= c("BBSL1084336")),
 
@@ -237,7 +237,7 @@ sp.ids <- list(
                     SubGenus="",
                     Species="haemorrhous",
                     SubSpecies="",
-                    Sex="f", Author = "",
+                    Sex="f", Author = "Meigen",
                     Determiner="M.Hauser",
                     temp.id= c("BBSL1072788",
                                "BBSL1071242")),
