@@ -609,9 +609,9 @@ sp.ids <- list(
                                  c("BBSL1074427", "BBSL1074365",
                                    "BBSL1074428", "BBSL1059087")),
 
-    Copestylum_haagi = list(Genus ="Copestylum",
+    Copestylum_haagii = list(Genus ="Copestylum",
                             SubGenus="",
-                            Species = "haagi",
+                            Species = "haagii",
                             SubSpecies="", Sex = "",
                             Author = "Jaennicke",
                             Determiner="M.Hauser",
