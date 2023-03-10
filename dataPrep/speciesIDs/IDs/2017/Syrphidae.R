@@ -271,7 +271,7 @@ sp.ids <- list(
                      Species="fumipennis",
                      SubSpecies="",
                      Sex="m",
-                     Author = "",
+                     Author = "Thomson",
                      Determiner="M.Hauser",
                      temp.id= c("BBSL1072804")),
 
