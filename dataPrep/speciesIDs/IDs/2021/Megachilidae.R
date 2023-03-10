@@ -167,8 +167,8 @@ sp.ids <- list(
                                            SubSpecies="rohweri",
                                            Sex="f", Author = "Smith",
                                            Determiner = "L. Best",
-                                           temp.id= c(30765, 30766,
-                                                      30761, 30762,
+                                           temp.id= c(
+                                                      30761,
                                                       31457, 31355,
                                                       31204, 31194,
                                                       31458, 31978,
@@ -223,7 +223,7 @@ sp.ids <- list(
                               Sex="m",
                               Author = "Cresson",
                               Determiner = "L. Best",
-                              temp.id= c(30793)),
+                              temp.id= c()),
 
     ## Megachile_relativa_f = list(Genus="Megachile",
     ##                             SubGenus ="Megachile",
