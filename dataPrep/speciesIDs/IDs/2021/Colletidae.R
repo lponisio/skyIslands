@@ -88,7 +88,7 @@ sp.ids <- list(
                                        31603, 34423, 33613, 32395, 32713)),
 
     Hylaeus_mesillae_f= list(Genus="Hylaeus",
-                             SubGenus="",
+                             SubGenus="Hylaeus",
                              Species="mesillae",
                              SubSpecies="", Sex="f",
                              Author = "Cockerell",
