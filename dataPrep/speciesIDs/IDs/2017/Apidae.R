@@ -1163,7 +1163,7 @@ sp.ids <- list(
                      temp.id= c("BBSL1086799")),
 
     Nomada_spb= list(Genus="Nomada", SubGenus="",
-                     Species="sp",
+                     Species="sp.",
                      SubSpecies="b", Sex="f",
                      Author = "",
                      Determiner="L.C. Ponisio",
