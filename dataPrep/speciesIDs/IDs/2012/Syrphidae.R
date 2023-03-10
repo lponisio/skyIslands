@@ -556,9 +556,9 @@ sp.ids <- list(
                                  Determiner="M.Hauser",
                                  temp.id = c("CH_082112_97")),
 
-    Copestylum_haagi = list(Genus ="Copestylum",
+    Copestylum_haagii = list(Genus ="Copestylum",
                             SubGenus="",
-                            Species = "haagi",
+                            Species = "haagii",
                             SubSpecies="", Sex = "",
                             Author = "Jaennicke",
                             Determiner="M.Hauser",
