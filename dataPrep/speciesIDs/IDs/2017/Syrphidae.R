@@ -219,7 +219,7 @@ sp.ids <- list(
                           SubGenus="",
                           Species="diversifasciata",
                           SubSpecies="",
-                          Sex="m", Author = "",
+                          Sex="m", Author = "Knab",
                           Determiner="M.Hauser",
                           temp.id= c("BBSL1058407",
                                      "BBSL1071297")),
