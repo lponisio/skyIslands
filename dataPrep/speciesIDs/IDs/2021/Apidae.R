@@ -37,7 +37,7 @@ sp.ids <- list(
                                        32747, 32746)),
 
    Melissodes_grindeliae_m= list(Genus="Melissodes",
-                             SubGenus="",
+                             SubGenus="Eumelissodes",
                              Species="grindeliae",
                              SubSpecies="", Sex="m",
                              Author = "Cockerell",
