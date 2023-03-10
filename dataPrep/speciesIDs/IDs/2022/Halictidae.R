@@ -129,7 +129,7 @@ sp.ids <- list(
     Halictus_rubicundus_m= list(Genus="Halictus",
                                 SubGenus ="Protohalictus",
                              Species="rubicundus", SubSpecies="",
-                             Sex="m", Author = "Christ, 1791",
+                             Sex="m", Author = "Christ",
                              Determiner = "J.L. Neff",
                              temp.id= c(36590,
                                         36593
