@@ -44,7 +44,7 @@ sp.ids <- list(
     Xylocopa_californica_f= list(Genus="Xylocopa",
                                  SubGenus="Xylocopoides",
                                  Species="californica",
-                                 SubSpecies="", Sex="f",
+                                 SubSpecies="arizonensis", Sex="f",
                                  Author = "Cresson",
                                  Determiner="L. Best",
                                  temp.id= c(38396)),
