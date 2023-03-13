@@ -197,7 +197,7 @@ sp.ids <- list(
                                                                                         )),
 
     ##    Megachile_zapoteca_m = list(Genus="Megachile",
-    ##                                SubGenus ="Xanthosarus",
+    ##                                SubGenus ="Cressoniella",
     ##                                Species="zapoteca",
     ##                                           SubSpecies="",
     ##                                           Sex="m", Author = "Cresson",
