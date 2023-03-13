@@ -57,7 +57,7 @@ sp.ids <- list(
     
     
      Coelioxys_sodalis_m = list(Genus="Coelioxys",
-                                     SubGenus ="",
+                                     SubGenus ="Coelioxys",
                                      Species="sodalis",
                                      SubSpecies="", Sex="m",
                                      Author = "Cresson",
@@ -66,7 +66,7 @@ sp.ids <- list(
     
         
      Coelioxys_sodalis_f = list(Genus="Coelioxys",
-                                     SubGenus ="",
+                                     SubGenus ="Coelioxys",
                                      Species="sodalis",
                                      SubSpecies="", Sex="f",
                                      Author = "Cresson",
