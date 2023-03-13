@@ -59,9 +59,9 @@ sp.ids <- list(
                                 Determiner = "J.L. Neff",
                                 temp.id= c(36688)),
 
-    Heriades_cruciferae_m = list(Genus="Heriades",
+    Heriades_crucifera_m = list(Genus="Heriades",
                                  SubGenus ="",
-                                 Species="cruciferae",
+                                 Species="crucifera",
                                  SubSpecies="", Sex="m",
                                  Author = "Cockerell",
                                  Determiner = "J.L. Neff",
