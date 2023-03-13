@@ -250,10 +250,10 @@ sp.ids <- list(
                                 temp.id= c(30919)),
 
     Hoplitis_fulgida_f = list(Genus="Hoplitis",
-                              SubGenus ="",
+                              SubGenus ="Alcidamea",
                               Species="fulgida",
                               SubSpecies="", Sex="f",
-                              Author = "Cronquist",
+                              Author = "Cresson",
                               Determiner = "L. Best",
                               temp.id= c(31360))
 
