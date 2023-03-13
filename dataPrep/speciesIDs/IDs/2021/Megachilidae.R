@@ -234,7 +234,7 @@ sp.ids <- list(
     ##                             temp.id= c())
 
     Hoplitis_albifrons_m = list(Genus="Hoplitis",
-                                SubGenus ="",
+                                SubGenus ="Alcidamea",
                                 Species="albifrons",
                                 SubSpecies="", Sex="m",
                                 Author = "Kirby",
@@ -242,7 +242,7 @@ sp.ids <- list(
                                 temp.id= c(30941, 30918)),
 
     Hoplitis_albifrons_f = list(Genus="Hoplitis",
-                                SubGenus ="",
+                                SubGenus ="Alcidamea",
                                 Species="albifrons",
                                 SubSpecies="", Sex="f",
                                 Author = "Kirby",
