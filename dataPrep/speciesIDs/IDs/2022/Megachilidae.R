@@ -296,9 +296,9 @@ sp.ids <- list(
                             Determiner = "J.L. Neff",
                             temp.id= c(30921)),
 
-    Osmia_penstemonis_f = list(Genus="Osmia", SubGenus
+    Osmia_pentstemonis_f = list(Genus="Osmia", SubGenus
                                ="Melanosmia",
-                               Species="penstemonis",
+                               Species="pentstemonis",
                                SubSpecies="", Sex="f", Author =
                                                            "Cockerell", Determiner =
                                                                             "J.L. Neff", temp.id= c(36823,
