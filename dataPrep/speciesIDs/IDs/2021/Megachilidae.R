@@ -2,7 +2,7 @@
 sp.ids <- list(
 
     Anthidium_maculosum_f = list(Genus="Anthidium",
-                                     SubGenus ="",
+                                     SubGenus ="Anthidium",
                                      Species="maculosum",
                                      SubSpecies="", Sex="f",
                                      Author = "Cresson",
