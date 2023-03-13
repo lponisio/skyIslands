@@ -57,7 +57,7 @@ sp.ids <- list(
      Determiner="J. Carpenter", temp.id
      =c("BBSL1059127")),
 
-  dilectus = list(Genus="Odynerus", SubGenus ="",
+  dilectus = list(Genus="Odynerus", SubGenus ="Odynerus",
      Species="dilectus", SubSpecies="", Sex="", Author = "Saussure",
      Determiner="J. Carpenter", temp.id
      =c("BBSL1071118","BBSL1071114","BBSL1071113","BBSL1071070","BBSL1071020",
@@ -65,10 +65,36 @@ sp.ids <- list(
         "BBSL1084717","BBSL1084723","BBSL1084745","BBSL1058647","BBSL1058644",
         "BBSL1058744")),
   
+  Polistes_dorsalis_f = list(Genus="Polistes", SubGenus ="Fuscopolistes",
+     Species="dorsalis", SubSpecies="", Sex="f", Author = "Fabricius",
+     Determiner="J. Carpenter", temp.id
+     =c("BBSL1071273")),
+  
+  Polistes_dorsalis_m = list(Genus="Polistes", SubGenus ="Fuscopolistes",
+     Species="dorsalis", SubSpecies="", Sex="m", Author = "Fabricius",
+     Determiner="J. Carpenter", temp.id
+     =c("18393")),
+  
+  Stenodynerus_taos_f = list(Genus="Stenodynerus", SubGenus ="",
+     Species="taos", SubSpecies="", Sex="f", Author = "Cresson",
+     Determiner="J. Carpenter", temp.id
+     =c("BBSL1084744","BBSL1058702","BBSL1071943","17956")),
+  
+  Stenodynerus_taos_m = list(Genus="Stenodynerus", SubGenus ="",
+     Species="taos", SubSpecies="", Sex="m", Author = "Cresson",
+     Determiner="J. Carpenter", temp.id
+     =c("BBSL1072824","BBSL1072821","BBSL1072842","BBSL1072790","BBSL1084878",
+        "BBSL1084626","BBSL1070817","17825","18592")),
+  
+  Crabronidae = list(Genus="Crabronidae", SubGenus ="",
+   Species="sp.", SubSpecies="", Sex="", Author = "",
+    Determiner="J. Carpenter", temp.id
+    =c("BBSL1072625")),
+  
   Scoliidae = list(Genus="Scoliidae", SubGenus ="",
    Species="sp.", SubSpecies="a", Sex="f", Author = "",
     Determiner="J. Carpenter", temp.id
-    =c("21637")),
+    =c("21637"))
 
 )
 
