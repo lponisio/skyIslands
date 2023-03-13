@@ -306,7 +306,7 @@ sp.ids <- list(
     ## Lasioglossum_manitouellum_m= list(Genus="Lasioglossum", SubGenus
     ##                                   ="Lasioglossum", Species="manitouellum",
     ##                                   SubSpecies="", Sex="m",
-    ##                                   Author = "Cockerell, 1908",
+    ##                                   Author = "Cockerell",
     ##                                   Determiner = "",
     ##                                   temp.id=  c()),
 
