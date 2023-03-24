@@ -74,6 +74,19 @@ write.csv(dbReadTable(con, "tblGeography"),
 dbListTables(con)
 
 
+print("conditions with no site key")
+print(sum(is.na(conditions$GeographyFK)))
+no.geo.cond <- conditions[is.na(conditions$GeographyFK),]
+write.csv(no.geo.cond, file="../../cleaning/conditions_no_geo_key.csv")
+
+print("specimens with no site key")
+print(sum(is.na(specimens$GeographyFK)))
+no.geo.spec <- specimens[is.na(specimens$GeographyFK),]
+print(no.geo.spec$SampleID)
+write.csv(no.geo.spec, file="../../cleaning/specimens_no_geo_key.csv")
+unique(no.geo.spec$Stand)
+
+
 ## keep <- c("SiteSubSite", "Site", "Country", "State", "County",
 ##           "Meadow", "Forest",
 ##           "MtRange", "Lat", "Long", "Elev", "Area", "SubSite")
@@ -144,9 +157,9 @@ bloom$Date  <- as.character(bloom$Date)
 
 
 ## Temporarily identify unique combinations:
-keep <- c("GeographyFK", "Date", "Method", "NetNumber")
-conditions$cond.code <- apply(conditions[keep], 1, paste, collapse=";")
-specimens$cond.code <- apply(specimens[keep], 1, paste, collapse=";")
+keep.spec <- c("GeographyFK", "Date", "Method", "NetNumber")
+conditions$cond.code <- apply(conditions[keep.spec], 1, paste, collapse=";")
+specimens$cond.code <- apply(specimens[keep.spec], 1, paste, collapse=";")
 
 ## make table
 keep <- c("Date", "SampleRound", "NetNumber", "Method",
@@ -181,9 +194,18 @@ write.csv(bad, file="weather_problems.csv", row.names=FALSE)
 bad.spec <- (specimens[, c("UniqueID", "Site", "Date",
                             "NetNumber", "SubSite")][is.na(specimens$ConditionsFK),])
 
-unique(specimens$cond.code[is.na(specimens$ConditionsFK)])
+write.csv(bad.spec, file="../../cleaning/spec_weather_problems.csv", row.names=FALSE)
 
-write.csv(bad.spec, file="spec_weather_problems.csv", row.names=FALSE)
+print("specimens without condition keys")
+spec.no.con.key <- unique(specimens$UniqueID[is.na(specimens$ConditionsFK)])
+print(spec.no.con.key)
+
+write.csv(specimens[is.na(specimens$ConditionsFK),],
+          file="../../cleaning/specimens_no_cond_key.csv")
+
+write.csv(unique(specimens[is.na(specimens$ConditionsFK),
+                           c("Site", keep.spec)]),
+          file="../../cleaning/cond_specimens_no_cond_key.csv")
 
 
 write.csv(dbReadTable(con, "tblConditions"),
