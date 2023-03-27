@@ -90,7 +90,7 @@ sp.ids <- list(
     Dufourea_maura_f= list(Genus="Dufourea", SubGenus ="",
                            Species="maura", SubSpecies="",
                            Sex="f", Author = "Cresson",
-                           Determiner = "J. Zorn",
+                           Determiner = "J. F. Zorn",
                            temp.id= c(33571, 33572, 33573, 33574,
                                       33575, 33576, 33588, 33708,
                                       33753, 33495)),
@@ -169,7 +169,7 @@ sp.ids <- list(
                                 Species="farinosus",
                                 SubSpecies="", Sex="f",
                                 Author = "Smith",
-                                Determiner = "J. Zorn",
+                                Determiner = "J. F. Zorn",
                                 temp.id= c(30915)),
 
     Halictus_farinosus_m = list(Genus="Halictus", SubGenus ="Nealictus",
@@ -237,6 +237,14 @@ sp.ids <- list(
                                              33481, 33485, 33488,
                                              33493, 33580, 33587,
                                              33604, 33489, 34325)),
+     
+    Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
+                                  SubGenus ="Dialictus",
+                                  Species="aquilae",
+                                  SubSpecies="",
+                                  Sex="f", Author = "Cockerell",
+                                  Determiner = "J. F. Zorn",
+                                  temp.id= c(34739, 34741, 34893, 35687, 35766, 35770, 35771, 35804, 35810, 35816, 35817, 35823, 36288)),
 
     Lasioglossum_aquilae_m = list(Genus="Lasioglossum",
                                   SubGenus ="Dialictus",
@@ -245,6 +253,14 @@ sp.ids <- list(
                                   Determiner = "L. Best",
                                   temp.id= c(34400, 34324, 33626,
                                              33450, 34323)),
+     
+    
+    Lasioglossum_aquilae_m = list(Genus="Lasioglossum",
+                                  SubGenus ="Dialictus",
+                                  Species="aquilae", SubSpecies="",
+                                  Sex="m", Author = "Cockerell",
+                                  Determiner = "J. F. Zorn",
+                                  temp.id= c(34744, 34745, 34757, 34758, 34761, 34762, 34775, 34786, 34792, 34794, 34795, 34811, 34891, 35014, 35024, 35028)),
 
     Lasioglossum_potosi_m = list(Genus="Lasioglossum",
                                  SubGenus ="",
