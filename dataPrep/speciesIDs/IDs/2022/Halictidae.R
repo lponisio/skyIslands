@@ -109,7 +109,7 @@ sp.ids <- list(
                            Sex="f", Author = "Cresson",
                            Determiner = "",
                            temp.id= c(37762,37763,37457,37363,38404,
-                                      37962,37961)),
+                                      37962,37961,38674, 38786, 38800, 38804)),
 
     ## Dufourea_maura_m= list(Genus="Dufourea", SubGenus ="",
     ##                        Species="maura", SubSpecies="",
