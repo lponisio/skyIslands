@@ -340,7 +340,7 @@ site.sum[site.sum$PollAbundance == max(site.sum$PollAbundance),]
 ## Parasite rate barchart
 ## ********************************************
 
-par.counts <- table(spec$ParasiteRichness[spec$Apidae == 1])
+par.counts <- table(spec.net$ParasiteRichness[spec.net$Apidae == 1])
 
 par.counts <- par.counts/sum(par.counts)
 
@@ -390,7 +390,8 @@ ggsave(site, file="../../../skyIslands_saved/figures/site_char.pdf",
 ## parasite summaries
 ## ***************************************************************
 
-sick.totals <- spec %>%
+makeParasitePlots <- function(spec, file.name){
+  sick.totals <- spec %>%
     group_by(Site) %>%
     summarise(TestedTotals = length(UniqueID[!is.na(ParasitePresence)]),
               ParasitismRate=round(mean(ParasitePresence, na.rm=TRUE),2),
@@ -399,65 +400,90 @@ sick.totals <- spec %>%
               InfectedAscosphaeraSpp=round(mean(AscosphaeraSpp, na.rm=TRUE),2),
               InfectedCrithidiaBombi=round(mean(CrithidiaBombi, na.rm=TRUE),2),
               InfectedCrithidiaExpoeki=round(mean(CrithidiaExpoeki,
-                                         na.rm=TRUE), 2),
+                                                  na.rm=TRUE), 2),
+              InfectedCrithidia=round(mean(CrithidiaPresence,
+                                           na.rm=TRUE), 2),
               InfectedNosemaBombi=round(mean(NosemaBombi,
-                                      na.rm=TRUE), 2),
+                                             na.rm=TRUE), 2),
               InfectedNosemaCeranae=round(mean(NosemaCeranae,
-                                         na.rm=TRUE), 2))
+                                               na.rm=TRUE), 2))
 
 
-sick.totals <- sick.totals[order(sick.totals$ParasitismRate),]
+  sick.totals <- sick.totals[order(sick.totals$ParasitismRate),]
 
-p1 <- ggplot(sick.totals, aes(x=Site, y=TestedTotals)) +
-  geom_bar(stat="identity") + theme_minimal() + coord_flip()
-p1
+  p1 <- ggplot(sick.totals, aes(x=Site, y=TestedTotals)) +
+    geom_bar(stat="identity") + theme_minimal() + coord_flip()
+  p1
 
-p2 <- ggplot(sick.totals, aes(x=Site, y=ParasitismRate)) +
-  geom_bar(stat="identity") + theme_minimal() + coord_flip()
-p2
+  p2 <- ggplot(sick.totals, aes(x=Site, y=ParasitismRate)) +
+    geom_bar(stat="identity") + theme_minimal() + coord_flip()
+  p2
 
-all.sums <- grid.arrange(p1, p2)
+  all.sums <- grid.arrange(p1, p2)
 
-ggsave(all.sums, file="../../../skyIslands_saved/figures/sum_parasites.pdf",
-       width = 8.5,
-       height = 15)
+  ggsave(all.sums, file=file.path("../../../skyIslands_saved/figures/",
+                             sprintf("%s_sum_parasites.pdf", file.name)),
+         width = 8.5,
+         height = 15)
 
 
-p3 <- ggplot(sick.totals, aes(x=Site, y=InfectedNosemaBombi)) +
+  ## p3 <- ggplot(sick.totals, aes(x=Site, y=InfectedNosemaBombi)) +
+  ##   geom_bar(stat="identity") + theme_minimal() + coord_flip() +
+  ##   theme(legend.position = "none")
+
+  ## p4 <- ggplot(sick.totals, aes(x=Site, y=InfectedNosemaCeranae)) +
+  ##   geom_bar(stat="identity") + theme_minimal() + coord_flip() +
+  ##   theme(legend.position = "none")
+
+  p5 <- ggplot(sick.totals, aes(x=Site, y=InfectedCrithidiaExpoeki )) +
     geom_bar(stat="identity") + theme_minimal() + coord_flip() +
     theme(legend.position = "none")
 
-p4 <- ggplot(sick.totals, aes(x=Site, y=InfectedNosemaCeranae)) +
+  p6 <- ggplot(sick.totals, aes(x=Site, y=InfectedCrithidiaBombi)) +
     geom_bar(stat="identity") + theme_minimal() + coord_flip() +
     theme(legend.position = "none")
 
-p5 <- ggplot(sick.totals, aes(x=Site, y=InfectedCrithidiaExpoeki )) +
+  p7 <- ggplot(sick.totals, aes(x=Site, y=InfectedCrithidia)) +
     geom_bar(stat="identity") + theme_minimal() + coord_flip() +
     theme(legend.position = "none")
 
-p6 <- ggplot(sick.totals, aes(x=Site, y=InfectedCrithidiaBombi)) +
+  p8 <- ggplot(sick.totals, aes(x=Site, y=InfectedApicystisSpp)) +
     geom_bar(stat="identity") + theme_minimal() + coord_flip() +
     theme(legend.position = "none")
 
-p7 <- ggplot(sick.totals, aes(x=Site, y=InfectedApicystisSpp)) +
+  p9 <- ggplot(sick.totals, aes(x=Site, y=InfectedAscosphaeraSpp)) +
     geom_bar(stat="identity") + theme_minimal() + coord_flip() +
     theme(legend.position = "none")
 
-p8 <- ggplot(sick.totals, aes(x=Site, y=InfectedAscosphaeraSpp)) +
-    geom_bar(stat="identity") + theme_minimal() + coord_flip() +
-       theme(legend.position = "none")
+  all1 <- grid.arrange(p5, p6, p7 , nrow = 1,
+                       ncol=3)
 
-all1 <- grid.arrange(p3, p4, p5 , nrow = 1,
-                                  ncol=3)
+  all2 <- grid.arrange(p8, p9, nrow = 1,
+                       ncol=2)
 
-all2 <- grid.arrange(p6, p7, p8 , nrow = 1,
-                                  ncol=3)
+  ggsave(all1, file=file.path("../../../skyIslands_saved/figures/",
+                         sprintf("%s_indiv_parasites_1.pdf", file.name)),
+         width = 10,
+         height = 10)
 
-ggsave(all1, file="../../../skyIslands_saved/figures/indiv_parasites_1.pdf",
-       width = 10,
-       height = 10)
+  ggsave(all2, file=file.path("../../../skyIslands_saved/figures/",
+                         sprintf("%s_indiv_parasites_2.pdf", file.name)),
+         width = 10,
+         height = 10)
+}
 
+makeParasitePlots(spec.net, "all")
 
-ggsave(all2, file="../../../skyIslands_saved/figures/indiv_parasites_2.pdf",
-       width = 10,
-       height = 10)
+makeParasitePlots(spec.net[spec.net$Genus == "Bombus",], "bombus")
+
+makeParasitePlots(spec.net[spec.net$Genus == "Apis",], "apis")
+
+makeParasitePlots(spec.net[spec.net$Genus == "Melissodes",],
+                  "melissodes")
+
+makeParasitePlots(spec.net[spec.net$Genus == "Megachile",],
+                  "megachile")
+
+makeParasitePlots(spec.net[spec.net$Genus == "Anthophora",],
+                  "anthophora")
+
