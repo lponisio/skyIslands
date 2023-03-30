@@ -475,7 +475,7 @@ sp.ids <- list(
                              = "anna", SubSpecies="", Sex ="f",
                              Author ="Williston",
                              Determiner="M.Hauser",
-                             temp.id =c(32415, 36461, 30944, 31037, 32151,
+                             temp.id =c(32145, 36461, 30944, 31037, 32151,
                                         32146, 35103, 32144, 34213, 34081)),
 
 
