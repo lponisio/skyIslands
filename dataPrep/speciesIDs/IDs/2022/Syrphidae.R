@@ -9,6 +9,12 @@ sp.ids <- list(
                                  Author = "Osten Sacken",
                                  Determiner="M.Hauser",
                                  temp.id = c(31440, 32423, 32446, 32447)),
+    
+    Chrysotoxum_morpho1 = list(Genus="Chrysotoxum",SubGenus="", Species
+                               = "sp.", SubSpecies = "a",
+                               Sex = "", Author = "",
+                               Determiner="M.Hauser",
+                               temp.id =  c(38310,38312,38265,37995,37120,37000,33756,34072,32958,38307,38325,37277,37282,31650,31688)),
 
 
     Helophilus_latifrons_m = list(Genus = "Helophilus", SubGenus="",
