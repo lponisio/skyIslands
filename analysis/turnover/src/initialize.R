@@ -10,16 +10,16 @@ library(bipartite)
 source('src/misc.R')
 load('../../data/spec.Rdata')
 
-# args <- commandArgs(trailingOnly=TRUE)
-# if(length(args) != 0){
-#     net.type <- args[1]
-#     species <- args[2]
-#     sp.level <- args[3]
-# } else{
-#     net.type <- "YrSR"
-#     species <- "Plant"
-#     sp.level <- "lower.level"
-# }
+args <- commandArgs(trailingOnly=TRUE)
+if(length(args) != 0){
+    net.type <- args[1]
+    species <- args[2]
+    sp.level <- args[3]
+} else{
+    net.type <- "YrSR"
+    species <- '16s'
+    sp.level <- "lower.level"
+}
 
 plants <- unique(spec$PlantGenusSpecies)
 pols <- unique(spec$GenusSpecies)

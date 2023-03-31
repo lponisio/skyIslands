@@ -26,8 +26,8 @@ microbe_igraph_list <- lapply(indivNet_micro, graph_from_incidence_matrix)
 
 
 beta.net <- networkBetadiversity(microbe_igraph_list,
-                                 lower.level=lower.level,
-                                 higher.level=higher.level,
+                                 lower.level=pols,
+                                 higher.level=microbes,
                                  geo.dist=geo.dist,
                                  nets.by.SR=nets.by.SR)
 
