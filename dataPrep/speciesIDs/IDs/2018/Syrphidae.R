@@ -74,7 +74,8 @@ sp.ids <- list(
                                Determiner="M.Hauser",
                                temp.id =  c("18182","18588","18645",
                                             "18763","18761","18226",
-                                            "17813","18484","17730")),
+                                            "17813","18484","17730"
+                                           19101,19035,19158)),
 
     Toxomerus_marginatus_m = list(Genus = "Toxomerus",SubGenus="",
                                   Species
