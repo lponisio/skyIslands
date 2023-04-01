@@ -123,6 +123,19 @@ ggarrange(
 ## venn diagram
 library(ggVennDiagram)
 
+spec16s <- read.csv('spec_RBCL_16s.csv') %>%
+  filter(Apidae == 1) %>%
+  select(UniqueID, Site, Genus, starts_with('X16s')) %>%
+  na.omit() %>%
+  pivot_longer(-c(UniqueID, Site, Genus), names_to = 'Bacteria', values_to = 'Abundance') %>% 
+  mutate(Site = factor(Site, levels=c("JC", ## ordered by latitude north to south
+                                      "SM",
+                                      "SC",
+                                      "MM",
+                                      "HM",
+                                      "PL",
+                                      "CH")))
+
 genus_filter <- function(dataframe, genus){
   new_df <- dataframe %>%
     filter(Genus == genus) %>%
@@ -131,20 +144,20 @@ genus_filter <- function(dataframe, genus){
   unique(new_df$Bacteria)
 }
 
-apis_subset <- genus_filter(relabund.dat, 'Apis')
-bombus_subset <- genus_filter(relabund.dat, 'Bombus')
-anthophora_subset <- genus_filter(relabund.dat, 'Anthophora')
-megachile_subset <- genus_filter(relabund.dat, 'Megachile')
+apis_subset <- genus_filter(spec16s, 'Apis')
+bombus_subset <- genus_filter(spec16s, 'Bombus')
+anthophora_subset <- genus_filter(spec16s, 'Anthophora')
+megachile_subset <- genus_filter(spec16s, 'Megachile')
 
 
-venn_data <- list(Apis = apis_subset,
+venn_data <- list(Anthophora = anthophora_subset,
+                  Apis = apis_subset,
                   Bombus = bombus_subset,
-                  Anthophora = anthophora_subset,
                   Megachile = megachile_subset)
 
 ggVennDiagram(venn_data,
-              edge_size = 2,
-              label_alpha = 0,
-              set_color = c("black","grey","blue","green")) + 
-  scale_color_manual(values = c("black","grey","blue","green")) +
-  ggplot2::scale_fill_gradient(low="white",high = "red")
+              edge_size = 50,
+              label_alpha = 0.5,
+              set_color = plasma(4)) + 
+  scale_color_manual(values = plasma(4)) +
+  scale_fill_gradient(low="white",high = "black")

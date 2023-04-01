@@ -92,35 +92,81 @@ meta$PhyloDiversity <- df.pd$PD
 
 meta$SpeciesRichness <- df.pd$SR
 
-plot.pd.genus <- ggplot(meta, aes(Genus, PhyloDiverity)) + geom_violin(aes(fill = Genus),) + geom_jitter(size = 2, alpha=0.5) + theme(axis.text.x = element_text(size=14, angle = 90)) + coord_flip() + theme_classic()
+library(rstatix)
+library(ggarrange)
+
+stat.test.pd <- meta %>% 
+  pairwise_wilcox_test(PhyloDiversity ~ Genus, p.adjust.method="fdr") %>%
+  filter(p.adj.signif != 'ns')
+
+
+plot.pd.genus <- ggplot(meta, aes(Genus, PhyloDiversity)) + 
+  geom_violin(aes(fill = Genus)) + 
+  geom_jitter(size = 2, alpha=0.5) + 
+  #coord_flip() + 
+  theme_classic() +
+  scale_fill_manual(values=plasma(4)) +
+  stat_summary(fun.data = "mean_cl_boot", geom = "crossbar",
+               colour = "black", width = 0.7)  +
+  stat_summary(fun = "median", geom = "crossbar",
+               colour = "red", width = 0.7) +
+  theme(legend.position='none', text=element_text(size=21)) +
+  labs(y='Phylogenetic Diversity') + 
+  stat_pvalue_manual(stat.test.pd, label = "p.adj", tip.length = 0.01, y.position = 10, step.increase = 0.05)
+
 print(plot.pd.genus)
 
-plot.sr.genus <- ggplot(meta, aes(Genus, SpeciesRichness)) + geom_violin(aes(fill = Genus)) + geom_jitter(size = 2, alpha=0.5) + theme(axis.text.x = element_text(size=14, angle = 90)) + coord_flip() + theme_classic()
+stat.test.sr <- meta %>% 
+  pairwise_wilcox_test(SpeciesRichness ~ Genus, p.adjust.method="fdr") %>%
+  filter(p.adj.signif != 'ns')
+
+
+plot.sr.genus <- ggplot(meta, aes(Genus, SpeciesRichness)) + 
+  geom_violin(aes(fill = Genus)) + 
+  geom_jitter(size = 2, alpha=0.5) + 
+  #coord_flip() + 
+  theme_classic() +
+  scale_fill_manual(values=plasma(4)) +
+  stat_summary(fun.data = "mean_cl_boot", geom = "crossbar",
+               colour = "black", width = 0.7)  +
+  stat_summary(fun = "median", geom = "crossbar",
+               colour = "red", width = 0.7) +
+  theme(legend.position='none', text=element_text(size=21)) +
+  labs(y='Species Richness') + 
+  stat_pvalue_manual(stat.test.sr, label = "p.adj", tip.length = 0.01, y.position = 100, step.increase = 0.05)
 print(plot.sr.genus)
 
-plot.pd.spp <- ggplot(meta, aes(gensp, PhyloDiverity)) + 
-  geom_boxplot(aes(fill = Genus), outlier.shape = NA) + 
-  geom_jitter(size = 2, alpha=0.5) + 
-  theme(axis.text.x = element_text(size=14, angle = 90)) + coord_flip() + theme_classic()
-print(plot.pd.spp)
+ggarrange(plot.sr.genus, plot.pd.genus)
 
-plot.sr.spp <- ggplot(meta, aes(gensp, SpeciesRichness)) + 
-  geom_boxplot(aes(fill = Genus), outlier.shape = NA) + 
-  geom_jitter(size = 2, alpha=0.5) + 
-  theme(axis.text.x = element_text(size=14, angle = 90)) + coord_flip() + theme_classic()
-print(plot.sr.spp)
+
 
 #lets look at distrubutions -- neither are normal
 
 hist(meta$PhyloDiversity, main="PhyloDiverity", xlab="", breaks=10)
 shapiro.test(meta$PhyloDiverity)
 
+#transform to make distribution normal
+meta$TransPhyloDiversity <- log(meta$PhyloDiverity+1)
+hist(meta$TransPhyloDiversity, main="TransPhyloDiverity", xlab="", breaks=10)
+
+
+x=log(x+1)
+
 hist(meta$SpeciesRichness, main="SpeciesRichness", xlab="", breaks=10)
-shapiro.test(meta$SpeciesRichness)
+meta$TransSpeciesRichness <- log(meta$SpeciesRichness)
+hist(meta$TransSpeciesRichness, main="TransPhyloDiverity", xlab="", breaks=10)
+library(ggpubr)
+ggdensity(meta$SpeciesRichness)
+ggdensity(meta$PhyloDiversity)
+ggdensity(meta$TransPhyloDiversity)
+shapiro.test(meta$TransSpeciesRichness)
 
 #non parametric test for if genus microbes are different
 kruskal.test(PhyloDiversity ~ Genus, data=meta)
 pairwise.wilcox.test(meta$PhyloDiversity, meta$Genus, p.adjust.method="fdr")
+
+kruskal.test(SpeciesRichness ~ Genus, data=meta)
+pairwise.wilcox.test(meta$SpeciesRichness, meta$Genus, p.adjust.method="fdr")
 
 #lets see interaction between genus and site
 aov.shannon.all = aov(SpeciesRichness ~ Site*Genus, data=meta)
