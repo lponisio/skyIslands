@@ -124,7 +124,7 @@ sp.ids <- list(
                                            "BBSL1071662",
                                            "BBSL1058981",
                                            "BBSL1071606",
-                                           "BBSL1085057")),
+                                           "BBSL1085057",23171,22662,23285)),
 
 
     Syrphus_ribesii_f =list(Genus = "Syrphus", SubGenus="",
@@ -301,7 +301,7 @@ sp.ids <- list(
                                 "BBSL1071067",
                                 "BBSL1073114",
                                 "BBSL1073948",
-                                "BBSL1073949" )),
+                                "BBSL1073949"22634,19445,17669 )),
 
     scaeva_f= list(Genus="Scaeva",
                    SubGenus="",
