@@ -30,11 +30,11 @@ source('dataPrep/relational/3join.R')
 ## *****************************************************************
 ## prep specimen data
 ## *****************************************************************
-dir.bombus <-
-    '~/Dropbox (University of Oregon)/skyIslands'
-
 ## dir.bombus <-
-##     '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
+##     '~/Dropbox (University of Oregon)/skyIslands'
+
+dir.bombus <-
+    '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
 
 setwd(file.path(dir.bombus, "dataPrep"))
 
@@ -46,7 +46,6 @@ spec <-
 source("src/misc.R")
 source("src/prepNets.R")
 source("src/specialization.R")
-
 
 spec$GenusSpecies <- fix.white.space(paste(spec$Genus,
                           spec$Species,
@@ -108,7 +107,7 @@ spec$PlantGenusSpecies[spec$PlantGenus == "Erigeron"] <-
 ## *****************************************************************
 ## specimen-level parasite calculations
 ## *****************************************************************
-
+dir.create("../data/", showWarnings = FALSE)
 dir.create("../data/networks", showWarnings = FALSE)
 dir.create("../data/splevel_network_metrics", showWarnings = FALSE)
 
