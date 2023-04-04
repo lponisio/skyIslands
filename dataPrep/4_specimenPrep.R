@@ -9,10 +9,10 @@ library(RSQLite)
 library(tidyr)
 library(readr)
 
-dir.bombus <-
-    '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
 ## dir.bombus <-
-##      '~/Dropbox (University of Oregon)/skyIslands'
+##     '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
+dir.bombus <-
+     '~/Dropbox (University of Oregon)/skyIslands'
 
 ## *****************************************************************
 ## create relational database, add species IDs
@@ -30,11 +30,11 @@ source('dataPrep/relational/3join.R')
 ## *****************************************************************
 ## prep specimen data
 ## *****************************************************************
-## dir.bombus <-
-##     '~/Dropbox (University of Oregon)/skyIslands'
-
 dir.bombus <-
-    '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
+    '~/Dropbox (University of Oregon)/skyIslands'
+
+## dir.bombus <-
+##     '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
 
 setwd(file.path(dir.bombus, "dataPrep"))
 

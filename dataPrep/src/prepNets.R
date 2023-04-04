@@ -11,7 +11,7 @@ dropNet <- function(z){
 
 ###  adj matrices by site, yr, SR
 makeNets <- function(spec.dat, net.type,
-                     species=c("Pollinator", '16s'),
+                     species=c("Plant", "Pollinator"),
                      poll.groups="all",
                      ...){
     ## 1. spec.data: the specimen data, can be all groups, only bees
@@ -62,6 +62,7 @@ makeNets <- function(spec.dat, net.type,
                       net.type,
                       paste(species, collapse=""), poll.groups
                       ))
+  return(sp.lev)
 }
 
 

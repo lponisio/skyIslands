@@ -1,6 +1,6 @@
 rm(list=ls())
-setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
-## setwd('~/Dropbox (University of Oregon)/skyislands')
+## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
+setwd('~/Dropbox (University of Oregon)/skyislands')
 ncores <- 2
 
 setwd("analysis/parasites")
