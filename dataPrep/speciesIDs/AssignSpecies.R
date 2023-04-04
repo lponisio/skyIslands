@@ -18,10 +18,6 @@ write.csv(spec, file=spec.data.file, row.names=FALSE)
 
 
 ## 2022 field season
-## source(file.path(save.dir, 'IDs/2021/Syrphidae.R'))
-## add.to.data(sp.ids=sp.ids,
-##             case='fly',"Syrphidae", "2021",
-##             data.file=spec.data.file)
 
 print("********2022 Apidae")
 source(file.path(save.dir, 'IDs/2022/Apidae.R'))
@@ -72,10 +68,11 @@ add.to.data(sp.ids=sp.ids,
 
 
 ## 2021 field season
-## source(file.path(save.dir, 'IDs/2021/Syrphidae.R'))
-## add.to.data(sp.ids=sp.ids,
-##             case='fly',"Syrphidae", "2021",
-##             data.file=spec.data.file)
+print("*********2021 Syrphidae")
+source(file.path(save.dir, 'IDs/2021/Syrphidae.R'))
+add.to.data(sp.ids=sp.ids,
+            case='fly',"Syrphidae", "2021",
+            data.file=spec.data.file)
 
 print("*********2021 Apidae")
 source(file.path(save.dir, 'IDs/2021/Apidae.R'))

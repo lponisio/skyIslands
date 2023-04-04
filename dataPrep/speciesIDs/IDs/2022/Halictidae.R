@@ -52,7 +52,7 @@ sp.ids <- list(
     ##                                Determiner =
     ##                                    "J.L. Neff",
     ##                                temp.id= c(30639, 37051, 34399, 31111)),
-    
+
     ## Lasioglossum_egregium_m = list(Genus="Lasioglossum",
     ##                                SubGenus ="Lasioglossum",
     ##                                Species="egregium",
@@ -82,7 +82,7 @@ sp.ids <- list(
     ##                           Author = "",
     ##                           Determiner ="",
     ##                           temp.id= c()),
-    
+
      ##     Sphecodes_sp_b_m= list(Genus="Sphecodes", SubGenus ="",
     ##                           Species="sp.",
     ##                           SubSpecies="b", Sex="m",
@@ -96,7 +96,7 @@ sp.ids <- list(
     ##                           Author = "",
     ##                           Determiner ="J.L. Neff",
     ##                           temp.id= c(33979, 34341, 33274)),
-    
+
       ##     Sphecodes_sp_a_f= list(Genus="Sphecodes", SubGenus ="",
     ##                           Species="sp.",
     ##                           SubSpecies="a", Sex="f",
@@ -165,26 +165,26 @@ sp.ids <- list(
                                         36838
                                         )),
 
-    Lasioglossum_sisymbrii_f = list(Genus="Lasioglossum",
-                                    SubGenus ="Lasioglossum",
-                                    Species="sisymbrii",
-                                    SubSpecies="",
-                                    Sex="f",
-                                    Author = "Cockerell",
-                                    Determiner = "D. Yanega",
-                                    temp.id=
-                                        c( )),
+    ## Lasioglossum_sisymbrii_f = list(Genus="Lasioglossum",
+    ##                                 SubGenus ="Lasioglossum",
+    ##                                 Species="sisymbrii",
+    ##                                 SubSpecies="",
+    ##                                 Sex="f",
+    ##                                 Author = "Cockerell",
+    ##                                 Determiner = "D. Yanega",
+    ##                                 temp.id=
+    ##                                     c( )),
 
 
-    Lasioglossum_sisymbrii_m = list(Genus="Lasioglossum",
-                                    SubGenus ="Lasioglossum",
-                                    Species="sisymbrii",
-                                    SubSpecies="",
-                                    Sex="m",
-                                    Author = "Cockerell",
-                                    Determiner = "L. Best",
-                                    temp.id=
-                                        c( )),
+    ## Lasioglossum_sisymbrii_m = list(Genus="Lasioglossum",
+    ##                                 SubGenus ="Lasioglossum",
+    ##                                 Species="sisymbrii",
+    ##                                 SubSpecies="",
+    ##                                 Sex="m",
+    ##                                 Author = "Cockerell",
+    ##                                 Determiner = "L. Best",
+    ##                                 temp.id=
+    ##                                     c( )),
 
     Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                   SubGenus ="Dialictus",
@@ -202,7 +202,7 @@ sp.ids <- list(
                                   SubSpecies="",
                                   Sex="m", Author = "Cockerell",
                                   Determiner = "",
-                                  temp.id= c("18064", "18704")),
+                                  temp.id= c(18064, 18704)),
 
     ## Lasioglossum_M2_f = list(Genus="Lasioglossum",
     ##                          SubGenus ="Dialictus",
@@ -325,7 +325,7 @@ sp.ids <- list(
     ##                         Author = "",
     ##                         Determiner = "",
     ##                         temp.id=  c())
-    
+
     ## Lasioglossum_rupticristum_m= list(Genus="Lasioglossum", SubGenus
     ##                         ="", Species="rupticristum",
     ##                         SubSpecies="", Sex="m",
@@ -339,8 +339,8 @@ sp.ids <- list(
     ##                         Author = "McGinley",
     ##                         Determiner = "J.L. Neff",
     ##                         temp.id=  c(38355, 38371, 38344, 38388, 38347, 38324, 38386, 38377))
-    
-    
+
+
     ## Lasioglossum_cooleyi_f= list(Genus="Lasioglossum", SubGenus
     ##                         ="Sphecodogastra", Species="cooleyi",
     ##                         SubSpecies="", Sex="f",

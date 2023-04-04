@@ -143,10 +143,27 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                   SubSpecies="", Sex="f",
                                   Author = "Cresson",
                                   Determiner = "J. Gardener",
-                                  temp.id=  c("BBSL1086975", "BBSL1084519", "BBSL1059609", "BBSL1071040", "BBSL1084558", "BBSL1085248", "BBSL1074392", "BBSL1072063", "BBSL1072711", "BBSL1072081", "BBSL1060004", "BBSL1074048", "BBSL1071121", "BBSL1084512", "BBSL1087228", "BBSL1085984", "BBSL1071053", "BBSL1071994")),
+                                  temp.id=  c("BBSL1086975",
+                                              "BBSL1084519",
+                                              "BBSL1059609",
+                                              "BBSL1071040",
+                                              "BBSL1084558",
+                                              "BBSL1085248",
+                                              "BBSL1074392",
+                                              "BBSL1072063",
+                                              "BBSL1072711",
+                                              "BBSL1072081",
+                                              "BBSL1060004",
+                                              "BBSL1074048",
+                                              "BBSL1071121",
+                                              "BBSL1084512",
+                                              "BBSL1087228",
+                                              "BBSL1085984",
+                                              "BBSL1071053",
+                                              "BBSL1071994")),
 
 
-     Lasioglossum_lusorium_m= list(Genus="Lasioglossum", SubGenus
+    Lasioglossum_lusorium_m= list(Genus="Lasioglossum", SubGenus
                                   ="Sphecodogastra", Species="lusorium",
                                   SubSpecies="", Sex="m",
                                   Author = "Cresson",
@@ -160,28 +177,37 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                               "BBSL1072916")),
 
 
-       Lasioglossum_sp_f_SPH= list(Genus="Lasioglossum", SubGenus
-                                  ="Sphecodogastra", Species="sp.",
-                                  SubSpecies="s", Sex="f",
-                                  Author = "",
-                                  Determiner = "J. Gardener",
-                                  temp.id=  c("BBSL1059537", "BBSL1059690", "BBSL1087008", "BBSL1087002", "BBSL1084582", "BBSL1059536", "BBSL1070759", "BBSL1073034", "BBSL1073036", "BBSL1084583")),
+    Lasioglossum_sp_f_SPH= list(Genus="Lasioglossum", SubGenus
+                                ="Sphecodogastra", Species="sp.",
+                                SubSpecies="s", Sex="f",
+                                Author = "",
+                                Determiner = "J. Gardener",
+                                temp.id=  c("BBSL1059537",
+                                            "BBSL1059690",
+                                            "BBSL1087008",
+                                            "BBSL1087002",
+                                            "BBSL1084582",
+                                            "BBSL1059536",
+                                            "BBSL1070759",
+                                            "BBSL1073034",
+                                            "BBSL1073036",
+                                            "BBSL1084583")),
 
 
-           Lasioglossum_sp_m_SPH= list(Genus="Lasioglossum", SubGenus
-                                  ="Sphecodogastra", Species="sp.",
-                                  SubSpecies="s", Sex="m",
-                                  Author = "",
-                                  Determiner = "J. Gardener",
-                                  temp.id=  c("BBSL1074383")),
+    Lasioglossum_sp_m_SPH= list(Genus="Lasioglossum", SubGenus
+                                ="Sphecodogastra", Species="sp.",
+                                SubSpecies="s", Sex="m",
+                                Author = "",
+                                Determiner = "J. Gardener",
+                                temp.id=  c("BBSL1074383")),
 
 
-           Lasioglossum_sp_f_EV= list(Genus="Lasioglossum", SubGenus
-                                  ="Evylaeus", Species="sp.",
-                                  SubSpecies="e", Sex="f",
-                                  Author = "",
-                                  Determiner = "J. Gardener",
-                                  temp.id=  c("BBSL1058887")),
+    Lasioglossum_sp_f_EV= list(Genus="Lasioglossum", SubGenus
+                               ="Evylaeus", Species="sp.",
+                               SubSpecies="e", Sex="f",
+                               Author = "",
+                               Determiner = "J. Gardener",
+                               temp.id=  c("BBSL1058887")),
 
 
 
@@ -208,7 +234,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                                   "BBSL1086977",
                                                   "BBSL1072722")),
 
-        Lasioglossum_Hemihalictus_f= list(Genus="Lasioglossum", SubGenus
+    Lasioglossum_Hemihalictus_f= list(Genus="Lasioglossum", SubGenus
                                       ="Hemihalictus", Species="sp.",
                                       SubSpecies="1", Sex="f",
                                       Author = "",
@@ -216,7 +242,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                       temp.id=  c("BBSL1058719", "BBSL1073513")),
 
 
-        Lasioglossum_Hemihalictus_f= list(Genus="Lasioglossum", SubGenus
+    Lasioglossum_Hemihalictus_f= list(Genus="Lasioglossum", SubGenus
                                       ="Hemihalictus", Species="sp.",
                                       SubSpecies="2", Sex="f",
                                       Author = "",
@@ -225,14 +251,14 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
 
 
 
-        Lasioglossum_Hemihalictus_m= list(Genus="Lasioglossum", SubGenus
+    Lasioglossum_Hemihalictus_m= list(Genus="Lasioglossum", SubGenus
                                       ="Hemihalictus", Species="sp.",
                                       SubSpecies="2", Sex="m",
                                       Author = "",
                                       Determiner = "J. Gardener",
                                       temp.id=  c("BBSL1059629", "BBSL1059620", "BBSL1059779", "BBSL1059691", "BBSL1059787", "BBSL1059619", "BBSL1059747")),
 
-     Lasioglossum_Hemihalictus_f= list(Genus="Lasioglossum", SubGenus
+    Lasioglossum_Hemihalictus_f= list(Genus="Lasioglossum", SubGenus
                                       ="Hemihalictus", Species="sp.",
                                       SubSpecies="3", Sex="f",
                                       Author = "",
@@ -241,7 +267,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
 
 
 
-     Lasioglossum_Hemihalictus_m= list(Genus="Lasioglossum", SubGenus
+    Lasioglossum_Hemihalictus_m= list(Genus="Lasioglossum", SubGenus
                                       ="Hemihalictus", Species="sp.",
                                       SubSpecies="3", Sex="m",
                                       Author = "",
@@ -249,7 +275,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                       temp.id=  c("BBSL1071255", "BBSL1071179", "BBSL1071137", "BBSL1071220", "BBSL1071168", "BBSL1071182", "BBSL1071164", "BBSL1071199", "BBSL1071135", "BBSL1071136", "BBSL1071171", "BBSL1073320", "BBSL1071132", "BBSL1071200", "BBSL1073345", "BBSL1073347", "BBSL1073342", "BBSL1071201", "BBSL1071295", "BBSL1071291", "BBSL1073335", "BBSL1071289", "BBSL1071292")),
 
 
-         Lasioglossum_Hemihalictus_f= list(Genus="Lasioglossum", SubGenus
+    Lasioglossum_Hemihalictus_f= list(Genus="Lasioglossum", SubGenus
                                       ="Hemihalictus", Species="sp.",
                                       SubSpecies="4", Sex="f",
                                       Author = "",
@@ -257,7 +283,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                       temp.id=  c("BBSL1086102", "BBSL1072917")),
 
 
-         Lasioglossum_Hemihalictus_f= list(Genus="Lasioglossum", SubGenus
+    Lasioglossum_Hemihalictus_f= list(Genus="Lasioglossum", SubGenus
                                       ="Hemihalictus", Species="sp.",
                                       SubSpecies="5", Sex="f",
                                       Author = "",
@@ -936,41 +962,41 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                               "BBSL1071308")),
 
     Lasioglossum_perparvum_f= list(Genus="Lasioglossum",
-                                  SubGenus ="Dialictus",
-                                  Species="aff. perparvum",
-                                  SubSpecies="",
-                                  Sex="f",
-                                  Author = "",
-                                  Determiner = "J. Gardener",
-                                  temp.id= c("BBSL1084456", "BBSL1071290",
-                                             "BBSL1073330", "BBSL1073315",
-                                             "BBSL1073322", "BBSL1071184",
-                                             "BBSL1071214", "BBSL1071138",
-                                             "BBSL1086797", "BBSL1071183",
-                                             "BBSL1071188", "BBSL1084329",
-                                             "BBSL1084445", "BBSL1084444",
-                                             "BBSL1084416", "BBSL1084418",
-                                             "BBSL1084427", "BBSL1084412",
-                                             "BBSL1084397", "BBSL1084450",
-                                             "BBSL1084446", "BBSL1084361",
-                                             "BBSL1084454", "BBSL1084457",
-                                             "BBSL1084324", "BBSL1084390",
-                                             "BBSL1087310", "BBSL1084396",
-                                             "BBSL1084331", "BBSL1084343",
-                                             "BBSL1084340", "BBSL1084328",
-                                             "BBSL1085328", "BBSL1073316",
-                                             "BBSL1087306", "BBSL1087305",
-                                             "BBSL1073364", "BBSL1071282",
-                                             "BBSL1071204")),
+                                   SubGenus ="Dialictus",
+                                   Species="aff. perparvum",
+                                   SubSpecies="",
+                                   Sex="f",
+                                   Author = "",
+                                   Determiner = "J. Gardener",
+                                   temp.id= c("BBSL1084456", "BBSL1071290",
+                                              "BBSL1073330", "BBSL1073315",
+                                              "BBSL1073322", "BBSL1071184",
+                                              "BBSL1071214", "BBSL1071138",
+                                              "BBSL1086797", "BBSL1071183",
+                                              "BBSL1071188", "BBSL1084329",
+                                              "BBSL1084445", "BBSL1084444",
+                                              "BBSL1084416", "BBSL1084418",
+                                              "BBSL1084427", "BBSL1084412",
+                                              "BBSL1084397", "BBSL1084450",
+                                              "BBSL1084446", "BBSL1084361",
+                                              "BBSL1084454", "BBSL1084457",
+                                              "BBSL1084324", "BBSL1084390",
+                                              "BBSL1087310", "BBSL1084396",
+                                              "BBSL1084331", "BBSL1084343",
+                                              "BBSL1084340", "BBSL1084328",
+                                              "BBSL1085328", "BBSL1073316",
+                                              "BBSL1087306", "BBSL1087305",
+                                              "BBSL1073364", "BBSL1071282",
+                                              "BBSL1071204")),
 
     Lasioglossum_perparvum_m= list(Genus="Lasioglossum",
-                                  SubGenus ="Dialictus",
-                                  Species="aff. perparvum",
-                                  SubSpecies="",
-                                  Sex="m",
-                                  Author = "",
-                                  Determiner = "J. Gardener",
-                                  temp.id= c("BBSL1071237")),
+                                   SubGenus ="Dialictus",
+                                   Species="aff. perparvum",
+                                   SubSpecies="",
+                                   Sex="m",
+                                   Author = "",
+                                   Determiner = "J. Gardener",
+                                   temp.id= c("BBSL1071237")),
 
 
 

@@ -5,13 +5,15 @@ sp.ids <- list(
     Copestylum_satur_f = list(Genus = "Copestylum",
                               SubGenus="",Species = "satur",
                               SubSpecies="", Sex = "",
-                              Author  = "Osten Sacken", Determiner="M.Hauser",
+                              Author  = "Osten Sacken",
+                              Determiner="M.Hauser",
                               temp.id = c("BBSL1071340", "BBSL1084952")),
 
     Copestylum_satur_m = list(Genus = "Copestylum",
                               SubGenus="",
                               Species = "satur",
-                              SubSpecies="", Sex = "", Author = "Osten Sacken",
+                              SubSpecies="", Sex = "",
+                              Author = "Osten Sacken",
                               Determiner="M.Hauser",
                               temp.id = c("BBSL1060046",
                                           "BBSL1059368")),
@@ -38,7 +40,8 @@ sp.ids <- list(
                                               )),
 
     Toxomerus_marginatus_m = list(Genus = "Toxomerus",SubGenus="", Species
-                                  = "marginatus", SubSpecies="", Sex = "", Author ="Meigen",
+                                  = "marginatus", SubSpecies="",
+                                  Sex = "", Author ="Meigen",
                                   Determiner="M.Hauser",
                                   temp.id = c("BBSL1084385",
                                               "BBSL1084560",
@@ -47,7 +50,8 @@ sp.ids <- list(
                                               "BBSL1073354",
                                               "BBSL1087184",
                                               "BBSL1071149",
-                                              "BBSL1084419","21787","20795","20794","24626")),
+                                              "BBSL1084419", "21787",
+                                              "20795","20794","24626")),
 
 
     Eristalis_arbustorum_m = list(Genus = "Eristalis", SubGenus="",
@@ -111,7 +115,8 @@ sp.ids <- list(
 
 
     Dasysyrphus_morpho1 = list(Genus = "Dasysyrphus", SubGenus="",
-                               Species = "sp.", SubSpecies = "a", Sex = "", Author = "",
+                               Species = "sp.", SubSpecies = "a",
+                               Sex = "", Author = "",
                                Determiner="M.Hauser",
                                temp.id = c("BBSL1059973",
                                            "BBSL1059974",
@@ -124,7 +129,8 @@ sp.ids <- list(
                                            "BBSL1071662",
                                            "BBSL1058981",
                                            "BBSL1071606",
-                                           "BBSL1085057",23171,22662,23285)),
+                                           "BBSL1085057",
+                                           "23171","22662","23285")),
 
 
     Syrphus_ribesii_f =list(Genus = "Syrphus", SubGenus="",
@@ -190,21 +196,21 @@ sp.ids <- list(
                                         "BBSL1084753")),
 
     asemosyrphus_polygrammus_f = list(Genus="Asemosyrphus", SubGenus="",
-                          Species="polygrammus", SubSpecies="",
-                          Sex="f", Author = "",
-                          Determiner="M.Hauser",
-                          temp.id= c("BBSL1087077",
-                                     "BBSL1084930",
-                                     "BBSL1084954")),
+                                      Species="polygrammus", SubSpecies="",
+                                      Sex="f", Author = "",
+                                      Determiner="M.Hauser",
+                                      temp.id= c("BBSL1087077",
+                                                 "BBSL1084930",
+                                                 "BBSL1084954")),
 
     asemosyrphus_polygrammus_m = list(Genus="Asemosyrphus",
-                          SubGenus="",
-                          Species="polygrammus",
-                          SubSpecies="",
-                          Sex="", Author = "",
-                          Determiner="M.Hauser",
-                          temp.id= c("BBSL1073070",
-                                     "BBSL1059934")),
+                                      SubGenus="",
+                                      Species="polygrammus",
+                                      SubSpecies="",
+                                      Sex="", Author = "",
+                                      Determiner="M.Hauser",
+                                      temp.id= c("BBSL1073070",
+                                                 "BBSL1059934")),
 
     hammerschmidtia_m = list(Genus="Hammerschmidtia",
                              SubGenus="",
@@ -892,14 +898,16 @@ sp.ids <- list(
                                             "BBSL1059889",
                                             "BBSL1059906",
                                             "BBSL1058993",
-                                            "BBSL1060082", 24704, 23103, 23276, 22764, 24703, 24711
-                                            )),
+                                            "BBSL1060082", "24704",
+                                            "23103", "23276", "22764",
+                                            "24703", "24711")),
 
 
     Copestylum_marginatum_group_f = list(Genus ="Copestylum",
                                          SubGenus="",
                                          Species =
-                                             "marginatum group", SubSpecies="", Sex="f",
+                                             "marginatum group",
+                                         SubSpecies="", Sex="f",
                                          Author ="",
                                          Determiner="M.Hauser",
                                          temp.id = c("30179","23018"))

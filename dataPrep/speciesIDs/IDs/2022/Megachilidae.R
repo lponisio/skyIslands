@@ -180,21 +180,22 @@ sp.ids <- list(
                                            ="Xanthosarus",
                                            Species="melanophaea",
                                            SubSpecies="rohweri",
-                                           Sex="f", Author =
-                                                        "Smith", Determiner =
-                                                                     "J.L. Neff", temp.id=
-                                                                                      c(36946, 30900,
-                                                                                        36646, 36681, 38214,
-                                                                                        38032, 38205, 36869,
-                                                                                        36699, 36549, 30905,
-                                                                                        30904, 31048, 30765,
-                                                                                        36645, 34264, 30899,
-                                                                                        31043, 31934, 30766,
-                                                                                        31797, 30902, 36647,
-                                                                                        31500, 33225, 36638,
-                                                                                        30762, 36889, 36747,
-                                                                                        33223, 36608, 36868
-                                                                                        )),
+                                           Sex="f",
+                                           Author =  "Smith",
+                                           Determiner =   "J.L. Neff",
+                                           temp.id=
+                                               c(36946, 30900,
+                                                 36646, 36681, 38214,
+                                                 38032, 38205, 36869,
+                                                 36699, 36549, 30905,
+                                                 30904, 31048, 30765,
+                                                 36645, 34264, 30899,
+                                                 31043, 31934, 30766,
+                                                 31797, 30902, 36647,
+                                                 31500, 33225, 36638,
+                                                 30762, 36889, 36747,
+                                                 33223, 36608, 36868
+                                                 )),
 
     ##    Megachile_zapoteca_m = list(Genus="Megachile",
     ##                                SubGenus ="Cressoniella",
@@ -297,13 +298,14 @@ sp.ids <- list(
                             temp.id= c(30921)),
 
     Osmia_pentstemonis_f = list(Genus="Osmia", SubGenus
-                               ="Melanosmia",
-                               Species="pentstemonis",
-                               SubSpecies="", Sex="f", Author =
-                                                           "Cockerell", Determiner =
-                                                                            "J.L. Neff", temp.id= c(36823,
-                                                                                                    30924, 30929, 30770, 36683,
-                                                                                                    30933, 36651, 30940)),
+                                ="Melanosmia",
+                                Species="pentstemonis",
+                                SubSpecies="", Sex="f",
+                                Author = "Cockerell",
+                                Determiner =  "J.L. Neff",
+                                temp.id= c(36823,
+                                           30924, 30929, 30770, 36683,
+                                           30933, 36651, 30940)),
 
     Osmia_subaustralis_f = list(Genus="Osmia",
                                 SubGenus ="Cephalosmia",

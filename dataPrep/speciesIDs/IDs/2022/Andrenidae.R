@@ -8,7 +8,7 @@ sp.ids <- list(
     ##                                   Sex="m", Author = "Cresson",
     ##                                   Determiner="J.L. Neff",
     ##                                   temp.id= c(36831, 31030)),
- 
+
     ##   Perdita_ignota_f= list(Genus="Perdita",
     ##                                   SubGenus ="Hexaperdita",
     ##                                   Species="ignota",
@@ -16,7 +16,7 @@ sp.ids <- list(
     ##                                   Sex="f", Author = "Cockerell",
     ##                                   Determiner="J.L Neff",
     ##                                   temp.id= c(30926)),
- 
+
     ##   Perdita_foveata_f= list(Genus="Perdita",
     ##                                   SubGenus ="hexaperdita",
     ##                                   Species="foveata",
@@ -41,9 +41,10 @@ sp.ids <- list(
                                       SubSpecies="",
                                       Sex="f", Author = "Cresson",
                                       Determiner="J.L. Neff",
-                                      temp.id= c(37976, 37871, 37872, 37874, 37388,
-                                                37697, 37694, 37185, 37736, 38342,
-                                                37643)),
+                                      temp.id= c(37976, 37871, 37872,
+                                                 37874, 37388, 37697,
+                                                 37694, 37185, 37736,
+                                                 38342, 37643)),
 
 
     Pseudopanurgus_atricornis_m= list(Genus="Pseudopanurgus",
@@ -80,8 +81,8 @@ sp.ids <- list(
                                                  38057, 38049, 38193,
                                                  38231, 38017, 38055,
                                                  38048,
-                                                 38128, 
-                                                 38186, 
+                                                 38128,
+                                                 38186,
                                                  38147)),
 
     ##   Panurginus_cressoniellus_f= list(Genus="Panurginus", SubGenus ="",
@@ -175,7 +176,7 @@ sp.ids <- list(
 
 
 
-       Heterosarus_bakeri_f= list(Genus="Heterosarus",
+    Heterosarus_bakeri_f= list(Genus="Heterosarus",
                                SubGenus ="",
                                Species="bakeri",
                                SubSpecies="",
@@ -183,16 +184,16 @@ sp.ids <- list(
                                Author = "Cockerell",
                                Determiner="J.L. Neff",
                                temp.id= c(37365, 38339, 37652, 38332, 38333,
-                                         38383, 38384, 38354)),
+                                          38383, 38384, 38354)),
 
-     Heterosarus_bakeri_m= list(Genus="Heterosarus",
-                                SubGenus ="",
-                                Species="bakeri",
-                                SubSpecies="",
-                                Sex="m",
-                                Author = "Cockerell",
-                                Determiner="J.L. Neff",
-                                temp.id= c(36977, 37366)),
+    Heterosarus_bakeri_m= list(Genus="Heterosarus",
+                               SubGenus ="",
+                               Species="bakeri",
+                               SubSpecies="",
+                               Sex="m",
+                               Author = "Cockerell",
+                               Determiner="J.L. Neff",
+                               temp.id= c(36977, 37366)),
 
 
     ## Heterosarus_neomex_f= list(Genus="Heterosarus",
@@ -219,7 +220,7 @@ sp.ids <- list(
     ##                                  Determiner="",
     ##                                  temp.id= c()),
 
-   
+
 
     Andrena_apacheorum_f= list(Genus="Andrena",
                                SubGenus ="Cnemidandrena",
@@ -256,41 +257,44 @@ sp.ids <- list(
     ##                            temp.id= c())
 
     Andrena_livida_f= list(Genus="Andrena",
-                               SubGenus ="Thysandrena",
-                               Species="livida",
-                               SubSpecies="",
-                               Sex="f",
-                               Author = "LaBerge",
-                               Determiner="J.L. Neff",
-                               temp.id= c(30923, 31477, 32557, 32687, 32409, 30803, 31365)),
-    
+                           SubGenus ="Thysandrena",
+                           Species="livida",
+                           SubSpecies="",
+                           Sex="f",
+                           Author = "LaBerge",
+                           Determiner="J.L. Neff",
+                           temp.id= c(30923, 31477,
+                                      32557, 32687, 32409, 30803, 31365)),
+
     Andrena_livida_m= list(Genus="Andrena",
-                               SubGenus ="Thysandrena",
-                               Species="livida",
-                               SubSpecies="",
-                               Sex="m",
-                               Author = "LaBerge",
-                               Determiner="J.L. Neff",
-                               temp.id= c(30923, 31477, 32557, 32687, 32409, 30803, 31365)),
-    
-        Andrena_livida_m= list(Genus="Andrena",
-                               SubGenus ="Thysandrena",
-                               Species="livida",
-                               SubSpecies="",
-                               Sex="m",
-                               Author = "LaBerge",
-                               Determiner="J.L. Neff",
-                               temp.id= c(30923, 31477, 32557, 32687, 32409, 30803, 31365)),
-    
-       Andrena_cerasifolii_f= list(Genus="Andrena",
-                               SubGenus ="Trachandrena",
-                               Species="Cerasifolii",
-                               SubSpecies="",
-                               Sex="f",
-                               Author = "Cockerell",
-                               Determiner="J.L. Neff",
-                               temp.id= c(37278)),
-    
+                           SubGenus ="Thysandrena",
+                           Species="livida",
+                           SubSpecies="",
+                           Sex="m",
+                           Author = "LaBerge",
+                           Determiner="J.L. Neff",
+                           temp.id= c(30923, 31477,
+                                      32557, 32687, 32409, 30803, 31365)),
+
+    Andrena_livida_m= list(Genus="Andrena",
+                           SubGenus ="Thysandrena",
+                           Species="livida",
+                           SubSpecies="",
+                           Sex="m",
+                           Author = "LaBerge",
+                           Determiner="J.L. Neff",
+                           temp.id= c(30923, 31477,
+                                      32557, 32687, 32409, 30803, 31365)),
+
+    Andrena_cerasifolii_f= list(Genus="Andrena",
+                                SubGenus ="Trachandrena",
+                                Species="Cerasifolii",
+                                SubSpecies="",
+                                Sex="f",
+                                Author = "Cockerell",
+                                Determiner="J.L. Neff",
+                                temp.id= c(37278)),
+
     Andrena_cyanophila_f= list(Genus="Andrena",
                                SubGenus ="",
                                Species="Cyanophila",
@@ -299,7 +303,7 @@ sp.ids <- list(
                                Author = "Cockerell",
                                Determiner="J.L. Neff",
                                temp.id= c(31470, 31205)),
-    
+
     Andrena_birtwelli_f= list(Genus="Andrena",
                               SubGenus ="",
                               Species="birtwelli",
@@ -321,34 +325,39 @@ sp.ids <- list(
                                          37381, 37228, 37377, 37226, 37225,
                                          37224, 37223, 37222, 37221, 37312,
                                          37298, 37297, 37296, 37269, 37294,
-                                         37293, 37291, 37159, 37157, 37158, 32288)),
+                                         37293, 37291, 37159, 37157,
+                                         37158,
+                                         32288)),
 
-     Andrena_hitei_f= list(Genus="Andrena",
-                                 SubGenus ="",
-                                 Species="hitei",
-                                 SubSpecies="",
-                                 Sex="f",
-                                 Author = "Cockerell",
-                                 Determiner="J.L. Neff",
-                                 temp.id= c(36498, 36499)),
+    Andrena_hitei_f= list(Genus="Andrena",
+                          SubGenus ="",
+                          Species="hitei",
+                          SubSpecies="",
+                          Sex="f",
+                          Author = "Cockerell",
+                          Determiner="J.L. Neff",
+                          temp.id= c(36498, 36499)),
 
-     Andrena_segregans_f= list(Genus="Andrena",
-                                 SubGenus ="",
-                                 Species="segregans",
-                                 SubSpecies="",
-                                 Sex="f",
-                                 Author = "Cockerell",
-                                 Determiner="J.L. Neff",
-                                 temp.id= c(37066))
-    
-    
-     Andrena_thaspii_f= list(Genus="Andrena",
-                                 SubGenus ="Andrena",
-                                 Species="thaspii",
-                                 SubSpecies="",
-                                 Sex="f",
-                                 Author = "Graenicher",
-                                 Determiner="J.L. Neff",
-                                 temp.id= c(31219, 31216, 30942, 31363, 31367, 31371, 30927, 30932, 31220, 31468, 30782, 31223, 36867, 30774, 31386))
+    Andrena_segregans_f= list(Genus="Andrena",
+                              SubGenus ="",
+                              Species="segregans",
+                              SubSpecies="",
+                              Sex="f",
+                              Author = "Cockerell",
+                              Determiner="J.L. Neff",
+                              temp.id= c(37066))
+
+
+    Andrena_thaspii_f= list(Genus="Andrena",
+                            SubGenus ="Andrena",
+                            Species="thaspii",
+                            SubSpecies="",
+                            Sex="f",
+                            Author = "Graenicher",
+                            Determiner="J.L. Neff",
+                            temp.id= c(31219, 31216, 30942, 31363,
+                                       31367, 31371, 30927, 30932,
+                                       31220, 31468, 30782, 31223,
+                                       36867, 30774, 31386))
 
 )

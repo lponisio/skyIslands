@@ -14,7 +14,8 @@ sp.ids <- list(
                              SubSpecies="", Sex="f",
                              Author = "Cockerell",
                              Determiner="J.L. Neff",
-                             temp.id= c(30925, 30780, 30930, 36741, 30777)),
+                             temp.id= c(30925, 30780,
+                                        30930, 36741, 30777)),
 
     Hylaeus_annulatus_f= list(Genus="Hylaeus",
                              SubGenus="Hylaeus",

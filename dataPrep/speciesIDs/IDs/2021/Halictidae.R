@@ -11,15 +11,17 @@ sp.ids <- list(
                                                31106, 31516, 31517,
                                                31518, 31521, 31879,
                                                31890, 31893, 31794)),
-     
-     
+
+
      Agapostemon_angelicus_f = list(Genus="Agapostemon",
                                     SubGenus ="Agapostemon",
                                     Species="angelicus",
                                     SubSpecies="",
                                     Sex="f", Author = "Cockerell",
                                     Determiner = "J.F. Zorn",
-                                    temp.id= c(34574,36016,36213,36216,36228,36232,36242,36278)),
+                                    temp.id= c(34574,36016,36213,
+                                               36216,36228,36232,
+                                               36242,36278)),
 
     Agapostemon_angelicus_m = list(Genus="Agapostemon",
                                    SubGenus ="Agapostemon",
@@ -31,8 +33,8 @@ sp.ids <- list(
                                               31258, 31515, 31796,
                                               31795, 31672, 31523,
                                               30801)),
-     
-         Agapostemon_angelicus_m = list(Genus="Agapostemon",
+
+    Agapostemon_angelicus_m = list(Genus="Agapostemon",
                                    SubGenus ="Agapostemon",
                                    Species="angelicus",
                                    SubSpecies="",
@@ -110,7 +112,8 @@ sp.ids <- list(
                            Determiner = "J. F. Zorn",
                            temp.id= c(33571, 33572, 33573, 33574,
                                       33575, 33576, 33588, 33708,
-                                      33753, 33495, 35258, 35447, 36218, 36627, 35615)),
+                                      33753, 33495, 35258, 35447,
+                                      36218, 36627, 35615)),
 
     ## Dufourea_maura_m= list(Genus="Dufourea", SubGenus ="",
     ##                        Species="maura", SubSpecies="",
@@ -119,45 +122,45 @@ sp.ids <- list(
     ##                        temp.id= c()),
 
     Dufourea_fimbriata_f= list(Genus="Dufourea", SubGenus ="",
-                            Species="maura", SubSpecies="",
-                            Sex="f", Author = "Cresson",
-                            Determiner = "J.L. Neff",
-                            temp.id= c(32530, 32710, 31212, 31210, 31230,
-                                      32412, 32413, 32406, 32403, 32410,
-                                      32397, 32555, 32414, 32558, 32418,
-                                      32419, 32438, 32532, 32420, 32389,
-                                      32539, 31378, 32547, 32551, 32545,
-                                      32563, 32564, 32571, 32581, 32610,
-                                      32601, 32668, 32674, 32667, 32680,
-                                      32608, 32603, 32592, 32593, 32595,
-                                      32597, 32599, 32584, 32585, 32556,
-                                      32569, 32679, 32682, 32685, 32692,
-                                      32688, 32705, 32701, 32706, 31236,
-                                      31252, 31411, 31419, 31237, 31241,
-                                      31415, 32396, 31473, 31471, 31208)),
+                               Species="maura", SubSpecies="",
+                               Sex="f", Author = "Cresson",
+                               Determiner = "J.L. Neff",
+                               temp.id= c(32530, 32710, 31212, 31210, 31230,
+                                          32412, 32413, 32406, 32403, 32410,
+                                          32397, 32555, 32414, 32558, 32418,
+                                          32419, 32438, 32532, 32420, 32389,
+                                          32539, 31378, 32547, 32551, 32545,
+                                          32563, 32564, 32571, 32581, 32610,
+                                          32601, 32668, 32674, 32667, 32680,
+                                          32608, 32603, 32592, 32593, 32595,
+                                          32597, 32599, 32584, 32585, 32556,
+                                          32569, 32679, 32682, 32685, 32692,
+                                          32688, 32705, 32701, 32706, 31236,
+                                          31252, 31411, 31419, 31237, 31241,
+                                          31415, 32396, 31473, 31471, 31208)),
 
     Dufourea_fimbriata_m= list(Genus="Dufourea", SubGenus ="",
-                            Species="maura", SubSpecies="",
-                            Sex="m", Author = "Cresson",
-                            Determiner = "J.L. Neff",
-                            temp.id= c(31235, 31207, 31416, 32665, 32552,
-                                       32415, 31377, 31243)),
+                               Species="maura", SubSpecies="",
+                               Sex="m", Author = "Cresson",
+                               Determiner = "J.L. Neff",
+                               temp.id= c(31235, 31207, 31416, 32665, 32552,
+                                          32415, 31377, 31243)),
 
     Dufourea_tinsleyi_f= list(Genus="Dufourea", SubGenus ="",
-                            Species="tinsleyi", SubSpecies="",
-                            Sex="f", Author = "Cockerell",
-                            Determiner = "J.L. Neff",
-                            temp.id= c(34114, 34029, 34026, 34027, 34117,
-                                      34118, 34126, 34121, 34237, 34187,
-                                      34120, 34021)),
+                              Species="tinsleyi", SubSpecies="",
+                              Sex="f", Author = "Cockerell",
+                              Determiner = "J.L. Neff",
+                              temp.id= c(34114, 34029, 34026, 34027, 34117,
+                                         34118, 34126, 34121, 34237, 34187,
+                                         34120, 34021)),
 
     Dufourea_tinsleyi_m= list(Genus="Dufourea", SubGenus ="",
-                            Species="tinsleyi", SubSpecies="",
-                            Sex="f", Author = "Cockerell",
-                            Determiner = "J.L. Neff",
-                            temp.id= c(34067, 34186, 34066, 34236, 34125,
-                                      32700, 34124, 34119, 34116, 34113,
-                                      34069, 34028, 34033, 34034, 34032)),
+                              Species="tinsleyi", SubSpecies="",
+                              Sex="f", Author = "Cockerell",
+                              Determiner = "J.L. Neff",
+                              temp.id= c(34067, 34186, 34066, 34236, 34125,
+                                         32700, 34124, 34119, 34116, 34113,
+                                         34069, 34028, 34033, 34034, 34032)),
 
     Halictus_ligatus_f= list(Genus="Halictus", SubGenus ="Odontalictus",
                              Species="ligatus", SubSpecies="",
@@ -213,10 +216,10 @@ sp.ids <- list(
                                     Determiner = "L. Best, J.L. Neff",
                                     temp.id=
                                         c(30649, 30777, 30778, 31788,
-                                         31790, 31885, 31909, 31915,
-                                         32779, 32775, 31483, 31362,
-                                         30920, 30795, 30778, 30775,
-                                         31880, 31930, 32277)),
+                                          31790, 31885, 31909, 31915,
+                                          32779, 32775, 31483, 31362,
+                                          30920, 30795, 30778, 30775,
+                                          31880, 31930, 32277)),
 
 
     Lasioglossum_sisymbrii_m = list(Genus="Lasioglossum",
@@ -230,13 +233,13 @@ sp.ids <- list(
                                         c(30772, 31602, 31604, 31674,
                                           31675, 31676, 31789, 31791,
                                           31792, 31481, 31910, 32284,
-                                         31904, 31902, 31898, 31891,
-                                         31894, 31924, 31926, 32274,
-                                         32275, 32276, 32278, 32279,
-                                         32280, 32282, 32281, 31918,
-                                         31921, 31907, 31884, 32285,
-                                         32283, 31914, 31911, 31375,
-                                         31917, 31361, 32237)),
+                                          31904, 31902, 31898, 31891,
+                                          31894, 31924, 31926, 32274,
+                                          32275, 32276, 32278, 32279,
+                                          32280, 32282, 32281, 31918,
+                                          31921, 31907, 31884, 32285,
+                                          32283, 31914, 31911, 31375,
+                                          31917, 31361, 32237)),
 
     Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                   SubGenus ="Dialictus",
@@ -254,14 +257,18 @@ sp.ids <- list(
                                              33481, 33485, 33488,
                                              33493, 33580, 33587,
                                              33604, 33489, 34325)),
-     
+
     Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                   SubGenus ="Dialictus",
                                   Species="aquilae",
                                   SubSpecies="",
                                   Sex="f", Author = "Cockerell",
                                   Determiner = "J. F. Zorn",
-                                  temp.id= c(34739, 34741, 34893, 35687, 35766, 35770, 35771, 35804, 35810, 35816, 35817, 35823, 36288)),
+                                  temp.id= c(34739, 34741, 34893,
+                                             35687, 35766, 35770,
+                                             35771, 35804, 35810,
+                                             35816, 35817, 35823,
+                                             36288)),
 
     Lasioglossum_aquilae_m = list(Genus="Lasioglossum",
                                   SubGenus ="Dialictus",
@@ -270,14 +277,19 @@ sp.ids <- list(
                                   Determiner = "L. Best",
                                   temp.id= c(34400, 34324, 33626,
                                              33450, 34323)),
-     
-    
+
+
     Lasioglossum_aquilae_m = list(Genus="Lasioglossum",
                                   SubGenus ="Dialictus",
                                   Species="aquilae", SubSpecies="",
                                   Sex="m", Author = "Cockerell",
                                   Determiner = "J. F. Zorn",
-                                  temp.id= c(34744, 34745, 34757, 34758, 34761, 34762, 34775, 34786, 34792, 34794, 34795, 34811, 34891, 35014, 35024, 35028)),
+                                  temp.id= c(34744, 34745, 34757,
+                                             34758, 34761, 34762,
+                                             34775, 34786, 34792,
+                                             34794, 34795, 34811,
+                                             34891, 35014, 35024,
+                                             35028)),
 
     Lasioglossum_potosi_m = list(Genus="Lasioglossum",
                                  SubGenus ="",
@@ -446,6 +458,6 @@ sp.ids <- list(
 
 
 
-    )
+)
 
 

@@ -9,10 +9,10 @@ library(RSQLite)
 library(tidyr)
 library(readr)
 
-## dir.bombus <-
-##     '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
 dir.bombus <-
-     '~/Dropbox (University of Oregon)/skyIslands'
+    '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
+## dir.bombus <-
+##      '~/Dropbox (University of Oregon)/skyIslands'
 
 ## *****************************************************************
 ## create relational database, add species IDs

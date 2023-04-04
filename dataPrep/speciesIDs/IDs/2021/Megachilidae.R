@@ -9,7 +9,7 @@ sp.ids <- list(
                                      Determiner = "J.L. Neff",
                                      temp.id= c(34317, 34174)),
 
-    
+
     ## Anthidium_maculosum_m = list(Genus="Anthidium",
     ##                              SubGenus ="Anthidium",
     ##                              Species="maculosum",
@@ -17,8 +17,8 @@ sp.ids <- list(
     ##                              Author = "Cresson",
     ##                              Determiner = "",
     ##                              temp.id= c()),
-    
-    
+
+
     Anthidium_manicatum_m = list(Genus="Anthidium",
                                      SubGenus ="",
                                      Species="manicatum",
@@ -27,17 +27,18 @@ sp.ids <- list(
                                      Determiner = "J.L. Neff",
                                      temp.id= c(30643)),
 
-    
+
     Paranthidium_jugatorium_f = list(Genus="Paranthidium",
                                      SubGenus ="",
                                      Species="jugatorium",
                                      SubSpecies="", Sex="f",
                                      Author = "Say",
                                      Determiner = "J.L. Neff",
-                                     temp.id= c(34065, 34018, 34128, 34020, 34019,
+                                     temp.id= c(34065, 34018, 34128,
+                                                34020, 34019,
                                                34129, 34127)),
-     
-     
+
+
      Paranthidium_jugatorium_m = list(Genus="Paranthidium",
                                      SubGenus ="",
                                      Species="jugatorium",
@@ -45,7 +46,7 @@ sp.ids <- list(
                                      Author = "Say",
                                      Determiner = "J.L. Neff",
                                      temp.id= c(34130, 34182, 32772)),
-    
+
 
      Coelioxys_rufitarsis_m = list(Genus="Coelioxys",
                                      SubGenus ="",
@@ -54,8 +55,8 @@ sp.ids <- list(
                                      Author = "Smith",
                                      Determiner = "J.L. Neff",
                                      temp.id= c(30799)),
-    
-    
+
+
      Coelioxys_sodalis_m = list(Genus="Coelioxys",
                                      SubGenus ="Coelioxys",
                                      Species="sodalis",
@@ -63,8 +64,8 @@ sp.ids <- list(
                                      Author = "Cresson",
                                      Determiner = "J.L. Neff",
                                      temp.id= c(30907)),
-    
-        
+
+
      Coelioxys_sodalis_f = list(Genus="Coelioxys",
                                      SubGenus ="Coelioxys",
                                      Species="sodalis",
@@ -72,8 +73,8 @@ sp.ids <- list(
                                      Author = "Cresson",
                                      Determiner = "J.L. Neff",
                                      temp.id= c(30909, 30908, 31132, 30910)),
-    
-    
+
+
     ## Lithurgopsis_apicalis_m = list(Genus="Lithurgopsis",
     ##                              SubGenus ="",
     ##                              Species="apicalis",
@@ -82,7 +83,7 @@ sp.ids <- list(
     ##                              Determiner = "L. Best",
     ##                              temp.id= c()),
 
-    
+
     Megachile_fidelis_f = list(Genus="Megachile",
                                SubGenus ="Sayapis",
                                Species="fidelis",

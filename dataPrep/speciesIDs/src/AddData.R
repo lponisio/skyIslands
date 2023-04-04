@@ -9,21 +9,42 @@ add.to.data <- function(sp.ids, case, family, date, data.file) {
         rep(sapply(sp.ids, function(x) x[[cat]]), lengths))
     TempID <- unlist(sapply(sp.ids, function(x) x$temp.id))
 
+    ## check for duplicates
+    if(sum(table(TempID) > 1) > 0) {
+        cat('!!!Duplicate TempID found!!!\n')
+        print(family)
+        tab.dup <- table(TempID)[table(TempID) > 1]
+        print(tab.dup)
+        write.csv(tab.dup, file=sprintf(
+                                "cleaning/%s_%s_%s_dup_IDs_same.csv",
+                                case,
+                                family,
+                                date))
+    }
+
    ## check that no IDs are already present in main data-set
-    if(any(TempID %in% spec.dat$SpecimenID[!is.na(spec.dat$Species)])) {
+    if(any(TempID %in% spec.dat$UniqueID[!is.na(spec.dat$Species)])) {
         cat('!!!TempID already present!!!\n')
         dup.temp <- TempID[TempID %in%
-                     spec.dat$SpecimenID[!is.na(spec.dat$Species)]]
+                     spec.dat$UniqueID[!is.na(spec.dat$Species)]]
         print(dup.temp)
-        write.csv(bad.ids, file="cleaning/dup_IDs.csv")
+        write.csv(dup.temp, file=sprintf(
+                                "cleaning/%s_%s_%s_dup_IDs_diff.csv",
+                                case,
+                                family,
+                                date))
     }
-    ind <- match(TempID, spec.dat$SpecimenID)
+    ind <- match(TempID, spec.dat$UniqueID)
 
     if(any(is.na(ind))){
       bad.ids <- TempID[is.na(ind)]
       print("bad temp ID")
       print(bad.ids)
-        write.csv(bad.ids, file="cleaning/ids_not_in_specimens.csv")
+        write.csv(bad.ids, file=sprintf(
+                                "cleaning/%s_%s_%s_ids_not_in_raw.csv",
+                                case,
+                                family,
+                                date))
     }
 
     if(case=='bee') {

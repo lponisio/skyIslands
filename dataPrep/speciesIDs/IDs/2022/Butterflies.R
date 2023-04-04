@@ -5,7 +5,8 @@ sp.ids <- list(
                             SubSpecies="",
                             Sex="", Author = "Reakirt",
                             Determiner="A. Santillana",
-                            temp.id= c(39014, 39025, 39027, 39028, 39029, 39030, 39031)),
+                            temp.id= c(39014, 39025, 39027, 39028,
+                                       39029, 39030, 39031)),
 
 
     Lon_taxiles_m = list(Genus="Lon",

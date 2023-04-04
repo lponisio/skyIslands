@@ -9,12 +9,15 @@ sp.ids <- list(
                                  Author = "Osten Sacken",
                                  Determiner="M.Hauser",
                                  temp.id = c(31440, 32423, 32446, 32447)),
-    
+
     Chrysotoxum_morpho1 = list(Genus="Chrysotoxum",SubGenus="", Species
                                = "sp.", SubSpecies = "a",
                                Sex = "", Author = "",
                                Determiner="M.Hauser",
-                               temp.id =  c(38310,38312,38265,37995,37120,37000,33756,34072,32958,38307,38325,37277,37282,31650,31688)),
+                               temp.id =  c(38310,38312, 38265,37995,
+                                            37120,37000,33756,34072,
+                                            32958,38307,38325,37277,
+                                            37282,31650,31688)),
 
 
     Helophilus_latifrons_m = list(Genus = "Helophilus", SubGenus="",
@@ -38,9 +41,10 @@ sp.ids <- list(
                                       Sex = "f",
                                       Author = "Loew",
                                       Determiner="M.Hauser",
-                                      temp.id = c(31422, 33754, 33712, 33757, 33762,
-                                                  32091, 34575, 30994, 35003, 35027,
-                                                  35346)),
+                                      temp.id = c(31422, 33754, 33712,
+                                                  33757, 33762, 32091,
+                                                  34575, 30994, 35003,
+                                                  35027, 35346)),
 
 
     Asemosyrphus_polygrammus_m = list(Genus = "Asemosyrphus", SubGenus="",
@@ -48,16 +52,21 @@ sp.ids <- list(
                                       Sex = "m",
                                       Author = "Loew",
                                       Determiner="M.Hauser",
-                                      temp.id = c(34592, 35261, 35311, 35329, 35330,
-                                                  36152, 32309, 35292, 33715, 33758,
-                                                  31442, 31617, 31642, 31643, 31644,
-                                                  34520, 31809, 34507, 34777)),
+                                      temp.id = c(34592, 35261, 35311,
+                                                  35329, 35330, 36152,
+                                                  32309, 35292, 33715,
+                                                  33758, 31442, 31617,
+                                                  31642, 31643, 31644,
+                                                  34520, 31809, 34507,
+                                                  34777)),
 
 
     Scaeva_affinis_f= list(Genus="Scaeva", SubGenus="",
-                           Species="affinis", SubSpecies="", Sex="f", Author = "",
+                           Species="affinis", SubSpecies="",
+                           Sex="f", Author = "",
                            Determiner="M.Hauser",
-                           temp.id= c(34469, 33295, 33501, 37780, 32060, 32106)),
+                           temp.id= c(34469, 33295, 33501, 37780,
+                                      32060, 32106)),
 
 
     Didea_fuscipes_f  = list(Genus = "Didea", SubGenus="",
@@ -95,15 +104,15 @@ sp.ids <- list(
 
 
     Dasysyrphus_morpho1 = list(Genus = "Dasysyrphus", SubGenus="",
-                           Species = "sp.", SubSpecies = "a",
-                           Sex = "",
-                           Author = "",
-                           Determiner="M.Hauser",
-                           temp.id = c(35228, 33507, 33709, 32142,
-                                       31287, 32337, 32911, 33308,
-                                       33764, 32962, 33498, 38051,
-                                       37994, 37476, 36830, 36826,
-                                       36845)),
+                               Species = "sp.", SubSpecies = "a",
+                               Sex = "",
+                               Author = "",
+                               Determiner="M.Hauser",
+                               temp.id = c(35228, 33507, 33709, 32142,
+                                           31287, 32337, 32911, 33308,
+                                           33764, 32962, 33498, 38051,
+                                           37994, 37476, 36830, 36826,
+                                           36845)),
 
 
     Toxomerus_marginatus_f = list(Genus = "Toxomerus",SubGenus="",
@@ -257,20 +266,24 @@ sp.ids <- list(
                                     Species="lapponicus", SubSpecies="",
                                     Sex="f", Author = "Zetterstedt",
                                     Determiner="M.Hauser",
-                                    temp.id= c(32441, 31819, 31678, 31646, 31645,
-                                               31636, 31620, 31619, 30833, 31816,
-                                               31812, 31803, 31681, 30837, 32428,
-                                               32424, 32836, 33311, 33305, 33310,
-                                               33174)),
+                                    temp.id= c(32441, 31819, 31678,
+                                               31646, 31645, 31636,
+                                               31620, 31619, 30833,
+                                               31816, 31812, 31803,
+                                               31681, 30837, 32428,
+                                               32424, 32836, 33311,
+                                               33305, 33310, 33174)),
 
 
     Lapposyrphus_lapponicus_m= list(Genus="Lapposyrphus", SubGenus="",
                                     Species="lapponicus", SubSpecies="",
                                     Sex="m", Author = "Zetterstedt",
                                     Determiner="M.Hauser",
-                                    temp.id= c(33506, 33508, 31800, 31823, 31488,
-                                               31802, 31806, 32931, 34556, 30817,
-                                               30811, 30819, 30842, 31273, 32914,
+                                    temp.id= c(33506, 33508, 31800,
+                                               31823, 31488, 31802,
+                                               31806, 32931, 34556,
+                                               30817, 30811, 30819,
+                                               30842, 31273, 32914,
                                                33175, 37362)),
 
 
@@ -426,7 +439,8 @@ sp.ids <- list(
                               Species="volucris", SubSpecies="", Sex="m",
                               Author = "Osten Sacken",
                               Determiner="M.Hauser",
-                              temp.id= c(32966, 34888, 34613, 31821, 30825, 35042, 31822, 34649)),
+                              temp.id= c(32966, 34888, 34613, 31821,
+                                         30825, 35042, 31822, 34649)),
 
 
     Copestylum_lentum_m = list(Genus ="Copestylum",
@@ -435,7 +449,8 @@ sp.ids <- list(
                                    "lentum", SubSpecies="", Sex="m",
                                Author ="Williston",
                                Determiner="M.Hauser",
-                               temp.id = c(30838, 36471, 36779, 36456, 36795, 36827)),
+                               temp.id = c(30838, 36471, 36779, 36456,
+                                           36795, 36827)),
 
 
     Copestylum_marginatum_group_m = list(Genus ="Copestylum",
@@ -444,12 +459,20 @@ sp.ids <- list(
                                              "marginatum group", SubSpecies="", Sex="m",
                                          Author ="",
                                          Determiner="M.Hauser",
-                                         temp.id = c(36911, 36573, 36788, 36739, 36605,
-                                                     36870, 36835, 36839, 36829, 31009,
-                                                     36813, 36810, 31869, 36671, 36801,
-                                                     32067, 31811, 30810, 36650, 32310,
-                                                     36725, 36759, 36626, 36653, 36568,
-                                                     36695, 36698, 36480)),
+                                         temp.id = c(36911, 36573,
+                                                     36788, 36739,
+                                                     36605, 36870,
+                                                     36835, 36839,
+                                                     36829, 31009,
+                                                     36813, 36810,
+                                                     31869, 36671,
+                                                     36801, 32067,
+                                                     31811, 30810,
+                                                     36650, 32310,
+                                                     36725, 36759,
+                                                     36626, 36653,
+                                                     36568, 36695,
+                                                     36698, 36480)),
 
 
     Copestylum_marginatum_group_f = list(Genus ="Copestylum",
@@ -458,9 +481,13 @@ sp.ids <- list(
                                              "marginatum group", SubSpecies="", Sex="f",
                                          Author ="",
                                          Determiner="M.Hauser",
-                                         temp.id = c(32139, 35001, 35321, 34545, 34576,
-                                                     32112, 36772, 30821, 32140, 32342,
-                                                     32065, 35323, 35362)),
+                                         temp.id = c(32139, 35001,
+                                                     35321, 34545,
+                                                     34576, 32112,
+                                                     36772, 30821,
+                                                     32140, 32342,
+                                                     32065, 35323,
+                                                     35362)),
 
 
     Copestylum_violaceum_f = list(Genus ="Copestylum",SubGenus="", Species
