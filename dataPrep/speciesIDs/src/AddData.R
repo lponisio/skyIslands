@@ -9,24 +9,23 @@ add.to.data <- function(sp.ids, case, family, date, data.file) {
         rep(sapply(sp.ids, function(x) x[[cat]]), lengths))
     TempID <- unlist(sapply(sp.ids, function(x) x$temp.id))
 
-    ## check for duplicates
-    if(sum(table(TempID)>1)>0) {
-        cat('!!!Duplicate TempID found!!!\n')
-        print(family)
-        print(table(TempID)[table(TempID)>1])
-    }
-
-    ## check that no IDs are already present in main data-set
-    if(any(TempID %in% spec.dat$UniqueID[!is.na(spec.dat$Species)])) {
+   ## check that no IDs are already present in main data-set
+    if(any(TempID %in% spec.dat$SpecimenID[!is.na(spec.dat$Species)])) {
         cat('!!!TempID already present!!!\n')
-        print(TempID[TempID %in%
-                     spec.dat$Unique[!is.na(spec.dat$Species)]])
+        dup.temp <- TempID[TempID %in%
+                     spec.dat$SpecimenID[!is.na(spec.dat$Species)]]
+        print(dup.temp)
+        write.csv(bad.ids, file="cleaning/dup_IDs.csv")
     }
-    ind <- match(TempID, spec.dat$UniqueID)
+    ind <- match(TempID, spec.dat$SpecimenID)
 
     if(any(is.na(ind))){
-        print(paste("bad temp ID", TempID[is.na(ind)]))
+      bad.ids <- TempID[is.na(ind)]
+      print("bad temp ID")
+      print(bad.ids)
+        write.csv(bad.ids, file="cleaning/ids_not_in_specimens.csv")
     }
+
     if(case=='bee') {
         spec.dat$Order[ind] <- 'Hymenoptera'
         spec.dat$GenID[ind] <- 'Bee'
@@ -49,7 +48,10 @@ add.to.data <- function(sp.ids, case, family, date, data.file) {
         spec.dat$GenID[ind] <- 'Fly'
     }
 
-    spec.dat[ind,cats] <- dd[,cats]
+    good.ids <- !is.na(ind)
+    ind <- ind[good.ids]
+    spec.dat[ind, cats] <- ""
+    spec.dat[ind, cats] <- dd[good.ids, cats]
     spec.dat$DateDetermined[ind] <- date
 
     if(case != "beetle"){

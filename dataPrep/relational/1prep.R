@@ -27,7 +27,10 @@ spec.data$SiteSubSite <-  paste0(spec.data$Site, spec.data$SubSite)
 print(paste("original number of specimens", nrow(spec.data)))
 
 ## BEWARE CHECK DATE FORMAT
-spec.data$Date <- as.Date(spec.data$Date, "%m/%d/%Y")
+spec.date.format <- "%m/%d/%y"
+print(spec.date.format)
+print(spec.data$Date[1])
+spec.data$Date <- as.Date(spec.data$Date, spec.date.format)
 
 ## add subsite one to all 2012 data
 spec.2012 <- spec.data$Date < "2013-01-01"
@@ -107,7 +110,10 @@ weather.data$SiteSubSite <-  paste0(weather.data$Site,
                                     weather.data$SubSite)
 
 ## BEWARE CHECK DATE
-weather.data$Date <- as.Date(weather.data$Date, "%m/%d/%Y")
+w.date.format <- "%m/%d/%Y"
+print(w.date.format)
+print(weather.data$Date[1])
+weather.data$Date <- as.Date(weather.data$Date, w.date.format)
 
 
 check.weather.data <- aggregate(weather.data$StartTime,
@@ -204,14 +210,42 @@ write.csv(data.geo, file="relational/original/geography.csv",
 
 screenings <- c("Apidae", "AspergillusSpp", "AscosphaeraSpp",
                 "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi",
+                "CrithidiaSpp",
                 "NosemaBombi", "NosemaCeranae")
 
-para.data <- read.csv("raw/parasites.csv",  stringsAsFactors=FALSE)
+## con
+## par.cols <-  c("UniqueID",
+##               "TempID",
+##               "Apidae",
+##               "AspergillusSpp",
+##               "AscosphaeraSpp",
+##               "ApicystisSpp",
+##               "CrithidiaExpoeki",
+##               "CrithidiaBombi",
+##               "CrithidiaSpp",
+##               "NosemaCeranae",
+##               "NosemaBombi")
+## ## 2018 data
+## para.data <- read.csv("raw/parasites.csv",  stringsAsFactors=FALSE)
+## para.data$CrithidiaSpp <- NA
+## para.data[, par.cols)]
+
+## dir.pars <- "parasite_postivies/indiv_parasites"
+
+## for(i in par.cols[-c(1,2)]){
+##   positives <- para.data$UniqueID[para.data[,i] == 1]
+ 
+##   write.table(glue_collapse(sort(positives), sep=", "),
+##               file=file.path(dir.pars, sprintf("/%s_2018.txt",
+##                                                i)), sep=",",
+##               row.names=FALSE)
+## }
 
 
-source('parasite_postivies/all_2021.R', chdir = TRUE)
+## 2021-2022 data
+source('parasite_postivies/all_parasites.R', chdir = TRUE)
 
-parasites.2021 <- data.frame(UniqueID=Apidae,
+para.data <- data.frame(UniqueID=Apidae,
                              TempID=NA,
                              Apidae=1,
                              AspergillusSpp=NA,
@@ -219,20 +253,34 @@ parasites.2021 <- data.frame(UniqueID=Apidae,
                              ApicystisSpp=0,
                              CrithidiaExpoeki=0,
                              CrithidiaBombi=0,
-                             NosemaCeranae=NA, ## change to 0 after
+                             CrithidiaSpp=0,
+                             NosemaCeranae=0, ## change to 0 after
                              ## the screenings are completed
-                             NosemaBombi=NA)
+                             NosemaBombi=0)
 
-parasites.2021$AscosphaeraSpp[parasites.2021$UniqueID %in%
+para.data$AscosphaeraSpp[para.data$UniqueID %in%
                               AscosphaeraSpp] <- 1
-parasites.2021$ApicystisSpp[parasites.2021$UniqueID %in%
+para.data$ApicystisSpp[para.data$UniqueID %in%
                               ApicystisSpp] <- 1
-parasites.2021$CrithidiaExpoeki[parasites.2021$UniqueID %in%
+para.data$CrithidiaExpoeki[para.data$UniqueID %in%
                               CrithidiaExpoeki] <- 1
-parasites.2021$CrithidiaBombi[parasites.2021$UniqueID %in%
+para.data$CrithidiaBombi[para.data$UniqueID %in%
                               CrithidiaBombi] <- 1
+para.data$CrithidiaSpp[para.data$UniqueID %in%
+                              CrithidiaSpp] <- 1
 
-para.data <- rbind(para.data, parasites.2021)
+## contaminated samples
+para.data$ApicystisSpp[para.data$UniqueID %in%
+                              ApicystisSppNA] <- NA
+para.data$CrithidiaExpoeki[para.data$UniqueID %in%
+                              CrithidiaExpoekiNA] <- NA
+para.data$CrithidiaBombi[para.data$UniqueID %in%
+                              CrithidiaBombiNA] <- NA
+para.data$CrithidiaSpp[para.data$UniqueID %in%
+                              CrithidiaSppNA] <- NA
+
+
+## para.data <- rbind(para.data, parasites)
 
 controls <- para.data[grepl("DNActrl", para.data$UniqueID),]
 print("Are DNA extraction controls all zero?")

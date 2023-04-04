@@ -48,8 +48,8 @@ print(paste("conditions without site matches",
 specimens$GeographyFK <- geography$GeographyPK[match(specimens$Site,
                                                      geography$Site)]
 
-print(paste("specimens without site matches",
-            unique(specimens$UniqueID[is.na(specimens$GeographyFK)])))
+## print("specimens without site matches",
+##             unique(specimens$UniqueID[is.na(specimens$GeographyFK)]))
 
 ## Propagate geography key to the veg table.
 veg$GeographyFK <- geography$GeographyPK[match(veg$Site,
@@ -181,9 +181,6 @@ conditions$ConditionsFK <-
 ## Propagate conditions key to the specimens table.
 specimens$ConditionsFK <-
     cond$ConditionsPK[match(specimens$cond.code, cond$cond.code)]
-
-print(paste("specimen without condition keys",
-            specimens$UniqueID[is.na(specimens$ConditionsFK)]))
 
 bad <- (specimens[, c("Site", "Date",
                             "NetNumber", "SubSite")][is.na(specimens$ConditionsFK),])

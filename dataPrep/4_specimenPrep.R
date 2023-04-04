@@ -112,8 +112,10 @@ spec$PlantGenusSpecies[spec$PlantGenus == "Erigeron"] <-
 dir.create("../data/networks", showWarnings = FALSE)
 dir.create("../data/splevel_network_metrics", showWarnings = FALSE)
 
+crithidias <- c("CrithidiaExpoeki",
+                "CrithidiaBombi", "CrithidiaSpp")
 parasites <- c( "AscosphaeraSpp",
-                "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi",
+               "ApicystisSpp", crithidias,
                "NosemaBombi", "NosemaCeranae")
 
 spec[, parasites][is.na(spec[, parasites])] <- 0
@@ -124,12 +126,18 @@ spec[spec$Apidae != 1 | is.na(spec$Apidae), parasites] <- NA
 
 spec$ParasiteRichness <- rowSums(spec[, parasites],
                                  na.rm=TRUE)
+spec$CrithidiaRichness <- rowSums(spec[, crithidias],
+                                 na.rm=TRUE)
 spec$PossibleParasite <- apply(spec[, parasites], 1,
                                function(x) sum(!is.na(x)))
 spec$ParasitePresence <- (spec$ParasiteRichness >= 1)*1
+spec$CrithidiaPresence <- (spec$CrithidiaRichness >= 1)*1
 
 spec[spec$Apidae != 1  | is.na(spec$Apidae), "ParasiteRichness"] <- NA
 spec[spec$Apidae != 1  | is.na(spec$Apidae), "ParasitePresence"] <- NA
+spec[spec$Apidae != 1  | is.na(spec$Apidae), "CrithidiaRichness"] <-
+  NA
+spec[spec$Apidae != 1  | is.na(spec$Apidae), "CrithidiaPresence"] <- NA
 
 write.csv(spec, file="../data/spec_all_methods.csv", row.names=FALSE)
 
@@ -137,7 +145,7 @@ spec.net <- spec[spec$Method == "Net",]
 spec.pan <- spec[spec$Method == "Pan",]
 spec <- spec[spec$Method != "Vane",]
 
-save(spec, file="../data/spec.Rdata")
+write.csv(spec, file="../data/spec_net_pan.csv", row.names=FALSE)
 
 ## net.only.columns <- c("PlantGenus", "PlantGenusSpecies",
 ##                       "PlantSpecies", "PlantSubSpecies", "PlantVar",
@@ -355,43 +363,51 @@ write.csv(traits, file='../data/parasitetraits.csv', row.names=FALSE)
 ## *******************************************************************
 
 ## plant-pollinator networks
-makeNets(spec.net.nets, net.type="YrSR", poll.group="BeesSyrphids")
-makeNets(spec.net.nets, net.type="Yr", mean.by.year=TRUE,
+bees.syr.yr.sr <- makeNets(spec.net.nets, net.type="YrSR", poll.group="BeesSyrphids")
+bees.syr.yr <- makeNets(spec.net.nets, net.type="Yr", mean.by.year=TRUE,
          poll.group="BeesSyrphids")
 
-makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
+bees.yr.sr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
          net.type="YrSR",
          poll.group="Bees")
-makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
+bees.yr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
          net.type="Yr", mean.by.year=TRUE, poll.group="Bees")
 
 spec.sub <- agg.spec.sub %>%
-    select(UniqueID, GenusSpecies, Site, Year, SampleRound,
-        "AscosphaeraSpp",
-           "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi",
-            "NosemaBombi", "NosemaCeranae")
+  select(UniqueID, GenusSpecies, Site, Year, SampleRound,
+         "AscosphaeraSpp",
+         "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi",
+         "NosemaBombi", "NosemaCeranae")
 
 prep.para <- spec.sub %>%
-    pivot_longer(cols=c("AscosphaeraSpp",
-                        "ApicystisSpp", "CrithidiaExpoeki",
-                        "CrithidiaBombi",
-                         "NosemaBombi", "NosemaCeranae"),
-                 names_to = "Parasite", values_to = "count")
+  pivot_longer(cols=c("AscosphaeraSpp",
+                      "ApicystisSpp", "CrithidiaExpoeki",
+                      "CrithidiaBombi",
+                      "NosemaBombi", "NosemaCeranae"),
+               names_to = "Parasite", values_to = "count")
 prep.para <- as.data.frame(prep.para)
 
-makeNets(prep.para, net.type="YrSR", species=c("Pollinator",
-                                               "Parasite"),
-         lower.level="GenusSpecies",
-         higher.level="Parasite",
-         poll.group="Bees")
+par.bees.yr.sr <- makeNets(prep.para, net.type="YrSR",
+                           species=c("Pollinator",
+                                     "Parasite"),
+                           lower.level="GenusSpecies",
+                           higher.level="Parasite",
+                           poll.group="Bees")
 
 
-makeNets(prep.para, net.type="Yr", species=c("Pollinator",
-                                               "Parasite"),
-         lower.level="GenusSpecies",
-         higher.level="Parasite",
-         mean.by.year=TRUE,
-         poll.group="Bees")
+par.bees.yr <- makeNets(prep.para, net.type="Yr",
+                        species=c("Pollinator",
+                                  "Parasite"),
+                        lower.level="GenusSpecies",
+                        higher.level="Parasite",
+                        mean.by.year=TRUE,
+                        poll.group="Bees")
+
+## merge site summary metrics
+spec.net <- merge(spec.net, bees.yr, all.x=TRUE)
+spec.net$SpSiteYear <- NULL
+
+save(spec.net, file="../data/spec_net.Rdata")
 
 ## *******************************************************************
 ##  Data checks

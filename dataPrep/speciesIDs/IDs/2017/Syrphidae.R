@@ -295,13 +295,11 @@ sp.ids <- list(
                      Sex="f",
                      Author = "Osten Sacken",
                      Determiner="M.Hauser",
-                     temp.id= c("BBSL1084943",
-                                "BBSL1058729",
-                                "BBSL1070541",
-                                "BBSL1071067",
-                                "BBSL1073114",
-                                "BBSL1073948",
-                                "BBSL1073949"22634,19445,17669 )),
+                     temp.id= c("BBSL1084943", "BBSL1058729",
+                                "BBSL1070541", "BBSL1071067",
+                                "BBSL1073114", "BBSL1073948",
+                                "BBSL1073949", "22634","19445",
+                                "17669")),
 
     scaeva_f= list(Genus="Scaeva",
                    SubGenus="",
@@ -581,15 +579,15 @@ sp.ids <- list(
                                         "BBSL1058619", "BBSL1058600")),
 
     Copestylum_mexicanum = list(Genus = "Copestylum", SubGenus="",
-                               Species   = "mexicanum",
-                               SubSpecies="",
-                               Sex = "", Author = "Macquart",
-                               Determiner="M.Hauser",
-                               temp.id = c("BBSL1058597", "BBSL1058815",
-                                           "BBSL1058275", "BBSL1058284",
-                                           "BBSL1058276", "BBSL1058277",
-                                           "BBSL1058348", "BBSL1058156",
-                                           "BBSL1058154")),
+                                Species   = "mexicanum",
+                                SubSpecies="",
+                                Sex = "", Author = "Macquart",
+                                Determiner="M.Hauser",
+                                temp.id = c("BBSL1058597", "BBSL1058815",
+                                            "BBSL1058275", "BBSL1058284",
+                                            "BBSL1058276", "BBSL1058277",
+                                            "BBSL1058348", "BBSL1058156",
+                                            "BBSL1058154")),
 
     Copestylum_anna_f = list(Genus = "Copestylum",
                              SubGenus="",
@@ -610,12 +608,12 @@ sp.ids <- list(
                                    "BBSL1074428", "BBSL1059087")),
 
     Copestylum_haagii = list(Genus ="Copestylum",
-                            SubGenus="",
-                            Species = "haagii",
-                            SubSpecies="", Sex = "",
-                            Author = "Jaennicke",
-                            Determiner="M.Hauser",
-                            temp.id =  c("BBSL1059348")),
+                             SubGenus="",
+                             Species = "haagii",
+                             SubSpecies="", Sex = "",
+                             Author = "Jaennicke",
+                             Determiner="M.Hauser",
+                             temp.id =  c("BBSL1059348")),
 
     Chrysotoxum_morpho1 = list(Genus="Chrysotoxum",
                                SubGenus="", Species = "sp.",
@@ -896,15 +894,15 @@ sp.ids <- list(
                                             "BBSL1058993",
                                             "BBSL1060082", 24704, 23103, 23276, 22764, 24703, 24711
                                             )),
-    
-    
+
+
     Copestylum_marginatum_group_f = list(Genus ="Copestylum",
-                               SubGenus="",
-                               Species =
-                                   "marginatum group", SubSpecies="", Sex="f",
-                               Author ="",
-                               Determiner="M.Hauser",
-                               temp.id = c("30179","23018"))
+                                         SubGenus="",
+                                         Species =
+                                             "marginatum group", SubSpecies="", Sex="f",
+                                         Author ="",
+                                         Determiner="M.Hauser",
+                                         temp.id = c("30179","23018"))
 
 )
 
