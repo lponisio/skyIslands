@@ -1637,7 +1637,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                          "BBSL1070317", "BBSL1071167",
                                          "BBSL1071673", "30302",
                                          "22652", "22651", "24683",
-                                         "30485")),
+                                         "30485", "22650")),
 
     Sphecodes_morphoa_m= list(Genus="Sphecodes", SubGenus ="",
                               Species="sp.",
