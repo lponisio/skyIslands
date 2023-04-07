@@ -203,6 +203,14 @@ sp.ids <- list(
                                   Sex="m", Author = "Timberlake",
                                   Determiner="J.L. Neff",
                                   temp.id= c(38340, 38296, 34115)),
+    
+  Protandrena_sp= list(Genus="Protandrena", SubGenus ="",
+                         Species="sp.",
+                         SubSpecies="",
+                         Sex="m", Author = "",
+                         Determiner="J.L. Neff",
+                         temp.id= c(33876)),
+
 
     ## Protandrena_sp_a= list(Genus="Protandrena", SubGenus ="",
     ##                        Species="sp.",
@@ -305,6 +313,15 @@ sp.ids <- list(
                                           33967, 33203, 33209, 32777,
                                           32684, 33878, 34185, 34331,
                                           32708)),
+    
+        Heterosarus_stathamae_?= list(Genus="Heterosarus",
+                               SubGenus ="",
+                               Species="stathamae",
+                               SubSpecies="?",
+                               Sex="",
+                               Author = "Timberlake",
+                               Determiner="",
+                               temp.id= c(38340,38296,34115)),
 
     ## Heterosarus_bakeri_m= list(Genus="Heterosarus",
     ##                            SubGenus ="",
