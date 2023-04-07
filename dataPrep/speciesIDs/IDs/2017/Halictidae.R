@@ -1891,6 +1891,12 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                         "BBSL1072696",
                                         "BBSL1071645", "25025", "20956", "22805",
                                         "30244")),
+               
+         Halictus_ligatus_f= list(Genus="Halictus", SubGenus ="Odontalictus",
+                             Species="ligatus", SubSpecies="",
+                             Sex="f", Author = "Say",
+                             Determiner = "J.F. Zorn",
+                             temp.id= c(21453,23557,21033,21007,21739)),
 
     Halictus_ligatus_m= list(Genus="Halictus",
                              SubGenus ="Odontalictus",
