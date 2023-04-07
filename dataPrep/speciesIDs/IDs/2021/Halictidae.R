@@ -220,6 +220,16 @@ sp.ids <- list(
                                           32779, 32775, 31483, 31362,
                                           30920, 30795, 30778, 30775,
                                           31880, 31930, 32277)),
+     
+         Lasioglossum_sisymbrii_f = list(Genus="Lasioglossum",
+                                    SubGenus ="Lasioglossum",
+                                    Species="sisymbrii",
+                                    SubSpecies="",
+                                    Sex="f",
+                                    Author = "Cockerell",
+                                    Determiner = "J.F. Zorn",
+                                    temp.id=
+                                        c(34536,36279,34505,34530,34564,34623,35848,35894,36215,36204,36019,34477)),
 
 
     Lasioglossum_sisymbrii_m = list(Genus="Lasioglossum",
