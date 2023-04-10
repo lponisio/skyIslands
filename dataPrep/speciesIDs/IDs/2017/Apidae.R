@@ -936,7 +936,7 @@ sp.ids <- list(
                                            "BBSL1073094",
                                            "BBSL1073093",
                                            "BBSL1071887",
-                                           "BBSL1073519")),
+                                           "BBSL1073519",24707)),
 
     Bombus_nevadensis_m = list(Genus = "Bombus", SubGenus="Bombias",
                                Species = "nevadensis",
