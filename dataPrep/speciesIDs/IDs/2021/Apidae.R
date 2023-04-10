@@ -255,10 +255,19 @@ sp.ids <- list(
                                Species = "nevadensis",
                                SubSpecies = "", Sex ="f",
                                Author = "Cresson",
-                               Determiner="",
+                               Determiner="L. Best",
                                temp.id = c(30740,30742,30749, 30783,
                                            30876, 30879, 30911, 30805,
                                            31980, 32030, 32263, 34449
+                                           )),
+    
+        Bombus_nevadensis_f = list(Genus = "Bombus", SubGenus="Bombias",
+                               Species = "nevadensis",
+                               SubSpecies = "", Sex ="f",
+                               Author = "Cresson",
+                               Determiner="J.F. Zorn",
+                               temp.id = c(35450,35840,35850,35863,35887,36017,36032,36086,38899,36087,36091,36090,
+                                           36092,36093,36108,36113,36114,36132,36146,36157,36158,36188,36190,35901,38900
                                            )),
 
     Bombus_nevadensis_m = list(Genus = "Bombus", SubGenus="Bombias",
