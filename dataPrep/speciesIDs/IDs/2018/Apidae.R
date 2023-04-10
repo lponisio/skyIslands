@@ -141,7 +141,7 @@ sp.ids <- list(
                             SubSpecies = "", Sex ="f",
                             Author = "Say",
                             Determiner="K. Watrous",
-                            temp.id = c("20417")),
+                            temp.id = c("20417",22064)),
 
     Bombus_nevadensis_m = list(Genus = "Bombus", SubGenus="Bombias",
                                Species = "nevadensis",
