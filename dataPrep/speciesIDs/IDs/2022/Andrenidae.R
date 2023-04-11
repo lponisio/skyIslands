@@ -176,7 +176,7 @@ sp.ids <- list(
 
 
 
-    Heterosarus_bakeri_f= list(Genus="Heterosarus",
+    Psuedopanurgus_bakeri_f= list(Genus="Pseudopanurgus",
                                SubGenus ="",
                                Species="bakeri",
                                SubSpecies="",
@@ -186,7 +186,7 @@ sp.ids <- list(
                                temp.id= c(37365, 38339, 37652, 38332, 38333,
                                           38383, 38384, 38354)),
 
-    Heterosarus_bakeri_m= list(Genus="Heterosarus",
+    Pseudopanurgus_bakeri_m= list(Genus="Pseudopanurgus",
                                SubGenus ="",
                                Species="bakeri",
                                SubSpecies="",
