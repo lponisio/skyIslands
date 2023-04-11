@@ -289,7 +289,7 @@ sp.ids <- list(
     ##                            temp.id= c()),
 
 
-    Heterosarus_bakeri_f= list(Genus="Heterosarus",
+    Pseudopanurgus_bakeri_f= list(Genus="Pseudopanurgus",
                                SubGenus ="",
                                Species="bakeri",
                                SubSpecies="",
@@ -314,8 +314,8 @@ sp.ids <- list(
                                           32684, 33878, 34185, 34331,
                                           32708)),
     
-        Heterosarus_stathamae_?= list(Genus="Heterosarus",
-                               SubGenus ="",
+        Protandrena_stathamae_?= list(Genus="Protandrena",
+                               SubGenus ="Pterosarus",
                                Species="stathamae",
                                SubSpecies="?",
                                Sex="",
@@ -323,7 +323,7 @@ sp.ids <- list(
                                Determiner="",
                                temp.id= c(38340,38296,34115)),
 
-    ## Heterosarus_bakeri_m= list(Genus="Heterosarus",
+    ## Psuedopanurgus_bakeri_m= list(Genus="Pseudopanurgus",
     ##                            SubGenus ="",
     ##                            Species="bakeri",
     ##                            SubSpecies="",
