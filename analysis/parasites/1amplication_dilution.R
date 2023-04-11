@@ -1,5 +1,6 @@
 rm(list=ls())
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
+## setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
 setwd('~/Dropbox (University of Oregon)/skyislands')
 ncores <- 2
 
@@ -49,10 +50,10 @@ xvars.single.species <-  c("Net_NonBombusHBAbundance",
 ## **********************************************************
 ## full model with all species, parasites
 
-## fit <- runParasiteModels(spec.data= spec.all,
-##                          species.group="all",
-##                          parasite="ParasitePresence",
-##                          xvars= xvars.multi.species)
+ fit <- runParasiteModels(spec.data= spec.all,
+                         species.group="all",
+                         parasite="ParasitePresence",
+                          xvars= xvars.multi.species)
 
 ## **********************************************************
 ## Crithidia models
