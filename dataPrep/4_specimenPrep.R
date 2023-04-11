@@ -11,9 +11,9 @@ library(readr)
 
 ## dir.bombus <-
 ##     '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
-dir.bombus <-
+ dir.bombus <-
      '~/Dropbox (University of Oregon)/skyIslands'
-
+## dir.bombus <- "C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands"
 ## *****************************************************************
 ## create relational database, add species IDs
 ## *****************************************************************
@@ -32,7 +32,7 @@ source('dataPrep/relational/3join.R')
 ## *****************************************************************
 dir.bombus <-
     '~/Dropbox (University of Oregon)/skyIslands'
-
+## dir.bombus <- "C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands"
 ## dir.bombus <-
 ##     '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
 
