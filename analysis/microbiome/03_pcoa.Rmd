@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r imports}
 library(tidyverse)
 library(ggplot2)
-
+setwd('~/Dropbox (University of Oregon)/PonisioLocal/skyIslands/')
 spec16s <- read.csv('spec_RBCL_16s.csv')
 
 meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'Sex', 'GeographyFK', 'Site', 'Meadow')
@@ -121,33 +121,33 @@ all_common <- bind_rows(apis_common, bombus_common, mega_common, antho_common) %
 
 ```{r pcoa_old_way}
 
-# rel_abund_assay<- microbes %>%
-#   select(starts_with('X16s'))
-# 
-# # Calculates Bray-Curtis distances between samples. 
-# bray_curtis_dist <- vegan::vegdist(rel_abund_assay, method = "bray")
-# 
-# # PCoA
-# bray_curtis_pcoa <- ecodist::pco(bray_curtis_dist)
-# 
-# # All components could be found here: 
-# # bray_curtis_pcoa$vectors
-# # But we only need the first two to demonstrate what we can do:
-# bray_curtis_pcoa_df <- data.frame(pcoa1 = bray_curtis_pcoa$vectors[,1], 
-#                                   pcoa2 = bray_curtis_pcoa$vectors[,2])
-# 
-# 
-# 
-# # Create a plot
-# bray_curtis_plot <- ggplot(data = bray_curtis_pcoa_df, aes(x=pcoa1, y=pcoa2)) +
-#   geom_point(aes(color=microbes$Genus), alpha=0.5) +
-#   labs(x = "PC1",
-#        y = "PC2", 
-#        title = "Bray-Curtis PCoA with color by genus") +
-#   theme(title = element_text(size = 10)) + # makes titles smaller
-#   theme_classic()
-# 
-# bray_curtis_plot
+rel_abund_assay<- microbes %>% select(starts_with('X16s'))
+
+# Calculates Bray-Curtis distances between samples. 
+bray_curtis_dist <- vegan::vegdist(rel_abund_assay, method = "bray")
+
+# PCoA 
+bray_curtis_pcoa <- ecodist::pco(bray_curtis_dist)
+
+# All components could be found here: # bray_curtis_pcoa$vectors 
+# But we only
+#need the first two to demonstrate what we can do: 
+bray_curtis_pcoa_df <- data.frame(pcoa1 = bray_curtis_pcoa$vectors[,1], pcoa2 = bray_curtis_pcoa$vectors[,2])
+
+
+
+# Create a plot
+bray_curtis_plot <- ggplot(data = bray_curtis_pcoa_df, aes(x=pcoa1, y=pcoa2)) + 
+  geom_point(aes(fill=microbes$Genus), alpha=0.7, size=5, pch=21, color='black') +
+  scale_fill_manual(values=plasma(4)) +
+  stat_ellipse(aes(linetype= microbes$Genus)) +
+  scale_linetype_manual("Genus", values=c("longdash", "solid", "dotted", "twodash")) +
+labs(x = "PC1 (19.6%)", y = "PC2 (14.6%)", fill='Genus') + # makes titles smaller
+theme_classic() +
+  guides(fill=guide_legend(nrow=2)) +
+theme(legend.position='bottom', text = element_text(size = 20))
+
+bray_curtis_plot
 
 
 ```
