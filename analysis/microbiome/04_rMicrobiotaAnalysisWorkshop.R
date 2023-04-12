@@ -6,6 +6,8 @@
 
 library(phyloseq)
 
+library(ggpubr)
+
 #Analyses of Phylogenetics and Evolution package. Required for tree calculations to be used with phyloseq
 library(ape)
 
@@ -22,6 +24,7 @@ library(gplots)
 library(lme4)
 
 library(phangorn)
+library(picante)
 
 #The phyloseq package seeks to address issues with multiple microbiome analysis packages by providing a set of functions that internally manage the organizing, linking, storing, and analyzing of phylogenetic sequencing data. In general, this package is used for UniFrac analyses.
 library(phyloseq)
@@ -81,7 +84,7 @@ otu_table_ps1 <- as.data.frame(physeq16sR0@otu_table)
 
 metadata_table_ps1  <- as.data.frame(physeq16sR0@sam_data)
 
-df.pd <- pd(t(otu_table_ps1), physeq16sR0@phy_tree,include.root=F) # t(ou_table) transposes the table for use in picante and the tre file comes from the first code chunck we used to read tree file (see making a phyloseq object section).
+df.pd <- picante::pd(t(otu_table_ps1), physeq16sR0@phy_tree,include.root=F) # t(ou_table) transposes the table for use in picante and the tre file comes from the first code chunck we used to read tree file (see making a phyloseq object section).
 df.pd <- df.pd[row.names(df.pd) %in% row.names(meta),]
 meta <- meta[row.names(meta) %in% row.names(df.pd),]
 
@@ -102,17 +105,17 @@ stat.test.pd <- meta %>%
 
 plot.pd.genus <- ggplot(meta, aes(Genus, PhyloDiversity)) + 
   geom_violin(aes(fill = Genus)) + 
-  geom_jitter(size = 2, alpha=0.5) + 
+  geom_jitter(size = 2, alpha=0.2) + 
   #coord_flip() + 
   theme_classic() +
   scale_fill_manual(values=plasma(4)) +
   stat_summary(fun.data = "mean_cl_boot", geom = "crossbar",
-               colour = "black", width = 0.7)  +
+               colour = "black", width = 1)  +
   stat_summary(fun = "median", geom = "crossbar",
-               colour = "red", width = 0.7) +
+               colour = "red", width = 1) +
   theme(legend.position='none', text=element_text(size=21)) +
   labs(y='Phylogenetic Diversity') + 
-  stat_pvalue_manual(stat.test.pd, label = "p.adj", tip.length = 0.01, y.position = 10, step.increase = 0.05)
+  stat_pvalue_manual(stat.test.pd, label = "p.adj.signif", tip.length = 0.01, y.position = 10, step.increase = 0.05)
 
 print(plot.pd.genus)
 
@@ -123,17 +126,17 @@ stat.test.sr <- meta %>%
 
 plot.sr.genus <- ggplot(meta, aes(Genus, SpeciesRichness)) + 
   geom_violin(aes(fill = Genus)) + 
-  geom_jitter(size = 2, alpha=0.5) + 
+  geom_jitter(size = 2, alpha=0.2) + 
   #coord_flip() + 
   theme_classic() +
   scale_fill_manual(values=plasma(4)) +
   stat_summary(fun.data = "mean_cl_boot", geom = "crossbar",
-               colour = "black", width = 0.7)  +
+               colour = "black", width = 1)  +
   stat_summary(fun = "median", geom = "crossbar",
-               colour = "red", width = 0.7) +
+               colour = "red", width = 1) +
   theme(legend.position='none', text=element_text(size=21)) +
   labs(y='Species Richness') + 
-  stat_pvalue_manual(stat.test.sr, label = "p.adj", tip.length = 0.01, y.position = 100, step.increase = 0.05)
+  stat_pvalue_manual(stat.test.sr, label = "p.adj.signif", tip.length = 0.01, y.position = 100, step.increase = 0.05)
 print(plot.sr.genus)
 
 ggarrange(plot.sr.genus, plot.pd.genus)
