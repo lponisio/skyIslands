@@ -582,6 +582,20 @@ sp.ids <- list(
                                      "Cresson",
                                  Determiner="L. Best",
                                  temp.id= c(31131))
+    
+        Nomada_sp= list(Genus="Nomada", SubGenus="",
+                     Species="sp.",
+                     SubSpecies="d", Sex="f",
+                     Author = "",
+                     Determiner="L.C. Ponisio",
+                     temp.id= c(34220,34219,34221)),
+    
+        Nomada_sp= list(Genus="Nomada", SubGenus="",
+                     Species="sp.",
+                     SubSpecies="e", Sex="f",
+                     Author = "",
+                     Determiner="L.C. Ponisio",
+                     temp.id= c(34557)),
 
 
 
