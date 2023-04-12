@@ -1,4 +1,4 @@
-
+## Protandrena/psuedopanurgus are currently in the process of being redescribed. Protandrena is the only panurgine with 3 submarginal cells. Pseudopanurgus has 2 submarginal cells. Pterosarus and heterosarus are subgenera of protandrena.
 sp.ids <- list(
 
     ##   Perdita_albipennis_m= list(Genus="Perdita",
