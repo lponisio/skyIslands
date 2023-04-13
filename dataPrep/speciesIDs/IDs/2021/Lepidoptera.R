@@ -79,6 +79,9 @@ sp.ids <- list(
     "Lycaenidae", Determiner="A. Santillana", temp.id =c(39014,39025,39027,39028,39029,39030,39031,38452,38516,38454,38459,38474,38483,39066,39073,
                                                         39036,39037,39039,39042,39038,39041,39088,39087,39090,39083,39080,39077,39076)),
   
+  Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
+    "atlantis", SubSpecies = "", Sex = "", Author = "Edwards", Family
+    = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36371,36372,36387,36391,38423,38431,38435,38436,38437,38438,38654,38523)),
   
   
   
