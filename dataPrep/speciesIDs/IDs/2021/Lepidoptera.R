@@ -3,7 +3,7 @@ sp.ids <- list(
 
   Vanessa_cardui = list(Genus = "Vanessa", SubGenus="", Species =
     "cardui", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
-    "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36346,36395,36409,36407,36410,36406,38419,38420,38440,36350)),
+    "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36346,36395,36407,36406,38440)),
 
   Battus_philenor = list(Genus = "Battus", SubGenus="", Species =
     "philenor", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
