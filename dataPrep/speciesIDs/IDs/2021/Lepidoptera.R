@@ -4,6 +4,11 @@ sp.ids <- list(
   Vanessa_cardui = list(Genus = "Vanessa", SubGenus="", Species =
     "cardui", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
     "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36346,36395,36407,36406,38440)),
+  
+  
+    Vanessa_virginiensis = list(Genus = "Vanessa", SubGenus="", Species =
+    "virginiensis", SubSpecies = "", Sex = "", Author = "Drury",
+    Family = "Nymphalidae", Determiner="J.F. Zorn", temp.id =c(36409,36410,38420,36350,38419)),
 
   Battus_philenor = list(Genus = "Battus", SubGenus="", Species =
     "philenor", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
@@ -86,6 +91,7 @@ sp.ids <- list(
    Danaus_plexippus = list(Genus = "Danaus", SubGenus="", Species =
     "plexippus", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
     = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36397,36394)),
+  
   
   
   
