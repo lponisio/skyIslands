@@ -21,4 +21,32 @@ sp.ids <- list(
     "Pieridae", Determiner="J.F. Zorn", temp.id = c(36377,36379,36380,36385,36386,36403,38481,38498,38507,38508,38526,38530,38533,38535,38577,38578,38604,38605,
                                                    38606,38607,38608,38609,38610,38611,38612,38613,38614,38615,38615,38616,38617,38618,38619,38649,38655)),
     
+  Nathalis_iole = list(Genus = "Nathalis", SubGenus="",Species =
+    "iole", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
+    "Pieridae", Determiner="J.F. Zorn", temp.id = c(36352,36355,36356,36358,36416,36417,36418,36419,36420,36421,36422,36423,36424,36425,38506,38510,38511,38512,38517,
+                                                   38519,38536,38538,38539,38540,38541,38542)),
+  
+    Echinargus_isola = list(Genus = "Echinargus", SubGenus="",Species =
+    "isola", SubSpecies = "", Sex = "", Author = "Reakirt", Family =
+    "Lycaenidae", Determiner="A.S.F.", temp.id = c(39014)),
+  
+     Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
+    "lineata", SubSpecies = "", Sex = "", Author = "Fabricius", Family =
+    "Sphingidae", Determiner="J.F. Zorn", temp.id = c(36427,36428,36429,38478,39011)),
+  
+  Papilio_multicaudata = list(Genus = "Papilio", SubGenus="", Species
+    = "multicaudata", SubSpecies = "", Sex = "", Author = "Kirby",
+    Family = "Papilionidae", Determiner="J.F. Zorn", temp.id =c(38424,38425,38426,38462,38463,38473)),
+  
+   Papilio_polyxenes = list(Genus = "Papilio", SubGenus="",Species =
+    "polyxenes", SubSpecies = "", Sex = "", Author = "Fabricius",
+    Family = "Papilionidae", Determiner="J.F. Zorn", temp.id = c(36396)),
+  
+  Pontia_protodice = list(Genus = "Pontia",  SubGenus="",Species = "protodice",
+    SubSpecies = "", Sex = "", Author = "Boisduval & Leconte", Family
+    = "Pieridae", Determiner="J.F. Zorn", temp.id = c(36435,38407,38479,38480,38527,38574)),
+  
+  
+  
+    
     
