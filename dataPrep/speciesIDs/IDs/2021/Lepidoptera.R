@@ -28,7 +28,7 @@ sp.ids <- list(
   
     Echinargus_isola = list(Genus = "Echinargus", SubGenus="",Species =
     "isola", SubSpecies = "", Sex = "", Author = "Reakirt", Family =
-    "Lycaenidae", Determiner="A.S.F.", temp.id = c(39014)),
+    "Lycaenidae", Determiner="A. Santillana", temp.id = c(39014)),
   
      Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
     "lineata", SubSpecies = "", Sex = "", Author = "Fabricius", Family =
@@ -45,6 +45,42 @@ sp.ids <- list(
   Pontia_protodice = list(Genus = "Pontia",  SubGenus="",Species = "protodice",
     SubSpecies = "", Sex = "", Author = "Boisduval & Leconte", Family
     = "Pieridae", Determiner="J.F. Zorn", temp.id = c(36435,38407,38479,38480,38527,38574)),
+  
+    Leptotes_marina = list(Genus = "Leptotes", SubGenus="", Species =
+    "marina", SubSpecies = "", Sex = "", Author = "Reakirt", Family =
+    "Lycaenidae", Determiner="A. Santillana", temp.id =c(36382,38451,38457,38458)),
+  
+     Agriades_glandon = list(Genus = "Agriades", SubGenus="", Species =
+    "glandon", SubSpecies = "", Sex = "", Author = "de Prunner", Family =
+    "Lycaenidae", Determiner="A. Santillana", temp.id =c(38552)),
+  
+    Plebejus_melissa = list(Genus = "Plebejus", SubGenus="", Species =
+    "melissa", SubSpecies = "", Sex = "", Author = "W.H. Edwards", Family =
+    "Lycaenidae", Determiner="A. Santillana", temp.id =c(36359,38502,38516)),
+  
+      Plebejus_lupini = list(Genus = "Plebejus", SubGenus="", Species =
+    "lupini", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
+    "Lycaenidae", Determiner="A. Santillana", temp.id =c(36360,38520,38518)),
+  
+    Brephidium_exile = list(Genus = "Brephidium", SubGenus="", Species =
+    "exile", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
+    "Lycaenidae", Determiner="A. Santillana", temp.id =c(36426)),
+  
+    Strymon_melinus = list(Genus = "Strymon", SubGenus="", Species =
+    "melinus", SubSpecies = "", Sex = "", Author = "Hubner", Family =
+    "Lycaenidae", Determiner="A. Santillana", temp.id =c(38623,36383)),
+  
+    Erora_quaderna = list(Genus = "Erora", SubGenus="", Species =
+    "quaderna", SubSpecies = "", Sex = "", Author = "Hewitson", Family =
+    "Lycaenidae", Determiner="A. Santillana", temp.id =c(38460)),
+  
+     Echinargus_isola = list(Genus = "Echinargus", SubGenus="", Species =
+    "isola", SubSpecies = "", Sex = "", Author = "Reakirt", Family =
+    "Lycaenidae", Determiner="A. Santillana", temp.id =c(39014,39025,39027,39028,39029,39030,39031,38452,38516,38454,38459,38474,38483,39066,39073,
+                                                        39036,39037,39039,39042,39038,39041,39088,39087,39090,39083,39080,39077,39076)),
+  
+  
+  
   
   
   
