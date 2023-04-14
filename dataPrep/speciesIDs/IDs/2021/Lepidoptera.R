@@ -34,6 +34,10 @@ sp.ids <- list(
     "gracilis", SubSpecies = "", Sex = "", Author =
     "Grote & Robinson", Family = "Nymphalidae", Determiner="A. Santillana", temp.id
     =c(39072,39044,39056,38595)),
+  
+    Phyciodes_tharos= list(Genus = "Phyciodes", SubGenus="",Species =
+    "tharos", SubSpecies = "", Sex = "", Author = "Drury", Family =
+    "Nymphalidae", Determiner="L.Ponisio", temp.id =c(36415,38644,36620,38621,38622,39048)),
 
   Battus_philenor = list(Genus = "Battus", SubGenus="", Species =
     "philenor", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
