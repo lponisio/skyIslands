@@ -34,6 +34,14 @@ sp.ids <- list(
     SubSpecies = "", Sex = "", Author = "Hewitson", Family =
     "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(38543)),
   
+  Burnsius_communis_f = list(Genus = "Burnsius", SubGenus="", Species =
+    "communis", SubSpecies = "", Sex = "f", Author = "Grote", Family =
+    "Hesperiidae", Determiner="A. Santillana", temp.id =c(36412,38509,36414,36349)),
+      
+  Burnsius_communis_m = list(Genus = "Burnsius", SubGenus="", Species =
+    "communis", SubSpecies = "", Sex = "m", Author = "Grote", Family =
+    "Hesperiidae", Determiner="A. Santillana", temp.id =c(38449,38504,38514)),
+  
   Polygonia_gracilis = list(Genus = "Polygonia", SubGenus="",Species =
     "gracilis", SubSpecies = "", Sex = "", Author =
     "Grote & Robinson", Family = "Nymphalidae", Determiner="A. Santillana", temp.id
