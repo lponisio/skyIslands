@@ -29,6 +29,11 @@ sp.ids <- list(
   Euptoierta_claudia = list(Genus = "Euptoierta", SubGenus="", Species
     = "claudia", SubSpecies = "", Sex = "", Author = "Cramer", Family
     = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36344,36362,36399,36408,36433,38405,38418,38421,38422,38432,38434,38482,38522,38525,38528)),
+  
+  Polygonia_gracilis = list(Genus = "Polygonia", SubGenus="",Species =
+    "gracilis", SubSpecies = "", Sex = "", Author =
+    "Grote & Robinson", Family = "Nymphalidae", Determiner="A. Santillana", temp.id
+    =c(39072,39044,39056,38595)),
 
   Battus_philenor = list(Genus = "Battus", SubGenus="", Species =
     "philenor", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
