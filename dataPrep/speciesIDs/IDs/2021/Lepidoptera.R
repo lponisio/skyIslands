@@ -125,6 +125,9 @@ sp.ids <- list(
     "Lycaenidae", Determiner="A. Santillana", temp.id =c(39014,39025,39027,39028,39029,39030,39031,38452,38516,38454,38459,38474,38483,39066,39073,
                                                         39036,39037,39039,39042,39038,39041,39088,39087,39090,39083,39080,39077,39076)),
   
+    Epargyreus_clarus = list(Genus = "Epargyreus", SubGenus="",Species =
+    "clarus", SubSpecies = "", Sex = "", Author = "Cramer", Family =
+    "Hesperiidae", Determiner="L.Ponisio", temp.id =c(36342, 38430, 38429)),
   
   
   
