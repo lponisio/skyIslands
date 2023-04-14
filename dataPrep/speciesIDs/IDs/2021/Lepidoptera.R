@@ -30,6 +30,10 @@ sp.ids <- list(
     = "claudia", SubSpecies = "", Sex = "", Author = "Cramer", Family
     = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36344,36362,36399,36408,36433,38405,38418,38421,38422,38432,38434,38482,38522,38525,38528)),
   
+    Texola_elada = list(Genus = "Texola", SubGenus="",Species = "elada",
+    SubSpecies = "", Sex = "", Author = "Hewitson", Family =
+    "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(38543)),
+  
   Polygonia_gracilis = list(Genus = "Polygonia", SubGenus="",Species =
     "gracilis", SubSpecies = "", Sex = "", Author =
     "Grote & Robinson", Family = "Nymphalidae", Determiner="A. Santillana", temp.id
