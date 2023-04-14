@@ -13,6 +13,18 @@ sp.ids <- list(
     Vanessa_virginiensis = list(Genus = "Vanessa", SubGenus="", Species =
     "virginiensis", SubSpecies = "", Sex = "", Author = "Drury",
     Family = "Nymphalidae", Determiner="J.F. Zorn", temp.id =c(36409,36410,38420,36350,38419)),
+  
+  Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
+    "atlantis", SubSpecies = "", Sex = "", Author = "Edwards", Family
+    = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36371,36372,36387,36391,38423,38431,38435,38436,38437,38438,38654,38523,39057)),
+  
+   Danaus_plexippus = list(Genus = "Danaus", SubGenus="", Species =
+    "plexippus", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
+    = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36397,36394)),
+  
+  Euptoierta_claudia = list(Genus = "Euptoierta", SubGenus="", Species
+    = "claudia", SubSpecies = "", Sex = "", Author = "Cramer", Family
+    = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36344,36362,36399,36408,36433,38405,38418,38421,38422,38432,38434,38482,38522,38525,38528)),
 
   Battus_philenor = list(Genus = "Battus", SubGenus="", Species =
     "philenor", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
@@ -88,17 +100,7 @@ sp.ids <- list(
     "Lycaenidae", Determiner="A. Santillana", temp.id =c(39014,39025,39027,39028,39029,39030,39031,38452,38516,38454,38459,38474,38483,39066,39073,
                                                         39036,39037,39039,39042,39038,39041,39088,39087,39090,39083,39080,39077,39076)),
   
-  Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
-    "atlantis", SubSpecies = "", Sex = "", Author = "Edwards", Family
-    = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36371,36372,36387,36391,38423,38431,38435,38436,38437,38438,38654,38523,39057)),
   
-   Danaus_plexippus = list(Genus = "Danaus", SubGenus="", Species =
-    "plexippus", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
-    = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36397,36394)),
-  
-  Euptoierta_claudia = list(Genus = "Euptoierta", SubGenus="", Species
-    = "claudia", SubSpecies = "", Sex = "", Author = "Cramer", Family
-    = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36344,36362,36399,36408,36433,38405,38418,38421,38422,38432,38434,38482,38522,38525,38528)),
   
   
   
