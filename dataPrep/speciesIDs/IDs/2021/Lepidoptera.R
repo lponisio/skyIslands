@@ -13,6 +13,10 @@ sp.ids <- list(
     "atlanta", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
     = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36373,38427,38428,38433,38439,38496)),
   
+     Erebia_epipsodea = list(Genus = "Erebia", SubGenus="", Species =
+    "epipsodea", SubSpecies = "", Sex = "", Author = "Butler", Family
+    = "Nymphalidae", Determiner="A. Stantillana", temp.id = c(38580)),
+  
   
     Vanessa_virginiensis = list(Genus = "Vanessa", SubGenus="", Species =
     "virginiensis", SubSpecies = "", Sex = "", Author = "Drury",
