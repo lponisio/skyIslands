@@ -138,6 +138,14 @@ sp.ids <- list(
     = "Hesperiidae", Determiner="J.F. Zorn", temp.id = c(36375,38661,38663,38665,38664,38666,38648,38652,38444,38445,38446,38468,38469,38555,38589,38590,38624,
                                                          38625,38626,38630,38632,38633,38634,38635,38636,38637,38638,38639,38640,38641,36384)),
   
+   Lon_taxiles_f = list(Genus = "Lon", SubGenus="",Species =
+    "taxiles", SubSpecies = "", Sex = "f", Author = "W.H. Edwards", Family
+    = "Hesperiidae", Determiner="A. Santillana", temp.id = c(39023)),
+  
+     Lon_taxiles_f = list(Genus = "Lon", SubGenus="",Species =
+    "taxiles", SubSpecies = "", Sex = "f", Author = "W.H. Edwards", Family
+    = "Hesperiidae", Determiner="J.F. Zorn", temp.id = c(39015,38646,39050,39022)),
+ 
   
   
   
