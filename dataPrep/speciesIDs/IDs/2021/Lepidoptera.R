@@ -149,6 +149,11 @@ sp.ids <- list(
      Lon_taxiles_f = list(Genus = "Lon", SubGenus="",Species =
     "taxiles", SubSpecies = "", Sex = "f", Author = "W.H. Edwards", Family
     = "Hesperiidae", Determiner="J.F. Zorn", temp.id = c(39015,38646,39050,39022)),
+  
+  
+     Thorybes_pylades = list(Genus = "Thorybes", SubGenus="",Species =
+    "pylades", SubSpecies = "", Sex = "", Author = "Scudder", Family
+    = "Hesperiidae", Determiner="A. Santillana", temp.id = c(35005)),
  
   
   
