@@ -129,6 +129,15 @@ sp.ids <- list(
     "clarus", SubSpecies = "", Sex = "", Author = "Cramer", Family =
     "Hesperiidae", Determiner="L.Ponisio", temp.id =c(36342, 38430, 38429)),
   
+  Hesperia_comma = list(Genus = "Hesperia", SubGenus="",Species =
+    "comma", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
+    "Hesperiidae", Determiner="J.F. Zorn", temp.id = c(38628,38548,38629,38631,38653)),
+  
+  Hesperia_pahaska = list(Genus = "Hesperia", SubGenus="",Species =
+    "pahaska", SubSpecies = "", Sex = "", Author = "Leussler", Family
+    = "Hesperiidae", Determiner="J.F. Zorn", temp.id = c(36375,38661,38663,38665,38664,38666,38648,38652,38444,38445,38446,38468,38469,38555,38589,38590,38624,
+                                                         38625,38626,38630,38632,38633,38634,38635,38636,38637,38638,38639,38640,38641,36384)),
+  
   
   
   
