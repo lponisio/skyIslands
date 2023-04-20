@@ -44,5 +44,10 @@ Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
     "plexippus", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
     = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(24180)),
 
+ Polygonia_gracilis = list(Genus = "Polygonia", SubGenus="",Species =
+    "gracilis", SubSpecies = "", Sex = "", Author =
+    "Grote & Robinson", Family = "Nymphalidae", Determiner="L.Ponisio", temp.id
+    =c(30052)),
+
     
     
