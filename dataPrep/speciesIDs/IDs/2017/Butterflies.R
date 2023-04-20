@@ -75,6 +75,10 @@ Nathalis_iole = list(Genus = "Nathalis", SubGenus="",Species =
     "iole", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
     "Pieridae", Determiner="L.Ponisio", temp.id = c(24909)),
 
+  Colias_eurytheme = list(Genus = "Colias", SubGenus="", Species = "eurytheme",
+    SubSpecies = "", Sex = "", Author = "Boisduval", Family =
+    "Pieridae", Determiner="L.Ponisio", temp.id = c(21506,30148,30151,24869,24130,24131,24128,24123,24159,24157,24160,24190,24188,24187,23833,23687,23703,
+                                                    24133,30021,30082)),
 
     
     
