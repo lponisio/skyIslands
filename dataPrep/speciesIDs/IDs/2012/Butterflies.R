@@ -199,8 +199,8 @@ sp.ids <- list(
     "Nymphalidae", Determiner="L.Ponisio", temp.id =c("PL_081312_243", "PL_081012_339",
     "CH_082012_186", "PL_080912_387", "PL_080912_414")),
 
-  Pyrgus_commonis = list(Genus = "Pyrgus", SubGenus="", Species =
-    "commonis", SubSpecies = "", Sex = "", Author = "Grote", Family =
+  Burnsius_communis = list(Genus = "Burnsius", SubGenus="", Species =
+    "communis", SubSpecies = "", Sex = "", Author = "Grote", Family =
     "Hesperiidae", Determiner="L.Ponisio", temp.id =c("PL_080912_419", "PL_081012_303",
     "CH_082012_196", "PL_080912_359", "PL_081212_236",
     "PL_081212_239", "JC_071512_119", "SC_072612_286",
@@ -215,8 +215,8 @@ sp.ids <- list(
     "Boisduval & Leconte", Family = "Hesperiidae", Determiner="L.Ponisio", temp.id
     =c("PL_081312_237")),
 
-  Poanes_zabulon_taxiles = list(Genus = "Poanes", SubGenus="", Species
-    = "zabulon", SubSpecies = "taxiles", Sex = "", Author = "Edwards",
+  Lon_taxiles= list(Genus = "Lon", SubGenus="", Species
+    = "taxiles", SubSpecies = "", Sex = "", Author = "Edwards",
     Family = "Hesperiidae", Determiner="L.Ponisio", temp.id =c("SC_072012_324")),
 
   Epargyreus_clarus = list(Genus = "Epargyreus", SubGenus="",Species =
