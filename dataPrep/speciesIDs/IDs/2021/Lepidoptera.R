@@ -155,6 +155,9 @@ sp.ids <- list(
     "pylades", SubSpecies = "", Sex = "", Author = "Scudder", Family
     = "Hesperiidae", Determiner="A. Santillana", temp.id = c(35005)),
  
+   Plebejus_acmon = list(Genus = "Plebejus", SubGenus="", Species =
+    "acmon", SubSpecies = "", Sex = "", Author = "Westwood", Family =
+    "Lycaenidae", Determiner="J.F. Zorn", temp.id =c(39068)),
   
   
   
