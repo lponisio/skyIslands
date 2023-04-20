@@ -1,4 +1,4 @@
-
+##contains 2021 and 2022 IDs
 sp.ids <- list(
 
   Vanessa_cardui = list(Genus = "Vanessa", SubGenus="", Species =
@@ -102,7 +102,7 @@ sp.ids <- list(
     "Lycaenidae", Determiner="A. Santillana", temp.id =c(38552)),
   
     Plebejus_melissa = list(Genus = "Plebejus", SubGenus="", Species =
-    "melissa", SubSpecies = "", Sex = "", Author = "W.H. Edwards", Family =
+    "melissa", SubSpecies = "", Sex = "", Author = "Edwards", Family =
     "Lycaenidae", Determiner="A. Santillana", temp.id =c(36359,38502,38516)),
   
       Plebejus_lupini = list(Genus = "Plebejus", SubGenus="", Species =
@@ -140,12 +140,12 @@ sp.ids <- list(
                                                          38625,38626,38630,38632,38633,38634,38635,38636,38637,38638,38639,38640,38641,36384)),
   
    Lon_taxiles_f = list(Genus = "Lon", SubGenus="",Species =
-    "taxiles", SubSpecies = "", Sex = "f", Author = "W.H. Edwards", Family
+    "taxiles", SubSpecies = "", Sex = "f", Author = "Edwards", Family
     = "Hesperiidae", Determiner="A. Santillana", temp.id = c(39023)),
   
      Lon_taxiles_f = list(Genus = "Lon", SubGenus="",Species =
-    "taxiles", SubSpecies = "", Sex = "f", Author = "W.H. Edwards", Family
-    = "Hesperiidae", Determiner="J.F. Zorn", temp.id = c(39015,38646,39050,39022)),
+    "taxiles", SubSpecies = "", Sex = "f", Author = "Edwards", Family
+    = "Hesperiidae", Determiner="J.F. Zorn", temp.id = c(38646,39050,39022)),
   
   
      Thorybes_pylades = list(Genus = "Thorybes", SubGenus="",Species =
