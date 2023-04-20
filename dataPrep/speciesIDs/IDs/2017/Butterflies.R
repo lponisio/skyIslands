@@ -62,5 +62,10 @@ Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
     = "multicaudata", SubSpecies = "", Sex = "", Author = "Kirby",
     Family = "Papilionidae", Determiner="L.Ponisio", temp.id =c(23763,23656,23791,23761,23792,23651,23700,23662,23744,30020,23686,23743)),
 
+  Eurema_nicippe = list(Genus = "Eurema", SubGenus="",Species =
+    "nicippe", SubSpecies = "", Sex = "", Author = "Cramer", Family =
+    "Pieridae", Determiner="L.Ponisio", temp.id = c(24154,23822,21548,30514,23705)),
+
+
     
     
