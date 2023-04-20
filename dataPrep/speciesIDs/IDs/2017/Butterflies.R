@@ -84,6 +84,10 @@ Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
     "lineata", SubSpecies = "", Sex = "", Author = "Fabricius", Family =
     "Sphingidae", Determiner="L.C. Ponisio", temp.id = c(24114,24880,24113))
 
+Hemiargus_isola = list(Genus = "Hemiargus", SubGenus="", Species = "isola",
+    SubSpecies = "", Sex = "", Author = "Reakirt", Family = "Lycaenidae",
+    Determiner="L.Ponisio", temp.id = c(24147,24202,24216,24208,24199,24196,24195,24213,24200)),
+
 )
 
     
