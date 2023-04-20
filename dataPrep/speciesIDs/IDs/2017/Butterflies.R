@@ -98,6 +98,10 @@ Hemiargus_isola = list(Genus = "Hemiargus", SubGenus="", Species = "isola",
                                                      21573,23865,23868,24767,23734,23735,23858,30063,23648,23741,23712,23689,23691,30066,
                                                      30072,30073,30571,30112)),
 
+  Celastrina_argiolus_ladon = list(Genus = "Celastrina", SubGenus="",
+    Species = "argiolus", SubSpecies = "ladon", Sex = "", Author =
+    "Cramer", Family = "Lycaenidae", Determiner="L.Ponisio", temp.id = c(24218,30610)),
+
 )
 
     
