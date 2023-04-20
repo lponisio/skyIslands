@@ -185,7 +185,7 @@ sp.ids <- list(
     "Lycaenidae", Determiner="L.Ponisio", temp.id =c("PL_081112_253", "CH_082012_201",
     "MM_080312_210", "PL_080912_415", "CH_082112_212")),
 
-  Plebejus_glandon = list(Genus = "Plebejus", SubGenus="", Species =
+  Agriades_glandon = list(Genus = "Agriades", SubGenus="", Species =
     "glandon", SubSpecies = "", Sex = "", Author = "de Prunner",
     Family = "Lycaenidae", Determiner="L.Ponisio", temp.id =c("JC_071712_4")),
 
