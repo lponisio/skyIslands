@@ -80,5 +80,11 @@ Nathalis_iole = list(Genus = "Nathalis", SubGenus="",Species =
     "Pieridae", Determiner="L.Ponisio", temp.id = c(21506,30148,30151,24869,24130,24131,24128,24123,24159,24157,24160,24190,24188,24187,23833,23687,23703,
                                                     24133,30021,30082)),
 
+Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
+    "lineata", SubSpecies = "", Sex = "", Author = "Fabricius", Family =
+    "Sphingidae", Determiner="L.C. Ponisio", temp.id = c(24114,24880,24113))
+
+)
+
     
     
