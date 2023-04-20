@@ -36,5 +36,9 @@ Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
     "mormonia", SubSpecies = "", Sex = "", Author = "Boisduval",
     Family = "Nymphalidae", Determiner="L.Ponisio", temp.id =c(30079,24854,24126)),
 
+  Phyciodes_tharos= list(Genus = "Phyciodes", SubGenus="",Species =
+    "tharos", SubSpecies = "", Sex = "", Author = "Drury", Family =
+    "Nymphalidae", Determiner="L.Ponisio", temp.id =c(21572,21578,21535,24609,23720,21494,23895,30519,24027,24000)),
+
     
     
