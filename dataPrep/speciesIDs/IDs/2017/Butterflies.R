@@ -60,7 +60,7 @@ Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
 
   Papilio_multicaudata = list(Genus = "Papilio", SubGenus="", Species
     = "multicaudata", SubSpecies = "", Sex = "", Author = "Kirby",
-    Family = "Papilionidae", Determiner="L.Ponisio", temp.id =c(23763,23656,23791,23761,23792,23651,23700,23662,23744,30020,23686)),
+    Family = "Papilionidae", Determiner="L.Ponisio", temp.id =c(23763,23656,23791,23761,23792,23651,23700,23662,23744,30020,23686,23743)),
 
     
     
