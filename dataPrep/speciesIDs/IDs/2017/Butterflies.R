@@ -28,6 +28,9 @@ Atrytonopsis_ovinia_zaovinia = list(Genus = "Atrytonopsis", SubGenus="", Species
     "Dyar", Family = "Hesperiidae", Determiner="L.Ponisio", temp.id
     =c(21534,30069,24171,24203,24197)),
 
+Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
+    "atlantis", SubSpecies = "", Sex = "", Author = "Edwards", Family
+    = "Nymphalidae", Determiner="L.Ponisio", temp.id = c(24120,24189,24191)),
 
     
     
