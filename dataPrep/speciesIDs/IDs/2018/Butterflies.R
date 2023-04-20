@@ -9,3 +9,7 @@ Hesperia_comma = list(Genus = "Hesperia", SubGenus="",Species =
 Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
     "atlantis", SubSpecies = "", Sex = "", Author = "Edwards", Family
     = "Nymphalidae", Determiner="L.Ponisio", temp.id = c(24891,24914,24858)),
+
+  Papilio_polyxenes = list(Genus = "Papilio", SubGenus="",Species =
+    "polyxenes", SubSpecies = "", Sex = "", Author = "Fabricius",
+    Family = "Papilionidae", Determiner="L.Ponisio", temp.id = c(24857)),
