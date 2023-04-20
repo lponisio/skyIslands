@@ -27,4 +27,8 @@ Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
     "lineata", SubSpecies = "", Sex = "", Author = "Fabricius", Family =
     "Sphingidae", Determiner="L.C. Ponisio", temp.id = c(18725,24864))
 
+  Plebejus_acmon = list(Genus = "Plebejus", SubGenus="", Species =
+    "acmon", SubSpecies = "", Sex = "", Author = "Westwood", Family =
+    "Lycaenidae", Determiner="L.Ponisio", temp.id =c(34822)),
+
 )
