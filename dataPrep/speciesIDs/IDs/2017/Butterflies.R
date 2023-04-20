@@ -71,6 +71,10 @@ Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
     = "Pieridae", Determiner="L.Ponisio", temp.id = c(23704,24921,24875,24915,24919,30074,21582,23690,30578,30541,30540,30589,30539,30077,23756,
                                                       24145,21581,24161,30606,21593,21596,21583,21594,21569)),
 
+Nathalis_iole = list(Genus = "Nathalis", SubGenus="",Species =
+    "iole", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
+    "Pieridae", Determiner="L.Ponisio", temp.id = c(24909)),
+
 
     
     
