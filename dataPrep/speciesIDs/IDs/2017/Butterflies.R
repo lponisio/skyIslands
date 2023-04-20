@@ -92,6 +92,12 @@ Hemiargus_isola = list(Genus = "Hemiargus", SubGenus="", Species = "isola",
     "melinus", SubSpecies = "", Sex = "", Author = "Hubner", Family =
     "Lycaenidae", Determiner="L.Ponisio", temp.id =c(24155,24223,24226,24219,24232,24144,24823,24910,24103))
 
+  Plebejus_acmon = list(Genus = "Plebejus", SubGenus="", Species =
+    "acmon", SubSpecies = "", Sex = "", Author = "Westwood", Family =
+    "Lycaenidae", Determiner="L.Ponisio", temp.id =c(24215,24211,24230,24221,24222,24231,24229,24825,24243,24248,24140,21630,21631,21500,
+                                                     21573,23865,23868,24767,23734,23735,23858,30063,23648,23741,23712,23689,23691,30066,
+                                                     30072,30073,30571,30112)),
+
 )
 
     
