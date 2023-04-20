@@ -13,3 +13,9 @@ Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
   Papilio_polyxenes = list(Genus = "Papilio", SubGenus="",Species =
     "polyxenes", SubSpecies = "", Sex = "", Author = "Fabricius",
     Family = "Papilionidae", Determiner="L.Ponisio", temp.id = c(24857)),
+
+  Pontia_protodice = list(Genus = "Pontia",  SubGenus="",Species = "protodice",
+    SubSpecies = "", Sex = "", Author = "Boisduval & Leconte", Family
+    = "Pieridae", Determiner="L.Ponisio", temp.id = c(24867)),
+
+
