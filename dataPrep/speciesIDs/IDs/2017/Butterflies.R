@@ -49,5 +49,10 @@ Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
     "Grote & Robinson", Family = "Nymphalidae", Determiner="L.Ponisio", temp.id
     =c(30052)),
 
+ Vanessa_cardui = list(Genus = "Vanessa", SubGenus="", Species =
+    "cardui", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
+    "Nymphalidae", Determiner="L.Ponisio", temp.id = c(24110,24109,24108,24107,24255,24252,24254,24257,24258,24119,24118,24117,24116,23793,24834,24884,
+                                                       24883,24882,24121,24881,24122,24112,24111,24901,24868,24866,24900,24899,24892,24922,24115)),
+
     
     
