@@ -8,4 +8,4 @@ Hesperia_comma = list(Genus = "Hesperia", SubGenus="",Species =
 
 Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
     "atlantis", SubSpecies = "", Sex = "", Author = "Edwards", Family
-    = "Nymphalidae", Determiner="L.Ponisio", temp.id = c(24891,24914)),
+    = "Nymphalidae", Determiner="L.Ponisio", temp.id = c(24891,24914,24858)),
