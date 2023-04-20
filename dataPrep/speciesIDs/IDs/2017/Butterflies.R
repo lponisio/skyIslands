@@ -66,6 +66,11 @@ Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
     "nicippe", SubSpecies = "", Sex = "", Author = "Cramer", Family =
     "Pieridae", Determiner="L.Ponisio", temp.id = c(24154,23822,21548,30514,23705)),
 
+  Pontia_protodice = list(Genus = "Pontia",  SubGenus="",Species = "protodice",
+    SubSpecies = "", Sex = "", Author = "Boisduval & Leconte", Family
+    = "Pieridae", Determiner="L.Ponisio", temp.id = c(23704,24921,24875,24915,24919,30074,21582,23690,30578,30541,30540,30589,30539,30077,23756,
+                                                      24145,21581,24161,30606,21593,21596,21583,21594,21569)),
+
 
     
     
