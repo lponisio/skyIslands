@@ -75,10 +75,7 @@ sp.ids <- list(
     "iole", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
     "Pieridae", Determiner="J.F. Zorn", temp.id = c(36352,36355,36356,36358,36416,36417,36418,36419,36420,36421,36422,36423,36424,36425,38506,38510,38511,38512,38517,
                                                    38519,38536,38538,38539,38540,38541,38542)),
-  
-    Echinargus_isola = list(Genus = "Echinargus", SubGenus="",Species =
-    "isola", SubSpecies = "", Sex = "", Author = "Reakirt", Family =
-    "Lycaenidae", Determiner="A. Santillana", temp.id = c()),
+ 
   
      Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
     "lineata", SubSpecies = "", Sex = "", Author = "Fabricius", Family =
