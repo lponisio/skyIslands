@@ -40,5 +40,9 @@ Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
     "tharos", SubSpecies = "", Sex = "", Author = "Drury", Family =
     "Nymphalidae", Determiner="L.Ponisio", temp.id =c(21572,21578,21535,24609,23720,21494,23895,30519,24027,24000)),
 
+   Danaus_plexippus = list(Genus = "Danaus", SubGenus="", Species =
+    "plexippus", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
+    = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(24180)),
+
     
     
