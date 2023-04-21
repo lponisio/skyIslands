@@ -102,6 +102,9 @@ Hemiargus_isola = list(Genus = "Hemiargus", SubGenus="", Species = "isola",
     Species = "argiolus", SubSpecies = "ladon", Sex = "", Author =
     "Cramer", Family = "Lycaenidae", Determiner="L.Ponisio", temp.id = c(24218,30610)),
 
+    Aglais_milberti = list(Genus = "Aglais", SubGenus="", Species =
+    "milberti", SubSpecies = "", Sex = "", Author = "Godart", Family
+    = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(24908)),
 )
 
     
