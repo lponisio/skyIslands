@@ -26,6 +26,10 @@ sp.ids <- list(
     "atlantis", SubSpecies = "", Sex = "", Author = "Edwards", Family
     = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36371,36372,36387,36391,38423,38431,38435,38436,38437,38438,38654,38523,39057)),
   
+    Aglais_milberti = list(Genus = "Aglais", SubGenus="", Species =
+    "milberti", SubSpecies = "", Sex = "", Author = "Godart", Family
+    = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(39012)),
+  
    Danaus_plexippus = list(Genus = "Danaus", SubGenus="", Species =
     "plexippus", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
     = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36397,36394)),
