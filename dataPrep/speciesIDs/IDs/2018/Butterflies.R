@@ -31,4 +31,7 @@ Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
     "acmon", SubSpecies = "", Sex = "", Author = "Westwood", Family =
     "Lycaenidae", Determiner="L.Ponisio", temp.id =c(34822)),
 
+     Danaus_gilippus = list(Genus = "Danaus", SubGenus="", Species =
+    "gilippus", SubSpecies = "", Sex = "", Author = "Cramer", Family
+    = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(24852))
 )
