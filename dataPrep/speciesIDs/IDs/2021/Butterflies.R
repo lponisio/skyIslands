@@ -30,6 +30,10 @@ sp.ids <- list(
     "milberti", SubSpecies = "", Sex = "", Author = "Godart", Family
     = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(39012)),
   
+    Gyrocheilus_patrobas = list(Genus = "Gyrocheilus", SubGenus="", Species =
+    "patrobas", SubSpecies = "", Sex = "", Author = "Hewitson", Family
+    = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(38497,36340,36343)),
+  
    Danaus_plexippus = list(Genus = "Danaus", SubGenus="", Species =
     "plexippus", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
     = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36397,36394)),
