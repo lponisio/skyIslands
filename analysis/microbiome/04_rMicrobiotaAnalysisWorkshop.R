@@ -114,7 +114,7 @@ plot.pd.genus <- ggplot(meta, aes(Genus, PhyloDiversity)) +
   stat_summary(fun = "median", geom = "crossbar",
                colour = "red", width = 1) +
   theme(legend.position='none', text=element_text(size=21)) +
-  labs(y='Phylogenetic Diversity') + 
+  labs(y='Phylogenetic Diversity (Branch Length)') + 
   stat_pvalue_manual(stat.test.pd, label = "p.adj.signif", tip.length = 0.01, y.position = 10, step.increase = 0.05)
 
 print(plot.pd.genus)
@@ -135,7 +135,7 @@ plot.sr.genus <- ggplot(meta, aes(Genus, SpeciesRichness)) +
   stat_summary(fun = "median", geom = "crossbar",
                colour = "red", width = 1) +
   theme(legend.position='none', text=element_text(size=21)) +
-  labs(y='Species Richness') + 
+  labs(y='OTU Richness') + 
   stat_pvalue_manual(stat.test.sr, label = "p.adj.signif", tip.length = 0.01, y.position = 100, step.increase = 0.05)
 print(plot.sr.genus)
 
