@@ -74,6 +74,9 @@ dist_decay_model
 ## by genus plots
 
 apis_model <- genus.decay.model(spec16s, 'Apis')
+
+ci95 <- predict(apis_model$model, interval = "confidence", level = 0.95)
+
 bombus_model <- genus.decay.model(spec16s, 'Bombus')
 anthophora_model <- genus.decay.model(spec16s, 'Anthophora')
 megachile_model <- genus.decay.model(spec16s, 'Megachile')
