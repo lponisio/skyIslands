@@ -8,12 +8,19 @@
 # On whatever computer will be running the tasks, innitiate a docker
 # container for qiime1
 
-docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline sglim2/qiime-1.9.1
+docker pull mbari/qiime1
+
+#sequences from 2020
+#running on Rebecca's username (andrena)
+docker run -itv /Users/andrena/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline_2023 mbari/qiime1
+
+#sequences from 2018
+#docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline sglim2/qiime-1.9.1
 
 
 # 2: cd into the correct folder within the container, verify that the files you need are there
 
-cd ../../mnt/SI_pipeline/
+cd ../../mnt/SI_pipeline_2023/
 ls
 
 
@@ -22,12 +29,21 @@ ls
 #barcodes in reverse so flowcell1 is the reverse and flowcell2 is the
 #forward
 
-## Run 1
-cd R2018/
-gunzip *.gz
+## Run 1 2018
+#cd R2018/
+#gunzip *.gz
 
-mv 4376_S0_L001_R1_001.fastq rawreverse.fastq
-mv 4376_S0_L001_R2_001.fastq rawforward.fastq
+#mv 4376_S0_L001_R1_001.fastq rawreverse.fastq
+#mv 4376_S0_L001_R2_001.fastq rawforward.fastq
+
+## Run 1 2020
+cd R2018/2023_sequence_results_raw/lane1
+gunzip GC3F-JZ-7102---6632_S1_L001_R1_001.fastq.gz
+gunzip GC3F-JZ-7102---6632_S1_L001_R2_001.fastq.gz
+
+mv GC3F-JZ-7102---6632_S1_L001_R1_001.fastq rawreverse.fastq
+mv GC3F-JZ-7102---6632_S1_L001_R2_001.fastq rawforward.fastq
+
 
 
 #4: parse the barcodes in the files, putting our data into a format
@@ -46,7 +62,7 @@ mv reads2.fastq.gz reverse.fastq.gz
 #5: Exit Qiime1 and use docker to open the environment for Qiime 2. 
 exit
 
-docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)\/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
+docker run -itv /Users/andrena/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline_2023 qiime2/core
 
 #6: Test that the container for Qiime 2 is properly associated, then
 #make sure you are in the root directory using ls, then set working
@@ -55,12 +71,15 @@ docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)\/skyIslands_
 #7: Import your parser barcodes into an object you can demultiplex in
 #Qiime 2. Make sure working directory is set correctly.
 cd ../../
-cd mnt/SI_pipeline/
+cd mnt/SI_pipeline_2023/
 
 
 ## R2018
-cd R2018/
+#cd R2018/
 #or whichever run you're working on 
+
+#2020 reads
+cd R2018/2023_sequence_results_raw/lane1
 
 qiime tools import --type EMPPairedEndSequences --input-path parsed_barcodes/ --output-path seqs.qza
 
