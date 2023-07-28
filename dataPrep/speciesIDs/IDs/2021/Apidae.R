@@ -581,7 +581,7 @@ sp.ids <- list(
                                  Author =
                                      "Cresson",
                                  Determiner="L. Best",
-                                 temp.id= c(31131))
+                                 temp.id= c(31131)),
     
         Nomada_sp= list(Genus="Nomada", SubGenus="",
                      Species="sp.",
