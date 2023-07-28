@@ -165,7 +165,8 @@ sp.ids <- list(
                                        33924, 34004,34005,34061,34104,
                                        34376, 34393,34394,34395,34254,
                                        34255, 34256,34257,34258,34310,
-                                       34311, 34312,34313,34314,34315, 34476, 34726, 34729, 34937, 35572, 35811, 35814, 36143)),
+                                       34311, 34312,34313,34314,34315, 
+                                       34476, 34726, 34729, 34937, 35572, 35811, 35814, 36143)),
 
 
      Anthophora_urbana_f = list(Genus="Anthophora",
@@ -455,9 +456,7 @@ sp.ids <- list(
                                  32234, 32242, 32243, 32247, 32253,
                                  32254, 32256, 32258, 32259, 32261,
                                  32262, 32858, 33417, 33422, 33436,
-                                 33439, 34385, 34391, 33570
-
-                                 )),
+                                 33439, 34385, 34391, 33570)),
 
     Bombus_huntii_m = list(Genus = "Bombus",
                            SubGenus="Pyrobombus",
@@ -558,8 +557,7 @@ sp.ids <- list(
                                  Species="californica",
                                  SubSpecies="arizonensis",
                                  Sex="f",
-                                 Author =
-                                     "Cresson",
+                                 Author ="Cresson",
                                  Determiner="L. Ponisio",
                                  temp.id= c(33995)),
 
@@ -595,7 +593,7 @@ sp.ids <- list(
                      SubSpecies="e", Sex="f",
                      Author = "",
                      Determiner="L.C. Ponisio",
-                     temp.id= c(34557)),
+                     temp.id= c(34557))
 
 
 
