@@ -7,17 +7,36 @@ source("src/chao.R")
 source("src/betaNet.R")
 
 library(lme4)
+library(igraph)
 
+#need to src microNets.R
 
 
 ##adapted from Lauren's 1betalink in skyIslands folder
 
 
 
-##make igraph object from indivNet_micro
-## i think only one year of microbe data so can ignore the things about time for now
+####################### must use functions from bipartite bc betalink package is depreciated
 
-microbe_igraph_list <- lapply(indivNet_micro, graph_from_incidence_matrix)
+CH_net <- spNet_micro$CH
+HM_net <- spNet_micro$HM
+JC_net <- spNet_micro$JC
+MM_net <- spNet_micro$MM
+PL_net <- spNet_micro$PL
+SC_net <- spNet_micro$SC
+SM_net <- spNet_micro$SM
+
+
+microbe_poll_betalink <- betalinkr_multi(webarray = webs2array(CH_net, HM_net, JC_net, MM_net, PL_net, SC_net, SM_net),
+                                         partitioning="commondenom", binary=FALSE)
+
+microbe_poll_betalink
+
+
+# for identical results to poisot 2012 betalink use the following settings:
+#
+#partitioning="poisot", function.dist="betadiver", distofempty="na" and binary=TRUE
+# including the function.dist induces a weird error.... need to figure out still if we want to use this method
 
 
 ## ******************************************************************
@@ -25,36 +44,38 @@ microbe_igraph_list <- lapply(indivNet_micro, graph_from_incidence_matrix)
 ## ******************************************************************
 
 
-beta.net <- networkBetadiversity(microbe_igraph_list,
-                                 lower.level=pols,
-                                 higher.level=microbes,
-                                 geo.dist=geo.dist,
-                                 nets.by.SR=nets.by.SR)
-
-## beta.net is formed BUT -- OS, ST, S.lower level, S. higher level, prop ST are induced NaNs
-# need to examine function more to understand why this is happening
-# ALSO check geo.dist to make sure the distance between the same sites are zero,
-# it looks like rn JC, SM, HM, and MM are not 0 distance between themselves :( WHYYYYY
-
-
-## turnover though time
-# beta.same.site <- beta.net[apply(beta.net, 1,
-#                                  function(x) x["Site1"] ==
-#                                              x["Site2"] &
-#                                              x["Year1"] !=
-#                                              x["Year2"]),]
-## turnover through space
-beta.same.year <- beta.net[apply(beta.net, 1,
-                                 function(x) x["Year1"] ==
-                                             x["Year2"] &
-                                             x["Site1"] !=
-                                             x["Site2"]),]
+# beta.net <- networkBetadiversity(microbe_igraph_list,
+#                                  lower.level=pols,
+#                                  higher.level=microbes,
+#                                  geo.dist=geo.dist,
+#                                  nets.by.SR=nets.by.SR)
+# 
+# ## beta.net is formed BUT -- OS, ST, S.lower level, S. higher level, prop ST are induced NaNs
+# # need to examine function more to understand why this is happening
+# # ALSO check geo.dist to make sure the distance between the same sites are zero,
+# # it looks like rn JC, SM, HM, and MM are not 0 distance between themselves :( WHYYYYY
+# 
+# 
+# ## turnover though time
+# # beta.same.site <- beta.net[apply(beta.net, 1,
+# #                                  function(x) x["Site1"] ==
+# #                                              x["Site2"] &
+# #                                              x["Year1"] !=
+# #                                              x["Year2"]),]
+# ## turnover through space
+# beta.same.year <- beta.net[apply(beta.net, 1,
+#                                  function(x) x["Year1"] ==
+#                                              x["Year2"] &
+#                                              x["Site1"] !=
+#                                              x["Site2"]),]
 # ## ## turnover though time within a year
 # beta.same.site.year <- beta.net[apply(beta.net, 1,
 #                                       function(x) x["Site1"] ==
 #                                                   x["Site2"] &
 #                                                   x["Year1"] ==
 #                                                   x["Year2"]),]
+
+
 
 ## ******************************************************************
 ## plotting/models
