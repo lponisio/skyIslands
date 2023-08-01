@@ -5,9 +5,10 @@ setwd("analysis/turnover")
 source("src/initialize.R")
 source("src/chao.R")
 source("src/betaNet.R")
-
+library(ggplot2)
 library(lme4)
 library(igraph)
+library(ggpubr)
 
 #need to src microNets.R
 
@@ -33,7 +34,7 @@ higher.order <- "Pollinators"
 microbe_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, SC, SM),
                                          partitioning="commondenom", binary=TRUE, distofempty='zero', partition.st=TRUE)
 
-View(microbe_poll_betalink)
+#View(microbe_poll_betalink)
 
 colnames(microbe_poll_betalink) <- c("Site1",
                                      "Site2",
@@ -66,28 +67,183 @@ microbe_poll_betalink$GeoDist <- apply(microbe_poll_betalink, 1, function(x){
   geo.dist[x["Site1"],  x["Site2"]]
 })
 
+#spec.turnover plot this is working!
+# 11:38 pm just deciding to copy and paste style it for now lol
+
+
+# spec.turnover plot
+
+forms <- formula(DissimilaritySpeciesComposition~GeoDist + (1|Site1) + (1|Site2))
+#browser()
+mod1 <- do.call(lmer,
+               list(formula=forms,
+                    data=microbe_poll_betalink,
+                    REML = FALSE))
+
+preds1 <- predict(mod1)
+
+
+spec.turnover.plot <- ggplot(microbe_poll_betalink, 
+                             aes(x=GeoDist, y=DissimilaritySpeciesComposition)) +
+  geom_point() + 
+  geom_smooth(aes(y=preds1, x=GeoDist), method='glm') +
+  theme_classic() + 
+  labs(x='Geographic Distance (km)', y='Species Turnover')
+
+spec.turnover.plot
+
+# interaction.turnover plot
+
+forms <- formula(WholeNetworkLinks~GeoDist + (1|Site1) + (1|Site2))
+#browser()
+mod2 <- do.call(lmer,
+               list(formula=forms,
+                    data=microbe_poll_betalink,
+                    REML = FALSE))
+
+preds2 <- predict(mod2)
+
+
+interaction.turnover.plot <- ggplot(microbe_poll_betalink, 
+                                    aes(x=GeoDist, y=WholeNetworkLinks)) +
+  geom_point() + 
+  geom_smooth(aes(y=preds2, x=GeoDist), method='glm') +
+  theme_classic() + 
+  labs(x='Geographic Distance (km)', y='Interaction Turnover')
+
+interaction.turnover.plot
+
+# poll.turnover plot
+
+forms <- formula(TurnoverAbsencePollinators~GeoDist + (1|Site1) + (1|Site2))
+#browser()
+mod3 <- do.call(lmer,
+               list(formula=forms,
+                    data=microbe_poll_betalink,
+                    REML = FALSE))
+
+preds3 <- predict(mod3)
+
+
+pollinator.turnover.plot <- ggplot(microbe_poll_betalink, 
+                                   aes(x=GeoDist, y=TurnoverAbsencePollinators)) +
+  geom_point() + 
+  geom_smooth(aes(y=preds3, x=GeoDist), method='glm') +
+  theme_classic() + 
+  labs(x='Geographic Distance (km)', y='Species Turnover: Pollinators')
+
+pollinator.turnover.plot
+
+# microbe.turnover plot
+
+forms <- formula(TurnoverAbsenceMicrobes~GeoDist + (1|Site1) + (1|Site2))
+#browser()
+mod4 <- do.call(lmer,
+               list(formula=forms,
+                    data=microbe_poll_betalink,
+                    REML = FALSE))
+
+preds4 <- predict(mod4)
+
+
+microbe.turnover.plot <- ggplot(microbe_poll_betalink, 
+                                aes(x=GeoDist, y=TurnoverAbsenceMicrobes)) +
+  geom_point() + 
+  geom_smooth(aes(y=preds4, x=GeoDist), method='glm') +
+  theme_classic() + 
+  labs(x='Geographic Distance (km)', y='Species Turnover: Microbes')
+
+microbe.turnover.plot
+
+## int.turnover.sp.comp plot
+
+forms <- formula(SpeciesTurnoverLinks~GeoDist + (1|Site1) + (1|Site2))
+#browser()
+mod5 <- do.call(lmer,
+               list(formula=forms,
+                    data=microbe_poll_betalink,
+                    REML = FALSE))
+
+preds5 <- predict(mod5)
+
+
+int.turnover.spcomp.plot <- ggplot(microbe_poll_betalink, 
+                                   aes(x=GeoDist, y=SpeciesTurnoverLinks)) +
+  geom_point() + 
+  geom_smooth(aes(y=preds5, x=GeoDist), method='glm') +
+  theme_classic() + 
+  labs(x='Geographic Distance (km)', y='Interaction Turnover: Species Composition')
+
+int.turnover.spcomp.plot
+
+## int.turnover.rewiring plot
+
+forms <- formula(OnlySharedLinks~GeoDist + (1|Site1) + (1|Site2))
+#browser()
+mod6 <- do.call(lmer,
+               list(formula=forms,
+                    data=microbe_poll_betalink,
+                    REML = FALSE))
+
+preds6 <- predict(mod6)
+
+
+int.turnover.rewiring.plot <- ggplot(microbe_poll_betalink, 
+                                     aes(x=GeoDist, y=OnlySharedLinks)) +
+  geom_point() + 
+  geom_smooth(aes(y=preds6, x=GeoDist), method='glm') +
+  theme_classic() + 
+  labs(x='Geographic Distance (km)', y='Interaction Turnover: Rewiring')
+
+int.turnover.rewiring.plot
+
+### facet plots
+bee_microbe_turnover <- ggarrange(spec.turnover.plot,
+                                  interaction.turnover.plot,
+                                  pollinator.turnover.plot,
+                                  microbe.turnover.plot,
+                                  int.turnover.spcomp.plot,
+                                  int.turnover.rewiring.plot,
+                                  ncol=2, nrow=3)
+
+dir.create("figures")
+
+ggsave(bee_microbe_turnover, file="figures/poll_microbe_betaComponents.pdf",
+       height=11, width=8)
+
+
+##yayyy working up to here! work on function later after ESA
+
+
 ### having trouble getting function for plotting to work, going to reconstruct plots using ggplot
-library(ggplot2)
 
-make_turnover_plot <- function(turnover_type, variable_name, network_betalink){
+
+make_turnover_plot <- function(turnover_type, ylabel, network_betalink){
+  
   forms <- formula(turnover_type~GeoDist + (1|Site1) + (1|Site2))
-
+  
+  #browser()
+  # this error:
+  #Error during wrapup: variable lengths differ (found for 'GeoDist')
   mod <- do.call(lmer,
                  list(formula=forms,
                       data=network_betalink,
                       REML = FALSE))
   
   preds <- predict(mod)
-  turnover.plot <- ggplot(network_betalink, 
+  
+  
+  spec.turnover.plot <- ggplot(network_betalink, 
                                aes(x=GeoDist, y=turnover_type)) +
     geom_point() + 
-    geom_smooth(aes(y=preds)) +
+    geom_smooth(aes(y=preds, x=GeoDist)) +
     theme_classic() + 
-    labs(x='Geographic Distance (km)', y=variable_name)
+    labs(x='Geographic Distance (km)', y=ylabel)
   
-  turnover.plot
+  spec.turnover.plot
   
 }
+
 
 yvars <- c("DissimilaritySpeciesComposition",
            "WholeNetworkLinks",
@@ -96,10 +252,14 @@ yvars <- c("DissimilaritySpeciesComposition",
            "SpeciesTurnoverLinks",
            "OnlySharedLinks")
 ylabs <- c("Species Turnover", "Interaction Turnover",
-           paste("Species Turnover:", higher.order),
            paste("Species Turnover:", lower.order),
+           paste("Species Turnover:", higher.order),
            "Interaction Turnover: Species Composition",
            "Interaction Turnover: Rewiring")
+
+make_turnover_plot(turnover_type = yvars[1], ylabel = ylabs[1], network_betalink = microbe_poll_betalink)
+
+
 
 for (i in length(yvars)){
   turnover_type <- yvars[i]
@@ -109,26 +269,9 @@ for (i in length(yvars)){
                                   network_betalink = microbe_poll_betalink)
 }
 
-#spec.turnover plot this is working!
-
-forms <- formula(DissimilaritySpeciesComposition~GeoDist + (1|Site1) + (1|Site2))
-#browser()
-mod <- do.call(lmer,
-               list(formula=forms,
-                    data=microbe_poll_betalink,
-                    REML = FALSE))
-
-preds <- predict(mod)
 
 
-spec.turnover.plot <- ggplot(microbe_poll_betalink, 
-                             aes(x=GeoDist, y=DissimilaritySpeciesComposition)) +
-  geom_point() + 
-  geom_smooth(aes(y=preds, x=GeoDist)) +
-  theme_classic() + 
-  labs(x='Geographic Distance (km)', y='Species Turnover')
 
-spec.turnover.plot
 
 # i = Site1
 # j = Site2
