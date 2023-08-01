@@ -26,11 +26,30 @@ PL <- spNet_micro$PL
 SC <- spNet_micro$SC
 SM <- spNet_micro$SM
 
+lower.order <- "Microbes"
+higher.order <- "Pollinators"
+
 
 microbe_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, SC, SM),
-                                         partitioning="poisot", binary=TRUE, distofempty='na')
+                                         partitioning="commondenom", binary=TRUE, distofempty='zero', partition.st=TRUE)
 
-microbe_poll_betalink
+View(microbe_poll_betalink)
+
+colnames(microbe_poll_betalink) <- c("Site1",
+                                     "Site2",
+                                     "DissimilaritySpeciesComposition",
+                                     "OnlySharedLinks",
+                                     "WholeNetworkLinks",
+                                     "SpeciesTurnoverLinks",
+                                     paste("TurnoverAbsence",lower.order,sep=""),
+                                     paste("TurnoverAbsence",higher.order,sep=""),
+                                     "TurnoverAbsenceBoth"
+                                     )
+
+
+
+
+
 
 ###will need to update LP's function networkBetaDiversity because most of the packages
 ### are no longer compatible :( 
@@ -44,8 +63,72 @@ colnames(geo.dist) <- rownames(geo.dist) <- geo$Site
 
 ## add column for geographic distance between sites
 microbe_poll_betalink$GeoDist <- apply(microbe_poll_betalink, 1, function(x){
-  geo.dist[x["i"],  x["j"]]
+  geo.dist[x["Site1"],  x["Site2"]]
 })
+
+### having trouble getting function for plotting to work, going to reconstruct plots using ggplot
+library(ggplot2)
+
+make_turnover_plot <- function(turnover_type, variable_name, network_betalink){
+  forms <- formula(turnover_type~GeoDist + (1|Site1) + (1|Site2))
+
+  mod <- do.call(lmer,
+                 list(formula=forms,
+                      data=network_betalink,
+                      REML = FALSE))
+  
+  preds <- predict(mod)
+  turnover.plot <- ggplot(network_betalink, 
+                               aes(x=GeoDist, y=turnover_type)) +
+    geom_point() + 
+    geom_smooth(aes(y=preds)) +
+    theme_classic() + 
+    labs(x='Geographic Distance (km)', y=variable_name)
+  
+  turnover.plot
+  
+}
+
+yvars <- c("DissimilaritySpeciesComposition",
+           "WholeNetworkLinks",
+           "TurnoverAbsenceMicrobes",
+           "TurnoverAbsencePollinators",
+           "SpeciesTurnoverLinks",
+           "OnlySharedLinks")
+ylabs <- c("Species Turnover", "Interaction Turnover",
+           paste("Species Turnover:", higher.order),
+           paste("Species Turnover:", lower.order),
+           "Interaction Turnover: Species Composition",
+           "Interaction Turnover: Rewiring")
+
+for (i in length(yvars)){
+  turnover_type <- yvars[i]
+  variable_name <- ylabs[i]
+  this_plot <- make_turnover_plot(turnover_type = turnover_type,
+                                  variable_name = variable_name,
+                                  network_betalink = microbe_poll_betalink)
+}
+
+#spec.turnover plot this is working!
+
+forms <- formula(DissimilaritySpeciesComposition~GeoDist + (1|Site1) + (1|Site2))
+#browser()
+mod <- do.call(lmer,
+               list(formula=forms,
+                    data=microbe_poll_betalink,
+                    REML = FALSE))
+
+preds <- predict(mod)
+
+
+spec.turnover.plot <- ggplot(microbe_poll_betalink, 
+                             aes(x=GeoDist, y=DissimilaritySpeciesComposition)) +
+  geom_point() + 
+  geom_smooth(aes(y=preds, x=GeoDist)) +
+  theme_classic() + 
+  labs(x='Geographic Distance (km)', y='Species Turnover')
+
+spec.turnover.plot
 
 # i = Site1
 # j = Site2
@@ -60,6 +143,30 @@ microbe_poll_betalink$GeoDist <- apply(microbe_poll_betalink, 1, function(x){
 #partitioning="poisot", function.dist="betadiver", distofempty="na" and binary=TRUE
 # including the function.dist induces a weird error.... need to figure out still if we want to use this method
 
+#yvars <- c("i", "j", "S", "OS", "WN","ST")
+
+ylabs <- c("TurnoverAbsenceMicrobes",
+           "TurnoverAbsencePollinators",
+           "TurnoverAbsenceBoth",
+           "OnlySharedLinks",
+           "WholeNetworkLinks",
+           "SpeciesTurnoverLinks")
+
+modGeoTurnover <- function(yvars, beta.same.year){
+  this.beta <- as.data.frame(beta.same.year)
+  y <- yvars
+  forms <- formula(y~GeoDist + (1|Site1) + (1|Site2))
+  #browser()
+  mod <- do.call(lmer,
+                 list(formula=forms,
+                      data=this.beta,
+                      REML = FALSE))
+  eff <- Effect(c("GeoDist"), mod)
+  return(list(mod=mod, eff=eff))
+  
+}
+geo.mods <- lapply(ylabs, modGeoTurnover, microbe_poll_betalink)
+names(geo.mods) <- ylabs
 
 ## ******************************************************************
 ## calculate different breakdowns of turnover
