@@ -18,19 +18,41 @@ library(igraph)
 
 ####################### must use functions from bipartite bc betalink package is depreciated
 
-CH_net <- spNet_micro$CH
-HM_net <- spNet_micro$HM
-JC_net <- spNet_micro$JC
-MM_net <- spNet_micro$MM
-PL_net <- spNet_micro$PL
-SC_net <- spNet_micro$SC
-SM_net <- spNet_micro$SM
+CH <- spNet_micro$CH
+HM <- spNet_micro$HM
+JC <- spNet_micro$JC
+MM <- spNet_micro$MM
+PL <- spNet_micro$PL
+SC <- spNet_micro$SC
+SM <- spNet_micro$SM
 
 
-microbe_poll_betalink <- betalinkr_multi(webarray = webs2array(CH_net, HM_net, JC_net, MM_net, PL_net, SC_net, SM_net),
-                                         partitioning="commondenom", binary=FALSE)
+microbe_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, SC, SM),
+                                         partitioning="poisot", binary=TRUE, distofempty='na')
 
 microbe_poll_betalink
+
+###will need to update LP's function networkBetaDiversity because most of the packages
+### are no longer compatible :( 
+
+geo <- unique(spec.net[, c("Site", "Lat", "Long")])
+geo <- geo[!duplicated(geo$Site),]
+
+geo.dist <- rdist.earth(cbind(geo$Long, geo$Lat),
+                        cbind(geo$Long, geo$Lat))
+colnames(geo.dist) <- rownames(geo.dist) <- geo$Site
+
+## add column for geographic distance between sites
+microbe_poll_betalink$GeoDist <- apply(microbe_poll_betalink, 1, function(x){
+  geo.dist[x["i"],  x["j"]]
+})
+
+# i = Site1
+# j = Site2
+# S = dissimilarity in species composition
+# OS = dissimilarity explained by rewiring among shared species (only shared)
+# WN = dissimilarity between two networks (whole network)
+# ST = dissimilarity explained by difference in species community composition (species turnover links)
 
 
 # for identical results to poisot 2012 betalink use the following settings:
@@ -75,7 +97,7 @@ microbe_poll_betalink
 #                                                   x["Year1"] ==
 #                                                   x["Year2"]),]
 
-
+#### still only one year of microbe data so not an issue yet
 
 ## ******************************************************************
 ## plotting/models
