@@ -1,16 +1,18 @@
 ## setwd("~/Dropbox/skyIslands/")
 setwd('~/Dropbox (University of Oregon)/skyIslands/') ## Rebecca wd
-#rm(list=ls())
+
+rm(list=ls())
 setwd("analysis/turnover")
 source("src/initialize.R")
 source("src/chao.R")
 source("src/betaNet.R")
 library(ggplot2)
 library(lme4)
+library(lmerTest)
 library(igraph)
 library(ggpubr)
 
-#need to src microNets.R
+load("C:/Users/rah10/Dropbox (University of Oregon)/skyIslands/data/networks/microNets.RData")
 
 
 ##adapted from Lauren's 1betalink in skyIslands folder
@@ -79,6 +81,7 @@ mod1 <- do.call(lmer,
                list(formula=forms,
                     data=microbe_poll_betalink,
                     REML = FALSE))
+summary(mod1)
 
 preds1 <- predict(mod1)
 
@@ -100,6 +103,7 @@ mod2 <- do.call(lmer,
                list(formula=forms,
                     data=microbe_poll_betalink,
                     REML = FALSE))
+summary(mod2)
 
 preds2 <- predict(mod2)
 
@@ -122,6 +126,8 @@ mod3 <- do.call(lmer,
                     data=microbe_poll_betalink,
                     REML = FALSE))
 
+summary(mod3)
+
 preds3 <- predict(mod3)
 
 
@@ -143,6 +149,8 @@ mod4 <- do.call(lmer,
                     data=microbe_poll_betalink,
                     REML = FALSE))
 
+summary(mod4)
+
 preds4 <- predict(mod4)
 
 
@@ -163,6 +171,7 @@ mod5 <- do.call(lmer,
                list(formula=forms,
                     data=microbe_poll_betalink,
                     REML = FALSE))
+summary(mod5)
 
 preds5 <- predict(mod5)
 
@@ -184,6 +193,7 @@ mod6 <- do.call(lmer,
                list(formula=forms,
                     data=microbe_poll_betalink,
                     REML = FALSE))
+summary(mod6)
 
 preds6 <- predict(mod6)
 
@@ -213,6 +223,8 @@ ggsave(bee_microbe_turnover, file="figures/poll_microbe_betaComponents.pdf",
 
 
 ##yayyy working up to here! work on function later after ESA
+
+###############################################################################
 
 
 ### having trouble getting function for plotting to work, going to reconstruct plots using ggplot
