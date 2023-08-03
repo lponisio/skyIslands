@@ -238,19 +238,19 @@ int.turnover.rewiring.plot
 
 ### facet plots
 bee_microbe_turnover <- ggarrange(spec.turnover.plot,
-                                  interaction.turnover.plot,
                                   pollinator.turnover.plot,
                                   microbe.turnover.plot,
+                                  interaction.turnover.plot,
                                   int.turnover.spcomp.plot,
                                   int.turnover.rewiring.plot,
-                                  ncol=2, nrow=3)
+                                  ncol=3, nrow=2)
 
 bee_microbe_turnover
 
 dir.create("figures")
 
 ggsave(bee_microbe_turnover, file="figures/poll_microbe_betaComponents.pdf",
-       height=11, width=8)
+       height=8, width=11)
 
 
 ##yayyy working up to here! work on function later after ESA
