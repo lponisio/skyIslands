@@ -11,6 +11,7 @@ library(lme4)
 library(lmerTest)
 library(igraph)
 library(ggpubr)
+library(emmeans)
 
 load("C:/Users/rah10/Dropbox (University of Oregon)/skyIslands/data/networks/microNets.RData")
 
@@ -83,15 +84,18 @@ mod1 <- do.call(lmer,
                     REML = FALSE))
 summary(mod1)
 
-preds1 <- predict(mod1)
-
+gr1 <- ref_grid(mod1, cov.keep= c('GeoDist'))
+emm1 <- emmeans(gr1, spec= c("GeoDist"), level= 0.95)
+emm1
 
 spec.turnover.plot <- ggplot(microbe_poll_betalink, 
                              aes(x=GeoDist, y=DissimilaritySpeciesComposition)) +
   geom_point() + 
-  geom_smooth(aes(y=preds1, x=GeoDist), method='glm') +
+  geom_ribbon(data= data.frame(emm1), aes(ymin= lower.CL, ymax= upper.CL, y= NULL), fill= 'grey80', alpha=0.5) +
+  geom_line(data= data.frame(emm1), aes(y= emmean)) +
   theme_classic() + 
-  labs(x='Geographic Distance (km)', y='Species Turnover')
+  labs(x='Geographic Distance (km)', y='Species Turnover') +
+  scale_y_continuous(limits=c(0,1))
 
 spec.turnover.plot
 
@@ -105,15 +109,20 @@ mod2 <- do.call(lmer,
                     REML = FALSE))
 summary(mod2)
 
-preds2 <- predict(mod2)
+
+gr2 <- ref_grid(mod2, cov.keep= c('GeoDist'))
+emm2 <- emmeans(gr2, spec= c("GeoDist"), level= 0.95)
+emm2
 
 
 interaction.turnover.plot <- ggplot(microbe_poll_betalink, 
                                     aes(x=GeoDist, y=WholeNetworkLinks)) +
   geom_point() + 
-  geom_smooth(aes(y=preds2, x=GeoDist), method='glm') +
+  geom_ribbon(data= data.frame(emm2), aes(ymin= lower.CL, ymax= upper.CL, y= NULL), fill= 'grey80', alpha=0.5) +
+  geom_line(data= data.frame(emm2), aes(y= emmean)) +
   theme_classic() + 
-  labs(x='Geographic Distance (km)', y='Interaction Turnover')
+  labs(x='Geographic Distance (km)', y='Interaction Turnover') +
+  scale_y_continuous(limits=c(0,1))
 
 interaction.turnover.plot
 
@@ -128,15 +137,21 @@ mod3 <- do.call(lmer,
 
 summary(mod3)
 
-preds3 <- predict(mod3)
+
+gr3 <- ref_grid(mod3, cov.keep= c('GeoDist'))
+emm3 <- emmeans(gr3, spec= c("GeoDist"), level= 0.95)
+emm3
+
 
 
 pollinator.turnover.plot <- ggplot(microbe_poll_betalink, 
                                    aes(x=GeoDist, y=TurnoverAbsencePollinators)) +
   geom_point() + 
-  geom_smooth(aes(y=preds3, x=GeoDist), method='glm') +
+  geom_ribbon(data= data.frame(emm3), aes(ymin= lower.CL, ymax= upper.CL, y= NULL), fill= 'grey80', alpha=0.5) +
+  geom_line(data= data.frame(emm3), aes(y= emmean)) +
   theme_classic() + 
-  labs(x='Geographic Distance (km)', y='Species Turnover: Pollinators')
+  labs(x='Geographic Distance (km)', y='Species Turnover: Pollinators')+
+  scale_y_continuous(limits=c(0,1))
 
 pollinator.turnover.plot
 
@@ -151,15 +166,20 @@ mod4 <- do.call(lmer,
 
 summary(mod4)
 
-preds4 <- predict(mod4)
+
+gr4 <- ref_grid(mod4, cov.keep= c('GeoDist'))
+emm4 <- emmeans(gr4, spec= c("GeoDist"), level= 0.95)
+emm4
 
 
 microbe.turnover.plot <- ggplot(microbe_poll_betalink, 
                                 aes(x=GeoDist, y=TurnoverAbsenceMicrobes)) +
   geom_point() + 
-  geom_smooth(aes(y=preds4, x=GeoDist), method='glm') +
+  geom_ribbon(data= data.frame(emm4), aes(ymin= lower.CL, ymax= upper.CL, y= NULL), fill= 'grey80', alpha=0.5) +
+  geom_line(data= data.frame(emm4), aes(y= emmean)) +
   theme_classic() + 
-  labs(x='Geographic Distance (km)', y='Species Turnover: Microbes')
+  labs(x='Geographic Distance (km)', y='Species Turnover: Microbes')+
+  scale_y_continuous(limits=c(0,1))
 
 microbe.turnover.plot
 
@@ -173,15 +193,20 @@ mod5 <- do.call(lmer,
                     REML = FALSE))
 summary(mod5)
 
-preds5 <- predict(mod5)
+
+gr5 <- ref_grid(mod5, cov.keep= c('GeoDist'))
+emm5 <- emmeans(gr5, spec= c("GeoDist"), level= 0.95)
+emm5
 
 
 int.turnover.spcomp.plot <- ggplot(microbe_poll_betalink, 
                                    aes(x=GeoDist, y=SpeciesTurnoverLinks)) +
   geom_point() + 
-  geom_smooth(aes(y=preds5, x=GeoDist), method='glm') +
+  geom_ribbon(data= data.frame(emm5), aes(ymin= lower.CL, ymax= upper.CL, y= NULL), fill= 'grey80', alpha=0.5) +
+  geom_line(data= data.frame(emm5), aes(y= emmean)) +
   theme_classic() + 
-  labs(x='Geographic Distance (km)', y='Interaction Turnover: Species Composition')
+  labs(x='Geographic Distance (km)', y='Interaction Turnover: Species Composition') +
+  scale_y_continuous(limits=c(0,1))
 
 int.turnover.spcomp.plot
 
@@ -195,15 +220,19 @@ mod6 <- do.call(lmer,
                     REML = FALSE))
 summary(mod6)
 
-preds6 <- predict(mod6)
+
+gr6 <- ref_grid(mod6, cov.keep= c('GeoDist'))
+emm6 <- emmeans(gr6, spec= c("GeoDist"), level= 0.95)
 
 
 int.turnover.rewiring.plot <- ggplot(microbe_poll_betalink, 
                                      aes(x=GeoDist, y=OnlySharedLinks)) +
   geom_point() + 
-  geom_smooth(aes(y=preds6, x=GeoDist), method='glm') +
+  geom_ribbon(data= data.frame(emm6), aes(ymin= lower.CL, ymax= upper.CL, y= NULL), fill= 'grey80', alpha=0.5) +
+  geom_line(data= data.frame(emm6), aes(y= emmean)) +
   theme_classic() + 
-  labs(x='Geographic Distance (km)', y='Interaction Turnover: Rewiring')
+  labs(x='Geographic Distance (km)', y='Interaction Turnover: Rewiring')+
+  scale_y_continuous(limits=c(0,1))
 
 int.turnover.rewiring.plot
 
@@ -215,6 +244,8 @@ bee_microbe_turnover <- ggarrange(spec.turnover.plot,
                                   int.turnover.spcomp.plot,
                                   int.turnover.rewiring.plot,
                                   ncol=2, nrow=3)
+
+bee_microbe_turnover
 
 dir.create("figures")
 
