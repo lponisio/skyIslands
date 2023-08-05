@@ -328,7 +328,7 @@ sp.ids <- list(
 
   Erynnis_morpho2 = list(Genus = "Erynnis", SubGenus="", Species =
     "sp.", SubSpecies = "b", Sex = "", Author = "", Family =
-    "Hesperiidae", Determiner="L.Ponisio", temp.id = c("PL_081312_277"))
+    "Hesperiidae", Determiner="L.Ponisio", temp.id = c("PL_081312_277")),
   
    Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
     "lineata", SubSpecies = "", Sex = "", Author = "Fabricius", Family =
@@ -341,7 +341,7 @@ sp.ids <- list(
                                                          "PL_081112_135","PL_081212_256","PL_081212_253",
                                                         "PL_081112_134","PL_081212_254","PL_080912_347",
                                                         "PL_080912_342","PL_081012_1",
-                                                        "PL_080912_341","PL_080912_343","PL_081212_255"
+                                                        "PL_080912_341","PL_080912_343","PL_081212_255",
                                                         "PL_081012_2","PL_080912_348","PL_081212_252"))
 
 
