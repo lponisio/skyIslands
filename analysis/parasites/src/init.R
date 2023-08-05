@@ -4,6 +4,8 @@ library(dplyr)
 library(tidyr)
 library(tidybayes)
 library(ggthemes)
+library(car)
+library(lme4)
 
 
 load('../../data/spec_net.Rdata')

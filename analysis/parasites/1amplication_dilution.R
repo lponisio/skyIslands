@@ -32,7 +32,7 @@ unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
 ## **********************************************************
 ## Multi species models
 xvars.multi.species <-  c("Net_NonBombusHBAbundance",
-                          "Net_HBAbundance",
+                          ## "Net_HBAbundance",
                           "Net_BombusAbundance",
                           "Net_BeeDiversity",
                           "rare.degree", "MeanITD",

@@ -10,6 +10,16 @@ runParasiteModels <- function(spec.data,
         sep=" ~ "))
 
 
+    formula.parasite.lmer  <- as.formula(paste(
+        parasite,
+        paste(xvars,
+              collapse=" + "),
+        sep=" ~ "))
+
+  mod.test <- glmer(formula.parasite.lmer, family="binomial",
+                    data=spec.data)
+  print(vif(mod.test))
+
     bf.parasite <- bf(formula.parasite, family="bernoulli")
     bform.parasite <- bf.fabund + bf.fdiv +
         bf.babund + bf.bombusabund + bf.HBabund +

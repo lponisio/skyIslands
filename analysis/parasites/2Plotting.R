@@ -1,6 +1,6 @@
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
 setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
-##setwd('~/Dropbox (University of Oregon)/skyislands')
+## setwd('~/Dropbox (University of Oregon)/skyislands')
 ## Script for plotting all of the important explanatory variables.
 
 setwd("analysis/parasites")
@@ -23,8 +23,6 @@ source("src/init.R")
 spec.orig <- spec.net
 site.orig <- site.sum
 
-
-ls()
 ## ***********************************************************************
 ## plotting, unscaling labs
 ## ***********************************************************************
@@ -124,8 +122,8 @@ p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
         text = element_text(size=16)) +
   ##theme_ms() +
  ##theme_dark_black()+
-  geom_point(data=spec.orig,
-             aes(y= CrithidiaPresence, x=Net_BeeDiversity),
+  geom_point(data=data.par,
+             aes(y= CrithidiaBombusParasitismRate, x=Net_BeeDiversity),
              color="grey40", cex=2)
 
 ## parasitism ~ bumble bee abundance
