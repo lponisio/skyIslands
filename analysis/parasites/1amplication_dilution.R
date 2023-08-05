@@ -1,7 +1,7 @@
 rm(list=ls())
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
-## setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
-setwd('~/Dropbox (University of Oregon)/skyislands')
+ setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
+##setwd('~/Dropbox (University of Oregon)/skyislands')
 ncores <- 2
 
 setwd("analysis/parasites")
@@ -66,9 +66,8 @@ xvars.single.species <-  c("Net_NonBombusHBAbundance",
 ## fit.bombus.cexpoeki <- runParasiteModels(spec.bombus, "bombus",
 ##                                          "CrithidiaExpoeki",
 ##                                          xvars.multi.species)
-## fit.bombus.cspp <- runParasiteModels(spec.bombus, "bombus",
-##                                      "CrithidiaPresence",
-##                                      xvars.multi.species)
+ fit.bombus.cspp <- runParasiteModels(spec.bombus, "bombus", "CrithidiaPresence",
+                                      xvars.multi.species)
 
 ## ## all apidae species (Bombus, Apis, Anthophora, Melissodes)
 ## fit.apidae.cbombi <- runParasiteModels(spec.apidae, "apidae",

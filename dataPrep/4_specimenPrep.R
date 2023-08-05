@@ -219,7 +219,12 @@ calcSummaryStats <- function(spec.method, method){
                     na.rm=TRUE),
                   SRDoyPoly1=mean(DoyPoly1),
                   SRDoyPoly2=mean(DoyPoly2),
-                  SRDoy=mean(Doy))
+                  SRDoy=mean(Doy),
+                  CrithidiaBombusParasitismRate= mean(CrithidiaPresence[Genus == "Bombus"], 
+                                                      na.rm=TRUE),
+                  CrithidiaHBParasitismRate= mean (CrithidiaPresence
+                                                   [GenusSpecies == "Apis mellifera"],
+                                                   na.rm=TRUE))
 
     site.sp.yr <- spec %>%
         group_by(Site, Year, GenusSpecies, Genus) %>%

@@ -1,6 +1,6 @@
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
-
-setwd('~/Dropbox (University of Oregon)/skyislands')
+setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
+##setwd('~/Dropbox (University of Oregon)/skyislands')
 ## Script for plotting all of the important explanatory variables.
 
 setwd("analysis/parasites")
@@ -8,17 +8,28 @@ rm(list=ls())
 
 source("src/ggplotThemes.R")
 source("src/misc.R")
+source("src/makeMultiLevelData.R")
+
+vars <- c("MeanFloralAbundance",
+          "MeanFloralDiversity",
+          "Net_BeeDiversity",
+          "Lat", "SRDoy",
+          "MeanITD",
+          ## "r.degree", ## across all networks
+          "rare.degree"  ## site-year level
+)
 source("src/init.R")
 
-spec.orig <- spec
+spec.orig <- spec.net
 site.orig <- site.sum
 
-load(file="saved/parasiteFitMod.Rdata")
 
+ls()
 ## ***********************************************************************
 ## plotting, unscaling labs
 ## ***********************************************************************
 ## lat
+
 spec.orig$Lat <- log(spec.orig$Lat)
 labs.lat.x <- (pretty(c(spec.orig$Lat),
                       n=10))
@@ -33,9 +44,8 @@ labs.area <- (pretty(spec.orig$Area, n=6))
 axis.area <-  standardize.axis(labs.area,
                                 spec.orig$Area)
 ## bee abund
-labs.bee.abund2 <- (pretty(c(0, spec.orig$PollAbundance),
-                           n=6))
-axis.bee.abund2 <- labs.bee.abund2
+## labs.bee.abund2 <- (pretty(c(0, spec.orig$PollAbundance),n=6))
+## axis.bee.abund2 <- labs.bee.abund2
 ## not standardized so can use poisson
 ## axis.bee.abund2 <-  standardize.axis(labs.bee.abund2,
 ##                                       spec.orig$PollAbundance)
@@ -48,271 +58,288 @@ axis.flower.div <-  standardize.axis(labs.flower.div,
 ## labs.bee.abund <- (pretty(c(0, spec.orig$PollAbundance), n=5))
 ## axis.bee.abund <-  axis.bee.abund
 ## HB abund
-labs.HB.abund <- (pretty(c(0, spec.orig$HBAbundance), n=5))
-axis.HB.abund <-  labs.HB.abund
+labs.HB.abund <- (pretty(c(0, spec.orig$Net_HBAbundance), n=5))
+axis.HB.abund <-  standardize.axis(labs.HB.abund, spec.orig$Net_HBAbundance)
 ## bombus abund
-labs.bombus.abund <- (pretty(c(0, spec.orig$PollAbundance), n=5))
-axis.bombus.abund <-  labs.bombus.abund
+labs.bombus.abund <- (pretty(c(0, spec.orig$Net_BombusAbundance), n=5))
+axis.bombus.abund <-  standardize.axis(labs.bombus.abund, spec.orig$Net_BombusAbundance)
 ## non hb non bombus abund
-labs.bee.abund <- (pretty(c(0, spec.orig$NonBombusHBAbundance), n=5))
-axis.bee.abund <-  labs.bee.abund
+labs.bee.abund <- (pretty(c(0, spec.orig$Net_NonBombusHBAbundance), n=5))
+axis.bee.abund <-  standardize.axis(labs.bee.abund, spec.orig$Net_NonBombusHBAbundance)
 ## bee diversity
-labs.bee.div <- (pretty(c(0, spec.orig$PollDiversity), n=5))
+labs.bee.div <- (pretty(c(0, spec.orig$Net_BeeDiversity), n=5))
 axis.bee.div <-  standardize.axis(labs.bee.div,
-                                  spec.orig$PollDiversity)
+                                  spec.orig$Net_BeeDiversity)
 
 ## ***********************************************************************
 ## bee community diversity and abundance and parasitism
 ## ***********************************************************************
+load(file="saved/parasiteFit_bombus_CrithidiaPresence.Rdata")
 
-par.data <- spec[spec$WeightsPar == 1,]
+# We want the standarized data for the predictions (spec.data)
+
+data.par <- spec.bombus[spec.bombus$WeightsPar == 1,]
 
 
 ## https://www.rensvandeschoot.com/tutorials/generalised-linear-models-with-brms/
 
-p1.parasite  <- fit %>%
-    spread_draws(b_PollDiversity_Intercept,
-                 b_ParasitePresence_Intercept,
-                 b_NonBombusHBAbundance_Intercept,
-                 b_ParasitePresence_NonBombusHBAbundance,
-                 b_ParasitePresence_HBAbundance,
-                 b_HBAbundance_Intercept,
-                 b_ParasitePresence_BombusAbundance,
-                 b_BombusAbundance_Intercept,
-                 b_ParasitePresence_PollDiversity,
-                 b_ParasitePresence_MeanITD,
-                 b_ParasitePresence_r.degree,
-                 ) %>%
-    mutate(PollDiversity =
-               list(seq(min(site.sum$PollDiversity, na.rm=TRUE),
-                        max(site.sum$PollDiversity, na.rm=TRUE),
-                        0.1))) %>%
-    unnest(PollDiversity) %>%
-    mutate(pred = exp(
-               b_PollDiversity_Intercept +
-               b_ParasitePresence_Intercept +
-               ## b_NonBombusHBAbundance_Intercept+
-               ## b_HBAbundance_Intercept+
-               ## b_BombusAbundance_Intercept+
-                 b_ParasitePresence_PollDiversity*PollDiversity)/
-               (1+exp( b_PollDiversity_Intercept +
-               b_ParasitePresence_Intercept +
-               ## b_NonBombusHBAbundance_Intercept+
-               ## b_HBAbundance_Intercept+
-               ## b_BombusAbundance_Intercept+
-                 b_ParasitePresence_PollDiversity*PollDiversity
-                 )
-               )) %>%
-    group_by(PollDiversity) %>%
-    summarise(pred_m = mean(pred, na.rm = TRUE),
-              pred_low_95 = quantile(pred, prob = 0.025),
-              pred_high_95 = quantile(pred, prob = 0.975),
-              pred_low_90 = quantile(pred, prob = 0.05),
-              pred_high_90 = quantile(pred, prob = 0.95),
-              pred_low_85 = quantile(pred, prob = 0.075),
-              pred_high_85 = quantile(pred, prob = 0.925)) %>%
-    ggplot(aes(x = PollDiversity, y = pred_m)) +
-    geom_line(color="dodgerblue") +
-    geom_ribbon(aes(ymin = pred_low_95, ymax = pred_high_95), alpha=0.2,
-                fill="grey80") +
-    geom_ribbon(aes(ymin = pred_low_90, ymax = pred_high_90), alpha=0.2,
-                fill="grey80") +
-    geom_ribbon(aes(ymin = pred_low_85, ymax = pred_high_85), alpha=0.2,
-                fill="grey80") +
-    ylab("Parasite Prevalence") +
-    xlab("Bee community diversity") +
-    scale_x_continuous(
-        breaks = axis.bee.div,
-        labels =  labs.bee.div) +
-    theme(axis.title.x = element_text(size=16),
-          axis.title.y = element_text(size=16),
-          text = element_text(size=16)) +
-    #    #theme_classic() +
-    theme_dark_black() +
-    geom_point(data=site.sum,
-               aes(y=SiteParasitismRate, x=PollDiversity),
-               color="dodgerblue")
+## parasitism ~ bee diversity
+newdata.beediv <- crossing(Net_BeeDiversity =
+                             seq(min(data.par$Net_BeeDiversity),
+                                 max(data.par$Net_BeeDiversity),
+                                 length.out=10),
+                           Lat = mean(data.par$Lat),
+                           rare.degree = mean(data.par$rare.degree),
+                           MeanITD = mean(data.par$MeanITD),
+                           MeanFloralAbund= mean(data.par$MeanFloralAbundance),
+                           MeanFloralDiversity= mean(data.par$MeanFloralDiversity),
+                           Net_HBAbundance= mean(data.par$Net_HBAbundance),
+                           Net_NonBombusHBAbundance = mean(data.par$Net_NonBombusHBAbundance),
+                           Net_BombusAbundance = mean(data.par$Net_BombusAbundance),
+                           Site = "JC", 
+                           GenusSpecies = "Bombus huntii"
+)
 
-##
+## predict values based on generated data and model parameters
+pred_beediv <- fit.parasite %>% 
+  epred_draws(newdata = newdata.beediv,
+              resp = "CrithidiaPresence")
 
+## to see range of predicted values
+pred_beediv %>%
+  group_by(Net_BeeDiversity) %>%
+  summarise(mean(.epred))
 
-p1.parasite <- site.sum %>%
-    ggplot(aes(x = Lat, y = SiteParasitismRate)) +
-    ylab("Parasite Prevalence") +
-    xlab("Latitude") +
-    scale_x_continuous(
-        breaks = axis.lat.x,
-        labels =  labs.lat.x) +
-    theme(axis.title.x = element_text(size=16),
-          axis.title.y = element_text(size=16),
-          text = element_text(size=16)) +
-    #    #theme_classic() +
-    theme_dark_black() +
-    geom_point(data=site.sum,
-               aes(y=SiteParasitismRate, x=Lat),
-               color="dodgerblue")
+p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
+  stat_lineribbon() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(x = "Bee community diversity", y = "Parasite Prevalence",
+       fill = "Credible interval") +
+  theme(legend.position = "bottom") +
+  scale_x_continuous(
+    breaks = axis.bee.div,
+    labels =  labs.bee.div) +
+  theme(axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        text = element_text(size=16)) +
+  ##theme_ms() +
+ ##theme_dark_black()+
+  geom_point(data=spec.orig,
+             aes(y= CrithidiaPresence, x=Net_BeeDiversity),
+             color="grey40", cex=2)
 
-ggsave(p1.parasite, file="figures/parasite_lat.pdf",
-       height=4, width=5)
+## parasitism ~ bumble bee abundance
 
+newdata.bombusabund <- crossing(Net_BombusAbundance = 
+                                seq(min(data.par$Net_BombusAbundance),
+                                 max(data.par$Net_BombusAbundance),
+                                 length.out=10),
+                           Lat = mean(data.par$Lat),
+                           Par.prev = mean(data.par$CrithidiaPresence),
+                           rare.degree = mean(data.par$rare.degree),
+                           MeanITD = mean(data.par$MeanITD),
+                           MeanFloralAbund= mean(data.par$MeanFloralAbundance),
+                           MeanFloralDiversity= mean(data.par$MeanFloralDiversity),
+                           Net_HBAbundance= mean(data.par$Net_HBAbundance),
+                           Net_NonBombusHBAbundance = mean(data.par$Net_NonBombusHBAbundance),
+                           Net_BeeDiversity = mean(data.par$Net_BeeDiversity),
+                           Site = "CH", 
+                           GenusSpecies = "Apis mellifera"
+)
 
+## predict values based on generated data and model parameters
+pred_bombusabund <- fit.parasite %>% 
+  epred_draws(newdata = newdata.bombusabund,
+              resp = "CrithidiaPresence")
 
-p2.parasite  <- fit %>%
-    spread_draws(b_ParasitePresence_Intercept,
-                 b_ParasitePresence_BombusAbundance) %>%
-    mutate(BombusAbundance =
-               list(seq(min(site.sum$BombusAbundance),
-                        max(site.sum$BombusAbundance),
-                        0.1))) %>%
-    unnest(BombusAbundance) %>%
-    mutate(pred = exp(b_BombusAbundance_Intercept +
-                      b_ParasitePresence_Intercept +
-                      b_ParasitePresence_BombusAbundance*BombusAbundance)/
-               (1+exp(b_BombusAbundance_Intercept +
-                      b_ParasitePresence_Intercept +
-                      b_ParasitePresence_r.degree*mean(spec$r.degree, na.rm=TRUE) +
-                      b_ParasitePresence_MeanITD*mean(spec$MeanITD, na.rm=TRUE) +
-                      b_ParasitePresence_PollDiversity*mean(spec$PollDiversity,
-                                                            na.rm=TRUE) +
-                      b_ParasitePresence_BombusAbundance*BombusAbundance))) %>%
-    group_by(BombusAbundance) %>%
-    summarise(pred_m = mean(pred, na.rm = TRUE),
-              pred_low_95 = quantile(pred, prob = 0.025),
-              pred_high_95 = quantile(pred, prob = 0.975),
-              pred_low_90 = quantile(pred, prob = 0.05),
-              pred_high_90 = quantile(pred, prob = 0.95),
-              pred_low_85 = quantile(pred, prob = 0.075),
-              pred_high_85 = quantile(pred, prob = 0.925)) %>%
-    ggplot(aes(x = BombusAbundance, y = pred_m)) +
-    geom_line(color="white") +
-    geom_ribbon(aes(ymin = pred_low_95, ymax = pred_high_95), alpha=0.2,
-                fill="grey80") +
-    geom_ribbon(aes(ymin = pred_low_90, ymax = pred_high_90), alpha=0.2,
-                fill="grey80") +
-    geom_ribbon(aes(ymin = pred_low_85, ymax = pred_high_85), alpha=0.2,
-                fill="grey80") +
-    ylab("") +
-    xlab("Bee abundance") +
-    ylim(0,1)  +
-    scale_x_continuous(
-        breaks = axis.bee.abund2,
-        labels =  labs.bee.abund2) +
-    theme(axis.title.x = element_text(size=16),
-          axis.title.y = element_text(size=16),
-          text = element_text(size=16)) +
-            #theme_classic() +
-    theme_dark_black()+
-    geom_point(data=spec[spec$Weights == 1 &
-                              spec$WeightsPar == 1,],
-               aes(y=SiteParasitismRate, x=BombusAbundance, colour="white"))
+## to see range of predicted values
+pred_bombusabund %>%
+  group_by(Net_BombusAbundance) %>%
+  summarise(mean(.epred))
+
+p2.parasite <- ggplot(pred_bombusabund, aes(x = Net_BombusAbundance, y = .epred)) +
+  stat_lineribbon() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(x = "Bumble bee Abundance", y = "Parasite Prevalence",
+       fill = "Credible interval") +
+  theme(legend.position = "bottom") +
+  scale_x_continuous(
+    breaks = axis.bombus.abund,
+    labels =  labs.bombus.abund) +
+  theme(axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        text = element_text(size=16)) +
+  ##theme_ms() +
+  ##theme_dark_black()+
+  geom_point(data=spec.all[spec.orig$Weights == 1 &
+                             spec.orig$WeightsPar == 1,],
+             aes(y= CrithidiaBombusParasitismRate, x=Net_BombusAbundance),
+             color="grey40", cex=2)
+
+## parasitism ~ HB abundance
+
+newdata.HBabund <- crossing(Net_HBAbundance =
+                                  seq(min(data.par$Net_HBAbundance),
+                                      max(data.par$Net_HBAbundance),
+                                      length.out=10),
+                                Lat = mean(data.par$Lat),
+                                rare.degree = mean(data.par$rare.degree),
+                                MeanITD = mean(data.par$MeanITD),
+                                MeanFloralAbund= mean(data.par$MeanFloralAbundance),
+                                MeanFloralDiversity= mean(data.par$MeanFloralDiversity),
+                                Net_BombusAbundance= mean(data.par$Net_BombusAbundance),
+                                Net_NonBombusHBAbundance = mean(data.par$Net_NonBombusHBAbundance),
+                                Net_BeeDiversity = mean(data.par$Net_BeeDiversity),
+                                Site = "CH", 
+                                GenusSpecies = "Apis mellifera"
+)
+
+## predict values based on generated data and model parameters
+pred_HBabund <- fit.parasite %>% 
+  epred_draws(newdata = newdata.HBabund,
+              resp = "CrithidiaPresence")
+
+## to see range of predicted values
+pred_HBabund %>%
+  group_by(Net_HBAbundance) %>%
+  summarise(mean(.epred))
+
+p3.parasite <- ggplot(pred_HBabund, aes(x = Net_HBAbundance, y = .epred)) +
+  stat_lineribbon() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(x = "Honey bee Abundance", y = "Parasite Prevalence",
+       fill = "Credible interval") +
+  theme(legend.position = "bottom") +
+  scale_x_continuous(
+    breaks = axis.HB.abund,
+    labels =  labs.HB.abund) +
+  theme(axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        text = element_text(size=16)) +
+  ##theme_ms() +
+  ##theme_dark_black()+
+  geom_point(data=spec.all[spec.all$Weights == 1 &
+                             spec.all$WeightsPar == 1,],
+             aes(y= CrithidiaPresence, x=Net_HBAbundance),
+             color="grey40", cex=2)
+
+## parasitism ~ NonHBBombus abundance
+newdata.NonBombusHBabund <- crossing(Net_NonBombusHBAbundance =
+                              seq(min(data.par$Net_NonBombusHBAbundance),
+                                  max(data.par$Net_NonBombusHBAbundance),
+                                  length.out=10),
+                            Lat = mean(data.par$Lat),
+                            rare.degree = mean(data.par$rare.degree),
+                            MeanITD = mean(data.par$MeanITD),
+                            MeanFloralAbund= mean(data.par$MeanFloralAbundance),
+                            MeanFloralDiversity= mean(data.par$MeanFloralDiversity),
+                            Net_BombusAbundance= mean(data.par$Net_BombusAbundance),
+                            Net_HBAbundance = mean(data.par$Net_HBAbundance),
+                            Net_BeeDiversity = mean(data.par$Net_BeeDiversity),
+                            Site = "CH", 
+                            GenusSpecies = "Apis mellifera"
+)
+
+## predict values based on generated data and model parameters
+pred_NonBombusHBabund <- fit.parasite %>% 
+  epred_draws(newdata = newdata.NonBombusHBabund,
+              resp = "CrithidiaPresence")
+
+## to see range of predicted values
+pred_NonBombusHBabund %>%
+  group_by(Net_NonBombusHBAbundance) %>%
+  summarise(mean(.epred))
+
+p4.parasite <- ggplot(pred_HBabund, aes(x = Net_NonBombusHBAbundance, y = .epred)) +
+  stat_lineribbon() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(x = "Other Bee Species Abundance", y = "Parasite Prevalence",
+       fill = "Credible interval") +
+  theme(legend.position = "bottom") +
+  scale_x_continuous(
+    breaks = axis.bee.abund,
+    labels =  labs.bee.abund) +
+  theme(axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        text = element_text(size=16)) +
+  ##theme_ms() +
+  ##theme_dark_black()+
+  geom_point(data=spec.all[spec.all$Weights == 1 &
+                             spec.all$WeightsPar == 1,],
+             aes(y= CrithidiaPresence, x=Net_NonBombusHBAbundance),
+             color="grey40", cex=2)
 
 ggsave(p1.parasite, file="figures/parasite_beeDiv.pdf",
        height=4, width=5)
 
-ggsave(p2.parasite, file="figures/parasite_beeAbund.pdf",
+ggsave(p2.parasite, file="figures/parasite_bombusAbund.pdf",
        height=4, width=5)
 
-parasite.all <- grid.arrange(p1.parasite, p2.parasite, ncol=2)
+ggsave(p3.parasite, file="figures/parasite_HBAbund.pdf",
+       height=4, width=5)
 
-ggsave(parasite.all, file="figures/bee_parasite.pdf",
+ggsave(p4.parasite, file="figures/parasite_NonBombusHBAbund.pdf",
+       height=4, width=5)
+
+parasite.all <- grid.arrange(p2.parasite, p1.parasite, ncol=2)
+
+ggsave(parasite.all, file="figures/all_parasite.pdf",
        height=4, width=10)
+
+## ***********************************************************************
+## lat and parasites
+## ***********************************************************************
+
+newdata.beediv_lat <- crossing(Net_BeeDiversity =
+                             seq(min(data.par$Net_BeeDiversity),
+                                 max(data.par$Net_BeeDiversity),
+                                 length.out=10),
+                           Lat = mean(data.par$Lat),
+                           rare.degree = mean(data.par$rare.degree),
+                           MeanITD = mean(data.par$MeanITD),
+                           MeanFloralAbund= mean(data.par$MeanFloralAbundance),
+                           MeanFloralDiversity= mean(data.par$MeanFloralDiversity),
+                           Net_HBAbundance= mean(data.par$Net_HBAbundance),
+                           Net_NonBombusHBAbundance = mean(data.par$Net_NonBombusHBAbundance),
+                           Net_BombusAbundance = mean(data.par$Net_BombusAbundance),
+                           Site = "JC", 
+                           GenusSpecies = "Apis mellifera"
+)
+
+## predict values based on generated data and model parameters
+pred_beediv_lat <- fit.parasite %>% 
+  epred_draws(newdata = newdata.beediv_lat,
+              resp = "Lat")
+
+## to see range of predicted values
+pred_beediv_lat %>%
+  group_by(Net_BeeDiversity) %>%
+  summarise(mean(.epred))
+
+p4.parasite <- ggplot(pred_beediv_lat, aes(x = Net_BeeDiversity, y = .epred)) +
+  stat_lineribbon() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(x = "Bee Species Diversity", y = "Latitude",
+       fill = "Credible interval") +
+  theme(legend.position = "bottom") +
+  scale_x_continuous(
+    breaks = axis.bee.div,
+    labels =  labs.bee.div) +
+  theme(axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        text = element_text(size=16)) +
+  ##theme_ms() +
+  ##theme_dark_black()+
+  geom_point(data=spec.all[spec.all$Weights == 1 &
+                             spec.all$WeightsPar == 1,],
+             aes(y= Lat, x=Net_BeeDiversity),
+             color="grey40", cex=2)
 
 ## ***********************************************************************
 ## traits and parasites
 ## ***********************************************************************
 
-p3.parasite  <- fit %>%
-    spread_draws(b_ParasitePresence_Intercept,
-                 b_ParasitePresence_MeanITD) %>%
-    mutate(MeanITD =
-               list(seq(min(spec$MeanITD[
-                                           spec$WeightsPar == 1], na.rm=TRUE),
-                        max(spec$MeanITD[
-                                           spec$WeightsPar == 1], na.rm=TRUE),
-                        0.1))) %>%
-    unnest(MeanITD) %>%
-    mutate(pred = exp(b_ParasitePresence_Intercept +
-                      b_ParasitePresence_MeanITD*MeanITD)/
-               (1+exp(b_ParasitePresence_Intercept +
-                      b_ParasitePresence_MeanITD*MeanITD))) %>%
-    group_by(MeanITD) %>%
-    summarise(pred_m = mean(pred, na.rm = TRUE),
-              pred_low_95 = quantile(pred, prob = 0.025),
-              pred_high_95 = quantile(pred, prob = 0.975),
-              pred_low_90 = quantile(pred, prob = 0.05),
-              pred_high_90 = quantile(pred, prob = 0.95),
-              pred_low_85 = quantile(pred, prob = 0.075),
-              pred_high_85 = quantile(pred, prob = 0.925)) %>%
-    ggplot(aes(x = MeanITD, y = pred_m)) +
-    geom_line(color="white") +
-    geom_ribbon(aes(ymin = pred_low_95, ymax = pred_high_95), alpha=0.2,
-                fill="grey80") +
-    geom_ribbon(aes(ymin = pred_low_90, ymax = pred_high_90), alpha=0.2,
-                fill="grey80") +
-    geom_ribbon(aes(ymin = pred_low_85, ymax = pred_high_85), alpha=0.2,
-                fill="grey80") +
-    ylab("") +
-    xlab("Bee abundance") +
-    ylim(0,1)  +
-    scale_x_continuous(
-        breaks = axis.bee.abund2,
-        labels =  labs.bee.abund2) +
-    theme(axis.title.x = element_text(size=16),
-          axis.title.y = element_text(size=16),
-          text = element_text(size=16)) +
-            #theme_classic() +
-    theme_dark_black()+
-    geom_point(data=spec[spec$Weights == 1 &
-                              spec$WeightsPar == 1,],
-               aes(y=SiteParasitismRate, x=MeanITD, colour="white"))
 
-
-
-
-p4.parasite  <- fit %>%
-    spread_draws(b_ParasitePresence_Intercept,
-                 b_ParasitePresence_r.degree) %>%
-    mutate(r.degree =
-               list(seq(min(spec$r.degree[
-                                           spec$WeightsPar == 1], na.rm=TRUE),
-                        max(spec$r.degree[
-                                           spec$WeightsPar == 1], na.rm=TRUE),
-                        0.1))) %>%
-    unnest(r.degree) %>%
-    mutate(pred = exp(b_ParasitePresence_Intercept +
-                      b_ParasitePresence_r.degree*r.degree)/
-               (1+exp(b_ParasitePresence_Intercept +
-                      b_ParasitePresence_r.degree*r.degree))) %>%
-    group_by(r.degree) %>%
-    summarise(pred_m = mean(pred, na.rm = TRUE),
-              pred_low_95 = quantile(pred, prob = 0.025),
-              pred_high_95 = quantile(pred, prob = 0.975),
-              pred_low_90 = quantile(pred, prob = 0.05),
-              pred_high_90 = quantile(pred, prob = 0.95),
-              pred_low_85 = quantile(pred, prob = 0.075),
-              pred_high_85 = quantile(pred, prob = 0.925)) %>%
-    ggplot(aes(x = r.degree, y = pred_m)) +
-    geom_line(color="white") +
-    geom_ribbon(aes(ymin = pred_low_95, ymax = pred_high_95), alpha=0.2,
-                fill="grey80") +
-    geom_ribbon(aes(ymin = pred_low_90, ymax = pred_high_90), alpha=0.2,
-                fill="grey80") +
-    geom_ribbon(aes(ymin = pred_low_85, ymax = pred_high_85), alpha=0.2,
-                fill="grey80") +
-    ylab("") +
-    xlab("Bee abundance") +
-    ylim(0,1)  +
-    scale_x_continuous(
-        breaks = axis.bee.abund2,
-        labels =  labs.bee.abund2) +
-    theme(axis.title.x = element_text(size=16),
-          axis.title.y = element_text(size=16),
-          text = element_text(size=16)) +
-            #theme_classic() +
-    theme_dark_black()+
-    geom_point(data=spec[spec$Weights == 1 &
-                              spec$WeightsPar == 1,],
-               aes(y=SiteParasitismRate, x=r.degree, colour="white"))
 
 
 ggsave(p3.parasite, file="figures/parasite_meanitd.pdf",
@@ -337,10 +364,10 @@ p5.parasite  <- fit %>%
                  b_ParasitePresence_Intercept,
                  b_ParasitePresence_MeanFloralDiversity) %>%
     mutate(MeanFloralDiversity =
-               list(seq(min(spec$MeanFloralDiversity[
-                                           spec$WeightsPar == 1]),
-                        max(spec$MeanFloralDiversity[
-                                           spec$WeightsPar == 1]),
+               list(seq(min(spec.all$MeanFloralDiversity[
+                                           spec.all$WeightsPar == 1]),
+                        max(spec.all$MeanFloralDiversity[
+                                           spec.all$WeightsPar == 1]),
                         0.1))) %>%
     unnest(MeanFloralDiversity) %>%
     mutate(pred = exp(b_MeanFloralDiversity_Intercept +
@@ -375,8 +402,8 @@ p5.parasite  <- fit %>%
           text = element_text(size=16)) +
     #    #theme_classic() +
     theme_dark_black()+
-    geom_point(data=spec[spec$Weights == 1 &
-                               spec$WeightsPar == 1,],
+    geom_point(data=spec.all[spec.all$Weights == 1 &
+                               spec.all$WeightsPar == 1,],
                aes(y=SiteParasitismRate, x=MeanFloralDiversity, colour="white"))
 
 p6.parasite  <- fit %>%
@@ -384,10 +411,10 @@ p6.parasite  <- fit %>%
                  b_ParasitePresence_Intercept,
                  b_ParasitePresence_MeanFloralAbundance) %>%
     mutate(MeanFloralAbundance =
-               list(seq(min(spec$MeanFloralAbundance[
-                                           spec$WeightsPar == 1]),
-                        max(spec$MeanFloralAbundance[
-                                           spec$WeightsPar == 1]),
+               list(seq(min(spec.all$MeanFloralAbundance[
+                                           spec.all$WeightsPar == 1]),
+                        max(spec.all$MeanFloralAbundance[
+                                           spec.all$WeightsPar == 1]),
                         0.1))) %>%
     unnest(MeanFloralAbundance) %>%
     mutate(pred = exp(b_MeanFloralAbundance_Intercept +
@@ -423,8 +450,8 @@ p6.parasite  <- fit %>%
           text = element_text(size=16)) +
             #theme_classic() +
     theme_dark_black()+
-    geom_point(data=spec[spec$Weights == 1 &
-                              spec$WeightsPar == 1,],
+    geom_point(data=spec.all[spec.all$Weights == 1 &
+                              spec.all$WeightsPar == 1,],
                aes(y=SiteParasitismRate, x=MeanFloralAbundance, colour="white"))
 
 ggsave(p5.parasite, file="figures/parasite_flowerDiv.pdf",
@@ -447,8 +474,8 @@ p1.bee <- fit %>%
     spread_draws(b_PollAbundance_Intercept,
                  b_PollAbundance_Area) %>%
     mutate(Area =
-               list(seq(min(spec$Area, na.rm=TRUE),
-                        max(spec$Area,  na.rm=TRUE),
+               list(seq(min(spec.all$Area, na.rm=TRUE),
+                        max(spec.all$Area,  na.rm=TRUE),
                         0.1))) %>%
     unnest(Area) %>%
     mutate(pred = b_PollAbundance_Intercept +
@@ -482,19 +509,19 @@ p1.bee <- fit %>%
           text = element_text(size=16)) +
         #theme_classic() +
     theme_dark_black()+
-    geom_point(data=spec[spec$Weights == 1,],
+    geom_point(data=spec.all[spec.all$Weights == 1,],
                aes(y=PollAbundance, x=Area, color="white"))
 
 p2.bee <- fit %>%
-    spread_draws(b_PollDiversity_Intercept, b_MeanFloralDiversity_Intercept,
-                 b_PollDiversity_MeanFloralDiversity) %>%
+    spread_draws(b_NetBeeDiversity_Intercept, b_MeanFloralDiversity_Intercept,
+                 b_NetBeeDiversity_MeanFloralDiversity) %>%
     mutate(MeanFloralDiversity =
-               list(seq(min(spec$MeanFloralDiversity),
-                        max(spec$MeanFloralDiversity),
+               list(seq(min(spec.all$MeanFloralDiversity),
+                        max(spec.all$MeanFloralDiversity),
                         0.1))) %>%
     unnest(MeanFloralDiversity) %>%
-    mutate(pred = b_PollDiversity_Intercept + b_MeanFloralDiversity_Intercept +
-               b_PollDiversity_MeanFloralDiversity*MeanFloralDiversity) %>%
+    mutate(pred = b_NetBeeDiversity_Intercept + b_MeanFloralDiversity_Intercept +
+               b_NetBeeDiversity_MeanFloralDiversity*MeanFloralDiversity) %>%
     group_by(MeanFloralDiversity) %>%
     summarise(pred_m = mean(pred, na.rm = TRUE),
               pred_low_95 = quantile(pred, prob = 0.025),
@@ -524,7 +551,7 @@ p2.bee <- fit %>%
           text = element_text(size=16)) +
         #theme_classic() +
     theme_dark_black()+
-    geom_point(data=spec[spec$Weights == 1,],
+    geom_point(data=spec.all[spec.all$Weights == 1,],
                aes(y=PollDiversity, x=MeanFloralDiversity, color="white"))
 
 bee.plots <- grid.arrange(p1.bee, p2.bee, ncol=1)
@@ -644,8 +671,8 @@ p2.flower.lat <- fit %>%
                  b_MeanFloralDiversity_Lat,
                  ) %>%
     mutate(Lat =
-               list(seq(min(spec$Lat),
-                        max(spec$Lat),
+               list(seq(min(spec.all$Lat),
+                        max(spec.all$Lat),
                         0.1))) %>%
     unnest(Lat) %>%
     mutate(pred = b_MeanFloralDiversity_Intercept +
@@ -680,15 +707,15 @@ p2.flower.lat <- fit %>%
           text = element_text(size=16)) +
         #theme_classic() +
     theme_dark_black()+
-    geom_point(data=spec[spec$Weights == 1,],
+    geom_point(data=spec.all[spec.all$Weights == 1,],
                aes(y=MeanFloralDiversity, x=Lat, color="white"))
 
 p4.bee.lat <- fit %>%
     spread_draws(b_PollDiversity_Intercept,
                  b_PollDiversity_Lat) %>%
     mutate(Lat =
-               list(seq(min(spec$Lat),
-                        max(spec$Lat),
+               list(seq(min(spec.all$Lat),
+                        max(spec.all$Lat),
                         0.1))) %>%
     unnest(Lat) %>%
     mutate(pred = b_PollDiversity_Intercept +
@@ -723,7 +750,7 @@ p4.bee.lat <- fit %>%
           text = element_text(size=16)) +
         #theme_classic() +
     theme_dark_black()+
-    geom_point(data=spec[spec$Weights == 1,],
+    geom_point(data=spec.all[spec.all$Weights == 1,],
                aes(y=PollDiversity, x=Lat, color="white"))
 
 lat.plots <- grid.arrange(p2.flower.lat,
@@ -734,7 +761,7 @@ ggsave(lat.plots, file="figures/lat.pdf",
        height=4, width=8)
 
 
-p5.parasite.lat <- ggplot(data= spec[spec$Weights == 1,],
+p5.parasite.lat <- ggplot(data= spec.all[spec.all$Weights == 1,],
                           aes(x=Lat, y=SiteParasitismRate)) +
     geom_point(color="white")+
     geom_smooth(method=lm) +    theme_dark_black()
