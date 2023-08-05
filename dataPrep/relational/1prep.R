@@ -27,7 +27,7 @@ spec.data$SiteSubSite <-  paste0(spec.data$Site, spec.data$SubSite)
 print(paste("original number of specimens", nrow(spec.data)))
 
 ## BEWARE CHECK DATE FORMAT
-spec.date.format <- "%m/%d/%y"
+spec.date.format <- "%m/%d/%Y"
 print(spec.date.format)
 print(spec.data$Date[1])
 spec.data$Date <- as.Date(spec.data$Date, spec.date.format)
