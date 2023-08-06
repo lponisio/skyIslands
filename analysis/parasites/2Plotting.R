@@ -113,6 +113,7 @@ p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
   scale_fill_brewer(palette = "Blues") +
   labs(x = "Bee community diversity", y = "Parasite Prevalence",
        fill = "Credible interval") +
+  theme_ms() +
   theme(legend.position = "bottom") +
   scale_x_continuous(
     breaks = axis.bee.div,
@@ -120,7 +121,6 @@ p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
   theme(axis.title.x = element_text(size=16),
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) +
-  theme_ms() +
  ##theme_dark_black()+
   geom_point(data=data.par,
              aes(y= CrithidiaPresence, x=Net_BeeDiversity),
@@ -159,17 +159,17 @@ p2.parasite <- ggplot(pred_bombusabund, aes(x = Net_BombusAbundance, y = .epred)
   scale_fill_brewer(palette = "Blues") +
   labs(x = "Bumble bee Abundance", y = "Parasite Prevalence",
        fill = "Credible interval") +
+  theme_ms() +
   theme(legend.position = "bottom") +
-  scale_x_continuous(
-    breaks = axis.bombus.abund,
-    labels =  labs.bombus.abund) +
+  #scale_x_continuous(
+    #breaks = axis.bombus.abund,
+    #labels =  labs.bombus.abund) +
   theme(axis.title.x = element_text(size=16),
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) +
-  theme_ms() +
   ##theme_dark_black()+
   geom_point(data=data.par,
-             aes(y= CrithidiaPresence, x=Net_BombusAbundance),
+             aes(y= CrithidiaBombusParasitismRate, x=Net_BombusAbundance),
              color="grey40", cex=2)
 
 
