@@ -87,9 +87,9 @@ xvars.single.species <-  c("Net_NonBombusHBAbundance",
 ## fit.apis.cexpoeki <- runParasiteModels(spec.apis, "apis",
 ##                                        "CrithidiaExpoeki",
 ##                                        xvars.single.species)
-## fit.apis.cspp <- runParasiteModels(spec.apis, "apis",
-##                                    "CrithidiaPresence",
-##                                    xvars.single.species)
+ fit.apis.cspp <- runParasiteModels(spec.apis, "apis",
+                                    "CrithidiaPresence",
+                                    xvars.single.species)
 
 ## **********************************************************
 ## ApicystisSpp models
