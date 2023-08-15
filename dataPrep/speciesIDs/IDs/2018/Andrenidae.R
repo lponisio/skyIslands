@@ -24,7 +24,7 @@ sp.ids <- list(
                                       Species="atricornis",
                                       SubSpecies="",
                                       Sex="f", Author = "Cresson",
-                                      Determiner="D. Yanega",
+                                      Determiner="D. Yanega","J.L. Neff",
                                       temp.id= c("18719", "17996",
                                                  "17863", "17805",
                                                  "18026", "18054",
@@ -47,7 +47,8 @@ sp.ids <- list(
                                                  "17875", "17862",
                                                  "18088","17953",
                                                  "18167","19793",
-                                                 "19747")),
+                                                 "19747","17759",
+                                                 "19942")),
 
 
     Pseudopanurgus_atricornis_m= list(Genus="Pseudopanurgus",
