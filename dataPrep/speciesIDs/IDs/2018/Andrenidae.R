@@ -81,8 +81,8 @@ sp.ids <- list(
                                      Species="cressoniellus",
                                      SubSpecies="",
                                      Sex="f", Author = "Cockerell",
-                                     Determiner="D. Yanega",
-                                     temp.id= c("18695")),
+                                     Determiner="D. Yanega","J.L. Neff",
+                                     temp.id= c("18695","19674")),
 
 
     Protandrena_sp_a= list(Genus="Protandrena", SubGenus ="",
