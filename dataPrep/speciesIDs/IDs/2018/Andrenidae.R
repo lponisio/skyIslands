@@ -56,7 +56,7 @@ sp.ids <- list(
                                       Species="atricornis",
                                       SubSpecies="",
                                       Sex="m", Author = "Cresson",
-                                      Determiner="D. Yanega",
+                                      Determiner="D. Yanega","J.L. Neff",
                                       temp.id= c("18507", "18478",
                                                  "18437", "18289",
                                                  "18510", "18452",
@@ -85,7 +85,9 @@ sp.ids <- list(
                                                  "18529", "18081",
                                                  "17951", "18123",
                                                  "18522", "18461",
-                                                 "18428")),
+                                                 "18428", "17748",
+                                                 "17754", "17745"
+                                                 "17640", "20354")),
 
       Panurginus_cressoniellus_f= list(Genus="Panurginus", SubGenus ="",
                                      Species="cressoniellus",
