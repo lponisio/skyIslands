@@ -152,7 +152,8 @@ sp.ids <- list(
                               Determiner = "J.L. Neff",
                               temp.id= c(34114, 34029, 34026, 34027, 34117,
                                          34118, 34126, 34121, 34237, 34187,
-                                         34120, 34021)),
+                                         34120, 34021, 35542, 35598, 35937, 
+                                         35940, 35952, 35945)),
 
     Dufourea_tinsleyi_m= list(Genus="Dufourea", SubGenus ="",
                               Species="tinsleyi", SubSpecies="",
