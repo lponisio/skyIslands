@@ -418,14 +418,14 @@ sp.ids <- list(
                                            35953)),
 
 
-    ## Heterosarus_neomex_f= list(Genus="Heterosarus",
-    ##                            SubGenus ="",
-    ##                            Species="neomexicanus",
-    ##                            SubSpecies="",
-    ##                            Sex="f",
-    ##                            Author = "Cockerell",
-    ##                            Determiner="",
-    ##                            temp.id= c()),
+     Heterosarus_neomex_f= list(Genus="Heterosarus",
+                                SubGenus ="",
+                                Species="neomexicanus",
+                                SubSpecies="",
+                                Sex="f",
+                                Author = "Cockerell",
+                                Determiner="J.L. Neff",
+                                temp.id= c(34852, 35530)),
 
     ## Panurginus_sp_a_f= list(Genus="Panurginus", SubGenus ="",
     ##                         Species="sp.",
