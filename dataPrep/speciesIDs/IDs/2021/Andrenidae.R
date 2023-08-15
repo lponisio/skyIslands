@@ -180,7 +180,8 @@ sp.ids <- list(
                                                  33112, 32888, 32889,
                                                  32887, 33103, 33114,
                                                  33076, 33102, 32812,
-                                                 32907, 32898, 33096)),
+                                                 32907, 32898, 33096,
+                                                 35733)),
 
     Panurginus_cressoniellus_f= list(Genus="Panurginus",
                                      SubGenus ="",
