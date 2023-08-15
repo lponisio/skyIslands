@@ -380,15 +380,17 @@ sp.ids <- list(
                                Determiner="",
                                temp.id= c(38340,38296,34115)),
 
-    ## Psuedopanurgus_bakeri_m= list(Genus="Pseudopanurgus",
-    ##                            SubGenus ="",
-    ##                            Species="bakeri",
-    ##                            SubSpecies="",
-    ##                            Sex="m",
-    ##                            Author = "Cockerell",
-    ##                            Determiner="",
-    ##                            temp.id= c(
-    ##                            )),
+     Psuedopanurgus_bakeri_m= list(Genus="Pseudopanurgus",
+                                SubGenus ="",
+                                Species="bakeri",
+                                SubSpecies="",
+                                Sex="m",
+                                Author = "Cockerell",
+                                Determiner="J.L. Neff",
+                                temp.id= c(35956, 36323, 36337, 36320, 
+                                           36308, 35955, 35974, 35977, 
+                                           35967, 36056, 36061, 36074, 
+                                           35985, 35875)),
 
 
     ## Heterosarus_neomex_f= list(Genus="Heterosarus",
