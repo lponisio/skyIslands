@@ -171,7 +171,7 @@ sp.ids <- list(
                                SubSpecies="",
                                Sex="f",
                                Author = "Cockerell",
-                               Determiner="D. Yanega",
+                               Determiner="D. Yanega","J.L. Neff",
                                temp.id= c("18198", "18288", "18041",
                                           "18238", "18069", "17808",
                                           "17648", "17976", "18184",
@@ -180,7 +180,7 @@ sp.ids <- list(
                                           "18193", "18433", "17800",
                                           "17832", "18686", "18200",
                                           "18016", "17654", "18270",
-                                          "19925")),
+                                          "19925","25084")),
 
 
     Heterosarus_bakeri_m= list(Genus="Heterosarus",
