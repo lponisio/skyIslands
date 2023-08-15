@@ -1,7 +1,7 @@
 
 sp.ids <- list(
 
-       Calliopsis_chlorops= list(Genus="Calliopsis",
+       Calliopsis_chlorops = list(Genus="Calliopsis",
                                       SubGenus ="",
                                       Species="chlorops",
                                       SubSpecies="",
