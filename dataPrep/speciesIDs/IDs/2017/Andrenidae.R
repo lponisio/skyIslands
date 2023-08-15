@@ -22,6 +22,14 @@ sp.ids <- list(
                                            "BBSL1072620",
                                            "BBSL1072621")),
 
+    Calliopsis_verbenae = list(Genus="Calliopsis",
+                                      SubGenus ="",
+                                      Species="verbenae",
+                                      SubSpecies="",
+                                      Sex="m", Author = "Cockerell and Porter",
+                                      Determiner="J.L. Neff",
+                                      temp.id= c("22423")),
+
     Andrena_prunorum_f = list(Genus="Andrena",
                               SubGenus="Plastandrena",
                               Species="prunorum",
