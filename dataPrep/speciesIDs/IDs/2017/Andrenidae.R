@@ -119,7 +119,8 @@ sp.ids <- list(
                                          "BBSL1071078",
                                          "BBSL1084805",
                                          "BBSL1084742",
-                                         "BBSL1058707"
+                                         "BBSL1058707",
+                                         "21696"
                                      )),
 
     Pseudopanurgus_atricornis_f= list(Genus="Pseudopanurgus",
