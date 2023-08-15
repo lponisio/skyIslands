@@ -263,12 +263,12 @@ sp.ids <- list(
                          temp.id= c(33876)),
 
 
-    ## Protandrena_sp_a= list(Genus="Protandrena", SubGenus ="",
-    ##                        Species="sp.",
-    ##                        SubSpecies="a",
-    ##                        Sex="f", Author = "",
-    ##                        Determiner=,
-    ##                        temp.id= c()),
+     Protandrena_sp_a_nv_dawsoni = list(Genus="Protandrena", SubGenus ="",
+                            Species="sp.",
+                            SubSpecies="a_nv_dawsoni",
+                            Sex="m", Author = "",
+                            Determiner="J.L. Neff",
+                            temp.id= c(35698, 35696)),
 
 
     ## Protandrena_sp_c= list(Genus="Protandrena", SubGenus ="",
