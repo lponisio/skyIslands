@@ -1,6 +1,15 @@
 
 sp.ids <- list(
 
+       Calliopsis_chlorops= list(Genus="Calliopsis",
+                                      SubGenus ="",
+                                      Species="chlorops",
+                                      SubSpecies="",
+                                      Sex="m", Author = "Cockerell",
+                                      Determiner="J.L. Neff",
+                                      temp.id= c("18964")),
+      
+      
       Pseudopanurgus_piercei_f= list(Genus="Pseudopanurgus",
                                       SubGenus ="",
                                       Species="piercei",
