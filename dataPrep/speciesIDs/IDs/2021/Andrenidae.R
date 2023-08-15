@@ -155,7 +155,8 @@ sp.ids <- list(
                                                  32810, 33079, 32901,
                                                  33074, 33063, 33088,
                                                  33087, 33077, 33078,
-                                                 33064, 33091)),
+                                                 33064, 33091, 35755,
+                                                 36067, 36058, 36072)),
 
     Pseudopanurgus_albitarsis_m= list(Genus="Pseudopanurgus", SubGenus ="",
                                       Species="albitarsis",
