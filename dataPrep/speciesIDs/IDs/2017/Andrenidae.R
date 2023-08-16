@@ -552,7 +552,7 @@ sp.ids <- list(
                            Species="ignota",
                            SubSpecies="isopappi", Sex="f",
                            Author = "Cockerell",
-                           Determiner="T.  Griswold","J.L. Neff",
+                           Determiner="J.L. Neff",
                            temp.id= c("23152")),
 
     Perdita_callicerata_m= list(Genus="Perdita",
