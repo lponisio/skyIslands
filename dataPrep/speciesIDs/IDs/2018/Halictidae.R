@@ -279,6 +279,13 @@ sp.ids <- list(
                                               "18246", "18722",
                                               "18573", "18258")),
 
+    Lasioglossum_ruidosense_m= list(Genus="Lasioglossum", SubGenus
+                                    ="Dialictus", Species="ruidosense",
+                                    SubSpecies="", Sex="m",
+                                    Author = "Cockerell",
+                                    Determiner = "J.L. Neff",
+                                    temp.id=c("19548")),
+
 
     Lasioglossum_pacatum_viridatulum_f=
         list(Genus="Lasioglossum",
