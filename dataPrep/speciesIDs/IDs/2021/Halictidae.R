@@ -42,6 +42,12 @@ sp.ids <- list(
                                    Determiner = "J.F. Zorn",
                                    temp.id= c(34538,35851,36212)),
 
+    Lasioglossum_obnubilum_f= list(Genus="Lasioglossum", SubGenus
+                                      ="", Species="obnubilum",
+                                      SubSpecies="", Sex="f",
+                                      Author = "Sandhouse",
+                                      Determiner = "J.L. Neff",
+                                      temp.id=  c(36310)),
 
     ## Lasioglossum_trizonatum_m = list(Genus="Lasioglossum",
     ##                                  SubGenus ="Lasioglossum",
@@ -337,7 +343,7 @@ sp.ids <- list(
                                                    32401, 30917,
                                                    31117, 34343,
                                                    32676, 34421,
-                                                   32570, 34425)),
+                                                   32570, 34425, 35539)),
 
     ## Lasioglossum_semicaeruleum_m = list(Genus="Lasioglossum",
     ##                                     SubGenus ="Dialictus",
