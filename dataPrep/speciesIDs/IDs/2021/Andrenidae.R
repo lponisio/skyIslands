@@ -16,6 +16,14 @@ sp.ids <- list(
                                 Author = "Cresson",
                                 Determiner="J.L. Neff",
                                 temp.id= c(35721)),
+
+    Perdita_ignota_f= list(Genus="Perdita",
+                           SubGenus="Hexaperdita",
+                           Species="ignota",
+                           SubSpecies="isopappi", Sex="f",
+                           Author = "Cockerell",
+                           Determiner="J.L. Neff",
+                           temp.id= c(36149, 35599)),
     
     Pseudopanurgus_atricornis_f= list(Genus="Pseudopanurgus",
                                       SubGenus ="",
