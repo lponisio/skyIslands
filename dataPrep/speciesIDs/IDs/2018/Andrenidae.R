@@ -183,6 +183,21 @@ sp.ids <- list(
                                Determiner="L. Ponisio",
                                temp.id= c("18269")),
 
+    Andrena_simulata_f = list(Genus="Andrena",
+                               SubGenus="",
+                               Species="simulata",
+                               SubSpecies="",
+                               Sex="f", Author = "Smith",
+                               Determiner="J.L. Neff",
+                               temp.id= c("22113","19502","22166","23936")),  
+
+    Andrena_costillensis_f = list(Genus="Andrena",
+                               SubGenus="",
+                               Species="costillensis",
+                               SubSpecies="",
+                               Sex="f", Author = "Viereck & Cockerell",
+                               Determiner="J.L. Neff",
+                               temp.id= c("19549")),  
 
     Heterosarus_bakeri_f= list(Genus="Heterosarus",
                                SubGenus ="",
@@ -249,7 +264,7 @@ sp.ids <- list(
                                SubSpecies="",
                                Sex="f",
                                Author = "Cockerell",
-                               Determiner="D. Yanega", temp.id=
+                               Determiner="D. Yanega","J.L.Neff", temp.id=
                                                            c("17796",
                                                              "17798",
                                                              "17710",
@@ -284,7 +299,7 @@ sp.ids <- list(
                                                              "17882",
                                                              "18328",
                                                              "18326",
-                                                             "18477")),
+                                                             "18477", "17642")),
 
     Andrena_apacheorum_m= list(Genus="Andrena", SubGenus ="Cnemidandrena",
                                Species="apacheorum",
