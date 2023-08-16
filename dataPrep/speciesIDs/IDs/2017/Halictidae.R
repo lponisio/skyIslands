@@ -325,7 +325,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                   Sex="f", Author = "Sandhouse",
                                   Determiner = "J. Gardener","J.L.Neff",
                                   temp.id= c("BBSL1058185","223453","25031","25046",
-                                             "22923","BBSL1086647","23457","20937")),
+                                             "22923","BBSL1086647","23457","20937","20947")),
 
 
 
