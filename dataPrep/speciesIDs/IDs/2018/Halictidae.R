@@ -319,16 +319,17 @@ sp.ids <- list(
              SubSpecies="", Sex="f",
              Author = "Sandhouse",
              Determiner="J.L. Neff",
-             temp.id=c(22092, 22050, 22011, 22040, 
-                       20215, 19528, 20239, 19877, 
-                       22027, 22016, 22046, 19850, 
-                       19529, 22059, 19898, 20335, 
-                       22039, 25126, 25140, 25109, 
-                       22014, 22073, 22022, 19851, 
-                       22093, 20317, 20266, 20145, 
-                       20146, 19668, 20153, 20147,
-                       22083, 19628, 20176, 20166, 
-                       20156, 20157, 20155)),
+             temp.id=c("22092", "22050", "22011", "22040", 
+                       "20215", "19528", "20239", "19877", 
+                       "22027", "22016", "22046", "19850", 
+                       "19529", "22059", "19898", "20335", 
+                       "22039", "25126", "25140", "25109", 
+                       "22014", "22073", "22022", "19851", 
+                       "22093", "20317", "20266", "20145", 
+                       "20146", "19668", "20153", "20147",
+                       "22083", "19628", "20176", "20166", 
+                       "20156", "20157", "20155", "20164",
+                       "20165")),
 
     Lasioglossum_obnubilum_f= list(Genus="Lasioglossum",
                                    SubGenus ="Dialictus",
@@ -354,9 +355,9 @@ sp.ids <- list(
                                    Species="laevissimum",
                                    SubSpecies="", Sex="f",
                                    Author = "Smith",
-                                   Determiner = "J. Gardener",
+                                   Determiner = "J. Gardener","J.L. Neff",
                                    temp.id= c("18545", "18576",
-                                              "18571", "18540")),
+                                              "18571", "18540", "25143")),
 
     Lasioglossum_manitouellum_m= list(Genus="Lasioglossum", SubGenus
                                       ="Lasioglossum", Species="manitouellum",
@@ -365,7 +366,12 @@ sp.ids <- list(
                                       Determiner = "J. Gardener",
                                       temp.id=  c("18748")),
 
-
+    Lasioglossum_obnubilum_f= list(Genus="Lasioglossum", SubGenus
+                                      ="", Species="obnubilum",
+                                      SubSpecies="", Sex="f",
+                                      Author = "Sandhouse",
+                                      Determiner = "J.L. Neff",
+                                      temp.id=  c("20272")),
 
        Lasioglossum_lusorium_f= list(Genus="Lasioglossum", SubGenus
                                   ="Sphecodogastra", Species="lusorium",
