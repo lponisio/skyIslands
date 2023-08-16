@@ -140,8 +140,20 @@ sp.ids <- list(
                            Determiner="D. Yanega",
                            temp.id= c("18411")),
 
+      Protandrena_albitarsis= list(Genus="Protandrena", SubGenus ="",
+                           Species="albitarsis",
+                           SubSpecies="",
+                           Sex="m", Author = "Cresson",
+                           Determiner="J.L. Neff",
+                           temp.id= c("23960")),
 
-
+       Protandrena_sp_1_cf_aurifodinae= list(Genus="Protandrena", SubGenus ="",
+                           Species="sp.",
+                           SubSpecies="1 cf. aurifodinae",
+                           Sex="m", Author = "Cresson",
+                           Determiner="J.L. Neff",
+                           temp.id= c("19050")),
+       
     Pseudopanurgus_porterae_f= list(Genus="Pseudopanurgus",
                                 SubGenus ="",
                                 Species="porterae",
