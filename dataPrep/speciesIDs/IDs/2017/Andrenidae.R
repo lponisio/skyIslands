@@ -631,7 +631,7 @@ sp.ids <- list(
                               Sex="f",
                               Author =
                                   "Cockerell",
-                              Determiner="T. Griswold",
+                              Determiner="T. Griswold","J.L. Neff",
                               temp.id= c("BBSL1060020",
                                          "BBSL1060034",
                                          "BBSL1060011",
@@ -642,7 +642,7 @@ sp.ids <- list(
                                          "BBSL1058718",
                                          "BBSL1060010",
                                          "BBSL1060035",
-                                         "BBSL1071063")),
+                                         "BBSL1071063", "23087")),
 
     Andrena_birtwelli_m= list(Genus="Andrena", SubGenus ="Cnemidandrena",
                               Species="birtwelli", SubSpecies="",
