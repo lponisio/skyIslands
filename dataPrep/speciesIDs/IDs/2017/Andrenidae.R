@@ -591,6 +591,14 @@ sp.ids <- list(
                                            "21388", "22598", "22324", 
                                            "21371", "22722")),   
 
+    Perdita_sexmaculata_f= list(Genus="Perdita",
+                                SubGenus="",
+                                Species="sexmaculata",
+                                SubSpecies="", Sex="f",
+                                Author = "Cockerell",
+                                Determiner="J.L. Neff",
+                                temp.id= c("21397", "21431")),   
+
     Andrena_costillensis= list(Genus="Andrena", SubGenus ="Cnemidandrena",
                                Species="costillensis", SubSpecies="",
                                Sex="f",
