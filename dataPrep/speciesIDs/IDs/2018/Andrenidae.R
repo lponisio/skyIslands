@@ -8,7 +8,14 @@ sp.ids <- list(
                                       Sex="m", Author = "Cockerell",
                                       Determiner="J.L. Neff",
                                       temp.id= c("18964")),
-      
+       
+       Perdita_sexmaculata_f= list(Genus="Perdita",
+                                SubGenus="",
+                                Species="sexmaculata",
+                                SubSpecies="", Sex="f",
+                                Author = "Cockerell",
+                                Determiner="J.L. Neff",
+                                temp.id= c("19135")),
       
       Pseudopanurgus_piercei_f= list(Genus="Pseudopanurgus",
                                       SubGenus ="",
