@@ -108,7 +108,7 @@ sp.ids <- list(
                                      Species="cressoniellus",
                                      SubSpecies="",
                                      Sex="m", Author = "Cockerell",
-                                     Determiner="D. Yanega",
+                                     Determiner="D. Yanega","J.L. Neff",
                                      temp.id= c(
                                          "BBSL1071096",
                                          "BBSL1071099",
@@ -128,7 +128,7 @@ sp.ids <- list(
                                          "BBSL1084805",
                                          "BBSL1084742",
                                          "BBSL1058707",
-                                         "21696"
+                                         "21696","22601"
                                      )),
 
     Pseudopanurgus_atricornis_f= list(Genus="Pseudopanurgus",
