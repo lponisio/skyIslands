@@ -482,7 +482,8 @@ sp.ids <- list(
                                Sex="m",
                                Author = "Cockerell",
                                Determiner="J.L. Neff",
-                               temp.id= c(31525, 31218, 33861)),
+                               temp.id= c(31525, 31218, 33861, 35742, 
+                                          38873, 35748, 35738, 36045)),
 
     ## Andrena_costillensis= list(Genus="Andrena",
     ##                            SubGenus ="Cnemidandrena",
