@@ -649,7 +649,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                               "BBSL1085712", "22356", "222459", "22358", 
                                               "22944", "22999", "23403", "23549", "22421", 
                                               "22501", "23597", "23587", "23273", "23468",
-                                              "22422", "23237", "23303")),
+                                              "22422", "23237", "23303", "21900")),
 
     Lasioglossum_semicaeruleum_m = list(Genus="Lasioglossum",
                                         SubGenus ="Dialictus",
