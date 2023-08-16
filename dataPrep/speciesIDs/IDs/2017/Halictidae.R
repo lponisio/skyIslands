@@ -90,12 +90,12 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                              SubSpecies="", Sex="f",
                                              Author = "Vachal, 1904",
                                              Determiner =
-                                                 "J. Gardener",
+                                                 "J. Gardener","J.L. Neff"
                                              temp.id= c("BBSL1059910",
                                                         "BBSL1072721",
                                                         "BBSL1072948",
                                                         "BBSL1070479",
-                                                        "BBSL1070741")),
+                                                        "BBSL1070741", "20800", "21025")),
 
 
                     Lasioglossum_egregium_m = list(Genus="Lasioglossum",
@@ -115,7 +115,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                   ="Lasioglossum", Species="desertum",
                                   SubSpecies="", Sex="f",
                                   Author = "Smith",
-                                  Determiner = "J. Gardener",
+                                  Determiner = "J. Gardener","J.L. Neff"
                                   temp.id=  c("BBSL1086912",
                                               "BBSL1084937",
                                               "BBSL1084641",
@@ -129,7 +129,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                               "BBSL1084376",
                                               "BBSL1084414",
                                               "BBSL1058139",
-                                              "BBSL1084415")),
+                                              "BBSL1084415","20932","23464","22938","30319")),
 
 
         Lasioglossum_desertum_m= list(Genus="Lasioglossum", SubGenus
@@ -656,12 +656,12 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                         Species="semicaeruleum",
                                         SubSpecies="", Sex="m",
                                         Author ="Cockerell",
-                                        Determiner = "J. Gardener",
+                                        Determiner = "J. Gardener","J.L. Neff",
                                         temp.id= c("BBSL1073539",
                                                    "BBSL1072943", "BBSL1070711",
                                                    "BBSL1070990", "BBSL1072870",
                                                    "BBSL1071309", "BBSL1072759",
-                                                   "BBSL1071203")),
+                                                   "BBSL1071203", "21910")),
 
 
     Lasioglossum_aff_comulum_f = list(Genus="Lasioglossum",
