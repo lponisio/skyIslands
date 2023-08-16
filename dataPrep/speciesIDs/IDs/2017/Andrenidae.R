@@ -80,6 +80,14 @@ sp.ids <- list(
                            Determiner="D. Yanega",
                            temp.id= c("BBSL1086888")),
 
+    
+     Protandrena_nanula_f= list(Genus="Protandrena", SubGenus ="",
+                           Species="nanula",
+                           SubSpecies="",
+                           Sex="f", Author = "Timberlake",
+                           Determiner="J.L. Neff",
+                           temp.id= c("21699")),
+
 
 
     Panurginus_cressoniellus_f= list(Genus="Panurginus", SubGenus ="",
