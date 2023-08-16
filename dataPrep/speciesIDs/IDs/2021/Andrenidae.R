@@ -9,6 +9,14 @@ sp.ids <- list(
     ##                                   temp.id= c()),
 
 
+    Perdita_affinis_f= list(Genus="Perdita",
+                                SubGenus="",
+                                Species="affinis",
+                                SubSpecies="", Sex="f",
+                                Author = "Cresson",
+                                Determiner="J.L. Neff",
+                                temp.id= c(35721)),
+    
     Pseudopanurgus_atricornis_f= list(Genus="Pseudopanurgus",
                                       SubGenus ="",
                                       Species="atricornis",
