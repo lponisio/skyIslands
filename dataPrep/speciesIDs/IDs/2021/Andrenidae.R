@@ -556,7 +556,7 @@ sp.ids <- list(
                               Determiner="J.L. Neff",
                               temp.id= c(34064, 34016, 34230, 34227, 34171,
                                          34086, 34170, 34062, 34099, 34165,
-                                         34169)),
+                                         34169, 35944, 35939, 36318)),
 
     Andrena_tegularis_m= list(Genus="Andrena",
                               SubGenus ="",
