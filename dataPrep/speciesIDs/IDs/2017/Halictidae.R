@@ -64,6 +64,13 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                              "BBSL1086466",
                                              "BBSL1086495")),
 
+               Lasioglossum_obnubilum_f= list(Genus="Lasioglossum", SubGenus
+                                      ="", Species="obnubilum",
+                                      SubSpecies="", Sex="f",
+                                      Author = "Sandhouse",
+                                      Determiner = "J.L. Neff",
+                                      temp.id=  c("20799","21795")),
+
 
                  Lasioglossum_trizonatum_m = list(Genus="Lasioglossum",
                                              SubGenus ="Lasioglossum",
