@@ -270,6 +270,20 @@ sp.ids <- list(
                                   Sex="m", Author = "Timberlake",
                                   Determiner="J.L. Neff",
                                   temp.id= c(38340, 38296, 34115)),
+
+     Protandrena_tidestromiae_f= list(Genus="Protandrena", SubGenus ="",
+                                  Species="tidestromiae",
+                                  SubSpecies="",
+                                  Sex="f", Author = "Timberlake",
+                                  Determiner="J.L. Neff",
+                                  temp.id= c(35704)),
+
+         Protandrena_tidestromiae_m= list(Genus="Protandrena", SubGenus ="",
+                                  Species="tidestromiae",
+                                  SubSpecies="",
+                                  Sex="m", Author = "Timberlake",
+                                  Determiner="J.L. Neff",
+                                  temp.id= c(35701)),
     
   Protandrena_sp= list(Genus="Protandrena", SubGenus ="",
                          Species="sp.",
