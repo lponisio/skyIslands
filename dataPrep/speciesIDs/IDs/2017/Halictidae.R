@@ -762,7 +762,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
     Lasioglossum_ruidosense_f= list(Genus="Lasioglossum", SubGenus
                                     ="Dialictus", Species="ruidosense",
                                     SubSpecies="cf.", Sex="f",
-                                    Author =  "Cockerell", Determiner = "J. Gardener",
+                                    Author =  "Cockerell", Determiner = "J. Gardener","J.L. Neff",
                                     temp.id=c("BBSL1073537", "BBSL1074040",
                                               "BBSL1070586", "BBSL1071095",
                                               "BBSL1071562", "BBSL1085066",
@@ -817,6 +817,13 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                               "BBSL1070710",
                                               "BBSL1071939")),
 
+    Lasioglossum_ruidosense_f= list(Genus="Lasioglossum", SubGenus
+                                    ="Dialictus", Species="ruidosense",
+                                    SubSpecies="", Sex="f",
+                                    Author =  "Cockerell", Determiner = "J.L. Neff",
+                                    temp.id=c("21707", "21653", "22639", "22187",
+                                              "20379", "20363", "21697", "21689",
+                                              "21698", "23618")),
 
     Lasioglossum_pacatum_viridatulum_f=
         list(Genus="Lasioglossum",
