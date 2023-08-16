@@ -418,6 +418,18 @@ sp.ids <- list(
                        33601, 33615, 33600, 33491, 34444, 34327,
                        34333, 33616, 34439, 33596, 33487))
 
+    Lasioglossum_pacatum_f = list(Genus="Lasioglossum",
+                                  SubGenus ="Dialictus",
+                                  Species="pacatum",
+                                  SubSpecies="",
+                                  Sex="f", Author = "",
+                                  Determiner = "J.L.Neff",
+                                  temp.id= c(35682, 35809, 35798, 35764, 
+                                             35829, 32719, 35838, 35834, 
+                                             35827, 35822, 35642, 35790, 
+                                             35792, 35778, 35773, 35772, 
+                                             35765)),
+
     ## Lasioglossum_obnubilum_f= list(Genus="Lasioglossum",
     ##                                SubGenus ="Dialictus",
     ##                                Species="obnubilum",
