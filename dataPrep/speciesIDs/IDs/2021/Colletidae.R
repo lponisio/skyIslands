@@ -9,6 +9,12 @@ sp.ids <- list(
                              Determiner="L. Best",
                              temp.id= c(31369, 31372)),
 
+    Colletes_slevini_f = list(Genus="Colletes", SubGenus ="",
+                             Species="slevini", SubSpecies="",
+                             Sex="f",
+                             Author = "Cockerell", Determiner = "J.L. Neff",
+                             temp.id= c(35815, 35830, 35786, 36264, 36131)),
+
     Colletes_skinneri_f= list(Genus="Colletes",
                              SubGenus="",
                              Species="skinneri",
