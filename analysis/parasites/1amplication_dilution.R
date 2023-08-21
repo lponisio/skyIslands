@@ -1,8 +1,8 @@
 rm(list=ls())
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
- setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
-##setwd('~/Dropbox (University of Oregon)/skyislands')
-ncores <- 2
+## setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
+setwd('~/Dropbox (University of Oregon)/skyislands')
+ncores <- 1
 
 setwd("analysis/parasites")
 source("src/misc.R")
@@ -32,28 +32,52 @@ unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
 ## **********************************************************
 ## Multi species models
 xvars.multi.species <-  c("Net_NonBombusHBAbundance",
-                          ## "Net_HBAbundance",
-                          "Net_BombusAbundance",
+                          "Net_HBAbundance",
+                         ## "Net_BombusAbundance",
                           "Net_BeeDiversity",
                           "rare.degree", "MeanITD",
                           "(1|Site)", "(1|GenusSpecies)")
 ## single species models
 xvars.single.species <-  c("Net_NonBombusHBAbundance",
-                          "Net_HBAbundance",
+                          ## "Net_HBAbundance",
                           "Net_BombusAbundance",
                           "Net_BeeDiversity",
                           "rare.degree",
                           "(1|Site)")
+
+
+## **********************************************************
+## community model
+## **********************************************************
+
+bform.community <- bf.fabund + bf.fdiv +
+  bf.babund + bf.bombusabund + bf.HBabund +
+  bf.bdiv  +
+  set_rescor(FALSE)
+
+fit.community <- brm(bform.community, spec.net,
+                     cores=ncores,
+                     iter = 10^4,
+                     chains = 1,
+                     thin=1,
+                     init=0,
+                     control = list(adapt_delta = 0.99))
+write.ms.table(fit.community,
+               sprintf("parasitism_%s_%s",
+                       species.group, parasite))
+r2 <- loo_R2(fit.community)
+save(fit.community, spec.net, r2,
+     file="saved/communityFit.Rdata")
 
 ## **********************************************************
 ## Parasite presence
 ## **********************************************************
 ## full model with all species, parasites
 
- fit <- runParasiteModels(spec.data= spec.all,
-                         species.group="all",
-                         parasite="ParasitePresence",
-                          xvars= xvars.multi.species)
+ ## fit <- runParasiteModels(spec.data= spec.all,
+ ##                         species.group="all",
+ ##                         parasite="ParasitePresence",
+ ##                          xvars= xvars.multi.species)
 
 ## **********************************************************
 ## Crithidia models
@@ -66,7 +90,8 @@ xvars.single.species <-  c("Net_NonBombusHBAbundance",
 ## fit.bombus.cexpoeki <- runParasiteModels(spec.bombus, "bombus",
 ##                                          "CrithidiaExpoeki",
 ##                                          xvars.multi.species)
- fit.bombus.cspp <- runParasiteModels(spec.bombus, "bombus", "CrithidiaPresence",
+ fit.bombus.cspp <- runParasiteModels(spec.bombus, "bombus",
+                                      "CrithidiaPresence",
                                       xvars.multi.species)
 
 ## ## all apidae species (Bombus, Apis, Anthophora, Melissodes)
