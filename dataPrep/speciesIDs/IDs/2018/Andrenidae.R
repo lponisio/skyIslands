@@ -147,6 +147,13 @@ sp.ids <- list(
                            Determiner="J.L. Neff",
                            temp.id= c("23960")),
 
+      Protandrena_citripes_m= list(Genus="Protandrena", SubGenus ="Pterosarus",
+                           Species="citripes",
+                           SubSpecies="",
+                           Sex="m", Author = "Ashmead",
+                           Determiner="J.L. Neff",
+                           temp.id= c("20403")),
+
        Protandrena_sp_1_cf_aurifodinae= list(Genus="Protandrena", SubGenus ="",
                            Species="sp.",
                            SubSpecies="1 cf. aurifodinae",
