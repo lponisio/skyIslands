@@ -141,6 +141,14 @@ sp.ids <- list(
                                  temp.id= c("18104",
                                             "18307")),
 
+        Halictus_confusus_f= list(Genus="Halictus",
+                                 SubGenus ="Seladonia",
+                                 Species="confusus",
+                                 SubSpecies="", Sex="f",
+                                 Author = "Smith",
+                                 Determiner = "J.L. Neff",
+                                 temp.id= c("19665")),
+
     Lasioglossum_sisymbrii_m = list(Genus="Lasioglossum",
                                     SubGenus ="Lasioglossum",
                                     Species="sisymbrii",
