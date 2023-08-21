@@ -177,7 +177,19 @@ sp.ids <- list(
                              Determiner = "L. Best",
                              temp.id= c(34321, 32776)),
 
+    Halictus_ligatus_f= list(Genus="Halictus", SubGenus ="Odontalictus",
+                             Species="ligatus", SubSpecies="",
+                             Sex="f", Author = "Say",
+                             Determiner = "J.L. Neff",
+                             temp.id= c(35826, 35635, 35659)),
 
+    Halictus_ligatus_m= list(Genus="Halictus", SubGenus ="Odontalictus",
+                             Species="ligatus", SubSpecies="",
+                             Sex="m", Author = "Say",
+                             Determiner = "J.L. Neff",
+                             temp.id= c(35801)),
+
+     
     Halictus_tripartitus_f= list(Genus="Halictus",
                                  SubGenus ="Seladonia",
                                  Species="tripartitus",
@@ -201,12 +213,26 @@ sp.ids <- list(
                                 Determiner = "J. F. Zorn",
                                 temp.id= c(30915)),
 
+    Halictus_farinosus_f = list(Genus="Halictus", SubGenus ="Nealictus",
+                                Species="farinosus",
+                                SubSpecies="", Sex="f",
+                                Author = "Smith",
+                                Determiner = "J.L. Neff",
+                                temp.id= c(35366)),
+     
     Halictus_farinosus_m = list(Genus="Halictus", SubGenus ="Nealictus",
                                 Species="farinosus",
                                 SubSpecies="", Sex="m",
                                 Author = "Smith",
                                 Determiner = "L. Best",
                                 temp.id= c(32291, 32292)),
+
+    Halictus_farinosus_m = list(Genus="Halictus", SubGenus ="Nealictus",
+                                Species="farinosus",
+                                SubSpecies="", Sex="m",
+                                Author = "Smith",
+                                Determiner = "J.L. Neff",
+                                temp.id= c(35871)),
 
     Halictus_confusus = list(Genus="Halictus", SubGenus ="Seladonia",
                              Species="confusus",
