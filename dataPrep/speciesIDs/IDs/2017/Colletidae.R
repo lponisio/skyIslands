@@ -135,6 +135,12 @@ sp.ids <- list(
                                             "BBSL1071089",
                                             "BBSL1084762")),
 
+ Colletes_nigrifrons_f = list(Genus="Colletes", SubGenus ="",
+                               Species="nigrifrons", SubSpecies="",
+                               Sex="f",
+                               Author = "Titus", Determiner = "J.L. Neff",
+                               temp.id= c("22429")),
+
  Colletes_scopiventer_f = list(Genus="Colletes", SubGenus ="Consors",
                                Species="scopiventer", SubSpecies="",
                                Sex="f",
