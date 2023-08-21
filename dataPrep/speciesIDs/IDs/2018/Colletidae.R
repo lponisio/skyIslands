@@ -5,6 +5,13 @@ sp.ids <- list(
     Species="slevini", SubSpecies="", Sex="m", Author = "Cockerell",
     Determiner="D. Yanega", 
     temp.id= c("18598")), 
+
+ 
+ Colletes_sleveni_f = list(Genus="Colletes", SubGenus ="",
+                          Species="sleveni", SubSpecies="",
+                          Sex="f",
+                          Author = "Cockerell", Determiner = "J.L. Neff",
+                          temp.id= c("17641")),
  
  
  Colletes_bryanti_m= list(Genus="Colletes", SubGenus ="",
