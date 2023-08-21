@@ -107,6 +107,15 @@ sp.ids <- list(
                                    "18283", "18701", "18114", "18255",
                                    "18271", "18351", "18096")),
 
+     Hylaeus_annulatus_f = list(Genus="Hylaeus", SubGenus ="Hylaeus",
+                               Species="annulatus", SubSpecies="",
+                               Sex="f",
+                               Author = "Linnaeus",
+                               Determiner = "J.L. Neff",
+                               temp.id= c("19666","19130","20158","19636",
+                                          "19465","19080","19865","22072",
+                                          "19742","19866","19468")),
+
     Hylaeus_morphoa_f = list(Genus="Hylaeus", SubGenus ="Hylaeus",
                              Species="sp.", SubSpecies="a",
                              Sex="f",
