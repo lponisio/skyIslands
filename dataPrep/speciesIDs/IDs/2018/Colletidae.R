@@ -7,8 +7,8 @@ sp.ids <- list(
     temp.id= c("18598")), 
 
  
- Colletes_sleveni_f = list(Genus="Colletes", SubGenus ="",
-                          Species="sleveni", SubSpecies="",
+ Colletes_slevini_f = list(Genus="Colletes", SubGenus ="",
+                          Species="slevini", SubSpecies="",
                           Sex="f",
                           Author = "Cockerell", Determiner = "J.L. Neff",
                           temp.id= c("17641")),
