@@ -34,7 +34,15 @@ sp.ids <- list(
                                    "19830", "22128")),
 
 
-    Lasioglossum_trizonatum_m = list(Genus="Lasioglossum",
+                   Lasioglossum_cooleyi_f = list(Genus="Lasioglossum",
+                                             SubGenus ="",
+                                             Species="cooleyi",
+                                             SubSpecies="",
+                                             Sex="f", Author = "Crawford",
+                                             Determiner = "J.L. Neff",
+                                             temp.id= c("22143")),
+    
+                   Lasioglossum_trizonatum_m = list(Genus="Lasioglossum",
                                      SubGenus ="Lasioglossum",
                                      Species="trizonatum",
                                      SubSpecies="", Sex="m",
