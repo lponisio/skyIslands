@@ -271,6 +271,20 @@ sp.ids <- list(
                                   Determiner="J.L. Neff",
                                   temp.id= c(38340, 38296, 34115)),
 
+    Protandrena_citripes_f= list(Genus="Protandrena", SubGenus ="Pterosarus",
+                                  Species="citripes",
+                                  SubSpecies="",
+                                  Sex="f", Author = "Ashmead",
+                                  Determiner="J.L. Neff",
+                                  temp.id= c(34728)),
+
+    Protandrena_citripes_m= list(Genus="Protandrena", SubGenus ="Pterosarus",
+                                  Species="citripes",
+                                  SubSpecies="",
+                                  Sex="m", Author = "Ashmead",
+                                  Determiner="J.L. Neff",
+                                  temp.id= c(35613)),
+
      Protandrena_tidestromiae_f= list(Genus="Protandrena", SubGenus ="",
                                   Species="tidestromiae",
                                   SubSpecies="",
