@@ -347,7 +347,7 @@ sp.ids <- list(
     ##                         SubSpecies="", Sex="f",
     ##                         Author = "Crawford",
     ##                         Determiner = "J.L. Neff",
-    ##                         temp.id=  c(30935, 36744, 30781))
+    ##                         temp.id=  c(38951, 38837))
 
 
 
