@@ -207,6 +207,13 @@ sp.ids <- list(
                                        "BBSL1084607", "BBSL1071633",
                                        "BBSL1086533")),
 
+ Hylaeus_annulatus_f = list(Genus="Hylaeus", SubGenus ="Hylaeus",
+                            Species="annulatus", SubSpecies="",
+                            Sex="f",
+                            Author = "Linnaeus",
+                            Determiner = "J.L. Neff",
+                            temp.id= c("23000","23449")),
+
  Hylaeus_annulatus_m = list(Genus="Hylaeus", SubGenus ="Hylaeus",
                             Species="annulatus", SubSpecies="",
                             Sex="m",
