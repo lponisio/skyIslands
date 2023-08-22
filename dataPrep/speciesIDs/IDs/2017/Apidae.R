@@ -1313,7 +1313,7 @@ sp.ids <- list(
                              temp.id=
                                  c("21418","20808","21417","20806","23522","23520","23521","23184","23084")),
 
-    Melissodes_gilensis= list(Genus="Melissodes",
+    Melissodes_gilensis_f= list(Genus="Melissodes",
                              SubGenus="",
                              Species="gilensis",
                              SubSpecies="",
@@ -1325,8 +1325,20 @@ sp.ids <- list(
                                    "24647","30434","19599","21305",
                                    "BBSL1086886","BBSL1086833","BBSL1086834",
                                    "BBSL1084837","BBSL1086991","BBSL1084686",
-                                   "BBSL1072635"))," 
+                                   "BBSL1072635")), 
     
+    Melissodes_gilensis_M= list(Genus="Melissodes",
+                             SubGenus="",
+                             Species="gilensis",
+                             SubSpecies="",
+                             Sex="M",
+                             Author = "Cockerell",
+                             Determiner="J.L. Neff",
+                             temp.id=
+                                 c("BBSL1086829","1058667","BBSL1086873","BBSL1059649","BBSL1073326","BBSL1059647")),
+
+
+
     Melissodes_confusus= list(Genus="Melissodes",
                               SubGenus="Eumelissodes",
                               Species="confusus",
