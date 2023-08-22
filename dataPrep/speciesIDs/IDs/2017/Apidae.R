@@ -1327,11 +1327,11 @@ sp.ids <- list(
                                    "BBSL1084837","BBSL1086991","BBSL1084686",
                                    "BBSL1072635")), 
     
-    Melissodes_gilensis_M= list(Genus="Melissodes",
+    Melissodes_gilensis_m= list(Genus="Melissodes",
                              SubGenus="",
                              Species="gilensis",
                              SubSpecies="",
-                             Sex="M",
+                             Sex="m",
                              Author = "Cockerell",
                              Determiner="J.L. Neff",
                              temp.id=
