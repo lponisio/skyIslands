@@ -1857,6 +1857,13 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                            Sex="m", Author = "Cresson",
                            Determiner = "L.C. Ponisio",
                            temp.id= c("BBSL1087274", "BBSL1084653")),
+     
+
+    Conanthalictus_conanthi_f= list(Genus="Conanthalictus", SubGenus ="",
+                           Species="conanthi", SubSpecies="",
+                           Sex="f", Author = "Cockerell",
+                           Determiner = "J.L. Neff",
+                           temp.id= c("BBSL1070512")),
 
     Halictus_tripartitus_f= list(Genus="Halictus",
                                  SubGenus ="Seladonia",
