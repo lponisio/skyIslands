@@ -23,6 +23,22 @@ sp.ids <- list(
                                             "17734", "17700", "18189",
                                             "18268", "23923", "23919")),
 
+    Anthidium_tenuiflorae = list(Genus="Anthidium",
+                                 SubGenus ="",
+                                 Species="tenuiflorae",
+                                 SubSpecies="", Sex="f",
+                                 Author = "Cockerell",
+                                 Determiner = "J.L. Neff",
+                                 temp.id= c("20268", "19701")),
+
+    Paranthidium_jugatorium = list(Genus="Paranthidium",
+                                SubGenus ="",
+                                Species="jugatorium",
+                                SubSpecies="", Sex="m",
+                                Author = "Say",
+                                Determiner = "J.L. Neff",
+                                temp.id= c("17769")),
+    
     Megachile_fidelis_f = list(Genus="Megachile",
                                SubGenus ="Sayapis",
                                Species="fidelis",
