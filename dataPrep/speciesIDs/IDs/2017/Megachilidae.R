@@ -445,6 +445,12 @@ sp.ids <- list(
                                Author = "Cresson", Determiner = "T. Griswold",
                                temp.id= c("BBSL1071163")),
 
+    Megachile_petulans_f = list(Genus="Megachile",
+                               SubGenus ="", Species="petulans",
+                               SubSpecies="", Sex="f",
+                               Author = "Cresson", Determiner = "J.L. Neff",
+                               temp.id= c("21844")),
+
     Megachile_proxima_f = list(Genus="Megachile",
                                SubGenus ="Pseudomegachile", Species="proxima",
                                SubSpecies="", Sex="f",
@@ -495,6 +501,12 @@ sp.ids <- list(
                                 Author = "Cresson", Determiner = "T. Griswold",
                                 temp.id= c("BBSL1071134",
                                            "BBSL1071142", "BBSL1071248")),
+
+    Megachile_zapoteca_f = list(Genus="Megachile",
+                                SubGenus ="Cressoniella", Species="zapoteca",
+                                SubSpecies="", Sex="f",
+                                Author = "Cresson", Determiner = "J.L. Neff",
+                                temp.id= c("24758")),
 
 
     Osmia_albolateralis_f = list(Genus="Osmia",
