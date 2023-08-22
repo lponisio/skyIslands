@@ -128,6 +128,14 @@ sp.ids <- list(
                                            "BBSL1072252",
                                            "BBSL1087227")),
 
+    Megachile_agustini_f = list(Genus="Megachile",
+                              SubGenus ="",
+                              Species="agustini", SubSpecies="",
+                              Sex="f",
+                              Author = "Cockerell",
+                              Determiner = "J.L. Neff",
+                              temp.id= c("23624", "21643", "23613")),
+    
     Megachile_comata_f = list(Genus="Megachile",
                               SubGenus ="Xanthosarus",
                               Species="comata", SubSpecies="",
