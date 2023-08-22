@@ -94,7 +94,14 @@ sp.ids <- list(
                                    Determiner="L. Best, J.L. Neff",
                                    temp.id= c(30638, 32273)),
 
-
+    Anthophorula_rufiventris = list(Genus="Anthophorula",
+                                   SubGenus="",
+                                   Species="rufiventris",
+                                   SubSpecies="", Sex="m",
+                                   Author = "Timberlake",
+                                   Determiner="J.L. Neff",
+                                   temp.id= c(35928)),
+    
     Apis_mellifera_f = list(Genus="Apis", SubGenus = "Apis",
                             Species="mellifera",
                             SubSpecies="", Sex="f",
