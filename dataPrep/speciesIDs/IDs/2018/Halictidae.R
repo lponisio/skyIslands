@@ -366,6 +366,18 @@ sp.ids <- list(
                                    Determiner = "J. Gardener",
                                    temp.id= c("18698", "18572", "17662")),
 
+    Lasioglossum_obnubilum_f= list(Genus="Lasioglossum",
+                                   SubGenus ="Dialictus",
+                                   Species="obnubilum",
+                                   SubSpecies="",
+                                   Sex="f",
+                                   Author = "Sandhouse",
+                                   Determiner = "J.L. Neff",
+                                   temp.id= c("17750","20344","19884","19895",
+                                              "19526","19534","19531","20195",
+                                              "19879","20347","20241","20331",
+                                              "19891")),
+
     Lasioglossum_obnubilum_m= list(Genus="Lasioglossum",
                                    SubGenus ="Dialictus",
                                    Species="obnubilum",
