@@ -1303,6 +1303,16 @@ sp.ids <- list(
                                    "BBSL1072863",
                                    "BBSL1072910")),
 
+    Melissodes_tristis= list(Genus="Melissodes",
+                             SubGenus="Eumelissodes",
+                             Species="tristis",
+                             SubSpecies="",
+                             Sex="f",
+                             Author = "Cockerell",
+                             Determiner="J.L. Neff",
+                             temp.id=
+                                 c("21418","20808","21417","20806","23522","23520","23521","23184","23084")),
+
     Melissodes_confusus= list(Genus="Melissodes",
                               SubGenus="Eumelissodes",
                               Species="confusus",
