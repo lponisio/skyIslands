@@ -1361,7 +1361,15 @@ sp.ids <- list(
                               Determiner="J.L. Neff",
                               temp.id= c("BBSL1086814","BBSL1086813","BBSL1086866","BBSL1086777",
                                          "BBSL1086815","BBSL1086812","BBSL1086867","BBSL106819",
-                                         "BBSL1073259","BBSL1073250","BBSL1085452","21334"))
+                                         "BBSL1073259","BBSL1073250","BBSL1085452","21334")),
+
+        Melissodes_confusus_m= list(Genus="Melissodes",
+                             SubGenus="Eumelissodes",
+                             Species="confusus",
+                             SubSpecies="", Sex="m",
+                             Author = "Cresson",
+                             Determiner="J.L. Neff",
+                             temp.id= c("BBSL1086788","BBSL1086789","BBSL1086779","BBSL1073237"))
 
 
 )
