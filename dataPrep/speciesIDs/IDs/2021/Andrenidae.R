@@ -9,6 +9,22 @@ sp.ids <- list(
     ##                                   temp.id= c()),
 
 
+    Calliopsis_teucrii= list(Genus="Calliopsis",
+                                SubGenus="",
+                                Species="teucrii",
+                                SubSpecies="", Sex="f",
+                                Author = "Cockerell",
+                                Determiner="J.L. Neff",
+                                temp.id= c(35658)),
+
+    Calliopsis_crypta= list(Genus="Calliopsis",
+                                SubGenus="",
+                                Species="crypta",
+                                SubSpecies="", Sex="f",
+                                Author = "Shinn",
+                                Determiner="J.L. Neff",
+                                temp.id= c(35994)),
+    
     Perdita_affinis_f= list(Genus="Perdita",
                                 SubGenus="",
                                 Species="affinis",
