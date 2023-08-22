@@ -28,7 +28,7 @@ sp.ids <- list(
                                       SubSpecies="",
                                       Sex="m", Author = "Cockerell and Porter",
                                       Determiner="J.L. Neff",
-                                      temp.id= c("22423")),
+                                      temp.id= c("22423", "21436")),
 
     Andrena_prunorum_f = list(Genus="Andrena",
                               SubGenus="Plastandrena",
