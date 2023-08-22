@@ -36,7 +36,7 @@ sp.ids <- list(
                                      Determiner = "J.L. Neff",
                                      temp.id= c(34065, 34018, 34128,
                                                 34020, 34019,
-                                               34129, 34127)),
+                                               34129, 34127, 32738)),
 
 
      Paranthidium_jugatorium_m = list(Genus="Paranthidium",
