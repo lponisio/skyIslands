@@ -395,6 +395,14 @@ sp.ids <- list(
                                               "BBSL1058657",
                                               "22301")),
 
+    Anthophorula_consobrina = list(Genus="Anthophorula",
+                                   SubGenus="",
+                                   Species="consobrina ",
+                                   SubSpecies="", Sex="m",
+                                   Author = "Timberlake",
+                                   Determiner="J.L. Neff",
+                                   temp.id= c("23151")),
+
     Apis_mellifera_f = list(Genus="Apis",
                             SubGenus = "Apis",
                             Species ="mellifera",
@@ -1092,6 +1100,22 @@ sp.ids <- list(
                                Determiner="T. Griswold",
                                temp.id= c("BBSL1071512",
                                           "BBSL1086479", "21435")),
+
+    Diadasia_diminuta_f = list(Genus="Diadasia",
+                               SubGenus="Coquillettapis",
+                               Species="diminuta",
+                               SubSpecies="", Sex="f",
+                               Author = "Cresson",
+                               Determiner="J.L. Neff",
+                               temp.id= c("24008")),
+    
+    Diadasia_diminuta_m = list(Genus="Diadasia",
+                               SubGenus="Coquillettapis",
+                               Species="diminuta",
+                               SubSpecies="", Sex="m",
+                               Author = "Cresson",
+                               Determiner="J.L. Neff",
+                               temp.id= c("21378")),
 
 
 
