@@ -824,6 +824,12 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                               "BBSL1071165", "BBSL1072494")),
 
 
+    Lasioglossum_ruidosense_f= list(Genus="Lasioglossum", SubGenus
+                                    ="Dialictus", Species="ruidosense",
+                                    SubSpecies="", Sex="f",
+                                    Author =  "Cockerell", Determiner = "J.L. Neff",
+                                    temp.id=c("22861","22862","22438","20838")),
+
     Lasioglossum_ruidosense_m= list(Genus="Lasioglossum",
                                     SubGenus="Dialictus",
                                     Species="ruidosense",
@@ -986,7 +992,15 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                               "BBSL1084513", "BBSL1084535",
                                               "BBSL1084534", "BBSL1073202")),
 
-
+    Lasioglossum_obnubilum_f= list(Genus="Lasioglossum",
+                                   SubGenus ="Dialictus",
+                                   Species="obnubilum",
+                                   SubSpecies="",
+                                   Sex="f",
+                                   Author = "Sandhouse",
+                                   Determiner = "J.L. Neff",
+                                   temp.id= c("22621","23503")),
+               
     Lasioglossum_obnubilum_m= list(Genus="Lasioglossum",
                                    SubGenus ="Dialictus",
                                    Species="obnubilum",
