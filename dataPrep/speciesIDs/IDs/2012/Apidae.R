@@ -103,6 +103,16 @@ sp.ids <- list(
                                         "PL_081212_270",
                                         "PL_081312_295")),
 
+    Melissodes_confusus_m= list(Genus="Melissodes",
+                             SubGenus="Eumelissodes",
+                             Species="confusus",
+                             SubSpecies="", Sex="m",
+                             Author = "Cresson",
+                             Determiner="J.L. Neff",
+                             temp.id= c("SC_072312_49","JC_071212_33","PL_081312_13","PL_081112_14",
+                                        "JC_071412_41","PL_081012_84","JC_071412_124","PL_081012_222",
+                                        "SC_072012_256","JC_071612_29","JC_071412_51")),
+    
     Melissodes_coreopsis= list(Genus="Melissodes",
                                SubGenus="Eumelissodes",
                                Species="coreopsis",
