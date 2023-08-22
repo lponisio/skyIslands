@@ -108,6 +108,11 @@ sp.ids <- list(
                                          "19871", "19875", "18965",
                                          "20263")),
 
+    Dufourea_maura_f= list(Genus="Dufourea", SubGenus ="",
+                           Species="maura", SubSpecies="",
+                           Sex="f", Author = "Cresson",
+                           Determiner = "J.L. Neff",
+                           temp.id= c("19524", "22162", "22154", "19563")),
 
     Dufourea_maura_f= list(Genus="Dufourea", SubGenus ="",
                            Species="maura", SubSpecies="",
@@ -123,6 +128,11 @@ sp.ids <- list(
                            Determiner = "L.C. Ponisio",
                            temp.id= c("18124", "18242")),
 
+    Dufourea_maura_m= list(Genus="Dufourea", SubGenus ="",
+                           Species="maura", SubSpecies="",
+                           Sex="m", Author = "Cresson",
+                           Determiner = "J.L. Neff",
+                           temp.id= c("19090")),
 
     Halictus_ligatus_f= list(Genus="Halictus", SubGenus ="Odontalictus",
                              Species="ligatus", SubSpecies="",
