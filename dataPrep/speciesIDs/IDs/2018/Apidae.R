@@ -143,6 +143,14 @@ sp.ids <- list(
                                          "25177","30618","17766","22116","30615",
                                          "19606","19620","24997")),
 
+    Melissodes_confusus_m= list(Genus="Melissodes",
+                             SubGenus="Eumelissodes",
+                             Species="confusus",
+                             SubSpecies="", Sex="m",
+                             Author = "Cresson",
+                             Determiner="J.L. Neff",
+                             temp.id= c("18371","18765","18749","18772","18388")),
+
     Nomada_spc= list(Genus="Nomada", SubGenus="",
                      Species="sp.",
                      SubSpecies="d", Sex="f",
