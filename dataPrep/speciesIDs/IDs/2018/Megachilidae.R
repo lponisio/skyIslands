@@ -39,6 +39,14 @@ sp.ids <- list(
                                 Determiner = "J.L. Neff",
                                 temp.id= c("17769")),
     
+    Megachile_agustini_f = list(Genus="Megachile",
+                              SubGenus ="",
+                              Species="agustini", SubSpecies="",
+                              Sex="f",
+                              Author = "Cockerell",
+                              Determiner = "J.L. Neff",
+                              temp.id= c("19571")),
+    
     Megachile_fidelis_f = list(Genus="Megachile",
                                SubGenus ="Sayapis",
                                Species="fidelis",
