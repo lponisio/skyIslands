@@ -26,6 +26,14 @@ sp.ids <- list(
                                 Determiner = "J.L. Neff",
                                 temp.id= c(37249)),
 
+    Dianthidium_heterulkei = list(Genus="Dianthidium",
+                                SubGenus ="",
+                                Species="heterulkei",
+                                SubSpecies="", Sex="f",
+                                Author = "Schwarz",
+                                Determiner = "J.L. Neff",
+                                temp.id= c(38979)),
+
     ## Ashmeadiella_timberlakei_f = list(Genus="Ashmeadiella",
     ##                                  SubGenus ="",
     ##                                  Species="timberlakei",
