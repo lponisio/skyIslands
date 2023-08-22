@@ -1215,6 +1215,15 @@ sp.ids <- list(
                                      "BBSL1084359", "24082", "24089",
                                      "20942", "21028", "23983")),
 
+    Ceratina_nanula_f= list(Genus="Ceratina",
+                                 SubGenus ="",
+                                 Species="nanula",
+                                 SubSpecies="",
+                                 Sex="f",
+                                 Author = "Cockerell",
+                                 Determiner="J.L. Neff",
+                                 temp.id= c("23150")),
+
 
     Ceratina_nanula= list(Genus="Ceratina", SubGenus="",
                           Species="nanula",
