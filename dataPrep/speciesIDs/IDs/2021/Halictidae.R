@@ -83,14 +83,13 @@ sp.ids <- list(
 
 
 
-    ## Lasioglossum_egregium_f = list(Genus="Lasioglossum",
-    ##                                SubGenus ="Lasioglossum",
-    ##                                Species="egregium",
-    ##                                SubSpecies="", Sex="f",
-    ##                                Author = "Vachal, 1904",
-    ##                                Determiner =
-    ##                                    "",
-    ##                                temp.id= c()),
+     Lasioglossum_egregium_f = list(Genus="Lasioglossum",
+                                    SubGenus ="Lasioglossum",
+                                    Species="egregium",
+                                    SubSpecies="", Sex="f",
+                                    Author = "Vachal, 1904",
+                                    Determiner ="J.L. Neff",
+                                    temp.id= c(35648,35888,36013,36140,35637)),
 
     ## Sphecodes_morphoa_f= list(Genus="Sphecodes", SubGenus ="",
     ##                           Species="sp.",
