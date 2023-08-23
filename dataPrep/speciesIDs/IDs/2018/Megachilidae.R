@@ -57,6 +57,15 @@ sp.ids <- list(
                                temp.id= c("17937", 
                                "18227",
                                           "20431", "20433")),
+
+        Megachile_fidelis_f = list(Genus="Megachile",
+                               SubGenus ="Sayapis",
+                               Species="fidelis",
+                               SubSpecies="",
+                               Sex="f",
+                               Author = "Cresson",
+                               Determiner = "J.L. Neff",
+                               temp.id= c("25012","19748")),
     
     Megachile_fidelis_m = list(Genus="Megachile",
                                SubGenus ="Sayapis",
