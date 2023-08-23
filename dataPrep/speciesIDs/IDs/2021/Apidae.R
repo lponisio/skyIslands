@@ -68,6 +68,14 @@ sp.ids <- list(
     ##                            Determiner="",
     ##                            temp.id= c()),
 
+    Diadasia_rinconis_f = list(Genus="Diadasia",
+                                SubGenus="Coquillettapis",
+                                Species="rinconis",
+                                SubSpecies="", Sex="f",
+                                Author = "Cockerell",
+                                Determiner="J.L. Neff",
+                                temp.id= c(36193)),
+
 
     Anthophora_montana_f = list(Genus="Anthophora",
                                 SubGenus="Mystacanthophora",
