@@ -1268,7 +1268,7 @@ sp.ids <- list(
                                        "BBSL1084502")),
 
 
-    Melissodes_tristis= list(Genus="Melissodes",
+    Melissodes_tristis_f= list(Genus="Melissodes",
                              SubGenus="Eumelissodes",
                              Species="tristis",
                              SubSpecies="",
@@ -1303,7 +1303,7 @@ sp.ids <- list(
                                    "BBSL1072863",
                                    "BBSL1072910")),
 
-    Melissodes_tristis= list(Genus="Melissodes",
+    Melissodes_tristis_f= list(Genus="Melissodes",
                              SubGenus="Eumelissodes",
                              Species="tristis",
                              SubSpecies="",
@@ -1311,7 +1311,13 @@ sp.ids <- list(
                              Author = "Cockerell",
                              Determiner="J.L. Neff",
                              temp.id=
-                                 c("21418","20808","21417","20806","23522","23520","23521","23184","23084")),
+                                 c("21418","20808","21417","20806",
+                                   "23522","23520","23521","23184",
+                                   "23084","20821","21443","21137",
+                                   "21434","21433","21440","22160",
+                                   "20801","21289","30463","20817",
+                                   "21381","20818","22765","21398",
+                                   "21377","21390")),
 
     Melissodes_tristis_m= list(Genus="Melissodes",
                              SubGenus="Eumelissodes",
