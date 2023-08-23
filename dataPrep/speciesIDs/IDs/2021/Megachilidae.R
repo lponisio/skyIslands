@@ -25,7 +25,7 @@ sp.ids <- list(
                                      SubSpecies="", Sex="m",
                                      Author = "Linnaeus",
                                      Determiner = "J.L. Neff",
-                                     temp.id= c(30643)),
+                                     temp.id= c(30643,35714,36000)),
 
 
     Paranthidium_jugatorium_f = list(Genus="Paranthidium",
