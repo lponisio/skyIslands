@@ -92,7 +92,7 @@ sp.ids <- list(
                                    SubSpecies="", Sex="f",
                                    Author = "Cresson",
                                    Determiner="L. Best, J.L. Neff",
-                                   temp.id= c(30638, 32273)),
+                                   temp.id= c(30638,32273,36255,36270)),
 
     Anthophorula_rufiventris = list(Genus="Anthophorula",
                                    SubGenus="",
