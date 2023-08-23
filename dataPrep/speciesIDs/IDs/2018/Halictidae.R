@@ -251,6 +251,16 @@ sp.ids <- list(
                                                    "17958", "18201",
                                                    "18230", "18150")),
 
+     Lasioglossum_semicaeruleum_f = list(Genus="Lasioglossum",
+                                        SubGenus ="Dialictus",
+                                        Species="semicaeruleum",
+                                        SubSpecies="", Sex="f",
+                                        Author ="Cockerell",
+                                        Determiner = "J.L. Neff",
+                                        temp.id= c("21980", "22161", "22146", "22195", 
+                                                   "22257", "20235")),
+
+
     Lasioglossum_semicaeruleum_m = list(Genus="Lasioglossum",
                                         SubGenus ="Dialictus",
                                         Species="semicaeruleum",
