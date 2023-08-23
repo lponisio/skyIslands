@@ -10,6 +10,13 @@ sp.ids <- list(
                                Determiner="L.C. Ponisio",
                                temp.id= c("18080", "17839")),
 
+    Svastra_sila = list(Genus="Svastra",
+                               SubGenus="Epimelissodes",
+                               Species="sila",
+                               SubSpecies="", Sex="m",
+                               Author = "LaBerge",
+                               Determiner="J.L. Neff",
+                               temp.id= c("18755")),
 
     Anthophora_montana_f = list(Genus="Anthophora",
                                 SubGenus="Mystacanthophora",
