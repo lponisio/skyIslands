@@ -459,6 +459,12 @@ sp.ids <- list(
                                Author = "Cresson", Determiner = "J.L. Neff",
                                temp.id= c("21844")),
 
+        Megachile_policaris_f = list(Genus="Megachile",
+                                 SubGenus ="Sayapis", Species="policaris",
+                                 SubSpecies="", Sex="f",
+                                 Author = "Say", Determiner = "J.L. Neff",
+                                 temp.id= c("21114")),
+
     Megachile_proxima_f = list(Genus="Megachile",
                                SubGenus ="Pseudomegachile", Species="proxima",
                                SubSpecies="", Sex="f",
@@ -502,6 +508,12 @@ sp.ids <- list(
                                  SubSpecies="", Sex="f",
                                  Author = "Cockerell", Determiner = "T. Griswold",
                                  temp.id= c("BBSL1073231", "BBSL1071733", "BBSL1059260")),
+
+    Megachile_subexilis_f = list(Genus="Megachile",
+                                 SubGenus ="Chelostomoides", Species="subexilis",
+                                 SubSpecies="", Sex="f",
+                                 Author = "Cockerell", Determiner = "J.L. Neff",
+                                 temp.id= c("23143")),
 
     Megachile_zapoteca_m = list(Genus="Megachile",
                                 SubGenus ="Cressoniella", Species="zapoteca",
