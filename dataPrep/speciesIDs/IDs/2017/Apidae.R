@@ -378,7 +378,14 @@ sp.ids <- list(
                                               "BBSL1084375",
                                               "BBSL1073839", "25085", "20962", "18095")),
 
-
+    Anthophora_terminalis_f = list(Genus="Anthophora",
+                                   SubGenus="Clisodon",
+                                   Species="terminalis",
+                                   SubSpecies="", Sex="f",
+                                   Author = "Cresson",
+                                   Determiner="J.L. Neff",
+                                   temp.id= c("BBSL1086649")),
+    
     Anthophora_terminalis_m = list(Genus="Anthophora",
                                    SubGenus="Clisodon",
                                    Species="terminalis",
@@ -394,6 +401,14 @@ sp.ids <- list(
                                               "BBSL1084366",
                                               "BBSL1058657",
                                               "22301")),
+
+    Anthophora_terminalis_m = list(Genus="Anthophora",
+                                   SubGenus="Clisodon",
+                                   Species="terminalis",
+                                   SubSpecies="", Sex="m",
+                                   Author = "Cresson",
+                                   Determiner="J.L. Neff",
+                                   temp.id= c("BBSL1084407")),
 
     Anthophorula_consobrina = list(Genus="Anthophorula",
                                    SubGenus="",
