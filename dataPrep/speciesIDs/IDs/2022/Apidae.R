@@ -91,7 +91,7 @@ sp.ids <- list(
                                     SubSpecies="", Sex="f",
                                     Author = "Cresson",
                                     Determiner="J.L. Neff",
-                                    temp.id= c(38131, 37730)),
+                                    temp.id= c(38131, 37730,38963)),
 
     Apis_mellifera_f = list(Genus="Apis", SubGenus = "Apis",
                             Species="mellifera",
