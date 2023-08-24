@@ -34,7 +34,7 @@ sp.ids <- list(
                                    "19830", "22128")),
 
 
-                   Lasioglossum_cooleyi_f = list(Genus="Lasioglossum",
+    Lasioglossum_cooleyi_f = list(Genus="Lasioglossum",
                                              SubGenus ="",
                                              Species="cooleyi",
                                              SubSpecies="",
@@ -42,7 +42,7 @@ sp.ids <- list(
                                              Determiner = "J.L. Neff",
                                              temp.id= c("22143")),
     
-                   Lasioglossum_trizonatum_m = list(Genus="Lasioglossum",
+    Lasioglossum_trizonatum_m = list(Genus="Lasioglossum",
                                      SubGenus ="Lasioglossum",
                                      Species="trizonatum",
                                      SubSpecies="", Sex="m",
@@ -77,6 +77,13 @@ sp.ids <- list(
                                    Determiner =
                                        "J. Gardener",
                                    temp.id= c("17988")),
+
+    Lasioglossum_heterorhinum_f= list(Genus="Lasioglossum", SubGenus
+                              ="Lasioglossum", Species="heterorhinum",
+                              SubSpecies="", Sex="f",
+                              Author = "Cockerell, 1930",
+                              Determiner = "J.L. Neff",
+                              temp.id=  c("19153")),
 
     Sphecodes_morphoa_f= list(Genus="Sphecodes", SubGenus ="",
                               Species="sp.",
