@@ -89,7 +89,7 @@ sp.ids <- list(
                                     SubSpecies="", Sex="f",
                                     Author = "Vachal, 1904",
                                     Determiner ="J.L. Neff",
-                                    temp.id= c(35648,35888,36013,36140,35637)),
+                                    temp.id= c(35648,35888,36013,36140,35637,35634,35633,34579,35629)),
 
     ## Sphecodes_morphoa_f= list(Genus="Sphecodes", SubGenus ="",
     ##                           Species="sp.",
