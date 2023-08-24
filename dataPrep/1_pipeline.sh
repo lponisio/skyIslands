@@ -8,12 +8,13 @@
 # On whatever computer will be running the tasks, innitiate a docker
 # container for qiime1
 
+#only need to do this docker pull step once
 docker pull mbari/qiime1
 
 #sequences from 2020
 #running on Rebecca's username (andrena)
 docker run -itv /Users/andrena/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline_2023 mbari/qiime1
-
+source activate qiime1
 #sequences from 2018
 #docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline sglim2/qiime-1.9.1
 
@@ -45,9 +46,8 @@ mv GC3F-JZ-7102---6632_S1_L001_R1_001.fastq rawreverse.fastq
 mv GC3F-JZ-7102---6632_S1_L001_R2_001.fastq rawforward.fastq
 
 
-
 #4: parse the barcodes in the files, putting our data into a format
-#qiime2 will be able to use
+#qiime2 will be able to use. -- NOTE this step takes ~40 minutes to run!
 
 extract_barcodes.py -f rawforward.fastq -r rawreverse.fastq  -c barcode_paired_end --bc1_len 8 --bc2_len 8 -o parsed_barcodes
 
@@ -90,18 +90,21 @@ qiime tools import --type EMPPairedEndSequences --input-path parsed_barcodes/ --
 #If you are examining multiple amplicon types, pick a map associated
 #with one to start with (e.g. 16s)
 
-qiime metadata tabulate --m-input-file maps/sky2018map16s.txt --o-visualization sky2018map16s.qzv
-qiime tools view sky2018map16s.qzv
+qiime metadata tabulate --m-input-file maps/sky2020map16s_1.txt --o-visualization sky2020map16s_1.qzv
+qiime tools view sky2020map16s_1.qzv
 
 #9: Demultiplex 16s reads first. Only works in version Qiime2 2019.1
 
 exit
-docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
+
+#docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
+docker run -itv /Users/andrena/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
+
 
 cd ../../mnt/SI_pipeline/
-cd R2018 #or whichever run you're working on
+cd R2018/2023_sequence_results_raw/lane1 #or whichever run you're working on
 
-qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2018map16s.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza 
+qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020map16s_1.txt --m-barcodes-column barcodesequence --p-rev-comp-barcodes --o-per-sample-sequences demux16s.qza 
 
 
 #9a: Visualize Results
