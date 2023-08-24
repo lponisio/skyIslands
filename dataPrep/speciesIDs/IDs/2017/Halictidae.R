@@ -279,7 +279,9 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                                   "21058","22671","22538","20898",
                                                   "22452","22310","24976","21408",
                                                   "21392","21268","22943","22939",
-                                                  "30281","22929")
+                                                  "30281","22929","23138","23574",
+                                                  "23190","22696","22674","22667",
+                                                  "22670","22590")),
 
     Lasioglossum_Hemihalictus_f= list(Genus="Lasioglossum", SubGenus
                                       ="Hemihalictus", Species="sp.",
