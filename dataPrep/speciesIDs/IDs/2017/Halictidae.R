@@ -270,6 +270,17 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                                   "BBSL1086977",
                                                   "BBSL1072722")),
 
+    Lasioglossum_heterorhinum_f= list(Genus="Lasioglossum", SubGenus
+                                      ="Lasioglossum", Species="heterorhinum",
+                                      SubSpecies="", Sex="f",
+                                      Author = "Cockerell, 1930",
+                                      Determiner = "J.L. Neff",
+                                      temp.id=  c("BBSL1087058","21447","22311","22669",
+                                                  "21058","22671","22538","20898",
+                                                  "22452","22310","24976","21408",
+                                                  "21392","21268","22943","22939",
+                                                  "30281","22929")
+
     Lasioglossum_Hemihalictus_f= list(Genus="Lasioglossum", SubGenus
                                       ="Hemihalictus", Species="sp.",
                                       SubSpecies="1", Sex="f",
