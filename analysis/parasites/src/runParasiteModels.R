@@ -30,14 +30,14 @@ runParasiteModels <- function(spec.data,
                       iter = 10^4,
                       chains = 2,
                       thin=1,
-                      ## init=0,
+                      init=0,
                       control = list(adapt_delta = 0.99))
   
   write.ms.table(fit.parasite,
                  sprintf("parasitism_%s_%s",
                          species.group, parasite))
 
-  r2 <- loo_R2(fit.parasite)
+  r2 <- bayes_R2(fit.parasite)
   print(r2)
 
   save(fit.parasite, data.par, r2,
