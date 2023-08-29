@@ -38,12 +38,20 @@ ls
 #mv 4376_S0_L001_R2_001.fastq rawforward.fastq
 
 ## Run 1 2020
-cd R2018/2023_sequence_results_raw/lane1
-gunzip GC3F-JZ-7102---6632_S1_L001_R1_001.fastq.gz
-gunzip GC3F-JZ-7102---6632_S1_L001_R2_001.fastq.gz
+# cd R2018/2023_sequence_results_raw/lane1
+# 
+# gunzip GC3F-JZ-7102---6632_S1_L001_R1_001.fastq.gz
+# gunzip GC3F-JZ-7102---6632_S1_L001_R2_001.fastq.gz
+# 
+# mv GC3F-JZ-7102---6632_S1_L001_R1_001.fastq rawreverse.fastq
+# mv GC3F-JZ-7102---6632_S1_L001_R2_001.fastq rawforward.fastq
 
-mv GC3F-JZ-7102---6632_S1_L001_R1_001.fastq rawreverse.fastq
-mv GC3F-JZ-7102---6632_S1_L001_R2_001.fastq rawforward.fastq
+## Run 2 2020
+
+
+
+
+
 
 
 #4: parse the barcodes in the files, putting our data into a format
@@ -63,6 +71,7 @@ mv reads2.fastq.gz reverse.fastq.gz
 exit
 
 docker run -itv /Users/andrena/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline_2023 qiime2/core
+#source activate qiime2
 
 #6: Test that the container for Qiime 2 is properly associated, then
 #make sure you are in the root directory using ls, then set working
@@ -104,7 +113,8 @@ docker run -itv /Users/andrena/Dropbox\ \(University\ of\ Oregon\)/skyIslands_sa
 cd ../../mnt/SI_pipeline/
 cd R2018/2023_sequence_results_raw/lane1 #or whichever run you're working on
 
-qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020map16s_1.txt --m-barcodes-column barcodesequence --p-rev-comp-barcodes --o-per-sample-sequences demux16s.qza 
+#note: this step takes ~2 hours!
+qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020map16s_1.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza 
 
 
 #9a: Visualize Results
@@ -121,7 +131,9 @@ qiime tools view demux16s.qzv
 
 ## The truncation length will vary between each run! Make sure to adjust the numbers pasted below. 
 ## R2018 16s: f = 180 , r = 220
+## R2023 16s: f = 180 , r = 220
 
+#note this step takes hours!
 
 qiime dada2 denoise-paired  \
 --i-demultiplexed-seqs demux16s.qza  \
