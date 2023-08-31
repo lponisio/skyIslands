@@ -8,8 +8,17 @@
 # On whatever computer will be running the tasks, innitiate a docker
 # container for qiime1
 
-#only need to do this docker pull step once
-docker pull mbari/qiime1
+#only need to do this docker pull step once per user
+#docker pull mbari/qiime1
+
+#Helpful notes:
+# 1. if running on the shared lab computer, you may get errors if your zipped sequence results are not synched 
+#     to your dropbox account. Double clicking the file will usually make it appear. If you look at the filesize and 
+# it is 0, this is likely because the file is not synched to the local.
+
+# 2. If you get an error about memory or space issues, check that the other users do not have their dropbox files
+#     on the local computer, you can fix this by logging in and making all dropbox files online only. This should
+#     clear up enough space to fix this error.
 
 #sequences from 2020
 #running on Rebecca's username (andrena)
@@ -48,10 +57,13 @@ ls
 
 ## Run 2 2020
 
+cd R2018/2023_sequence_results_raw/lane2
 
+gunzip GC3F-JZ-7632---7075_S1_L001_R1_001.fastq.gz
+gunzip GC3F-JZ-7632---7075_S1_L001_R2_001.fastq.gz
 
-
-
+mv GC3F-JZ-7632---7075_S1_L001_R1_001.fastq rawreverse.fastq
+mv GC3F-JZ-7632---7075_S1_L001_R2_001.fastq rawforward.fastq
 
 
 #4: parse the barcodes in the files, putting our data into a format
@@ -88,7 +100,13 @@ cd mnt/SI_pipeline_2023/
 #or whichever run you're working on 
 
 #2020 reads
-cd R2018/2023_sequence_results_raw/lane1
+#Run 1
+# cd R2018/2023_sequence_results_raw/lane1
+# 
+# qiime tools import --type EMPPairedEndSequences --input-path parsed_barcodes/ --output-path seqs.qza
+
+#Run 2
+cd R2018/2023_sequence_results_raw/lane2
 
 qiime tools import --type EMPPairedEndSequences --input-path parsed_barcodes/ --output-path seqs.qza
 
@@ -99,8 +117,14 @@ qiime tools import --type EMPPairedEndSequences --input-path parsed_barcodes/ --
 #If you are examining multiple amplicon types, pick a map associated
 #with one to start with (e.g. 16s)
 
-qiime metadata tabulate --m-input-file maps/sky2020map16s_1.txt --o-visualization sky2020map16s_1.qzv
-qiime tools view sky2020map16s_1.qzv
+#2020 run 1
+# qiime metadata tabulate --m-input-file maps/sky2020map16s_1.txt --o-visualization sky2020map16s_1.qzv
+# qiime tools view sky2020map16s_1.qzv
+
+#2020 run2
+qiime metadata tabulate --m-input-file maps/sky2020map16s_2.txt --o-visualization sky2020map16s_2.qzv
+qiime tools view sky2020map16s_2.qzv
+
 
 #9: Demultiplex 16s reads first. Only works in version Qiime2 2019.1
 
@@ -111,11 +135,13 @@ docker run -itv /Users/andrena/Dropbox\ \(University\ of\ Oregon\)/skyIslands_sa
 
 
 cd ../../mnt/SI_pipeline/
-cd R2018/2023_sequence_results_raw/lane1 #or whichever run you're working on
+#cd R2018/2023_sequence_results_raw/lane1 #or whichever run you're working on
+cd R2018/2023_sequence_results_raw/lane2
 
 #note: this step takes ~2 hours!
-qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020map16s_1.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza 
+#qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020map16s_1.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza 
 
+qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020map16s_2.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza 
 
 #9a: Visualize Results
 
@@ -151,7 +177,12 @@ qiime feature-table summarize --i-table dada2-16s/table16s.qza --o-visualization
 
 ## repeat the steps for RBCL
 
-qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2018mapRBCL.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demuxRBCL.qza 
+## ***** need to fix duplicate ID issue before demuxing rbcl!! but i think can move forward rn with 16s
+
+## 2020 run 2
+cd ../lane2
+
+qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020mapRBCL_2.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demuxRBCL.qza 
 
 #9a: Visualize Results
 
@@ -202,7 +233,8 @@ cd ../
 #### 1. 16s ###
 # 1a. first merge the table files. do this from your main SI_pipeline folder
 qiime feature-table merge \
-      --i-tables R2018/dada2-16s/table16s.qza \
+      --i-tables lane1/dada2-16s/table16s.qza \
+      --i-tables lane2/dada2-16s/table16s.qza \
       --o-merged-table merged/16s/table16s.qza
 
  # --i-tables R1/dada2-16s/table16s.qza \
@@ -214,7 +246,8 @@ qiime feature-table merge \
 
 # 1b: next merge the rep-seqs
 qiime feature-table merge-seqs \
-       --i-data R2018/dada2-16s/rep-seqs-dada2-16s.qza \
+       --i-data lane1/dada2-16s/rep-seqs-dada2-16s.qza \
+       --i-data lane2/dada2-16s/rep-seqs-dada2-16s.qza \
 	--o-merged-data merged/16s/rep-seqs-16s.qza
 
  # --i-data R1/dada2-16s/rep-seqs-dada2-16s.qza \
