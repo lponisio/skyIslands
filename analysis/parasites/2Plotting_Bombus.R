@@ -169,7 +169,7 @@ p2.parasite <- ggplot(pred_bombusabund, aes(x = Net_BombusAbundance, y = .epred)
         text = element_text(size=16)) +
   ##theme_dark_black()+
   geom_point(data=data.par,
-             aes(y= CrithidiaBombusParasitismRate, x=Net_BombusAbundance),
+             aes(y= CrithidiaPresence, x=Net_BombusAbundance),
              color="grey40", cex=2)
 
 
