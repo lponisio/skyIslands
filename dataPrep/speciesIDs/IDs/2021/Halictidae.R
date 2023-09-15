@@ -55,7 +55,12 @@ sp.ids <- list(
                                       SubSpecies="", Sex="f",
                                       Author = "Sandhouse",
                                       Determiner = "J.L. Neff",
-                                      temp.id=  c(36310)),
+                                      temp.id=  c(36310, 35588, 35583, 35582, 35561, 
+                                                  35549, 35534, 35807, 35808, 36066, 
+                                                  36249, 36254, 36259, 35521, 34560, 
+                                                  36300, 36312, 36335, 36305, 36295, 
+                                                  36298, 36296, 36294, 36287, 36284, 
+                                                  36281, 36274)),
 
     ## Lasioglossum_trizonatum_m = list(Genus="Lasioglossum",
     ##                                  SubGenus ="Lasioglossum",
