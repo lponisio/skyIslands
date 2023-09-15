@@ -438,7 +438,9 @@ sp.ids <- list(
                                               35757, 35763, 35735,
                                               35799, 35787, 35824, 
                                               35938, 36022, 35949,
-                                              32714, 36222, 35913)),
+                                              32714, 36222, 35913, 
+                                              35739, 35737, 35751, 
+                                              35756, 36258)),
 
     Lasioglossum_ruidosense_m= list(Genus="Lasioglossum", SubGenus
                                     ="Dialictus", Species="ruidosense",
