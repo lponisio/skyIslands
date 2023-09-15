@@ -402,8 +402,8 @@ sp.ids <- list(
                                    temp.id= c("17750","20344","19884","19895",
                                               "19526","19534","19531","20195",
                                               "19879","20347","20241","20331",
-                                              "19891")),
-
+                                              "19891","20238","19540","25183")),
+    
     Lasioglossum_obnubilum_m= list(Genus="Lasioglossum",
                                    SubGenus ="Dialictus",
                                    Species="obnubilum",
