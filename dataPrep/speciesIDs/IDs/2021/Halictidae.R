@@ -94,7 +94,8 @@ sp.ids <- list(
                                     SubSpecies="", Sex="f",
                                     Author = "Vachal, 1904",
                                     Determiner ="J.L. Neff",
-                                    temp.id= c(35648,35888,36013,36140,35637,35634,35633,34579,35629)),
+                                    temp.id= c(35648,35888,36013,36140,35637,
+                                               35634,35633,34579,35629)),
 
     ## Sphecodes_morphoa_f= list(Genus="Sphecodes", SubGenus ="",
     ##                           Species="sp.",
@@ -276,7 +277,8 @@ sp.ids <- list(
                                     Author = "Cockerell",
                                     Determiner = "J.F. Zorn",
                                     temp.id=
-                                        c(34536,36279,34505,34530,34564,34623,35848,35894,36215,36204,36019,34477)),
+                                        c(34536,36279,34505,34530,34564,34623,
+                                          35848,35894,36215,36204,36019,34477)),
 
 
     Lasioglossum_sisymbrii_m = list(Genus="Lasioglossum",
@@ -497,7 +499,7 @@ sp.ids <- list(
                                              35792, 35778, 35773, 35772, 
                                              35765, 35497, 35664, 35481,
                                              35431, 35496, 35433, 35435,
-                                             35441, 35461, 35451, 34735)),
+                                             35441, 35461, 35451, 34735))
 
     ## Lasioglossum_obnubilum_f= list(Genus="Lasioglossum",
     ##                                SubGenus ="Dialictus",
