@@ -1,7 +1,7 @@
 rm(list=ls())
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
 ## setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
-setwd('~/Dropbox (University of Oregon)/skyislands')
+## setwd('~/Dropbox (University of Oregon)/skyislands')
 ncores <- 1
 
 setwd("analysis/parasites")
@@ -19,6 +19,14 @@ vars <- c("MeanFloralAbundance",
           ## "r.degree", ## across all networks
           "rare.degree"  ## site-year level
           )
+
+variables.to.log <- c("MeanFloralAbundance",
+                      "Net_NonBombusHBAbundance",
+                      "Net_HBAbundance",
+                      "Net_BombusAbundance",
+                      "Lat")
+
+
 ## uses only net specimens, and drops syrphids
 source("src/init.R")
 ## define all the formulas for the different parts of the models
@@ -64,7 +72,7 @@ fit.community <- brm(bform.community, spec.net,
                      control = list(adapt_delta = 0.99))
 write.ms.table(fit.community,
                sprintf("parasitism_%s_%s",
-                       species.group, parasite))
+                       species.group="all", parasite="none"))
 r2 <- loo_R2(fit.community)
 save(fit.community, spec.net, r2,
      file="saved/communityFit.Rdata")
@@ -82,6 +90,16 @@ save(fit.community, spec.net, r2,
 ## **********************************************************
 ## Crithidia models
 ## **********************************************************
+
+fit.bombus.cbombi <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
+                                        parasites=c("CrithidiaPresence", "ApicystisSpp"),
+                                        vars=xvars.multi.species,
+                                        iter = 10^4,
+                                        chains = 1,
+                                        thin=1,
+                                        init=0)
+
+
 
 ## ## bombus only models
 ## fit.bombus.cbombi <- runParasiteModels(spec.bombus, "bombus",

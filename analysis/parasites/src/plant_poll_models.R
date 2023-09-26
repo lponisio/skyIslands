@@ -51,7 +51,7 @@ formula.bee.abund <- formula(Net_NonBombusHBAbundance | weights(Weights)~
 ## **********************************************************
 bf.fabund <- bf(formula.flower.abund)
 bf.fdiv <- bf(formula.flower.div)
-bf.babund <- bf(formula.bee.abund, family="negbinomial")
-bf.bombusabund <- bf(formula.bombus.abund, family="negbinomial")
-bf.HBabund <- bf(formula.HB.abund, family="negbinomial")
+bf.babund <- bf(formula.bee.abund, family="gaussian")
+bf.bombusabund <- bf(formula.bombus.abund, family="gaussian")
+bf.HBabund <- bf(formula.HB.abund, family="gaussian")
 bf.bdiv <- bf(formula.bee.div)

@@ -6,6 +6,7 @@ library(tidybayes)
 library(ggthemes)
 library(car)
 library(lme4)
+library(bayestestR)
 
 
 load('../../data/spec_net.Rdata')
@@ -53,6 +54,16 @@ spec.net$YearSR <- paste(spec.net$Year, spec.net$SampleRound, sep=";")
 
 ## will need to modify when we have multiple years
 spec.net <- makeDataMultiLevel(spec.net, "Site", "YearSR")
+
+
+spec.net[, variables.to.log] <- log(spec.net[,variables.to.log] + 1)
+
+##  center all of the x variables, need to use unique values to avoid
+##  repetition by the number of specimens
+unique.site.vals <- spec.net[spec.net$Weights == 1, ]
+unique.site.vals[, vars] <- apply(unique.site.vals[, vars], 2, standardize)
+spec.net[, vars] <- NULL
+spec.net <- merge(spec.net, unique.site.vals)
 
 ## create a dumby varaible "WeightPar" for the parasite data. The
 ## original intention was to keep stan from dropping data for

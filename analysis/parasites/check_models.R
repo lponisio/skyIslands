@@ -112,3 +112,7 @@ r2(model)
 
 model_performance(model)
 check_model(model)
+
+
+
+

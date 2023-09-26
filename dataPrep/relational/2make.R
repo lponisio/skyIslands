@@ -382,7 +382,7 @@ write.csv(dbReadTable(con, 'tblPan'),
 ## *******************************************************
 
 keep <- c('Quadrat')
-quads <- sort(unique(veg[keep]))
+quads <- unique(veg[keep])
 
 quads$QuadPK <- seq_len(nrow(quads))
 
