@@ -91,10 +91,10 @@ save(fit.community, spec.net, r2,
 ## Crithidia models
 ## **********************************************************
 
-fit.bombus.cbombi <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
+fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         parasites=c("CrithidiaPresence", "ApicystisSpp"),
-                                        vars=xvars.multi.species,
-                                        iter = 10^4,
+                                        xvars=xvars.multi.species,
+                                        iter = 20^4,
                                         chains = 1,
                                         thin=1,
                                         init=0)
