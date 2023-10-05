@@ -1,7 +1,7 @@
 rm(list=ls())
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
 ## setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
-## setwd('~/Dropbox (University of Oregon)/skyislands')
+setwd('~/Dropbox (University of Oregon)/skyislands')
 ncores <- 1
 
 setwd("analysis/parasites")
@@ -34,6 +34,9 @@ source("src/plant_poll_models.R")
 ## check ids
 unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
                              is.na(spec.net$MeanITD)])
+spec.net$Year <- as.factor(spec.net$Year)
+## sites only sampled once
+spec.net <- spec.net[!spec.net$Site %in% c("UK", "VC")]
 
 ## **********************************************************
 ## Parasite models set up
@@ -41,17 +44,17 @@ unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
 ## Multi species models
 xvars.multi.species <-  c("Net_NonBombusHBAbundance",
                           "Net_HBAbundance",
-                         ## "Net_BombusAbundance",
+                          "Net_BombusAbundance",
                           "Net_BeeDiversity",
                           "rare.degree", "MeanITD",
                           "(1|Site)", "(1|GenusSpecies)")
 ## single species models
 xvars.single.species <-  c("Net_NonBombusHBAbundance",
-                          ## "Net_HBAbundance",
-                          "Net_BombusAbundance",
-                          "Net_BeeDiversity",
-                          "rare.degree",
-                          "(1|Site)")
+                           "Net_HBAbundance",
+                           "Net_BombusAbundance",
+                           "Net_BeeDiversity",
+                           "rare.degree",
+                           "(1|Site)")
 
 
 ## **********************************************************
@@ -59,17 +62,19 @@ xvars.single.species <-  c("Net_NonBombusHBAbundance",
 ## **********************************************************
 
 bform.community <- bf.fabund + bf.fdiv +
-  bf.babund + bf.bombusabund + bf.HBabund +
+  bf.babund 
+  bf.bombusabund + bf.HBabund +
   bf.bdiv  +
   set_rescor(FALSE)
 
 fit.community <- brm(bform.community, spec.net,
                      cores=ncores,
-                     iter = 10^4,
+                     iter = 20^4,
                      chains = 1,
                      thin=1,
                      init=0,
-                     control = list(adapt_delta = 0.99))
+                     control = list(adapt_delta = 0.99),
+                     save_pars = save_pars(all = TRUE))
 write.ms.table(fit.community,
                sprintf("parasitism_%s_%s",
                        species.group="all", parasite="none"))

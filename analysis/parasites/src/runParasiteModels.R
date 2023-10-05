@@ -18,10 +18,14 @@ runCombinedParasiteModels <- function(spec.data,
       paste(xvars,
             collapse=" + "),
       sep=" ~ "))
-    bf.parasite.formulas[[parasite]] <-  bf(formula.parasite, family="bernoulli")  
+    bf.parasite.formulas[[parasite]] <-  bf(formula.parasite,
+                                            family="bernoulli")  
   }
 
-  bform <- bf.fabund + bf.fdiv + bf.babund + bf.bdiv +
+ 
+  bform.community <- bf.fabund + bf.fdiv +
+    bf.babund + bf.bombusabund + bf.HBabund +
+    bf.bdiv  +    
     bf.parasite.formulas[[1]]+
     bf.parasite.formulas[[2]] +
     set_rescor(FALSE)

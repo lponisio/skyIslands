@@ -3,13 +3,16 @@
 ## **********************************************************
 ## flower diversity
 formula.flower.div <- formula(MeanFloralDiversity | weights(Weights) ~
-                                  Lat +  SRDoy + I(SRDoy^2) + Year +
-                                      (1|Site)
+                                Lat +
+                                  SRDoy*Year + I(SRDoy^2)*Year +
+                                  SRDoy*Lat + I(SRDoy^2)*Lat +
+                                  (1+SRDoy|Site)
                               )
 ## flower abund
 formula.flower.abund <- formula(MeanFloralAbundance | weights(Weights) ~
-                                    SRDoy + I(SRDoy^2) + Year +
-                                        (1|Site)
+                                  SRDoy*Year + I(SRDoy^2)*Year +
+                                    SRDoy*Lat + I(SRDoy^2)*Lat +
+                                    (1+SRDoy|Site)
                                 )
 
 ## **********************************************************
@@ -17,33 +20,37 @@ formula.flower.abund <- formula(MeanFloralAbundance | weights(Weights) ~
 ## **********************************************************
 ## bee diversity
 formula.bee.div <- formula(Net_BeeDiversity | weights(Weights)~
-                               MeanFloralDiversity +
-                                   Lat +  SRDoy + Year +
-                                   (1|Site)
+                             MeanFloralDiversity +
+                               Lat + Year +
+                               SRDoy*Year + I(SRDoy^2)*Year +
+                               SRDoy*Lat + I(SRDoy^2)*Lat +
+                               (1+SRDoy|Site)
                            )
 ## bombus abund
 formula.bombus.abund <- formula(Net_BombusAbundance | weights(Weights)~
-                                    MeanFloralAbundance +
-                                        MeanFloralDiversity+
-                                        SRDoy + I(SRDoy^2) +
-                                        Lat + Year+
-                                        (1|Site)
+                                  MeanFloralAbundance +
+                                    MeanFloralDiversity + Year +
+                                    SRDoy*Year + I(SRDoy^2)*Year +
+                                    SRDoy*Lat + I(SRDoy^2)*Lat +
+                                    Lat + 
+                                    (1|Site)
                                 )
 ## HB abund
 formula.HB.abund <- formula(Net_HBAbundance | weights(Weights)~
-                                MeanFloralAbundance +
-                                    MeanFloralDiversity+
-                                    SRDoy + I(SRDoy^2) +
-                                    Lat + Year+
-                                    (1|Site)
+                              MeanFloralAbundance +
+                                MeanFloralDiversity+  Year +
+                                SRDoy*Year + I(SRDoy^2)*Year +
+                                SRDoy*Lat + I(SRDoy^2)*Lat +
+                                (Site)
                             )
 ## bee abund
 formula.bee.abund <- formula(Net_NonBombusHBAbundance | weights(Weights)~
-                                 MeanFloralAbundance +
-                                     MeanFloralDiversity+
-                                     SRDoy + I(SRDoy^2) +
-                                     Lat + Year+
-                                     (1|Site)
+                               MeanFloralAbundance +
+                                 MeanFloralDiversity +  Year +
+                                 SRDoy*Year + I(SRDoy^2)*Year +
+                                 SRDoy*Lat + I(SRDoy^2)*Lat +
+                                 Lat +
+                                 (1+SRDoy|Site)
                              )
 
 ## **********************************************************
