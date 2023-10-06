@@ -44,9 +44,6 @@ dir.create(path="saved/tables", showWarnings = FALSE)
 
 spec.net <- spec.net[order(spec.net$Site),]
 
-spec.net$Lat <- log(spec.net$Lat)
-spec.net$Area <- log(spec.net$Area)
-
 ## create a dumby varaible "Weight" to deal with the data sets being at
 ## different levels to get around the issue of having to pass in one
 ## data set into brms
@@ -55,7 +52,6 @@ spec.net$YearSR <- paste(spec.net$Year, spec.net$SampleRound, sep=";")
 ## will need to modify when we have multiple years
 spec.net <- makeDataMultiLevel(spec.net, "Site", "YearSR")
 
-
 spec.net[, variables.to.log] <- log(spec.net[,variables.to.log] + 1)
 
 ##  center all of the x variables, need to use unique values to avoid
@@ -63,7 +59,12 @@ spec.net[, variables.to.log] <- log(spec.net[,variables.to.log] + 1)
 unique.site.vals <- spec.net[spec.net$Weights == 1, ]
 unique.site.vals[, vars] <- apply(unique.site.vals[, vars], 2, standardize)
 spec.net[, vars] <- NULL
+
+unique.site.vals <- unique.site.vals[, c("Site", "YearSR", vars)]
+
+dim(spec.net)
 spec.net <- merge(spec.net, unique.site.vals)
+dim(spec.net)
 
 ## create a dumby varaible "WeightPar" for the parasite data. The
 ## original intention was to keep stan from dropping data for

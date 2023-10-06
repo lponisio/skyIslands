@@ -36,7 +36,7 @@ unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
                              is.na(spec.net$MeanITD)])
 spec.net$Year <- as.factor(spec.net$Year)
 ## sites only sampled once
-spec.net <- spec.net[!spec.net$Site %in% c("UK", "VC")]
+spec.net <- spec.net[!spec.net$Site %in% c("UK", "VC"),]
 
 ## **********************************************************
 ## Parasite models set up
@@ -96,10 +96,12 @@ save(fit.community, spec.net, r2,
 ## Crithidia models
 ## **********************************************************
 
+table(spec.bombus$Site, spec.bombus$ApicystisSpp)
+
 fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         parasites=c("CrithidiaPresence", "ApicystisSpp"),
                                         xvars=xvars.multi.species,
-                                        iter = 20^4,
+                                        iter = 10^4,
                                         chains = 1,
                                         thin=1,
                                         init=0)

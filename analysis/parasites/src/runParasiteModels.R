@@ -23,7 +23,7 @@ runCombinedParasiteModels <- function(spec.data,
   }
 
  
-  bform.community <- bf.fabund + bf.fdiv +
+  bform <- bf.fabund + bf.fdiv +
     bf.babund + bf.bombusabund + bf.HBabund +
     bf.bdiv  +    
     bf.parasite.formulas[[1]]+
