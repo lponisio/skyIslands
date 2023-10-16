@@ -6,13 +6,13 @@ formula.flower.div <- formula(MeanFloralDiversity | weights(Weights) ~
                                 Lat +
                                   SRDoy*Year + I(SRDoy^2)*Year +
                                   SRDoy*Lat + I(SRDoy^2)*Lat +
-                                  (1+SRDoy|Site)
+                                  (1|Site)
                               )
 ## flower abund
 formula.flower.abund <- formula(MeanFloralAbundance | weights(Weights) ~
                                   SRDoy*Year + I(SRDoy^2)*Year +
                                     SRDoy*Lat + I(SRDoy^2)*Lat +
-                                    (1+SRDoy|Site)
+                                    (1|Site)
                                 )
 
 ## **********************************************************
@@ -24,7 +24,7 @@ formula.bee.div <- formula(Net_BeeDiversity | weights(Weights)~
                                Lat + Year +
                                SRDoy*Year + I(SRDoy^2)*Year +
                                SRDoy*Lat + I(SRDoy^2)*Lat +
-                               (1+SRDoy|Site)
+                               (1|Site)
                            )
 ## bombus abund
 formula.bombus.abund <- formula(Net_BombusAbundance | weights(Weights)~
@@ -41,7 +41,7 @@ formula.HB.abund <- formula(Net_HBAbundance | weights(Weights)~
                                 MeanFloralDiversity+  Year +
                                 SRDoy*Year + I(SRDoy^2)*Year +
                                 SRDoy*Lat + I(SRDoy^2)*Lat +
-                                (Site)
+                                (1|Site)
                             )
 ## bee abund
 formula.bee.abund <- formula(Net_NonBombusHBAbundance | weights(Weights)~
@@ -50,7 +50,7 @@ formula.bee.abund <- formula(Net_NonBombusHBAbundance | weights(Weights)~
                                  SRDoy*Year + I(SRDoy^2)*Year +
                                  SRDoy*Lat + I(SRDoy^2)*Lat +
                                  Lat +
-                                 (1+SRDoy|Site)
+                                 (1|Site)
                              )
 
 ## **********************************************************

@@ -2,7 +2,7 @@ rm(list=ls())
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
 ## setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
 setwd('~/Dropbox (University of Oregon)/skyislands')
-ncores <- 1
+ncores <- 3
 
 setwd("analysis/parasites")
 source("src/misc.R")
@@ -36,7 +36,7 @@ unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
                              is.na(spec.net$MeanITD)])
 spec.net$Year <- as.factor(spec.net$Year)
 ## sites only sampled once
-spec.net <- spec.net[!spec.net$Site %in% c("UK", "VC"),]
+## spec.net <- spec.net[!spec.net$Site %in% c("UK", "VC", ""),]
 
 ## **********************************************************
 ## Parasite models set up
@@ -86,73 +86,41 @@ save(fit.community, spec.net, r2,
 ## Parasite presence
 ## **********************************************************
 ## full model with all species, parasites
-
- ## fit <- runParasiteModels(spec.data= spec.all,
- ##                         species.group="all",
- ##                         parasite="ParasitePresence",
- ##                          xvars= xvars.multi.species)
-
-## **********************************************************
-## Crithidia models
-## **********************************************************
-
-table(spec.bombus$Site, spec.bombus$ApicystisSpp)
-
-fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
-                                        parasites=c("CrithidiaPresence", "ApicystisSpp"),
+fit.all <- runCombinedParasiteModels(spec.all, species.group="all",
+                                        parasites=c("CrithidiaPresence",
+                                                    "ApicystisSpp"),
                                         xvars=xvars.multi.species,
                                         iter = 10^4,
                                         chains = 1,
                                         thin=1,
                                         init=0)
 
+## bombus
+fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
+                                        parasites=c("CrithidiaPresence",
+                                                    "ApicystisSpp"),
+                                        xvars=xvars.multi.species,
+                                        iter = 10^4,
+                                        chains = 1,
+                                        thin=1,
+                                        init=0)
 
-
-## ## bombus only models
-## fit.bombus.cbombi <- runParasiteModels(spec.bombus, "bombus",
-##                                        "CrithidiaBombi",
-##                                        xvars.multi.species)
-## fit.bombus.cexpoeki <- runParasiteModels(spec.bombus, "bombus",
-##                                          "CrithidiaExpoeki",
-##                                          xvars.multi.species)
- fit.bombus.cspp <- runParasiteModels(spec.bombus, "bombus",
-                                      "CrithidiaPresence",
-                                      xvars.multi.species)
-
-## ## all apidae species (Bombus, Apis, Anthophora, Melissodes)
-## fit.apidae.cbombi <- runParasiteModels(spec.apidae, "apidae",
-##                                        "CrithidiaBombi",
-##                                        xvars.multi.species)
-## fit.apidae.cexpoeki <- runParasiteModels(spec.apidae, "apidae",
-##                                          "CrithidiaExpoeki",
-##                                          xvars.multi.species)
-## fit.apidae.cspp <- runParasiteModels(spec.apidae, "apidae",
-##                                      "CrithidiaPresence",
-##                                      xvars.multi.species)
-
-## ## Apis only
-## fit.apis.cbombi <- runParasiteModels(spec.apis, "apis",
-##                                      "CrithidiaBombi",
-##                                      xvars.single.species)
-## fit.apis.cexpoeki <- runParasiteModels(spec.apis, "apis",
-##                                        "CrithidiaExpoeki",
-##                                        xvars.single.species)
- fit.apis.cspp <- runParasiteModels(spec.apis, "apis",
-                                    "CrithidiaPresence",
-                                    xvars.single.species)
-
-## **********************************************************
-## ApicystisSpp models
-## **********************************************************
-## bombus only models
-fit.bombus.apicystis <- runParasiteModels(spec.bombus, "bombus",
-                                          "ApicystisSpp",
-                                          xvars.multi.species)
 ## all apidae species (Bombus, Apis, Anthophora, Melissodes)
-fit.apidae.apicystis <- runParasiteModels(spec.apidae, "apidae",
-                                          "ApicystisSpp",
-                                          xvars.multi.species)
-## Apis only
-fit.apis.apicystis <- runParasiteModels(spec.apis, "apis",
-                                        "ApicystisSpp",
-                                        xvars.single.species)
+fit.apidae <- runCombinedParasiteModels(spec.apidae, species.group="apidae",
+                                        parasites=c("CrithidiaPresence",
+                                                    "ApicystisSpp"),
+                                        xvars=xvars.multi.species,
+                                        iter = 10^4,
+                                        chains = 1,
+                                        thin=1,
+                                        init=0)
+
+## Honey bees
+fit.apis <- runCombinedParasiteModels(spec.apis, species.group="apis",
+                                        parasites=c("CrithidiaPresence",
+                                                    "ApicystisSpp"),
+                                        xvars=xvars.single.species,
+                                        iter = 10^4,
+                                        chains = 1,
+                                        thin=1,
+                                        init=0)
