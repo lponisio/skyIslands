@@ -15,7 +15,6 @@ makeDataMultiLevel <- function(indiv.data, site.col, year.col="Year"){
 
 
 addWeightCol <- function(each.year.dat, site.col){
-    indiv.data <- indiv.data[order(indiv.data[, site.col]),]
     site.ids <- unlist(tapply(each.year.dat[, site.col],
                               each.year.dat[, site.col],
                               function(x) 1:length(x)))

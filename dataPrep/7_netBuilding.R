@@ -14,7 +14,7 @@ options(cores=1)
 ## ********************************************************
 ## pollinator abundance by site to multiple interactions by
 ## ********************************************************
-pol.abund <- read.csv(file.path(mainDir, "spstats.csv"))
+pol.abund <- read.csv(file.path(mainDir, "spstats_net.csv"))
 
 ## prep for making a vector of bee abund at each site
 pol.abund.site <- split(pol.abund, pol.abund$Site)
@@ -24,12 +24,12 @@ pol.abund.site <- split(pol.abund, pol.abund$Site)
 ## ********************************************************
 
 ## list of rbcl data columns
-rbcl_names <- grep('RBCL',names(spec))
+rbcl_names <- grep('RBCL',names(spec.net))
 
 # note check out RBCL:NA
 
 ## split out specimens that were sequenced
-seq.df <- spec[apply(spec[, rbcl_names], 1, function(x) !all(is.na(x))),]
+seq.df <- spec.net[apply(spec.net[, rbcl_names], 1, function(x) !all(is.na(x))),]
 
 ## makes community matrix/network of plants by individuals
 indivNet_rbcl <- illumSplit(seq.df, "Site", rbcl_names)
@@ -38,7 +38,7 @@ indivNet_rbcl <- illumSplit(seq.df, "Site", rbcl_names)
 
 pol.sp.rbcl <- lapply(indivNet_rbcl,
                 function(x){
-                spec$GenusSpecies[match(colnames(x), spec$UniqueID)]
+                spec.net$GenusSpecies[match(colnames(x), spec.net$UniqueID)]
 })
 
 
@@ -72,23 +72,23 @@ nsp.rbcl <- sapply(spNet_rbcl, ncol) > 1
 
 indivNetSums_rbcl  <-  netSums(indivNet_rbcl[nindiv.rbcl],
                                binary=FALSE,
-                               spec=spec, FUN=mclapply,
+                               spec=spec.net, FUN=mclapply,
                                m=ndim.func)
 
 indivNetSums_rbclBinary  <-  netSums(indivNet_rbcl[nindiv.rbcl],
                                      binary=TRUE,
-                                     spec=spec,
+                                     spec=spec.net,
                                      FUN=mclapply,
                                      m=ndim.func)
 
 spNetSums_rbcl  <-  netSums(spNet_rbcl[nsp.rbcl],
                             binary=FALSE,
-                            spec=spec,
+                            spec=spec.net,
                             type="sp")
 
 spNetSums_rbclBinary  <-  netSums(spNet_rbcl[nsp.rbcl],
                                   binary=TRUE,
-                                  spec=spec,
+                                  spec=spec.net,
                                   type="sp")
 
 
@@ -101,10 +101,10 @@ save(indivNetSums_rbcl, indivNetSums_rbclBinary,
 ## 16s
 ## ********************************************************
 #list of column names for 16s
-names_16s  <-  grep('16s',names(spec))
+names_16s  <-  grep('16s',names(spec.net))
 
 #split out specimens that were sequenced
-seq.micro <- spec[apply(spec[, names_16s], 1,
+seq.micro <- spec.net[apply(spec.net[, names_16s], 1,
                         function(x) !all(is.na(x))),]
 
 indivNet_micro <- illumSplit(seq.micro,"Site", names_16s)
@@ -112,8 +112,8 @@ indivNet_micro <- illumSplit(seq.micro,"Site", names_16s)
 
 pol.sp.micro <- lapply(indivNet_micro,
                 function(x){
-                    spec$GenusSpecies[match(colnames(x),
-                                            spec$UniqueID)]
+                    spec.net$GenusSpecies[match(colnames(x),
+                                            spec.net$UniqueID)]
 })
 
 ## species level
@@ -136,23 +136,23 @@ save(indivNet_micro, spNet_micro, pol.sp.micro,
 
 indivNetSums_micro  <-  netSums(indivNet_micro,
                                 binary=FALSE,
-                                spec=spec,
+                                spec=spec.net,
                                 FUN=mclapply,
                                 m=ndim.func)
 
 indivNetSums_microBinary  <-  netSums(indivNet_micro,
                                       binary=TRUE,
-                                      spec=spec,
+                                      spec=spec.net,
                                       FUN=mclapply,
                                       m=ndim.func)
 
 spNetSums_micro  <-  netSums(spNet_micro, binary=FALSE,
-                             spec=spec,
+                             spec=spec.net,
                              FUN=mclapply,
                              type="sp")
 
 spNetSums_microBinary  <-  netSums(spNet_micro, binary=TRUE,
-                                   spec=spec,
+                                   spec=spec.net,
                                    FUN=mclapply,
                                    type="sp")
 
@@ -167,22 +167,22 @@ save(indivNetSums_micro, indivNetSums_microBinary,
 
 #get columns of parasite presence to feed into illumSplit
 
-names.Para <- c("AscosphaeraSpp","ApicystisSpp", "AspergillusSpp",
+names.Para <- c("AscosphaeraSpp","ApicystisSpp", # "AspergillusSpp",
                 "CrithidiaBombi", "CrithidiaExpoeki",
                 "NosemaCeranae", "NosemaBombi" )
 
 ## no       "CrithidiaSpp",
 
-spec[, names.Para] <- apply(spec[, names.Para], 2, as.numeric)
-seq.para <- spec[apply(spec[, names.Para], 1, function(x) !all(is.na(x))),]
+spec.net[, names.Para] <- apply(spec.net[, names.Para], 2, as.numeric)
+seq.para <- spec.net[apply(spec.net[, names.Para], 1, function(x) !all(is.na(x))),]
 
 indivNet_para  <-  illumSplit(seq.para,"Site",names.Para)
 
 
 pol.sp.para <- lapply(indivNet_para,
                 function(x){
-                    spec$GenusSpecies[match(colnames(x),
-                                            spec$UniqueID)]
+                    spec.net$GenusSpecies[match(colnames(x),
+                                            spec.net$UniqueID)]
 })
 
 ## species level
@@ -201,10 +201,12 @@ save(indivNet_para, spNet_para, pol.abund.site.para,
      file =file.path(save.dir, 'paraNets.RData'))
 
 #calculate network summary statistics
+sapply(indivNet_para, sum)
 
-indivNetSums_para  <-  netSums(indivNet_para, spec=spec)
+indivNetSums_para  <-  netSums(indivNet_para[sapply(indivNet_para,
+                                                    sum) > 5], spec=spec.net)
 
-spNetSums_para  <-  netSums(spNet_para, spec=spec,
+spNetSums_para  <-  netSums(spNet_para, spec=spec.net,
                             type="sp", FUN=lapply)
 
 
@@ -242,10 +244,10 @@ colnames(spNetSums_micro) <- makeNewColnames(spNetSums_micro, "Micro")
 all.indiv.mets <- merge(indivNetSums_micro, indivNetSums_rbcl, all=TRUE)
 all.indiv.mets <- merge(all.indiv.mets, indivNetSums_para, all=TRUE)
 
-all.indiv.mets$Site <- spec$Site[match(all.indiv.mets$UniqueID,
-                                       spec$UniqueID)]
-all.indiv.mets$GenusSpecies <- spec$GenusSpecies[match(all.indiv.mets$UniqueID,
-                                       spec$UniqueID)]
+all.indiv.mets$Site <- spec.net$Site[match(all.indiv.mets$UniqueID,
+                                       spec.net$UniqueID)]
+all.indiv.mets$GenusSpecies <- spec.net$GenusSpecies[match(all.indiv.mets$UniqueID,
+                                       spec.net$UniqueID)]
 
 ## combine species level metrics
 all.sp.mets <- merge(spNetSums_micro, spNetSums_rbcl, all=TRUE)
@@ -268,13 +270,13 @@ all.indiv.mets.binary <- merge(indivNetSums_microBinary,
                                indivNetSums_rbclBinary, all=TRUE)
 all.indiv.mets.binary <- merge(all.indiv.mets.binary,
                                indivNetSums_para, all=TRUE)
-all.indiv.mets.binary$Site <- spec$Site[match(all.indiv.mets.binary$UniqueID,
-                                       spec$UniqueID)]
-all.indiv.mets.binary$GenusSpecies <- spec$GenusSpecies[
+all.indiv.mets.binary$Site <- spec.net$Site[match(all.indiv.mets.binary$UniqueID,
+                                       spec.net$UniqueID)]
+all.indiv.mets.binary$GenusSpecies <- spec.net$GenusSpecies[
                                        match(all.indiv.mets.binary$UniqueID,
-                                             spec$UniqueID)]
+                                             spec.net$UniqueID)]
 
-all.indiv.mets.binary <- merge(all.indiv.mets.binary, spec)
+all.indiv.mets.binary <- merge(all.indiv.mets.binary, spec.net)
 
 ## combine species level metrics
 all.sp.mets.binary <- merge(spNetSums_microBinary,
@@ -290,8 +292,8 @@ load('../skyIslands/data/spec_traits.Rdata')
 ##                 "CrithidiaSpp", "CrithidiaBombi", "CrithidiaExpoeki",
 ##                 "NosemaCeranae", "NosemaBombi" )
 
-spec[, names.Para] <- NULL
-all.indiv.mets <- merge(all.indiv.mets, spec)
+spec.net[, names.Para] <- NULL
+all.indiv.mets <- merge(all.indiv.mets, spec.net)
 ## all.indiv.mets.binary <- merge(all.indiv.mets.binary, spec)
 
 

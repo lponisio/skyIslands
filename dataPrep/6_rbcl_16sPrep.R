@@ -15,6 +15,11 @@ library(phyloseq)
 library(TreeTools)
 library(devtools)
 
+## if (!require("BiocManager", quietly = TRUE))
+##     install.packages("BiocManager")
+
+## BiocManager::install("phyloseq")
+
 devtools::install_github("jbisanz/qiime2R")
 library(qiime2R)
 
@@ -283,7 +288,7 @@ tree.rbcl$tip.label  <-  feature.2.tax.rbcl$Taxon[match(tree.rbcl$tip.label,
 ## Make mega dataset
 ## ***********************************************************************
 ## spec already includes parasite data
-load('../skyIslands/data/spec.Rdata')
+load('../skyIslands/data/spec_net.Rdata')
 
 indiv.comm.rbcl <- as.data.frame(merged.comm.rbcl)
 pollen <- colnames(indiv.comm.rbcl)
@@ -293,15 +298,15 @@ indiv.comm.16s <- as.data.frame(merged.comm.16s)
 bact <- colnames(indiv.comm.16s)
 indiv.comm.16s$UniqueID <- rownames(indiv.comm.16s)
 
-spec <-cbind(spec, indiv.comm.16s[, bact][match(spec$UniqueID,
+spec.net <-cbind(spec.net, indiv.comm.16s[, bact][match(spec.net$UniqueID,
                            indiv.comm.16s$UniqueID),])
 
-spec <-cbind(spec, indiv.comm.rbcl[, pollen][match(spec$UniqueID,
+spec.net <-cbind(spec.net, indiv.comm.rbcl[, pollen][match(spec.net$UniqueID,
                            indiv.comm.rbcl$UniqueID),])
 
-save(spec, file= "../skyIslands/data/spec_RBCL_16s.Rdata")
+save(spec.net, file= "../skyIslands/data/spec_RBCL_16s.Rdata")
 
-write.csv(spec, file= "../skyIslands/data/spec_RBCL_16s.csv",
+write.csv(spec.net, file= "../skyIslands/data/spec_RBCL_16s.csv",
           row.names=FALSE)
 
 save(tree.16s, tree.rbcl, file="../skyIslands/data/trees.Rdata")
