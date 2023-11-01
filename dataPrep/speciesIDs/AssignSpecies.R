@@ -10,7 +10,7 @@ spec <- read.csv(file=spec.data.file, as.is=TRUE)
 
 spec$Order <- spec$Family <- spec$Genus <- spec$SubGenus <- spec$Species <-
   spec$SubSpecies <-  spec$Sex <-  spec$Determiner <-
-      spec$DateDetermined <-  spec$Author <- NA
+  spec$DateDetermined <-  spec$Author <- NA
 
 write.csv(spec, file=spec.data.file, row.names=FALSE)
 
@@ -22,7 +22,7 @@ write.csv(spec, file=spec.data.file, row.names=FALSE)
 print("********2022 Apidae")
 source(file.path(save.dir, 'IDs/2022/Apidae.R'))
 add.to.data(sp.ids=sp.ids, case='bee', "Apidae","2022",
-data.file=spec.data.file)
+            data.file=spec.data.file)
 
 print("*********2022 Halictidae")
 source(file.path(save.dir, 'IDs/2022/Halictidae.R'))
@@ -77,7 +77,7 @@ add.to.data(sp.ids=sp.ids,
 print("*********2021 Apidae")
 source(file.path(save.dir, 'IDs/2021/Apidae.R'))
 add.to.data(sp.ids=sp.ids, case='bee', "Apidae","2021",
-data.file=spec.data.file)
+            data.file=spec.data.file)
 
 print("*********2021 Halictidae")
 source(file.path(save.dir, 'IDs/2021/Halictidae.R'))
@@ -114,7 +114,7 @@ add.to.data(sp.ids=sp.ids,
 print("*********2018 Apidae")
 source(file.path(save.dir, 'IDs/2018/Apidae.R'))
 add.to.data(sp.ids=sp.ids, case='bee', "Apidae","2019",
-data.file=spec.data.file)
+            data.file=spec.data.file)
 
 print("*********2018 Halictidae")
 source(file.path(save.dir, 'IDs/2018/Halictidae.R'))
@@ -246,5 +246,4 @@ source(file.path(save.dir, 'IDs/2012/Bombyliidae.R'))
 add.to.data(sp.ids=sp.ids,
             case='fly', "Bombyliidae","2020",
             data.file=spec.data.file)
-
 

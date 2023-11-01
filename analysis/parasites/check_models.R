@@ -126,13 +126,16 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
 
 #Floral Diversity brms formula
 formula.flower.div <- formula(MeanFloralDiversity | weights(Weights) ~
-                                Lat + SRDoy + I(SRDoy^2) + Year +
-                                (1|Site)
+                                Lat +
+                                  SRDoy*Year + I(SRDoy^2)*Year +
+                                  SRDoy*Lat + I(SRDoy^2)*Lat +
+                                  (1|Site)
 )
 #Floral Diversity freq formula
 freq.formula.flower.div <- formula(MeanFloralDiversity ~
-                                    Lat + SRDoy + I(SRDoy^2) + Year +
-                                    (1|Site)
+                                     Lat + Year+
+                                     SRDoy*Lat + I(SRDoy^2)*Lat +
+                                     (1|Site)
 )
 #for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
 freq.flower.div.model <- run_plot_freq_model_diagnostics(freq.formula.flower.div,
@@ -143,7 +146,8 @@ ggsave(freq.flower.div.model, file="figures/FloralDiversityModelDiagnostics.pdf"
 
 ## flower abund
 formula.flower.abund <- formula(MeanFloralAbundance  ~
-                                  SRDoy + I(SRDoy^2) + Year +
+                                  Year + 
+                                  SRDoy*Lat + I(SRDoy^2)*Lat +
                                   (1|Site)
 )
 
@@ -155,7 +159,8 @@ ggsave(freq.flower.abun.model, file="figures/FloralAbunModelDiagnostics.pdf",
 ## bee diversity
 formula.bee.div <- formula(Net_BeeDiversity ~
                              MeanFloralDiversity +
-                             Lat +  SRDoy + Year +
+                             Lat + Year +
+                             SRDoy*Lat + I(SRDoy^2)*Lat +
                              (1|Site)
 )
 freq.bee.div.model <- run_plot_freq_model_diagnostics(formula.bee.div,
@@ -166,9 +171,9 @@ ggsave(freq.bee.div.model, file="figures/BeeDivModelDiagnostics.pdf",
 ## bombus abund
 formula.bombus.abund <- formula(Net_BombusAbundance ~
                                   MeanFloralAbundance +
-                                  MeanFloralDiversity+
-                                  SRDoy + I(SRDoy^2) +
-                                  Lat + Year+
+                                  MeanFloralDiversity + Year +
+                                  SRDoy*Lat + I(SRDoy^2)*Lat +
+                                  Lat + 
                                   (1|Site)
 )
 freq.bombus.abun.model <- run_plot_freq_model_diagnostics(formula.bombus.abund,
@@ -179,22 +184,21 @@ ggsave(freq.bombus.abun.model, file="figures/BombusAbunModelDiagnostics.pdf",
 ## HB abund
 formula.HB.abund <- formula(Net_HBAbundance ~
                               MeanFloralAbundance +
-                              MeanFloralDiversity+
-                              SRDoy + I(SRDoy^2) +
-                              Lat + Year+
+                              MeanFloralDiversity+  Year +
+                              SRDoy*Lat + I(SRDoy^2)*Lat +
                               (1|Site)
 )
 freq.HB.abun.model <- run_plot_freq_model_diagnostics(formula.HB.abund,
-                                                          spec.net[spec.net$Weights==1,], this_family = 'gaussian')
+                                                          spec.net[spec.net$Weights==1,], this_family = "gaussian")
 ggsave(freq.HB.abun.model, file="figures/HBAbunModelDiagnostics.pdf",
        height=8, width=11)
 
 ## bee abund
 formula.bee.abund <- formula(Net_NonBombusHBAbundance ~
                                MeanFloralAbundance +
-                               MeanFloralDiversity+
-                               SRDoy + I(SRDoy^2) +
-                               Lat + Year+
+                               MeanFloralDiversity +  Year +
+                               SRDoy*Lat + I(SRDoy^2)*Lat +
+                               Lat +
                                (1|Site)
 )
 freq.bee.abun.model <- run_plot_freq_model_diagnostics(formula.bee.abund,
@@ -203,7 +207,7 @@ ggsave(freq.bee.abun.model, file="figures/NonBombusHBAbunModelDiagnostics.pdf",
        height=8, width=11)
 
 ## parasite
-formula.parasite <- formula(parasites ~
+formula.parasite <- formula(CrithidiaPresence ~
                                 MeanFloralAbundance+
                               MeanFloralDiversity+
                               Net_BeeDiversity+
@@ -213,6 +217,6 @@ formula.parasite <- formula(parasites ~
                               rare.degree 
 )
 freq.parasite.model <- run_plot_freq_model_diagnostics(formula.parasite,
-                                                       spec.net[spec.net$Weights==1,], this_family = 'gaussian')
+                                                       spec.net[spec.net$Weights==1,], this_family = 'binomial')
 ggsave(freq.parasite.model, file="figures/ParasiteModelDiagnostics.pdf",
        height=8, width=11)

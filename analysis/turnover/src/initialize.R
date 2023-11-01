@@ -1,14 +1,14 @@
 library(vegan)
 library(fields)
 library(igraph)
-library(betalink)
+#library(betalinkr)
 library(ggplot2)
 library(gridExtra)
 library(bipartite)
 ## library(effects)
 
 source('src/misc.R')
-load('../../data/spec.Rdata')
+load('../../data/spec_net.Rdata')
 
 args <- commandArgs(trailingOnly=TRUE)
 if(length(args) != 0){
@@ -21,12 +21,12 @@ if(length(args) != 0){
     sp.level <- "lower.level"
 }
 
-plants <- unique(spec$PlantGenusSpecies)
-pols <- unique(spec$GenusSpecies)
+plants <- unique(spec.net$PlantGenusSpecies)
+pols <- unique(spec.net$GenusSpecies)
 parasites <- c("AscosphaeraSpp", "ApicystisSpp",
                "CrithidiaExpoeki", "CrithidiaBombi", "NosemaBombi",
                "NosemaCeranae")
-microbes <- names(spec)[grepl("16s", names(spec))]
+microbes <- names(spec.net)[grepl("16s", names(spec.net))]
 
 if(species == "Plant"){
     species <- c("Plant", "Pollinator")

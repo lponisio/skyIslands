@@ -115,6 +115,20 @@ print(w.date.format)
 print(weather.data$Date[1])
 weather.data$Date <- as.Date(weather.data$Date, w.date.format)
 
+convertFtoC <- function(x){
+  y <- round((x-32)*(5/9),2)
+  return(y)
+}
+
+weather.data$TempStart[weather.data$TempStart > 50  & is.finite(weather.data$TempStart)] <- 
+  convertFtoC(weather.data$TempStart[weather.data$TempStart > 50 & is.finite(weather.data$TempStart)])
+
+
+weather.data$TempEnd[weather.data$TempEnd == ""] <- NA
+weather.data$TempEnd <- as.numeric(weather.data$TempEnd)
+weather.data$TempEnd[weather.data$TempEnd > 50 & is.finite(weather.data$TempEnd)] <- 
+  convertFtoC(weather.data$TempEnd[weather.data$TempEnd > 50 & is.finite(weather.data$TempEnd)])
+
 
 check.weather.data <- aggregate(weather.data$StartTime,
                                 list(site = weather.data$Site,

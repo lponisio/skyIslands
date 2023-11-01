@@ -46,37 +46,25 @@ spec.net <- spec.net[order(spec.net$Site),]
 ## different levels to get around the issue of having to pass in one
 ## data set into brms
 spec.net$YearSR <- paste(spec.net$Year, spec.net$SampleRound, sep=";")
+spec.net$YearSRGenusSpecies <- paste(spec.net$YearSR, spec.net$GenusSpecies, sep=";")
 
 ## will need to modify when we have multiple years
 spec.net <- makeDataMultiLevel(spec.net, "Site", "YearSR")
 
-spec.net[, variables.to.log] <- log(spec.net[,variables.to.log] + 1)
+spec.net[, variables.to.log] <- log(spec.net[,variables.to.log])
 
 ##  center all of the x variables, need to use unique values to avoid
 ##  repetition by the number of specimens
-unique.site.vals <- spec.net[spec.net$Weights == 1, ]
-unique.site.vals[, vars] <- apply(unique.site.vals[, vars], 2, standardize)
-spec.net[, vars] <- NULL
+spec.net <- standardizeVars(spec.net, vars_yearsr, "YearSR")
 
-unique.site.vals <- unique.site.vals[, c("Site", "YearSR", vars)]
-
-dim(spec.net)
-spec.net <- merge(spec.net, unique.site.vals)
-dim(spec.net)
-
+spec.net <- standardizeVars(spec.net, vars_sp, "YearSRGenusSpecies")
 ## create a dumby varaible "WeightPar" for the parasite data. The
 ## original intention was to keep stan from dropping data for
 ## site-level models, but weight is 0 for parasite models.
-
-spec.net$WeightsPar <- 1
-spec.net$WeightsPar[is.na(spec.net$ParasitePresence) | spec.net$Apidae != 1] <- 0
-
-## stan drops all NA data, so can set ParasitePresence to 0 with WeightsPar
-## to keep it in the models
-spec.net$ParasitePresence[is.na(spec.net$ParasitePresence | spec.net$Apidae != 1)] <- 0
+spec.net <- prepParasiteWeights()
 
 spec.all <- spec.net
-spec.all[, vars] <- apply(spec.all[, vars], 2, standardize)
+
 
 ## bombus only data
 spec.bombus <- spec.all
@@ -93,7 +81,4 @@ spec.melissodes$WeightsPar[spec.melissodes$Genus != "Melissodes"] <- 0
 spec.apidae <- spec.all
 spec.apidae$WeightsPar[spec.melissodes$Family != "Apidae"] <- 0
 
-## not enough replication of species in Halictidae
-spec.all$lWeightsPar[spec.all$Family =="Halictidae"] <- 0
-## not enough replication of species in Colletidae
-spec.all$lWeightsPar[spec.all$Family =="Colletidae"] <- 0
+

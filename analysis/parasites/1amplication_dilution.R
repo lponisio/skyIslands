@@ -2,30 +2,23 @@ rm(list=ls())
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
 ## setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
 setwd('~/Dropbox (University of Oregon)/skyislands')
-ncores <- 3
+ncores <- 1
 
 setwd("analysis/parasites")
 source("src/misc.R")
 source("src/writeResultsTable.R")
 source("src/makeMultiLevelData.R")
 source("src/runParasiteModels.R")
+source("src/standardize_weights.R")
 ## all of the variables that are explanatory variables and thus need
 ## to be centered
-vars <- c("MeanFloralAbundance",
+vars_yearsr <- c("MeanFloralAbundance",
           "MeanFloralDiversity",
           "Net_BeeDiversity",
-          "Lat", "SRDoy",
-           "MeanITD",
-          ## "r.degree", ## across all networks
-          "rare.degree"  ## site-year level
+          "Lat", "SRDoy"  
           )
-
-variables.to.log <- c("MeanFloralAbundance",
-                      "Net_NonBombusHBAbundance",
-                      "Net_HBAbundance",
-                      "Net_BombusAbundance",
-                      "Lat")
-
+vars_sp <- c("MeanITD",
+          "rare.degree")
 
 ## uses only net specimens, and drops syrphids
 source("src/init.R")
@@ -34,9 +27,6 @@ source("src/plant_poll_models.R")
 ## check ids
 unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
                              is.na(spec.net$MeanITD)])
-spec.net$Year <- as.factor(spec.net$Year)
-## sites only sampled once
-## spec.net <- spec.net[!spec.net$Site %in% c("UK", "VC", ""),]
 
 ## **********************************************************
 ## Parasite models set up
@@ -56,7 +46,6 @@ xvars.single.species <-  c("Net_NonBombusHBAbundance",
                            "rare.degree",
                            "(1|Site)")
 
-
 ## **********************************************************
 ## community model
 ## **********************************************************
@@ -69,7 +58,7 @@ bform.community <- bf.fabund + bf.fdiv +
 
 fit.community <- brm(bform.community, spec.net,
                      cores=ncores,
-                     iter = 20^4,
+                     iter = 10^4,
                      chains = 1,
                      thin=1,
                      init=0,
@@ -90,7 +79,7 @@ fit.all <- runCombinedParasiteModels(spec.all, species.group="all",
                                         parasites=c("CrithidiaPresence",
                                                     "ApicystisSpp"),
                                         xvars=xvars.multi.species,
-                                        iter = 10^4,
+                                        iter = 20^4,
                                         chains = 1,
                                         thin=1,
                                         init=0)

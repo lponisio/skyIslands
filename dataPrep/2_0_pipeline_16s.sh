@@ -5,7 +5,7 @@
 ## *****************************************************************************
 # 1. ASSIGN TAXONOMY 16s
 ## *****************************************************************************
-
+#navigate to Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline/R2018/2023_sequence_results_raw
 
 # We need taxonomic classifications 
 
@@ -18,50 +18,54 @@
 # 1a. Download the newest silva 132 database into a new working directory from https://www.arb-silva.de/download/archive/qiime
 
 # use 99_otus_16S.fasta and  consensus_taxonomy_7_levels.txt to create the training set.
-mkdir 16s-trainingclassifier
-cd 16s-trainingclassifier
-wget https://www.arb-silva.de/fileadmin/silva_databases/qiime/Silva_132_release.zip
-unzip Silva_132_release.zip
-rm SILVA_132_release.zip
+# mkdir 16s-trainingclassifier
+# cd 16s-trainingclassifier
+# wget https://www.arb-silva.de/fileadmin/silva_databases/qiime/Silva_132_release.zip
+# unzip Silva_132_release.zip
+# rm SILVA_132_release.zip
+
+
+#downloaded from: https://docs.qiime2.org/2023.9/data-resources/#taxonomy-classifiers-for-use-with-q2-feature-classifier
+#silva 136 SSURef N99 seq and tax files
 
 # 1b. Train feature classifier
 # import reference sequences from silva data as a qiime2 artifact
 
 ## go back into qiime
-docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
+docker run -itv /Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
 
-cd ../mnt/SI_pipeline/classifiers/16s-trainingclassifier/SILVA_132_QIIME_release
+cd ../mnt/SI_pipeline/R2018/2023_sequence_results_raw/16s-trainingclassifier/
 
 ## 99 is 99% match between our seq and the database
-qiime tools import \
---type 'FeatureData[Sequence]' \
---input-path rep_set/rep_set_16S_only/99/SILVA_132_99_16S.fna \
---output-path 99_otus_16S.qza
-
-# import taxonomy strings. Check and see if your taxonomy file is a tab-seperated file without a header.
-# if it doesnt have a header, specify "headerlessTSVTaxonomyFormat" since the default source formats usually have headers
-
-qiime tools import \
---type 'FeatureData[Taxonomy]' \
---input-format HeaderlessTSVTaxonomyFormat \
---input-path taxonomy/16S_only/99/majority_taxonomy_7_levels.txt \
---output-path 99_otus_16S_taxonomy.qza
+# qiime tools import \
+# --type 'FeatureData[Sequence]' \
+# --input-path silva-138-99-seqs.qza \
+# --output-path 99_otus_16S.qza
+# 
+# # import taxonomy strings. Check and see if your taxonomy file is a tab-seperated file without a header.
+# # if it doesnt have a header, specify "headerlessTSVTaxonomyFormat" since the default source formats usually have headers
+# 
+# qiime tools import \
+# --type 'FeatureData[Taxonomy]' \
+# --input-format TSVTaxonomyFormat \
+# --input-path taxonomy/16S_only/99/majority_taxonomy_7_levels.txt \
+# --output-path 99_otus_16S_taxonomy.qza
 
 # We now have two Qiime2 artifacts, 99_otus_16s.qza (reference sequences) and 99_otus_16s_taxonomy.qza (taxonomic names). 
 # trim silva to my region using my sequencing primers. We tell the algorithm our genomic primer forward and reverse sequences
 # we do this because taxonomic classification is more accurate when a naive bayes classifier is trained on the region
 # of the 16s sequence that we sequenced (Werner et al. 2012).
-qiime feature-classifier extract-reads --i-sequences 99_otus_16S.qza --p-f-primer CMGGATTAGATACCCKGG --p-r-primer AGGGTTGCGCTCGTTG --o-reads ref-seqs16s.qza
+qiime feature-classifier extract-reads --i-sequences silva-138-99-seqs.qza --p-f-primer CMGGATTAGATACCCKGG --p-r-primer AGGGTTGCGCTCGTTG --o-reads ref-seqs16s.qza
 
 # visualize:
 qiime feature-table tabulate-seqs --i-data ref-seqs16s.qza --o-visualization ref-seqs16s.qzv
-qiime tools view ref-seqs16s.qzv # (but this is big and took forever to load...).
+#qiime tools view ref-seqs16s.qzv # (but this is big and took forever to load...).
 
 ## may need to clean up docker memory usage
-docker system prune
+#docker system prune
 
 #Train the classifier:
-qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads ref-seqs16s.qza --i-reference-taxonomy 99_otus_16S_taxonomy.qza  --o-classifier classifier16s.qza
+qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads ref-seqs16s.qza --i-reference-taxonomy silva-138-99-tax.qza  --o-classifier classifier16s.qza
 
 # 1c. classify rep seqs and get the resulting taxonomic ids 
 
@@ -70,23 +74,24 @@ qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads ref-seqs
 # pip install -U scikit-learn==0.19.1 #OR WHATEVER VERSION IS COMPATIBLE WITH THE CONTAINER! Might be an old version
 
 #CD to the main SI_pipeline folder where the classifiers are
-cd ../../
+#cd ../../
 
-qiime feature-classifier classify-sklearn --i-classifier classifiers/16s-trainingclassifier/SILVA_132_QIIME_release/classifier16s.qza --i-reads  merged/16s/rep-seqs-16s.qza --o-classification  merged/16s/taxonomy16s.qza
+qiime feature-classifier classify-sklearn --i-classifier classifier16s.qza --i-reads  ../merged/16s/rep-seqs-16s.qza --o-classification  ../merged/16s/taxonomy16s.qza
+
 
 ## switch to the newest version of qiime
 exit
-docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
+docker run -itv /Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
 
 # visualize. navigate back to where you have your taxonomy files
-cd ../mnt/SI_pipeline/merged/16s
+cd ../mnt/SI_pipeline/R2018/2023_sequence_results_raw/merged/16s
 
 qiime metadata tabulate --m-input-file taxonomy16s.qza --o-visualization taxonomy16s.qzv
 
 #cant do this step without a master map, which we don't have for the merged files. 
 #skip for now. we still wanna do the other steps on the merged files
-cd ../../
-qiime taxa barplot --i-table merged/16s/table16s.qza --i-taxonomy merged/16s/taxonomy16s.qza --m-metadata-file merged/16s/maps/sky2018map16s.txt --o-visualization merged/16s/taxa-bar-plots.qzv
+# cd ../../
+# qiime taxa barplot --i-table merged/16s/table16s.qza --i-taxonomy merged/16s/taxonomy16s.qza --m-metadata-file merged/16s/maps/sky2018map16s.txt --o-visualization merged/16s/taxa-bar-plots.qzv
 
 
 ### ************************************************************************
@@ -167,6 +172,8 @@ qiime phylogeny midpoint-root --i-tree unrooted_tree16s.qza --o-rooted-tree root
 ## 4. SPLIT MERGED DATA TO CONTINUE CLEANING
 ### ************************************************************************
 
+#########made it here! need to make txt file
+
 
 # We have 5 rounds of data. We need make a txt file for each round with the list of IDs for samples associated with each one
 
@@ -174,6 +181,14 @@ mkdir split
 cd split
 
 # the files are made inside split and called "R0samples.txt", "R1samples.txt", "R2samples.txt", "R2samples.txt", "R4samples.txt" 
+
+# R0 = plate 1 2021
+# R1 = plate 2 2021
+# R2 = plate 3 2021
+# R3 = plate 4 2021
+# R4 = plate 5 2021
+# R5 = plate 6 2021
+
 
 
 # qiime feature-table filter-samples --i-table tablefilt2.qza --m-metadata-file R0samples.txt --o-filtered-table tableR0.qza
@@ -184,7 +199,9 @@ cd split
 
 # qiime feature-table filter-samples --i-table tablefilt2.qza --m-metadata-file R3samples.txt --o-filtered-table tableR3.qza
 
-# qiime feature-table filter-samples --i-table tablefilt2.qza --m-metadata-file R4samples.txt --o-filtered-table stableR4.qza
+# qiime feature-table filter-samples --i-table tablefilt2.qza --m-metadata-file R4samples.txt --o-filtered-table tableR4.qza
+
+# qiime feature-table filter-samples --i-table tablefilt2.qza --m-metadata-file R5samples.txt --o-filtered-table tableR5.qza
 
 
 # Now that you have split the tables you can continue to filter out samples. 
@@ -201,7 +218,7 @@ cd split
 # they include  Halomonas, Shewanella, Oceanospirillales, and the acne bacteria Propionibacterium. 
 
 
-qiime taxa filter-table --i-table tablefilt2.qza --i-taxonomy taxonomy16s.qza --p-exclude halomonas,lautropia,rothia,haemophilus,desulfuromonadales,pseudomonas,devosia,sphingomonas,solirubrobacterales,escherichia-shigella,staphylococcus,prevotellaceae,blastococcus,aeromonas,streptococcus,shewanella,oceanospirillales,propionibacteriales --o-filtered-table tablefilt3.qza
+qiime taxa filter-table --i-table tableR0.qza --i-taxonomy taxonomy16s.qza --p-exclude halomonas,lautropia,rothia,haemophilus,desulfuromonadales,pseudomonas,devosia,sphingomonas,solirubrobacterales,escherichia-shigella,staphylococcus,prevotellaceae,blastococcus,aeromonas,streptococcus,shewanella,oceanospirillales,propionibacteriales --o-filtered-table tableR0_f1.qza
 
 # qiime taxa filter-table --i-table tableR1.qza --i-taxonomy taxonomy16s.qza --p-exclude halomonas,lautropia,rothia,haemophilus,desulfuromonadales,pseudomonas,devosia,sphingomonas,solirubrobacterales,escherichia-shigella,staphylococcus,prevotellaceae,blastococcus,aeromonas,streptococcus,shewanella,oceanospirillales,propionibacteriales --o-filtered-table tableR1_f1.qza
 
@@ -210,6 +227,8 @@ qiime taxa filter-table --i-table tablefilt2.qza --i-taxonomy taxonomy16s.qza --
 # qiime taxa filter-table --i-table tableR3.qza --i-taxonomy taxonomy16s.qza --p-exclude halomonas,lautropia,rothia,haemophilus,desulfuromonadales,pseudomonas,devosia,sphingomonas,solirubrobacterales,escherichia-shigella,staphylococcus,prevotellaceae,blastococcus,aeromonas,streptococcus,shewanella,oceanospirillales,propionibacteriales --o-filtered-table tableR3_f1.qza
 
 # qiime taxa filter-table --i-table tableR4.qza --i-taxonomy taxonomy16s.qza --p-exclude halomonas,lautropia,rothia,haemophilus,desulfuromonadales,pseudomonas,devosia,sphingomonas,solirubrobacterales,escherichia-shigella,staphylococcus,prevotellaceae,blastococcus,aeromonas,streptococcus,shewanella,oceanospirillales,propionibacteriales --o-filtered-table tableR4_f1.qza
+
+# qiime taxa filter-table --i-table tableR5.qza --i-taxonomy taxonomy16s.qza --p-exclude halomonas,lautropia,rothia,haemophilus,desulfuromonadales,pseudomonas,devosia,sphingomonas,solirubrobacterales,escherichia-shigella,staphylococcus,prevotellaceae,blastococcus,aeromonas,streptococcus,shewanella,oceanospirillales,propionibacteriales --o-filtered-table tableR5_f1.qza
 
 
 # 5b. Let's specifically look at sequences in our controls and remove the bacteria that are in them

@@ -3,8 +3,11 @@
 
 ## tutorial also have some good pcoa plots and heatmaps, which arent
 ## on here
+#dir.bombus <- '/Volumes/bombus/Dropbox (University of Oregon)'
 
-setwd('/Volumes/bombus/Dropbox (University of Oregon)')
+dir.bombus <- '~/Dropbox (University of Oregon)'
+
+setwd(dir.bombus)
 setwd('skyIslands_saved')
 rm(list=ls())
 
@@ -14,11 +17,6 @@ library(bipartite)
 library(phyloseq)
 library(TreeTools)
 library(devtools)
-
-## if (!require("BiocManager", quietly = TRUE))
-##     install.packages("BiocManager")
-
-## BiocManager::install("phyloseq")
 
 devtools::install_github("jbisanz/qiime2R")
 library(qiime2R)
@@ -60,7 +58,7 @@ physeq16sR0 <- qza_to_phyloseq(
     metadata = "SI_pipeline/merged/16s/maps/SI2018map16s.txt"
 )
 
-## physeq16sR0
+#physeq16sR0
 ## plot(physeq16sR0@phy_tree, show.tip.label = FALSE)
 
 feature.2.tax.16s <-
@@ -75,6 +73,20 @@ tree.16sR0 <- phy_tree(physeq16sR0, errorIfNULL=TRUE)
 ## match the tip labs to the table with feature ID and Taxon
 tree.16sR0$tip.label  <-  feature.2.tax.16s$Taxon[match(tree.16sR0$tip.label,
                                            feature.2.tax.16s$Feature.ID)]
+
+
+## 10-24-2023 Rebecca is dropping all sequences that are only resolved to the first level D_0__Bacteria
+# Load the required package
+library(ape)
+
+
+# Identify tips with labels exactly matching '16s:D_0__Bacteria'
+matching_tips <- grep('^16s:D_0__Bacteria$', tree.16sR0$tip.label)
+
+# Drop the matching tips
+tree.16sR0 <- drop.tip(tree.16sR0, matching_tips)
+
+plot(tree.16sR0, show.tip.label = FALSE)
 
 ## ***********************************************************************
 ## 16s networks
