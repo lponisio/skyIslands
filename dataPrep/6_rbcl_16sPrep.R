@@ -23,6 +23,7 @@ library(qiime2R)
 
 source("../skyIslands/dataPrep/src/misc.R")
 
+# 2018 Samples!!
 ## reading artifacts
 qza.16s.path  <- "SI_pipeline/merged/16s/final"
 qza.rbcl.path  <- "SI_pipeline/merged/RBCL/final"
@@ -73,6 +74,208 @@ tree.16sR0 <- phy_tree(physeq16sR0, errorIfNULL=TRUE)
 ## match the tip labs to the table with feature ID and Taxon
 tree.16sR0$tip.label  <-  feature.2.tax.16s$Taxon[match(tree.16sR0$tip.label,
                                            feature.2.tax.16s$Feature.ID)]
+
+
+## 10-24-2023 Rebecca is dropping all sequences that are only resolved to the first level D_0__Bacteria
+# Load the required package
+library(ape)
+
+
+# Identify tips with labels exactly matching '16s:D_0__Bacteria'
+matching_tips <- grep('^16s:D_0__Bacteria$', tree.16sR0$tip.label)
+
+# Drop the matching tips
+tree.16sR0 <- drop.tip(tree.16sR0, matching_tips)
+
+plot(tree.16sR0, show.tip.label = FALSE)
+
+
+
+## 2021 samples!! 
+
+## reading artifacts
+qza.16s.path.2021  <- "SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/final"
+
+# 16s
+#plate R0
+weightedUF16sqzaR0.2021 <- read_qza(file.path(qza.16s.path.2021,
+                                         'core_metrics16sR0/weighted_unifrac_distance_matrix.qza'))
+
+unweightedUF16sqzaR0.2021 <- read_qza(file.path(qza.16s.path.2021,
+                                           'core_metrics16sR0/unweighted_unifrac_distance_matrix.qza'))
+
+#plate R1
+weightedUF16sqzaR1.2021 <- read_qza(file.path(qza.16s.path.2021,
+                                              'core_metrics16sR1/weighted_unifrac_distance_matrix.qza'))
+
+unweightedUF16sqzaR1.2021 <- read_qza(file.path(qza.16s.path.2021,
+                                                'core_metrics16sR1/unweighted_unifrac_distance_matrix.qza'))
+
+#plate R2
+weightedUF16sqzaR2.2021 <- read_qza(file.path(qza.16s.path.2021,
+                                              'core_metrics16sR2/weighted_unifrac_distance_matrix.qza'))
+
+unweightedUF16sqzaR2.2021 <- read_qza(file.path(qza.16s.path.2021,
+                                                'core_metrics16sR2/unweighted_unifrac_distance_matrix.qza'))
+
+#plate R3
+weightedUF16sqzaR3.2021 <- read_qza(file.path(qza.16s.path.2021,
+                                              'core_metrics16sR3/weighted_unifrac_distance_matrix.qza'))
+
+unweightedUF16sqzaR3.2021 <- read_qza(file.path(qza.16s.path.2021,
+                                                'core_metrics16sR3/unweighted_unifrac_distance_matrix.qza'))
+
+#plate R4
+weightedUF16sqzaR4.2021 <- read_qza(file.path(qza.16s.path.2021,
+                                              'core_metrics16sR4/weighted_unifrac_distance_matrix.qza'))
+
+unweightedUF16sqzaR4.2021 <- read_qza(file.path(qza.16s.path.2021,
+                                                'core_metrics16sR4/unweighted_unifrac_distance_matrix.qza'))
+
+#plate R5
+weightedUF16sqzaR5.2021 <- read_qza(file.path(qza.16s.path.2021,
+                                              'core_metrics16sR5/weighted_unifrac_distance_matrix.qza'))
+
+unweightedUF16sqzaR5.2021 <- read_qza(file.path(qza.16s.path.2021,
+                                                'core_metrics16sR5/unweighted_unifrac_distance_matrix.qza'))
+
+
+
+
+# 16s
+
+#plate R0
+wphylo.dist.16sR0.2021 <- weightedUF16sqzaR0.2021$data
+phylo.dist.16sR0.2021 <-unweightedUF16sqzaR0.2021$data
+
+#plate R1
+wphylo.dist.16sR1.2021 <- weightedUF16sqzaR1.2021$data
+phylo.dist.16sR1.2021 <-unweightedUF16sqzaR1.2021$data
+
+#plate R2
+wphylo.dist.16sR2.2021 <- weightedUF16sqzaR2.2021$data
+phylo.dist.16sR2.2021 <-unweightedUF16sqzaR2.2021$data
+
+#plate R3
+wphylo.dist.16sR3.2021 <- weightedUF16sqzaR3.2021$data
+phylo.dist.16sR3.2021 <-unweightedUF16sqzaR3.2021$data
+
+#plate R4
+wphylo.dist.16sR4.2021 <- weightedUF16sqzaR4.2021$data
+phylo.dist.16sR4.2021 <-unweightedUF16sqzaR4.2021$data
+
+#plate R5
+wphylo.dist.16sR5.2021 <- weightedUF16sqzaR5.2021$data
+phylo.dist.16sR5.2021 <-unweightedUF16sqzaR5.2021$data
+
+## Note, when taxonomy is imported, a single string is returned along
+## with a confidence score.  For many analysis we will want to break
+## up this string and for that purpose the parse_taxonomy() function
+## is provided:
+
+# R0
+taxonomy16sR0.2021 <- read_qza(
+  file.path(qza.16s.path.2021, "core_metrics16sR0/rarefied_table.qza"))
+
+taxonomy16sR0.2021 <- taxonomy16sR0.2021$data
+
+# R1
+taxonomy16sR1.2021 <- read_qza(
+  file.path(qza.16s.path.2021, "core_metrics16sR1/rarefied_table.qza"))
+
+taxonomy16sR1.2021 <- taxonomy16sR1.2021$data
+
+# R2
+taxonomy16sR2.2021 <- read_qza(
+  file.path(qza.16s.path.2021, "core_metrics16sR2/rarefied_table.qza"))
+
+taxonomy16sR2.2021 <- taxonomy16sR2.2021$data
+
+# R3
+taxonomy16sR3.2021 <- read_qza(
+  file.path(qza.16s.path.2021, "core_metrics16sR3/rarefied_table.qza"))
+
+taxonomy16sR3.2021 <- taxonomy16sR3.2021$data
+
+# R4
+taxonomy16sR4.2021 <- read_qza(
+  file.path(qza.16s.path.2021, "core_metrics16sR4/rarefied_table.qza"))
+
+taxonomy16sR4.2021 <- taxonomy16sR4.2021$data
+
+# R5
+taxonomy16sR5.2021 <- read_qza(
+  file.path(qza.16s.path.2021, "core_metrics16sR5/rarefied_table.qza"))
+
+taxonomy16sR5.2021 <- taxonomy16sR5.2021$data
+
+
+## Merge R0 - R5 2021
+# List of individual matrices
+matrices <- list(taxonomy16sR0.2021, 
+                 taxonomy16sR1.2021,
+                 taxonomy16sR2.2021,
+                 taxonomy16sR3.2021,
+                 taxonomy16sR4.2021,
+                 taxonomy16sR5.2021)
+
+# Get a list of unique feature IDs
+unique_feature_ids <- unique(unlist(lapply(matrices, function(mat) rownames(mat))))
+
+# Get a list of unique feature IDs
+unique_specimen_ids <- unique(unlist(lapply(matrices, function(mat) colnames(mat))))
+
+# Create an empty master matrix with rows for unique features and columns for unique samples
+master_matrix <- matrix(0, nrow = length(unique_feature_ids), ncol = length(unique_specimen_ids))
+rownames(master_matrix) <- unique_feature_ids
+colnames(master_matrix) <- unique_specimen_ids
+
+# Fill in values from individual matrices, replacing zeros with original values
+for (mat in matrices) {
+  for (i in 1:nrow(mat)) {
+    feature_id <- rownames(mat)[i]
+    for (j in 1:ncol(mat)){
+    sample_id <- colnames(mat)[j]
+    sample_value <- mat[i, j]
+    if (sample_value > 0) {
+      master_matrix[feature_id, sample_id] <- sample_value
+    } else {
+      master_matrix[feature_id, sample_id] <- 0
+    }
+  }
+  }
+}
+
+# Print the master matrix with updated values
+print(master_matrix)
+
+
+
+## ## 16s R0 phylogeny
+
+physeq16sR0 <- qza_to_phyloseq(
+  features=
+    file.path(qza.16s.path, "core_metrics16sR0/rarefied_table.qza"),
+  tree="SI_pipeline/merged/16s/rooted-tree16s.qza",
+  "SI_pipeline/merged/16s/taxonomy16s.qza",
+  metadata = "SI_pipeline/merged/16s/maps/SI2018map16s.txt"
+)
+
+#physeq16sR0
+## plot(physeq16sR0@phy_tree, show.tip.label = FALSE)
+
+feature.2.tax.16s <-
+  read.table("SI_pipeline/merged/16s/taxonomy16s.txt", sep="\t",
+             header=TRUE)
+
+feature.2.tax.16s$Taxon <- paste("16s", feature.2.tax.16s$Taxon, sep=':')
+
+## convert to a phylo class which is more useful downstream
+tree.16sR0 <- phy_tree(physeq16sR0, errorIfNULL=TRUE)
+
+## match the tip labs to the table with feature ID and Taxon
+tree.16sR0$tip.label  <-  feature.2.tax.16s$Taxon[match(tree.16sR0$tip.label,
+                                                        feature.2.tax.16s$Feature.ID)]
 
 
 ## 10-24-2023 Rebecca is dropping all sequences that are only resolved to the first level D_0__Bacteria
