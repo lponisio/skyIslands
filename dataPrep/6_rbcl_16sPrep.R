@@ -94,7 +94,7 @@ plot(tree.16sR0, show.tip.label = FALSE)
 ## 2021 samples!! 
 
 ## reading artifacts
-qza.16s.path.2021  <- "SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/final"
+qza.16s.path.2021  <- "SI_pipeline/R2018/2023_sequence_results_raw/merged/16s"
 
 # 16s
 #plate R0
@@ -175,90 +175,59 @@ phylo.dist.16sR5.2021 <-unweightedUF16sqzaR5.2021$data
 
 # R0
 taxonomy16sR0.2021 <- read_qza(
-  file.path(qza.16s.path.2021, "core_metrics16sR0/rarefied_table.qza"))
+  file.path(qza.16s.path.2021, "master_table_rarefied.qza"))
 
 taxonomy16sR0.2021 <- taxonomy16sR0.2021$data
 
-# R1
-taxonomy16sR1.2021 <- read_qza(
-  file.path(qza.16s.path.2021, "core_metrics16sR1/rarefied_table.qza"))
-
-taxonomy16sR1.2021 <- taxonomy16sR1.2021$data
-
-# R2
-taxonomy16sR2.2021 <- read_qza(
-  file.path(qza.16s.path.2021, "core_metrics16sR2/rarefied_table.qza"))
-
-taxonomy16sR2.2021 <- taxonomy16sR2.2021$data
-
-# R3
-taxonomy16sR3.2021 <- read_qza(
-  file.path(qza.16s.path.2021, "core_metrics16sR3/rarefied_table.qza"))
-
-taxonomy16sR3.2021 <- taxonomy16sR3.2021$data
-
-# R4
-taxonomy16sR4.2021 <- read_qza(
-  file.path(qza.16s.path.2021, "core_metrics16sR4/rarefied_table.qza"))
-
-taxonomy16sR4.2021 <- taxonomy16sR4.2021$data
-
-# R5
-taxonomy16sR5.2021 <- read_qza(
-  file.path(qza.16s.path.2021, "core_metrics16sR5/rarefied_table.qza"))
-
-taxonomy16sR5.2021 <- taxonomy16sR5.2021$data
 
 
-## Merge R0 - R5 2021
-# List of individual matrices
-matrices <- list(taxonomy16sR0.2021, 
-                 taxonomy16sR1.2021,
-                 taxonomy16sR2.2021,
-                 taxonomy16sR3.2021,
-                 taxonomy16sR4.2021,
-                 taxonomy16sR5.2021)
 
-# Get a list of unique feature IDs
-unique_feature_ids <- unique(unlist(lapply(matrices, function(mat) rownames(mat))))
-
-# Get a list of unique feature IDs
-unique_specimen_ids <- unique(unlist(lapply(matrices, function(mat) colnames(mat))))
-
-# Create an empty master matrix with rows for unique features and columns for unique samples
-master_matrix <- matrix(0, nrow = length(unique_feature_ids), ncol = length(unique_specimen_ids))
-rownames(master_matrix) <- unique_feature_ids
-colnames(master_matrix) <- unique_specimen_ids
-
-# Fill in values from individual matrices, replacing zeros with original values
-for (mat in matrices) {
-  for (i in 1:nrow(mat)) {
-    feature_id <- rownames(mat)[i]
-    for (j in 1:ncol(mat)){
-    sample_id <- colnames(mat)[j]
-    sample_value <- mat[i, j]
-    if (sample_value > 0) {
-      master_matrix[feature_id, sample_id] <- sample_value
-    } else {
-      master_matrix[feature_id, sample_id] <- 0
-    }
-  }
-  }
-}
-
-# Print the master matrix with updated values
-print(master_matrix)
+# ## Merge R0 - R5 2021
+# # List of individual matrices
+# matrices <- list(taxonomy16sR0.2021, 
+#                  taxonomy16sR1.2021,
+#                  taxonomy16sR2.2021,
+#                  taxonomy16sR3.2021,
+#                  taxonomy16sR4.2021,
+#                  taxonomy16sR5.2021)
+# 
+# # Get a list of unique feature IDs
+# unique_feature_ids <- unique(unlist(lapply(matrices, function(mat) rownames(mat))))
+# 
+# # Get a list of unique feature IDs
+# unique_specimen_ids <- unique(unlist(lapply(matrices, function(mat) colnames(mat))))
+# 
+# # Create an empty master matrix with rows for unique features and columns for unique samples
+# master_matrix <- matrix(0, nrow = length(unique_feature_ids), ncol = length(unique_specimen_ids))
+# rownames(master_matrix) <- unique_feature_ids
+# colnames(master_matrix) <- unique_specimen_ids
+# 
+# # Fill in values from individual matrices, replacing zeros with original values
+# for (mat in matrices) {
+#   for (i in 1:nrow(mat)) {
+#     feature_id <- rownames(mat)[i]
+#     for (j in 1:ncol(mat)){
+#     sample_id <- colnames(mat)[j]
+#     sample_value <- mat[i, j]
+#     if (sample_value > 0) {
+#       master_matrix[feature_id, sample_id] <- sample_value
+#     } else {
+#       master_matrix[feature_id, sample_id] <- 0
+#     }
+#   }
+#   }
+# }
 
 
 
 ## ## 16s R0 phylogeny
 
-physeq16sR0 <- qza_to_phyloseq(
+physeq16sR0.2021 <- qza_to_phyloseq(
   features=
-    file.path(qza.16s.path, "core_metrics16sR0/rarefied_table.qza"),
-  tree="SI_pipeline/merged/16s/rooted-tree16s.qza",
-  "SI_pipeline/merged/16s/taxonomy16s.qza",
-  metadata = "SI_pipeline/merged/16s/maps/SI2018map16s.txt"
+    file.path(qza.16s.path.2021, "master_table_rarefied.qza"),
+  tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/rooted-tree16s.qza",
+  taxonomy="SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/taxonomy16s.qza",
+  metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/sky2021MasterMap.txt"
 )
 
 #physeq16sR0
