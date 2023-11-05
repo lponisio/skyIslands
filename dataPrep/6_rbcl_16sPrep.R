@@ -99,45 +99,45 @@ qza.16s.path.2021  <- "SI_pipeline/R2018/2023_sequence_results_raw/merged/16s"
 # 16s
 #plate R0
 weightedUF16sqzaR0.2021 <- read_qza(file.path(qza.16s.path.2021,
-                                              'core_metrics16sR0/weighted_unifrac_distance_matrix.qza'))
+                                              'final/core_metrics16sR0/weighted_unifrac_distance_matrix.qza'))
 
 unweightedUF16sqzaR0.2021 <- read_qza(file.path(qza.16s.path.2021,
-                                                'core_metrics16sR0/unweighted_unifrac_distance_matrix.qza'))
+                                                'final/core_metrics16sR0/unweighted_unifrac_distance_matrix.qza'))
 
 #plate R1
 weightedUF16sqzaR1.2021 <- read_qza(file.path(qza.16s.path.2021,
-                                              'core_metrics16sR1/weighted_unifrac_distance_matrix.qza'))
+                                              'final/core_metrics16sR1/weighted_unifrac_distance_matrix.qza'))
 
 unweightedUF16sqzaR1.2021 <- read_qza(file.path(qza.16s.path.2021,
-                                                'core_metrics16sR1/unweighted_unifrac_distance_matrix.qza'))
+                                                'final/core_metrics16sR1/unweighted_unifrac_distance_matrix.qza'))
 
 #plate R2
 weightedUF16sqzaR2.2021 <- read_qza(file.path(qza.16s.path.2021,
-                                              'core_metrics16sR2/weighted_unifrac_distance_matrix.qza'))
+                                              'final/core_metrics16sR2/weighted_unifrac_distance_matrix.qza'))
 
 unweightedUF16sqzaR2.2021 <- read_qza(file.path(qza.16s.path.2021,
-                                                'core_metrics16sR2/unweighted_unifrac_distance_matrix.qza'))
+                                                'final/core_metrics16sR2/unweighted_unifrac_distance_matrix.qza'))
 
 #plate R3
 weightedUF16sqzaR3.2021 <- read_qza(file.path(qza.16s.path.2021,
-                                              'core_metrics16sR3/weighted_unifrac_distance_matrix.qza'))
+                                              'final/core_metrics16sR3/weighted_unifrac_distance_matrix.qza'))
 
 unweightedUF16sqzaR3.2021 <- read_qza(file.path(qza.16s.path.2021,
-                                                'core_metrics16sR3/unweighted_unifrac_distance_matrix.qza'))
+                                                'final/core_metrics16sR3/unweighted_unifrac_distance_matrix.qza'))
 
 #plate R4
 weightedUF16sqzaR4.2021 <- read_qza(file.path(qza.16s.path.2021,
-                                              'core_metrics16sR4/weighted_unifrac_distance_matrix.qza'))
+                                              'final/core_metrics16sR4/weighted_unifrac_distance_matrix.qza'))
 
 unweightedUF16sqzaR4.2021 <- read_qza(file.path(qza.16s.path.2021,
-                                                'core_metrics16sR4/unweighted_unifrac_distance_matrix.qza'))
+                                                'final/core_metrics16sR4/unweighted_unifrac_distance_matrix.qza'))
 
 #plate R5
 weightedUF16sqzaR5.2021 <- read_qza(file.path(qza.16s.path.2021,
-                                              'core_metrics16sR5/weighted_unifrac_distance_matrix.qza'))
+                                              'final/core_metrics16sR5/weighted_unifrac_distance_matrix.qza'))
 
 unweightedUF16sqzaR5.2021 <- read_qza(file.path(qza.16s.path.2021,
-                                                'core_metrics16sR5/unweighted_unifrac_distance_matrix.qza'))
+                                                'final/core_metrics16sR5/unweighted_unifrac_distance_matrix.qza'))
 
 
 
@@ -285,6 +285,8 @@ rownames(merged.comm.16s.2021) <- bees.16s.2021
 ## ***********************************************************************
 ## working with a merged 16s tree
 ## ***********************************************************************
+#2018 samples!!
+
 # upload our mega 16s phylogenetic tree
 
 mega16sdata <- read_qza("SI_pipeline/merged/16s/rooted-tree16s.qza")
@@ -311,6 +313,36 @@ tree.16s$tip.label  <-  feature.2.tax.16s$Taxon[match(tree.16s$tip.label,
                                            feature.2.tax.16s$Feature.ID)]
 
 tree.16s <- drop.tip(tree.16s, which(duplicated(tree.16s$tip.label)))
+
+
+# 2021 samples
+
+# upload our mega 16s phylogenetic tree
+
+mega16sdata.2021 <- read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/rooted-tree16s.qza")
+
+tree.16s.2021 <- mega16sdata.2021$data
+
+## function from: https://stackoverflow.com/questions/38570074/phylogenetics-in-r-collapsing-descendant-tips-of-an-internal-node
+
+drop_dupes <- function(tree, thres=1e-5){
+  tips <- which(tree$edge[,2] %in% 1:Ntip(tree))
+  toDrop <- tree$edge.length[tips] < thres
+  drop.tip(tree,tree$tip.label[toDrop])
+}
+
+## tree.16s <- tip_glom(tree.16s, h=0.05)
+
+## what is a good cutoff?
+tree.16s.2021 <- drop_dupes(tree.16s.2021, thres=1e-3)
+
+
+# make distance matrix
+
+tree.16s.2021$tip.label  <-  feature.2.tax.16s.2021$Taxon[match(tree.16s.2021$tip.label,
+                                                      feature.2.tax.16s.2021$Feature.ID)]
+
+tree.16s.2021 <- drop.tip(tree.16s.2021, which(duplicated(tree.16s.2021$tip.label)))
 
 ## ***********************************************************************
 ## RBCL
@@ -460,6 +492,9 @@ tree.rbcl$tip.label  <-  feature.2.tax.rbcl$Taxon[match(tree.rbcl$tip.label,
 ## ***********************************************************************
 ## Make mega dataset
 ## ***********************************************************************
+
+#made it here!!
+
 ## spec already includes parasite data
 load('../skyIslands/data/spec_net.Rdata')
 
@@ -467,9 +502,15 @@ indiv.comm.rbcl <- as.data.frame(merged.comm.rbcl)
 pollen <- colnames(indiv.comm.rbcl)
 indiv.comm.rbcl$UniqueID <- rownames(indiv.comm.rbcl)
 
+#2018 16s
 indiv.comm.16s <- as.data.frame(merged.comm.16s)
 bact <- colnames(indiv.comm.16s)
 indiv.comm.16s$UniqueID <- rownames(indiv.comm.16s)
+
+#2021 16s
+indiv.comm.16s.2021 <- as.data.frame(merged.comm.16s.2021)
+bact.2021 <- colnames(indiv.comm.16s.2021)
+indiv.comm.16s.2021$UniqueID <- rownames(indiv.comm.16s.2021)
 
 spec.net <-cbind(spec.net, indiv.comm.16s[, bact][match(spec.net$UniqueID,
                            indiv.comm.16s$UniqueID),])
@@ -477,11 +518,14 @@ spec.net <-cbind(spec.net, indiv.comm.16s[, bact][match(spec.net$UniqueID,
 spec.net <-cbind(spec.net, indiv.comm.rbcl[, pollen][match(spec.net$UniqueID,
                            indiv.comm.rbcl$UniqueID),])
 
+spec.net <-cbind(spec.net, indiv.comm.16s.2021[, bact.2021][match(spec.net$UniqueID,
+                                                        indiv.comm.16s.2021$UniqueID),])
+
 save(spec.net, file= "../skyIslands/data/spec_RBCL_16s.Rdata")
 
 write.csv(spec.net, file= "../skyIslands/data/spec_RBCL_16s.csv",
           row.names=FALSE)
 
-save(tree.16s, tree.rbcl, file="../skyIslands/data/trees.Rdata")
+save(tree.16s, tree.16s.2021, tree.rbcl, file="../skyIslands/data/trees.Rdata")
 
 
