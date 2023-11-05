@@ -99,10 +99,10 @@ qza.16s.path.2021  <- "SI_pipeline/R2018/2023_sequence_results_raw/merged/16s"
 # 16s
 #plate R0
 weightedUF16sqzaR0.2021 <- read_qza(file.path(qza.16s.path.2021,
-                                         'core_metrics16sR0/weighted_unifrac_distance_matrix.qza'))
+                                              'core_metrics16sR0/weighted_unifrac_distance_matrix.qza'))
 
 unweightedUF16sqzaR0.2021 <- read_qza(file.path(qza.16s.path.2021,
-                                           'core_metrics16sR0/unweighted_unifrac_distance_matrix.qza'))
+                                                'core_metrics16sR0/unweighted_unifrac_distance_matrix.qza'))
 
 #plate R1
 weightedUF16sqzaR1.2021 <- read_qza(file.path(qza.16s.path.2021,
@@ -173,50 +173,12 @@ phylo.dist.16sR5.2021 <-unweightedUF16sqzaR5.2021$data
 ## up this string and for that purpose the parse_taxonomy() function
 ## is provided:
 
-# R0
+# use master table
 taxonomy16sR0.2021 <- read_qza(
   file.path(qza.16s.path.2021, "master_table_rarefied.qza"))
 
 taxonomy16sR0.2021 <- taxonomy16sR0.2021$data
 
-
-
-
-# ## Merge R0 - R5 2021
-# # List of individual matrices
-# matrices <- list(taxonomy16sR0.2021, 
-#                  taxonomy16sR1.2021,
-#                  taxonomy16sR2.2021,
-#                  taxonomy16sR3.2021,
-#                  taxonomy16sR4.2021,
-#                  taxonomy16sR5.2021)
-# 
-# # Get a list of unique feature IDs
-# unique_feature_ids <- unique(unlist(lapply(matrices, function(mat) rownames(mat))))
-# 
-# # Get a list of unique feature IDs
-# unique_specimen_ids <- unique(unlist(lapply(matrices, function(mat) colnames(mat))))
-# 
-# # Create an empty master matrix with rows for unique features and columns for unique samples
-# master_matrix <- matrix(0, nrow = length(unique_feature_ids), ncol = length(unique_specimen_ids))
-# rownames(master_matrix) <- unique_feature_ids
-# colnames(master_matrix) <- unique_specimen_ids
-# 
-# # Fill in values from individual matrices, replacing zeros with original values
-# for (mat in matrices) {
-#   for (i in 1:nrow(mat)) {
-#     feature_id <- rownames(mat)[i]
-#     for (j in 1:ncol(mat)){
-#     sample_id <- colnames(mat)[j]
-#     sample_value <- mat[i, j]
-#     if (sample_value > 0) {
-#       master_matrix[feature_id, sample_id] <- sample_value
-#     } else {
-#       master_matrix[feature_id, sample_id] <- 0
-#     }
-#   }
-#   }
-# }
 
 
 
@@ -231,20 +193,20 @@ physeq16sR0.2021 <- qza_to_phyloseq(
 )
 
 #physeq16sR0
-## plot(physeq16sR0@phy_tree, show.tip.label = FALSE)
+#plot(physeq16sR0.2021@phy_tree, show.tip.label = FALSE)
 
-feature.2.tax.16s <-
-  read.table("SI_pipeline/merged/16s/taxonomy16s.txt", sep="\t",
+feature.2.tax.16s.2021 <-
+  read.table("SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/taxonomy.tsv", sep="\t",
              header=TRUE)
 
-feature.2.tax.16s$Taxon <- paste("16s", feature.2.tax.16s$Taxon, sep=':')
+feature.2.tax.16s.2021$Taxon <- paste("16s", feature.2.tax.16s.2021$Taxon, sep=':')
 
 ## convert to a phylo class which is more useful downstream
-tree.16sR0 <- phy_tree(physeq16sR0, errorIfNULL=TRUE)
+tree.16sR0.2021 <- phy_tree(physeq16sR0.2021, errorIfNULL=TRUE)
 
 ## match the tip labs to the table with feature ID and Taxon
-tree.16sR0$tip.label  <-  feature.2.tax.16s$Taxon[match(tree.16sR0$tip.label,
-                                                        feature.2.tax.16s$Feature.ID)]
+tree.16sR0.2021$tip.label  <-  feature.2.tax.16s.2021$Taxon[match(tree.16sR0.2021$tip.label,
+                                                                  feature.2.tax.16s.2021$Feature.ID)]
 
 
 ## 10-24-2023 Rebecca is dropping all sequences that are only resolved to the first level D_0__Bacteria
@@ -252,17 +214,13 @@ tree.16sR0$tip.label  <-  feature.2.tax.16s$Taxon[match(tree.16sR0$tip.label,
 library(ape)
 
 
-# Identify tips with labels exactly matching '16s:D_0__Bacteria'
-matching_tips <- grep('^16s:D_0__Bacteria$', tree.16sR0$tip.label)
-
-# Drop the matching tips
-tree.16sR0 <- drop.tip(tree.16sR0, matching_tips)
-
-plot(tree.16sR0, show.tip.label = FALSE)
 
 ## ***********************************************************************
 ## 16s networks
 ## ***********************************************************************
+
+
+#2018 samples 
 
 indiv.comm.16sR0 <-
     bipartite::empty(catchDups(makeComm(taxonomy16sR0,
@@ -292,6 +250,37 @@ dim(merged.comm.16s)
 length(species.16s)
 
 rownames(merged.comm.16s) <- bees.16s
+
+#2021 samples!!
+
+indiv.comm.16sR0.2021 <-
+  bipartite::empty(catchDups(makeComm(taxonomy16sR0.2021,
+                                      feature.2.tax.16s.2021)))
+indiv.comm.16sR0.2021 <- indiv.comm.16sR0.2021/rowSums(indiv.comm.16sR0.2021)
+
+bees.16s.2021 <- c(rownames(indiv.comm.16sR0.2021))
+
+comms.2021 <- list(indiv.comm.16sR0.2021)
+
+## bees.16s <- c(rownames(indiv.comm.16sR0),
+##               paste0("SF",  rownames(indiv.comm.16sR1)),
+##               paste0("SF", rownames(indiv.comm.16sR2)),
+##                      paste0("SF", rownames(indiv.comm.16sR3)),
+##               paste0("SF", rownames(indiv.comm.16sR4)))
+
+## comms <- list(indiv.comm.16sR0, indiv.comm.16sR1,
+##               indiv.comm.16sR2, indiv.comm.16sR3,
+##               indiv.comm.16sR4)
+
+species.16s.2021 <- unique(unlist(sapply(comms.2021, colnames)))
+
+merged.comm.16s.2021 <- plyr::rbind.fill(lapply(comms.2021, as.data.frame))
+
+## check with number of columns against number of unique species
+dim(merged.comm.16s.2021)
+length(species.16s.2021)
+
+rownames(merged.comm.16s.2021) <- bees.16s.2021
 
 ## ***********************************************************************
 ## working with a merged 16s tree
