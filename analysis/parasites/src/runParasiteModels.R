@@ -21,14 +21,21 @@ runCombinedParasiteModels <- function(spec.data,
     bf.parasite.formulas[[parasite]] <-  bf(formula.parasite,
                                             family="bernoulli")  
   }
-
- 
-  bform <- bf.fabund + bf.fdiv +
-    bf.babund + bf.bombusabund + bf.HBabund +
-    bf.bdiv  +    
-    bf.parasite.formulas[[1]]+
-    bf.parasite.formulas[[2]] +
-    set_rescor(FALSE)
+  
+  if(length(parasites) == 2){
+    bform <- bf.fabund + bf.fdiv +
+      bf.babund + bf.bombusabund + bf.HBabund +
+      bf.bdiv  +    
+      bf.parasite.formulas[[1]]+
+      bf.parasite.formulas[[2]] +
+      set_rescor(FALSE)
+  }else  if(length(parasites) == 1){
+    bform <- bf.fabund + bf.fdiv +
+      bf.babund + bf.bombusabund + bf.HBabund +
+      bf.bdiv  +    
+      bf.parasite.formulas[[1]]+
+      set_rescor(FALSE)
+  }
 
   fit.parasite <- brm(bform, spec.data,
                       cores=ncores,
