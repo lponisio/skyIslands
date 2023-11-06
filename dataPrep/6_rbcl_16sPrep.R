@@ -201,6 +201,20 @@ feature.2.tax.16s.2021 <-
 
 feature.2.tax.16s.2021$Taxon <- paste("16s", feature.2.tax.16s.2021$Taxon, sep=':')
 
+#2018 and 2021 sequences have different naming structure, need to match them
+
+# new naming -- 16s:d__Bacteria; p__Actinobacteriota; c__Actinobacteria; o__Bifidobacteriales; f__Bifidobacteriaceae; g__Bifidobacterium; s__uncultured_Bifidobacterium
+
+# old naming -- 16s:D_0__Bacteria;D_1__Acidobacteria;D_2__Acidobacteriia;D_3__Acidobacteriales;D_4__Acidobacteriaceae (Subgroup 1);D_5__Terriglobus
+
+feature.2.tax.16s.2021$Taxon <- gsub("d__", "D_0__", feature.2.tax.16s.2021$Taxon)
+feature.2.tax.16s.2021$Taxon <- gsub(" p__", "D_1__", feature.2.tax.16s.2021$Taxon)
+feature.2.tax.16s.2021$Taxon <- gsub(" c__", "D_2__", feature.2.tax.16s.2021$Taxon)
+feature.2.tax.16s.2021$Taxon <- gsub(" o__", "D_3__", feature.2.tax.16s.2021$Taxon)
+feature.2.tax.16s.2021$Taxon <- gsub(" f__", "D_4__", feature.2.tax.16s.2021$Taxon)
+feature.2.tax.16s.2021$Taxon <- gsub(" g__", "D_5__", feature.2.tax.16s.2021$Taxon)
+feature.2.tax.16s.2021$Taxon <- gsub(" s__", "D_6__", feature.2.tax.16s.2021$Taxon)
+
 ## convert to a phylo class which is more useful downstream
 tree.16sR0.2021 <- phy_tree(physeq16sR0.2021, errorIfNULL=TRUE)
 
@@ -209,9 +223,16 @@ tree.16sR0.2021$tip.label  <-  feature.2.tax.16s.2021$Taxon[match(tree.16sR0.202
                                                                   feature.2.tax.16s.2021$Feature.ID)]
 
 
-## 10-24-2023 Rebecca is dropping all sequences that are only resolved to the first level D_0__Bacteria
-# Load the required package
-library(ape)
+## 10-24-2023 Rebecca is dropping all sequences that are only resolved to the first level D_0__Bacteria and Unassigned
+# Identify tips with labels exactly matching '16s:D_0__Bacteria'
+matching_tips.2021 <- grep('^16s:D_0__Bacteria$', tree.16sR0.2021$tip.label)
+matching_tips2.2021 <- grep('^16s:Unassigned$', tree.16sR0.2021$tip.label)
+
+# Drop the matching tips
+tree.16sR0.2021 <- drop.tip(tree.16sR0.2021, matching_tips.2021)
+tree.16sR0.2021 <- drop.tip(tree.16sR0.2021, matching_tips2.2021)
+
+plot(tree.16sR0.2021, show.tip.label = FALSE)
 
 
 
