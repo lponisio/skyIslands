@@ -5,19 +5,25 @@ setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
 
 setwd("analysis/parasites")
 rm(list=ls())
-
-source("src/ggplotThemes.R")
 source("src/misc.R")
+source("src/writeResultsTable.R")
 source("src/makeMultiLevelData.R")
-
-vars <- c("MeanFloralAbundance",
-          "MeanFloralDiversity",
-          "Net_BeeDiversity",
-          "Lat", "SRDoy",
-          "MeanITD",
-          ## "r.degree", ## across all networks
-          "rare.degree"  ## site-year level
+source("src/runParasiteModels.R")
+source("src/standardize_weights.R")
+source("src/ggplotThemes.R")
+## all of the variables that are explanatory variables and thus need
+## to be centered
+vars_yearsr <- c("MeanFloralAbundance",
+                 "MeanFloralDiversity",
+                 "Net_BeeDiversity",
+                 "Lat", "SRDoy"  
 )
+vars_sp <- c("MeanITD",
+             "rare.degree")
+
+variables.to.log <- "rare.degree"
+
+## uses only net specimens, and drops syrphids
 source("src/init.R")
 
 spec.orig <- spec.net

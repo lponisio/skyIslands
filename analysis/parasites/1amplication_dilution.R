@@ -20,6 +20,8 @@ vars_yearsr <- c("MeanFloralAbundance",
 vars_sp <- c("MeanITD",
           "rare.degree")
 
+variables.to.log <- "rare.degree"
+
 ## uses only net specimens, and drops syrphids
 source("src/init.R")
 ## define all the formulas for the different parts of the models
@@ -51,7 +53,7 @@ xvars.single.species <-  c("Net_NonBombusHBAbundance",
 ## **********************************************************
 
 bform.community <- bf.fabund + bf.fdiv +
-  bf.babund 
+  bf.babund +
   bf.bombusabund + bf.HBabund +
   bf.bdiv  +
   set_rescor(FALSE)
@@ -67,7 +69,8 @@ fit.community <- brm(bform.community, spec.net,
 write.ms.table(fit.community,
                sprintf("parasitism_%s_%s",
                        species.group="all", parasite="none"))
-r2 <- loo_R2(fit.community)
+r2loo <- loo_R2(fit.community)
+r2 <- rstantools::bayes_R2(fit.community)
 save(fit.community, spec.net, r2,
      file="saved/communityFit.Rdata")
 
@@ -79,7 +82,16 @@ fit.all <- runCombinedParasiteModels(spec.all, species.group="all",
                                         parasites=c("CrithidiaPresence",
                                                     "ApicystisSpp"),
                                         xvars=xvars.multi.species,
-                                        iter = 20^4,
+                                        iter = 10^4,
+                                        chains = 1,
+                                        thin=1,
+                                        init=0)
+
+## bombus
+fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
+                                        parasites=c("CrithidiaPresence"),
+                                        xvars=xvars.multi.species,
+                                        iter = 10^4,
                                         chains = 1,
                                         thin=1,
                                         init=0)
@@ -89,7 +101,7 @@ fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         parasites=c("CrithidiaPresence",
                                                     "ApicystisSpp"),
                                         xvars=xvars.multi.species,
-                                        iter = 10^4,
+                                        iter = 10^5,
                                         chains = 1,
                                         thin=1,
                                         init=0)
