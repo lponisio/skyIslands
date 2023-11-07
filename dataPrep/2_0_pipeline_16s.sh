@@ -76,8 +76,11 @@ qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads ref-seqs
 #CD to the main SI_pipeline folder where the classifiers are
 #cd ../../
 
+#2021 samps
 qiime feature-classifier classify-sklearn --i-classifier classifier16s.qza --i-reads  ../merged/16s/rep-seqs-16s.qza --o-classification  ../merged/16s/taxonomy16s.qza
 
+#2018 samps -- reclassifying with updated silva database
+qiime feature-classifier classify-sklearn --i-classifier classifier16s.qza --i-reads  ../../../merged/16s/rep-seqs-16s.qza --o-classification  ../merged/16s/taxonomy16s-2018.qza
 
 ## switch to the newest version of qiime
 exit
@@ -86,7 +89,10 @@ docker run -itv /Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIs
 # visualize. navigate back to where you have your taxonomy files
 cd ../mnt/SI_pipeline/R2018/2023_sequence_results_raw/merged/16s
 
+#2021
 qiime metadata tabulate --m-input-file taxonomy16s.qza --o-visualization taxonomy16s.qzv
+#2018
+qiime metadata tabulate --m-input-file taxonomy16s-2018.qza --o-visualization taxonomy16s-2018.qzv
 
 #cant do this step without a master map, which we don't have for the merged files. 
 #skip for now. we still wanna do the other steps on the merged files
@@ -115,6 +121,7 @@ cd merged/16s/
 
 qiime feature-table tabulate-seqs --i-data rep-seqs-16s.qza --o-visualization rep-seqs-16s.qzv
 
+qiime feature-table tabulate-seqs --i-data rep-seqs-16s-2018.qza --o-visualization rep-seqs-16s-2018.qzv
 
 # using these two documents, select the sequence corresponding with the feature ids for L. kunkeei
 
@@ -131,23 +138,36 @@ qiime tools import \
 
 #2b. filter 1: out the chloroplast and mitochondria reads 
 
+#2021
 qiime taxa filter-table --i-table table16s.qza --i-taxonomy taxonomy16s.qza --p-exclude mitochondria,chloroplast --o-filtered-table tablefilt1.qza
-
 qiime feature-table summarize --i-table tablefilt1.qza --o-visualization tablefilt1.qzv 
+
+#2018
+qiime taxa filter-table --i-table table16s-2018.qza --i-taxonomy taxonomy16s-2018.qza --p-exclude mitochondria,chloroplast --o-filtered-table tablefilt1-2018.qza
+qiime feature-table summarize --i-table tablefilt1-2018.qza --o-visualization tablefilt1-2018.qzv 
 
 #2c. filter 2: remove sequences only found in one sample 
 
+#2021
 qiime feature-table filter-features --i-table tablefilt1.qza --p-min-samples 2 --o-filtered-table tablefilt2.qza
-
 qiime feature-table summarize --i-table tablefilt2.qza --o-visualization tablefilt2.qzv
+
+#2018
+qiime feature-table filter-features --i-table tablefilt1-2018.qza --p-min-samples 2 --o-filtered-table tablefilt2-2018.qza
+qiime feature-table summarize --i-table tablefilt2-2018.qza --o-visualization tablefilt2-2018.qzv
 
 
 #2d: Filter our rep seqs file so that you can see what samples you have left after filtering and subsampling
+
+#2021
 qiime feature-table filter-seqs --i-data rep-seqs-16s.qza --i-table tablefilt2.qza --o-filtered-data rep-seqs-16s-filtered.qza
-
 qiime feature-table tabulate-seqs --i-data rep-seqs-16s-filtered.qza --o-visualization rep-seqs-16s-filtered.qzv
-
 qiime tools view rep-seqs-16s-filtered.qzv
+
+#2018
+qiime feature-table filter-seqs --i-data rep-seqs-16s-2018.qza --i-table tablefilt2-2018.qza --o-filtered-data rep-seqs-16s-filtered-2018.qza
+qiime feature-table tabulate-seqs --i-data rep-seqs-16s-filtered-2018.qza --o-visualization rep-seqs-16s-filtered-2018.qzv
+qiime tools view rep-seqs-16s-filtered-2018.qzv
 
 ### ************************************************************************
 ## 3. #GENERATE TREE FOR PHYLOGENETIC DIVERSITY ANALYSES
@@ -172,7 +192,6 @@ qiime phylogeny midpoint-root --i-tree unrooted_tree16s.qza --o-rooted-tree root
 ## 4. SPLIT MERGED DATA TO CONTINUE CLEANING
 ### ************************************************************************
 
-#########made it here! need to make txt file
 
 
 # We have 5 rounds of data. We need make a txt file for each round with the list of IDs for samples associated with each one
@@ -376,6 +395,17 @@ qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-tree16s.qza --i-t
 #now we have lots of files in that core_metrics directory. gotta export rarefied_table.qza so we can get a qzv and convert to a csv
 #NOT SURE WHAT MAP TO USE HERE, the map or the RnoCtrl file.....
 qiime taxa barplot --i-table final/core_metrics16sR0/rarefied_table.qza --i-taxonomy taxonomy16s.qza --m-metadata-file maps/R0samplesNoCtrl.txt --o-visualization final/core_metrics16sR0/rarefiedtable16s.qzv
+
+#### merging master maps
+
+qiime feature-table merge \
+       --i-tables final/core_metrics16sR0/rarefied_table.qza \
+       --i-tables final/core_metrics16sR1/rarefied_table.qza \
+       --i-tables final/core_metrics16sR2/rarefied_table.qza \
+       --i-tables final/core_metrics16sR3/rarefied_table.qza \
+       --i-tables final/core_metrics16sR4/rarefied_table.qza \
+       --i-tables final/core_metrics16sR5/rarefied_table.qza \
+  	--o-merged-table master_table_rarefied.qza
 
 #drag the new qzv into qiime 2 view, and download a csv! put this into "final asv tables" folder
 
