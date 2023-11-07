@@ -169,6 +169,37 @@ qiime feature-table filter-seqs --i-data rep-seqs-16s-2018.qza --i-table tablefi
 qiime feature-table tabulate-seqs --i-data rep-seqs-16s-filtered-2018.qza --o-visualization rep-seqs-16s-filtered-2018.qzv
 qiime tools view rep-seqs-16s-filtered-2018.qzv
 
+
+#merging repseqs between 2018 and 2021
+qiime feature-table merge-seqs \
+       --i-data rep-seqs-16s-filtered.qza \
+       --i-data rep-seqs-16s-filtered-2018.qza \
+	--o-merged-data rep-seqs-16s-filtered-combined.qza
+	
+## need to also merge taxonomy tables!
+## made it here but having trouble merging the taxonomy files because it is saying taxonomy.qza is not a valid filepath
+
+qiime feature-table merge-taxa \
+  --i-data taxonomy.qza \
+  --i-data taxonomy-2018.qza \
+  --o-merged-data combined-taxonomy.qza
+  
+## here is a step we are changing for 2023 -- since we are using the trees to determine microbial phylogenetic distance, we need to 
+## filter out unwanted sequences before we generate the trees.
+## also, we will not split sequences into runs and instead will filter out contaminants across all runs
+
+#moving the filtering B steps up here
+
+# 5a. Filter out large taxonomic groups of bacteria that are known to be contaminants
+
+# there are known bacteria are salt-loving and often found in buffers. 
+# they include  Halomonas, Shewanella, Oceanospirillales, and the acne bacteria Propionibacterium. 
+
+
+qiime taxa filter-table --i-table rep-seqs-16s-filtered-combined.qza --i-taxonomy taxonomy16s.qza --p-exclude halomonas,lautropia,rothia,haemophilus,desulfuromonadales,pseudomonas,devosia,sphingomonas,solirubrobacterales,escherichia-shigella,staphylococcus,prevotellaceae,blastococcus,aeromonas,streptococcus,shewanella,oceanospirillales,propionibacteriales --o-filtered-table tableR0_f1.qza
+
+
+
 ### ************************************************************************
 ## 3. #GENERATE TREE FOR PHYLOGENETIC DIVERSITY ANALYSES
 ### ************************************************************************
