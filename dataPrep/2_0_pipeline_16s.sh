@@ -205,9 +205,35 @@ qiime taxa filter-table --i-table tables-combined.qza --i-taxonomy combined-taxo
 
 # 5b. Let's specifically look at sequences in our controls and remove the bacteria that are in them
 
-# made it here!! need to create master map that includes 2018 and 2021 metadata
 
-qiime taxa barplot --i-table table-combined-f1.qza --i-taxonomy combined-taxonomy.qza --m-metadata-file maps/SI2018map16s.txt --o-visualization split/taxa-bar-plots-R0_filt3.qzv
+qiime taxa barplot --i-table table-combined-f1.qza --i-taxonomy combined-taxonomy.qza --m-metadata-file maps/combined-map-2018-2021.txt --o-visualization taxa-bar-plots-combined-f1.qzv
+
+#now filter out taxa that are in the controls!
+
+#2018 controls
+qiime taxa filter-table --i-table table-combined-f1.qza --i-taxonomy combined-taxonomy.qza --p-mode exact --p-exclude "d__Bacteria;p__Actinobacteria;c__Actinobacteria;o__Micrococcales;f__Microbacteriaceae;g__Galbitalea",\
+"d__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Chitinophagales;f__Chitinophagaceae",\
+"d__Bacteria;p__Tenericutes;c__Mollicutes;o__Entomoplasmatales;f__Spiroplasmataceae;g__Spiroplasma",\
+"d__Bacteria;p__Actinobacteria;c__Actinobacteria;o__Kineosporiales;f__Kineosporiaceae;g__Kineosporia;s__uncultured;bacterium",\
+"d__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Chitinophagales;f__Chitinophagaceae;g__Segetibacter",\
+"d__Bacteria",\
+"Unassigned" --o-filtered-table table-combined-f2.qza
+
+qiime taxa barplot --i-table table-combined-f2.qza --i-taxonomy combined-taxonomy.qza --m-metadata-file maps/combined-map-2018-2021.txt --o-visualization taxa-bar-plots-combined-f2.qzv
+
+#2021 controls
+qiime taxa filter-table --i-table table-combined-f2.qza --i-taxonomy combined-taxonomy.qza --p-mode exact --p-exclude "d__Bacteria;p__Proteobacteria;c__Alphaproteobacteria;o__Rhizobiales;f__Xanthobacteraceae;g__Bradyrhizobium",\
+"d__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Burkholderiales;f__Comamonadaceae",\
+"d__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Burkholderiales;f__Comamonadaceae;g__Acidovorax",\
+"d__Bacteria;p__Fusobacteriota;c__Fusobacteriia;o__Fusobacteriales;f__Fusobacteriaceae;g__Fusobacterium",\
+"d__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Burkholderiales;f__Burkholderiaceae;g__Ralstonia",\
+"d__Bacteria;p__Firmicutes;c__Bacilli;o__Bacillales;f__Bacillaceae;g__Bacillus",\
+"d__Bacteria;p__Proteobacteria;c__Alphaproteobacteria;o__Caulobacterales;f__Caulobacteraceae;g__Phenylobacterium",\
+"Unassigned" --o-filtered-table table-combined-f3.qza
+
+qiime taxa barplot --i-table table-combined-f3.qza --i-taxonomy combined-taxonomy.qza --m-metadata-file maps/combined-map-2018-2021.txt --o-visualization taxa-bar-plots-combined-f3.qzv
+
+#made it here
 
 
 ### ************************************************************************
