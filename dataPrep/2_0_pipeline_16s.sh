@@ -176,12 +176,17 @@ qiime feature-table merge-seqs \
        --i-data rep-seqs-16s-filtered-2018.qza \
 	--o-merged-data rep-seqs-16s-filtered-combined.qza
 	
-## need to also merge taxonomy tables!
-## made it here but having trouble merging the taxonomy files because it is saying taxonomy.qza is not a valid filepath
+	#merging freq tables between 2018 and 2021
+qiime feature-table merge \
+       --i-tables table16s.qza \
+       --i-tables table16s-2018.qza \
+	--o-merged-table tables-combined.qza
+	
+
 
 qiime feature-table merge-taxa \
-  --i-data taxonomy.qza \
-  --i-data taxonomy-2018.qza \
+  --i-data taxonomy16s.qza \
+  --i-data taxonomy16s-2018.qza \
   --o-merged-data combined-taxonomy.qza
   
 ## here is a step we are changing for 2023 -- since we are using the trees to determine microbial phylogenetic distance, we need to 
@@ -196,8 +201,13 @@ qiime feature-table merge-taxa \
 # they include  Halomonas, Shewanella, Oceanospirillales, and the acne bacteria Propionibacterium. 
 
 
-qiime taxa filter-table --i-table rep-seqs-16s-filtered-combined.qza --i-taxonomy taxonomy16s.qza --p-exclude halomonas,lautropia,rothia,haemophilus,desulfuromonadales,pseudomonas,devosia,sphingomonas,solirubrobacterales,escherichia-shigella,staphylococcus,prevotellaceae,blastococcus,aeromonas,streptococcus,shewanella,oceanospirillales,propionibacteriales --o-filtered-table tableR0_f1.qza
+qiime taxa filter-table --i-table tables-combined.qza --i-taxonomy combined-taxonomy.qza --p-exclude halomonas,lautropia,rothia,haemophilus,desulfuromonadales,pseudomonas,devosia,sphingomonas,solirubrobacterales,escherichia-shigella,staphylococcus,prevotellaceae,blastococcus,aeromonas,streptococcus,shewanella,oceanospirillales,propionibacteriales --o-filtered-table table-combined-f1.qza
 
+# 5b. Let's specifically look at sequences in our controls and remove the bacteria that are in them
+
+# made it here!! need to create master map that includes 2018 and 2021 metadata
+
+qiime taxa barplot --i-table table-combined-f1.qza --i-taxonomy combined-taxonomy.qza --m-metadata-file maps/SI2018map16s.txt --o-visualization split/taxa-bar-plots-R0_filt3.qzv
 
 
 ### ************************************************************************
@@ -241,7 +251,7 @@ cd split
 
 
 
-# qiime feature-table filter-samples --i-table tablefilt2.qza --m-metadata-file R0samples.txt --o-filtered-table tableR0.qza
+qiime feature-table filter-samples --i-table tablefilt2.qza --m-metadata-file R0samples.txt --o-filtered-table tableR0.qza
 
 # qiime feature-table filter-samples --i-table tablefilt2.qza --m-metadata-file R1samples.txt --o-filtered-table tableR1.qza
 
@@ -283,7 +293,7 @@ qiime taxa filter-table --i-table tableR0.qza --i-taxonomy taxonomy16s.qza --p-e
 
 # 5b. Let's specifically look at sequences in our controls and remove the bacteria that are in them
 
-# cd ../
+### made it here! need to make master map of both years 
 
 qiime taxa barplot --i-table tablefilt3.qza --i-taxonomy taxonomy16s.qza --m-metadata-file maps/SI2018map16s.txt --o-visualization split/taxa-bar-plots-R0_filt3.qzv
 
