@@ -165,6 +165,10 @@ save(indivNetSums_micro, indivNetSums_microBinary,
 ## Parasite networks
 ## ***********************************************************************
 
+
+# parasite networks not working right now!
+
+
 #get columns of parasite presence to feed into illumSplit
 
 names.Para <- c("AscosphaeraSpp","ApicystisSpp", "AspergillusSpp",
@@ -216,11 +220,14 @@ save(indivNetSums_para, #spNetSums_para,
 ## ***************************************************************
 load( file =file.path(save.dir, 'NetSums_micro.RData'))
 load(   file=file.path(save.dir, 'NetSums_rbcl.RData'))
-load(   file=file.path(save.dir, 'NetSums_para.RData'))
+#load(   file=file.path(save.dir, 'NetSums_para.RData'))
 
 
-net.metrics <- colnames(indivNetSums_para)[!
-    colnames(indivNetSums_para) %in% c("Site", "GenusSpecies", "UniqueID")]
+#net.metrics <- colnames(indivNetSums_para)[!
+#    colnames(indivNetSums_para) %in% c("Site", "GenusSpecies", "UniqueID")]
+
+net.metrics <- colnames(indivNetSums_micro)[!
+   colnames(indivNetSums_micro) %in% c("Site", "GenusSpecies", "UniqueID")]
 
 makeNewColnames <- function(netSums, name){
     colnames(netSums)[colnames(netSums) %in% net.metrics] <-
@@ -229,7 +236,7 @@ makeNewColnames <- function(netSums, name){
     return(colnames(netSums))
 }
 
-colnames(indivNetSums_para) <- makeNewColnames(indivNetSums_para, "Parasite")
+#colnames(indivNetSums_para) <- makeNewColnames(indivNetSums_para, "Parasite")
 colnames(indivNetSums_rbcl) <- makeNewColnames(indivNetSums_rbcl, "RBCL")
 colnames(indivNetSums_micro) <- makeNewColnames(indivNetSums_micro, "Micro")
 
@@ -241,7 +248,7 @@ colnames(indivNetSums_micro) <- makeNewColnames(indivNetSums_micro, "Micro")
 
 ## combine individual level metrics
 all.indiv.mets <- merge(indivNetSums_micro, indivNetSums_rbcl, all=TRUE)
-all.indiv.mets <- merge(all.indiv.mets, indivNetSums_para, all=TRUE)
+#all.indiv.mets <- merge(all.indiv.mets, indivNetSums_para, all=TRUE)
 
 all.indiv.mets$Site <- spec.net$Site[match(all.indiv.mets$UniqueID,
                                        spec.net$UniqueID)]
@@ -270,8 +277,8 @@ colnames(indivNetSums_microBinary) <- makeNewColnames(indivNetSums_microBinary,
 ## combine individual level metrics
 all.indiv.mets.binary <- merge(indivNetSums_microBinary,
                                indivNetSums_rbclBinary, all=TRUE)
-all.indiv.mets.binary <- merge(all.indiv.mets.binary,
-                               indivNetSums_para, all=TRUE)
+#all.indiv.mets.binary <- merge(all.indiv.mets.binary,
+#                               indivNetSums_para, all=TRUE)
 all.indiv.mets.binary$Site <- spec.net$Site[match(all.indiv.mets.binary$UniqueID,
                                        spec.net$UniqueID)]
 all.indiv.mets.binary$GenusSpecies <- spec.net$GenusSpecies[
