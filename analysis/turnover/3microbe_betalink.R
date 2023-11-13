@@ -25,17 +25,17 @@ load("C:/Users/rah10/Dropbox (University of Oregon)/skyIslands/data/networks/mic
 CH <- spNet_micro$CH
 HM <- spNet_micro$HM
 JC <- spNet_micro$JC
-MM <- spNet_micro$MM
+MM <- spNet_micro$MM 
 PL <- spNet_micro$PL
-SC <- spNet_micro$SC
+SC <- spNet_micro$SC 
 SM <- spNet_micro$SM
 
 lower.order <- "Microbes"
 higher.order <- "Pollinators"
 
 
-microbe_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, SC, SM),
-                                         partitioning="commondenom", binary=TRUE, distofempty='zero', partition.st=TRUE)
+microbe_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, SM, SC),
+                                         partitioning="commondenom", binary=TRUE, distofempty='zero', partition.st=TRUE, partition.rr=TRUE)
 
 #View(microbe_poll_betalink)
 
@@ -47,8 +47,12 @@ colnames(microbe_poll_betalink) <- c("Site1",
                                      "SpeciesTurnoverLinks",
                                      paste("TurnoverAbsence",lower.order,sep=""),
                                      paste("TurnoverAbsence",higher.order,sep=""),
-                                     "TurnoverAbsenceBoth"
-                                     )
+                                     "TurnoverAbsenceBoth",
+                                     "WholeNetworkReplaced",
+                                     "OnlySharedReplaced",
+                                     "WholeNetworkRichnessDifference",
+                                     "OnlySharedRichnessDifference"
+)
 
 
 
@@ -70,369 +74,228 @@ microbe_poll_betalink$GeoDist <- apply(microbe_poll_betalink, 1, function(x){
   geo.dist[x["Site1"],  x["Site2"]]
 })
 
-#spec.turnover plot this is working!
-# 11:38 pm just deciding to copy and paste style it for now lol
-
-
-# spec.turnover plot
-
-forms <- formula(DissimilaritySpeciesComposition~GeoDist + (1|Site1) + (1|Site2))
-#browser()
-mod1 <- do.call(lmer,
-               list(formula=forms,
-                    data=microbe_poll_betalink,
-                    REML = FALSE))
-summary(mod1)
-
-gr1 <- ref_grid(mod1, cov.keep= c('GeoDist'))
-emm1 <- emmeans(gr1, spec= c("GeoDist"), level= 0.95)
-emm1
-
-spec.turnover.plot <- ggplot(microbe_poll_betalink, 
-                             aes(x=GeoDist, y=DissimilaritySpeciesComposition)) +
-  geom_point() + 
-  geom_ribbon(data= data.frame(emm1), aes(ymin= lower.CL, ymax= upper.CL, y= NULL), fill= 'grey80', alpha=0.5) +
-  geom_line(data= data.frame(emm1), aes(y= emmean)) +
-  theme_classic() + 
-  labs(x='Geographic Distance (km)', y='Species Turnover') +
-  scale_y_continuous(limits=c(0,1))
-
-spec.turnover.plot
-
-# interaction.turnover plot
-
-forms <- formula(WholeNetworkLinks~GeoDist + (1|Site1) + (1|Site2))
-#browser()
-mod2 <- do.call(lmer,
-               list(formula=forms,
-                    data=microbe_poll_betalink,
-                    REML = FALSE))
-summary(mod2)
-
-
-gr2 <- ref_grid(mod2, cov.keep= c('GeoDist'))
-emm2 <- emmeans(gr2, spec= c("GeoDist"), level= 0.95)
-emm2
-
-
-interaction.turnover.plot <- ggplot(microbe_poll_betalink, 
-                                    aes(x=GeoDist, y=WholeNetworkLinks)) +
-  geom_point() + 
-  geom_ribbon(data= data.frame(emm2), aes(ymin= lower.CL, ymax= upper.CL, y= NULL), fill= 'grey80', alpha=0.5) +
-  geom_line(data= data.frame(emm2), aes(y= emmean)) +
-  theme_classic() + 
-  labs(x='Geographic Distance (km)', y='Interaction Turnover') +
-  scale_y_continuous(limits=c(0,1))
-
-interaction.turnover.plot
-
-# poll.turnover plot
-
-forms <- formula(TurnoverAbsencePollinators~GeoDist + (1|Site1) + (1|Site2))
-#browser()
-mod3 <- do.call(lmer,
-               list(formula=forms,
-                    data=microbe_poll_betalink,
-                    REML = FALSE))
-
-summary(mod3)
-
-
-gr3 <- ref_grid(mod3, cov.keep= c('GeoDist'))
-emm3 <- emmeans(gr3, spec= c("GeoDist"), level= 0.95)
-emm3
 
 
 
-pollinator.turnover.plot <- ggplot(microbe_poll_betalink, 
-                                   aes(x=GeoDist, y=TurnoverAbsencePollinators)) +
-  geom_point() + 
-  geom_ribbon(data= data.frame(emm3), aes(ymin= lower.CL, ymax= upper.CL, y= NULL), fill= 'grey80', alpha=0.5) +
-  geom_line(data= data.frame(emm3), aes(y= emmean)) +
-  theme_classic() + 
-  labs(x='Geographic Distance (km)', y='Species Turnover: Pollinators')+
-  scale_y_continuous(limits=c(0,1))
-
-pollinator.turnover.plot
-
-# microbe.turnover plot
-
-forms <- formula(TurnoverAbsenceMicrobes~GeoDist + (1|Site1) + (1|Site2))
-#browser()
-mod4 <- do.call(lmer,
-               list(formula=forms,
-                    data=microbe_poll_betalink,
-                    REML = FALSE))
-
-summary(mod4)
-
-
-gr4 <- ref_grid(mod4, cov.keep= c('GeoDist'))
-emm4 <- emmeans(gr4, spec= c("GeoDist"), level= 0.95)
-emm4
-
-
-microbe.turnover.plot <- ggplot(microbe_poll_betalink, 
-                                aes(x=GeoDist, y=TurnoverAbsenceMicrobes)) +
-  geom_point() + 
-  geom_ribbon(data= data.frame(emm4), aes(ymin= lower.CL, ymax= upper.CL, y= NULL), fill= 'grey80', alpha=0.5) +
-  geom_line(data= data.frame(emm4), aes(y= emmean)) +
-  theme_classic() + 
-  labs(x='Geographic Distance (km)', y='Species Turnover: Microbes')+
-  scale_y_continuous(limits=c(0,1))
-
-microbe.turnover.plot
-
-## int.turnover.sp.comp plot
-
-forms <- formula(SpeciesTurnoverLinks~GeoDist + (1|Site1) + (1|Site2))
-#browser()
-mod5 <- do.call(lmer,
-               list(formula=forms,
-                    data=microbe_poll_betalink,
-                    REML = FALSE))
-summary(mod5)
-
-
-gr5 <- ref_grid(mod5, cov.keep= c('GeoDist'))
-emm5 <- emmeans(gr5, spec= c("GeoDist"), level= 0.95)
-emm5
-
-
-int.turnover.spcomp.plot <- ggplot(microbe_poll_betalink, 
-                                   aes(x=GeoDist, y=SpeciesTurnoverLinks)) +
-  geom_point() + 
-  geom_ribbon(data= data.frame(emm5), aes(ymin= lower.CL, ymax= upper.CL, y= NULL), fill= 'grey80', alpha=0.5) +
-  geom_line(data= data.frame(emm5), aes(y= emmean)) +
-  theme_classic() + 
-  labs(x='Geographic Distance (km)', y='Interaction Turnover: Species Composition') +
-  scale_y_continuous(limits=c(0,1))
-
-int.turnover.spcomp.plot
-
-## int.turnover.rewiring plot
-
-forms <- formula(OnlySharedLinks~GeoDist + (1|Site1) + (1|Site2))
-#browser()
-mod6 <- do.call(lmer,
-               list(formula=forms,
-                    data=microbe_poll_betalink,
-                    REML = FALSE))
-summary(mod6)
-
-
-gr6 <- ref_grid(mod6, cov.keep= c('GeoDist'))
-emm6 <- emmeans(gr6, spec= c("GeoDist"), level= 0.95)
-
-
-int.turnover.rewiring.plot <- ggplot(microbe_poll_betalink, 
-                                     aes(x=GeoDist, y=OnlySharedLinks)) +
-  geom_point() + 
-  geom_ribbon(data= data.frame(emm6), aes(ymin= lower.CL, ymax= upper.CL, y= NULL), fill= 'grey80', alpha=0.5) +
-  geom_line(data= data.frame(emm6), aes(y= emmean)) +
-  theme_classic() + 
-  labs(x='Geographic Distance (km)', y='Interaction Turnover: Rewiring')+
-  scale_y_continuous(limits=c(0,1))
-
-int.turnover.rewiring.plot
-
-### facet plots
-bee_microbe_turnover <- ggarrange(spec.turnover.plot,
-                                  pollinator.turnover.plot,
-                                  microbe.turnover.plot,
-                                  interaction.turnover.plot,
-                                  int.turnover.spcomp.plot,
-                                  int.turnover.rewiring.plot,
-                                  ncol=3, nrow=2)
-
-bee_microbe_turnover
-
-dir.create("figures")
-
-ggsave(bee_microbe_turnover, file="figures/poll_microbe_betaComponents.pdf",
-       height=8, width=11)
-
-
-##yayyy working up to here! work on function later after ESA
 
 ###############################################################################
 
+# Define a function called 'calculate_and_plot_betalinkr' that takes three arguments: this_component (which dissimilarity component should you make plots for?), 
+#                                                                                     this_network(which network object will be used for input), and label (y axis label).
 
-### having trouble getting function for plotting to work, going to reconstruct plots using ggplot
 
-
-make_turnover_plot <- function(turnover_type, ylabel, network_betalink){
+calculate_and_plot_betalinkr <- function(this_component, this_network, label){
   
-  forms <- formula(turnover_type~GeoDist + (1|Site1) + (1|Site2))
+  # Assign the value of 'this_component' to a new variable 'y'.
+  y <- this_component
   
-  #browser()
-  # this error:
-  #Error during wrapup: variable lengths differ (found for 'GeoDist')
-  mod <- do.call(lmer,
-                 list(formula=forms,
-                      data=network_betalink,
-                      REML = FALSE))
-  
-  preds <- predict(mod)
-  
-  
-  spec.turnover.plot <- ggplot(network_betalink, 
-                               aes(x=GeoDist, y=turnover_type)) +
-    geom_point() + 
-    geom_smooth(aes(y=preds, x=GeoDist)) +
-    theme_classic() + 
-    labs(x='Geographic Distance (km)', y=ylabel)
-  
-  spec.turnover.plot
-  
-}
-
-
-yvars <- c("DissimilaritySpeciesComposition",
-           "WholeNetworkLinks",
-           "TurnoverAbsenceMicrobes",
-           "TurnoverAbsencePollinators",
-           "SpeciesTurnoverLinks",
-           "OnlySharedLinks")
-ylabs <- c("Species Turnover", "Interaction Turnover",
-           paste("Species Turnover:", lower.order),
-           paste("Species Turnover:", higher.order),
-           "Interaction Turnover: Species Composition",
-           "Interaction Turnover: Rewiring")
-
-make_turnover_plot(turnover_type = yvars[1], ylabel = ylabs[1], network_betalink = microbe_poll_betalink)
-
-
-
-for (i in length(yvars)){
-  turnover_type <- yvars[i]
-  variable_name <- ylabs[i]
-  this_plot <- make_turnover_plot(turnover_type = turnover_type,
-                                  variable_name = variable_name,
-                                  network_betalink = microbe_poll_betalink)
-}
-
-
-
-
-
-# i = Site1
-# j = Site2
-# S = dissimilarity in species composition
-# OS = dissimilarity explained by rewiring among shared species (only shared)
-# WN = dissimilarity between two networks (whole network)
-# ST = dissimilarity explained by difference in species community composition (species turnover links)
-
-
-# for identical results to poisot 2012 betalink use the following settings:
-#
-#partitioning="poisot", function.dist="betadiver", distofempty="na" and binary=TRUE
-# including the function.dist induces a weird error.... need to figure out still if we want to use this method
-
-#yvars <- c("i", "j", "S", "OS", "WN","ST")
-
-ylabs <- c("TurnoverAbsenceMicrobes",
-           "TurnoverAbsencePollinators",
-           "TurnoverAbsenceBoth",
-           "OnlySharedLinks",
-           "WholeNetworkLinks",
-           "SpeciesTurnoverLinks")
-
-modGeoTurnover <- function(yvars, beta.same.year){
-  this.beta <- as.data.frame(beta.same.year)
-  y <- yvars
+  # Define a formula for linear mixed-effects modeling with 'y' as the response variable,
+  # 'GeoDist' as a fixed effect, and 'Site1' and 'Site2' as random effects.
   forms <- formula(y~GeoDist + (1|Site1) + (1|Site2))
-  #browser()
-  mod <- do.call(lmer,
-                 list(formula=forms,
-                      data=this.beta,
-                      REML = FALSE))
-  eff <- Effect(c("GeoDist"), mod)
-  return(list(mod=mod, eff=eff))
+  
+  # Fit a linear mixed-effects model using the 'lmer' function, providing the formula, data, and specifying REML to be FALSE.
+  mod1 <- do.call(lmer,
+                  list(formula=forms,
+                       data=this_network,
+                       REML = FALSE))
+  
+  # Summarize the model 'mod1'.
+  mod_summary <- summary(mod1)
+  
+  # Compute the significance of the model using ANOVA.
+  model.sig <- anova(mod1)
+  
+  # Check if the p-value from the ANOVA is less than or equal to 0.05 and set the 'ribbon_col' accordingly.
+  if(model.sig$`Pr(>F)` <= 0.05){
+    ribbon_col = '#FFA500'
+  } else {
+    ribbon_col = 'grey80'
+  }
+  
+  # Create a reference grid 'gr1' based on the model, keeping 'GeoDist' as a covariate.
+  gr1 <- ref_grid(mod1, cov.keep= c('GeoDist'))
+  
+  # Compute estimated marginal means (emmeans) for 'GeoDist' at a 95% confidence level and store it in 'emm1'.
+  emm1 <- data.frame(emmeans(gr1, spec= c("GeoDist"), level= 0.95))
+  
+  # Determine the upper bound based on 'emm1' and set it to 1.05 if the upper confidence limit is greater than 1, or 1 otherwise.
+  if(max(emm1$upper.CL) > 1){
+    upper.bound = 1.05
+  } else {
+    upper.bound = 1
+  }
+  
+  # Determine the lower bound based on 'emm1' and set it to -0.10 if the lower confidence limit is less than 0, or 0 otherwise.
+  if(min(emm1$lower.CL) < 0){
+    lower.bound = -0.10
+  } else {
+    lower.bound = 0
+  }
+  # Create a ggplot for plotting the data in 'this_network' with 'GeoDist' on the x-axis and 'this_component' on the y-axis.
+  
+  turnover.plot <- ggplot(this_network, 
+                          aes(x=GeoDist, y=this_component)) +
+    geom_point() + 
+    # Add a ribbon to the plot based on 'emm1' for visualizing confidence intervals.
+    geom_ribbon(data= emm1, aes(ymin= lower.CL, ymax= upper.CL, y= NULL), fill= ribbon_col, alpha=0.5) +
+    # Add a line to the plot based on 'emm1' for the estimated marginal means.
+    geom_line(data= emm1, aes(y= emmean)) +
+    theme_classic() + 
+    labs(x='Geographic Distance (km)', y=label) +
+    # Set the y-axis limits based on the computed lower and upper bounds.
+    scale_y_continuous(limits=c(lower.bound,upper.bound))
+  # Return a list containing the model summary[1] and the generated 'turnover.plot'[2].
+  return(list(mod_summary, turnover.plot))
+  
   
 }
-geo.mods <- lapply(ylabs, modGeoTurnover, microbe_poll_betalink)
-names(geo.mods) <- ylabs
 
-## ******************************************************************
-## calculate different breakdowns of turnover
-## ******************************************************************
+################################################################################
 
 
-# beta.net <- networkBetadiversity(microbe_igraph_list,
-#                                  lower.level=pols,
-#                                  higher.level=microbes,
-#                                  geo.dist=geo.dist,
-#                                  nets.by.SR=nets.by.SR)
+dir.create("figures/microbe_poll", showWarnings = FALSE)
+
+species.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$DissimilaritySpeciesComposition, microbe_poll_betalink, "Species Turnover")
+ggsave(species.turnover[[2]], file="figures/microbe_poll/DissimilaritySpeciesTurnover.pdf", height=4, width=6)
+
+interaction.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkLinks, microbe_poll_betalink, "Interaction Turnover")
+ggsave(interaction.turnover[[2]], file="figures/microbe_poll/DissimilarityInteractionTurnover.pdf", height=4, width=6)
+
+int.turnover.rewiring <- calculate_and_plot_betalinkr(microbe_poll_betalink$OnlySharedLinks, microbe_poll_betalink, "Interaction Turnover: Rewiring")
+ggsave(int.turnover.rewiring[[2]], file="figures/microbe_poll/InteractionDissimilarityRewiring.pdf", height=4, width=6)
+
+int.turnover.species.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$SpeciesTurnoverLinks, microbe_poll_betalink, "Interaction Turnover: Species Turnover")
+ggsave(int.turnover.species.turnover[[2]], file="figures/microbe_poll/InteractionTurnoverSpeciesComp.pdf", height=4, width=6)
+
+sp.turnover.microbes <- calculate_and_plot_betalinkr(microbe_poll_betalink$TurnoverAbsenceMicrobes, microbe_poll_betalink, "Species Turnover: Microbes")
+ggsave(sp.turnover.microbes[[2]], file="figures/microbe_poll/SpeciesTurnoverAbsenceMicrobes.pdf", height=4, width=6)
+
+sp.turnover.bees <- calculate_and_plot_betalinkr(microbe_poll_betalink$TurnoverAbsencePollinators, microbe_poll_betalink, "Species Turnover: Bees")
+ggsave(sp.turnover.bees[[2]], file="figures/microbe_poll/SpeciesTurnoverAbsenceBees.pdf", height=4, width=6)
+
+sp.turnover.both <- calculate_and_plot_betalinkr(microbe_poll_betalink$TurnoverAbsenceBoth, microbe_poll_betalink, "Species Turnover: Both")
+ggsave(sp.turnover.both[[2]], file="figures/microbe_poll/SpeciesTurnoverAbsenceBoth.pdf", height=4, width=6)
+
+diss.whole.network.replace <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkReplaced, microbe_poll_betalink, "Dissimilarity: Whole Network Replacement")
+ggsave(diss.whole.network.replace[[2]], file="figures/microbe_poll/DissimilarityWholeNetReplace.pdf", height=4, width=6)
+
+diss.only.shared.replace <- calculate_and_plot_betalinkr(microbe_poll_betalink$OnlySharedReplaced, microbe_poll_betalink, "Dissimilarity: Only Shared Species Replacement")
+ggsave(diss.only.shared.replace[[2]], file="figures/microbe_poll/DissimilarityOnlySharedReplace.pdf", height=4, width=6)
+
+diss.whole.network.rich.dif <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkRichnessDifference, microbe_poll_betalink, "Dissimilarity: Whole Network Richness Difference")
+ggsave(diss.whole.network.rich.dif[[2]], file="figures/microbe_poll/DissimilarityWholeNetRichDif.pdf", height=4, width=6)
+
+diss.only.shared.rich.dif <- calculate_and_plot_betalinkr(microbe_poll_betalink$OnlySharedRichnessDifference, microbe_poll_betalink, "Dissimilarity: Only Shared Richness Difference")
+ggsave(diss.only.shared.rich.dif[[2]], file="figures/microbe_poll/DissimilarityOnlySharedRichDif.pdf", height=4, width=6)
+
+
+
+# ### facet plots
+# bee_microbe_turnover <- ggarrange(spec.turnover.plot,
+#                                   pollinator.turnover.plot,
+#                                   microbe.turnover.plot,
+#                                   interaction.turnover.plot,
+#                                   int.turnover.spcomp.plot,
+#                                   int.turnover.rewiring.plot,
+#                                   ncol=3, nrow=2)
 # 
-# ## beta.net is formed BUT -- OS, ST, S.lower level, S. higher level, prop ST are induced NaNs
-# # need to examine function more to understand why this is happening
-# # ALSO check geo.dist to make sure the distance between the same sites are zero,
-# # it looks like rn JC, SM, HM, and MM are not 0 distance between themselves :( WHYYYYY
+# bee_microbe_turnover
+# 
+# dir.create("figures")
+# 
+# ggsave(bee_microbe_turnover, file="figures/poll_microbe_betaComponents.pdf",
+#        height=8, width=11)
+# 
+# # Assign the value of 'this_component' to a new variable 'y'.
+# y <- microbe_poll_betalink$OnlySharedLinks
+# y2 <- microbe_poll_betalink$SpeciesTurnoverLinks
+# 
+# # Define a formula for linear mixed-effects modeling with 'y' as the response variable,
+# # 'GeoDist' as a fixed effect, and 'Site1' and 'Site2' as random effects.
+# forms <- formula(y~GeoDist + (1|Site1) + (1|Site2))
+# forms2 <- formula(y2~GeoDist + (1|Site1) + (1|Site2))
+# 
+# # Fit a linear mixed-effects model using the 'lmer' function, providing the formula, data, and specifying REML to be FALSE.
+# mod2 <- do.call(lmer,
+#                 list(formula=forms2,
+#                      data=microbe_poll_betalink,
+#                      REML = FALSE))
+# mod1 <- do.call(lmer,
+#                 list(formula=forms,
+#                      data=microbe_poll_betalink,
+#                      REML = FALSE))
+# 
+# # Summarize the model 'mod1'.
+# mod_summary1 <- summary(mod1)
+# mod_summary2 <- summary(mod2)
+# 
+# # Compute the significance of the model using ANOVA.
+# model.sig1 <- anova(mod1)
+# model.sig2 <- anova(mod2)
+# 
+# # Check if the p-value from the ANOVA is less than or equal to 0.05 and set the 'ribbon_col' accordingly.
+# if(model.sig2$`Pr(>F)` <= 0.05){
+#   ribbon_col2 = '#FFA500'
+# } else {
+#   ribbon_col2 = 'grey80'
+# }
+# 
+# if(model.sig1$`Pr(>F)` <= 0.05){
+#   ribbon_col1 = '#FFA500'
+# } else {
+#   ribbon_col1 = 'grey80'
+# }
+# 
+# # Create a reference grid 'gr1' based on the model, keeping 'GeoDist' as a covariate.
+# gr2 <- ref_grid(mod2, cov.keep= c('GeoDist'))
+# gr1 <- ref_grid(mod1, cov.keep= c('GeoDist'))
+# 
+# # Compute estimated marginal means (emmeans) for 'GeoDist' at a 95% confidence level and store it in 'emm1'.
+# emm2 <- data.frame(emmeans(gr2, spec= c("GeoDist"), level= 0.95))
+# emm1 <- data.frame(emmeans(gr1, spec= c("GeoDist"), level= 0.95))
+# 
+# # Determine the upper bound based on 'emm1' and set it to 1.05 if the upper confidence limit is greater than 1, or 1 otherwise.
+# if(max(emm1$upper.CL) > 1){
+#   upper.bound1 = 1.05
+# } else {
+#   upper.bound1 = 1
+# }
+# 
+# if(max(emm2$upper.CL) > 1){
+#   upper.bound2 = 1.05
+# } else {
+#   upper.bound2 = 1
+# }
 # 
 # 
-# ## turnover though time
-# # beta.same.site <- beta.net[apply(beta.net, 1,
-# #                                  function(x) x["Site1"] ==
-# #                                              x["Site2"] &
-# #                                              x["Year1"] !=
-# #                                              x["Year2"]),]
-# ## turnover through space
-# beta.same.year <- beta.net[apply(beta.net, 1,
-#                                  function(x) x["Year1"] ==
-#                                              x["Year2"] &
-#                                              x["Site1"] !=
-#                                              x["Site2"]),]
-# ## ## turnover though time within a year
-# beta.same.site.year <- beta.net[apply(beta.net, 1,
-#                                       function(x) x["Site1"] ==
-#                                                   x["Site2"] &
-#                                                   x["Year1"] ==
-#                                                   x["Year2"]),]
-
-#### still only one year of microbe data so not an issue yet
-
-## ******************************************************************
-## plotting/models
-## ******************************************************************
-## Bs: Dissimilarity in the species composition of communities
-## Bwn: Dissimilarity of interactions
-## Bos: Dissimilarity of interactions established between species
-## common to both realisations
-## Bst: Dissimilarity of interactions due to species turnover
-## ProbST: Bst/wn: Dissimilarity of interactions due to species turnover
-
-yvars <- c("S", "WN", "S_lower.level", "S_higher.level", "PropST",
-           "OS")
-
-ylabs <- c("Species Turnover", "Interaction Turnover",
-           paste("Species Turnover:", species),
-           "Interaction Turnover: Species Composition",
-           "Interaction Turnover: Rewiring")
-
-
-modGeoTurnover <- function(yvars, beta.same.year){
-    this.beta <- beta.same.year
-    colnames(this.beta)[colnames(this.beta) == yvars] <- "y"
-    forms <- formula(y~scale(GeoDist) + (1|Site1) + (1|Site2))
-    mod <- do.call(lmer,
-                   list(formula=forms,
-                        data=this.beta,
-                        REML = FALSE))
-    eff <- Effect(c("GeoDist"), mod)
-    return(list(mod=mod, eff=eff))
-
-}
-geo.mods <- lapply(yvars, modGeoTurnover, beta.same.year)
-names(geo.mods) <- yvars
-
-lapply(geo.mods, function(x) summary(x$mod))
-
-source("src/distPlotting.R")
-plotDists()
-
-
-save(beta.same.site, beta.same.year, beta.same.site.year, geo.mods,
-     file=sprintf("saved/Beta%s%s.Rdata", net.type,
-                  paste(species, collapse="")
-                  ))
+# # Determine the lower bound based on 'emm1' and set it to -0.10 if the lower confidence limit is less than 0, or 0 otherwise.
+# if(min(emm1$lower.CL) < 0){
+#   lower.bound1 = -0.10
+# } else {
+#   lower.bound1 = 0
+# }
+# 
+# if(min(emm2$lower.CL) < 0){
+#   lower.bound2 = -0.10
+# } else {
+#   lower.bound2 = 0
+# }
+# # Create a ggplot for plotting the data in 'this_network' with 'GeoDist' on the x-axis and 'this_component' on the y-axis.
+# 
+# turnover.plot <- ggplot(microbe_poll_betalink, 
+#                         aes(x=GeoDist, y=OnlySharedLinks)) +
+#   geom_point() + 
+#   # Add a ribbon to the plot based on 'emm1' for visualizing confidence intervals.
+#   geom_ribbon(data= emm1, aes(ymin= lower.CL, ymax= upper.CL, y= NULL), fill= ribbon_col1, alpha=0.5) +
+#   # Add a line to the plot based on 'emm1' for the estimated marginal means.
+#   geom_line(data= emm1, aes(y= emmean)) +
+#   theme_classic() + 
+#   geom_point(aes(x=GeoDist, y=SpeciesTurnoverLinks), pch=1) +
+#   # Add a ribbon to the plot based on 'emm1' for visualizing confidence intervals.
+#   geom_ribbon(data= emm2, aes(ymin= lower.CL, ymax= upper.CL, y= NULL), fill= ribbon_col2, alpha=0.5) +
+#   geom_line(data= emm2, aes(y= emmean)) +
+#   labs(x='Geographic Distance (km)', y="Network Dissimilarity") +
+#   # Set the y-axis limits based on the computed lower and upper bounds.
+#   scale_y_continuous(limits=c(lower.bound2,upper.bound1))
+# 
+# turnover.plot
