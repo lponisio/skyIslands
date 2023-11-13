@@ -317,6 +317,7 @@ tree.rbcl$tip.label  <-  feature.2.tax.rbcl$Taxon[match(tree.rbcl$tip.label,
 ## spec already includes parasite data
 load('../skyIslands/data/spec_net.Rdata')
 
+
 indiv.comm.rbcl <- as.data.frame(merged.comm.rbcl)
 pollen <- colnames(indiv.comm.rbcl)
 indiv.comm.rbcl$UniqueID <- rownames(indiv.comm.rbcl)
@@ -334,7 +335,8 @@ spec.net <-cbind(spec.net, indiv.comm.rbcl[, pollen][match(spec.net$UniqueID,
                            indiv.comm.rbcl$UniqueID),])
 
 
-
+#drop duplicate sampleIDs
+spec.net <- spec.net[!duplicated(spec.net$UniqueID),]
   
 save(spec.net, file= "../skyIslands/data/spec_RBCL_16s.Rdata")
 
