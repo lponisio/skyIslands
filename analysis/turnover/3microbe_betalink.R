@@ -3,7 +3,7 @@ setwd('~/Dropbox (University of Oregon)/skyIslands/') ## Rebecca wd
 
 rm(list=ls())
 setwd("analysis/turnover")
-source("src/initialize.R")
+#source("src/initialize.R")
 source("src/chao.R")
 source("src/betaNet.R")
 library(ggplot2)
@@ -14,6 +14,9 @@ library(ggpubr)
 library(emmeans)
 
 load("C:/Users/rah10/Dropbox (University of Oregon)/skyIslands/data/networks/microNets.RData")
+
+load("C:/Users/rah10/Dropbox (University of Oregon)/skyIslands/data/spec_RBCL_16s.RData")
+
 
 
 ##adapted from Lauren's 1betalink in skyIslands folder
@@ -27,6 +30,7 @@ HM <- spNet_micro$HM
 JC <- spNet_micro$JC
 MM <- spNet_micro$MM 
 PL <- spNet_micro$PL
+RP <- spNet_micro$RP
 SC <- spNet_micro$SC 
 SM <- spNet_micro$SM
 
@@ -34,7 +38,7 @@ lower.order <- "Microbes"
 higher.order <- "Pollinators"
 
 
-microbe_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, SM, SC),
+microbe_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, RP, SM, SC),
                                          partitioning="commondenom", binary=TRUE, distofempty='zero', partition.st=TRUE, partition.rr=TRUE)
 
 #View(microbe_poll_betalink)
@@ -152,7 +156,7 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label){
 
 ################################################################################
 
-
+dir.create("figures", showWarnings = FALSE)
 dir.create("figures/microbe_poll", showWarnings = FALSE)
 
 species.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$DissimilaritySpeciesComposition, microbe_poll_betalink, "Species Turnover")
