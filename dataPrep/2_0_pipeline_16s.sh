@@ -222,7 +222,7 @@ qiime taxa filter-table --i-table table-combined-f1.qza --i-taxonomy combined-ta
 qiime taxa barplot --i-table table-combined-f2.qza --i-taxonomy combined-taxonomy.qza --m-metadata-file maps/combined-map-2018-2021.txt --o-visualization taxa-bar-plots-combined-f2.qzv
 
 #2021 controls
-qiime taxa filter-table --i-table table-combined-f2.qza --i-taxonomy combined-taxonomy.qza --p-mode exact --p-exclude "d__Bacteria;p__Proteobacteria;c__Alphaproteobacteria;o__Rhizobiales;f__Xanthobacteraceae;g__Bradyrhizobium",\
+qiime taxa filter-table --i-table table-combined-f2.qza --i-taxonomy combined-taxonomy.qza --p-mode exact --p-exclude "d__Bacteria;p__Proteobacteria;c__Alphaproteobacteria;o__Rhizobiales;f__Xanthobacteraceae;g__Bradyrhizobium;__",\
 "d__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Burkholderiales;f__Comamonadaceae",\
 "d__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Burkholderiales;f__Comamonadaceae;g__Acidovorax",\
 "d__Bacteria;p__Fusobacteriota;c__Fusobacteriia;o__Fusobacteriales;f__Fusobacteriaceae;g__Fusobacterium",\
@@ -233,9 +233,13 @@ qiime taxa filter-table --i-table table-combined-f2.qza --i-taxonomy combined-ta
 
 qiime taxa barplot --i-table table-combined-f3.qza --i-taxonomy combined-taxonomy.qza --m-metadata-file maps/combined-map-2018-2021.txt --o-visualization taxa-bar-plots-combined-f3.qzv
 
-#made it here
+#Filter out controls by making new map file excluding controls
+qiime feature-table filter-samples --i-table table-combined-f3.qza --m-metadata-file maps/combined-map-2018-2021-noCtrl.txt --o-filtered-table table-combined-f4.qza
 
+#now need to filter the rep-seqs FeatureTable[sequence] to the updated fitered FeatureTable[frequency]
 
+qiime feature-table filter-seqs --i-data rep-seqs-16s-filtered-combined.qza --i-table table-combined-f4.qza --o-filtered-data rep-seqs-16s-final-filter.qza
+  
 ### ************************************************************************
 ## 3. #GENERATE TREE FOR PHYLOGENETIC DIVERSITY ANALYSES
 ### ************************************************************************
@@ -243,17 +247,17 @@ qiime taxa barplot --i-table table-combined-f3.qza --i-taxonomy combined-taxonom
 # generate a tree with the merged data
 
 #Now alignment of the reads using MAFFT.
-qiime alignment mafft --i-sequences rep-seqs-16s-filtered.qza --o-alignment aligned_repseqs16s.qza
+qiime alignment mafft --i-sequences rep-seqs-16s-final-filter.qza --o-alignment aligned_repseqs16s-combined.qza
 
 #Then filter out the unconserved, highly gapped columns from alignment
-qiime alignment mask --i-alignment aligned_repseqs16s.qza --o-masked-alignment masked_aligned_repseqs16s.qza
+qiime alignment mask --i-alignment aligned_repseqs16s-combined.qza --o-masked-alignment masked_aligned_repseqs16s-combined.qza
 
 #And make a tree with Fasttree which creates a maximum likelihood phylogenetic trees from aligned sequences
 #for more information on fastree, http://www.microbesonline.org/fasttree/
-qiime phylogeny fasttree --i-alignment masked_aligned_repseqs16s.qza --o-tree unrooted_tree16s.qza
+qiime phylogeny fasttree --i-alignment masked_aligned_repseqs16s-combined.qza --o-tree unrooted_tree16s-combined.qza
 
 #now root it
-qiime phylogeny midpoint-root --i-tree unrooted_tree16s.qza --o-rooted-tree rooted-tree16s.qza
+qiime phylogeny midpoint-root --i-tree unrooted_tree16s-combined.qza --o-rooted-tree rooted-tree16s-combined.qza
 
 ### *************************************************************************
 ## 4. SPLIT MERGED DATA TO CONTINUE CLEANING
