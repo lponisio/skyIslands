@@ -15,6 +15,7 @@ setwd(wdpath)
 
 library(tidyverse)
 library(ggVennDiagram)
+library(gt)
 devtools::install_github("jbisanz/qiime2R")
 library(qiime2R)
 
@@ -84,8 +85,18 @@ shared_table_data <- spec16s %>%
   parse_taxonomy() %>%
   mutate(Kingdom = str_replace_all(Kingdom, 'd__', '')) %>%
   arrange(Phylum, Class, Order, Family, Genus, Species) %>%
+  mutate(Genus = str_replace_all(Genus, '_', ' ')) %>%
+  mutate(Species = str_replace_all(Species, '_', ' ')) %>%
+  #mutate(which_genera = 'Shared Among All') %>%
   as_tibble()
-  
+
+gt_shared <- gt(shared_table_data) %>%
+  sub_missing(columns=1:7, missing_text = '') %>%
+  tab_row_group(label = 'Present in all genera',
+                rows=1:31)
+
+
+gt_shared 
 
 # relabund.dat <- read.csv('spec_RBCL_16s.csv') %>%
 #   filter(Apidae == 1) %>%
