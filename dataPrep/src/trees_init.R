@@ -35,7 +35,7 @@ spec16s <- read.csv('spec_RBCL_16s.csv') %>%
 names(spec16s) <- gsub(x = names(spec16s), pattern = "X1", replacement = "1")  
 names(spec16s) <- gsub(x = names(spec16s), pattern = "RBCL.", replacement = "RBCL:")  
 
-meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'Sex', 'Site', 'Meadow')
+meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'GenusSpecies', 'Sex', 'Site', 'Meadow')
 
 # meta <- spec16s %>%
 #   select(all_of(meta_cols), Apidae, starts_with('16s')) %>%
