@@ -1,21 +1,17 @@
 
 ## tutorial: https://bioconductor.org/packages/devel/bioc/vignettes/ggtreeExtra/inst/doc/ggtreeExtra.html
-#rm(list=ls())
+rm(list=ls())
 
 #####
 setwd('~/Dropbox (University of Oregon)/skyIslands/')
 
 
-src('dataPrep/src/trees_init.R')
-load('data/presAbsTable.Rdata')
-load('data/spec_RBCL_16s.Rdata')
-load('data/physeq16s.Rdata')
+source('dataPrep/src/trees_init.R')
+load('presAbsTable.Rdata')
+load('spec_RBCL_16s.Rdata')
+load('physeq16s.Rdata')
 ##import community presence/absence file
-setwd("../skyIslands_saved")
-
-meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'GenusSpecies', 'Sex', 'Site', 'Meadow')
-
-
+setwd("../../skyIslands_saved")
 
 
 
@@ -238,53 +234,58 @@ comm_presabs <- tibble::rownames_to_column(comm_presabs, "UniqueID") #make rowna
 apis_tree2 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis mellifera", comm_presabs, apis_sites, all_levels=TRUE, do_collapse = TRUE)
 apis_tree2
 # 
-# apis_tree_drop6 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", comm_presabs, apis_sites, all_levels=FALSE, levels_to_drop='D_6', do_collapse=TRUE, tree.type='16s')
-# apis_tree_drop6
+apis_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis mellifera", comm_presabs, apis_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse=TRUE)
+apis_tree_drop_s
 # 
-# apis_tree_drop5 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", comm_presabs, apis_sites, all_levels=FALSE, levels_to_drop=c('D_6', 'D_5'), do_collapse = TRUE, tree.type='16s')
-# apis_tree_drop5
+apis_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis mellifera", comm_presabs, apis_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
+apis_tree_drop_g
 
 
 
-#bombus
-bombus_tree <- phylotree_heatmap_byGenus(physeqRBCLR0, meta, "Bombus", comm_presabs, bombus_sites, do_collapse = TRUE)
-bombus_tree
+#bombus centralis
+centralis_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus centralis", comm_presabs, bombus_sites, do_collapse = TRUE)
+centralis_tree
 
-bombus_tree_drop6 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop='D_6', do_collapse = TRUE)
-bombus_tree_drop6
+centralis_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus centralis", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
+centralis_tree_drop_s
 
-bombus_tree_drop5 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c('D_6', 'D_5'), do_collapse = TRUE)
-bombus_tree_drop5
+centralis_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus centralis", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
+centralis_tree_drop_g
+
+#bombus huntii
+huntii_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus huntii", comm_presabs, bombus_sites, do_collapse = TRUE)
+huntii_tree
+
+huntii_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus huntii", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
+huntii_tree_drop_s
+
+huntii_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus huntii", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
+huntii_tree_drop_g
+
+#bombus bifarius -- only found at one site!
+# bifarius_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus bifarius", comm_presabs, bombus_sites, do_collapse = TRUE)
+# bifarius_tree
+#
+# bifarius_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus bifarius", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
+# bifarius_tree_drop_s
+#
+# bifarius_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus bifarius", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
+# bifarius_tree_drop_g
 
 
+# melissodes confusus
+melissodes_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes confusus", comm_presabs, bombus_sites, do_collapse = TRUE)
+melissodes_tree
 
-#anthophora
+melissodes_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes confusus", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
+melissodes_tree_drop_s
 
-anthophora_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Anthophora",comm_presabs, anthophora_sites, do_collapse = TRUE)
-anthophora_tree
+melissodes_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes confusus", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
+melissodes_tree_drop_g
 
-anthophora_tree_drop6 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Anthophora", comm_presabs, anthophora_sites, all_levels=FALSE, levels_to_drop='D_6', do_collapse = TRUE)
-anthophora_tree_drop6
-
-anthophora_tree_drop5 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Anthophora", comm_presabs, anthophora_sites, all_levels=FALSE, levels_to_drop=c('D_6', 'D_5'), do_collapse = TRUE)
-anthophora_tree_drop5
-
-
-#megachile
-
-megachile_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Megachile", comm_presabs, megachile_sites, do_collapse = TRUE)
-megachile_tree
-
-megachile_tree_drop6 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Megachile", comm_presabs, megachile_sites, all_levels=FALSE, levels_to_drop='D_6', do_collapse = TRUE)
-megachile_tree_drop6
-
-megachile_tree_drop5 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Megachile", comm_presabs, megachile_sites, all_levels=FALSE, levels_to_drop=c('D_6', 'D_5'), do_collapse = TRUE)
-megachile_tree_drop5
-
-##########################
-
-### now do the same with RBCL networks
-
+#now i think i want to add tip colors that signify whether that taxa was found in all genera/only that genus
+#do we want something about how many individuals that strain was in?
+#maybe size of tip shape?
 
 ##########################
 
