@@ -9,132 +9,24 @@
 ## so 7 sites and four bee genera (rows will be site and cols will be genus)
 ## colored by ASV (family probs)
 ## maybe will have to subet to each genus then facet only by site but we will see
-
-wdpath <- 'C:/Users/rah10/Dropbox (University of Oregon)/PonisioLocal/skyIslands'
+rm(list=ls())
+wdpath <- 'C:/Users/rah10/Dropbox (University of Oregon)/skyIslands'
 setwd(wdpath)
 
 library(tidyverse)
-
-
-relabund.dat <- read.csv('spec_RBCL_16s.csv') %>%
-  filter(Apidae == 1) %>%
-  select(UniqueID, Site, Genus, starts_with('X16s')) %>%
-  na.omit() %>%
-  pivot_longer(-c(UniqueID, Site, Genus), names_to = 'Bacteria', values_to = 'Abundance') %>% 
-  mutate(Site = factor(Site, levels=c("JC", ## ordered by latitude north to south
-                                      "SM",
-                                      "SC",
-                                      "MM",
-                                      "HM",
-                                      "PL",
-                                      "CH")))
-
-# #change the column names to just include the bacteria family
-relabund.dat$Bacteria <- gsub(".*D_4__","",relabund.dat$Bacteria)#remove all of the column name before and up to D_4__
-relabund.dat$Bacteria <- gsub('\\.D_5__.*',"",relabund.dat$Bacteria) #remove everything after D_5__ to isolate just the bacteria family
-
-# #change the column names to just include the bacteria order
-# relabund.dat$Bacteria <- gsub(".*D_3__","",relabund.dat$Bacteria)#remove all of the column name before and up to D_4__
-# relabund.dat$Bacteria <- gsub('\\.D_4__.*',"",relabund.dat$Bacteria) #remove everything after D_5__ to isolate just the bacteria family
-
-## some issues with resolution: for now to get around this i am filtering out samples that included anything that was not resolved to family
-
-library(randomcoloR)
-
-relabund.dat.clean <- relabund.dat %>%
-  filter(!grepl('X16s', Bacteria)) %>%
-  filter(Genus != 'Agapostemon') %>%
-  filter(Abundance > 0.01) ## too many groups -- decide what is the cutoff to show on relabund bars
-
-
-## commenting out because found a palette i kinda liked 
-# n <- length(unique(relabund.dat.clean$Bacteria))
-# palette <- distinctColorPalette(n)
-# strains <- unique(relabund.dat.clean$Bacteria)
-
-
-#now need to export palette 
-#color_dict <- data.frame(palette, strains)
-
-#write.csv(color_dict, "CustomPalette.csv", row.names=FALSE)
-
-## import color dict
-
-color_dict <- read.csv('CustomPalette.csv')
-
-
-## good enough for now probs
-
-## now to make prelim plot
-
-# relabund.dat.clean %>%
-#   ggplot(aes(x=UniqueID, y=Abundance)) +
-#   geom_bar(aes(fill=Bacteria), stat='identity', position='fill') +
-#   facet_grid(rows=vars(relabund.dat.clean$Site), cols=vars(relabund.dat.clean$Genus))
-
-## yuck :( okay needs to do each genus separately
-
-plot_genus_by_site_relabund <- function(data, genus){
-  
-  genus_subset <- data %>%
-    filter(Genus == genus) %>%
-    arrange(Bacteria)
-  
-  these_colors <- color_dict %>%
-    filter(strains %in% genus_subset$Bacteria) %>%
-    arrange(strains)
-  
-  ggplot(data=genus_subset, aes(x=UniqueID, y=Abundance)) +
-    geom_bar(aes(fill=Bacteria), stat='identity', position='fill', width=1) +
-    facet_grid(~Site, scales='free_x', space='free_x') +
-    theme_classic() +
-    theme(axis.text.x=element_blank(),
-          #axis.ticks.x=element_blank(),
-          axis.text.y = element_text(color = "black")) +
-    scale_fill_manual(values=as.vector(these_colors$palette), name = "Bacteria Family") + 
-    labs(x='Individuals', y='Relative Abundance')
-}
-
-apis_plot <- plot_genus_by_site_relabund(relabund.dat.clean, 'Apis')
-apis_plot
-
-bombus_plot <- plot_genus_by_site_relabund(relabund.dat.clean, 'Bombus')
-bombus_plot
-
-anthophora_plot <- plot_genus_by_site_relabund(relabund.dat.clean, 'Anthophora')
-anthophora_plot
-
-megachile_plot <- plot_genus_by_site_relabund(relabund.dat.clean, 'Megachile')
-megachile_plot
-
-## lets see how they look combined 
-library(ggpubr)
-
-ggarrange(
-  apis_plot, 
-  bombus_plot,
-  anthophora_plot,
-  megachile_plot,
-  labels = c("Ap", "B", "An", "M"),
-  common.legend = FALSE, legend = "bottom"
-)
-
-
-## venn diagram
 library(ggVennDiagram)
+devtools::install_github("jbisanz/qiime2R")
+library(qiime2R)
 
-spec16s <- read.csv('spec_RBCL_16s.csv') %>%
+load("data/spec_RBCL_16s.Rdata")
+
+spec16s <- spec.net %>%
   filter(Apidae == 1) %>%
-  select(UniqueID, Site, Genus, starts_with('X16s')) %>%
+  select(UniqueID, Site, Genus, GenusSpecies, starts_with('16s')) %>%
   na.omit() %>%
-  pivot_longer(-c(UniqueID, Site, Genus), names_to = 'Bacteria', values_to = 'Abundance') %>% 
-  mutate(Site = factor(Site, levels=c("JC", ## ordered by latitude north to south
-                                      "SM",
-                                      "SC",
-                                      "MM",
-                                      "HM",
-                                      "PL",
-                                      "CH")))
+  pivot_longer(-c(UniqueID, Site, Genus, GenusSpecies), names_to = 'Bacteria', values_to = 'Abundance')
+     
+  
 
 genus_filter <- function(dataframe, genus){
   new_df <- dataframe %>%
@@ -148,16 +40,170 @@ apis_subset <- genus_filter(spec16s, 'Apis')
 bombus_subset <- genus_filter(spec16s, 'Bombus')
 anthophora_subset <- genus_filter(spec16s, 'Anthophora')
 megachile_subset <- genus_filter(spec16s, 'Megachile')
+melissodes_subset <- genus_filter(spec16s, 'Melissodes')
 
 
 venn_data <- list(Anthophora = anthophora_subset,
                   Apis = apis_subset,
                   Bombus = bombus_subset,
-                  Megachile = megachile_subset)
+                  Megachile = megachile_subset,
+                  Melissodes = melissodes_subset)
 
 ggVennDiagram(venn_data,
-              edge_size = 50,
-              label_alpha = 0.5,
-              set_color = plasma(4)) + 
-  scale_color_manual(values = plasma(4)) +
-  scale_fill_gradient(low="white",high = "black")
+              label_alpha = 0.5) + 
+  scale_color_manual(values = plasma(5)) +
+  scale_fill_gradient(low="white",high = "black") +
+  scale_x_continuous(expand = expansion(mult = .2))
+
+intersection_vals <- process_region_data(Venn(venn_data))
+
+shared_otus_all <- unlist(intersection_vals$item[intersection_vals$id == '12345'])
+
+bombus_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Bombus'])
+
+apis_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Apis'])
+
+megachile_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Megachile'])
+
+melissodes_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Melissodes'])
+
+anthophora_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Anthophora'])
+
+
+#now making a nice table to show the shared OTUs between all genera
+shared_table_data <- spec16s %>%
+  filter(Bacteria %in% shared_otus_all) %>%
+  select(UniqueID, Bacteria, Abundance) %>%
+  filter(Abundance > 0) %>%
+  filter(!duplicated(Bacteria)) %>%
+  select(-Abundance) %>%
+  mutate(Feature.ID = row_number()) %>%
+  mutate(Taxon = Bacteria) %>%
+  select(-c(Bacteria, UniqueID)) %>%
+  mutate(Taxon = str_replace_all(Taxon, '16s:', '')) %>%
+  parse_taxonomy() %>%
+  mutate(Kingdom = str_replace_all(Kingdom, 'd__', '')) %>%
+  arrange(Phylum, Class, Order, Family, Genus, Species) %>%
+  as_tibble()
+  
+
+# relabund.dat <- read.csv('spec_RBCL_16s.csv') %>%
+#   filter(Apidae == 1) %>%
+#   select(UniqueID, Site, Genus, starts_with('X16s')) %>%
+#   na.omit() %>%
+#   pivot_longer(-c(UniqueID, Site, Genus), names_to = 'Bacteria', values_to = 'Abundance') %>% 
+#   mutate(Site = factor(Site, levels=c("JC", ## ordered by latitude north to south
+#                                       "SM",
+#                                       "SC",
+#                                       "MM",
+#                                       "HM",
+#                                       "PL",
+#                                       "CH")))
+# 
+# # #change the column names to just include the bacteria family
+# relabund.dat$Bacteria <- gsub(".*D_4__","",relabund.dat$Bacteria)#remove all of the column name before and up to D_4__
+# relabund.dat$Bacteria <- gsub('\\.D_5__.*',"",relabund.dat$Bacteria) #remove everything after D_5__ to isolate just the bacteria family
+# 
+# # #change the column names to just include the bacteria order
+# # relabund.dat$Bacteria <- gsub(".*D_3__","",relabund.dat$Bacteria)#remove all of the column name before and up to D_4__
+# # relabund.dat$Bacteria <- gsub('\\.D_4__.*',"",relabund.dat$Bacteria) #remove everything after D_5__ to isolate just the bacteria family
+# 
+# ## some issues with resolution: for now to get around this i am filtering out samples that included anything that was not resolved to family
+# 
+# library(randomcoloR)
+# 
+# relabund.dat.clean <- relabund.dat %>%
+#   filter(!grepl('X16s', Bacteria)) %>%
+#   filter(Genus != 'Agapostemon') %>%
+#   filter(Abundance > 0.01) ## too many groups -- decide what is the cutoff to show on relabund bars
+# 
+# 
+# ## commenting out because found a palette i kinda liked 
+# # n <- length(unique(relabund.dat.clean$Bacteria))
+# # palette <- distinctColorPalette(n)
+# # strains <- unique(relabund.dat.clean$Bacteria)
+# 
+# 
+# #now need to export palette 
+# #color_dict <- data.frame(palette, strains)
+# 
+# #write.csv(color_dict, "CustomPalette.csv", row.names=FALSE)
+# 
+# ## import color dict
+# 
+# color_dict <- read.csv('CustomPalette.csv')
+# 
+# 
+# ## good enough for now probs
+# 
+# ## now to make prelim plot
+# 
+# # relabund.dat.clean %>%
+# #   ggplot(aes(x=UniqueID, y=Abundance)) +
+# #   geom_bar(aes(fill=Bacteria), stat='identity', position='fill') +
+# #   facet_grid(rows=vars(relabund.dat.clean$Site), cols=vars(relabund.dat.clean$Genus))
+# 
+# ## yuck :( okay needs to do each genus separately
+# 
+# plot_genus_by_site_relabund <- function(data, genus){
+#   
+#   genus_subset <- data %>%
+#     filter(Genus == genus) %>%
+#     arrange(Bacteria)
+#   
+#   these_colors <- color_dict %>%
+#     filter(strains %in% genus_subset$Bacteria) %>%
+#     arrange(strains)
+#   
+#   ggplot(data=genus_subset, aes(x=UniqueID, y=Abundance)) +
+#     geom_bar(aes(fill=Bacteria), stat='identity', position='fill', width=1) +
+#     facet_grid(~Site, scales='free_x', space='free_x') +
+#     theme_classic() +
+#     theme(axis.text.x=element_blank(),
+#           #axis.ticks.x=element_blank(),
+#           axis.text.y = element_text(color = "black")) +
+#     scale_fill_manual(values=as.vector(these_colors$palette), name = "Bacteria Family") + 
+#     labs(x='Individuals', y='Relative Abundance')
+# }
+# 
+# apis_plot <- plot_genus_by_site_relabund(relabund.dat.clean, 'Apis')
+# apis_plot
+# 
+# bombus_plot <- plot_genus_by_site_relabund(relabund.dat.clean, 'Bombus')
+# bombus_plot
+# 
+# anthophora_plot <- plot_genus_by_site_relabund(relabund.dat.clean, 'Anthophora')
+# anthophora_plot
+# 
+# megachile_plot <- plot_genus_by_site_relabund(relabund.dat.clean, 'Megachile')
+# megachile_plot
+# 
+# ## lets see how they look combined 
+# library(ggpubr)
+# 
+# ggarrange(
+#   apis_plot, 
+#   bombus_plot,
+#   anthophora_plot,
+#   megachile_plot,
+#   labels = c("Ap", "B", "An", "M"),
+#   common.legend = FALSE, legend = "bottom"
+# )
+# 
+# 
+# ## venn diagram
+# library(ggVennDiagram)
+# 
+# spec16s <- read.csv('spec_RBCL_16s.csv') %>%
+#   filter(Apidae == 1) %>%
+#   select(UniqueID, Site, Genus, starts_with('X16s')) %>%
+#   na.omit() %>%
+#   pivot_longer(-c(UniqueID, Site, Genus), names_to = 'Bacteria', values_to = 'Abundance') %>% 
+#   mutate(Site = factor(Site, levels=c("JC", ## ordered by latitude north to south
+#                                       "SM",
+#                                       "SC",
+#                                       "MM",
+#                                       "HM",
+#                                       "PL",
+#                                       "CH")))
+
