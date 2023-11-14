@@ -59,6 +59,8 @@ physeq16sR0 <- qza_to_phyloseq(
     metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/maps/combined-map-2018-2021.txt"
 )
 
+save(physeq16sR0, file= "../skyIslands/data/physeq16s.Rdata")
+
 #physeq16sR0
 ## plot(physeq16sR0@phy_tree, show.tip.label = FALSE)
 
@@ -103,6 +105,8 @@ indiv.comm.16sR0 <-
     bipartite::empty(catchDups(makeComm(taxonomy16sR0,
                                         feature.2.tax.16s)))
 indiv.comm.16sR0 <- indiv.comm.16sR0/rowSums(indiv.comm.16sR0)
+
+save(indiv.comm.16sR0, file= "../skyIslands/data/presAbsTable.Rdata")
 
 bees.16s <- c(rownames(indiv.comm.16sR0))
 
