@@ -23,8 +23,7 @@ load("C:/Users/rah10/Dropbox (University of Oregon)/skyIslands/data/spec_RBCL_16
 
 
 
-####################### must use functions from bipartite bc betalink package is depreciated
-
+#### species level networks
 CH <- spNet_micro$CH
 HM <- spNet_micro$HM
 JC <- spNet_micro$JC
@@ -131,7 +130,7 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label){
   
   # Determine the lower bound based on 'emm1' and set it to -0.10 if the lower confidence limit is less than 0, or 0 otherwise.
   if(min(emm1$lower.CL) < 0){
-    lower.bound = -0.10
+    lower.bound = -0.15
   } else {
     lower.bound = 0
   }
@@ -303,3 +302,86 @@ ggsave(diss.only.shared.rich.dif[[2]], file="figures/microbe_poll/DissimilarityO
 #   scale_y_continuous(limits=c(lower.bound2,upper.bound1))
 # 
 # turnover.plot
+
+
+
+########## 11-14-23 trying individual species turnover
+#### species level networks
+
+this.species <- 'Apis mellifera'
+
+species.indiv.ids <- spec.net %>%
+  filter(Apidae == 1) %>%
+  select(UniqueID, GenusSpecies) %>%
+  filter(GenusSpecies == this.species) %>%
+  select(UniqueID)
+
+CH <- indivNet_micro$CH 
+CH <- CH[,colnames(CH) %in% species.indiv.ids$UniqueID]
+
+HM <- indivNet_micro$HM
+HM <- HM[,colnames(HM) %in% species.indiv.ids$UniqueID]
+
+JC <- indivNet_micro$JC
+JC <- JC[,colnames(JC) %in% species.indiv.ids$UniqueID]
+
+MM <- indivNet_micro$MM 
+MM <- MM[,colnames(MM) %in% species.indiv.ids$UniqueID]
+
+PL <- indivNet_micro$PL
+PL <- PL[,colnames(PL) %in% species.indiv.ids$UniqueID]
+
+RP <- indivNet_micro$RP
+RP <- RP[,colnames(RP) %in% species.indiv.ids$UniqueID]
+
+SC <- indivNet_micro$SC 
+SC <- SC[,colnames(SC) %in% species.indiv.ids$UniqueID]
+
+SM <- indivNet_micro$SM
+SM <- SM[,colnames(SM) %in% species.indiv.ids$UniqueID]
+
+lower.order <- "Microbes"
+higher.order <- "Pollinators"
+
+
+microbe_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, RP, SM, SC),
+                                         partitioning="commondenom", binary=TRUE, distofempty='zero', partition.st=TRUE, partition.rr=TRUE)
+
+View(microbe_poll_betalink)
+
+colnames(microbe_poll_betalink) <- c("Site1",
+                                     "Site2",
+                                     "DissimilaritySpeciesComposition",
+                                     "OnlySharedLinks",
+                                     "WholeNetworkLinks",
+                                     "SpeciesTurnoverLinks",
+                                     paste("TurnoverAbsence",lower.order,sep=""),
+                                     paste("TurnoverAbsence",higher.order,sep=""),
+                                     "TurnoverAbsenceBoth",
+                                     "WholeNetworkReplaced",
+                                     "OnlySharedReplaced",
+                                     "WholeNetworkRichnessDifference",
+                                     "OnlySharedRichnessDifference"
+)
+
+
+### i think i might need to use the individual networks for this
+
+
+
+###will need to update LP's function networkBetaDiversity because most of the packages
+### are no longer compatible :( 
+
+geo <- unique(spec.net[, c("Site", "Lat", "Long")])
+geo <- geo[!duplicated(geo$Site),]
+
+geo.dist <- rdist.earth(cbind(geo$Long, geo$Lat),
+                        cbind(geo$Long, geo$Lat))
+colnames(geo.dist) <- rownames(geo.dist) <- geo$Site
+
+## add column for geographic distance between sites
+microbe_poll_betalink$GeoDist <- apply(microbe_poll_betalink, 1, function(x){
+  geo.dist[x["Site1"],  x["Site2"]]
+})
+
+
