@@ -18,9 +18,9 @@ parasites <- c("AspergillusSpp",
                "NosemaBombi",
                "NosemaCeranae")
 
-spec <- merge(spec, site.sum)
+spec.net <- merge(spec.net, site.sum)
 
-spec <- merge(spec, veg, all.x=TRUE)
+spec.net <- merge(spec.net, veg, all.x=TRUE)
 
 
 dir.create(path="saved", showWarnings = FALSE)

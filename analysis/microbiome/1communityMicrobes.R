@@ -1,19 +1,37 @@
 ## setwd('C:/Users/na_ma/Dropbox (University of Oregon)/Rotation/skyIslands')
-## setwd('~/Dropbox (University of Oregon)/skyislands')
+## setwd('~/Dropbox (University of Oregon)/skyIslands')
 setwd('~/Dropbox (University of Oregon)/skyIslands')
 
 setwd("analysis/microbiome")
 
 rm(list=ls())
 
-source("src/init.R")
-
-
+source("src/misc_microbe.R")
 source("src/misc.R")
+source('src/makeMultiLevelData.R')
+source("src/writeResultsTable.R")
+source("src/runParasiteModels.R")
+source("src/standardize_weights.R")
+source("src/plant_poll_models_microbe.R")
 
-source("../microbiome/src/writeResultsTable.R")
+load("../../data/spec_RBCL_16s.Rdata")
 
-source("../microbiome/src/makeMultiLevelData.R")
+## all of the variables that are explanatory variables and thus need
+## to be centered
+vars_yearsr <- c("MeanFloralAbundance",
+                 "MeanFloralDiversity",
+                 "Net_BeeDiversity",
+                 "Lat", "SRDoy"  
+)
+vars_sp <- c("MeanITD",
+             "rare.degree")
+
+variables.to.log <- "rare.degree"
+
+
+source("src/init.R")
+source('src/init_microbe.R')
+
 
 ncores <- 1
 
@@ -25,28 +43,29 @@ library(bayesplot)
 
 
 
-#genus_pd_fit <- function(spec, this_genus, num_iter){
+#genus_pd_fit <- function(spec.net, this_genus, num_iter){
   
-microbes <- colnames(spec)[grepl("16s:", colnames(spec))] 
+microbes <- colnames(spec.net)[grepl("16s:", colnames(spec.net))] 
   
-screened.microbes <- apply(spec, 1, function(x) all(is.na(x[microbes])))
+screened.microbes <- apply(spec.net, 1, function(x) all(is.na(x[microbes])))
   
-spec.microbes <- spec[!screened.microbes, ]
+spec.microbes <- spec.net[!screened.microbes, ]
   
 #genus.microbes <- spec.microbes[spec.microbes$Genus == this_genus, ]
   
-
+##should include root = TRUE? if false gives warning 3x
+## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
 PD <- apply(spec.microbes[,microbes], 1, function(x){
   this.bee <- x[x > 0]
   this.tree <- prune.sample(t(this.bee), tree.16s)
-  pd(t(this.bee), this.tree, include.root = FALSE)
+  pd(t(this.bee), this.tree, include.root = TRUE)
 })
 
 PD <- do.call(rbind, PD)
 
 spec.microbes <- cbind(spec.microbes, PD)
 
-spec <- merge(spec, spec.microbes, all.x=TRUE)
+spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
 
 
 ##copying over code from communityHealthBayes and changing
