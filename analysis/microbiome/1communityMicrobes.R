@@ -1,11 +1,14 @@
 ## setwd('C:/Users/na_ma/Dropbox (University of Oregon)/Rotation/skyIslands')
 ## setwd('~/Dropbox (University of Oregon)/skyIslands')
-setwd('~/Dropbox (University of Oregon)/skyIslands')
+## setwd('~/Dropbox (University of Oregon)/skyIslands')
+setwd("/Volumes/bombus/rhayes/Dropbox (University of Oregon)/skyIslands")
 
-setwd("analysis/microbiome")
+setwd("analysis/microbiome/")
 
 rm(list=ls())
-
+library(picante)
+library(bayesplot)
+library(brms)
 source("src/misc_microbe.R")
 source("src/misc.R")
 source('src/makeMultiLevelData.R')
@@ -36,8 +39,6 @@ source("src/init.R")
 ncores <- 1
 
 
-library(picante)
-library(bayesplot)
 
 
 
@@ -59,40 +60,42 @@ source("src/init_microbe.R")
 
 
 #genus_pd_fit <- function(spec.net, this_genus, num_iter){
-
-microbes <- colnames(spec.net)[grepl("16s:", colnames(spec.net))] 
-
-screened.microbes <- apply(spec.net, 1, function(x) all(is.na(x[microbes])))
-
-spec.microbes <- spec.net[!screened.microbes, ]
-
-#genus.microbes <- spec.microbes[spec.microbes$Genus == this_genus, ]
-
-
-## QUESTION: should include root = TRUE? if false gives warning 3x
-## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
-PD <- apply(spec.microbes[,microbes], 1, function(x){
-  this.bee <- x[x > 0]
-  this.tree <- prune.sample(t(this.bee), tree.16s)
-  pd(t(this.bee), this.tree, include.root = TRUE)
-})
-
-PD <- do.call(rbind, PD)
-
-spec.microbes <- cbind(spec.microbes, PD)
-
-spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
-
-
+# 
+# microbes <- colnames(spec.net)[grepl("16s:", colnames(spec.net))] 
+# 
+# screened.microbes <- apply(spec.net, 1, function(x) all(is.na(x[microbes])))
+# 
+# spec.microbes <- spec.net[!screened.microbes, ]
+# 
+# #genus.microbes <- spec.microbes[spec.microbes$Genus == this_genus, ]
+# 
+# 
+# ## QUESTION: should include root = TRUE? if false gives warning 3x
+# ## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
+# PD <- apply(spec.microbes[,microbes], 1, function(x){
+#   this.bee <- x[x > 0]
+#   this.tree <- prune.sample(t(this.bee), tree.16s)
+#   pd(t(this.bee), this.tree, include.root = TRUE)
+# })
+# 
+# PD <- do.call(rbind, PD)
+# 
+# spec.microbes <- cbind(spec.microbes, PD)
+# 
+# spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
+# 
+load("../../data/spec_RBCL_16s_PD.Rdata")
 
 ## define all the formulas for the different parts of the models
 source("src/plant_poll_models_microbe.R")
-
+spec.net <- spec.net.merge
 
 ## QUESTION: should there be NAs?
 ## check ids
 unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
                                is.na(spec.net$MeanITD)])
+
+# having trouble getting code to generate PD to run on lab computer, saved it on RH machine and loading it here
 
 ## **********************************************************
 ## Parasite models set up
