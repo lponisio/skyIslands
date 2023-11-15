@@ -30,7 +30,7 @@ variables.to.log <- "rare.degree"
 
 
 source("src/init.R")
-source('src/init_microbe.R')
+#source('src/init_microbe.R')
 
 
 ncores <- 1
@@ -42,18 +42,34 @@ library(bayesplot)
 
 
 
+## all of the variables that are explanatory variables and thus need
+## to be centered
+vars_yearsr <- c("MeanFloralAbundance",
+                 "MeanFloralDiversity",
+                 "Net_BeeDiversity",
+                 "Lat", "SRDoy"  
+)
+vars_sp <- c("MeanITD",
+             "rare.degree")
+
+variables.to.log <- "rare.degree"
+
+## uses only net specimens, and drops syrphids
+source("src/init_microbe.R")
+
 
 #genus_pd_fit <- function(spec.net, this_genus, num_iter){
-  
+
 microbes <- colnames(spec.net)[grepl("16s:", colnames(spec.net))] 
-  
+
 screened.microbes <- apply(spec.net, 1, function(x) all(is.na(x[microbes])))
-  
+
 spec.microbes <- spec.net[!screened.microbes, ]
-  
+
 #genus.microbes <- spec.microbes[spec.microbes$Genus == this_genus, ]
-  
-##should include root = TRUE? if false gives warning 3x
+
+
+## QUESTION: should include root = TRUE? if false gives warning 3x
 ## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
 PD <- apply(spec.microbes[,microbes], 1, function(x){
   this.bee <- x[x > 0]
@@ -68,52 +84,60 @@ spec.microbes <- cbind(spec.microbes, PD)
 spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
 
 
-##copying over code from communityHealthBayes and changing
-##parasite for microbiome data
 
-vars <- c("FloralAbundance",
-          "FloralDiversity",
-          "PollAbundance",
-          "PollDiversity",
-          "PD",
-          "Lat",
-          "Elev",
-          "Area")
+## define all the formulas for the different parts of the models
+source("src/plant_poll_models_microbe.R")
 
-##  center all of the x variables across the datasets
-spec[, vars] <- apply(spec[, vars], 2, standardize)
 
-## will need to modify when we have multiple years
-spec <- makeDataMultiLevel(spec, "Site", "Year")
+## QUESTION: should there be NAs?
+## check ids
+unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
+                               is.na(spec.net$MeanITD)])
 
 ## **********************************************************
-## Model 1.1: formula for forest effects on floral community
+## Parasite models set up
 ## **********************************************************
-## flower diversity
-formula.flower.div <- formula(FloralDiversity  ~
-                                Lat + Area +  (1|Site)
-)
-## flower abund
-formula.flower.abund <- formula(FloralAbundance  ~
-                                  Area + (1|Site)
-)
+## Multi species models
+xvars.multi.species <-  c("Net_NonBombusHBAbundance",
+                          "Net_HBAbundance",
+                          "Net_BombusAbundance",
+                          "Net_BeeDiversity",
+                          "rare.degree", "MeanITD",
+                          "(1|Site)", "(1|GenusSpecies)")
+## single species models
+xvars.single.species <-  c("Net_NonBombusHBAbundance",
+                           "Net_HBAbundance",
+                           "Net_BombusAbundance",
+                           "Net_BeeDiversity",
+                           "rare.degree",
+                           "(1|Site)")
+
 ## **********************************************************
-## Model 1.2: formula for forest effects on bee community
+## community model
 ## **********************************************************
-## bee diversity
-formula.bee.div <- formula(PollDiversity ~
-                             FloralAbundance +
-                             FloralDiversity +
-                             Lat + Area +
-                             (1|Site)
-)
-## bee abund
-formula.bee.abund <- formula(PollAbundance ~
-                               FloralAbundance +
-                               FloralDiversity +
-                               Area +
-                               (1|Site)
-)
+
+bform.community <- bf.fabund + bf.fdiv +
+  bf.babund +
+  bf.bombusabund + bf.HBabund +
+  bf.bdiv  +
+  set_rescor(FALSE)
+
+fit.community <- brm(bform.community, spec.net,
+                     cores=ncores,
+                     iter = 10^4,
+                     chains = 1,
+                     thin=1,
+                     init=0,
+                     control = list(adapt_delta = 0.99),
+                     save_pars = save_pars(all = TRUE))
+write.ms.table(fit.community,
+               sprintf("microbe_%s_%s",
+                       species.group="all", parasite="none"))
+r2loo <- loo_R2(fit.community)
+r2 <- rstantools::bayes_R2(fit.community)
+save(fit.community, spec.net, r2,
+     file="saved/communityFit.Rdata")
+
 ## **********************************************************
 ## Model 1.3: formula for bee community effects on parasitism
 ## **********************************************************
