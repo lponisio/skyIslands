@@ -37,6 +37,14 @@ genus_filter <- function(dataframe, genus){
   unique(new_df$Bacteria)
 }
 
+species_filter <- function(dataframe, species){
+  new_df <- dataframe %>%
+    filter(GenusSpecies == species) %>%
+    filter(Abundance > 0) %>%
+    select(Bacteria)
+  unique(new_df$Bacteria)
+}
+
 apis_subset <- genus_filter(spec16s, 'Apis')
 bombus_subset <- genus_filter(spec16s, 'Bombus')
 anthophora_subset <- genus_filter(spec16s, 'Anthophora')
@@ -97,6 +105,39 @@ gt_shared <- gt(shared_table_data) %>%
 
 
 gt_shared 
+
+
+
+### now do overlap between just the focal species
+# Apis mellifera
+# Melissodes confusus
+# Bombus centralis
+# Bombus huntii
+# Bombus bifarius
+
+
+Amellifera_subset <- species_filter(spec16s, 'Apis mellifera')
+Bcentralis_subset <- species_filter(spec16s, 'Bombus centralis')
+Bhuntii_subset <- species_filter(spec16s, 'Bombus huntii')
+Bbifarius_subset <- species_filter(spec16s, 'Bombus bifarius')
+Mconfusus_subset <- species_filter(spec16s, 'Melissodes confusus')
+
+
+
+venn_data_2 <- list(Apis_mellifera = Amellifera_subset,
+                  Bombus_centralis = Bcentralis_subset,
+                  Bombus_huntii = Bhuntii_subset,
+                  Bombus_bifarius = Bbifarius_subset,
+                  Melissodes_confusus = Mconfusus_subset)
+
+ggVennDiagram(venn_data_2,
+              label_alpha = 0.5) + 
+  scale_color_manual(values = plasma(5)) +
+  scale_fill_gradient(low="white",high = "black") +
+  scale_x_continuous(expand = expansion(mult = .2))
+
+
+
 
 # relabund.dat <- read.csv('spec_RBCL_16s.csv') %>%
 #   filter(Apidae == 1) %>%
