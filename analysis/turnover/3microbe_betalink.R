@@ -14,6 +14,7 @@ library(ggpubr)
 library(emmeans)
 library(bipartite)
 library(dplyr)
+library(fields)
 
 library(gridExtra)
 
@@ -396,7 +397,14 @@ microbe_poll_betalink$GeoDist <- apply(microbe_poll_betalink, 1, function(x){
   geo.dist[x["Site1"],  x["Site2"]]
 })
 
+ggsave(microbe_poll_betalink, file="figures/microbe_poll/indiv_level/DissimilaritySpeciesTurnover_Apis_indiv.pdf", height=4, width=6)
+
+
+
 dir.create("figures", showWarnings = FALSE)
+dir.create("tables", showWarnings = FALSE)
+write.csv(microbe_poll_betalink, file="tables/indiv_level_Apis_turnover.csv")
+
 dir.create("figures/microbe_poll", showWarnings = FALSE)
 dir.create("figures/microbe_poll/indiv_level", showWarnings = FALSE)
 
@@ -522,6 +530,10 @@ microbe_poll_betalink$GeoDist <- apply(microbe_poll_betalink, 1, function(x){
 })
 
 dir.create("figures", showWarnings = FALSE)
+dir.create("tables", showWarnings = FALSE)
+write.csv(microbe_poll_betalink, file="tables/indiv_level_Bcentralis_turnover.csv")
+
+
 dir.create("figures/microbe_poll", showWarnings = FALSE)
 dir.create("figures/microbe_poll/indiv_level", showWarnings = FALSE)
 
