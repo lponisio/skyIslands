@@ -79,8 +79,7 @@ save(fit.community, spec.net, r2,
 ## **********************************************************
 ## full model with all species, parasites
 fit.all <- runCombinedParasiteModels(spec.all, species.group="all",
-                                        parasites=c("CrithidiaPresence",
-                                                    "ApicystisSpp"),
+                                        parasites=c("CrithidiaPresence"),
                                         xvars=xvars.multi.species,
                                         iter = 10^4,
                                         chains = 1,
