@@ -26,6 +26,7 @@
 #from https://gitlab.umiacs.umd.edu/derek/qiime/tree/master/rdp_classifier_2.2
 
 #go to Bell and Brosi's rbcl reference library: https://figshare.com/collections/rbcL_reference_library/3466311/1
+#the "new" 2021 reference library is formatted for their DADA2 pipeline here: https://figshare.com/collections/rbcL_reference_library_July_2021/5504193
 
 #Download "rbcl_utax_trained.zip" and "rbcl_rdp_trained_reference_database" 
 #into a folder called RBCLclassifierRDP in your local working directory. unzip the files.
@@ -53,7 +54,8 @@ unzip rbcL_utax_trained.zip
 # *****************************************************************************
 docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
 
-cd ../mnt/SI_pipeline/merged/
+#cd ../mnt/SI_pipeline/merged/
+cd ../mnt/SI_pipeline/R2018/2023_sequence_results_raw/merged
 
 qiime tools export --input-path RBCL/rep-seqs-RBCL.qza --output-path RBCL
   
@@ -86,7 +88,8 @@ exit
 cd /Volumes/bombus/Dropbox (University of Oregon)/skyIslands_saved/SI_pipeline
 
 #this one gives taxonomy to species (we ended up only using this one)
-java -Xmx2g -jar classifiers/RBCLclassifierRDP/qiime-master-rdp_classifier_2.2/rdp_classifier_2.2/rdp_classifier-2.2.jar classify -t classifiers/RBCLclassifierRDP/rbcL_rdp_trained/rbcL.properties -o merged/RBCL/rbcl_classified_rdp.txt -q merged/RBCL/rep-seqs-RBCL.fasta
+#java -Xmx2g -jar classifiers/RBCLclassifierRDP/qiime-master-rdp_classifier_2.2/rdp_classifier_2.2/rdp_classifier-2.2.jar classify -t classifiers/RBCLclassifierRDP/rbcL_rdp_trained/rbcL.properties -o merged/RBCL/rbcl_classified_rdp.txt -q merged/RBCL/rep-seqs-RBCL.fasta
+java -Xmx2g -jar classifiers/RBCLclassifierRDP/qiime-master-rdp_classifier_2.2/rdp_classifier_2.2/rdp_classifier-2.2.jar classify -t classifiers/RBCLclassifierRDP/rbcL_rdp_trained/rbcL.properties -o R2018/2023_sequence_results_raw/merged/RBCL/rbcl_classified_rdp.txt -q R2018/2023_sequence_results_raw/merged/RBCL/rep-seqs-RBCL.fasta
 
 #Our resulting taxonomic IDs are found in two sheets in the merged/RBCL folder
 
@@ -101,6 +104,7 @@ java -Xmx2g -jar classifiers/RBCLclassifierRDP/qiime-master-rdp_classifier_2.2/r
  ## You likely don't need to make the database de-novo; copying the
  ## whole RBCLclassifierNCBI folder from a recent pipeline will
  ## work. if so, skip down to 3.2
+ ### Database last updated in 2023
  
 ##We are going to use BioPerl to blast against NCBI, you need to get a
 ## package installer that has python arguments and stuff install
@@ -141,7 +145,8 @@ cd classifiers/
 ## KAYE THINKS WE CAN SUBSET THE FASTA FILE TO THE SPECIES WE ARE
 ## INTERESTED IN AND THEN USE THAT IN SUBSEQENT STEPS
 
-makeblastdb -in -taxid_map gi_taxid_nucl.dmp RBCLclassifierNCBI/rbcL_only_NCBI.fasta -out RBCLclassifierNCBI/rbcL_only_DB -parse_seqids -dbtype nucl
+#makeblastdb -in -taxid_map gi_taxid_nucl.dmp RBCLclassifierNCBI/rbcL_only_NCBI.fasta -out RBCLclassifierNCBI/rbcL_only_DB -parse_seqids -dbtype nucl
+makeblastdb -in -taxid_map gi_taxid_nucl.dmp RBCLclassifierNCBI/rbcL_only_NCBI_Updated_2023.fasta -out RBCLclassifierNCBI/2023_rbcL_only_DB -parse_seqids -dbtype nucl
 
 ## if this all worked, you should get a series of files called
 ## "rbcL_only_DB" with some extension or numerical at the end. These
@@ -186,8 +191,8 @@ cd ../mnt/SI_pipeline #[or whichever run you're working on]
 ## that done, navigate to your SI_pipeline folder and run the script
 
 ## top match
-perl classifiers/RBCLclassifierNCBI/BlastToTableexistingdb.pl merged/RBCL/rep-seqs-RBCL.fasta classifiers/RBCLclassifierNCBI/rbcL_only_DB > merged/RBCL/rbcl_classified_NCBI.txt
-
+#perl classifiers/RBCLclassifierNCBI/BlastToTableexistingdb.pl merged/RBCL/rep-seqs-RBCL.fasta classifiers/RBCLclassifierNCBI/rbcL_only_DB > merged/RBCL/rbcl_classified_NCBI.txt
+perl classifiers/RBCLclassifierNCBI/BlastToTableexistingdb.pl R2018/2023_sequence_results_raw/merged/RBCL/rep-seqs-dada2RBCL.fasta classifiers/RBCLclassifierNCBI/2023_rbcL_only_DB > R2018/2023_sequence_results_raw/merged/RBCL/rbcl_classified_NCBI.txt
 
 ## top 10 matches (did this work????)
 perl classifiers/RBCLclassifierNCBI/BlastToTableexistingdb_top_10.pl merged/RBCL/rep-seqs-RBCL.fasta classifiers/RBCLclassifierNCBI/rbcL_only_DB > merged/RBCL/rbcl_classified_NCBI_top_10.txt
