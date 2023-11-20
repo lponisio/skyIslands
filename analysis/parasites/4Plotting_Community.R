@@ -77,7 +77,7 @@ axis.bee.div <-  standardize.axis(labs.bee.div,
 ## Load the model data
 load(file="saved/communityFit.Rdata")
 ## We want the standarized data for the predictions (spec.   ) depending on the model
-data.par <- spec.net[spec.net$WeightsPar == 1,]
+data.par <- spec.net[spec.net$Weights == 1,]
 ## ***********************************************************************
 ## bee community diversity and latitude
 ## ***********************************************************************
