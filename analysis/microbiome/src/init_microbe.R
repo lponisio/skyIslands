@@ -8,6 +8,7 @@ library(bayestestR)
 
 
 load('../../data/spec_RBCL_16s.Rdata')
+load("../../data/trees.Rdata")
 site.sum <- read.csv("../../data/sitestats.csv")
 
 spec.net <- spec.net[!is.na(spec.net$GenusSpecies),]
@@ -24,18 +25,18 @@ parasites <- c(#"AspergillusSpp", ## problematic parasite!
   "NosemaCeranae")
 
 spec.net <- merge(spec.net, site.sum, all.x=TRUE)
-
-traits <-
-    read.csv("../../../skyIslands_saved/data/raw/bee_traits.csv")
-traits$GenusSpecies <- fix.white.space(traits$GenusSpecies)
-traits <- traits[, c("GenusSpecies", "Sociality", "Lecty", "MeanITD"),]
-
-net.traits <- read.csv("../../data/networks_traits.csv")
-net.traits <- net.traits[, c("GenusSpecies", "r.degree"),]
-
-traits <- merge(traits, net.traits, by="GenusSpecies", all.x=TRUE)
-
-spec.net <- merge(spec.net, traits, all.x=TRUE, by="GenusSpecies")
+# 
+# traits <-
+#     read.csv("../../../skyIslands_saved/data/raw/bee_traits.csv")
+# traits$GenusSpecies <- fix.white.space(traits$GenusSpecies)
+# traits <- traits[, c("GenusSpecies", "Sociality", "Lecty", "MeanITD"),]
+# 
+# net.traits <- read.csv("../../data/networks_traits.csv")
+# net.traits <- net.traits[, c("GenusSpecies", "r.degree"),]
+# 
+# traits <- merge(traits, net.traits, by="GenusSpecies", all.x=TRUE)
+# 
+# spec.net <- merge(spec.net, traits, all.x=TRUE, by="GenusSpecies")
 
 dir.create(path="saved", showWarnings = FALSE)
 dir.create(path="saved/tables", showWarnings = FALSE)
@@ -62,6 +63,17 @@ spec.net <- standardizeVars(spec.net, vars_sp, "YearSRGenusSpecies")
 ## original intention was to keep stan from dropping data for
 ## site-level models, but weight is 0 for parasite models.
 spec.net <- prepParasiteWeights()
+
+
+#genus_pd_fit <- function(spec.net, this_genus, num_iter){
+
+microbes <- colnames(spec.net)[grepl("16s:", colnames(spec.net))] 
+
+screened.microbes <- apply(spec.net, 1, function(x) all(is.na(x[microbes])))
+
+spec.microbes <- spec.net[!screened.microbes, ]
+
+#genus.microbes <- spec.microbes[spec.microbes$Genus == this_genus, ]
 
 spec.all <- spec.net
 
