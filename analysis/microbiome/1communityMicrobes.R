@@ -1,23 +1,16 @@
 ## setwd('C:/Users/na_ma/Dropbox (University of Oregon)/Rotation/skyIslands')
 ## setwd('~/Dropbox (University of Oregon)/skyIslands')
-## setwd('~/Dropbox (University of Oregon)/skyIslands')
-setwd("/Volumes/bombus/rhayes/Dropbox (University of Oregon)/skyIslands")
+setwd('~/Dropbox (University of Oregon)/skyIslands')
+#setwd("/Volumes/bombus/rhayes/Dropbox (University of Oregon)/skyIslands")
 
 setwd("analysis/microbiome/")
 
 rm(list=ls())
+
+
 library(picante)
 library(bayesplot)
 library(brms)
-source("src/misc_microbe.R")
-source("src/misc.R")
-source('src/makeMultiLevelData.R')
-source("src/writeResultsTable.R")
-source("src/runParasiteModels.R")
-source("src/standardize_weights.R")
-source("src/plant_poll_models_microbe.R")
-
-load("../../data/spec_RBCL_16s.Rdata")
 
 ## all of the variables that are explanatory variables and thus need
 ## to be centered
@@ -31,71 +24,43 @@ vars_sp <- c("MeanITD",
 
 variables.to.log <- "rare.degree"
 
-
-source("src/init.R")
-#source('src/init_microbe.R')
-
+source("src/misc_microbe.R")
+source("src/misc.R")
+source('src/makeMultiLevelData.R')
+source("src/standardize_weights.R")
+source("src/init_microbe.R")
+source("src/writeResultsTable.R")
+source("src/runParasiteModels.R")
+source("src/plant_poll_models_microbe.R")
 
 ncores <- 1
 
 
+## QUESTION: should include root = TRUE? if false gives warning 3x
+## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
+PD <- apply(spec.microbes[,microbes], 1, function(x){
+  this.bee <- x[x > 0]
+  this.tree <- prune.sample(t(this.bee), tree.16s)
+  #browser()
+  picante::pd(t(this.bee), this.tree, include.root = TRUE)
+})
+
+PD <- do.call(rbind, PD)
+
+spec.microbes <- cbind(spec.microbes, PD)
+
+spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
 
 
 
-
-## all of the variables that are explanatory variables and thus need
-## to be centered
-vars_yearsr <- c("MeanFloralAbundance",
-                 "MeanFloralDiversity",
-                 "Net_BeeDiversity",
-                 "Lat", "SRDoy"  
-)
-vars_sp <- c("MeanITD",
-             "rare.degree")
-
-variables.to.log <- "rare.degree"
-
-## uses only net specimens, and drops syrphids
-source("src/init_microbe.R")
-
-
-#genus_pd_fit <- function(spec.net, this_genus, num_iter){
-# 
-# microbes <- colnames(spec.net)[grepl("16s:", colnames(spec.net))] 
-# 
-# screened.microbes <- apply(spec.net, 1, function(x) all(is.na(x[microbes])))
-# 
-# spec.microbes <- spec.net[!screened.microbes, ]
-# 
-# #genus.microbes <- spec.microbes[spec.microbes$Genus == this_genus, ]
-# 
-# 
-# ## QUESTION: should include root = TRUE? if false gives warning 3x
-# ## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
-# PD <- apply(spec.microbes[,microbes], 1, function(x){
-#   this.bee <- x[x > 0]
-#   this.tree <- prune.sample(t(this.bee), tree.16s)
-#   pd(t(this.bee), this.tree, include.root = TRUE)
-# })
-# 
-# PD <- do.call(rbind, PD)
-# 
-# spec.microbes <- cbind(spec.microbes, PD)
-# 
-# spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
-# 
-load("../../data/spec_RBCL_16s_PD.Rdata")
-
-## define all the formulas for the different parts of the models
-source("src/plant_poll_models_microbe.R")
-spec.net <- spec.net.merge
-
-## QUESTION: should there be NAs?
+## QUESTION: should there be NAs? not sure what check ids means
 ## check ids
 unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
                                is.na(spec.net$MeanITD)])
 
-# having trouble getting code to generate PD to run on lab computer, saved it on RH machine and loading it here
+#dropping genus species with NA -- 
+spec.net <- spec.net[!is.na(spec.net$GenusSpecies),]
+
 
 ## **********************************************************
 ## Parasite models set up
@@ -127,7 +92,7 @@ bform.community <- bf.fabund + bf.fdiv +
 
 fit.community <- brm(bform.community, spec.net,
                      cores=ncores,
-                     iter = 10^4,
+                     iter = 100,
                      chains = 1,
                      thin=1,
                      init=0,
