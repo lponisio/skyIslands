@@ -19,7 +19,7 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
   # return a list of single plots
   diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))} else if (this_family=='negbinomial') {
     
-    this_model_output <- glm.nb(this_formula, data=this_data)
+    this_model_output <- glmer.nb(this_formula, data=this_data)
     diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
   }
   
