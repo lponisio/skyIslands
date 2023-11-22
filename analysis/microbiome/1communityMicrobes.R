@@ -11,16 +11,23 @@ run.diagnostics = TRUE
 
 library(picante)
 library(bayesplot)
+library(pscl)
 library(brms)
 library(performance)
 library(lme4)
+library(glmmADMB)
+library(R2admb)
+# install.packages("glmmADMB", 
+#                  repos=c("http://glmmadmb.r-forge.r-project.org/repos",
+#                          getOption("repos")),
+#                  type="source")
 
 ## all of the variables that are explanatory variables and thus need
 ## to be centered
 vars_yearsr <- c("MeanFloralAbundance",
                  "MeanFloralDiversity",
                  "Net_BeeDiversity",
-                 "Lat", "SRDoy"  
+                 "Lat", "SRDoy", "Net_BombusAbundance", "Net_HBAbundance"  
 )
 vars_sp <- c("MeanITD",
              "rare.degree")
@@ -156,7 +163,7 @@ if(run.diagnostics){
   freq.model.bombus.abund <- run_plot_freq_model_diagnostics(
     freq.formula.bombus.abund,
     spec.net[spec.net$Weights==1,],
-    this_family = "negbinomial")
+    this_family = "zero_inflated_negbinomial")
   
   ggsave(freq.model.bombus.abund,
          file="figures/SI_BombusAbundModelDiagnostics.pdf",
@@ -217,7 +224,7 @@ if(run.diagnostics){
   freq.model.bee.abund <- run_plot_freq_model_diagnostics(
     freq.formula.bee.abund,
     spec.net[spec.net$Weights==1,],
-    this_family = "negbinomial")
+    this_family = "zero_inflated_negbinomial")
   
   ggsave(freq.model.bee.abund,
          file="figures/SI_BeeAbundModelDiagnostics.pdf",
