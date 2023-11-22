@@ -21,7 +21,7 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
     
     this_model_output <- glmer.nb(this_formula, data=this_data)
     diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
-  } else if (this_family=='zero_inflated_beta') {
+  } else if (this_family=='zero_inflated_negbinomial') {
     
     this_model_output <- MASS::zeroinfl(this_formula, data=this_data)
     diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
