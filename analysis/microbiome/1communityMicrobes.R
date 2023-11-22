@@ -13,6 +13,7 @@ library(picante)
 library(bayesplot)
 library(brms)
 library(performance)
+library(lme4)
 
 ## all of the variables that are explanatory variables and thus need
 ## to be centered
@@ -133,38 +134,133 @@ if(run.diagnostics){
 ## **********************************************************
 ## Bee abundance
 ## **********************************************************
-## bombus abund
-formula.bombus.abund <- formula(Net_BombusAbundance | weights(Weights)~
-                                  MeanFloralAbundance + Year +
-                                  SRDoy + I(SRDoy^2) +
-                                  Lat + 
-                                  (1|Site)
-)
+
+## bombus abundance variables 
+bombus.abund.vars <- c("MeanFloralAbundance",
+                       "Year",
+                       "SRDoy",
+                       "I(SRDoy^2)",
+                       "Lat",
+                       "(1|Site)")
+
+bombus.abund.x <- paste(bombus.abund.vars, collapse="+")
+bombus.abund.y <- "Net_BombusAbundance | weights(Weights)"
+formula.bombus.abund <- as.formula(paste(bombus.abund.y, "~",bombus.abund.x))
+
+
+#Bombus abundance check
+freq.formula.bombus.abund <- as.formula(paste("Net_BombusAbundance", "~", bombus.abund.x ))
+
+#for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+if(run.diagnostics){
+  freq.model.bombus.abund <- run_plot_freq_model_diagnostics(
+    freq.formula.bombus.abund,
+    spec.net[spec.net$Weights==1,],
+    this_family = "negbinomial")
+  
+  ggsave(freq.model.bombus.abund,
+         file="figures/SI_BombusAbundModelDiagnostics.pdf",
+         height=8, width=11)
+}
+
+
 ## HB abund
-formula.HB.abund <- formula(Net_HBAbundance | weights(Weights)~
-                              MeanFloralAbundance +  Year +
-                              SRDoy + I(SRDoy^2) +
-                              Lat +
-                              (1|Site)
-)
+
+## honeybee abundance variables 
+hb.abund.vars <- c("MeanFloralAbundance",
+                       "Year",
+                       "SRDoy",
+                       "I(SRDoy^2)",
+                       "Lat",
+                       "(1|Site)")
+
+hb.abund.x <- paste(hb.abund.vars, collapse="+")
+hb.abund.y <- "Net_HBAbundance | weights(Weights)"
+formula.hb.abund <- as.formula(paste(hb.abund.y, "~",hb.abund.x))
+
+
+# HB abund check
+freq.formula.hb.abund <- as.formula(paste("Net_HBAbundance", "~", hb.abund.x ))
+
+#for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+if(run.diagnostics){
+  freq.model.hb.abund <- run_plot_freq_model_diagnostics(
+    freq.formula.hb.abund,
+    spec.net[spec.net$Weights==1,],
+    this_family = "negbinomial")
+  
+  ggsave(freq.model.hb.abund,
+         file="figures/SI_HoneyBeeAbundModelDiagnostics.pdf",
+         height=8, width=11)
+}
+
+
 ## bee abund
-formula.bee.abund <- formula(Net_NonBombusHBAbundance | weights(Weights)~
-                               MeanFloralAbundance +  Year +
-                               SRDoy + I(SRDoy^2) +
-                               Lat +
-                               (1|Site)
-)
+
+bee.abund.vars <- c("MeanFloralAbundance",
+                   "Year",
+                   "SRDoy",
+                   "I(SRDoy^2)",
+                   "Lat",
+                   "(1|Site)")
+
+bee.abund.x <- paste(bee.abund.vars, collapse="+")
+bee.abund.y <- "Net_NonBombusHBAbundance | weights(Weights)"
+formula.bee.abund <- as.formula(paste(bee.abund.y, "~",bee.abund.x))
+
+
+# bee abund check
+freq.formula.bee.abund <- as.formula(paste("Net_NonBombusHBAbundance", "~", bee.abund.x ))
+
+##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+if(run.diagnostics){
+  freq.model.bee.abund <- run_plot_freq_model_diagnostics(
+    freq.formula.bee.abund,
+    spec.net[spec.net$Weights==1,],
+    this_family = "negbinomial")
+  
+  ggsave(freq.model.bee.abund,
+         file="figures/SI_BeeAbundModelDiagnostics.pdf",
+         height=8, width=11)
+}
+
+
+## Warning message:
+##   In checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv,  :
+##                  Model failed to converge with max|grad| = 0.00307909 (tol = 0.002, component 1)
 
 
 ## **********************************************************
 ## Bee diversity
 ## **********************************************************
-formula.bee.div <- formula(Net_BeeDiversity | weights(Weights)~
-                             MeanFloralDiversity +
-                             Lat + Year +
-                             SRDoy + I(SRDoy^2) +
-                             (1|Site)
-)
+
+
+bee.div.vars <- c("MeanFloralDiversity",
+                    "Year",
+                    "SRDoy",
+                    "I(SRDoy^2)",
+                    "Lat",
+                    "(1|Site)")
+
+bee.div.x <- paste(bee.div.vars, collapse="+")
+bee.div.y <- "Net_BeeDiversity | weights(Weights)"
+formula.bee.div <- as.formula(paste(bee.div.y, "~",bee.div.x))
+
+
+# bee div check
+freq.formula.bee.div <- as.formula(paste("Net_BeeDiversity", "~", bee.div.x ))
+
+##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+if(run.diagnostics){
+  freq.model.bee.div <- run_plot_freq_model_diagnostics(
+    freq.formula.bee.div,
+    spec.net[spec.net$Weights==1,],
+    this_family = "gaussian")
+  
+  ggsave(freq.model.bee.div,
+         file="figures/SI_BeeDiversityModelDiagnostics.pdf",
+         height=8, width=11)
+}
 
 
 ## **********************************************************
