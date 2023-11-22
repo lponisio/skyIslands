@@ -23,14 +23,30 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
     diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
   } else if (this_family=='zero_inflated_negbinomial') {
     
-    this_model_output <- pscl::zeroinfl(this_formula, data=this_data)
+    this_model_output <- glmmadmb(this_formula, data=this_data, zeroInflation=TRUE, family='nbinom')
     diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
   }
   else if (this_family=='hurdle_gamma') {
     
     this_model_output <- glmer(this_formula, data=this_data, family=Gamma)
     diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
-  }
+  } else if (this_family=='negbinomial') {
+    # this_model_output <- glmmadmb(this_formula, data=this_data, zeroInflation=FALSE, family='nbinom')
+    # diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
+  } else if (this_family == 'Gamma'){
+    #run model
+    this_model_output <- glmer(this_formula, data=this_data, family=Gamma(link=log))
+   
+    # return a list of single plots
+    diagnostic.plots <- plot(check_model(this_model_output, 
+                                         panel = TRUE))
+    } 
+  # else if (this_family=='Gamma') {
+  #   this_model_output <- glmmadmb(this_formula, data=this_data, zeroInflation=FALSE, family='gamma')
+  #   this_pp <- pp_check(this_model_output)
+  #   #diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
+  #   this_pp
+  # }
   
   diagnostic.plots
 }
