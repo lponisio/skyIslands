@@ -27,7 +27,11 @@ library(R2admb)
 vars_yearsr <- c("MeanFloralAbundance",
                  "MeanFloralDiversity",
                  "Net_BeeDiversity",
-                 "Lat", "SRDoy", "Net_BombusAbundance", "Net_HBAbundance"  
+                 "Lat", "SRDoy",
+                 "Net_BombusAbundance",
+                 "Net_HBAbundance"  ,
+                 "Net_NonBombusHBAbundance",
+                 "Net_BeeAbundance"
 )
 vars_sp <- c("MeanITD",
              "rare.degree")
@@ -73,7 +77,16 @@ unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
 #dropping genus species with NA -- 
 #spec.net <- spec.net[!is.na(spec.net$GenusSpecies),]
 
+## adding one to bombus abundance to make it non negative
+spec.net$Net_BombusAbundance <- spec.net$Net_BombusAbundance + 1
+spec.net$Net_HBAbundance <- spec.net$Net_HBAbundance + 1
+spec.net$Net_NonBombusHBAbundance <- spec.net$Net_NonBombusHBAbundance + 1
 
+#squared transformed net bee abundance
+spec.net$Net_BeeAbundance <- (spec.net$Net_BeeAbundance)^2
+
+## making site a factor so it works with gamma dist
+spec.net$Site <- as.factor(spec.net$Site)
 
 ## **********************************************************
 ## Flower abundance
@@ -163,12 +176,16 @@ if(run.diagnostics){
   freq.model.bombus.abund <- run_plot_freq_model_diagnostics(
     freq.formula.bombus.abund,
     spec.net[spec.net$Weights==1,],
-    this_family = "zero_inflated_negbinomial")
+    this_family = "Gamma")
   
   ggsave(freq.model.bombus.abund,
          file="figures/SI_BombusAbundModelDiagnostics.pdf",
          height=8, width=11)
 }
+
+#neg binomial is bad
+# gaussian isn't great
+# gamma -- isnt too bad! some weirdness w/ residuals..
 
 
 ## HB abund
@@ -194,13 +211,14 @@ if(run.diagnostics){
   freq.model.hb.abund <- run_plot_freq_model_diagnostics(
     freq.formula.hb.abund,
     spec.net[spec.net$Weights==1,],
-    this_family = "negbinomial")
+    this_family = "Gamma")
   
   ggsave(freq.model.hb.abund,
          file="figures/SI_HoneyBeeAbundModelDiagnostics.pdf",
          height=8, width=11)
 }
 
+#with gamma distribution homogeneity of variance looks kinda bad 
 
 ## bee abund
 
@@ -224,7 +242,7 @@ if(run.diagnostics){
   freq.model.bee.abund <- run_plot_freq_model_diagnostics(
     freq.formula.bee.abund,
     spec.net[spec.net$Weights==1,],
-    this_family = "zero_inflated_negbinomial")
+    this_family = "Gamma")
   
   ggsave(freq.model.bee.abund,
          file="figures/SI_BeeAbundModelDiagnostics.pdf",
@@ -235,6 +253,65 @@ if(run.diagnostics){
 ## Warning message:
 ##   In checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv,  :
 ##                  Model failed to converge with max|grad| = 0.00307909 (tol = 0.002, component 1)
+
+# gamma distribution gives this error too
+
+## bee abund total
+tot.bee.abund.vars <- c("MeanFloralAbundance",
+                    "Year",
+                    "SRDoy",
+                    "I(SRDoy^2)",
+                    "Lat",
+                    "(1|Site)")
+
+tot.bee.abund.x <- paste(tot.bee.abund.vars, collapse="+")
+tot.bee.abund.y <- "BeeAbundance | weights(Weights)"
+formula.tot.bee.abund <- as.formula(paste(tot.bee.abund.y, "~",tot.bee.abund.x))
+
+
+# bee abund check
+freq.formula.tot.bee.abund <- as.formula(paste("BeeAbundance", "~", tot.bee.abund.x ))
+
+##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+if(run.diagnostics){
+  freq.model.tot.bee.abund <- run_plot_freq_model_diagnostics(
+    freq.formula.tot.bee.abund,
+    spec.net[spec.net$Weights==1,],
+    this_family = "gaussian")
+  
+  ggsave(freq.model.tot.bee.abund,
+         file="figures/SI_TotalBeeAbundModelDiagnostics.pdf",
+         height=8, width=11)
+}
+
+#net bee abund
+## bee abund total
+net.bee.abund.vars <- c("MeanFloralAbundance",
+                        "Year",
+                        "SRDoy",
+                        "I(SRDoy^2)",
+                        "Lat",
+                        "(1|Site)")
+
+net.bee.abund.x <- paste(net.bee.abund.vars, collapse="+")
+net.bee.abund.y <- "Net_BeeAbundance | weights(Weights)"
+formula.net.bee.abund <- as.formula(paste(net.bee.abund.y, "~",net.bee.abund.x))
+
+
+# bee abund check
+freq.formula.net.bee.abund <- as.formula(paste("Net_BeeAbundance", "~", net.bee.abund.x ))
+
+##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+if(run.diagnostics){
+  freq.model.net.bee.abund <- run_plot_freq_model_diagnostics(
+    freq.formula.net.bee.abund,
+    spec.net[spec.net$Weights==1,],
+    this_family = "Gamma")
+  
+  ggsave(freq.model.net.bee.abund,
+         file="figures/SI_NetBeeAbundModelDiagnostics.pdf",
+         height=8, width=11)
+}
 
 
 ## **********************************************************
@@ -274,9 +351,10 @@ if(run.diagnostics){
 ## Microbe models set up
 ## **********************************************************
 ## Multi species models
-xvars.multi.species <-  c("Net_NonBombusHBAbundance",
-                          "Net_HBAbundance",
-                          "Net_BombusAbundance",
+xvars.multi.species <-  c(#"Net_NonBombusHBAbundance",
+                          #"Net_HBAbundance",
+                          #"Net_BombusAbundance", 
+                          "BeeAbundance",
                           "Net_BeeDiversity",
                           "rare.degree", "MeanITD",
                           "(1|Site)", "(1|GenusSpecies)")
@@ -289,30 +367,41 @@ xvars.single.species <-  c("Net_NonBombusHBAbundance",
                            "(1|Site)")
 
 ## **********************************************************
+## convert formulas to brms forma
+## **********************************************************
+bf.fabund <- bf(formula.flower.abund)
+bf.fdiv <- bf(formula.flower.div)
+#bf.babund <- bf(formula.bee.abund, family="hurdle_gamma")
+#bf.bombusabund <- bf(formula.bombus.abund, family="hurdle_gamma")
+#bf.HBabund <- bf(formula.hb.abund, family="hurdle_gamma")
+bf.tot.babund <- bf(formula.tot.bee.abund)
+bf.bdiv <- bf(formula.bee.div)
+
+## **********************************************************
 ## community model
 ## **********************************************************
-
-bform.community <- bf.fabund + bf.fdiv +
-  bf.babund +
-  bf.bombusabund + bf.HBabund +
-  bf.bdiv  +
-  set_rescor(FALSE)
-
-fit.community <- brm(bform.community, spec.net,
-                     cores=ncores,
-                     iter = 100,
-                     chains = 1,
-                     thin=1,
-                     init=0,
-                     control = list(adapt_delta = 0.99),
-                     save_pars = save_pars(all = TRUE))
-write.ms.table(fit.community,
-               sprintf("microbe_%s_%s",
-                       species.group="all", parasite="none"))
-r2loo <- loo_R2(fit.community)
-r2 <- rstantools::bayes_R2(fit.community)
-save(fit.community, spec.net, r2,
-     file="saved/communityFit.Rdata")
+# 
+# bform.community <- bf.fabund + bf.fdiv +
+#   bf.babund +
+#   bf.bombusabund + bf.HBabund +
+#   bf.bdiv  +
+#   set_rescor(FALSE)
+# 
+# fit.community <- brm(bform.community, spec.net,
+#                      cores=ncores,
+#                      iter = 100,
+#                      chains = 1,
+#                      thin=1,
+#                      init=0,
+#                      control = list(adapt_delta = 0.99),
+#                      save_pars = save_pars(all = TRUE))
+# write.ms.table(fit.community,
+#                sprintf("microbe_%s_%s",
+#                        species.group="all", parasite="none"))
+# r2loo <- loo_R2(fit.community)
+# r2 <- rstantools::bayes_R2(fit.community)
+# save(fit.community, spec.net, r2,
+#      file="saved/communityFit.Rdata")
 
 
 ## **********************************************************
@@ -331,14 +420,14 @@ formula.microbe <- as.formula(paste(microbe.y, "~",
 bf.microbe <- bf(formula.microbe)
 
 #combine forms
-bform <- bf.fabund + bf.fdiv +
-  bf.babund + bf.bombusabund + bf.HBabund +
+bform <- bf.fabund + bf.fdiv + bf.tot.babund +
+  #bf.babund + bf.bombusabund + bf.HBabund +
   bf.bdiv  +    
   bf.microbe +
   set_rescor(FALSE)
 
 ## run model
-fit.microbe <- brm(bform , spec.microbes,
+fit.microbe <- brm(bform , spec.net,
                   cores=ncores,
                   iter = 10000,
                   chains =1,
