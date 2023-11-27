@@ -7,7 +7,7 @@ setwd("analysis/microbiome/")
 
 rm(list=ls())
 
-run.diagnostics = TRUE
+run.diagnostics = FALSE
 
 library(picante)
 library(bayesplot)
@@ -371,37 +371,37 @@ xvars.single.species <-  c("Net_NonBombusHBAbundance",
 ## **********************************************************
 bf.fabund <- bf(formula.flower.abund)
 bf.fdiv <- bf(formula.flower.div)
-#bf.babund <- bf(formula.bee.abund, family="hurdle_gamma")
-#bf.bombusabund <- bf(formula.bombus.abund, family="hurdle_gamma")
-#bf.HBabund <- bf(formula.hb.abund, family="hurdle_gamma")
+bf.babund <- bf(formula.bee.abund, family="Gamma")
+bf.bombusabund <- bf(formula.bombus.abund, family="Gamma")
+bf.HBabund <- bf(formula.hb.abund, family="Gamma")
 bf.tot.babund <- bf(formula.tot.bee.abund)
 bf.bdiv <- bf(formula.bee.div)
 
 ## **********************************************************
 ## community model
 ## **********************************************************
-# 
-# bform.community <- bf.fabund + bf.fdiv +
-#   bf.babund +
-#   bf.bombusabund + bf.HBabund +
-#   bf.bdiv  +
-#   set_rescor(FALSE)
-# 
-# fit.community <- brm(bform.community, spec.net,
-#                      cores=ncores,
-#                      iter = 100,
-#                      chains = 1,
-#                      thin=1,
-#                      init=0,
-#                      control = list(adapt_delta = 0.99),
-#                      save_pars = save_pars(all = TRUE))
-# write.ms.table(fit.community,
-#                sprintf("microbe_%s_%s",
-#                        species.group="all", parasite="none"))
-# r2loo <- loo_R2(fit.community)
-# r2 <- rstantools::bayes_R2(fit.community)
-# save(fit.community, spec.net, r2,
-#      file="saved/communityFit.Rdata")
+
+bform.community <- bf.fabund + bf.fdiv +
+  bf.babund +
+  bf.bombusabund + bf.HBabund +
+  bf.bdiv  +
+  set_rescor(FALSE)
+
+fit.community <- brm(bform.community, spec.net,
+                     cores=ncores,
+                     iter = 100,
+                     chains = 1,
+                     thin=1,
+                     init=0,
+                     control = list(adapt_delta = 0.99),
+                     save_pars = save_pars(all = TRUE))
+write.ms.table(fit.community,
+               sprintf("community_%s_%s",
+                       species.group="all", parasite="none"))
+r2loo <- loo_R2(fit.community)
+r2 <- rstantools::bayes_R2(fit.community)
+save(fit.community, spec.net, r2,
+     file="saved/communityFit.Rdata")
 
 
 ## **********************************************************
