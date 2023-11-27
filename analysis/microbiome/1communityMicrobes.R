@@ -28,6 +28,7 @@ vars_yearsr <- c("MeanFloralAbundance",
                  "MeanFloralDiversity",
                  "Net_BeeDiversity",
                  "Lat", "SRDoy",
+                 "BeeAbundance",
                  "Net_BombusAbundance",
                  "Net_HBAbundance"  ,
                  "Net_NonBombusHBAbundance",
@@ -116,7 +117,7 @@ if(run.diagnostics){
     this_family = 'gaussian')
   
   ggsave(freq.model.flower.abund,
-         file="figures/SI_VegAbundModelDiagnostics.pdf",
+         file="figures/diagnostics/SI_VegAbundModelDiagnostics.pdf",
          height=8, width=11)
 }
 
@@ -148,7 +149,7 @@ if(run.diagnostics){
     this_family = 'gaussian')
   
   ggsave(freq.model.flower.div,
-         file="figures/SI_VegDivModelDiagnostics.pdf",
+         file="figures/diagnostics/SI_VegDivModelDiagnostics.pdf",
          height=8, width=11)
 }
 
@@ -163,7 +164,6 @@ tot.bee.abund.vars <- c("MeanFloralAbundance",
                     "Year",
                     "SRDoy",
                     "I(SRDoy^2)",
-                    "Lat",
                     "(1|Site)")
 
 tot.bee.abund.x <- paste(tot.bee.abund.vars, collapse="+")
@@ -182,7 +182,7 @@ if(run.diagnostics){
     this_family = "gaussian")
   
   ggsave(freq.model.tot.bee.abund,
-         file="figures/SI_TotalBeeAbundModelDiagnostics.pdf",
+         file="figures/diagnostics/SI_TotalBeeAbundModelDiagnostics.pdf",
          height=8, width=11)
 }
 
@@ -192,7 +192,6 @@ net.bee.abund.vars <- c("MeanFloralAbundance",
                         "Year",
                         "SRDoy",
                         "I(SRDoy^2)",
-                        "Lat",
                         "(1|Site)")
 
 net.bee.abund.x <- paste(net.bee.abund.vars, collapse="+")
@@ -208,10 +207,10 @@ if(run.diagnostics){
   freq.model.net.bee.abund <- run_plot_freq_model_diagnostics(
     freq.formula.net.bee.abund,
     spec.net[spec.net$Weights==1,],
-    this_family = "Gamma")
+    this_family = "gaussian")
   
   ggsave(freq.model.net.bee.abund,
-         file="figures/SI_NetBeeAbundModelDiagnostics.pdf",
+         file="figures/diagnostics/SI_NetBeeAbundModelDiagnostics.pdf",
          height=8, width=11)
 }
 
@@ -244,7 +243,7 @@ if(run.diagnostics){
     this_family = "gaussian")
   
   ggsave(freq.model.bee.div,
-         file="figures/SI_BeeDiversityModelDiagnostics.pdf",
+         file="figures/diagnostics/SI_BeeDiversityModelDiagnostics.pdf",
          height=8, width=11)
 }
 
