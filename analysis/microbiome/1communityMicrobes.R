@@ -7,7 +7,7 @@ setwd("analysis/microbiome/")
 
 rm(list=ls())
 
-run.diagnostics = FALSE
+run.diagnostics = TRUE
 
 library(picante)
 library(bayesplot)
@@ -36,8 +36,9 @@ vars_yearsr <- c("MeanFloralAbundance",
 vars_sp <- c("MeanITD",
              "rare.degree")
 
-variables.to.log <- c("rare.degree",
-                      "MeanFloralAbundance")
+variables.to.log <- c("rare.degree"
+                      #"MeanFloralAbundance"
+                      )
 
 source("src/misc_microbe.R")
 source("src/misc.R")
@@ -155,106 +156,7 @@ if(run.diagnostics){
 ## Bee abundance
 ## **********************************************************
 
-## bombus abundance variables 
-bombus.abund.vars <- c("MeanFloralAbundance",
-                       "Year",
-                       "SRDoy",
-                       "I(SRDoy^2)",
-                       "Lat",
-                       "(1|Site)")
 
-bombus.abund.x <- paste(bombus.abund.vars, collapse="+")
-bombus.abund.y <- "Net_BombusAbundance | weights(Weights)"
-formula.bombus.abund <- as.formula(paste(bombus.abund.y, "~",bombus.abund.x))
-
-
-#Bombus abundance check
-freq.formula.bombus.abund <- as.formula(paste("Net_BombusAbundance", "~", bombus.abund.x ))
-
-#for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
-if(run.diagnostics){
-  freq.model.bombus.abund <- run_plot_freq_model_diagnostics(
-    freq.formula.bombus.abund,
-    spec.net[spec.net$Weights==1,],
-    this_family = "Gamma")
-  
-  ggsave(freq.model.bombus.abund,
-         file="figures/SI_BombusAbundModelDiagnostics.pdf",
-         height=8, width=11)
-}
-
-#neg binomial is bad
-# gaussian isn't great
-# gamma -- isnt too bad! some weirdness w/ residuals..
-
-
-## HB abund
-
-## honeybee abundance variables 
-hb.abund.vars <- c("MeanFloralAbundance",
-                       "Year",
-                       "SRDoy",
-                       "I(SRDoy^2)",
-                       "Lat",
-                       "(1|Site)")
-
-hb.abund.x <- paste(hb.abund.vars, collapse="+")
-hb.abund.y <- "Net_HBAbundance | weights(Weights)"
-formula.hb.abund <- as.formula(paste(hb.abund.y, "~",hb.abund.x))
-
-
-# HB abund check
-freq.formula.hb.abund <- as.formula(paste("Net_HBAbundance", "~", hb.abund.x ))
-
-#for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
-if(run.diagnostics){
-  freq.model.hb.abund <- run_plot_freq_model_diagnostics(
-    freq.formula.hb.abund,
-    spec.net[spec.net$Weights==1,],
-    this_family = "Gamma")
-  
-  ggsave(freq.model.hb.abund,
-         file="figures/SI_HoneyBeeAbundModelDiagnostics.pdf",
-         height=8, width=11)
-}
-
-#with gamma distribution homogeneity of variance looks kinda bad 
-
-## bee abund
-
-bee.abund.vars <- c("MeanFloralAbundance",
-                   "Year",
-                   "SRDoy",
-                   "I(SRDoy^2)",
-                   "Lat",
-                   "(1|Site)")
-
-bee.abund.x <- paste(bee.abund.vars, collapse="+")
-bee.abund.y <- "Net_NonBombusHBAbundance | weights(Weights)"
-formula.bee.abund <- as.formula(paste(bee.abund.y, "~",bee.abund.x))
-
-
-# bee abund check
-freq.formula.bee.abund <- as.formula(paste("Net_NonBombusHBAbundance", "~", bee.abund.x ))
-
-##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
-if(run.diagnostics){
-  freq.model.bee.abund <- run_plot_freq_model_diagnostics(
-    freq.formula.bee.abund,
-    spec.net[spec.net$Weights==1,],
-    this_family = "Gamma")
-  
-  ggsave(freq.model.bee.abund,
-         file="figures/SI_BeeAbundModelDiagnostics.pdf",
-         height=8, width=11)
-}
-
-
-## Warning message:
-##   In checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv,  :
-##                  Model failed to converge with max|grad| = 0.00307909 (tol = 0.002, component 1)
-
-# gamma distribution gives this error too
 
 ## bee abund total
 tot.bee.abund.vars <- c("MeanFloralAbundance",
