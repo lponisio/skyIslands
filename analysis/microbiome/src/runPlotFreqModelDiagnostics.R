@@ -11,6 +11,7 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
                             this_data, #data frame, subsetted to correct weights!
                             num_chains=1, 
                             num_iter=10000, 
+                            launch.shiny=FALSE,
                             this_family #model family
                             ){
   if (this_family == 'gaussian'){
@@ -94,6 +95,6 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
     diagnostic.plots <- plot(check_model(this_model_output, 
                                          panel = TRUE))
   } 
-  
+  if (launch.shiny == TRUE){shinystan::launch_shinystan(this_model_output)}
   diagnostic.plots
 }
