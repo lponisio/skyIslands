@@ -102,7 +102,7 @@ spec.net <- spec.net[!(spec.net$UniqueID %in% drop.PD.NA),]
 ## **********************************************************
 
 ## flower abundance variables 
-flower.abund.vars <- c("Year",
+flower.abund.vars <- c("(1|Year)",
                        "SRDoy",
                        "I(SRDoy^2)",
                        "Lat",
@@ -121,7 +121,7 @@ formula.flower.abund <- as.formula(paste(flower.abund.y, "~",flower.abund.x))
 
 
 ## flower abundance variables 
-flower.div.vars <- c("Year",
+flower.div.vars <- c("(1|Year)",
                        "SRDoy",
                        "I(SRDoy^2)",
                        "Lat",
@@ -141,7 +141,7 @@ formula.flower.div <- as.formula(paste(flower.div.y, "~",flower.div.x))
 
 ## bee abund total
 tot.bee.abund.vars <- c("MeanFloralAbundance",
-                    "Year",
+                    "(1|Year)",
                     "SRDoy",
                     "I(SRDoy^2)",
                     "(1|Site)")
@@ -156,7 +156,7 @@ formula.tot.bee.abund <- as.formula(paste(tot.bee.abund.y, "~",tot.bee.abund.x))
 #net bee abund
 ## bee abund total
 net.bee.abund.vars <- c("MeanFloralAbundance",
-                        "Year",
+                        "(1|Year)",
                         "SRDoy",
                         "I(SRDoy^2)",
                         "(1|Site)")
@@ -175,7 +175,7 @@ formula.net.bee.abund <- as.formula(paste(net.bee.abund.y, "~",net.bee.abund.x))
 
 
 bee.div.vars <- c("MeanFloralDiversity",
-                    "Year",
+                    "(1|Year)",
                     "SRDoy",
                     "I(SRDoy^2)",
                     "Lat",
@@ -187,9 +187,10 @@ formula.bee.div <- as.formula(paste(bee.div.y, "~",bee.div.x))
 
 ## bee div total
 tot.bee.div.vars <- c("MeanFloralAbundance",
-                        "Year",
+                        "(1|Year)",
                         "SRDoy",
                         "I(SRDoy^2)",
+                      "Lat",
                         "(1|Site)")
 
 tot.bee.div.x <- paste(tot.bee.div.vars, collapse="+")
@@ -197,7 +198,8 @@ tot.bee.div.y <- "BeeDiversity | weights(Weights)"
 formula.tot.bee.div <- as.formula(paste(tot.bee.div.y, "~",tot.bee.div.x))
 
 
-
+## NOTE accidentally ran most recent iteration of community model excluding lat as a bee diversity variable.. i think it should be included so running full model with it
+#but may want to consider taking it out if models are worse with it?
 
 
 ## **********************************************************
@@ -212,28 +214,28 @@ bf.tot.bdiv <- bf(formula.tot.bee.div)
 ## **********************************************************
 ## community model
 ## **********************************************************
-
-bform.community <- bf.fabund +
-  bf.fdiv +
-  bf.tot.babund +
-  bf.tot.bdiv  +
-  set_rescor(FALSE)
-
-fit.community <- brm(bform.community, spec.net,
-                     cores=ncores,
-                     iter = 10000,
-                     chains = 1,
-                     thin=1,
-                     init=0,
-                     control = list(adapt_delta = 0.99),
-                     save_pars = save_pars(all = TRUE))
-write.ms.table(fit.community,
-               sprintf("community_%s_%s",
-                       species.group="all", parasite="none"))
-r2loo <- loo_R2(fit.community)
-r2 <- rstantools::bayes_R2(fit.community)
-save(fit.community, spec.net, r2,
-     file="saved/communityFit.Rdata")
+# 
+# bform.community <- bf.fabund +
+#   bf.fdiv +
+#   bf.tot.babund +
+#   bf.tot.bdiv  +
+#   set_rescor(FALSE)
+# 
+# fit.community <- brm(bform.community, spec.net,
+#                      cores=ncores,
+#                      iter = 10000,
+#                      chains = 1,
+#                      thin=1,
+#                      init=0,
+#                      control = list(adapt_delta = 0.99),
+#                      save_pars = save_pars(all = TRUE))
+# write.ms.table(fit.community,
+#                sprintf("community_%s_%s",
+#                        species.group="all", parasite="none"))
+# r2loo <- loo_R2(fit.community)
+# r2 <- rstantools::bayes_R2(fit.community)
+# save(fit.community, spec.net, r2,
+#      file="saved/communityFit.Rdata")
 
 
 ## **********************************************************
@@ -246,7 +248,6 @@ save(fit.community, spec.net, r2,
 ## Multi species models
 microbe.vars <-  c("BeeAbundance",
                           "BeeDiversity",
-                          #"rare.degree", "MeanITD",
                           "(1|Site)", "(1|GenusSpecies)")
 
 
@@ -256,34 +257,34 @@ formula.microbe <- as.formula(paste(microbe.y, "~",
                                      microbe.x))
 
 
-# bf.microbe <- bf(formula.microbe)
-# 
-# #combine forms
-# bform <- bf.fabund + 
-#   bf.fdiv + 
-#   bf.tot.babund +
-#   bf.bdiv  +    
-#   bf.microbe +
-#   set_rescor(FALSE)
-# 
-# ## run model
-# fit.microbe <- brm(bform , spec.net,
-#                   cores=ncores,
-#                   iter = 10000,
-#                   chains =1,
-                  # thin=1,
-                  # init=0,
-                  # open_progress = FALSE,
-                  # control = list(adapt_delta = 0.99),
-                  # save_pars = save_pars(all = TRUE))
-# 
-# write.ms.table(fit.microbe,
-#                sprintf("full_microbe_%s_%s",
-#                        species.group="all", parasite="none"))
-# r2loo <- loo_R2(fit.microbe)
-# r2 <- rstantools::bayes_R2(fit.microbe)
-# save(fit.microbe, spec.net, r2, r2loo,
-#      file="saved/fullMicrobeFit.Rdata")
+bf.microbe <- bf(formula.microbe)
+
+#combine forms
+bform <- bf.fabund +
+  bf.fdiv +
+  bf.tot.babund +
+  bf.tot.bdiv  +
+  bf.microbe +
+  set_rescor(FALSE)
+
+## run model
+fit.microbe <- brm(bform , spec.net,
+                  cores=ncores,
+                  iter = 10000,
+                  chains =1,
+                  thin=1,
+                  init=0,
+                  open_progress = FALSE,
+                  control = list(adapt_delta = 0.99),
+                  save_pars = save_pars(all = TRUE))
+
+write.ms.table(fit.microbe,
+               sprintf("full_microbe_%s_%s",
+                       species.group="all", parasite="none"))
+r2loo <- loo_R2(fit.microbe)
+r2 <- rstantools::bayes_R2(fit.microbe)
+save(fit.microbe, spec.net, r2, r2loo,
+     file="saved/fullMicrobeFit.Rdata")
 
 
 ## **********************************************************
