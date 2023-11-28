@@ -7,7 +7,7 @@ setwd("analysis/microbiome/")
 
 rm(list=ls())
 
-run.diagnostics = TRUE
+run.diagnostics = FALSE
 
 library(picante)
 library(bayesplot)
@@ -17,6 +17,7 @@ library(performance)
 library(lme4)
 library(glmmADMB)
 library(R2admb)
+library(shinystan)
 # install.packages("glmmADMB", 
 #                  repos=c("http://glmmadmb.r-forge.r-project.org/repos",
 #                          getOption("repos")),
@@ -97,6 +98,8 @@ spec.net$Net_NonBombusHBAbundance <- spec.net$Net_NonBombusHBAbundance + 1
 ## making site a factor so it works with gamma dist
 spec.net$Site <- as.factor(spec.net$Site)
 
+#should weightsPar only have 61 obs?
+
 ## **********************************************************
 ## Flower abundance
 ## **********************************************************
@@ -109,7 +112,7 @@ flower.abund.vars <- c("Year",
                        "(1|Site)")
 
 flower.abund.x <- paste(flower.abund.vars, collapse="+")
-flower.abund.y <- "MeanFloralAbundance | weights(Weights)"
+flower.abund.y <- "MeanFloralAbundance | weights(WeightsPar)"
 formula.flower.abund <- as.formula(paste(flower.abund.y, "~",flower.abund.x))
                                          
 
@@ -128,7 +131,7 @@ flower.div.vars <- c("Year",
                        "(1|Site)")
 
 flower.div.x <- paste(flower.div.vars, collapse="+")
-flower.div.y <- "MeanFloralDiversity | weights(Weights)"
+flower.div.y <- "MeanFloralDiversity | weights(WeightsPar)"
 formula.flower.div <- as.formula(paste(flower.div.y, "~",flower.div.x))
 
 
@@ -147,7 +150,7 @@ tot.bee.abund.vars <- c("MeanFloralAbundance",
                     "(1|Site)")
 
 tot.bee.abund.x <- paste(tot.bee.abund.vars, collapse="+")
-tot.bee.abund.y <- "BeeAbundance | weights(Weights)"
+tot.bee.abund.y <- "BeeAbundance | weights(WeightsPar)"
 formula.tot.bee.abund <- as.formula(paste(tot.bee.abund.y, "~",tot.bee.abund.x))
 
 
@@ -162,7 +165,7 @@ net.bee.abund.vars <- c("MeanFloralAbundance",
                         "(1|Site)")
 
 net.bee.abund.x <- paste(net.bee.abund.vars, collapse="+")
-net.bee.abund.y <- "Net_BeeAbundance | weights(Weights)"
+net.bee.abund.y <- "Net_BeeAbundance | weights(WeightsPar)"
 formula.net.bee.abund <- as.formula(paste(net.bee.abund.y, "~",net.bee.abund.x))
 
 
@@ -182,7 +185,7 @@ bee.div.vars <- c("MeanFloralDiversity",
                     "(1|Site)")
 
 bee.div.x <- paste(bee.div.vars, collapse="+")
-bee.div.y <- "Net_BeeDiversity | weights(Weights)"
+bee.div.y <- "Net_BeeDiversity | weights(WeightsPar)"
 formula.bee.div <- as.formula(paste(bee.div.y, "~",bee.div.x))
 
 
@@ -201,27 +204,27 @@ bf.bdiv <- bf(formula.bee.div)
 ## community model
 ## **********************************************************
 
-bform.community <- bf.fabund + 
-  bf.fdiv + 
-  bf.tot.babund +
-  bf.bdiv  +
-  set_rescor(FALSE)
-
-fit.community <- brm(bform.community, spec.net,
-                     cores=ncores,
-                     iter = 10000,
-                     chains = 1,
-                     thin=1,
-                     init=0,
-                     control = list(adapt_delta = 0.99),
-                     save_pars = save_pars(all = TRUE))
-write.ms.table(fit.community,
-               sprintf("community_%s_%s",
-                       species.group="all", parasite="none"))
-r2loo <- loo_R2(fit.community)
-r2 <- rstantools::bayes_R2(fit.community)
-save(fit.community, spec.net, r2,
-     file="saved/communityFit.Rdata")
+# bform.community <- bf.fabund + 
+#   bf.fdiv + 
+#   bf.tot.babund +
+#   bf.bdiv  +
+#   set_rescor(FALSE)
+# 
+# fit.community <- brm(bform.community, spec.net,
+#                      cores=ncores,
+#                      iter = 10000,
+#                      chains = 1,
+#                      thin=1,
+#                      init=0,
+#                      control = list(adapt_delta = 0.99),
+#                      save_pars = save_pars(all = TRUE))
+# write.ms.table(fit.community,
+#                sprintf("community_%s_%s",
+#                        species.group="all", parasite="none"))
+# r2loo <- loo_R2(fit.community)
+# r2 <- rstantools::bayes_R2(fit.community)
+# save(fit.community, spec.net, r2,
+#      file="saved/communityFit.Rdata")
 
 
 ## **********************************************************
@@ -234,7 +237,7 @@ save(fit.community, spec.net, r2,
 ## Multi species models
 microbe.vars <-  c("BeeAbundance",
                           "Net_BeeDiversity",
-                          "rare.degree", "MeanITD",
+                          #"rare.degree", "MeanITD",
                           "(1|Site)", "(1|GenusSpecies)")
 
 
