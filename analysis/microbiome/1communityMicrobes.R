@@ -7,7 +7,7 @@ setwd("analysis/microbiome/")
 
 rm(list=ls())
 
-run.diagnostics = FALSE
+run.diagnostics = TRUE
 
 library(picante)
 library(bayesplot)
@@ -27,10 +27,11 @@ library(shinystan)
 ## to be centered
 
 ##QUESTION: log or center first?? 
-
+# 
 variables.to.log <- c("rare.degree",
-                      "BeeAbundance",
-                      "Net_BeeAbundance"
+ #                      "BeeAbundance",
+                      "Net_BeeAbundance"#,
+ #                     "BeeDiversity"
 )
 
 vars_yearsr <- c("MeanFloralAbundance",
@@ -38,10 +39,8 @@ vars_yearsr <- c("MeanFloralAbundance",
                  "Net_BeeDiversity",
                  "Lat", "SRDoy",
                  "BeeAbundance",
-                 "Net_BombusAbundance",
-                 "Net_HBAbundance"  ,
-                 "Net_NonBombusHBAbundance",
-                 "Net_BeeAbundance"
+                 "Net_BeeAbundance",
+                 "BeeDiversity"
 )
 vars_sp <- c("MeanITD",
              "rare.degree")
@@ -80,23 +79,23 @@ spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
 
 ## QUESTION: should there be NAs? not sure what check ids means
 ## check ids
-unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
-                               is.na(spec.net$MeanITD)])
+# unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
+#                                is.na(spec.net$MeanITD)])
 
 #dropping genus species with NA -- 
-#spec.net <- spec.net[!is.na(spec.net$GenusSpecies),]
+# spec.net <- spec.net[!is.na(spec.net$GenusSpecies),]
 
 ## adding one to bombus abundance to make it non negative
-spec.net$Net_BombusAbundance <- spec.net$Net_BombusAbundance + 1
-spec.net$Net_HBAbundance <- spec.net$Net_HBAbundance + 1
-spec.net$Net_NonBombusHBAbundance <- spec.net$Net_NonBombusHBAbundance + 1
+# spec.net$Net_BombusAbundance <- spec.net$Net_BombusAbundance + 1
+# spec.net$Net_HBAbundance <- spec.net$Net_HBAbundance + 1
+# spec.net$Net_NonBombusHBAbundance <- spec.net$Net_NonBombusHBAbundance + 1
 
 
 #squared transformed net bee abundance
 #spec.net$Net_BeeAbundance <- (spec.net$Net_BeeAbundance)^2
 
 ## making site a factor so it works with gamma dist
-spec.net$Site <- as.factor(spec.net$Site)
+#spec.net$Site <- as.factor(spec.net$Site)
 
 #should weightsPar only have 61 obs?
 
@@ -112,7 +111,7 @@ flower.abund.vars <- c("Year",
                        "(1|Site)")
 
 flower.abund.x <- paste(flower.abund.vars, collapse="+")
-flower.abund.y <- "MeanFloralAbundance | weights(WeightsPar)"
+flower.abund.y <- "MeanFloralAbundance | weights(Weights)"
 formula.flower.abund <- as.formula(paste(flower.abund.y, "~",flower.abund.x))
                                          
 
@@ -131,7 +130,7 @@ flower.div.vars <- c("Year",
                        "(1|Site)")
 
 flower.div.x <- paste(flower.div.vars, collapse="+")
-flower.div.y <- "MeanFloralDiversity | weights(WeightsPar)"
+flower.div.y <- "MeanFloralDiversity | weights(Weights)"
 formula.flower.div <- as.formula(paste(flower.div.y, "~",flower.div.x))
 
 
@@ -150,7 +149,7 @@ tot.bee.abund.vars <- c("MeanFloralAbundance",
                     "(1|Site)")
 
 tot.bee.abund.x <- paste(tot.bee.abund.vars, collapse="+")
-tot.bee.abund.y <- "BeeAbundance | weights(WeightsPar)"
+tot.bee.abund.y <- "BeeAbundance | weights(Weights)"
 formula.tot.bee.abund <- as.formula(paste(tot.bee.abund.y, "~",tot.bee.abund.x))
 
 
@@ -165,7 +164,7 @@ net.bee.abund.vars <- c("MeanFloralAbundance",
                         "(1|Site)")
 
 net.bee.abund.x <- paste(net.bee.abund.vars, collapse="+")
-net.bee.abund.y <- "Net_BeeAbundance | weights(WeightsPar)"
+net.bee.abund.y <- "Net_BeeAbundance | weights(Weights)"
 formula.net.bee.abund <- as.formula(paste(net.bee.abund.y, "~",net.bee.abund.x))
 
 
@@ -185,8 +184,19 @@ bee.div.vars <- c("MeanFloralDiversity",
                     "(1|Site)")
 
 bee.div.x <- paste(bee.div.vars, collapse="+")
-bee.div.y <- "Net_BeeDiversity | weights(WeightsPar)"
+bee.div.y <- "Net_BeeDiversity | weights(Weights)"
 formula.bee.div <- as.formula(paste(bee.div.y, "~",bee.div.x))
+
+## bee div total
+tot.bee.div.vars <- c("MeanFloralAbundance",
+                        "Year",
+                        "SRDoy",
+                        "I(SRDoy^2)",
+                        "(1|Site)")
+
+tot.bee.div.x <- paste(tot.bee.div.vars, collapse="+")
+tot.bee.div.y <- "BeeDiversity | weights(Weights)"
+formula.tot.bee.div <- as.formula(paste(tot.bee.div.y, "~",tot.bee.div.x))
 
 
 
@@ -199,6 +209,7 @@ bf.fabund <- bf(formula.flower.abund)
 bf.fdiv <- bf(formula.flower.div)
 bf.tot.babund <- bf(formula.tot.bee.abund)
 bf.bdiv <- bf(formula.bee.div)
+bf.tot.bdiv <- bf(formula.tot.bee.div)
 
 ## **********************************************************
 ## community model
@@ -234,47 +245,47 @@ bf.bdiv <- bf(formula.bee.div)
 ## **********************************************************
 ## Microbe models set up
 ## **********************************************************
-## Multi species models
-microbe.vars <-  c("BeeAbundance",
-                          "Net_BeeDiversity",
-                          #"rare.degree", "MeanITD",
-                          "(1|Site)", "(1|GenusSpecies)")
-
-
-microbe.x <- paste(microbe.vars, collapse="+")
-microbe.y <- "PD | weights(WeightsPar)"
-formula.microbe <- as.formula(paste(microbe.y, "~",
-                                     microbe.x))
-
-
-bf.microbe <- bf(formula.microbe)
-
-#combine forms
-bform <- bf.fabund + 
-  bf.fdiv + 
-  bf.tot.babund +
-  bf.bdiv  +    
-  bf.microbe +
-  set_rescor(FALSE)
-
-## run model
-fit.microbe <- brm(bform , spec.net,
-                  cores=ncores,
-                  iter = 10000,
-                  chains =1,
-                  thin=1,
-                  init=0,
-                  open_progress = FALSE,
-                  control = list(adapt_delta = 0.99),
-                  save_pars = save_pars(all = TRUE))
-
-write.ms.table(fit.microbe,
-               sprintf("full_microbe_%s_%s",
-                       species.group="all", parasite="none"))
-r2loo <- loo_R2(fit.microbe)
-r2 <- rstantools::bayes_R2(fit.microbe)
-save(fit.microbe, spec.net, r2, r2loo,
-     file="saved/fullMicrobeFit.Rdata")
+# ## Multi species models
+# microbe.vars <-  c("BeeAbundance",
+#                           "Net_BeeDiversity",
+#                           #"rare.degree", "MeanITD",
+#                           "(1|Site)", "(1|GenusSpecies)")
+# 
+# 
+# microbe.x <- paste(microbe.vars, collapse="+")
+# microbe.y <- "PD | weights(WeightsPar)"
+# formula.microbe <- as.formula(paste(microbe.y, "~",
+#                                      microbe.x))
+# 
+# 
+# bf.microbe <- bf(formula.microbe)
+# 
+# #combine forms
+# bform <- bf.fabund + 
+#   bf.fdiv + 
+#   bf.tot.babund +
+#   bf.bdiv  +    
+#   bf.microbe +
+#   set_rescor(FALSE)
+# 
+# ## run model
+# fit.microbe <- brm(bform , spec.net,
+#                   cores=ncores,
+#                   iter = 10000,
+#                   chains =1,
+#                   thin=1,
+#                   init=0,
+#                   open_progress = FALSE,
+#                   control = list(adapt_delta = 0.99),
+#                   save_pars = save_pars(all = TRUE))
+# 
+# write.ms.table(fit.microbe,
+#                sprintf("full_microbe_%s_%s",
+#                        species.group="all", parasite="none"))
+# r2loo <- loo_R2(fit.microbe)
+# r2 <- rstantools::bayes_R2(fit.microbe)
+# save(fit.microbe, spec.net, r2, r2loo,
+#      file="saved/fullMicrobeFit.Rdata")
 
 
 ## **********************************************************
@@ -352,6 +363,21 @@ if(run.diagnostics){
   
   ggsave(freq.model.bee.div,
          file="figures/diagnostics/SI_BeeDiversityModelDiagnostics.pdf",
+         height=8, width=11)
+}
+
+# total bee div check
+freq.formula.tot.bee.div <- as.formula(paste("BeeDiversity", "~", tot.bee.div.x ))
+
+##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+if(run.diagnostics){
+  freq.model.tot.bee.div <- run_plot_freq_model_diagnostics(
+    freq.formula.tot.bee.div,
+    spec.net[spec.net$Weights==1,],
+    this_family = "gaussian")
+  
+  ggsave(freq.model.tot.bee.div,
+         file="figures/diagnostics/SI_TotalBeeDivModelDiagnostics.pdf",
          height=8, width=11)
 }
 
