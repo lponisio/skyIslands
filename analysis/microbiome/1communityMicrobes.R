@@ -75,7 +75,12 @@ spec.microbes <- cbind(spec.microbes, PD)
 
 spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
 
+#which individuals don't have microbe data
+drop.PD.NA <- unique(spec.net$UniqueID[spec.net$WeightsPar == 1 &
+                               is.na(spec.net$PD)])
 
+#drop individuals that had parasite screen but not microbe
+spec.net <- spec.net[!(spec.net$UniqueID %in% drop.PD.NA),]
 
 ## QUESTION: should there be NAs? not sure what check ids means
 ## check ids
@@ -97,7 +102,6 @@ spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
 ## making site a factor so it works with gamma dist
 #spec.net$Site <- as.factor(spec.net$Site)
 
-#should weightsPar only have 61 obs?
 
 ## **********************************************************
 ## Flower abundance
@@ -245,19 +249,19 @@ bf.tot.bdiv <- bf(formula.tot.bee.div)
 ## **********************************************************
 ## Microbe models set up
 ## **********************************************************
-# ## Multi species models
-# microbe.vars <-  c("BeeAbundance",
-#                           "Net_BeeDiversity",
-#                           #"rare.degree", "MeanITD",
-#                           "(1|Site)", "(1|GenusSpecies)")
-# 
-# 
-# microbe.x <- paste(microbe.vars, collapse="+")
-# microbe.y <- "PD | weights(WeightsPar)"
-# formula.microbe <- as.formula(paste(microbe.y, "~",
-#                                      microbe.x))
-# 
-# 
+## Multi species models
+microbe.vars <-  c("BeeAbundance",
+                          "BeeDiversity",
+                          #"rare.degree", "MeanITD",
+                          "(1|Site)", "(1|GenusSpecies)")
+
+
+microbe.x <- paste(microbe.vars, collapse="+")
+microbe.y <- "PD | weights(WeightsPar)"
+formula.microbe <- as.formula(paste(microbe.y, "~",
+                                     microbe.x))
+
+
 # bf.microbe <- bf(formula.microbe)
 # 
 # #combine forms
@@ -378,6 +382,21 @@ if(run.diagnostics){
   
   ggsave(freq.model.tot.bee.div,
          file="figures/diagnostics/SI_TotalBeeDivModelDiagnostics.pdf",
+         height=8, width=11)
+}
+
+# microbe check
+freq.formula.microbe <- as.formula(paste("PD", "~", microbe.x ))
+
+##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+if(run.diagnostics){
+  freq.model.microbe <- run_plot_freq_model_diagnostics(
+    freq.formula.microbe,
+    spec.net[spec.net$WeightsPar==1,],
+    this_family = "gaussian")
+  
+  ggsave(freq.model.microbe,
+         file="figures/diagnostics/SI_MicrobeModelDiagnostics.pdf",
          height=8, width=11)
 }
 
