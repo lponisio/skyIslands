@@ -7,7 +7,7 @@ setwd("analysis/microbiome/")
 
 rm(list=ls())
 
-run.diagnostics = TRUE
+run.diagnostics = FALSE
 
 library(picante)
 library(bayesplot)
@@ -28,18 +28,12 @@ library(shinystan)
 
 ##QUESTION: log or center first?? 
 # 
-variables.to.log <- c("rare.degree",
- #                      "BeeAbundance",
-                      "Net_BeeAbundance"#,
- #                     "BeeDiversity"
-)
+variables.to.log <- c("rare.degree")
 
 vars_yearsr <- c("MeanFloralAbundance",
                  "MeanFloralDiversity",
-                 "Net_BeeDiversity",
                  "Lat", "SRDoy",
                  "BeeAbundance",
-                 "Net_BeeAbundance",
                  "BeeDiversity"
 )
 vars_sp <- c("MeanITD",
@@ -75,11 +69,11 @@ spec.microbes <- cbind(spec.microbes, PD)
 
 spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
 
-#which individuals don't have microbe data
+## check which individuals don't have microbe data
 drop.PD.NA <- unique(spec.net$UniqueID[spec.net$WeightsPar == 1 &
                                is.na(spec.net$PD)])
 
-#drop individuals that had parasite screen but not microbe
+## drop individuals that had parasite screen but not microbe
 spec.net <- spec.net[!(spec.net$UniqueID %in% drop.PD.NA),]
 
 ## QUESTION: should there be NAs? not sure what check ids means
@@ -219,27 +213,27 @@ bf.tot.bdiv <- bf(formula.tot.bee.div)
 ## community model
 ## **********************************************************
 
-# bform.community <- bf.fabund + 
-#   bf.fdiv + 
-#   bf.tot.babund +
-#   bf.bdiv  +
-#   set_rescor(FALSE)
-# 
-# fit.community <- brm(bform.community, spec.net,
-#                      cores=ncores,
-#                      iter = 10000,
-#                      chains = 1,
-#                      thin=1,
-#                      init=0,
-#                      control = list(adapt_delta = 0.99),
-#                      save_pars = save_pars(all = TRUE))
-# write.ms.table(fit.community,
-#                sprintf("community_%s_%s",
-#                        species.group="all", parasite="none"))
-# r2loo <- loo_R2(fit.community)
-# r2 <- rstantools::bayes_R2(fit.community)
-# save(fit.community, spec.net, r2,
-#      file="saved/communityFit.Rdata")
+bform.community <- bf.fabund +
+  bf.fdiv +
+  bf.tot.babund +
+  bf.tot.bdiv  +
+  set_rescor(FALSE)
+
+fit.community <- brm(bform.community, spec.net,
+                     cores=ncores,
+                     iter = 10000,
+                     chains = 1,
+                     thin=1,
+                     init=0,
+                     control = list(adapt_delta = 0.99),
+                     save_pars = save_pars(all = TRUE))
+write.ms.table(fit.community,
+               sprintf("community_%s_%s",
+                       species.group="all", parasite="none"))
+r2loo <- loo_R2(fit.community)
+r2 <- rstantools::bayes_R2(fit.community)
+save(fit.community, spec.net, r2,
+     file="saved/communityFit.Rdata")
 
 
 ## **********************************************************
@@ -277,11 +271,11 @@ formula.microbe <- as.formula(paste(microbe.y, "~",
 #                   cores=ncores,
 #                   iter = 10000,
 #                   chains =1,
-#                   thin=1,
-#                   init=0,
-#                   open_progress = FALSE,
-#                   control = list(adapt_delta = 0.99),
-#                   save_pars = save_pars(all = TRUE))
+                  # thin=1,
+                  # init=0,
+                  # open_progress = FALSE,
+                  # control = list(adapt_delta = 0.99),
+                  # save_pars = save_pars(all = TRUE))
 # 
 # write.ms.table(fit.microbe,
 #                sprintf("full_microbe_%s_%s",
@@ -393,7 +387,9 @@ if(run.diagnostics){
   freq.model.microbe <- run_plot_freq_model_diagnostics(
     freq.formula.microbe,
     spec.net[spec.net$WeightsPar==1,],
-    this_family = "gaussian")
+    this_family = "gaussian",
+    launch.shiny = FALSE,
+    examine.pairs = FALSE)
   
   ggsave(freq.model.microbe,
          file="figures/diagnostics/SI_MicrobeModelDiagnostics.pdf",
