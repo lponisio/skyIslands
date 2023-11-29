@@ -280,9 +280,7 @@ fit.microbe <- brm(bform , spec.net,
                   control = list(adapt_delta = 0.99),
                   save_pars = save_pars(all = TRUE))
 
-write.ms.table(fit.microbe,
-               sprintf("full_microbe_%s_%s",
-                       species.group="all", parasite="none"))
+write.ms.table(fit.microbe, "full_microbe")
 r2loo <- loo_R2(fit.microbe)
 r2 <- rstantools::bayes_R2(fit.microbe)
 save(fit.microbe, spec.net, r2, r2loo,
