@@ -18,6 +18,11 @@ library(ggVennDiagram)
 library(gt)
 devtools::install_github("jbisanz/qiime2R")
 library(qiime2R)
+library(viridis)
+library(UpSetR)
+
+
+source("analysis/microbiome/src/vennFunctions.R")
 
 load("data/spec_RBCL_16s.Rdata")
 
@@ -27,23 +32,14 @@ spec16s <- spec.net %>%
   na.omit() %>%
   pivot_longer(-c(UniqueID, Site, Genus, GenusSpecies), names_to = 'Bacteria', values_to = 'Abundance')
      
-  
+gensp_summary_table <- spec.net %>%
+  filter(Apidae == 1) %>%
+  select(GenusSpecies) %>%
+  group_by(GenusSpecies) %>%
+  summarize(n = n()) %>%
+  arrange(desc(n))
 
-genus_filter <- function(dataframe, genus){
-  new_df <- dataframe %>%
-    filter(Genus == genus) %>%
-    filter(Abundance > 0) %>%
-    select(Bacteria)
-  unique(new_df$Bacteria)
-}
 
-species_filter <- function(dataframe, species){
-  new_df <- dataframe %>%
-    filter(GenusSpecies == species) %>%
-    filter(Abundance > 0) %>%
-    select(Bacteria)
-  unique(new_df$Bacteria)
-}
 
 apis_subset <- genus_filter(spec16s, 'Apis')
 bombus_subset <- genus_filter(spec16s, 'Bombus')
@@ -64,79 +60,145 @@ ggVennDiagram(venn_data,
   scale_fill_gradient(low="white",high = "black") +
   scale_x_continuous(expand = expansion(mult = .2))
 
-intersection_vals <- process_region_data(Venn(venn_data))
-
-shared_otus_all <- unlist(intersection_vals$item[intersection_vals$id == '12345'])
-
-bombus_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Bombus'])
-
-apis_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Apis'])
-
-megachile_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Megachile'])
-
-melissodes_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Melissodes'])
-
-anthophora_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Anthophora'])
-
-
-#now making a nice table to show the shared OTUs between all genera
-shared_table_data <- spec16s %>%
-  filter(Bacteria %in% shared_otus_all) %>%
-  select(UniqueID, Bacteria, Abundance) %>%
-  filter(Abundance > 0) %>%
-  filter(!duplicated(Bacteria)) %>%
-  select(-Abundance) %>%
-  mutate(Feature.ID = row_number()) %>%
-  mutate(Taxon = Bacteria) %>%
-  select(-c(Bacteria, UniqueID)) %>%
-  mutate(Taxon = str_replace_all(Taxon, '16s:', '')) %>%
-  parse_taxonomy() %>%
-  mutate(Kingdom = str_replace_all(Kingdom, 'd__', '')) %>%
-  arrange(Phylum, Class, Order, Family, Genus, Species) %>%
-  mutate(Genus = str_replace_all(Genus, '_', ' ')) %>%
-  mutate(Species = str_replace_all(Species, '_', ' ')) %>%
-  #mutate(which_genera = 'Shared Among All') %>%
-  as_tibble()
-
-gt_shared <- gt(shared_table_data) %>%
-  sub_missing(columns=1:7, missing_text = '') %>%
-  tab_row_group(label = 'Present in all genera',
-                rows=1:31)
-
-
-gt_shared 
-
-
-
-### now do overlap between just the focal species
-# Apis mellifera
-# Melissodes confusus
-# Bombus centralis
-# Bombus huntii
-# Bombus bifarius
+# intersection_vals <- process_region_data(Venn(venn_data))
+# 
+# shared_otus_all <- unlist(intersection_vals$item[intersection_vals$id == '12345'])
+# 
+# bombus_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Bombus'])
+# 
+# apis_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Apis'])
+# 
+# megachile_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Megachile'])
+# 
+# melissodes_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Melissodes'])
+# 
+# anthophora_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Anthophora'])
+# 
+# 
+# #now making a nice table to show the shared OTUs between all genera
+# shared_table_data <- spec16s %>%
+#   filter(Bacteria %in% shared_otus_all) %>%
+#   select(UniqueID, Bacteria, Abundance) %>%
+#   filter(Abundance > 0) %>%
+#   filter(!duplicated(Bacteria)) %>%
+#   select(-Abundance) %>%
+#   mutate(Feature.ID = row_number()) %>%
+#   mutate(Taxon = Bacteria) %>%
+#   select(-c(Bacteria, UniqueID)) %>%
+#   mutate(Taxon = str_replace_all(Taxon, '16s:', '')) %>%
+#   parse_taxonomy() %>%
+#   mutate(Kingdom = str_replace_all(Kingdom, 'd__', '')) %>%
+#   arrange(Phylum, Class, Order, Family, Genus, Species) %>%
+#   mutate(Genus = str_replace_all(Genus, '_', ' ')) %>%
+#   mutate(Species = str_replace_all(Species, '_', ' ')) %>%
+#   #mutate(which_genera = 'Shared Among All') %>%
+#   as_tibble()
+# 
+# gt_shared <- gt(shared_table_data) %>%
+#   sub_missing(columns=1:7, missing_text = '') %>%
+#   tab_row_group(label = 'Present in all genera',
+#                 rows=1:31)
+# 
+# 
+# gt_shared 
 
 
-Amellifera_subset <- species_filter(spec16s, 'Apis mellifera')
+
+### subsetting different intersections based on how many individuals we have of each
+### will do one for ones >50, >20, >10, and > 4
+
+
+## >= 50 indiv
+Amellifera_subset <- species_filter(spec16s, 'Apis mellifera') 
 Bcentralis_subset <- species_filter(spec16s, 'Bombus centralis')
 Bhuntii_subset <- species_filter(spec16s, 'Bombus huntii')
 Bbifarius_subset <- species_filter(spec16s, 'Bombus bifarius')
 Mconfusus_subset <- species_filter(spec16s, 'Melissodes confusus')
+## >= 20 indiv
+Amontana_subset <- species_filter(spec16s, 'Anthophora montana')
+Brufocinctus_subset <- species_filter(spec16s, 'Bombus rufocinctus')
+Bflavifrons_subset <- species_filter(spec16s, 'Bombus flavifrons')
+Mfrigida_subset <- species_filter(spec16s, 'Megachile frigida')
+## >= 10 indiv
+Bnevadensis_subset <- species_filter(spec16s, "Bombus nevadensis")
+Mcomata_subset <- species_filter(spec16s, "Megachile comata")
+## >= 4 indiv
+Bfervidus_subset <- species_filter(spec16s, "Bombus fervidus")
+Aurbana_subset <- species_filter(spec16s, "Anthophora urbana")
+Bmixtus_subset <- species_filter(spec16s, "Bombus mixtus")
+Bmorrisoni_subset <- species_filter(spec16s, "Bombus morrisoni")
+Bsonorus_subset <- species_filter(spec16s, "Bombus sonorus")
+Dmaura_subset <- species_filter(spec16s, "Dufourea maura")
+Mrelativa_subset <- species_filter(spec16s, "Megachile relativa")
 
 
 
-venn_data_2 <- list(Apis_mellifera = Amellifera_subset,
+venn_data_50 <- list(Apis_mellifera = Amellifera_subset,
                   Bombus_centralis = Bcentralis_subset,
                   Bombus_huntii = Bhuntii_subset,
                   Bombus_bifarius = Bbifarius_subset,
                   Melissodes_confusus = Mconfusus_subset)
 
-ggVennDiagram(venn_data_2,
+venn_50 <- ggVennDiagram(venn_data_50,
               label_alpha = 0.5) + 
   scale_color_manual(values = plasma(5)) +
   scale_fill_gradient(low="white",high = "black") +
   scale_x_continuous(expand = expansion(mult = .2))
+venn_50
 
+upset_50 <- upset(fromList(venn_data_50), nsets = 5, order.by='freq')
+upset_50
 
+### now do overlap between just the species that are in > 20
+
+venn_data_20 <- list(Apis_mellifera = Amellifera_subset,
+                     Bombus_centralis = Bcentralis_subset,
+                     Bombus_huntii = Bhuntii_subset,
+                     Bombus_bifarius = Bbifarius_subset,
+                     Melissodes_confusus = Mconfusus_subset,
+                     Anthophora_montana = Amontana_subset,
+                     Bombus_rufocinctus = Brufocinctus_subset,
+                     Bombus_flavifrons = Bflavifrons_subset,
+                     Megachile_frigida = Mfrigida_subset)
+
+upset_20 <- upset(fromList(venn_data_20), nsets = 9, order.by='freq')
+upset_20
+## now do 10
+venn_data_10 <- list(Apis_mellifera = Amellifera_subset,
+                     Bombus_centralis = Bcentralis_subset,
+                     Bombus_huntii = Bhuntii_subset,
+                     Bombus_bifarius = Bbifarius_subset,
+                     Melissodes_confusus = Mconfusus_subset,
+                     Anthophora_montana = Amontana_subset,
+                     Bombus_rufocinctus = Brufocinctus_subset,
+                     Bombus_flavifrons = Bflavifrons_subset,
+                     Megachile_frigida = Mfrigida_subset,
+                     Bombus_nevadensis = Bnevadensis_subset,
+                     Megachile_comata = Mcomata_subset)
+
+upset_10 <- upset(fromList(venn_data_10), nsets = 11, order.by='freq')
+upset_10
+## now do 4
+venn_data_4 <- list(Apis_mellifera = Amellifera_subset,
+                     Bombus_centralis = Bcentralis_subset,
+                     Bombus_huntii = Bhuntii_subset,
+                     Bombus_bifarius = Bbifarius_subset,
+                     Melissodes_confusus = Mconfusus_subset,
+                     Anthophora_montana = Amontana_subset,
+                     Bombus_rufocinctus = Brufocinctus_subset,
+                     Bombus_flavifrons = Bflavifrons_subset,
+                     Megachile_frigida = Mfrigida_subset,
+                     Bombus_nevadensis = Bnevadensis_subset,
+                     Megachile_comata = Mcomata_subset,
+                    Bombus_fervidus = Bfervidus_subset,
+                    Anthophora_urbana = Aurbana_subset,
+                    Bombus_mixtus = Bmixtus_subset,
+                    Bombus_morrisoni = Bmorrisoni_subset,
+                    Bombus_sonorus = Bsonorus_subset,
+                    Dufourea_maura = Dmaura_subset)
+
+upset_4 <- upset(fromList(venn_data_4), nsets = 17, order.by='freq')
+upset_4
 
 
 # relabund.dat <- read.csv('spec_RBCL_16s.csv') %>%
