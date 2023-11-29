@@ -15,12 +15,12 @@ setwd('dataPrep')
 
 source("src/calcFuncUniqOrig.R")
 source("src/misc.R")
-load('../data/spec.Rdata')
+load('../data/spec_net.Rdata')
 
 traits <- read.csv("../../skyIslands_saved/data/raw/bee_traits.csv")
 traits$GenusSpecies <- fix.white.space(traits$GenusSpecies)
 
-traits <- traits[traits$GenusSpecies %in% spec$GenusSpecies,]
+traits <- traits[traits$GenusSpecies %in% spec.net$GenusSpecies,]
 
 bee.traits <- c("NestLocation", "PrimaryNestMaterial","NestConstruction","Lecty",
                  "MeanITD", "Sociality")
@@ -54,19 +54,19 @@ traits <- merge(traits, bee.func, by="GenusSpecies")
 all.traits <- colnames(traits)[!colnames(traits) %in%
                                c("GenusSpecies")]
 ## save prepped data
-spec <- cbind(spec, traits[, all.traits][match(spec$GenusSpecies,
+spec.net <- cbind(spec.net, traits[, all.traits][match(spec.net$GenusSpecies,
                            traits$GenusSpecies),])
 
-## spec$r.degree <- as.numeric(spec$r.degree)
+## spec.net$r.degree <- as.numeric(spec.net$r.degree)
 
 print(paste("missing trait data",
-            sort(unique(spec$GenusSpecies[is.na(spec$Lecty)]))))
+            sort(unique(spec.net$GenusSpecies[is.na(spec.net$Lecty)]))))
 
 write.csv(traits, file="../data/traits.csv",
           row.names=FALSE)
 
-save(spec, file="../data/spec_traits.Rdata")
-write.csv(spec, file="../data/spec_traits.csv", row.names=FALSE)
+save(spec.net, file="../data/spec_traits.Rdata")
+write.csv(spec.net, file="../data/spec_traits.csv", row.names=FALSE)
 
 ## *****************************************************************
 ## site-level function diversity metrics
