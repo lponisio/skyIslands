@@ -55,6 +55,7 @@ venn_data <- list(Anthophora = anthophora_subset,
                   Megachile = megachile_subset,
                   Melissodes = melissodes_subset)
 
+
 ggVennDiagram(venn_data,
               label_alpha = 0.5) + 
   scale_color_manual(values = plasma(5)) +
