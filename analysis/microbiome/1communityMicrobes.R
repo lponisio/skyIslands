@@ -28,7 +28,10 @@ library(shinystan)
 
 ##QUESTION: log or center first?? 
 # 
-variables.to.log <- c("rare.degree")
+variables.to.log <- c("rare.degree",
+                      "MeanFloralAbundance", #keep logged
+                      "BeeAbundance"
+                      )
 
 vars_yearsr <- c("MeanFloralAbundance",
                  "MeanFloralDiversity",
@@ -74,7 +77,9 @@ drop.PD.NA <- unique(spec.net$UniqueID[spec.net$WeightsPar == 1 &
                                is.na(spec.net$PD)])
 
 ## drop individuals that had parasite screen but not microbe
-spec.net <- spec.net[!(spec.net$UniqueID %in% drop.PD.NA),]
+## filling in zeros for NAs in PD
+spec.net <- spec.net[!(spec.net$UniqueID %in% drop.PD.NA),] %>%
+  mutate(PD = ifelse(!is.na(PD), PD, 0))
 
 ## QUESTION: should there be NAs? not sure what check ids means
 ## check ids
@@ -102,7 +107,7 @@ spec.net <- spec.net[!(spec.net$UniqueID %in% drop.PD.NA),]
 ## **********************************************************
 
 ## flower abundance variables 
-flower.abund.vars <- c("(1|Year)",
+flower.abund.vars <- c("Year",
                        "SRDoy",
                        "I(SRDoy^2)",
                        "Lat",
@@ -121,7 +126,7 @@ formula.flower.abund <- as.formula(paste(flower.abund.y, "~",flower.abund.x))
 
 
 ## flower abundance variables 
-flower.div.vars <- c("(1|Year)",
+flower.div.vars <- c("Year",
                        "SRDoy",
                        "I(SRDoy^2)",
                        "Lat",
@@ -141,7 +146,7 @@ formula.flower.div <- as.formula(paste(flower.div.y, "~",flower.div.x))
 
 ## bee abund total
 tot.bee.abund.vars <- c("MeanFloralAbundance",
-                    "(1|Year)",
+                    "Year",
                     "SRDoy",
                     "I(SRDoy^2)",
                     "(1|Site)")
@@ -156,7 +161,7 @@ formula.tot.bee.abund <- as.formula(paste(tot.bee.abund.y, "~",tot.bee.abund.x))
 #net bee abund
 ## bee abund total
 net.bee.abund.vars <- c("MeanFloralAbundance",
-                        "(1|Year)",
+                        "Year",
                         "SRDoy",
                         "I(SRDoy^2)",
                         "(1|Site)")
@@ -175,7 +180,7 @@ formula.net.bee.abund <- as.formula(paste(net.bee.abund.y, "~",net.bee.abund.x))
 
 
 bee.div.vars <- c("MeanFloralDiversity",
-                    "(1|Year)",
+                    "Year",
                     "SRDoy",
                     "I(SRDoy^2)",
                     "Lat",
@@ -187,7 +192,7 @@ formula.bee.div <- as.formula(paste(bee.div.y, "~",bee.div.x))
 
 ## bee div total
 tot.bee.div.vars <- c("MeanFloralAbundance",
-                        "(1|Year)",
+                        "Year",
                         "SRDoy",
                         "I(SRDoy^2)",
                       "Lat",
@@ -197,9 +202,6 @@ tot.bee.div.x <- paste(tot.bee.div.vars, collapse="+")
 tot.bee.div.y <- "BeeDiversity | weights(Weights)"
 formula.tot.bee.div <- as.formula(paste(tot.bee.div.y, "~",tot.bee.div.x))
 
-
-## NOTE accidentally ran most recent iteration of community model excluding lat as a bee diversity variable.. i think it should be included so running full model with it
-#but may want to consider taking it out if models are worse with it?
 
 
 ## **********************************************************
@@ -286,11 +288,14 @@ r2 <- rstantools::bayes_R2(fit.microbe)
 save(fit.microbe, spec.net, r2, r2loo,
      file="saved/fullMicrobeFit.Rdata")
 
+## model still dropping NAs... is this because the first layers use Weights 
+## but this final level uses 
 
 ## **********************************************************
 ## Diagnostics
 ## **********************************************************
 #VegAbund check
+if(run.diagnostics){
 freq.formula.flower.abund <- as.formula(paste("MeanFloralAbundance", "~", flower.abund.x ))
 
 #for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
@@ -335,35 +340,35 @@ if(run.diagnostics){
          height=8, width=11)
 }
 
-# bee abund check
-freq.formula.net.bee.abund <- as.formula(paste("Net_BeeAbundance", "~", net.bee.abund.x ))
+# # bee abund check
+# freq.formula.net.bee.abund <- as.formula(paste("Net_BeeAbundance", "~", net.bee.abund.x ))
+# 
+# ##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+# if(run.diagnostics){
+#   freq.model.net.bee.abund <- run_plot_freq_model_diagnostics(
+#     freq.formula.net.bee.abund,
+#     spec.net[spec.net$Weights==1,],
+#     this_family = "gaussian")
+#   
+#   ggsave(freq.model.net.bee.abund,
+#          file="figures/diagnostics/SI_NetBeeAbundModelDiagnostics.pdf",
+#          height=8, width=11)
+# }
 
-##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
-if(run.diagnostics){
-  freq.model.net.bee.abund <- run_plot_freq_model_diagnostics(
-    freq.formula.net.bee.abund,
-    spec.net[spec.net$Weights==1,],
-    this_family = "gaussian")
-  
-  ggsave(freq.model.net.bee.abund,
-         file="figures/diagnostics/SI_NetBeeAbundModelDiagnostics.pdf",
-         height=8, width=11)
-}
-
-# bee div check
-freq.formula.bee.div <- as.formula(paste("Net_BeeDiversity", "~", bee.div.x ))
-
-##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
-if(run.diagnostics){
-  freq.model.bee.div <- run_plot_freq_model_diagnostics(
-    freq.formula.bee.div,
-    spec.net[spec.net$Weights==1,],
-    this_family = "gaussian")
-  
-  ggsave(freq.model.bee.div,
-         file="figures/diagnostics/SI_BeeDiversityModelDiagnostics.pdf",
-         height=8, width=11)
-}
+# # bee div check
+# freq.formula.bee.div <- as.formula(paste("Net_BeeDiversity", "~", bee.div.x ))
+# 
+# ##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+# if(run.diagnostics){
+#   freq.model.bee.div <- run_plot_freq_model_diagnostics(
+#     freq.formula.bee.div,
+#     spec.net[spec.net$Weights==1,],
+#     this_family = "gaussian")
+#   
+#   ggsave(freq.model.bee.div,
+#          file="figures/diagnostics/SI_BeeDiversityModelDiagnostics.pdf",
+#          height=8, width=11)
+# }
 
 # total bee div check
 freq.formula.tot.bee.div <- as.formula(paste("BeeDiversity", "~", tot.bee.div.x ))
@@ -395,6 +400,6 @@ if(run.diagnostics){
   ggsave(freq.model.microbe,
          file="figures/diagnostics/SI_MicrobeModelDiagnostics.pdf",
          height=8, width=11)
+  }
 }
-
 
