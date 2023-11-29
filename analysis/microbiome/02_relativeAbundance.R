@@ -20,6 +20,7 @@ devtools::install_github("jbisanz/qiime2R")
 library(qiime2R)
 library(viridis)
 library(UpSetR)
+library(ComplexUpset)
 
 
 source("analysis/microbiome/src/vennFunctions.R")
@@ -59,6 +60,21 @@ ggVennDiagram(venn_data,
   scale_color_manual(values = plasma(5)) +
   scale_fill_gradient(low="white",high = "black") +
   scale_x_continuous(expand = expansion(mult = .2))
+
+upset_genus <- upset(fromList(venn_data),
+                  colnames(fromList(venn_data)),
+                  queries=query_by_degree(
+                    fromList(venn_data),
+                    colnames(fromList(venn_data)),
+                    params_by_degree=list(
+                      '0'=list(color='black', fill='black'),
+                      '1'=list(color='black', fill='black'),
+                      '2'=list(color='black', fill='black'),
+                      '3'=list(color='black', fill='black'),
+                      '4'=list(color='black', fill='black'),
+                      '5'=list(color='red', fill='red')
+                    )))
+upset_genus
 
 # intersection_vals <- process_region_data(Venn(venn_data))
 # 
@@ -146,7 +162,19 @@ venn_50 <- ggVennDiagram(venn_data_50,
   scale_x_continuous(expand = expansion(mult = .2))
 venn_50
 
-upset_50 <- upset(fromList(venn_data_50), nsets = 5, order.by='freq')
+upset_50 <- upset(fromList(venn_data_50),
+                  colnames(fromList(venn_data_50)),
+                  queries=query_by_degree(
+                    fromList(venn_data_50),
+                    colnames(fromList(venn_data_50)),
+                    params_by_degree=list(
+                      '0'=list(color='black', fill='black'),
+                      '1'=list(color='black', fill='black'),
+                      '2'=list(color='black', fill='black'),
+                      '3'=list(color='black', fill='black'),
+                      '4'=list(color='black', fill='black'),
+                      '5'=list(color='red', fill='red')
+                      )))
 upset_50
 
 ### now do overlap between just the species that are in > 20
@@ -161,8 +189,25 @@ venn_data_20 <- list(Apis_mellifera = Amellifera_subset,
                      Bombus_flavifrons = Bflavifrons_subset,
                      Megachile_frigida = Mfrigida_subset)
 
-upset_20 <- upset(fromList(venn_data_20), nsets = 9, order.by='freq')
+upset_20 <- upset(fromList(venn_data_20),
+                  colnames(fromList(venn_data_20)),
+                  queries=query_by_degree(
+                    fromList(venn_data_20),
+                    colnames(fromList(venn_data_20)),
+                    params_by_degree=list(
+                      '0'=list(color='black', fill='black'),
+                      '1'=list(color='black', fill='black'),
+                      '2'=list(color='black', fill='black'),
+                      '3'=list(color='black', fill='black'),
+                      '4'=list(color='black', fill='black'),
+                      '5'=list(color='black', fill='black'),
+                      '6'=list(color='black', fill='black'),
+                      '7'=list(color='black', fill='black'),
+                      '8'=list(color='black', fill='black'),
+                      '9'=list(color='red', fill='red')
+                    )))
 upset_20
+
 ## now do 10
 venn_data_10 <- list(Apis_mellifera = Amellifera_subset,
                      Bombus_centralis = Bcentralis_subset,
