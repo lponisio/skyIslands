@@ -42,7 +42,7 @@ dir.create(path="saved/tables", showWarnings = FALSE)
 
 spec.net <- spec.net[order(spec.net$Site),]
 
-## create a dumby varaible "Weight" to deal with the data sets being at
+## create a dummy variable "Weight" to deal with the data sets being at
 ## different levels to get around the issue of having to pass in one
 ## data set into brms
 spec.net$YearSR <- paste(spec.net$Year, spec.net$SampleRound, sep=";")
@@ -79,6 +79,6 @@ spec.melissodes <- spec.all
 spec.melissodes$WeightsPar[spec.melissodes$Genus != "Melissodes"] <- 0
 
 spec.apidae <- spec.all
-spec.apidae$WeightsPar[spec.melissodes$Family != "Apidae"] <- 0
+spec.apidae$WeightsPar[spec.apidae$Family != "Apidae"] <- 0
 
 
