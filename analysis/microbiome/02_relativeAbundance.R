@@ -250,7 +250,7 @@ shared_boxplots <- ggplot(boxplot_data,
                   geom_jitter(aes(fill=GenusSpecies), shape=21) +
                   geom_boxplot(aes(fill=GenusSpecies),alpha=0.2) +
                   facet_wrap(~Taxon) +
-                  theme_classic() + theme(axis.text.x = element_text(angle = 45, vjust = 0.5)) +
+                  theme_classic() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
                   scale_fill_viridis(discrete=TRUE) +
                   scale_color_viridis(discrete=TRUE)
 shared_boxplots
