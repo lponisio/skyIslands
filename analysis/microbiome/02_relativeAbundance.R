@@ -78,46 +78,48 @@ upset_genus <- upset(fromList(venn_data),
                     )))
 upset_genus
 
-intersection_vals <- process_region_data(Venn(venn_data))
+#genus intersections
+# intersection_vals <- process_region_data(Venn(venn_data))
+# 
+# shared_otus_all <- unlist(intersection_vals$item[intersection_vals$id == '12345'])
+# 
+# bombus_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Bombus'])
+# 
+# apis_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Apis'])
+# 
+# megachile_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Megachile'])
+# 
+# melissodes_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Melissodes'])
+# 
+# anthophora_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Anthophora'])
+# 
 
-shared_otus_all <- unlist(intersection_vals$item[intersection_vals$id == '12345'])
-
-bombus_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Bombus'])
-
-apis_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Apis'])
-
-megachile_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Megachile'])
-
-melissodes_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Melissodes'])
-
-anthophora_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Anthophora'])
 
 
 #now making a nice table to show the shared OTUs between all genera
-shared_table_data <- spec16s %>%
-  filter(Bacteria %in% shared_otus_all) %>%
-  select(UniqueID, Bacteria, Abundance) %>%
-  filter(Abundance > 0) %>%
-  filter(!duplicated(Bacteria)) %>%
-  select(-Abundance) %>%
-  mutate(Feature.ID = row_number()) %>%
-  mutate(Taxon = Bacteria) %>%
-  select(-c(Bacteria, UniqueID)) %>%
-  mutate(Taxon = str_replace_all(Taxon, '16s:', '')) %>%
-  parse_taxonomy() %>%
-  mutate(Kingdom = str_replace_all(Kingdom, 'd__', '')) %>%
-  arrange(Phylum, Class, Order, Family, Genus, Species) %>%
-  mutate(Genus = str_replace_all(Genus, '_', ' ')) %>%
-  mutate(Species = str_replace_all(Species, '_', ' ')) %>%
-  na.omit() %>%
-  filter(Species %in% c("Bifidobacterium indicum",
-                        "Lactobacillus apis",
-                        "Fructobacillus tropaeoli",
-                        "Bartonella apis",
-                        "Rickettsia bellii",
-                        "Frischella perrara",
-                        "Acinetobacter nectaris"))
-
+# shared_table_data <- spec16s %>%
+#   filter(Bacteria %in% shared_otus_all) %>%
+#   select(UniqueID, Bacteria, Abundance, GenusSpecies) %>%
+#   filter(Abundance > 0) %>%
+#   mutate(Feature.ID = row_number()) %>%
+#   mutate(Taxon = Bacteria) %>%
+#   select(-Bacteria) %>%
+#   mutate(Taxon = str_replace_all(Taxon, '16s:', '')) %>%
+#   na.omit() %>%
+#   filter(grepl("Bifidobacterium_indicum|Lactobacillus_apis|Fructobacillus_tropaeoli|Bartonella_apis|Rickettsia_bellii|Frischella_perrara|Acinetobacter_nectaris", Taxon)) %>%
+#   group_by(GenusSpecies, Taxon) %>%
+#   mutate(num_indiv = n()) %>%
+#   filter(GenusSpecies %in% c("Apis mellifera","Bombus huntii","Melissodes confusus","Bombus centralis","Bombus bifarius")) %>%
+#   ungroup() %>%
+#   group_by(Taxon)
+# 
+# shared_table_data$Taxon = str_remove(shared_table_data$Taxon, '.*(?=s__)')
+# 
+# shared_boxplots <- ggplot(shared_table_data, 
+#                          aes(x=GenusSpecies, y=Abundance)) +
+#                   geom_jitter(alpha=0.2) +
+#                   geom_boxplot() + facet_wrap(~Taxon)
+# shared_boxplots
 # gt_shared <- gt(shared_table_data) %>%
 #   sub_missing(columns=1:7, missing_text = '') %>%
 #   tab_row_group(label = 'Present in all genera',
@@ -132,11 +134,6 @@ shared_table_data <- spec16s %>%
 ##      One panel for each strain 
 ##      5 boxes for relative abundance in each species
 
-spec16s$bact_to_keep <- lapply(spec16s$Bacteria, function(x) ifelse(any(str_detect(x, shared_table_data$Species)), 1, 0))
-
-violin_data <- spec16s %>%
-  mutate(bact_to_keep = ifelse(grepl(shared_table_data$Species, Bacteria), 1, 0))
-  filter(str_detect(Bacteria, shared_table_data$Species))
 
 
 
@@ -196,6 +193,63 @@ upset_50 <- upset(fromList(venn_data_50),
                       '5'=list(color='red', fill='red')
                       )))
 upset_50
+
+
+## determining shared 
+intersection_vals <- process_region_data(Venn(venn_data_50))
+
+shared_otus_all <- unlist(intersection_vals$item[intersection_vals$id == '12345'])
+
+#now making a nice table to show the shared OTUs between all genera
+shared_table_data <- spec16s %>%
+  filter(Bacteria %in% shared_otus_all) %>%
+  select(UniqueID, Bacteria, Abundance) %>%
+  filter(Abundance > 0) %>%
+  filter(!duplicated(Bacteria)) %>%
+  select(-Abundance) %>%
+  mutate(Feature.ID = row_number()) %>%
+  mutate(Taxon = Bacteria) %>%
+  select(-c(Bacteria, UniqueID)) %>%
+  mutate(Taxon = str_replace_all(Taxon, '16s:', '')) %>%
+  parse_taxonomy() %>%
+  mutate(Kingdom = str_replace_all(Kingdom, 'd__', '')) %>%
+  arrange(Phylum, Class, Order, Family, Genus, Species) %>%
+  mutate(Genus = str_replace_all(Genus, '_', ' ')) %>%
+  mutate(Species = str_replace_all(Species, '_', ' ')) %>%
+  #mutate(which_genera = 'Shared Among All') %>%
+  as_tibble()
+
+boxplot_data <- spec16s %>%
+  filter(Bacteria %in% shared_otus_all) %>%
+  select(UniqueID, Bacteria, Abundance, GenusSpecies) %>%
+  filter(Abundance > 0) %>%
+  mutate(Feature.ID = row_number()) %>%
+  mutate(Taxon = Bacteria) %>%
+  select(-Bacteria) %>%
+  mutate(Taxon = str_replace_all(Taxon, '16s:', '')) %>%
+  na.omit() %>%
+  filter(grepl("Lactobacillus_kosoi|
+               Fructobacillus_tropaeoli|
+               Wolbachia|
+               Rickettsia_bellii|
+               Snodgrassella_alvi|
+               Candidatus_Schmidhempelia|
+               Gilliamella|
+               Acinetobacter_apis|
+               Acinetobacter_nectaris", Taxon)) %>%
+  group_by(GenusSpecies, Taxon) %>%
+  mutate(num_indiv = n()) %>%
+  filter(GenusSpecies %in% c("Apis mellifera","Bombus huntii","Melissodes confusus","Bombus centralis","Bombus bifarius")) %>%
+  ungroup() %>%
+  group_by(Taxon)
+
+shared_table_data$Taxon = str_remove(shared_table_data$Taxon, '.*(?=s__)')
+
+shared_boxplots <- ggplot(shared_table_data,
+                         aes(x=GenusSpecies, y=Abundance)) +
+                  geom_jitter(alpha=0.2) +
+                  geom_boxplot() + facet_wrap(~Taxon)
+shared_boxplots
 
 ### now do overlap between just the species that are in > 20
 
