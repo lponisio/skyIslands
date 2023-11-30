@@ -1,9 +1,9 @@
 ## setwd("~/Dropbox/skyIslands/")
 
 rm(list=ls())
-
-wdpath <- 'C:/Users/rah10/Dropbox (University of Oregon)/PonisioLocal/skyIslands'
+wdpath <- 'C:/Users/rah10/Dropbox (University of Oregon)/skyIslands'
 setwd(wdpath)
+load("data/spec_RBCL_16s.Rdata")
 
 ##mantel tests
 ##https://jkzorz.github.io/2019/07/08/mantel-test.html
@@ -17,11 +17,11 @@ library(betapart)
 library(tidyverse)
 
 
-meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'Site', 'Lat', 'Long')
+meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'GenusSpecies', 'Site', 'Lat', 'Long')
 
-spec16s <- read.csv('spec_RBCL_16s.csv') %>%
+spec16s <- spec.net %>%
   filter(Apidae == 1) %>%
-  select(all_of(meta_cols), starts_with('X16s')) %>%
+  select(all_of(meta_cols), starts_with('16s')) %>%
   na.omit()
 
 ##Species abundance dissimilarity matrix: created using a distance measure, i.e. Bray-curtis dissimilarity. This is the same type of dissimilarity matrix used when conducting an ANOSIM test or when making an NMDS plot
@@ -35,19 +35,38 @@ spec16s <- read.csv('spec_RBCL_16s.csv') %>%
 ## correlation between community dissimilarity and distance, then plots the distance decay curves
 
 
-genus.decay.model <- function(data, genus){
+genusspecies.decay.model <- function(data, type, which){
 #bray curtis dissimilarity matrix of 16s
+
+  
+if(type == 'Genus'){
 abund <- data %>%
-  filter(Genus == genus) %>%
-  select(UniqueID, starts_with('X16s')) %>%
+  filter(Genus == which) %>%
+  select(UniqueID, starts_with('16s')) %>%
   select(-UniqueID)
 
 #distance matrix of sites
 geo <- data %>%
-  filter(Genus == genus) %>%
+  filter(Genus == which) %>%
   select(UniqueID, Long, Lat) %>%
   select(-UniqueID) %>%
   mutate()
+} else if (type == 'GenusSpecies'){
+    
+abund <- data %>%
+    filter(GenusSpecies == which) %>%
+    select(UniqueID, starts_with('16s')) %>%
+    select(-UniqueID)
+#distance matrix of sites
+geo <- data %>%
+  filter(GenusSpecies == which) %>%
+  select(UniqueID, Long, Lat) %>%
+  select(-UniqueID) %>%
+  mutate()
+}
+  
+  
+
 
 #abundance data frame - bray curtis dissimilarity
 dist.abund <- vegdist(abund, method = "bray")
@@ -73,19 +92,18 @@ dist_decay_model
 }
 ## by genus plots
 
-apis_model <- genus.decay.model(spec16s, 'Apis')
+apis_model <- genusspecies.decay.model(spec16s, 'Apis', type='Genus')
+bombus_model <- genusspecies.decay.model(spec16s, 'Bombus', type='Genus')
+anthophora_model <- genusspecies.decay.model(spec16s, 'Anthophora', type='Genus')
+megachile_model <- genusspecies.decay.model(spec16s, 'Megachile', type='Genus')
+melissodes_model <- genusspecies.decay.model(spec16s, 'Melissodes', type='Genus')
 
-ci95 <- predict(apis_model$model, interval = "confidence", level = 0.95)
-
-bombus_model <- genus.decay.model(spec16s, 'Bombus')
-anthophora_model <- genus.decay.model(spec16s, 'Anthophora')
-megachile_model <- genus.decay.model(spec16s, 'Megachile')
 
 plot.decay(bombus_model, 
            col='#ED7953', 
            bg=alpha('#ED7953', 0.1), 
            pch = 22, lwd=10,
-           cex=2) 
+           cex=2, remove.dots = TRUE) 
 
 plot.decay(apis_model, 
            col='#9C179E', 
@@ -93,7 +111,7 @@ plot.decay(apis_model,
            pch = 21, lwd=10,
            cex=2,
            xlab='Distance (km)',
-           ylab="Bray-Curtis Dissimilarity", add=TRUE) 
+           ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
 
 
 plot.decay(megachile_model, 
@@ -102,7 +120,7 @@ plot.decay(megachile_model,
            pch = 23, lwd=10,
            cex=2,
            xlab='Distance (km)',
-           ylab="Bray-Curtis Dissimilarity", add=TRUE) 
+           ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
 
 plot.decay(anthophora_model, 
            col='#0D0887', 
@@ -110,4 +128,53 @@ plot.decay(anthophora_model,
            pch = 24, lwd=10,
            cex=2,
            xlab='Distance (km)',
-           ylab="Bray-Curtis Dissimilarity", add=TRUE) 
+           ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
+
+plot.decay(melissodes_model, 
+           col='green', 
+           bg=alpha('green', 0.1), 
+           pch = 24, lwd=10,
+           cex=2,
+           xlab='Distance (km)',
+           ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE)
+
+
+## by species plots
+
+apis.mellifera_model <- genusspecies.decay.model(spec16s, 'Apis mellifera', type='GenusSpecies')
+bombus.centralis_model <- genusspecies.decay.model(spec16s, 'Bombus centralis', type='GenusSpecies')
+bombus.huntii_model <- genusspecies.decay.model(spec16s, 'Bombus huntii', type='GenusSpecies')
+melissodes.confusus_model <- genusspecies.decay.model(spec16s, 'Melissodes confusus', type='GenusSpecies')
+
+
+plot.decay(apis.mellifera_model, 
+           col='#ED7953', 
+           bg=alpha('#ED7953', 0.1), 
+           pch = 22, lwd=10,
+           cex=2, remove.dots = TRUE) 
+
+plot.decay(bombus.centralis_model, 
+           col='#9C179E', 
+           bg=alpha('#9C179E', 0.1), 
+           pch = 21, lwd=10,
+           cex=2,
+           xlab='Distance (km)',
+           ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
+
+
+plot.decay(bombus.huntii_model, 
+           col='#F0F921', 
+           bg=alpha('#F0F921', 0.1), 
+           pch = 23, lwd=10,
+           cex=2,
+           xlab='Distance (km)',
+           ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
+
+plot.decay(melissodes.confusus_model, 
+           col='#0D0887', 
+           bg=alpha('#0D0887', 0.1), 
+           pch = 24, lwd=10,
+           cex=2,
+           xlab='Distance (km)',
+           ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
+
