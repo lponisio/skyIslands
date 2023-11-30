@@ -228,27 +228,24 @@ boxplot_data <- spec16s %>%
   select(-Bacteria) %>%
   mutate(Taxon = str_replace_all(Taxon, '16s:', '')) %>%
   na.omit() %>%
-  filter(grepl("Lactobacillus_kosoi|
-               Fructobacillus_tropaeoli|
-               Wolbachia|
-               Rickettsia_bellii|
-               Snodgrassella_alvi|
-               Candidatus_Schmidhempelia|
-               Gilliamella|
-               Acinetobacter_apis|
-               Acinetobacter_nectaris", Taxon)) %>%
+  filter(grepl("Lactobacillus_kosoi|Fructobacillus_tropaeoli|Wolbachia|Rickettsia_bellii|Snodgrassella_alvi|Candidatus_Schmidhempelia|Gilliamella|Acinetobacter_apis|Acinetobacter_nectaris", Taxon)) %>%
   group_by(GenusSpecies, Taxon) %>%
   mutate(num_indiv = n()) %>%
   filter(GenusSpecies %in% c("Apis mellifera","Bombus huntii","Melissodes confusus","Bombus centralis","Bombus bifarius")) %>%
   ungroup() %>%
-  group_by(Taxon)
+  group_by(Taxon, GenusSpecies)
 
-shared_table_data$Taxon = str_remove(shared_table_data$Taxon, '.*(?=s__)')
+boxplot_data$Taxon <- str_remove(boxplot_data$Taxon, '.*(?=s__)')
+boxplot_data$Taxon <- str_remove(boxplot_data$Taxon, '.*(?=g__)')
 
-shared_boxplots <- ggplot(shared_table_data,
+
+
+shared_boxplots <- ggplot(boxplot_data,
                          aes(x=GenusSpecies, y=Abundance)) +
+                  geom_boxplot() +
                   geom_jitter(alpha=0.2) +
-                  geom_boxplot() + facet_wrap(~Taxon)
+                  facet_wrap(~Taxon) +
+                  theme_classic() + theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
 shared_boxplots
 
 ### now do overlap between just the species that are in > 20
