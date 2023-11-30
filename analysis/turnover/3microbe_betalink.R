@@ -308,268 +308,268 @@ ggsave(diss.only.shared.rich.dif[[2]], file="figures/microbe_poll/DissimilarityO
 # 
 # turnover.plot
 
-
-
-########## 11-14-23 trying individual species turnover
-#### species level networks
-
-this.species <- 'Apis mellifera'
-
-species.indiv.ids <- spec.net %>%
-  filter(Apidae == 1) %>%
-  select(UniqueID, GenusSpecies) %>%
-  filter(GenusSpecies == this.species) %>%
-  select(UniqueID)
-
-these.sites <- spec.net %>%
-  filter(Apidae == 1) %>%
-  select(UniqueID, GenusSpecies, Site) %>%
-  filter(GenusSpecies == this.species) %>%
-  reframe(site.list = unique(Site))
-
-site_list <- these.sites$site.list
-
-CH <- indivNet_micro$CH 
-CH <- CH[,colnames(CH) %in% species.indiv.ids$UniqueID]
-
-HM <- indivNet_micro$HM
-HM <- HM[,colnames(HM) %in% species.indiv.ids$UniqueID]
-
-JC <- indivNet_micro$JC
-JC <- JC[,colnames(JC) %in% species.indiv.ids$UniqueID]
-
-MM <- indivNet_micro$MM 
-MM <- MM[,colnames(MM) %in% species.indiv.ids$UniqueID]
-
-PL <- indivNet_micro$PL
-PL <- PL[,colnames(PL) %in% species.indiv.ids$UniqueID]
-
-RP <- indivNet_micro$RP
-RP <- RP[,colnames(RP) %in% species.indiv.ids$UniqueID]
-
-SC <- indivNet_micro$SC 
-SC <- SC[,colnames(SC) %in% species.indiv.ids$UniqueID]
-
-SM <- indivNet_micro$SM
-SM <- SM[,colnames(SM) %in% species.indiv.ids$UniqueID]
-
-lower.order <- "Microbes"
-higher.order <- "Pollinators"
-
-
-microbe_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, RP, SM, SC),
-                                         partitioning="commondenom", binary=TRUE, distofempty='zero', partition.st=TRUE, partition.rr=TRUE)
-
-#View(microbe_poll_betalink)
-
-colnames(microbe_poll_betalink) <- c("Site1",
-                                     "Site2",
-                                     "DissimilaritySpeciesComposition",
-                                     "OnlySharedLinks",
-                                     "WholeNetworkLinks",
-                                     "SpeciesTurnoverLinks",
-                                     paste("TurnoverAbsence",lower.order,sep=""),
-                                     paste("TurnoverAbsence",higher.order,sep=""),
-                                     "TurnoverAbsenceBoth",
-                                     "WholeNetworkReplaced",
-                                     "OnlySharedReplaced",
-                                     "WholeNetworkRichnessDifference",
-                                     "OnlySharedRichnessDifference"
-)
-
-
-### i think i might need to use the individual networks for this
-
-
-
-###will need to update LP's function networkBetaDiversity because most of the packages
-### are no longer compatible :( 
-
-geo <- unique(spec.net[, c("Site", "Lat", "Long")])
-geo <- geo[!duplicated(geo$Site),]
-
-geo.dist <- rdist.earth(cbind(geo$Long, geo$Lat),
-                        cbind(geo$Long, geo$Lat))
-colnames(geo.dist) <- rownames(geo.dist) <- geo$Site
-
-## add column for geographic distance between sites
-microbe_poll_betalink$GeoDist <- apply(microbe_poll_betalink, 1, function(x){
-  geo.dist[x["Site1"],  x["Site2"]]
-})
-
-ggsave(microbe_poll_betalink, file="figures/microbe_poll/indiv_level/DissimilaritySpeciesTurnover_Apis_indiv.pdf", height=4, width=6)
-
-
-
-dir.create("figures", showWarnings = FALSE)
-dir.create("tables", showWarnings = FALSE)
-write.csv(microbe_poll_betalink, file="tables/indiv_level_Apis_turnover.csv")
-
-dir.create("figures/microbe_poll", showWarnings = FALSE)
-dir.create("figures/microbe_poll/indiv_level", showWarnings = FALSE)
-
-species.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$DissimilaritySpeciesComposition, microbe_poll_betalink, "Species Turnover")
-ggsave(species.turnover[[2]], file="figures/microbe_poll/indiv_level/DissimilaritySpeciesTurnover_Apis_indiv.pdf", height=4, width=6)
-
-#not working
-# interaction.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkLinks, microbe_poll_betalink, "Interaction Turnover")
-# ggsave(interaction.turnover[[2]], file="figures/microbe_poll/indiv_level/DissimilarityInteractionTurnover_Apis_indiv.pdf", height=4, width=6)
-
-#not working
-# int.turnover.rewiring <- calculate_and_plot_betalinkr(microbe_poll_betalink$OnlySharedLinks, microbe_poll_betalink, "Interaction Turnover: Rewiring")
-# ggsave(int.turnover.rewiring[[2]], file="figures/microbe_poll/indiv_level/InteractionDissimilarityRewiring_Apis_indiv.pdf", height=4, width=6)
-
-# int.turnover.species.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$SpeciesTurnoverLinks, microbe_poll_betalink, "Interaction Turnover: Species Turnover")
-# ggsave(int.turnover.species.turnover[[2]], file="figures/microbe_poll/indiv_level/InteractionTurnoverSpeciesComp_Apis_indiv.pdf", height=4, width=6)
-
-# sp.turnover.microbes <- calculate_and_plot_betalinkr(microbe_poll_betalink$TurnoverAbsenceMicrobes, microbe_poll_betalink, "Species Turnover: Microbes")
-# ggsave(sp.turnover.microbes[[2]], file="figures/microbe_poll/indiv_level/SpeciesTurnoverAbsenceMicrobes_Apis_indiv.pdf", height=4, width=6)
-
-sp.turnover.bees <- calculate_and_plot_betalinkr(microbe_poll_betalink$TurnoverAbsencePollinators, microbe_poll_betalink, "Species Turnover: Bees")
-ggsave(sp.turnover.bees[[2]], file="figures/microbe_poll/indiv_level/SpeciesTurnoverAbsenceBees_Apis_indiv.pdf", height=4, width=6)
-
-sp.turnover.both <- calculate_and_plot_betalinkr(microbe_poll_betalink$TurnoverAbsenceBoth, microbe_poll_betalink, "Species Turnover: Both")
-ggsave(sp.turnover.both[[2]], file="figures/microbe_poll/indiv_level/SpeciesTurnoverAbsenceBoth_Apis_indiv.pdf", height=4, width=6)
-
-diss.whole.network.replace <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkReplaced, microbe_poll_betalink, "Dissimilarity: Whole Network Replacement")
-ggsave(diss.whole.network.replace[[2]], file="figures/microbe_poll/indiv_level/DissimilarityWholeNetReplace_Apis_indiv.pdf", height=4, width=6)
-
-# diss.only.shared.replace <- calculate_and_plot_betalinkr(microbe_poll_betalink$OnlySharedReplaced, microbe_poll_betalink, "Dissimilarity: Only Shared Species Replacement")
-# ggsave(diss.only.shared.replace[[2]], file="figures/microbe_poll/indiv_level/DissimilarityOnlySharedReplace_Apis_indiv.pdf", height=4, width=6)
-
-diss.whole.network.rich.dif <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkRichnessDifference, microbe_poll_betalink, "Dissimilarity: Whole Network Richness Difference")
-ggsave(diss.whole.network.rich.dif[[2]], file="figures/microbe_poll/indiv_level/DissimilarityWholeNetRichDif_Apis_indiv.pdf", height=4, width=6)
-
-diss.only.shared.rich.dif <- calculate_and_plot_betalinkr(microbe_poll_betalink$OnlySharedRichnessDifference, microbe_poll_betalink, "Dissimilarity: Only Shared Richness Difference")
-ggsave(diss.only.shared.rich.dif[[2]], file="figures/microbe_poll/indiv_level/DissimilarityOnlySharedRichDif_Apis_indiv.pdf", height=4, width=6)
-
-
-## bombus centralis
-this.species <- 'Bombus centralis'
-
-species.indiv.ids <- spec.net %>%
-  filter(Apidae == 1) %>%
-  select(UniqueID, GenusSpecies) %>%
-  filter(GenusSpecies == this.species) %>%
-  select(UniqueID)
-
-these.sites <- spec.net %>%
-  filter(Apidae == 1) %>%
-  select(UniqueID, GenusSpecies, Site) %>%
-  filter(GenusSpecies == this.species) %>%
-  reframe(site.list = unique(Site))
-
-site_list <- these.sites$site.list
-
-CH <- indivNet_micro$CH 
-CH <- CH[,colnames(CH) %in% species.indiv.ids$UniqueID]
-
-HM <- indivNet_micro$HM
-HM <- HM[,colnames(HM) %in% species.indiv.ids$UniqueID]
-
-JC <- indivNet_micro$JC
-JC <- JC[,colnames(JC) %in% species.indiv.ids$UniqueID]
-
-MM <- indivNet_micro$MM 
-MM <- MM[,colnames(MM) %in% species.indiv.ids$UniqueID]
-
-PL <- indivNet_micro$PL
-PL <- PL[,colnames(PL) %in% species.indiv.ids$UniqueID]
-
-RP <- indivNet_micro$RP
-RP <- RP[,colnames(RP) %in% species.indiv.ids$UniqueID]
-
-SC <- indivNet_micro$SC 
-SC <- SC[,colnames(SC) %in% species.indiv.ids$UniqueID]
-
-SM <- indivNet_micro$SM
-SM <- SM[,colnames(SM) %in% species.indiv.ids$UniqueID]
-
-lower.order <- "Microbes"
-higher.order <- "Pollinators"
-
-
-microbe_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, RP, SM, SC),
-                                         partitioning="commondenom", binary=TRUE, distofempty='zero', partition.st=TRUE, partition.rr=TRUE)
-
-#View(microbe_poll_betalink)
-
-colnames(microbe_poll_betalink) <- c("Site1",
-                                     "Site2",
-                                     "DissimilaritySpeciesComposition",
-                                     "OnlySharedLinks",
-                                     "WholeNetworkLinks",
-                                     "SpeciesTurnoverLinks",
-                                     paste("TurnoverAbsence",lower.order,sep=""),
-                                     paste("TurnoverAbsence",higher.order,sep=""),
-                                     "TurnoverAbsenceBoth",
-                                     "WholeNetworkReplaced",
-                                     "OnlySharedReplaced",
-                                     "WholeNetworkRichnessDifference",
-                                     "OnlySharedRichnessDifference"
-)
-
-
-### i think i might need to use the individual networks for this
-
-
-
-###will need to update LP's function networkBetaDiversity because most of the packages
-### are no longer compatible :( 
-
-geo <- unique(spec.net[, c("Site", "Lat", "Long")])
-geo <- geo[!duplicated(geo$Site),]
-
-geo.dist <- rdist.earth(cbind(geo$Long, geo$Lat),
-                        cbind(geo$Long, geo$Lat))
-colnames(geo.dist) <- rownames(geo.dist) <- geo$Site
-
-## add column for geographic distance between sites
-microbe_poll_betalink$GeoDist <- apply(microbe_poll_betalink, 1, function(x){
-  geo.dist[x["Site1"],  x["Site2"]]
-})
-
-dir.create("figures", showWarnings = FALSE)
-dir.create("tables", showWarnings = FALSE)
-write.csv(microbe_poll_betalink, file="tables/indiv_level_Bcentralis_turnover.csv")
-
-
-dir.create("figures/microbe_poll", showWarnings = FALSE)
-dir.create("figures/microbe_poll/indiv_level", showWarnings = FALSE)
-
-species.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$DissimilaritySpeciesComposition, microbe_poll_betalink, "Species Turnover")
-ggsave(species.turnover[[2]], file="figures/microbe_poll/indiv_level/DissimilaritySpeciesTurnover_Bcentralis_indiv.pdf", height=4, width=6)
-
-##not working
-# interaction.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkLinks, microbe_poll_betalink, "Interaction Turnover")
-# ggsave(interaction.turnover[[2]], file="figures/microbe_poll/indiv_level/DissimilarityInteractionTurnover_Bcentralis_indiv.pdf", height=4, width=6)
-
-#not working
-# int.turnover.rewiring <- calculate_and_plot_betalinkr(microbe_poll_betalink$OnlySharedLinks, microbe_poll_betalink, "Interaction Turnover: Rewiring")
-# ggsave(int.turnover.rewiring[[2]], file="figures/microbe_poll/indiv_level/InteractionDissimilarityRewiring_Bcentralis_indiv.pdf", height=4, width=6)
-
-# int.turnover.species.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$SpeciesTurnoverLinks, microbe_poll_betalink, "Interaction Turnover: Species Turnover")
-# ggsave(int.turnover.species.turnover[[2]], file="figures/microbe_poll/indiv_level/InteractionTurnoverSpeciesComp_Bcentralis_indiv.pdf", height=4, width=6)
-
-# sp.turnover.microbes <- calculate_and_plot_betalinkr(microbe_poll_betalink$TurnoverAbsenceMicrobes, microbe_poll_betalink, "Species Turnover: Microbes")
-# ggsave(sp.turnover.microbes[[2]], file="figures/microbe_poll/indiv_level/SpeciesTurnoverAbsenceMicrobes_Bcentralis_indiv.pdf", height=4, width=6)
-
-sp.turnover.bees <- calculate_and_plot_betalinkr(microbe_poll_betalink$TurnoverAbsencePollinators, microbe_poll_betalink, "Species Turnover: Bees")
-ggsave(sp.turnover.bees[[2]], file="figures/microbe_poll/indiv_level/SpeciesTurnoverAbsenceBees_Bcentralis_indiv.pdf", height=4, width=6)
-
-sp.turnover.both <- calculate_and_plot_betalinkr(microbe_poll_betalink$TurnoverAbsenceBoth, microbe_poll_betalink, "Species Turnover: Both")
-ggsave(sp.turnover.both[[2]], file="figures/microbe_poll/indiv_level/SpeciesTurnoverAbsenceBoth_Bcentralis_indiv.pdf", height=4, width=6)
-
-diss.whole.network.replace <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkReplaced, microbe_poll_betalink, "Dissimilarity: Whole Network Replacement")
-ggsave(diss.whole.network.replace[[2]], file="figures/microbe_poll/indiv_level/DissimilarityWholeNetReplace_Bcentralis_indiv.pdf", height=4, width=6)
-
-# diss.only.shared.replace <- calculate_and_plot_betalinkr(microbe_poll_betalink$OnlySharedReplaced, microbe_poll_betalink, "Dissimilarity: Only Shared Species Replacement")
-# ggsave(diss.only.shared.replace[[2]], file="figures/microbe_poll/indiv_level/DissimilarityOnlySharedReplace_Bcentralis_indiv.pdf", height=4, width=6)
-
-diss.whole.network.rich.dif <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkRichnessDifference, microbe_poll_betalink, "Dissimilarity: Whole Network Richness Difference")
-ggsave(diss.whole.network.rich.dif[[2]], file="figures/microbe_poll/indiv_level/DissimilarityWholeNetRichDif_Bcentralis_indiv.pdf", height=4, width=6)
-
+# 
+# 
+# ########## 11-14-23 trying individual species turnover
+# #### species level networks
+# 
+# this.species <- 'Apis mellifera'
+# 
+# species.indiv.ids <- spec.net %>%
+#   filter(Apidae == 1) %>%
+#   select(UniqueID, GenusSpecies) %>%
+#   filter(GenusSpecies == this.species) %>%
+#   select(UniqueID)
+# 
+# these.sites <- spec.net %>%
+#   filter(Apidae == 1) %>%
+#   select(UniqueID, GenusSpecies, Site) %>%
+#   filter(GenusSpecies == this.species) %>%
+#   reframe(site.list = unique(Site))
+# 
+# site_list <- these.sites$site.list
+# 
+# CH <- indivNet_micro$CH 
+# CH <- CH[,colnames(CH) %in% species.indiv.ids$UniqueID]
+# 
+# HM <- indivNet_micro$HM
+# HM <- HM[,colnames(HM) %in% species.indiv.ids$UniqueID]
+# 
+# JC <- indivNet_micro$JC
+# JC <- JC[,colnames(JC) %in% species.indiv.ids$UniqueID]
+# 
+# MM <- indivNet_micro$MM 
+# MM <- MM[,colnames(MM) %in% species.indiv.ids$UniqueID]
+# 
+# PL <- indivNet_micro$PL
+# PL <- PL[,colnames(PL) %in% species.indiv.ids$UniqueID]
+# 
+# RP <- indivNet_micro$RP
+# RP <- RP[,colnames(RP) %in% species.indiv.ids$UniqueID]
+# 
+# SC <- indivNet_micro$SC 
+# SC <- SC[,colnames(SC) %in% species.indiv.ids$UniqueID]
+# 
+# SM <- indivNet_micro$SM
+# SM <- SM[,colnames(SM) %in% species.indiv.ids$UniqueID]
+# 
+# lower.order <- "Microbes"
+# higher.order <- "Pollinators"
+# 
+# 
+# microbe_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, RP, SM, SC),
+#                                          partitioning="commondenom", binary=TRUE, distofempty='zero', partition.st=TRUE, partition.rr=TRUE)
+# 
+# #View(microbe_poll_betalink)
+# 
+# colnames(microbe_poll_betalink) <- c("Site1",
+#                                      "Site2",
+#                                      "DissimilaritySpeciesComposition",
+#                                      "OnlySharedLinks",
+#                                      "WholeNetworkLinks",
+#                                      "SpeciesTurnoverLinks",
+#                                      paste("TurnoverAbsence",lower.order,sep=""),
+#                                      paste("TurnoverAbsence",higher.order,sep=""),
+#                                      "TurnoverAbsenceBoth",
+#                                      "WholeNetworkReplaced",
+#                                      "OnlySharedReplaced",
+#                                      "WholeNetworkRichnessDifference",
+#                                      "OnlySharedRichnessDifference"
+# )
+# 
+# 
+# ### i think i might need to use the individual networks for this
+# 
+# 
+# 
+# ###will need to update LP's function networkBetaDiversity because most of the packages
+# ### are no longer compatible :( 
+# 
+# geo <- unique(spec.net[, c("Site", "Lat", "Long")])
+# geo <- geo[!duplicated(geo$Site),]
+# 
+# geo.dist <- rdist.earth(cbind(geo$Long, geo$Lat),
+#                         cbind(geo$Long, geo$Lat))
+# colnames(geo.dist) <- rownames(geo.dist) <- geo$Site
+# 
+# ## add column for geographic distance between sites
+# microbe_poll_betalink$GeoDist <- apply(microbe_poll_betalink, 1, function(x){
+#   geo.dist[x["Site1"],  x["Site2"]]
+# })
+# 
+# ggsave(microbe_poll_betalink, file="figures/microbe_poll/indiv_level/DissimilaritySpeciesTurnover_Apis_indiv.pdf", height=4, width=6)
+# 
+# 
+# 
+# dir.create("figures", showWarnings = FALSE)
+# dir.create("tables", showWarnings = FALSE)
+# write.csv(microbe_poll_betalink, file="tables/indiv_level_Apis_turnover.csv")
+# 
+# dir.create("figures/microbe_poll", showWarnings = FALSE)
+# dir.create("figures/microbe_poll/indiv_level", showWarnings = FALSE)
+# 
+# species.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$DissimilaritySpeciesComposition, microbe_poll_betalink, "Species Turnover")
+# ggsave(species.turnover[[2]], file="figures/microbe_poll/indiv_level/DissimilaritySpeciesTurnover_Apis_indiv.pdf", height=4, width=6)
+# 
+# #not working
+# # interaction.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkLinks, microbe_poll_betalink, "Interaction Turnover")
+# # ggsave(interaction.turnover[[2]], file="figures/microbe_poll/indiv_level/DissimilarityInteractionTurnover_Apis_indiv.pdf", height=4, width=6)
+# 
+# #not working
+# # int.turnover.rewiring <- calculate_and_plot_betalinkr(microbe_poll_betalink$OnlySharedLinks, microbe_poll_betalink, "Interaction Turnover: Rewiring")
+# # ggsave(int.turnover.rewiring[[2]], file="figures/microbe_poll/indiv_level/InteractionDissimilarityRewiring_Apis_indiv.pdf", height=4, width=6)
+# 
+# # int.turnover.species.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$SpeciesTurnoverLinks, microbe_poll_betalink, "Interaction Turnover: Species Turnover")
+# # ggsave(int.turnover.species.turnover[[2]], file="figures/microbe_poll/indiv_level/InteractionTurnoverSpeciesComp_Apis_indiv.pdf", height=4, width=6)
+# 
+# # sp.turnover.microbes <- calculate_and_plot_betalinkr(microbe_poll_betalink$TurnoverAbsenceMicrobes, microbe_poll_betalink, "Species Turnover: Microbes")
+# # ggsave(sp.turnover.microbes[[2]], file="figures/microbe_poll/indiv_level/SpeciesTurnoverAbsenceMicrobes_Apis_indiv.pdf", height=4, width=6)
+# 
+# sp.turnover.bees <- calculate_and_plot_betalinkr(microbe_poll_betalink$TurnoverAbsencePollinators, microbe_poll_betalink, "Species Turnover: Bees")
+# ggsave(sp.turnover.bees[[2]], file="figures/microbe_poll/indiv_level/SpeciesTurnoverAbsenceBees_Apis_indiv.pdf", height=4, width=6)
+# 
+# sp.turnover.both <- calculate_and_plot_betalinkr(microbe_poll_betalink$TurnoverAbsenceBoth, microbe_poll_betalink, "Species Turnover: Both")
+# ggsave(sp.turnover.both[[2]], file="figures/microbe_poll/indiv_level/SpeciesTurnoverAbsenceBoth_Apis_indiv.pdf", height=4, width=6)
+# 
+# diss.whole.network.replace <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkReplaced, microbe_poll_betalink, "Dissimilarity: Whole Network Replacement")
+# ggsave(diss.whole.network.replace[[2]], file="figures/microbe_poll/indiv_level/DissimilarityWholeNetReplace_Apis_indiv.pdf", height=4, width=6)
+# 
+# # diss.only.shared.replace <- calculate_and_plot_betalinkr(microbe_poll_betalink$OnlySharedReplaced, microbe_poll_betalink, "Dissimilarity: Only Shared Species Replacement")
+# # ggsave(diss.only.shared.replace[[2]], file="figures/microbe_poll/indiv_level/DissimilarityOnlySharedReplace_Apis_indiv.pdf", height=4, width=6)
+# 
+# diss.whole.network.rich.dif <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkRichnessDifference, microbe_poll_betalink, "Dissimilarity: Whole Network Richness Difference")
+# ggsave(diss.whole.network.rich.dif[[2]], file="figures/microbe_poll/indiv_level/DissimilarityWholeNetRichDif_Apis_indiv.pdf", height=4, width=6)
+# 
 # diss.only.shared.rich.dif <- calculate_and_plot_betalinkr(microbe_poll_betalink$OnlySharedRichnessDifference, microbe_poll_betalink, "Dissimilarity: Only Shared Richness Difference")
-# ggsave(diss.only.shared.rich.dif[[2]], file="figures/microbe_poll/indiv_level/DissimilarityOnlySharedRichDif_Bcentralis_indiv.pdf", height=4, width=6)
-
-
+# ggsave(diss.only.shared.rich.dif[[2]], file="figures/microbe_poll/indiv_level/DissimilarityOnlySharedRichDif_Apis_indiv.pdf", height=4, width=6)
+# 
+# 
+# ## bombus centralis
+# this.species <- 'Bombus centralis'
+# 
+# species.indiv.ids <- spec.net %>%
+#   filter(Apidae == 1) %>%
+#   select(UniqueID, GenusSpecies) %>%
+#   filter(GenusSpecies == this.species) %>%
+#   select(UniqueID)
+# 
+# these.sites <- spec.net %>%
+#   filter(Apidae == 1) %>%
+#   select(UniqueID, GenusSpecies, Site) %>%
+#   filter(GenusSpecies == this.species) %>%
+#   reframe(site.list = unique(Site))
+# 
+# site_list <- these.sites$site.list
+# 
+# CH <- indivNet_micro$CH 
+# CH <- CH[,colnames(CH) %in% species.indiv.ids$UniqueID]
+# 
+# HM <- indivNet_micro$HM
+# HM <- HM[,colnames(HM) %in% species.indiv.ids$UniqueID]
+# 
+# JC <- indivNet_micro$JC
+# JC <- JC[,colnames(JC) %in% species.indiv.ids$UniqueID]
+# 
+# MM <- indivNet_micro$MM 
+# MM <- MM[,colnames(MM) %in% species.indiv.ids$UniqueID]
+# 
+# PL <- indivNet_micro$PL
+# PL <- PL[,colnames(PL) %in% species.indiv.ids$UniqueID]
+# 
+# RP <- indivNet_micro$RP
+# RP <- RP[,colnames(RP) %in% species.indiv.ids$UniqueID]
+# 
+# SC <- indivNet_micro$SC 
+# SC <- SC[,colnames(SC) %in% species.indiv.ids$UniqueID]
+# 
+# SM <- indivNet_micro$SM
+# SM <- SM[,colnames(SM) %in% species.indiv.ids$UniqueID]
+# 
+# lower.order <- "Microbes"
+# higher.order <- "Pollinators"
+# 
+# 
+# microbe_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, RP, SM, SC),
+#                                          partitioning="commondenom", binary=TRUE, distofempty='zero', partition.st=TRUE, partition.rr=TRUE)
+# 
+# #View(microbe_poll_betalink)
+# 
+# colnames(microbe_poll_betalink) <- c("Site1",
+#                                      "Site2",
+#                                      "DissimilaritySpeciesComposition",
+#                                      "OnlySharedLinks",
+#                                      "WholeNetworkLinks",
+#                                      "SpeciesTurnoverLinks",
+#                                      paste("TurnoverAbsence",lower.order,sep=""),
+#                                      paste("TurnoverAbsence",higher.order,sep=""),
+#                                      "TurnoverAbsenceBoth",
+#                                      "WholeNetworkReplaced",
+#                                      "OnlySharedReplaced",
+#                                      "WholeNetworkRichnessDifference",
+#                                      "OnlySharedRichnessDifference"
+# )
+# 
+# 
+# ### i think i might need to use the individual networks for this
+# 
+# 
+# 
+# ###will need to update LP's function networkBetaDiversity because most of the packages
+# ### are no longer compatible :( 
+# 
+# geo <- unique(spec.net[, c("Site", "Lat", "Long")])
+# geo <- geo[!duplicated(geo$Site),]
+# 
+# geo.dist <- rdist.earth(cbind(geo$Long, geo$Lat),
+#                         cbind(geo$Long, geo$Lat))
+# colnames(geo.dist) <- rownames(geo.dist) <- geo$Site
+# 
+# ## add column for geographic distance between sites
+# microbe_poll_betalink$GeoDist <- apply(microbe_poll_betalink, 1, function(x){
+#   geo.dist[x["Site1"],  x["Site2"]]
+# })
+# 
+# dir.create("figures", showWarnings = FALSE)
+# dir.create("tables", showWarnings = FALSE)
+# write.csv(microbe_poll_betalink, file="tables/indiv_level_Bcentralis_turnover.csv")
+# 
+# 
+# dir.create("figures/microbe_poll", showWarnings = FALSE)
+# dir.create("figures/microbe_poll/indiv_level", showWarnings = FALSE)
+# 
+# species.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$DissimilaritySpeciesComposition, microbe_poll_betalink, "Species Turnover")
+# ggsave(species.turnover[[2]], file="figures/microbe_poll/indiv_level/DissimilaritySpeciesTurnover_Bcentralis_indiv.pdf", height=4, width=6)
+# 
+# ##not working
+# # interaction.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkLinks, microbe_poll_betalink, "Interaction Turnover")
+# # ggsave(interaction.turnover[[2]], file="figures/microbe_poll/indiv_level/DissimilarityInteractionTurnover_Bcentralis_indiv.pdf", height=4, width=6)
+# 
+# #not working
+# # int.turnover.rewiring <- calculate_and_plot_betalinkr(microbe_poll_betalink$OnlySharedLinks, microbe_poll_betalink, "Interaction Turnover: Rewiring")
+# # ggsave(int.turnover.rewiring[[2]], file="figures/microbe_poll/indiv_level/InteractionDissimilarityRewiring_Bcentralis_indiv.pdf", height=4, width=6)
+# 
+# # int.turnover.species.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$SpeciesTurnoverLinks, microbe_poll_betalink, "Interaction Turnover: Species Turnover")
+# # ggsave(int.turnover.species.turnover[[2]], file="figures/microbe_poll/indiv_level/InteractionTurnoverSpeciesComp_Bcentralis_indiv.pdf", height=4, width=6)
+# 
+# # sp.turnover.microbes <- calculate_and_plot_betalinkr(microbe_poll_betalink$TurnoverAbsenceMicrobes, microbe_poll_betalink, "Species Turnover: Microbes")
+# # ggsave(sp.turnover.microbes[[2]], file="figures/microbe_poll/indiv_level/SpeciesTurnoverAbsenceMicrobes_Bcentralis_indiv.pdf", height=4, width=6)
+# 
+# sp.turnover.bees <- calculate_and_plot_betalinkr(microbe_poll_betalink$TurnoverAbsencePollinators, microbe_poll_betalink, "Species Turnover: Bees")
+# ggsave(sp.turnover.bees[[2]], file="figures/microbe_poll/indiv_level/SpeciesTurnoverAbsenceBees_Bcentralis_indiv.pdf", height=4, width=6)
+# 
+# sp.turnover.both <- calculate_and_plot_betalinkr(microbe_poll_betalink$TurnoverAbsenceBoth, microbe_poll_betalink, "Species Turnover: Both")
+# ggsave(sp.turnover.both[[2]], file="figures/microbe_poll/indiv_level/SpeciesTurnoverAbsenceBoth_Bcentralis_indiv.pdf", height=4, width=6)
+# 
+# diss.whole.network.replace <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkReplaced, microbe_poll_betalink, "Dissimilarity: Whole Network Replacement")
+# ggsave(diss.whole.network.replace[[2]], file="figures/microbe_poll/indiv_level/DissimilarityWholeNetReplace_Bcentralis_indiv.pdf", height=4, width=6)
+# 
+# # diss.only.shared.replace <- calculate_and_plot_betalinkr(microbe_poll_betalink$OnlySharedReplaced, microbe_poll_betalink, "Dissimilarity: Only Shared Species Replacement")
+# # ggsave(diss.only.shared.replace[[2]], file="figures/microbe_poll/indiv_level/DissimilarityOnlySharedReplace_Bcentralis_indiv.pdf", height=4, width=6)
+# 
+# diss.whole.network.rich.dif <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkRichnessDifference, microbe_poll_betalink, "Dissimilarity: Whole Network Richness Difference")
+# ggsave(diss.whole.network.rich.dif[[2]], file="figures/microbe_poll/indiv_level/DissimilarityWholeNetRichDif_Bcentralis_indiv.pdf", height=4, width=6)
+# 
+# # diss.only.shared.rich.dif <- calculate_and_plot_betalinkr(microbe_poll_betalink$OnlySharedRichnessDifference, microbe_poll_betalink, "Dissimilarity: Only Shared Richness Difference")
+# # ggsave(diss.only.shared.rich.dif[[2]], file="figures/microbe_poll/indiv_level/DissimilarityOnlySharedRichDif_Bcentralis_indiv.pdf", height=4, width=6)
+# 
+# 
