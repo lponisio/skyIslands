@@ -13,7 +13,7 @@ load('physeq16s.Rdata')
 ##import community presence/absence file
 setwd("../../skyIslands_saved")
 
-
+library(pals)
 
 
 #######################################
@@ -129,7 +129,12 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, this.species, presA
   #browser()
 
   if(all_levels==FALSE){
-    this_level <- paste(": Collapsed", final_level)
+    if(final_level == ' s__'){
+      rest_of_label <- ' to genus'
+    } else if(final_level == ' g__'){
+      rest_of_label <- ' to family'
+    }
+    this_level <- paste(": Collapsed", rest_of_label)
   } else {this_level <- ': Full Tree'}
 
   
@@ -169,7 +174,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, this.species, presA
     group_by(bacteria) %>%
     add_count(Site, name="n_individuals") %>%
     mutate(SiteCount = as.numeric(n_distinct(Site))) 
-    
+   #browser() 
   tree_tip_labs <- gentree$tip.label
   
   #dropping branches that weren't in the presence abs table
@@ -185,19 +190,54 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, this.species, presA
   
   p2 <- p +
     new_scale_fill() + 
-    geom_tiplab(align=TRUE, size=2) + 
+    #geom_tiplab(align=TRUE, size=2) + 
     coord_cartesian(clip="off") +
     geom_fruit(
       data=features_site_metadata,
       geom=geom_tile,
       pwidth=0.1,
-      offset=0.5,
+      offset=0.2,
       mapping=aes(y=bacteria,
                   #x=SiteCount,
                   fill=SiteCount, width=0.1),
       show.legend=TRUE) +
-    scale_fill_viridis(option="rocket", discrete=FALSE, direction=-1) +
-    ggtitle(paste(this.species, this_level)) 
+    scale_fill_gradient(high = "black", low ="lightgrey") +
+    ggtitle(paste(this.species, this_level)) +
+    new_scale_fill() + 
+    geom_tippoint(aes(
+      subset=(grepl('Acetobacteraceae',label,fixed=TRUE)==TRUE)), color="#604E97", size=3) +
+    geom_tippoint(aes(
+      subset=(grepl('Bifidobacteriaceae',label,fixed=TRUE)==TRUE)), color="#F3C300", size=3)+
+    geom_tippoint(aes(
+      subset=(grepl('Enterobacteriaceae',label,fixed=TRUE)==TRUE)), color="#B3446C", size=3)+
+    geom_tippoint(aes(
+      subset=(grepl('Erwiniaceae',label,fixed=TRUE)==TRUE)), color="#F38400", size=3)+
+    geom_tippoint(aes(
+      subset=(grepl('Hafniaceae',label,fixed=TRUE)==TRUE)), color="#A1CAF1", size=3)+
+    geom_tippoint(aes(
+      subset=(grepl('Lactobacillaceae',label,fixed=TRUE)==TRUE)), color="#BE0032", size=3)+
+    geom_tippoint(aes(
+      subset=(grepl('Leuconostocaceae',label,fixed=TRUE)==TRUE)), color="#C2B280", size=3)+
+    geom_tippoint(aes(
+      subset=(grepl('Moraxellaceae',label,fixed=TRUE)==TRUE)), color="#848482", size=3)+
+    geom_tippoint(aes(
+      subset=(grepl('Neisseriaceae',label,fixed=TRUE)==TRUE)), color="#008856", size=3)+
+    geom_tippoint(aes(
+      subset=(grepl('Orbaceae',label,fixed=TRUE)==TRUE)), color="#E68FAC", size=3)+
+    geom_tippoint(aes(
+      subset=(grepl('Streptococcaceae',label,fixed=TRUE)==TRUE)), color="#0067A5", size=3)+
+    geom_tippoint(aes(
+      subset=(grepl('Yersiniaceae',label,fixed=TRUE)==TRUE)), color="#F99379", size=3)
+  
+
+
+  # "#332288" "#6699CC"
+  # [3] "#88CCEE" "#44AA99"
+  # [5] "#117733" "#999933"
+  # [7] "#DDCC77" "#661100"
+  # [9] "#CC6677" "#AA4466"
+  # [11] "#882255" "#AA4499"
+  
   p2
   
   #browser()
@@ -286,6 +326,7 @@ melissodes_tree_drop_g
 #now i think i want to add tip colors that signify whether that taxa was found in all genera/only that genus
 #do we want something about how many individuals that strain was in?
 #maybe size of tip shape?
+#also want to fix layers labels so instead of g__ it says genus etc
 
 ##########################
 
