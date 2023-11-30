@@ -13,6 +13,7 @@ rm(list=ls())
 wdpath <- 'C:/Users/rah10/Dropbox (University of Oregon)/skyIslands'
 setwd(wdpath)
 
+library(stringr)
 library(tidyverse)
 library(ggVennDiagram)
 library(gt)
@@ -77,47 +78,65 @@ upset_genus <- upset(fromList(venn_data),
                     )))
 upset_genus
 
-# intersection_vals <- process_region_data(Venn(venn_data))
-# 
-# shared_otus_all <- unlist(intersection_vals$item[intersection_vals$id == '12345'])
-# 
-# bombus_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Bombus'])
-# 
-# apis_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Apis'])
-# 
-# megachile_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Megachile'])
-# 
-# melissodes_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Melissodes'])
-# 
-# anthophora_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Anthophora'])
-# 
-# 
-# #now making a nice table to show the shared OTUs between all genera
-# shared_table_data <- spec16s %>%
-#   filter(Bacteria %in% shared_otus_all) %>%
-#   select(UniqueID, Bacteria, Abundance) %>%
-#   filter(Abundance > 0) %>%
-#   filter(!duplicated(Bacteria)) %>%
-#   select(-Abundance) %>%
-#   mutate(Feature.ID = row_number()) %>%
-#   mutate(Taxon = Bacteria) %>%
-#   select(-c(Bacteria, UniqueID)) %>%
-#   mutate(Taxon = str_replace_all(Taxon, '16s:', '')) %>%
-#   parse_taxonomy() %>%
-#   mutate(Kingdom = str_replace_all(Kingdom, 'd__', '')) %>%
-#   arrange(Phylum, Class, Order, Family, Genus, Species) %>%
-#   mutate(Genus = str_replace_all(Genus, '_', ' ')) %>%
-#   mutate(Species = str_replace_all(Species, '_', ' ')) %>%
-#   #mutate(which_genera = 'Shared Among All') %>%
-#   as_tibble()
-# 
+intersection_vals <- process_region_data(Venn(venn_data))
+
+shared_otus_all <- unlist(intersection_vals$item[intersection_vals$id == '12345'])
+
+bombus_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Bombus'])
+
+apis_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Apis'])
+
+megachile_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Megachile'])
+
+melissodes_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Melissodes'])
+
+anthophora_only_otus <- unlist(intersection_vals$item[intersection_vals$name == 'Anthophora'])
+
+
+#now making a nice table to show the shared OTUs between all genera
+shared_table_data <- spec16s %>%
+  filter(Bacteria %in% shared_otus_all) %>%
+  select(UniqueID, Bacteria, Abundance) %>%
+  filter(Abundance > 0) %>%
+  filter(!duplicated(Bacteria)) %>%
+  select(-Abundance) %>%
+  mutate(Feature.ID = row_number()) %>%
+  mutate(Taxon = Bacteria) %>%
+  select(-c(Bacteria, UniqueID)) %>%
+  mutate(Taxon = str_replace_all(Taxon, '16s:', '')) %>%
+  parse_taxonomy() %>%
+  mutate(Kingdom = str_replace_all(Kingdom, 'd__', '')) %>%
+  arrange(Phylum, Class, Order, Family, Genus, Species) %>%
+  mutate(Genus = str_replace_all(Genus, '_', ' ')) %>%
+  mutate(Species = str_replace_all(Species, '_', ' ')) %>%
+  na.omit() %>%
+  filter(Species %in% c("Bifidobacterium indicum",
+                        "Lactobacillus apis",
+                        "Fructobacillus tropaeoli",
+                        "Bartonella apis",
+                        "Rickettsia bellii",
+                        "Frischella perrara",
+                        "Acinetobacter nectaris"))
+
 # gt_shared <- gt(shared_table_data) %>%
 #   sub_missing(columns=1:7, missing_text = '') %>%
 #   tab_row_group(label = 'Present in all genera',
 #                 rows=1:31)
 # 
 # 
-# gt_shared 
+# gt_shared
+
+## what I want:
+## 1. choose several strains
+## 2. make violin plot for each strain 
+##      One panel for each strain 
+##      5 boxes for relative abundance in each species
+
+spec16s$bact_to_keep <- lapply(spec16s$Bacteria, function(x) ifelse(any(str_detect(x, shared_table_data$Species)), 1, 0))
+
+violin_data <- spec16s %>%
+  mutate(bact_to_keep = ifelse(grepl(shared_table_data$Species, Bacteria), 1, 0))
+  filter(str_detect(Bacteria, shared_table_data$Species))
 
 
 
