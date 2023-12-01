@@ -1,5 +1,5 @@
 
-## funciton to run frequentist version of brms models and plot diagnostics
+## function to run frequentist version of brms models and plot diagnostics
 
 #currently works with all families included in ?family, as well as zero inflated neg binomial, negbinomial, Gamma, inverse gaussian, poisson, quasibinomial
 # will need to add other families as needed 
@@ -12,6 +12,7 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
                             num_chains=1, 
                             num_iter=10000, 
                             launch.shiny=FALSE,
+                            examine.pairs=FALSE,
                             this_family #model family
                             ){
   if (this_family == 'gaussian'){
@@ -19,10 +20,15 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
   this_model_output <- brms::brm(this_formula,
                          data = this_data, 
                          chains = num_chains, 
-                         iter = num_iter, family=this_family)
+                         iter = num_iter, family=this_family,
+                         thin=1,
+                         init=0,
+                         open_progress = FALSE,
+                         control = list(adapt_delta = 0.99),
+                         save_pars = save_pars(all = TRUE))
 
   
-  this_model_output
+  print(summary(this_model_output))
   # return a list of single plots
   diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))} else if (this_family=='negbinomial') {
     
@@ -66,7 +72,12 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
     this_model_output <- brms::brm(this_formula,
                                    data = this_data, 
                                    chains = num_chains, 
-                                   iter = num_iter, family=this_family)
+                                   iter = num_iter, family=this_family,
+                                   thin=1,
+                                   init=0,
+                                   open_progress = FALSE,
+                                   control = list(adapt_delta = 0.99),
+                                   save_pars = save_pars(all = TRUE))
     # return a list of single plots
     diagnostic.plots <- plot(check_model(this_model_output, 
                                          panel = TRUE))
@@ -78,7 +89,12 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
     this_model_output <- brms::brm(this_formula,
                                    data = this_data, 
                                    chains = num_chains, 
-                                   iter = num_iter, family=this_family)
+                                   iter = num_iter, family=this_family,
+                                   thin=1,
+                                   init=0,
+                                   open_progress = FALSE,
+                                   control = list(adapt_delta = 0.99),
+                                   save_pars = save_pars(all = TRUE))
     # return a list of single plots
     diagnostic.plots <- plot(check_model(this_model_output, 
                                          panel = TRUE), type = "discrete_dots")
@@ -90,11 +106,17 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
     this_model_output <- brms::brm(this_formula,
                                    data = this_data, 
                                    chains = num_chains, 
-                                   iter = num_iter, family=this_family)
+                                   iter = num_iter, family=this_family,
+                                   thin=1,
+                                   init=0,
+                                   open_progress = FALSE,
+                                   control = list(adapt_delta = 0.99),
+                                   save_pars = save_pars(all = TRUE))
     # return a list of single plots
     diagnostic.plots <- plot(check_model(this_model_output, 
                                          panel = TRUE))
   } 
   if (launch.shiny == TRUE){shinystan::launch_shinystan(this_model_output)}
+  if (examine.pairs == TRUE){pairs(this_model_output)}
   diagnostic.plots
 }
