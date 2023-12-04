@@ -7,7 +7,7 @@ setwd("analysis/microbiome/")
 
 rm(list=ls())
 
-run.diagnostics = FALSE
+run.diagnostics = TRUE
 
 library(picante)
 library(bayesplot)
@@ -37,7 +37,9 @@ vars_yearsr <- c("MeanFloralAbundance",
                  "MeanFloralDiversity",
                  "Lat", "SRDoy",
                  "BeeAbundance",
-                 "BeeDiversity"
+                 "BeeDiversity",
+                 "MeanITD",
+                 "VisitedFloralDiversity"
 )
 vars_sp <- c("MeanITD",
              "rare.degree")
@@ -248,8 +250,15 @@ bf.tot.bdiv <- bf(formula.tot.bee.div)
 ## Microbe models set up
 ## **********************************************************
 ## Multi species models
+
+#cant put in sociality bc all ones with weightsPar == 1 are eusocial or missing
+
+##probs want to add some measure of diet.. is mean plant diversity enough?
+## not sure if we have RBCL richness yet
+
+
 microbe.vars <-  c("BeeAbundance",
-                          "BeeDiversity",
+                          "BeeDiversity", "Lat", "VisitedFloralDiversity",# "MeanITD", 
                           "(1|Site)", "(1|GenusSpecies)")
 
 
@@ -286,102 +295,101 @@ r2 <- rstantools::bayes_R2(fit.microbe)
 save(fit.microbe, spec.net, r2, r2loo,
      file="saved/fullMicrobeFit.Rdata")
 
-## model still dropping NAs... is this because the first layers use Weights 
-## but this final level uses 
+
 
 ## **********************************************************
 ## Diagnostics
 ## **********************************************************
 #VegAbund check
 if(run.diagnostics){
-freq.formula.flower.abund <- as.formula(paste("MeanFloralAbundance", "~", flower.abund.x ))
-
-#for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
-if(run.diagnostics){
-  freq.model.flower.abund <- run_plot_freq_model_diagnostics(
-    freq.formula.flower.abund,
-    spec.net[spec.net$Weights==1,],
-    this_family = 'gaussian')
-  
-  ggsave(freq.model.flower.abund,
-         file="figures/diagnostics/SI_VegAbundModelDiagnostics.pdf",
-         height=8, width=11)
-}
-
-#Vegdiv check
-freq.formula.flower.div <- as.formula(paste("MeanFloralDiversity", "~", flower.div.x ))
-
-#for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
-if(run.diagnostics){
-  freq.model.flower.div <- run_plot_freq_model_diagnostics(
-    freq.formula.flower.div,
-    spec.net[spec.net$Weights==1,],
-    this_family = 'gaussian')
-  
-  ggsave(freq.model.flower.div,
-         file="figures/diagnostics/SI_VegDivModelDiagnostics.pdf",
-         height=8, width=11)
-}
-
-# bee abund check
-freq.formula.tot.bee.abund <- as.formula(paste("BeeAbundance", "~", tot.bee.abund.x ))
-
-##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
-if(run.diagnostics){
-  freq.model.tot.bee.abund <- run_plot_freq_model_diagnostics(
-    freq.formula.tot.bee.abund,
-    spec.net[spec.net$Weights==1,],
-    this_family = "gaussian")
-  
-  ggsave(freq.model.tot.bee.abund,
-         file="figures/diagnostics/SI_TotalBeeAbundModelDiagnostics.pdf",
-         height=8, width=11)
-}
-
+# freq.formula.flower.abund <- as.formula(paste("MeanFloralAbundance", "~", flower.abund.x ))
+# 
+# #for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+# if(run.diagnostics){
+#   freq.model.flower.abund <- run_plot_freq_model_diagnostics(
+#     freq.formula.flower.abund,
+#     spec.net[spec.net$Weights==1,],
+#     this_family = 'gaussian')
+#   
+#   ggsave(freq.model.flower.abund,
+#          file="figures/diagnostics/SI_VegAbundModelDiagnostics.pdf",
+#          height=8, width=11)
+# }
+# 
+# #Vegdiv check
+# freq.formula.flower.div <- as.formula(paste("MeanFloralDiversity", "~", flower.div.x ))
+# 
+# #for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+# if(run.diagnostics){
+#   freq.model.flower.div <- run_plot_freq_model_diagnostics(
+#     freq.formula.flower.div,
+#     spec.net[spec.net$Weights==1,],
+#     this_family = 'gaussian')
+#   
+#   ggsave(freq.model.flower.div,
+#          file="figures/diagnostics/SI_VegDivModelDiagnostics.pdf",
+#          height=8, width=11)
+# }
+# 
 # # bee abund check
-# freq.formula.net.bee.abund <- as.formula(paste("Net_BeeAbundance", "~", net.bee.abund.x ))
+# freq.formula.tot.bee.abund <- as.formula(paste("BeeAbundance", "~", tot.bee.abund.x ))
 # 
 # ##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
 # if(run.diagnostics){
-#   freq.model.net.bee.abund <- run_plot_freq_model_diagnostics(
-#     freq.formula.net.bee.abund,
+#   freq.model.tot.bee.abund <- run_plot_freq_model_diagnostics(
+#     freq.formula.tot.bee.abund,
 #     spec.net[spec.net$Weights==1,],
 #     this_family = "gaussian")
 #   
-#   ggsave(freq.model.net.bee.abund,
-#          file="figures/diagnostics/SI_NetBeeAbundModelDiagnostics.pdf",
+#   ggsave(freq.model.tot.bee.abund,
+#          file="figures/diagnostics/SI_TotalBeeAbundModelDiagnostics.pdf",
 #          height=8, width=11)
 # }
-
-# # bee div check
-# freq.formula.bee.div <- as.formula(paste("Net_BeeDiversity", "~", bee.div.x ))
+# 
+# # # bee abund check
+# # freq.formula.net.bee.abund <- as.formula(paste("Net_BeeAbundance", "~", net.bee.abund.x ))
+# # 
+# # ##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+# # if(run.diagnostics){
+# #   freq.model.net.bee.abund <- run_plot_freq_model_diagnostics(
+# #     freq.formula.net.bee.abund,
+# #     spec.net[spec.net$Weights==1,],
+# #     this_family = "gaussian")
+# #   
+# #   ggsave(freq.model.net.bee.abund,
+# #          file="figures/diagnostics/SI_NetBeeAbundModelDiagnostics.pdf",
+# #          height=8, width=11)
+# # }
+# 
+# # # bee div check
+# # freq.formula.bee.div <- as.formula(paste("Net_BeeDiversity", "~", bee.div.x ))
+# # 
+# # ##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+# # if(run.diagnostics){
+# #   freq.model.bee.div <- run_plot_freq_model_diagnostics(
+# #     freq.formula.bee.div,
+# #     spec.net[spec.net$Weights==1,],
+# #     this_family = "gaussian")
+# #   
+# #   ggsave(freq.model.bee.div,
+# #          file="figures/diagnostics/SI_BeeDiversityModelDiagnostics.pdf",
+# #          height=8, width=11)
+# # }
+# 
+# # total bee div check
+# freq.formula.tot.bee.div <- as.formula(paste("BeeDiversity", "~", tot.bee.div.x ))
 # 
 # ##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
 # if(run.diagnostics){
-#   freq.model.bee.div <- run_plot_freq_model_diagnostics(
-#     freq.formula.bee.div,
+#   freq.model.tot.bee.div <- run_plot_freq_model_diagnostics(
+#     freq.formula.tot.bee.div,
 #     spec.net[spec.net$Weights==1,],
 #     this_family = "gaussian")
 #   
-#   ggsave(freq.model.bee.div,
-#          file="figures/diagnostics/SI_BeeDiversityModelDiagnostics.pdf",
+#   ggsave(freq.model.tot.bee.div,
+#          file="figures/diagnostics/SI_TotalBeeDivModelDiagnostics.pdf",
 #          height=8, width=11)
 # }
-
-# total bee div check
-freq.formula.tot.bee.div <- as.formula(paste("BeeDiversity", "~", tot.bee.div.x ))
-
-##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
-if(run.diagnostics){
-  freq.model.tot.bee.div <- run_plot_freq_model_diagnostics(
-    freq.formula.tot.bee.div,
-    spec.net[spec.net$Weights==1,],
-    this_family = "gaussian")
-  
-  ggsave(freq.model.tot.bee.div,
-         file="figures/diagnostics/SI_TotalBeeDivModelDiagnostics.pdf",
-         height=8, width=11)
-}
 
 # microbe check
 freq.formula.microbe <- as.formula(paste("PD", "~", microbe.x ))
