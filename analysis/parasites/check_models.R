@@ -11,20 +11,21 @@ setwd("analysis/parasites")
 source("src/misc.R")
 source("src/writeResultsTable.R")
 source("src/makeMultiLevelData.R")
-vars <- c("MeanFloralAbundance",
-          "MeanFloralDiversity",
-          "Net_BeeDiversity",
-          "Lat", "SRDoy",
-          "MeanITD",
-          ## "r.degree", ## across all networks
-          "rare.degree"  ## site-year level
+source("src/runParasiteModels.R")
+source("src/standardize_weights.R")
+## all of the variables that are explanatory variables and thus need
+## to be centered
+vars_yearsr <- c("MeanFloralAbundance",
+                 "MeanFloralDiversity",
+                 "Net_BeeDiversity",
+                 "Lat", "SRDoy"  
 )
+vars_sp <- c("MeanITD",
+             "rare.degree")
 
-variables.to.log <- c("MeanFloralAbundance",
-                      "Net_NonBombusHBAbundance",
-                      "Net_HBAbundance",
-                      "Net_BombusAbundance",
-                      "Lat")
+variables.to.log <- "rare.degree"
+
+## uses only net specimens, and drops syrphids
 source("src/init.R")
 ## Testing the fit of the parasite models. 
 
@@ -132,10 +133,11 @@ formula.flower.div <- formula(MeanFloralDiversity | weights(Weights) ~
                                   (1|Site)
 )
 #Floral Diversity freq formula
-freq.formula.flower.div <- formula(MeanFloralDiversity ~
-                                     Lat + Year+
-                                     SRDoy*Lat + I(SRDoy^2)*Lat +
-                                     (1|Site)
+formula.flower.div <- formula(MeanFloralDiversity ~
+                                Lat +
+                                Year +
+                                SRDoy + I(SRDoy^2) +
+                                (1|Site)
 )
 #for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
 freq.flower.div.model <- run_plot_freq_model_diagnostics(freq.formula.flower.div,
@@ -145,10 +147,10 @@ ggsave(freq.flower.div.model, file="figures/FloralDiversityModelDiagnostics.pdf"
        height=8, width=11)
 
 ## flower abund
-formula.flower.abund <- formula(MeanFloralAbundance  ~
-                                  Year + 
-                                  SRDoy*Lat + I(SRDoy^2)*Lat +
-                                  (1|Site)
+formula.flower.abund <- formula(MeanFloralAbundance ~
+                                                          Year+ Lat + 
+                                                          SRDoy + I(SRDoy^2) +
+                                                          (1|Site)
 )
 
 freq.flower.abun.model <- run_plot_freq_model_diagnostics(formula.flower.abund,
@@ -160,7 +162,7 @@ ggsave(freq.flower.abun.model, file="figures/FloralAbunModelDiagnostics.pdf",
 formula.bee.div <- formula(Net_BeeDiversity ~
                              MeanFloralDiversity +
                              Lat + Year +
-                             SRDoy*Lat + I(SRDoy^2)*Lat +
+                             SRDoy + I(SRDoy^2) +
                              (1|Site)
 )
 freq.bee.div.model <- run_plot_freq_model_diagnostics(formula.bee.div,
@@ -170,9 +172,8 @@ ggsave(freq.bee.div.model, file="figures/BeeDivModelDiagnostics.pdf",
 
 ## bombus abund
 formula.bombus.abund <- formula(Net_BombusAbundance ~
-                                  MeanFloralAbundance +
-                                  MeanFloralDiversity + Year +
-                                  SRDoy*Lat + I(SRDoy^2)*Lat +
+                                  MeanFloralAbundance + Year +
+                                  SRDoy + I(SRDoy^2) +
                                   Lat + 
                                   (1|Site)
 )
@@ -183,9 +184,9 @@ ggsave(freq.bombus.abun.model, file="figures/BombusAbunModelDiagnostics.pdf",
 
 ## HB abund
 formula.HB.abund <- formula(Net_HBAbundance ~
-                              MeanFloralAbundance +
-                              MeanFloralDiversity+  Year +
-                              SRDoy*Lat + I(SRDoy^2)*Lat +
+                              MeanFloralAbundance +  Year +
+                              SRDoy + I(SRDoy^2) +
+                              Lat +
                               (1|Site)
 )
 freq.HB.abun.model <- run_plot_freq_model_diagnostics(formula.HB.abund,
@@ -195,9 +196,8 @@ ggsave(freq.HB.abun.model, file="figures/HBAbunModelDiagnostics.pdf",
 
 ## bee abund
 formula.bee.abund <- formula(Net_NonBombusHBAbundance ~
-                               MeanFloralAbundance +
-                               MeanFloralDiversity +  Year +
-                               SRDoy*Lat + I(SRDoy^2)*Lat +
+                               MeanFloralAbundance +  Year +
+                               SRDoy + I(SRDoy^2) +
                                Lat +
                                (1|Site)
 )
@@ -207,16 +207,14 @@ ggsave(freq.bee.abun.model, file="figures/NonBombusHBAbunModelDiagnostics.pdf",
        height=8, width=11)
 
 ## parasite
-formula.parasite <- formula(CrithidiaPresence ~
-                                MeanFloralAbundance+
-                              MeanFloralDiversity+
-                              Net_BeeDiversity+
-                              Lat+ SRDoy+
-                              MeanITD +
-                              r.degree +
-                              rare.degree 
-)
-freq.parasite.model <- run_plot_freq_model_diagnostics(formula.parasite,
-                                                       spec.net[spec.net$Weights==1,], this_family = 'binomial')
+beta_bi_formula <- formula(CrithidiaPresence ~ Net_NonBombusHBAbundance + 
+                             Net_HBAbundance + Net_BombusAbundance + 
+                             Net_BeeDiversity + rare.degree + MeanITD + 
+                             (1|Site) + (1|GenusSpecies)) 
+
+freq.parasite.model <- run_plot_freq_model_diagnostics(beta_bi_formula,
+                                                       spec.net[spec.net$WeightsPar==1,], 
+                                                       this_family = 'bernoulli')
+
 ggsave(freq.parasite.model, file="figures/ParasiteModelDiagnostics.pdf",
        height=8, width=11)

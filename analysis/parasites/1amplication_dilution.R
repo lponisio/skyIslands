@@ -10,6 +10,7 @@ source("src/writeResultsTable.R")
 source("src/makeMultiLevelData.R")
 source("src/runParasiteModels.R")
 source("src/standardize_weights.R")
+source("src/parasiteModelFunctions.R")
 ## all of the variables that are explanatory variables and thus need
 ## to be centered
 vars_yearsr <- c("MeanFloralAbundance",
@@ -20,7 +21,9 @@ vars_yearsr <- c("MeanFloralAbundance",
 vars_sp <- c("MeanITD",
           "rare.degree")
 
-variables.to.log <- "rare.degree"
+variables.to.log <- c("rare.degree", "MeanFloralAbundance",
+                      "Net_NonBombusHBAbundance","Net_HBAbundance",
+                      "Net_BombusAbundance")
 
 ## uses only net specimens, and drops syrphids
 source("src/init.R")
@@ -78,13 +81,13 @@ save(fit.community, spec.net, r2,
 ## Parasite presence
 ## **********************************************************
 ## full model with all species, parasites
-fit.all <- runCombinedParasiteModels(spec.all, species.group="all",
-                                        parasites=c("CrithidiaPresence"),
+fit.all <- runParasiteModels(spec.all, species.group="all",
+                                        parasite="CrithidiaPresence",
                                         xvars=xvars.multi.species,
                                         iter = 10^4,
                                         chains = 1,
                                         thin=1,
-                                        init=0)
+                                        init=0, SEM = FALSE)
 
 ## bombus
 fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
