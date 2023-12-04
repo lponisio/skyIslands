@@ -15,13 +15,12 @@
 
 
 rm(list=ls())
-ncbi <- read.table("~/Dropbox/sunflower_saved/ffar_pipeline/merged/RBCL/rbcl_classified_NCBI.txt",
+
+ncbi <- read.table("~/Dropbox/skyIslands_saved/SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rbcl_classified_NCBI.txt",
                    sep="\t", header=TRUE)
 
-
-rdp <- read.table("~/Dropbox/sunflower_saved/ffar_pipeline/merged/RBCL/rbcl_classified_rdp.txt",
+rdp <- read.table("~/Dropbox/skyIslands_saved/SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rbcl_classified_rdp.txt",
                   sep="\t", header=TRUE)
-
 ## rdp cleaning
 rdp$clean_family <- gsub("f__", "", rdp$family)
 rdp$clean_family <- sapply(strsplit(rdp$clean_family, "_"),
@@ -44,14 +43,19 @@ ncbi$species <- sapply(strsplit(ncbi$name, "[ ]"),
                        function(x) x[2])
 ncbi$GenusSpecies <- paste(ncbi$genus, ncbi$species)
 
+# Identify which samples were dropped from NCBI (looks like they blast to non-plant DNA)
+library(arsenal)
+ncbi$ID <- ncbi$Query
+summary(comparedf(rdp, ncbi, by='ID'))
 
 ## plants IDed by hand at sites
-plants <- read.csv("~/Dropbox/sunflower_saved/data/raw/plants.csv")
 
-veg.genera <- unique(plants$Genus)
+plants <- read.csv(" ~/Dropbox/skyIslands_saved/data/relational/relational/traditional/veg-complete.csv")
+                       
+veg.genera <- unique(plants$PlantGenus)
 veg.genera <- veg.genera[!is.na(veg.genera)]
 
-veg.sp <- unique(plants$Species)
+veg.sp <- unique(plants$PlantSpecies)
 veg.sp <- veg.sp[!is.na(veg.sp)]
 
 nrow(ncbi)
@@ -150,12 +154,11 @@ ids$FinalGenusSpeciesConfirmed[ids$FinalGenusSpecies %in% not.possible] <- TRUE
 
 ids$FinalGenusSpeciesInVeg <- NULL
 ids$FinalGenusInVeg <- NULL
-
-write.csv(ids, "~/Dropbox/sunflower_saved/ffar_pipeline/merged/RBCL/taxonomyRBCLworkbook.csv", row.names=FALSE)
-
+                       
+write.csv(ids, "~/Dropbox/skyIslands_saved/SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCLworkbook.csv", row.names=FALSE)
 
 ## editing final csv
-final <- read.csv("~/Dropbox/sunflower_saved/ffar_pipeline/merged/RBCL/taxonomyRBCLworkbook.csv",
+final <- read.csv("~/Dropbox/skyIslands_saved/SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCLworkbook.csv",
                   sep="\t", header=TRUE)
 
 
