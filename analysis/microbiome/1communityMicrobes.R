@@ -7,7 +7,7 @@ setwd("analysis/microbiome/")
 
 rm(list=ls())
 
-run.diagnostics = TRUE
+run.diagnostics = FALSE
 
 library(picante)
 library(bayesplot)
@@ -28,7 +28,7 @@ library(shinystan)
 
 ##QUESTION: log or center first?? 
 # 
-variables.to.log <- c("rare.degree",
+variables.to.log <- c(#"rare.degree",
                       "MeanFloralAbundance", #keep logged
                       "BeeAbundance"
                       )
@@ -41,6 +41,7 @@ vars_yearsr <- c("MeanFloralAbundance",
                  "MeanITD",
                  "VisitedFloralDiversity"
 )
+
 vars_sp <- c("MeanITD",
              "rare.degree")
 
@@ -58,6 +59,7 @@ source("src/runPlotFreqModelDiagnostics.R")
 
 ncores <- 1
 
+##fixing traits data so it merges properly
 
 ## QUESTION: should include root = TRUE? if false gives warning 3x
 ## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
@@ -83,6 +85,40 @@ drop.PD.NA <- unique(spec.net$UniqueID[spec.net$WeightsPar == 1 &
 spec.net <- spec.net[!(spec.net$UniqueID %in% drop.PD.NA),] %>%
   mutate(PD = ifelse(!is.na(PD), PD, 0))
 
+
+##load tree from :
+##Henriquez Piskulich, Patricia Andrea; Hugall, Andrew F.; Stuart-Fox, Devi (2023). A supermatrix phylogeny of the world’s bees (Hymenoptera: Anthophila) [Dataset]. Dryad. https://doi.org/10.5061/dryad.80gb5mkw1
+
+phylo <- ape::read.tree("../../data/BEE_mat7_fulltree.nwk")
+
+
+## i think we need to drop the tips that aren't in our dataset
+## changing sp labels to match phylogeny
+spec.net$GenusSpecies <- gsub("Megachile gemula fulvogemula", "Megachile gemula", spec.net$GenusSpecies)
+spec.net$GenusSpecies <- gsub("Megachile melanophaea rohweri", "Megachile melanophaea", spec.net$GenusSpecies)
+
+
+##clean up unwanted portion of labels
+pattern <- "(_n\\d+m\\d+_[A-Za-z0-9]+)?$"
+phylo$tip.label <- gsub(pattern, "", phylo$tip.label)
+
+## replace underscore with space
+phylo$tip.label <- gsub("_", " ", phylo$tip.label)
+
+## i think we need to drop the tips that aren't in our dataset
+## changing sp labels to match phylogeny
+species_to_keep <- na.omit(unique(spec.net$GenusSpecies[spec.net$Apidae == 1]))
+
+## megachile comate and megachile subexilis are not in phylogeny so will drop these
+species_to_keep <- species_to_keep[!species_to_keep %in% c("Megachile comata", "Megachile subexilis")]
+
+#only keep tips that match our species
+phylo <- ape::keep.tip(phylo, species_to_keep)
+
+phylo_matrix <- ape::vcv.phylo(phylo)
+
+
+
 ## QUESTION: should there be NAs? not sure what check ids means
 ## check ids
 # unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
@@ -102,6 +138,8 @@ spec.net <- spec.net[!(spec.net$UniqueID %in% drop.PD.NA),] %>%
 
 ## making site a factor so it works with gamma dist
 #spec.net$Site <- as.factor(spec.net$Site)
+
+
 
 
 ## **********************************************************
@@ -258,8 +296,11 @@ bf.tot.bdiv <- bf(formula.tot.bee.div)
 
 
 microbe.vars <-  c("BeeAbundance",
-                          "BeeDiversity", "Lat", "VisitedFloralDiversity",# "MeanITD", 
-                          "(1|Site)", "(1|GenusSpecies)")
+                          "BeeDiversity", "Lat", #check this doesn't make VIF high
+                   "FloralDiversity",# "MeanITD", # sociality if not at the genus level
+                          "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+# rare.degree
+# split genus into separate PD for apis bombus megachile
 
 
 microbe.x <- paste(microbe.vars, collapse="+")
