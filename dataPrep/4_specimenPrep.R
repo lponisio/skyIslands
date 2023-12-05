@@ -385,10 +385,9 @@ bees.yr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
          net.type="Yr", mean.by.year=TRUE, poll.group="Bees")
 
 spec.sub <- agg.spec.sub %>%
-  select(UniqueID, GenusSpecies, Site, Year, SampleRound,
-         "AscosphaeraSpp",
-         "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi",
-         "NosemaBombi", "NosemaCeranae")
+  dplyr::select(UniqueID, GenusSpecies, Site, Year, SampleRound, AscosphaeraSpp,
+         ApicystisSpp, CrithidiaExpoeki, CrithidiaBombi,
+         NosemaBombi, NosemaCeranae)
 
 prep.para <- spec.sub %>%
   pivot_longer(cols=c("AscosphaeraSpp",
@@ -698,3 +697,4 @@ write.csv(veg.year.sum, file="../data/veg_species_richness.csv", row.names=FALSE
 
 ## write.csv(all.plant.sp, row.names=FALSE,
 ##           file="../data/vegbySite.csv")
+
