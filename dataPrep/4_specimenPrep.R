@@ -11,9 +11,10 @@ library(readr)
 
 ## dir.bombus <-
 ##     '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
- dir.bombus <-
-     '~/Dropbox (University of Oregon)/skyIslands'
+dir.bombus <- '~/Dropbox (University of Oregon)/skyIslands'
 ## dir.bombus <- "C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands"
+##dir.bombus <- '/Volumes/bombus/rhayes/Dropbox (University of Oregon)/skyIslands'
+ 
 ## *****************************************************************
 ## create relational database, add species IDs
 ## *****************************************************************
@@ -30,11 +31,11 @@ source('dataPrep/relational/3join.R')
 ## *****************************************************************
 ## prep specimen data
 ## *****************************************************************
-dir.bombus <-
-    '~/Dropbox (University of Oregon)/skyIslands'
+dir.bombus <- '~/Dropbox (University of Oregon)/skyIslands'
 ## dir.bombus <- "C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands"
 ## dir.bombus <-
 ##     '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
+## dir.bombus <- '/Volumes/bombus/rhayes/Dropbox (University of Oregon)/skyIslands'
 
 setwd(file.path(dir.bombus, "dataPrep"))
 
@@ -229,6 +230,10 @@ calcSummaryStats <- function(spec.method, method){
     site.sp.yr <- spec %>%
         group_by(Site, Year, GenusSpecies, Genus) %>%
         summarise(Abundance = length(GenusSpecies))
+    
+    site.sp.yr.round <- spec %>%
+      group_by(Site, Year, Round, GenusSpecies, Genus) %>%
+      summarise(AbundanceSYR = length(GenusSpecies))
 
     bombus <- site.sp.yr[site.sp.yr$Genus == "Bombus",]
     bombus$Genus  <- NULL
@@ -241,6 +246,8 @@ calcSummaryStats <- function(spec.method, method){
                                        method),
               row.names=FALSE)
     write.csv(site.sp, file=sprintf('../data/spstats_%s.csv', method),
+              row.names=FALSE)
+    write.csv(site.sp.yr.round, file='../data/sp_year_site_round.csv',
               row.names=FALSE)
     return(site.sum)
 }
