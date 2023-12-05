@@ -55,7 +55,7 @@ plants <- read.csv(" ~/Dropbox/skyIslands_saved/data/relational/relational/tradi
 veg.genera <- unique(plants$PlantGenus)
 veg.genera <- veg.genera[!is.na(veg.genera)]
 
-veg.sp <- unique(plants$PlantSpecies)
+veg.sp <- unique(paste(plants$PlantGenus, plants$PlantSpecies))
 veg.sp <- veg.sp[!is.na(veg.sp)]
 
 nrow(ncbi)
@@ -98,10 +98,29 @@ unique(ids$FinalGenus[ids$FinalGenusInVeg == 0][ids$GenusRDPMatch > 0.8])
 ## IDs that have an okay match but are not in the hand collected veg dats 
 unique(ids$FinalGenus[ids$FinalGenusInVeg == 0][ids$GenusRDPMatch >0.6 & ids$GenusRDPMatch < 0.8])
 
+# based on USDA plant database - these genera are represented in southwestern US, but keep in mind that many of the spp hits we are getting are not found there
+acceptable <- c("Pedicularis", "Conyza", "Achillea", "Allium", "Alnus", "Penstemon","Tiquilia",
+                "Aloe","Amsinckia","Erigeron", "Arceuthobium", "Arctium", "Cichorium","Tanacetum",
+                "Nasturtium", "Hypericum", "Campanula","Linum","Potentilla", "Cruciata", "Picea",
+                "Eremogone", "Lupinus","Medicago","Oxalis","Erodium","Holodiscus","Plantago",
+                "Rubus","Centaurium", "Thalictrum", "Astragalus","Bistorta","Juncus","Trifolium",
+                "Prunus", "Hedyotis", "Stenaria", "Geranium","Senecio", "Brickellia","Capparis", 
+                "Cercocarpus", "Amblyopappus", "Cicuta", "Zizia", "Nothoscordum", "Helianthus", 
+                "Phacelia", "Veronica", "Arctotheca","Cerastium","Cichorium", "Cucurbita", "Daucus",
+                "Ellisia", "Erigeron", "Ipomoea","Oxytropis", "Phacelia", "Rubus", "Scandix",
+                "Sisyrinchium", "Spiranthes","Symphoricarpos", "Tamarix", "Vicia", "Ipomoea",
+                "Robinia", "Galium", "Prunella", "Heuchera", "Valeriana", "Astragalus","Scorphularia",
+                "Fragaria","Penstemon", "Dalea", "Calochortus", "Rosa", "Bistorta", "Swertia", "Primula",
+                "Geum", "Betula", "Sedum","Garrya", "Melilotus", "Pyrola","Euphorbia", "Sanguisorba",
+                "Cinnamomum","Carex","Sium","Prosopis", "Prosopis","Mentzelia","Iris","Hydrophyllum","Ziziphus",
+                "Ulmus", "Chlorophytum","Eriobotrya", "Physocarpus", "Rorippa", "Polemonium", "Mimosa",
+                "Crotalaria", "Glycine")
 
-acceptable <- c("Xxxx")
-
-not.possible <- c("Xxxx")
+# based on USDA plant database, Discover Life, and natural history papers for some genera - these seem unlikely and should be flagged
+not.possible <- c("Olearia", "Linochilus", "Acridocarpus","Sheareria","Formania", "Apodytes", 
+                  "Maharanga", "Cratoxylum", "Ascolepis","Argophyllum", "Beloglottis", "Ophiopogon", #Beloglottis in FL, Hesperomannia in HI, Weigela + Liriodendron in CA
+                  "Hesperomannia", "Sinocarum", "Strychnos", "Echiochilon","Indofevillea", "Enydra",
+                  "Weigela", "Liriodendron")
 
 ## if acceptable, gets final genus check
 ids$FinalGenusConfirmed  <- NA
