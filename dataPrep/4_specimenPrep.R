@@ -233,7 +233,7 @@ calcSummaryStats <- function(spec.method, method){
     
     site.sp.yr.round <- spec %>%
       group_by(Site, Year, SampleRound, GenusSpecies, Genus) %>%
-      summarise(AbundanceSYR = length(GenusSpecies))
+      summarise(AbundanceSYR = mean(length(GenusSpecies)))
 
     bombus <- site.sp.yr[site.sp.yr$Genus == "Bombus",]
     bombus$Genus  <- NULL
