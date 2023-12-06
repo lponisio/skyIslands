@@ -39,6 +39,16 @@ traits <- merge(traits, net.traits, by="GenusSpecies", all.x=TRUE)
 
 spec.net <- merge(spec.net, traits, all.x=TRUE, by="GenusSpecies")
 
+# changing missing sociality to Unknown
+spec.net$Sociality <- spec.net$Sociality %>%
+  replace_na("Unknown")
+
+# changing missing MeanITD to Unknown
+spec.net$MeanITD <- spec.net$MeanITD %>%
+  replace_na(0)
+
+
+
 dir.create(path="saved", showWarnings = FALSE)
 dir.create(path="saved/tables", showWarnings = FALSE)
 
@@ -59,7 +69,7 @@ spec.net[, variables.to.log] <- log(spec.net[,variables.to.log])
 ##  repetition by the number of specimens
 spec.net <- standardizeVars(spec.net, vars_yearsr, "YearSR")
 
-spec.net <- standardizeVars(spec.net, vars_sp, "YearSRGenusSpecies")
+#spec.net <- standardizeVars(spec.net, vars_sp, "YearSRGenusSpecies")
 ## create a dumby varaible "WeightPar" for the parasite data. The
 ## original intention was to keep stan from dropping data for
 ## site-level models, but weight is 0 for parasite models.

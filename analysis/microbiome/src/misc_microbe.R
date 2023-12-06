@@ -64,7 +64,7 @@ check_for_NA <- function(which.form){
     anyNA <- length(spec.net[[x]][is.na(spec.net[[x]])])
     if (anyNA > 0){
     print(paste('microbe', x, "NAs:", length(spec.net[[x]][is.na(spec.net[[x]])])))
-    print(spec.net$GenusSpecies[spec.net[[x]][is.na(spec.net[[x]])]])
+    #print(spec.net$GenusSpecies[spec.net[[x]][is.na(spec.net[[x]])]])
     }
   }
 }
