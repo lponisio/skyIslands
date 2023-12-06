@@ -22,8 +22,7 @@ prepParasiteWeights <- function(){
   ## but weight is 0 for parasite models.
   spec.net$WeightsPar <- 1
   spec.net$WeightsPar[spec.net$Apidae == 0 |
-                        is.na(spec.net$Apidae) |
-                        spec.net$Genus != "Bombus"] <- 0
+                        is.na(spec.net$Apidae)] <- 0
   ## stan drops all NA data, so can set AnyParasite to 0 with WeightsPar
   ## to keep it in the models
   spec.net$ParasitePresence[is.na(spec.net$ParasitePresence)] <- 0
