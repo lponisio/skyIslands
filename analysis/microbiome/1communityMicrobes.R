@@ -3,6 +3,9 @@
 setwd('~/Dropbox (University of Oregon)/skyIslands')
 #setwd("/Volumes/bombus/rhayes/Dropbox (University of Oregon)/skyIslands")
 
+
+## going back to the last time the model worked to troubleshoot
+
 setwd("analysis/microbiome/")
 
 rm(list=ls())
