@@ -9,10 +9,6 @@ rm(list=ls())
 
 run.diagnostics = FALSE
 
-full.model=FALSE
-bombus.model=TRUE
-apis.model=FALSE
-melissodes.model=FALSE
 
 library(picante)
 library(plyr)
@@ -68,20 +64,6 @@ ncores <- 1
 
 
 
-## QUESTION: should include root = TRUE? if false gives warning 3x
-## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
-PD <- apply(spec.microbes[,microbes], 1, function(x){
-  this.bee <- x[x > 0]
-  this.tree <- prune.sample(t(this.bee), tree.16s)
-  #browser()
-  picante::pd(t(this.bee), this.tree, include.root = TRUE)
-})
-
-PD <- do.call(rbind, PD)
-
-spec.microbes <- cbind(spec.microbes, PD)
-
-spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
 
 ## check which individuals don't have microbe data
 drop.PD.NA <- unique(spec.net$UniqueID[spec.net$WeightsPar == 1 &
@@ -319,6 +301,7 @@ microbe.vars <-  c("BeeAbundance",
 ## NA check
 check_for_NA(microbe.vars)
 
+##still having issues with MeanITD ()
 
 
 
