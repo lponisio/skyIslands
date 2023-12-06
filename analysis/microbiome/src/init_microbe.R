@@ -37,6 +37,9 @@ net.traits <- net.traits[, c("GenusSpecies", "r.degree"),]
 
 traits <- merge(traits, net.traits, by="GenusSpecies", all.x=TRUE)
 
+these_missing_ITD <- unique(spec.net$GenusSpecies[is.na(spec.net$MeanITD)])
+
+
 spec.net <- merge(spec.net, traits, all.x=TRUE, by="GenusSpecies")
 
 
@@ -84,7 +87,14 @@ spec.net <- spec.net[!spec.net$GenusSpecies %in% drop.species,]
 # # changing missing MeanITD to 0
 # spec.net$MeanITD <- spec.net$MeanITD %>%
 #   replace_na(0)
-# 
+
+## missing ITD for Anthidium mormonum, Bombus centralis, Bombus huntii, Dufourea maura, Melissodes confusus
+## The following paper has B. centralis (Mean: 3.45, n=6), B, huntii (2.78 n=6)
+##Nixon, Anna E., and H. Hines. "Bumblebee thermoregulation: understanding the thermal properties of physical features of bumblebees." The Penn State McNair Journal 2017 (2017): 99.
+
+
+## we have all ITDs except for Anthidium mormonum......
+
 # # changing missing rare.degree to 0
 # spec.net$rare.degree <- spec.net$rare.degree %>%
 #   replace_na(0)
@@ -126,15 +136,7 @@ screened.microbes <- apply(spec.net, 1, function(x) all(is.na(x[microbes])))
 
 spec.microbes <- spec.net[!screened.microbes, ]
 
-##adding abundance weights column
-abund_csv <- data.frame(read.csv("../../data/sp_year_site_round.csv"))
 
-#join abundance csv
-spec.net <- join(spec.net, abund_csv)
-
-#multiply weightspar by abundance to get abundance weights
-spec.net$WeightsAbund <- spec.net$WeightsPar * spec.net$AbundanceSYR
-spec.net$LogWeightsAbund <- log(spec.net$WeightsAbund + 1)
 
 
 ## QUESTION: should include root = TRUE? if false gives warning 3x
@@ -161,15 +163,30 @@ drop.PD.NA <- unique(spec.net$UniqueID[spec.net$WeightsPar == 1 &
 spec.net <- spec.net[!(spec.net$UniqueID %in% drop.PD.NA),] %>%
   mutate(PD = ifelse(!is.na(PD), PD, 0))
 
+##adding abundance weights column
+abund_csv <- data.frame(read.csv("../../data/sp_year_site_round.csv"))
+
+#join abundance csv
+spec.net <- join(spec.net, abund_csv)
+
+
 
 #genus.microbes <- spec.microbes[spec.microbes$Genus == this_genus, ]
 
 spec.all <- spec.net
 
+#multiply weightspar by abundance to get abundance weights
+spec.net$WeightsAbund <- spec.net$WeightsPar * spec.net$AbundanceSYR
+spec.net$LogWeightsAbund <- log(spec.net$WeightsAbund + 1)
+
 
 ## bombus only data
 spec.bombus <- spec.all
+#multiply weightspar by abundance to get abundance weights
+spec.bombus$WeightsAbund <- spec.bombus$WeightsPar * spec.bombus$AbundanceSYR
+spec.bombus$LogWeightsAbund <- log(spec.bombus$WeightsAbund + 1)
 spec.bombus$LogWeightsAbund[spec.bombus$Genus != "Bombus"] <- 0
+spec.bombus$WeightsAbund[spec.bombus$Genus != "Bombus"] <- 0
 
 # 
 # ## megachile comate and megachile subexilis are not in phylogeny so will drop these
@@ -184,11 +201,19 @@ spec.bombus$LogWeightsAbund[spec.bombus$Genus != "Bombus"] <- 0
 
 ## apis only data
 spec.apis <- spec.all
+#multiply weightspar by abundance to get abundance weights
+spec.apis$WeightsAbund <- spec.apis$WeightsPar * spec.apis$AbundanceSYR
+spec.apis$LogWeightsAbund <- log(spec.apis$WeightsAbund + 1)
 spec.apis$LogWeightsAbund[spec.apis$Genus != "Apis"] <- 0
+spec.apis$WeightsAbund[spec.apis$Genus != "Apis"] <- 0
 
 ## melissodes only data
 spec.melissodes <- spec.all
-spec.melissodes$WeightsPar[spec.melissodes$Genus != "Melissodes"] <- 0
+#multiply weightspar by abundance to get abundance weights
+spec.melissodes$WeightsAbund <- spec.melissodes$WeightsPar * spec.melissodes$AbundanceSYR
+spec.melissodes$LogWeightsAbund <- log(spec.melissodes$WeightsAbund + 1)
+spec.melissodes$LogWeightsAbund[spec.melissodes$Genus != "Melissodes"] <- 0
+spec.melissodes$WeightsAbund[spec.melissodes$Genus != "Melissodes"] <- 0
 
 spec.apidae <- spec.all
 spec.apidae$WeightsPar[spec.melissodes$Family != "Apidae"] <- 0
