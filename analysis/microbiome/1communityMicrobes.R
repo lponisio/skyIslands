@@ -65,52 +65,7 @@ ncores <- 1
 
 
 
-## check which individuals don't have microbe data
-drop.PD.NA <- unique(spec.net$UniqueID[spec.net$WeightsPar == 1 &
-                               is.na(spec.net$PD)])
 
-## drop individuals that had parasite screen but not microbe
-## filling in zeros for NAs in PD
-spec.net <- spec.net[!(spec.net$UniqueID %in% drop.PD.NA),] %>%
-  mutate(PD = ifelse(!is.na(PD), PD, 0))
-
-
-##load tree from :
-##Henriquez Piskulich, Patricia Andrea; Hugall, Andrew F.; Stuart-Fox, Devi (2023). A supermatrix phylogeny of the world’s bees (Hymenoptera: Anthophila) [Dataset]. Dryad. https://doi.org/10.5061/dryad.80gb5mkw1
-
-phylo <- ape::read.tree("../../data/BEE_mat7_fulltree.nwk")
-
-
-## i think we need to drop the tips that aren't in our dataset
-## changing sp labels to match phylogeny
-spec.net$GenusSpecies <- gsub("Megachile gemula fulvogemula", "Megachile gemula", spec.net$GenusSpecies)
-spec.net$GenusSpecies <- gsub("Megachile melanophaea rohweri", "Megachile melanophaea", spec.net$GenusSpecies)
-
-
-##clean up unwanted portion of labels
-pattern <- "(_n\\d+m\\d+_[A-Za-z0-9]+)?$"
-phylo$tip.label <- gsub(pattern, "", phylo$tip.label)
-
-## replace underscore with space
-phylo$tip.label <- gsub("_", " ", phylo$tip.label)
-
-## i think we need to drop the tips that aren't in our dataset
-## changing sp labels to match phylogeny
-species_to_keep <- na.omit(unique(spec.net$GenusSpecies))
-
-## megachile comate and megachile subexilis are not in phylogeny so will drop these
-species_to_keep <- species_to_keep[!species_to_keep %in% c("Megachile comata", "Megachile subexilis")]
-
-phylo_tips <- phylo$tip.label
-#only keep tips that match our species
-phylo <- ape::keep.tip(phylo, species_to_keep[species_to_keep %in% phylo_tips])
-
-phylo_matrix <- ape::vcv.phylo(phylo)
-
-
-## dropping species not in the phylogeny from the dataset
-## megachile comate and megachile subexilis are not in phylogeny so will drop these
-spec.net <- spec.net[!spec.net$GenusSpecies %in% c("Megachile comata", "Megachile subexilis"),]
 # spec.net$GenusSpecies[spec.net$GenusSpecies == 'NA'] <- NA
 # spec.net <- spec.net %>%
 #   filter(is.na(GenusSpecies) == FALSE)
@@ -148,6 +103,7 @@ flower.abund.vars <- c("Year",
                        "I(SRDoy^2)",
                        "Lat",
                        "(1|Site)")
+check_for_NA(flower.abund.vars)
 
 flower.abund.x <- paste(flower.abund.vars, collapse="+")
 flower.abund.y <- "MeanFloralAbundance | weights(Weights)"
@@ -167,6 +123,7 @@ flower.div.vars <- c("Year",
                        "I(SRDoy^2)",
                        "Lat",
                        "(1|Site)")
+check_for_NA(flower.div.vars)
 
 flower.div.x <- paste(flower.div.vars, collapse="+")
 flower.div.y <- "MeanFloralDiversity | weights(Weights)"
@@ -186,6 +143,7 @@ tot.bee.abund.vars <- c("MeanFloralAbundance",
                     "SRDoy",
                     "I(SRDoy^2)",
                     "(1|Site)")
+check_for_NA(tot.bee.abund.vars)
 
 tot.bee.abund.x <- paste(tot.bee.abund.vars, collapse="+")
 tot.bee.abund.y <- "BeeAbundance | weights(Weights)"
@@ -201,6 +159,7 @@ net.bee.abund.vars <- c("MeanFloralAbundance",
                         "SRDoy",
                         "I(SRDoy^2)",
                         "(1|Site)")
+check_for_NA(net.bee.abund.vars)
 
 net.bee.abund.x <- paste(net.bee.abund.vars, collapse="+")
 net.bee.abund.y <- "Net_BeeAbundance | weights(Weights)"
@@ -221,6 +180,7 @@ bee.div.vars <- c("MeanFloralDiversity",
                     "I(SRDoy^2)",
                     "Lat",
                     "(1|Site)")
+check_for_NA(bee.div.vars)
 
 bee.div.x <- paste(bee.div.vars, collapse="+")
 bee.div.y <- "Net_BeeDiversity | weights(Weights)"
@@ -233,6 +193,8 @@ tot.bee.div.vars <- c("MeanFloralAbundance",
                         "I(SRDoy^2)",
                       "Lat",
                         "(1|Site)")
+
+check_for_NA(tot.bee.div.vars)
 
 tot.bee.div.x <- paste(tot.bee.div.vars, collapse="+")
 tot.bee.div.y <- "BeeDiversity | weights(Weights)"
@@ -293,15 +255,15 @@ bf.tot.bdiv <- bf(formula.tot.bee.div)
 
 microbe.vars <-  c("BeeAbundance",
                           "BeeDiversity", "Lat", #check this doesn't make VIF high
-                   "MeanFloralDiversity", "MeanITD", "Sociality", # if not at the genus level
-                          "(1|Site)", "rare.degree", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+                   "MeanFloralDiversity", "MeanITD", "Sociality", "rare.degree", # if not at the genus level
+                          "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
 # rare.degree
 # split genus into separate PD for apis bombus megachile
 
 ## NA check
 check_for_NA(microbe.vars)
 
-##still having issues with MeanITD ()
+##now having issues with some species not being listed in tree i.e some to just sp. 
 
 
 
@@ -351,21 +313,17 @@ r2 <- rstantools::bayes_R2(fit.microbe)
 save(fit.microbe, spec.net, r2, r2loo,
      file="saved/fullMicrobeFit.Rdata")
 
-# Warning messages:
-#   1: Rows containing NAs were excluded from the model. 
-# 2: There were 5000 transitions after warmup that exceeded the maximum treedepth. Increase max_treedepth above 10. See
-# https://mc-stan.org/misc/warnings.html#maximum-treedepth-exceeded 
-# 3: Examine the pairs() plot to diagnose sampling problems
-# 
-# 4: The largest R-hat is 2.11, indicating chains have not mixed.
-# Running the chains for more iterations may help. See
-# https://mc-stan.org/misc/warnings.html#r-hat 
-# 5: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-# Running the chains for more iterations may help. See
-# https://mc-stan.org/misc/warnings.html#bulk-ess 
-# 6: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
-# Running the chains for more iterations may help. See
-# https://mc-stan.org/misc/warnings.html#tail-ess 
+## new error
+# SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
+# Chain 1: Rejecting initial value:
+#   Chain 1:   Error evaluating the log probability at the initial value.
+# Chain 1: Exception: normal_lpdf: Location parameter is nan, but must be finite! (in 'string', line 229, column 6 to column 76)
+# [1] "Error : Initialization failed."                    
+# [2] "In addition: Warning message:"                     
+# [3] "Rows containing NAs were excluded from the model. "
+# [1] "error occurred during calling the sampler; sampling not done"
+
+
 
 # ## run bombus model
 # microbe.bombus.vars <- c("BeeAbundance",
