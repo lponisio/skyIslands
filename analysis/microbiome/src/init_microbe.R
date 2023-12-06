@@ -77,17 +77,17 @@ phylo_matrix <- ape::vcv.phylo(phylo)
 drop.species <- unique(spec.net$GenusSpecies[!(spec.net$GenusSpecies %in% rownames(phylo_matrix))])
 spec.net <- spec.net[!spec.net$GenusSpecies %in% drop.species,]
 
-# changing missing sociality to Unknown
-spec.net$Sociality <- spec.net$Sociality %>%
-  replace_na("Unknown")
-
-# changing missing MeanITD to 0
-spec.net$MeanITD <- spec.net$MeanITD %>%
-  replace_na(0)
-
-# changing missing rare.degree to 0
-spec.net$rare.degree <- spec.net$rare.degree %>%
-  replace_na(0)
+# # changing missing sociality to Unknown
+# spec.net$Sociality <- spec.net$Sociality %>%
+#   replace_na("Unknown")
+# 
+# # changing missing MeanITD to 0
+# spec.net$MeanITD <- spec.net$MeanITD %>%
+#   replace_na(0)
+# 
+# # changing missing rare.degree to 0
+# spec.net$rare.degree <- spec.net$rare.degree %>%
+#   replace_na(0)
 
 
 
@@ -169,11 +169,22 @@ spec.all <- spec.net
 
 ## bombus only data
 spec.bombus <- spec.all
-spec.bombus$WeightsPar[spec.bombus$Genus != "Bombus"] <- 0
+spec.bombus$LogWeightsAbund[spec.bombus$Genus != "Bombus"] <- 0
+
+# 
+# ## megachile comate and megachile subexilis are not in phylogeny so will drop these
+# species_to_keep <- species_to_keep[!species_to_keep %in% c("Megachile comata", "Megachile subexilis")]
+# 
+# phylo_tips <- phylo$tip.label
+# #only keep tips that match our species
+# phylo <- ape::keep.tip(phylo, species_to_keep[species_to_keep %in% phylo_tips])
+# 
+# phylo_matrix <- ape::vcv.phylo(phylo)
+
 
 ## apis only data
 spec.apis <- spec.all
-spec.apis$WeightsPar[spec.apis$Genus != "Apis"] <- 0
+spec.apis$LogWeightsAbund[spec.apis$Genus != "Apis"] <- 0
 
 ## melissodes only data
 spec.melissodes <- spec.all
