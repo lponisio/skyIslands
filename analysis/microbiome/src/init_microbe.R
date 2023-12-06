@@ -39,6 +39,44 @@ traits <- merge(traits, net.traits, by="GenusSpecies", all.x=TRUE)
 
 spec.net <- merge(spec.net, traits, all.x=TRUE, by="GenusSpecies")
 
+
+
+##load tree from :
+##Henriquez Piskulich, Patricia Andrea; Hugall, Andrew F.; Stuart-Fox, Devi (2023). A supermatrix phylogeny of the world’s bees (Hymenoptera: Anthophila) [Dataset]. Dryad. https://doi.org/10.5061/dryad.80gb5mkw1
+
+phylo <- ape::read.tree("../../data/BEE_mat7_fulltree.nwk")
+
+
+## i think we need to drop the tips that aren't in our dataset
+## changing sp labels to match phylogeny
+spec.net$GenusSpecies <- gsub("Megachile gemula fulvogemula", "Megachile gemula", spec.net$GenusSpecies)
+spec.net$GenusSpecies <- gsub("Megachile melanophaea rohweri", "Megachile melanophaea", spec.net$GenusSpecies)
+
+
+##clean up unwanted portion of labels
+pattern <- "(_n\\d+m\\d+_[A-Za-z0-9]+)?$"
+phylo$tip.label <- gsub(pattern, "", phylo$tip.label)
+
+## replace underscore with space
+phylo$tip.label <- gsub("_", " ", phylo$tip.label)
+
+## i think we need to drop the tips that aren't in our dataset
+## changing sp labels to match phylogeny
+species_to_keep <- na.omit(unique(spec.net$GenusSpecies))
+
+## megachile comate and megachile subexilis are not in phylogeny so will drop these
+species_to_keep <- species_to_keep[!species_to_keep %in% c("Megachile comata", "Megachile subexilis")]
+
+phylo_tips <- phylo$tip.label
+#only keep tips that match our species
+phylo <- ape::keep.tip(phylo, species_to_keep[species_to_keep %in% phylo_tips])
+
+phylo_matrix <- ape::vcv.phylo(phylo)
+
+## dropping species not in the phylogeny from the dataset
+drop.species <- unique(spec.net$GenusSpecies[!(spec.net$GenusSpecies %in% rownames(phylo_matrix))])
+spec.net <- spec.net[!spec.net$GenusSpecies %in% drop.species,]
+
 # changing missing sociality to Unknown
 spec.net$Sociality <- spec.net$Sociality %>%
   replace_na("Unknown")
