@@ -10,6 +10,7 @@ rm(list=ls())
 run.diagnostics = FALSE
 
 library(picante)
+library(plyr)
 library(bayesplot)
 library(pscl)
 library(brms)
@@ -28,7 +29,7 @@ library(shinystan)
 
 ##QUESTION: log or center first?? 
 # 
-variables.to.log <- c(#"rare.degree",
+variables.to.log <- c("rare.degree",
                       "MeanFloralAbundance", #keep logged
                       "BeeAbundance"
                       )
@@ -40,6 +41,7 @@ vars_yearsr <- c("MeanFloralAbundance",
                  "BeeDiversity",
                  "MeanITD",
                  "VisitedFloralDiversity"
+                 #"FloralDiversity"
 )
 
 vars_sp <- c("MeanITD",
@@ -58,8 +60,6 @@ source("src/runPlotFreqModelDiagnostics.R")
 
 
 ncores <- 1
-
-##fixing traits data so it merges properly
 
 
 
@@ -109,13 +109,14 @@ phylo$tip.label <- gsub("_", " ", phylo$tip.label)
 
 ## i think we need to drop the tips that aren't in our dataset
 ## changing sp labels to match phylogeny
-species_to_keep <- na.omit(unique(spec.net$GenusSpecies[spec.net$Apidae == 1]))
+species_to_keep <- na.omit(unique(spec.net$GenusSpecies))
 
 ## megachile comate and megachile subexilis are not in phylogeny so will drop these
 species_to_keep <- species_to_keep[!species_to_keep %in% c("Megachile comata", "Megachile subexilis")]
 
+phylo_tips <- phylo$tip.label
 #only keep tips that match our species
-phylo <- ape::keep.tip(phylo, species_to_keep)
+phylo <- ape::keep.tip(phylo, species_to_keep[species_to_keep %in% phylo_tips])
 
 phylo_matrix <- ape::vcv.phylo(phylo)
 
@@ -123,9 +124,12 @@ phylo_matrix <- ape::vcv.phylo(phylo)
 ## dropping species not in the phylogeny from the dataset
 ## megachile comate and megachile subexilis are not in phylogeny so will drop these
 spec.net <- spec.net[!spec.net$GenusSpecies %in% c("Megachile comata", "Megachile subexilis"),]
-
-## QUESTION: should there be NAs? not sure what check ids means
-## check ids
+# spec.net$GenusSpecies[spec.net$GenusSpecies == 'NA'] <- NA
+# spec.net <- spec.net %>%
+#   filter(is.na(GenusSpecies) == FALSE)
+# 
+# ## QUESTION: should there be NAs? not sure what check ids means
+# ## check ids
 # unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
 #                                is.na(spec.net$MeanITD)])
 
@@ -302,14 +306,14 @@ bf.tot.bdiv <- bf(formula.tot.bee.div)
 
 microbe.vars <-  c("BeeAbundance",
                           "BeeDiversity", "Lat", #check this doesn't make VIF high
-                   "FloralDiversity",# "MeanITD", # sociality if not at the genus level
-                          "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+                   "MeanFloralDiversity", "MeanITD", "Sociality", # if not at the genus level
+                          "(1|Site)", "rare.degree", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
 # rare.degree
 # split genus into separate PD for apis bombus megachile
 
 
 microbe.x <- paste(microbe.vars, collapse="+")
-microbe.y <- "PD | weights(WeightsPar)"
+microbe.y <- "PD | weights(LogWeightsAbund)"
 formula.microbe <- as.formula(paste(microbe.y, "~",
                                      microbe.x))
 
@@ -333,7 +337,8 @@ fit.microbe <- brm(bform , spec.net,
                   init=0,
                   open_progress = FALSE,
                   control = list(adapt_delta = 0.99),
-                  save_pars = save_pars(all = TRUE))
+                  save_pars = save_pars(all = TRUE),
+                  data2 = list(phylo_matrix=phylo_matrix))
 
 write.ms.table(fit.microbe, "full_microbe")
 r2loo <- loo_R2(fit.microbe)

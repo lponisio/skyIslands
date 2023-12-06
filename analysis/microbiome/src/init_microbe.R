@@ -11,15 +11,6 @@ load('../../data/spec_RBCL_16s.Rdata')
 load("../../data/trees.Rdata")
 site.sum <- read.csv("../../data/sitestats.csv")
 
-##adding abundance weights column
-abund_csv <- data.frame(read.csv("../../data/sp_year_site_round.csv"))
-
-#join abundance csv
-spec.net <- join(spec.net, abund_csv)
-
-#multiply weightspar by abundance to get abundance weights
-spec.net$WeightsAbund <- spec.net$WeightsPar * spec.net$AbundanceSYR
-
 
 spec.net <- spec.net[!is.na(spec.net$GenusSpecies),]
 
@@ -82,6 +73,17 @@ microbes <- colnames(spec.net)[grepl("16s:", colnames(spec.net))]
 screened.microbes <- apply(spec.net, 1, function(x) all(is.na(x[microbes])))
 
 spec.microbes <- spec.net[!screened.microbes, ]
+
+##adding abundance weights column
+abund_csv <- data.frame(read.csv("../../data/sp_year_site_round.csv"))
+
+#join abundance csv
+spec.net <- join(spec.net, abund_csv)
+
+#multiply weightspar by abundance to get abundance weights
+spec.net$WeightsAbund <- spec.net$WeightsPar * spec.net$AbundanceSYR
+spec.net$LogWeightsAbund <- log(spec.net$WeightsAbund + 1)
+
 
 #genus.microbes <- spec.microbes[spec.microbes$Genus == this_genus, ]
 
