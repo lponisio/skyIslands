@@ -85,6 +85,31 @@ spec.net$WeightsAbund <- spec.net$WeightsPar * spec.net$AbundanceSYR
 spec.net$LogWeightsAbund <- log(spec.net$WeightsAbund + 1)
 
 
+## QUESTION: should include root = TRUE? if false gives warning 3x
+## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
+PD <- apply(spec.microbes[,microbes], 1, function(x){
+  this.bee <- x[x > 0]
+  this.tree <- prune.sample(t(this.bee), tree.16s)
+  #browser()
+  picante::pd(t(this.bee), this.tree, include.root = TRUE)
+})
+
+PD <- do.call(rbind, PD)
+
+spec.microbes <- cbind(spec.microbes, PD)
+
+spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
+
+## check which individuals don't have microbe data
+drop.PD.NA <- unique(spec.net$UniqueID[spec.net$WeightsPar == 1 &
+                                         is.na(spec.net$PD)])
+
+## drop individuals that had parasite screen but not microbe
+## filling in zeros for NAs in PD
+spec.net <- spec.net[!(spec.net$UniqueID %in% drop.PD.NA),] %>%
+  mutate(PD = ifelse(!is.na(PD), PD, 0))
+
+
 #genus.microbes <- spec.microbes[spec.microbes$Genus == this_genus, ]
 
 spec.all <- spec.net
