@@ -61,6 +61,8 @@ ncores <- 1
 
 ##fixing traits data so it merges properly
 
+
+
 ## QUESTION: should include root = TRUE? if false gives warning 3x
 ## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
 PD <- apply(spec.microbes[,microbes], 1, function(x){
@@ -118,6 +120,9 @@ phylo <- ape::keep.tip(phylo, species_to_keep)
 phylo_matrix <- ape::vcv.phylo(phylo)
 
 
+## dropping species not in the phylogeny from the dataset
+## megachile comate and megachile subexilis are not in phylogeny so will drop these
+spec.net <- spec.net[!spec.net$GenusSpecies %in% c("Megachile comata", "Megachile subexilis"),]
 
 ## QUESTION: should there be NAs? not sure what check ids means
 ## check ids
