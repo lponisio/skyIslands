@@ -40,7 +40,7 @@ vars_yearsr <- c("MeanFloralAbundance",
                  "BeeAbundance",
                  "BeeDiversity",
                  "MeanITD",
-                 "VisitedFloralDiversity"
+                 "VisitedFloralDiversity", "rare.degree"
                  #"FloralDiversity"
 )
 
