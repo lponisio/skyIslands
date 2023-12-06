@@ -316,6 +316,11 @@ microbe.vars <-  c("BeeAbundance",
 # rare.degree
 # split genus into separate PD for apis bombus megachile
 
+## NA check
+check_for_NA(microbe.vars)
+
+
+
 
 microbe.x <- paste(microbe.vars, collapse="+")
 microbe.y <- "PD | weights(LogWeightsAbund)"

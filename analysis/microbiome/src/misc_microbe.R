@@ -59,7 +59,7 @@ fix.white.space <- function(d) {
 
 ## checks formula for any NAs
 ## NA check
-check_for_NA <- function(x, which.form){
+check_for_NA <- function(which.form){
   for (x in which.form){
     anyNA <- length(spec.net[[x]][is.na(spec.net[[x]])])
     if (anyNA > 0){
