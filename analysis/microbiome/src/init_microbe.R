@@ -11,6 +11,16 @@ load('../../data/spec_RBCL_16s.Rdata')
 load("../../data/trees.Rdata")
 site.sum <- read.csv("../../data/sitestats.csv")
 
+##adding abundance weights column
+abund_csv <- data.frame(read.csv("../../data/sp_year_site_round.csv"))
+
+#join abundance csv
+spec.net <- join(spec.net, abund_csv)
+
+#multiply weightspar by abundance to get abundance weights
+spec.net$WeightsAbund <- spec.net$WeightsPar * spec.net$AbundanceSYR
+
+
 spec.net <- spec.net[!is.na(spec.net$GenusSpecies),]
 
 spec.net <- spec.net[spec.net$Family != "Syrphidae",]
@@ -25,18 +35,18 @@ parasites <- c(#"AspergillusSpp", ## problematic parasite!
   "NosemaCeranae")
 
 spec.net <- merge(spec.net, site.sum, all.x=TRUE)
-# 
-# traits <-
-#     read.csv("../../../skyIslands_saved/data/raw/bee_traits.csv")
-# traits$GenusSpecies <- fix.white.space(traits$GenusSpecies)
-# traits <- traits[, c("GenusSpecies", "Sociality", "Lecty", "MeanITD"),]
-# 
-# net.traits <- read.csv("../../data/networks_traits.csv")
-# net.traits <- net.traits[, c("GenusSpecies", "r.degree"),]
-# 
-# traits <- merge(traits, net.traits, by="GenusSpecies", all.x=TRUE)
-# 
-# spec.net <- merge(spec.net, traits, all.x=TRUE, by="GenusSpecies")
+
+traits <-
+    read.csv("../../../skyIslands_saved/data/raw/bee_traits.csv")
+traits$GenusSpecies <- fix.white.space(traits$GenusSpecies)
+traits <- traits[, c("GenusSpecies", "Sociality", "Lecty", "MeanITD"),]
+
+net.traits <- read.csv("../../data/networks_traits.csv")
+net.traits <- net.traits[, c("GenusSpecies", "r.degree"),]
+
+traits <- merge(traits, net.traits, by="GenusSpecies", all.x=TRUE)
+
+spec.net <- merge(spec.net, traits, all.x=TRUE, by="GenusSpecies")
 
 dir.create(path="saved", showWarnings = FALSE)
 dir.create(path="saved/tables", showWarnings = FALSE)
