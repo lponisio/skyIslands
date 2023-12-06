@@ -305,104 +305,120 @@ bf.tot.bdiv <- bf(formula.tot.bee.div)
 
 #cant put in sociality bc all ones with weightsPar == 1 are eusocial or missing
 
-##probs want to add some measure of diet.. is mean plant diversity enough?
-## not sure if we have RBCL richness yet
-# 
-# 
-# microbe.vars <-  c("BeeAbundance",
-#                           "BeeDiversity", "Lat", #check this doesn't make VIF high
-#                    "MeanFloralDiversity", "MeanITD", "Sociality", # if not at the genus level
-#                           "(1|Site)", "rare.degree", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
-# # rare.degree
-# # split genus into separate PD for apis bombus megachile
-# 
-# 
-# microbe.x <- paste(microbe.vars, collapse="+")
-# microbe.y <- "PD | weights(LogWeightsAbund)"
-# microbe.y2 <- "PD | weights(WeightsAbund)"
-# formula.microbe <- as.formula(paste(microbe.y, "~",
-#                                      microbe.x))
-# formula.microbe2 <- as.formula(paste(microbe.y2, "~",
-#                                     microbe.x))
-# 
-# 
-# bf.microbe <- bf(formula.microbe)
-# bf.microbe2 <- bf(formula.microbe2)
-# 
-# #combine forms
-# bform <- bf.fabund +
-#   bf.fdiv +
-#   bf.tot.babund +
-#   bf.tot.bdiv  +
-#   bf.microbe +
-#   set_rescor(FALSE)
-# 
-# #combine forms
-# bform2 <- bf.fabund +
-#   bf.fdiv +
-#   bf.tot.babund +
-#   bf.tot.bdiv  +
-#   bf.microbe2 +
-#   set_rescor(FALSE)
-# 
-# ## run full model
-# fit.microbe <- brm(bform , spec.net,
-#                   cores=ncores,
-#                   iter = 10000,
-#                   chains =1,
-#                   thin=1,
-#                   init=0,
-#                   open_progress = FALSE,
-#                   control = list(adapt_delta = 0.99),
-#                   save_pars = save_pars(all = TRUE),
-#                   data2 = list(phylo_matrix=phylo_matrix))
-# 
-# write.ms.table(fit.microbe, "full_microbe")
-# r2loo <- loo_R2(fit.microbe)
-# r2 <- rstantools::bayes_R2(fit.microbe)
-# save(fit.microbe, spec.net, r2, r2loo,
-#      file="saved/fullMicrobeFit.Rdata")
-
-## run bombus model
-microbe.bombus.vars <- c("BeeAbundance",
-                                  "BeeDiversity", "Lat", #check this doesn't make VIF high
-                                  "MeanFloralDiversity", "MeanITD", 
-                                  "(1|Site)", "rare.degree", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+#probs want to add some measure of diet.. is mean plant diversity enough?
+# not sure if we have RBCL richness yet
 
 
+microbe.vars <-  c("BeeAbundance",
+                          "BeeDiversity", "Lat", #check this doesn't make VIF high
+                   "MeanFloralDiversity", "MeanITD", "Sociality", # if not at the genus level
+                          "(1|Site)", "rare.degree", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+# rare.degree
+# split genus into separate PD for apis bombus megachile
 
-microbe.bombus.x <- paste(microbe.bombus.vars, collapse="+")
-microbe.bombus.y <- "PD | weights(LogWeightsAbund)"
-formula.microbe.bombus <- as.formula(paste(microbe.bombus.y, "~",
-                                    microbe.bombus.x))
+
+microbe.x <- paste(microbe.vars, collapse="+")
+microbe.y <- "PD | weights(LogWeightsAbund)"
+microbe.y2 <- "PD | weights(WeightsAbund)"
+formula.microbe <- as.formula(paste(microbe.y, "~",
+                                     microbe.x))
+formula.microbe2 <- as.formula(paste(microbe.y2, "~",
+                                    microbe.x))
 
 
-bf.microbe.bombus <- bf(formula.microbe.bombus)
+bf.microbe <- bf(formula.microbe)
+bf.microbe2 <- bf(formula.microbe2)
 
 #combine forms
-bform.bombus <- bf.fabund +
+bform <- bf.fabund +
   bf.fdiv +
   bf.tot.babund +
   bf.tot.bdiv  +
-  bf.microbe.bombus +
+  bf.microbe +
   set_rescor(FALSE)
 
-fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
-                   cores=ncores,
-                   iter = 10000,
-                   chains =1,
-                   thin=1,
-                   init=0,
-                   open_progress = FALSE,
-                   control = list(adapt_delta = 0.99),
-                   save_pars = save_pars(all = TRUE),
-                   data2 = list(phylo_matrix=phylo_matrix))
+#combine forms
+bform2 <- bf.fabund +
+  bf.fdiv +
+  bf.tot.babund +
+  bf.tot.bdiv  +
+  bf.microbe2 +
+  set_rescor(FALSE)
 
-write.ms.table(fit.microbe.bombus, "bombus_microbe")
-r2loo.bombus <- loo_R2(fit.microbe.bombus)
-r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
-save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
-     file="saved/fullMicrobeBombusFit.Rdata")
+## run full model
+fit.microbe <- brm(bform , spec.net,
+                  cores=ncores,
+                  iter = 10000,
+                  chains =1,
+                  thin=1,
+                  init=0,
+                  open_progress = FALSE,
+                  control = list(adapt_delta = 0.99),
+                  save_pars = save_pars(all = TRUE),
+                  data2 = list(phylo_matrix=phylo_matrix))
+
+write.ms.table(fit.microbe, "full_microbe")
+r2loo <- loo_R2(fit.microbe)
+r2 <- rstantools::bayes_R2(fit.microbe)
+save(fit.microbe, spec.net, r2, r2loo,
+     file="saved/fullMicrobeFit.Rdata")
+
+# Warning messages:
+#   1: Rows containing NAs were excluded from the model. 
+# 2: There were 5000 transitions after warmup that exceeded the maximum treedepth. Increase max_treedepth above 10. See
+# https://mc-stan.org/misc/warnings.html#maximum-treedepth-exceeded 
+# 3: Examine the pairs() plot to diagnose sampling problems
+# 
+# 4: The largest R-hat is 2.11, indicating chains have not mixed.
+# Running the chains for more iterations may help. See
+# https://mc-stan.org/misc/warnings.html#r-hat 
+# 5: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
+# Running the chains for more iterations may help. See
+# https://mc-stan.org/misc/warnings.html#bulk-ess 
+# 6: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
+# Running the chains for more iterations may help. See
+# https://mc-stan.org/misc/warnings.html#tail-ess 
+
+# ## run bombus model
+# microbe.bombus.vars <- c("BeeAbundance",
+#                                   "BeeDiversity", "Lat", #check this doesn't make VIF high
+#                                   "MeanFloralDiversity", "MeanITD", 
+#                                   "(1|Site)", "rare.degree", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+# 
+# 
+# 
+# microbe.bombus.x <- paste(microbe.bombus.vars, collapse="+")
+# microbe.bombus.y <- "PD | weights(LogWeightsAbund)"
+# formula.microbe.bombus <- as.formula(paste(microbe.bombus.y, "~",
+#                                     microbe.bombus.x))
+# 
+# 
+# bf.microbe.bombus <- bf(formula.microbe.bombus)
+# 
+# #combine forms
+# bform.bombus <- bf.fabund +
+#   bf.fdiv +
+#   bf.tot.babund +
+#   bf.tot.bdiv  +
+#   bf.microbe.bombus +
+#   set_rescor(FALSE)
+# 
+# fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
+#                    cores=ncores,
+#                    iter = 10000,
+#                    chains =1,
+#                    thin=1,
+#                    init=0,
+#                    open_progress = FALSE,
+#                    control = list(adapt_delta = 0.99),
+#                    save_pars = save_pars(all = TRUE),
+#                    data2 = list(phylo_matrix=phylo_matrix))
+# 
+# write.ms.table(fit.microbe.bombus, "bombus_microbe")
+# r2loo.bombus <- loo_R2(fit.microbe.bombus)
+# r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
+# save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
+#      file="saved/fullMicrobeBombusFit.Rdata")
 
 # ## run apis model
 # microbe.apis.vars <- c("BeeAbundance",
