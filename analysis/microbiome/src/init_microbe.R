@@ -37,12 +37,47 @@ net.traits <- net.traits[, c("GenusSpecies", "r.degree"),]
 
 traits <- merge(traits, net.traits, by="GenusSpecies", all.x=TRUE)
 
-these_missing_ITD <- unique(spec.net$GenusSpecies[is.na(spec.net$MeanITD)])
 
 
 spec.net <- merge(spec.net, traits, all.x=TRUE, by="GenusSpecies")
 
 
+
+
+
+#the 6 species getting dropped are still present at this step
+
+
+
+dir.create(path="saved", showWarnings = FALSE)
+dir.create(path="saved/tables", showWarnings = FALSE)
+
+spec.net <- spec.net[order(spec.net$Site),]
+
+#the 6 species getting dropped are still present at this step
+
+## create a dumby varaible "Weight" to deal with the data sets being at
+## different levels to get around the issue of having to pass in one
+## data set into brms
+spec.net$YearSR <- paste(spec.net$Year, spec.net$SampleRound, sep=";")
+spec.net$YearSRGenusSpecies <- paste(spec.net$YearSR, spec.net$GenusSpecies, sep=";")
+
+## will need to modify when we have multiple years
+spec.net <- makeDataMultiLevel(spec.net, "Site", "YearSR")
+
+#the 6 species getting dropped are still present at this step
+
+spec.net[, variables.to.log] <- log(spec.net[,variables.to.log])
+
+#the 6 species getting dropped are still present at this step
+
+##  center all of the x variables, need to use unique values to avoid
+##  repetition by the number of specimens
+spec.net <- standardizeVars(spec.net, vars_yearsr, "YearSR")
+
+#the 6 species getting dropped are still present at this step
+
+#spec.net <- standardizeVars(spec.net, vars_sp, "YearSRGenusSpecies")
 
 ##load tree from :
 ##Henriquez Piskulich, Patricia Andrea; Hugall, Andrew F.; Stuart-Fox, Devi (2023). A supermatrix phylogeny of the world’s bees (Hymenoptera: Anthophila) [Dataset]. Dryad. https://doi.org/10.5061/dryad.80gb5mkw1
@@ -52,8 +87,8 @@ phylo <- ape::read.tree("../../data/BEE_mat7_fulltree.nwk")
 
 ## i think we need to drop the tips that aren't in our dataset
 ## changing sp labels to match phylogeny
-spec.net$GenusSpecies <- gsub("Megachile gemula fulvogemula", "Megachile gemula", spec.net$GenusSpecies)
-spec.net$GenusSpecies <- gsub("Megachile melanophaea rohweri", "Megachile melanophaea", spec.net$GenusSpecies)
+# spec.net$GenusSpecies <- gsub("Megachile gemula fulvogemula", "Megachile gemula", spec.net$GenusSpecies)
+# spec.net$GenusSpecies <- gsub("Megachile melanophaea rohweri", "Megachile melanophaea", spec.net$GenusSpecies)
 
 
 ##clean up unwanted portion of labels
@@ -70,6 +105,8 @@ species_to_keep <- na.omit(unique(spec.net$GenusSpecies))
 ## megachile comate and megachile subexilis are not in phylogeny so will drop these
 species_to_keep <- species_to_keep[!species_to_keep %in% c("Megachile comata", "Megachile subexilis")]
 
+#the 6 species getting dropped are still present at this step
+
 phylo_tips <- phylo$tip.label
 #only keep tips that match our species
 phylo <- ape::keep.tip(phylo, species_to_keep[species_to_keep %in% phylo_tips])
@@ -80,53 +117,12 @@ phylo_matrix <- ape::vcv.phylo(phylo)
 drop.species <- unique(spec.net$GenusSpecies[!(spec.net$GenusSpecies %in% rownames(phylo_matrix))])
 spec.net <- spec.net[!spec.net$GenusSpecies %in% drop.species,]
 
-# # changing missing sociality to Unknown
-# spec.net$Sociality <- spec.net$Sociality %>%
-#   replace_na("Unknown")
-# 
-# # changing missing MeanITD to 0
-# spec.net$MeanITD <- spec.net$MeanITD %>%
-#   replace_na(0)
-
-## missing ITD for Anthidium mormonum, Bombus centralis, Bombus huntii, Dufourea maura, Melissodes confusus
-## The following paper has B. centralis (Mean: 3.45, n=6), B, huntii (2.78 n=6)
-##Nixon, Anna E., and H. Hines. "Bumblebee thermoregulation: understanding the thermal properties of physical features of bumblebees." The Penn State McNair Journal 2017 (2017): 99.
-
-
-## we have all ITDs except for Anthidium mormonum......
-
-# # changing missing rare.degree to 0
-# spec.net$rare.degree <- spec.net$rare.degree %>%
-#   replace_na(0)
-
-
-
-dir.create(path="saved", showWarnings = FALSE)
-dir.create(path="saved/tables", showWarnings = FALSE)
-
-spec.net <- spec.net[order(spec.net$Site),]
-
-## create a dumby varaible "Weight" to deal with the data sets being at
-## different levels to get around the issue of having to pass in one
-## data set into brms
-spec.net$YearSR <- paste(spec.net$Year, spec.net$SampleRound, sep=";")
-spec.net$YearSRGenusSpecies <- paste(spec.net$YearSR, spec.net$GenusSpecies, sep=";")
-
-## will need to modify when we have multiple years
-spec.net <- makeDataMultiLevel(spec.net, "Site", "YearSR")
-
-spec.net[, variables.to.log] <- log(spec.net[,variables.to.log])
-
-##  center all of the x variables, need to use unique values to avoid
-##  repetition by the number of specimens
-spec.net <- standardizeVars(spec.net, vars_yearsr, "YearSR")
-
-#spec.net <- standardizeVars(spec.net, vars_sp, "YearSRGenusSpecies")
 ## create a dumby varaible "WeightPar" for the parasite data. The
 ## original intention was to keep stan from dropping data for
 ## site-level models, but weight is 0 for parasite models.
 spec.net <- prepParasiteWeights()
 
+#the 6 species getting dropped are still present at this step
 
 #genus_pd_fit <- function(spec.net, this_genus, num_iter){
 
@@ -154,14 +150,18 @@ spec.microbes <- cbind(spec.microbes, PD)
 
 spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
 
+#the 6 species getting dropped are still present at this step
+
 ## check which individuals don't have microbe data
-drop.PD.NA <- unique(spec.net$UniqueID[spec.net$WeightsPar == 1 &
+drop.PD.NA <- unique(spec.net$UniqueID[spec.net$WeightsMicrobe == 1 &
                                          is.na(spec.net$PD)])
 
 ## drop individuals that had parasite screen but not microbe
 ## filling in zeros for NAs in PD
 spec.net <- spec.net[!(spec.net$UniqueID %in% drop.PD.NA),] %>%
   mutate(PD = ifelse(!is.na(PD), PD, 0))
+
+#the 6 species getting dropped are still present at this step
 
 ##adding abundance weights column
 abund_csv <- data.frame(read.csv("../../data/sp_year_site_round.csv"))
@@ -170,20 +170,21 @@ abund_csv <- data.frame(read.csv("../../data/sp_year_site_round.csv"))
 spec.net <- join(spec.net, abund_csv)
 
 
+#the 6 species getting dropped are still present at this step
 
 #genus.microbes <- spec.microbes[spec.microbes$Genus == this_genus, ]
 
 spec.all <- spec.net
 
 #multiply weightspar by abundance to get abundance weights
-spec.net$WeightsAbund <- spec.net$WeightsPar * spec.net$AbundanceSYR
+spec.net$WeightsAbund <- spec.net$WeightsMicrobe * spec.net$AbundanceSYR
 spec.net$LogWeightsAbund <- log(spec.net$WeightsAbund + 1)
 
 
 ## bombus only data
 spec.bombus <- spec.all
-#multiply weightspar by abundance to get abundance weights
-spec.bombus$WeightsAbund <- spec.bombus$WeightsPar * spec.bombus$AbundanceSYR
+#multiply weightsMicrobe by abundance to get abundance weights
+spec.bombus$WeightsAbund <- spec.bombus$WeightsMicrobe * spec.bombus$AbundanceSYR
 spec.bombus$LogWeightsAbund <- log(spec.bombus$WeightsAbund + 1)
 spec.bombus$LogWeightsAbund[spec.bombus$Genus != "Bombus"] <- 0
 spec.bombus$WeightsAbund[spec.bombus$Genus != "Bombus"] <- 0
@@ -201,21 +202,23 @@ spec.bombus$WeightsAbund[spec.bombus$Genus != "Bombus"] <- 0
 
 ## apis only data
 spec.apis <- spec.all
-#multiply weightspar by abundance to get abundance weights
-spec.apis$WeightsAbund <- spec.apis$WeightsPar * spec.apis$AbundanceSYR
+#multiply weightsMicrobe by abundance to get abundance weights
+spec.apis$WeightsAbund <- spec.apis$WeightsMicrobe * spec.apis$AbundanceSYR
 spec.apis$LogWeightsAbund <- log(spec.apis$WeightsAbund + 1)
 spec.apis$LogWeightsAbund[spec.apis$Genus != "Apis"] <- 0
 spec.apis$WeightsAbund[spec.apis$Genus != "Apis"] <- 0
 
 ## melissodes only data
 spec.melissodes <- spec.all
-#multiply weightspar by abundance to get abundance weights
-spec.melissodes$WeightsAbund <- spec.melissodes$WeightsPar * spec.melissodes$AbundanceSYR
+#multiply weightsMicrobe by abundance to get abundance weights
+spec.melissodes$WeightsAbund <- spec.melissodes$WeightsMicrobe * spec.melissodes$AbundanceSYR
 spec.melissodes$LogWeightsAbund <- log(spec.melissodes$WeightsAbund + 1)
 spec.melissodes$LogWeightsAbund[spec.melissodes$Genus != "Melissodes"] <- 0
 spec.melissodes$WeightsAbund[spec.melissodes$Genus != "Melissodes"] <- 0
 
 spec.apidae <- spec.all
-spec.apidae$WeightsPar[spec.melissodes$Family != "Apidae"] <- 0
+spec.apidae$WeightsMicrobe[spec.melissodes$Family != "Apidae"] <- 0
 
-
+### troubleshooting
+these_are_getting_dropped <- c("Anthidium mormonum","Bombus centralis","Bombus huntii","Dufourea maura","Melissodes confusus")
+#View(spec.net[spec.net$GenusSpecies %in% these_are_getting_dropped,])
