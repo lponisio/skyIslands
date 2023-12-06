@@ -43,8 +43,12 @@ spec.net <- merge(spec.net, traits, all.x=TRUE, by="GenusSpecies")
 spec.net$Sociality <- spec.net$Sociality %>%
   replace_na("Unknown")
 
-# changing missing MeanITD to Unknown
+# changing missing MeanITD to 0
 spec.net$MeanITD <- spec.net$MeanITD %>%
+  replace_na(0)
+
+# changing missing rare.degree to 0
+spec.net$rare.degree <- spec.net$rare.degree %>%
   replace_na(0)
 
 
