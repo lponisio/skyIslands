@@ -5,6 +5,7 @@ library(tidyr)
 library(tidybayes)
 library(ggthemes)
 library(bayestestR)
+library(gtools)
 
 
 load('../../data/spec_RBCL_16s.Rdata')
@@ -53,6 +54,20 @@ dir.create(path="saved", showWarnings = FALSE)
 dir.create(path="saved/tables", showWarnings = FALSE)
 
 spec.net <- spec.net[order(spec.net$Site),]
+
+
+microbes <- colnames(spec.net)[grepl("16s:", colnames(spec.net))] 
+
+screened.microbes <- apply(spec.net, 1, function(x) all(is.na(x[microbes])))
+
+spec.microbes <- spec.net[!screened.microbes, ]
+
+spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
+
+#change microbe NAs to 0
+spec.net <- spec.net %>%
+  mutate_at(vars(starts_with('16s')), ~ifelse(is.na(.), 0, .))
+  
 
 #the 6 species getting dropped are still present at this step
 
@@ -126,11 +141,6 @@ spec.net <- prepParasiteWeights()
 
 #genus_pd_fit <- function(spec.net, this_genus, num_iter){
 
-microbes <- colnames(spec.net)[grepl("16s:", colnames(spec.net))] 
-
-screened.microbes <- apply(spec.net, 1, function(x) all(is.na(x[microbes])))
-
-spec.microbes <- spec.net[!screened.microbes, ]
 
 
 
