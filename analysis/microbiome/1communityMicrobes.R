@@ -351,48 +351,48 @@ bf.microbe <- bf(formula.microbe)
 
 ## run bombus model
 microbe.bombus.vars <- c("BeeAbundance",
-                                  "BeeDiversity", "Lat", #check this doesn't make VIF high
-                                  "MeanFloralDiversity", "MeanITD",
-                                  "(1|Site)", "rare.degree", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+                                   "BeeDiversity", "Lat", #check this doesn't make VIF high
+                                   "MeanFloralDiversity", "MeanITD",
+                                   "(1|Site)", "rare.degree", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
 ## NA check
-check_for_NA(microbe.bombus.vars)
+ check_for_NA(microbe.bombus.vars)
 
 
 microbe.bombus.x <- paste(microbe.bombus.vars, collapse="+")
 microbe.bombus.y <- "PD | weights(LogWeightsAbund)"
 formula.microbe.bombus <- as.formula(paste(microbe.bombus.y, "~",
-                                    microbe.bombus.x))
+                                     microbe.bombus.x))
 
 
 bf.microbe.bombus <- bf(formula.microbe.bombus)
 
 #combine forms
 bform.bombus <- bf.fabund +
-  bf.fdiv +
-  bf.tot.babund +
-  bf.tot.bdiv  +
-  bf.microbe.bombus +
-  set_rescor(FALSE)
+   bf.fdiv +
+   bf.tot.babund +
+   bf.tot.bdiv  +
+   bf.microbe.bombus +
+   set_rescor(FALSE)
 
 
 fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
-                   cores=ncores,
-                   iter = 10000,
-                   chains =1,
-                   thin=1,
-                   init=0,
-                   open_progress = FALSE,
-                   control = list(adapt_delta = 0.99),
-                   save_pars = save_pars(all = TRUE),
-                   data2 = list(phylo_matrix=phylo_matrix))
+                    cores=ncores,
+                    iter = 10000,
+                    chains =1,
+                    thin=1,
+                    init=0,
+                    open_progress = FALSE,
+                    control = list(adapt_delta = 0.99),
+                    save_pars = save_pars(all = TRUE),
+                    data2 = list(phylo_matrix=phylo_matrix))
 
 write.ms.table(fit.microbe.bombus, "bombus_microbe")
 r2loo.bombus <- loo_R2(fit.microbe.bombus)
 r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
 save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
-     file="saved/fullMicrobeBombusFit.Rdata")
+      file="saved/fullMicrobeBombusFit.Rdata")
 
-# ## run apis model
+# # ## run apis model
 # microbe.apis.vars <- c("BeeAbundance",
 #                        "BeeDiversity", "Lat", #check this doesn't make VIF high
 #                        "MeanFloralDiversity",# "MeanITD",
