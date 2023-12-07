@@ -1,8 +1,7 @@
 standardizeVars <- function(spec.data, vars, key){
   ##  center all of the x variables, need to use unique values to avoid
   ##  repetition by the number of specimens
-  unique.site.vals <- spec.data[spec.data$Weight == 1,
-                               c("Site", key, vars)]
+  unique.site.vals <-  unique(spec.data[,c("Site", key, vars)])
   unique.site.vals[, vars] <- apply(unique.site.vals[, vars], 2, standardize)
   print(dim(spec.data))
   spec.data[, vars] <- NULL
