@@ -1,9 +1,8 @@
 standardizeVars <- function(spec.data, vars, key){
   ##  center all of the x variables, need to use unique values to avoid
   ##  repetition by the number of specimens
-
-  unique.site.vals <- spec.data[spec.data$Weights == 1,
-                               c("Site", key, vars)]
+  browser()
+  unique.site.vals <-  unique(spec.data[,c("Site", key, vars)])
   unique.site.vals[, vars] <- apply(unique.site.vals[, vars], 2, standardize)
   print(dim(spec.data))
   spec.data[, vars] <- NULL
@@ -13,7 +12,7 @@ standardizeVars <- function(spec.data, vars, key){
   for(var in vars){
     hist(unique.site.vals[, var], main=var)
   }
-                
+  #browser()              
   return(spec.data)
 }
 
@@ -23,8 +22,7 @@ prepParasiteWeights <- function(){
   ## but weight is 0 for parasite models.
   spec.net$WeightsPar <- 1
   spec.net$WeightsPar[spec.net$Apidae == 0 |
-                        is.na(spec.net$Apidae) |
-                        spec.net$Genus != "Bombus"] <- 0
+                        is.na(spec.net$Apidae)] <- 0
   spec.net$WeightsMicrobe <- 1
   spec.net$WeightsMicrobe[spec.net$Apidae == 0 |
                         is.na(spec.net$Apidae)] <- 0
