@@ -29,7 +29,7 @@ library(shinystan)
 
 ##QUESTION: log or center first?? 
 # 
-variables.to.log <- c("rare.degree",
+variables.to.log <- c(#"rare.degree",
                       "MeanFloralAbundance", #keep logged
                       "BeeAbundance"
 )
@@ -39,13 +39,12 @@ vars_yearsr <- c("MeanFloralAbundance",
                  "Lat", "SRDoy",
                  "BeeAbundance",
                  "BeeDiversity",
-                 #"MeanITD",
-                 "VisitedFloralDiversity"#, "rare.degree"
+                 "VisitedFloralDiversity"
                  #"FloralDiversity"
 )
-# 
-# vars_sp <- c("MeanITD",
-#              "rare.degree")
+
+vars_sp <- c("MeanITD",
+             "rare.degree")
 
 
 
