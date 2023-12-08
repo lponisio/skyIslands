@@ -243,7 +243,7 @@ bee.div.y <- "Net_BeeDiversity | weights(Weights)"
 formula.bee.div <- as.formula(paste(bee.div.y, "~",bee.div.x))
 
 ## bee div total
-tot.bee.div.vars <- c("MeanFloralAbundance",
+tot.bee.div.vars <- c("MeanFloralDiversity",
                       "Year",
                       "SRDoy",
                       "I(SRDoy^2)",
@@ -306,22 +306,22 @@ bf.tot.bdiv <- bf(formula.tot.bee.div)
 ##probs want to add some measure of diet.. is mean plant diversity enough?
 ## not sure if we have RBCL richness yet
 
-
-microbe.vars <-  c("BeeAbundance",
-                   "BeeDiversity", "Lat", #check this doesn't make VIF high
-                   "MeanFloralDiversity", "MeanITD", "Sociality", # if not at the genus level
-                   "(1|Site)", "rare.degree", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
-# rare.degree
-# split genus into separate PD for apis bombus megachile
-
-
-microbe.x <- paste(microbe.vars, collapse="+")
-microbe.y <- "PD | weights(LogWeightsAbund)"
-formula.microbe <- as.formula(paste(microbe.y, "~",
-                                    microbe.x))
-
-
-bf.microbe <- bf(formula.microbe)
+# 
+# microbe.vars <-  c("BeeAbundance",
+#                    "BeeDiversity", "Lat", #check this doesn't make VIF high
+#                    "MeanFloralDiversity", "MeanITD", "Sociality", # if not at the genus level
+#                    "(1|Site)", "rare.degree", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+# # rare.degree
+# # split genus into separate PD for apis bombus megachile
+# 
+# 
+# microbe.x <- paste(microbe.vars, collapse="+")
+# microbe.y <- "PD | weights(LogWeightsAbund)"
+# formula.microbe <- as.formula(paste(microbe.y, "~",
+#                                     microbe.x))
+# 
+# 
+# bf.microbe <- bf(formula.microbe)
 
 # #combine forms
 # bform <- bf.fabund +
@@ -334,7 +334,7 @@ bf.microbe <- bf(formula.microbe)
 # ## run model
 # fit.microbe <- brm(bform , spec.net,
 #                    cores=ncores,
-#                    iter = 10000,
+#                    iter = 5000,
 #                    chains =1,
 #                    thin=1,
 #                    init=0,
@@ -352,8 +352,8 @@ bf.microbe <- bf(formula.microbe)
 ## run bombus model
 microbe.bombus.vars <- c("BeeAbundance",
                                    "BeeDiversity", "Lat", #check this doesn't make VIF high
-                                   "MeanFloralDiversity", "MeanITD",
-                                   "(1|Site)", "rare.degree", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+                                   "MeanFloralDiversity", "MeanITD",  "rare.degree",
+                                   "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
 ## NA check
  check_for_NA(microbe.bombus.vars)
 
@@ -392,7 +392,7 @@ r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
 save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
       file="saved/fullMicrobeBombusFit.Rdata")
 
-# # ## run apis model
+## run apis model
 # microbe.apis.vars <- c("BeeAbundance",
 #                        "BeeDiversity", "Lat", #check this doesn't make VIF high
 #                        "MeanFloralDiversity",# "MeanITD",
