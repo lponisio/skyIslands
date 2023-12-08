@@ -64,10 +64,28 @@ spec.microbes <- spec.net[!screened.microbes, ]
 
 spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
 
+## QUESTION: should include root = TRUE? if false gives warning 3x
+## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
+PD <- apply(spec.microbes[,microbes], 1, function(x){
+  this.bee <- x[x > 0]
+  this.tree <- prune.sample(t(this.bee), tree.16s)
+  #browser()
+  picante::pd(t(this.bee), this.tree, include.root = TRUE)
+})
+
+PD <- do.call(rbind, PD)
+
+spec.microbes <- cbind(spec.microbes, PD)
+
+spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
+
+
 #change microbe NAs to 0
 spec.net <- spec.net %>%
-  mutate_at(vars(starts_with('16s')), ~ifelse(is.na(.), 0, .))
+  mutate_at(vars(microbes), ~replace_na(PD, 0))
   
+
+spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 
 #the 6 species getting dropped are still present at this step
 
@@ -88,11 +106,13 @@ spec.net[, variables.to.log] <- log(spec.net[,variables.to.log])
 
 ##  center all of the x variables, need to use unique values to avoid
 ##  repetition by the number of specimens
+
+
 spec.net <- standardizeVars(spec.net, vars_yearsr, "YearSR")
 
 #the 6 species getting dropped are still present at this step
 
-#spec.net <- standardizeVars(spec.net, vars_sp, "YearSRGenusSpecies")
+spec.net <- standardizeVars(spec.net, vars_sp, "YearSRGenusSpecies")
 
 ##load tree from :
 ##Henriquez Piskulich, Patricia Andrea; Hugall, Andrew F.; Stuart-Fox, Devi (2023). A supermatrix phylogeny of the world’s bees (Hymenoptera: Anthophila) [Dataset]. Dryad. https://doi.org/10.5061/dryad.80gb5mkw1
@@ -143,23 +163,6 @@ spec.net <- prepParasiteWeights()
 
 
 
-
-
-## QUESTION: should include root = TRUE? if false gives warning 3x
-## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
-PD <- apply(spec.microbes[,microbes], 1, function(x){
-  this.bee <- x[x > 0]
-  this.tree <- prune.sample(t(this.bee), tree.16s)
-  #browser()
-  picante::pd(t(this.bee), this.tree, include.root = TRUE)
-})
-
-PD <- do.call(rbind, PD)
-
-spec.microbes <- cbind(spec.microbes, PD)
-
-spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
-
 #the 6 species getting dropped are still present at this step
 
 ## check which individuals don't have microbe data
@@ -184,12 +187,14 @@ spec.net <- join(spec.net, abund_csv)
 
 #genus.microbes <- spec.microbes[spec.microbes$Genus == this_genus, ]
 
-spec.all <- spec.net
+
 
 #multiply weightspar by abundance to get abundance weights
 spec.net$WeightsAbund <- spec.net$WeightsMicrobe * spec.net$AbundanceSYR
 spec.net$LogWeightsAbund <- log(spec.net$WeightsAbund + 1)
 
+
+spec.all <- spec.net
 
 ## bombus only data
 spec.bombus <- spec.all
