@@ -306,73 +306,73 @@ bf.tot.bdiv <- bf(formula.tot.bee.div)
 ##probs want to add some measure of diet.. is mean plant diversity enough?
 ## not sure if we have RBCL richness yet
 
-# 
-# microbe.vars <-  c("BeeAbundance",
-#                    "BeeDiversity", "Lat", #check this doesn't make VIF high
-#                    "MeanFloralDiversity", "MeanITD", "Sociality", # if not at the genus level
-#                    "(1|Site)", "rare.degree", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
-# # rare.degree
+#
+microbe.vars <-  c("BeeAbundance",
+                    "BeeDiversity", "Lat", #check this doesn't make VIF high
+                    "MeanFloralDiversity", "MeanITD", "Sociality", # if not at the genus level
+                    "(1|Site)", "rare.degree", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+#rare.degree
 # # split genus into separate PD for apis bombus megachile
-# 
-# 
-# microbe.x <- paste(microbe.vars, collapse="+")
-# microbe.y <- "PD | weights(LogWeightsAbund)"
-# formula.microbe <- as.formula(paste(microbe.y, "~",
-#                                     microbe.x))
-# 
-# 
-# bf.microbe <- bf(formula.microbe)
+#
+#
+microbe.x <- paste(microbe.vars, collapse="+")
+microbe.y <- "PD | weights(LogWeightsAbund)"
+formula.microbe <- as.formula(paste(microbe.y, "~",
+                                     microbe.x))
+#
+#
+bf.microbe <- bf(formula.microbe)
 
 # #combine forms
-# bform <- bf.fabund +
-#   bf.fdiv +
-#   bf.tot.babund +
-#   bf.tot.bdiv  +
-#   bf.microbe +
-#   set_rescor(FALSE)
-# 
-# ## run model
-# fit.microbe <- brm(bform , spec.net,
-#                    cores=ncores,
-#                    iter = 5000,
-#                    chains =1,
-#                    thin=1,
-#                    init=0,
-#                    open_progress = FALSE,
-#                    control = list(adapt_delta = 0.99),
-#                    save_pars = save_pars(all = TRUE),
-#                    data2 = list(phylo_matrix=phylo_matrix))
-# 
-# write.ms.table(fit.microbe, "full_microbe")
-# r2loo <- loo_R2(fit.microbe)
-# r2 <- rstantools::bayes_R2(fit.microbe)
-# save(fit.microbe, spec.net, r2, r2loo,
-#      file="saved/fullMicrobeFit.Rdata")
-
-## run bombus model
-microbe.bombus.vars <- c("BeeAbundance",
-                                   "BeeDiversity", "Lat", #check this doesn't make VIF high
-                                   "MeanFloralDiversity", "MeanITD",  "rare.degree",
-                                   "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
-## NA check
- check_for_NA(microbe.bombus.vars)
-
-
-microbe.bombus.x <- paste(microbe.bombus.vars, collapse="+")
-microbe.bombus.y <- "PD | weights(LogWeightsAbund)"
-formula.microbe.bombus <- as.formula(paste(microbe.bombus.y, "~",
-                                     microbe.bombus.x))
-
-
-bf.microbe.bombus <- bf(formula.microbe.bombus)
-# 
-# #combine forms
-bform.bombus <- bf.fabund +
+bform <- bf.fabund +
    bf.fdiv +
    bf.tot.babund +
    bf.tot.bdiv  +
-   bf.microbe.bombus +
+   bf.microbe +
    set_rescor(FALSE)
+#
+# ## run model
+ fit.microbe <- brm(bform , spec.net,
+                    cores=ncores,
+                    iter = 5000,
+                    chains =1,
+                    thin=1,
+                    init=0,
+                    open_progress = FALSE,
+                    control = list(adapt_delta = 0.99),
+                    save_pars = save_pars(all = TRUE),
+                    data2 = list(phylo_matrix=phylo_matrix))
+
+write.ms.table(fit.microbe, "full_microbe")
+r2loo <- loo_R2(fit.microbe)
+r2 <- rstantools::bayes_R2(fit.microbe)
+save(fit.microbe, spec.net, r2, r2loo,
+      file="saved/fullMicrobeFit.Rdata")
+
+## run bombus model
+# microbe.bombus.vars <- c("BeeAbundance",
+#                                    "BeeDiversity", "Lat", #check this doesn't make VIF high
+#                                    "MeanFloralDiversity", "MeanITD",  "rare.degree",
+#                                    "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+# ## NA check
+#  check_for_NA(microbe.bombus.vars)
+# 
+# 
+# microbe.bombus.x <- paste(microbe.bombus.vars, collapse="+")
+# microbe.bombus.y <- "PD | weights(LogWeightsAbund)"
+# formula.microbe.bombus <- as.formula(paste(microbe.bombus.y, "~",
+#                                      microbe.bombus.x))
+# 
+# 
+# bf.microbe.bombus <- bf(formula.microbe.bombus)
+# # 
+# # #combine forms
+# bform.bombus <- bf.fabund +
+#    bf.fdiv +
+#    bf.tot.babund +
+#    bf.tot.bdiv  +
+#    bf.microbe.bombus +
+#    set_rescor(FALSE)
 
 
 # fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
@@ -433,45 +433,45 @@ bform.bombus <- bf.fabund +
 #      file="saved/fullMicrobeApisFit.Rdata")
 
 # ## run melissodes model
-microbe.melissodes.vars <- c("BeeAbundance",
-                         "BeeDiversity", "Lat", #check this doesn't make VIF high
-                         "MeanFloralDiversity", #"MeanITD",
-                         "(1|Site)", "rare.degree") #, "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
-
-
-
-microbe.melissodes.x <- paste(microbe.melissodes.vars, collapse="+")
-microbe.melissodes.y <- "PD | weights(LogWeightsAbund)"
-formula.microbe.melissodes <- as.formula(paste(microbe.melissodes.y, "~",
-                                           microbe.melissodes.x))
-
-
-bf.microbe.melissodes <- bf(formula.microbe.melissodes)
-
-#combine forms
-bform.melissodes <- bf.fabund +
-  bf.fdiv +
-  bf.tot.babund +
-  bf.tot.bdiv  +
-  bf.microbe.melissodes +
-  set_rescor(FALSE)
-
-fit.microbe.melissodes <- brm(bform.melissodes , spec.melissodes,
-                          cores=ncores,
-                          iter = 10000,
-                          chains =1,
-                          thin=1,
-                          init=0,
-                          open_progress = FALSE,
-                          control = list(adapt_delta = 0.99),
-                          save_pars = save_pars(all = TRUE))
-
-write.ms.table(fit.microbe.melissodes, "melissodes_microbe")
-r2loo.melissodes <- loo_R2(fit.microbe.melissodes)
-r2.melissodes <- rstantools::bayes_R2(fit.microbe.melissodes)
-save(fit.microbe.melissodes, spec.melissodes, r2.melissodes, r2loo.melissodes,
-     file="saved/fullMicrobeMelissodesFit.Rdata")
-
+# microbe.melissodes.vars <- c("BeeAbundance",
+#                          "BeeDiversity", "Lat", #check this doesn't make VIF high
+#                          "MeanFloralDiversity", #"MeanITD",
+#                          "(1|Site)", "rare.degree") #, "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+# 
+# 
+# 
+# microbe.melissodes.x <- paste(microbe.melissodes.vars, collapse="+")
+# microbe.melissodes.y <- "PD | weights(LogWeightsAbund)"
+# formula.microbe.melissodes <- as.formula(paste(microbe.melissodes.y, "~",
+#                                            microbe.melissodes.x))
+# 
+# 
+# bf.microbe.melissodes <- bf(formula.microbe.melissodes)
+# 
+# #combine forms
+# bform.melissodes <- bf.fabund +
+#   bf.fdiv +
+#   bf.tot.babund +
+#   bf.tot.bdiv  +
+#   bf.microbe.melissodes +
+#   set_rescor(FALSE)
+# 
+# fit.microbe.melissodes <- brm(bform.melissodes , spec.melissodes,
+#                           cores=ncores,
+#                           iter = 10000,
+#                           chains =1,
+#                           thin=1,
+#                           init=0,
+#                           open_progress = FALSE,
+#                           control = list(adapt_delta = 0.99),
+#                           save_pars = save_pars(all = TRUE))
+# 
+# write.ms.table(fit.microbe.melissodes, "melissodes_microbe")
+# r2loo.melissodes <- loo_R2(fit.microbe.melissodes)
+# r2.melissodes <- rstantools::bayes_R2(fit.microbe.melissodes)
+# save(fit.microbe.melissodes, spec.melissodes, r2.melissodes, r2loo.melissodes,
+#      file="saved/fullMicrobeMelissodesFit.Rdata")
+# 
 
 
 ## **********************************************************
