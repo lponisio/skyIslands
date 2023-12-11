@@ -133,7 +133,7 @@ spec.net[, variables.to.log] <- log(spec.net[,variables.to.log])
 ##  center all of the x variables, need to use unique values to avoid
 ##  repetition by the number of specimens
 
-if(make.plots=FALSE){
+if(make.plots == FALSE){
 spec.net <- standardizeVars(spec.net, vars_yearsr, "YearSR")
 
 #the 6 species getting dropped are still present at this step
