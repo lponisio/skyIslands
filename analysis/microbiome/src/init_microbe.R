@@ -7,6 +7,32 @@ library(ggthemes)
 library(bayestestR)
 library(gtools)
 
+## plotting
+library(tidyr)
+library(dplyr)
+library(viridis)
+library(tidybayes)
+library(gridExtra)
+library(grid)
+library(scales)
+library(RColorBrewer)
+
+library(rstantools)
+library(performance)
+library(bayestestR)
+library(see)
+
+save.dir <- "saved/tables"
+if(!dir.exists(save.dir)) {
+  dir.create(save.dir, showWarnings = FALSE)
+}
+
+fig.dir <- "figures"
+if(!dir.exists(fig.dir)) {
+  dir.create(save.dir, showWarnings = FALSE)
+}
+
+
 
 load('../../data/spec_RBCL_16s.Rdata')
 load("../../data/trees.Rdata")
@@ -107,13 +133,13 @@ spec.net[, variables.to.log] <- log(spec.net[,variables.to.log])
 ##  center all of the x variables, need to use unique values to avoid
 ##  repetition by the number of specimens
 
-
+if(make.plots=FALSE){
 spec.net <- standardizeVars(spec.net, vars_yearsr, "YearSR")
 
 #the 6 species getting dropped are still present at this step
 
 spec.net <- standardizeVars(spec.net, vars_sp, "YearSRGenusSpecies")
-
+}
 ##load tree from :
 ##Henriquez Piskulich, Patricia Andrea; Hugall, Andrew F.; Stuart-Fox, Devi (2023). A supermatrix phylogeny of the world’s bees (Hymenoptera: Anthophila) [Dataset]. Dryad. https://doi.org/10.5061/dryad.80gb5mkw1
 
