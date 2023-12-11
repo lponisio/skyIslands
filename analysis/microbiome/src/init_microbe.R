@@ -126,8 +126,9 @@ spec.net <- makeDataMultiLevel(spec.net, "Site", "YearSR")
 
 #the 6 species getting dropped are still present at this step
 
-spec.net[, variables.to.log] <- log(spec.net[,variables.to.log])
-
+if(make.plots == FALSE){
+  spec.net[, variables.to.log] <- log(spec.net[,variables.to.log])
+}
 #the 6 species getting dropped are still present at this step
 
 ##  center all of the x variables, need to use unique values to avoid
