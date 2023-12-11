@@ -51,7 +51,7 @@ spec.net$YearSRGenusSpecies <- paste(spec.net$YearSR, spec.net$GenusSpecies, sep
 ## will need to modify when we have multiple years
 spec.net <- makeDataMultiLevel(spec.net, "Site", "YearSR")
 
-spec.net[, variables.to.log] <- log(spec.net[,variables.to.log])
+spec.net[, variables.to.log] <- log(spec.net[,variables.to.log]) + 1 
 
 ##  center all of the x variables, need to use unique values to avoid
 ##  repetition by the number of specimens

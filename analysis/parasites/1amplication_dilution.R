@@ -21,9 +21,8 @@ vars_yearsr <- c("MeanFloralAbundance",
 vars_sp <- c("MeanITD",
           "rare.degree")
 
-variables.to.log <- c("rare.degree", "MeanFloralAbundance",
-                      "Net_NonBombusHBAbundance","Net_HBAbundance",
-                      "Net_BombusAbundance")
+variables.to.log <- "rare.degree"
+                      
 
 ## uses only net specimens, and drops syrphids
 source("src/init.R")
@@ -66,7 +65,6 @@ fit.community <- brm(bform.community, spec.net,
                      iter = 10^4,
                      chains = 1,
                      thin=1,
-                     init=0,
                      control = list(adapt_delta = 0.99),
                      save_pars = save_pars(all = TRUE))
 write.ms.table(fit.community,
@@ -81,13 +79,22 @@ save(fit.community, spec.net, r2,
 ## Parasite presence
 ## **********************************************************
 ## full model with all species, parasites
-fit.all <- runParasiteModels(spec.all, species.group="all",
-                                        parasite="CrithidiaPresence",
+fit.all <- runParasiteModels(spec.net, species.group="all",
+                                        parasite= "ApicystisSpp",
                                         xvars=xvars.multi.species,
                                         iter = 10^4,
                                         chains = 1,
                                         thin=1,
-                                        init=0, SEM = FALSE)
+                                        init=0)
+
+fit.both.parasites <- runCombinedParasiteModels(spec.net, species.group="all",
+                             parasite= c("CrithidiaPresence",
+                                         "ApicystisSpp"),
+                             xvars=xvars.multi.species,
+                             iter = 10^4,
+                             chains = 1,
+                             thin=1,
+                             init=0)
 
 ## bombus
 fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",

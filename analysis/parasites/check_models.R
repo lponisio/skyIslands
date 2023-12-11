@@ -6,6 +6,7 @@ library(bayesplot)
 library(rstanarm)
 library(lme4)
 library(performance)
+library(glmmTMB)
 
 setwd("analysis/parasites")
 source("src/misc.R")
@@ -13,6 +14,7 @@ source("src/writeResultsTable.R")
 source("src/makeMultiLevelData.R")
 source("src/runParasiteModels.R")
 source("src/standardize_weights.R")
+source("src/runPlotFreqModelDiagnostics.R")
 ## all of the variables that are explanatory variables and thus need
 ## to be centered
 vars_yearsr <- c("MeanFloralAbundance",
@@ -23,7 +25,7 @@ vars_yearsr <- c("MeanFloralAbundance",
 vars_sp <- c("MeanITD",
              "rare.degree")
 
-variables.to.log <- "rare.degree"
+variables.to.log <- c("rare.degree", "Net_HBAbundance", "Net_BombusAbundance")
 
 ## uses only net specimens, and drops syrphids
 source("src/init.R")
@@ -69,7 +71,8 @@ plot(flowerloop)
 ## Histogram of raw data
 hist(spec.net$MeanFloralDiversity)
 hist(spec.net$MeanFloralAbundance)
-hist(spec.net$Net_BeeAbundance)
+hist(log(spec.net$Net_BombusAbundance)+ 1)
+hist(log(spec.net$Net_HBAbundance) + 1)
 hist(spec.net$Net_BeeDiversity)
 
 spec.net$MeanFloralDiversity<- log(spec.net$MeanFloralDiversity)
@@ -107,23 +110,7 @@ spec.net %>%
 ###############################################################################
 ## Using the performance package to get the R2
 ## Function by Rebecca
-##funciton to run frequentist version of brms models and plot diagnostics
-run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
-                                            this_data, #data frame, subsetted to correct weights!
-                                            num_chains=1,
-                                            num_iter=10000,
-                                            this_family #model family
-){
-  #run model
-  this_model_output <- brms::brm(this_formula,
-                                 data = this_data,
-                                 chains = num_chains,
-                                 iter = num_iter, family=this_family)
-  this_model_output
-  # return a list of single plots
-  diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
-  diagnostic.plots
-}
+
 
 #Floral Diversity brms formula
 formula.flower.div <- formula(MeanFloralDiversity | weights(Weights) ~
@@ -179,7 +166,7 @@ formula.bombus.abund <- formula(Net_BombusAbundance ~
 )
 freq.bombus.abun.model <- run_plot_freq_model_diagnostics(formula.bombus.abund,
                                                           spec.net[spec.net$Weights==1,], this_family = 'gaussian')
-ggsave(freq.bombus.abun.model, file="figures/BombusAbunModelDiagnostics.pdf",
+ggsave(freq.bombus.abun.model, file="figures/BombusAbunModelDiagnostics_log_gaussian.pdf",
        height=8, width=11)
 
 ## HB abund
@@ -191,7 +178,7 @@ formula.HB.abund <- formula(Net_HBAbundance ~
 )
 freq.HB.abun.model <- run_plot_freq_model_diagnostics(formula.HB.abund,
                                                           spec.net[spec.net$Weights==1,], this_family = "gaussian")
-ggsave(freq.HB.abun.model, file="figures/HBAbunModelDiagnostics.pdf",
+ggsave(freq.HB.abun.model, file="figures/HBAbunModelDiagnostics_log_gaussian.pdf",
        height=8, width=11)
 
 ## bee abund
@@ -218,3 +205,9 @@ freq.parasite.model <- run_plot_freq_model_diagnostics(beta_bi_formula,
 
 ggsave(freq.parasite.model, file="figures/ParasiteModelDiagnostics.pdf",
        height=8, width=11)
+
+
+## Load the model data
+load(file="saved/communityFit.Rdata")
+## Posterior predictive check for the community model with students t distribution
+pp_check(fit.community, Net_BombusAbundance)

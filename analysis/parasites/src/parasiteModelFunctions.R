@@ -16,8 +16,8 @@ runParasiteModels <- function(spec.data,
     
     bf.par <- bf(formula.parasite, family="bernoulli")  
     
-    bform <- bf.fabund + bf.fdiv + bf.babund + bf.bdiv + bf.par +
-      set_rescor(FALSE)
+    bform <- bf.fabund + bf.fdiv + bf.babund + bf.bombusabund + bf.HBabund +
+      bf.bdiv + bf.par + set_rescor(FALSE)
     
   } else{
     
@@ -84,7 +84,7 @@ runCombinedParasiteModels <- function(spec.data,
   
   bform <- bf.fabund + bf.fdiv + bf.babund + bf.bdiv +
     bf.parasite.formulas[[1]]+
-    bf.parasite.formulas[[2]]+ bf.parasite.formulas[[3]] +
+    bf.parasite.formulas[[2]] +
     set_rescor(FALSE)
   
   fit.parasite <- brm(bform, spec.data,
