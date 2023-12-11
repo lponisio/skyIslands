@@ -22,6 +22,8 @@ vars_sp <- c("MeanITD",
           "rare.degree")
 
 variables.to.log <- "rare.degree"
+
+variables.to.log.1<- "Net_HBAbundance"
                       
 
 ## uses only net specimens, and drops syrphids
@@ -72,7 +74,7 @@ write.ms.table(fit.community,
                        species.group="all", parasite="none"))
 r2loo <- loo_R2(fit.community)
 r2 <- rstantools::bayes_R2(fit.community)
-save(fit.community, spec.net, r2,
+save(fit.community, spec.net, r2, spec.orig,
      file="saved/communityFit.Rdata")
 
 ## **********************************************************

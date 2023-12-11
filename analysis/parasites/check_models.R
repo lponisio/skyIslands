@@ -25,7 +25,8 @@ vars_yearsr <- c("MeanFloralAbundance",
 vars_sp <- c("MeanITD",
              "rare.degree")
 
-variables.to.log <- c("rare.degree", "Net_HBAbundance", "Net_BombusAbundance")
+variables.to.log <- c("rare.degree" ,"Net_HBAbundance", "Net_BombusAbundance"
+                      )
 
 ## uses only net specimens, and drops syrphids
 source("src/init.R")
@@ -159,7 +160,9 @@ ggsave(freq.bee.div.model, file="figures/BeeDivModelDiagnostics.pdf",
 
 ## bombus abund
 formula.bombus.abund <- formula(Net_BombusAbundance ~
-                                  MeanFloralAbundance + Year +
+                                  MeanFloralDiversity +
+                                  #MeanFloralAbundance + 
+                                  Year +
                                   SRDoy + I(SRDoy^2) +
                                   Lat + 
                                   (1|Site)
