@@ -36,6 +36,9 @@ ggplot(spec.all, aes(Site, MeanFloralDiversity)) + geom_boxplot()
 ## Parasite prevalence by meadows
 
 sick.totals <- spec.all %>%
+  
+  
+## Subset to Weights == 1
   group_by(Site) %>%
   summarise(TestedTotals = length(UniqueID[!is.na(ParasitePresence)]),
             ParasitismRate=round(mean(ParasitePresence, na.rm=TRUE),2),

@@ -6,6 +6,8 @@ library(tidybayes)
 library(ggthemes)
 library(bayestestR)
 
+dir.create(path="saved", showWarnings = FALSE)
+dir.create(path="saved/tables", showWarnings = FALSE)
 
 load('../../data/spec_net.Rdata')
 site.sum <- read.csv("../../data/sitestats.csv")
@@ -23,8 +25,14 @@ parasites <- c(#"AspergillusSpp", ## problematic parasite!
   "NosemaBombi",
   "NosemaCeranae")
 
+## Merging specimen data with site characteristic data.
+print("Before merge with site characteristics")
+print(dim(spec.net))
 spec.net <- merge(spec.net, site.sum, all.x=TRUE)
+print("After merge with site characteristics")
+print(dim(spec.net))
 
+## Merging specimen data with trait data and network trait data.
 traits <-
     read.csv("../../../skyIslands_saved/data/raw/bee_traits.csv")
 traits$GenusSpecies <- fix.white.space(traits$GenusSpecies)
@@ -32,53 +40,34 @@ traits <- traits[, c("GenusSpecies", "Sociality", "Lecty", "MeanITD"),]
 
 net.traits <- read.csv("../../data/networks_traits.csv")
 net.traits <- net.traits[, c("GenusSpecies", "r.degree"),]
-
+print("Before merge with network traits to species traits")
+print(dim(traits))
 traits <- merge(traits, net.traits, by="GenusSpecies", all.x=TRUE)
-
+print("After merge with network traits to species traits")
+print(dim(traits))
+## Merge all the trait data to the specimen data.
 spec.net <- merge(spec.net, traits, all.x=TRUE, by="GenusSpecies")
+print("After merge with specimen traits")
+print(dim(spec.net))
+spec.orig <- spec.net
 
-dir.create(path="saved", showWarnings = FALSE)
-dir.create(path="saved/tables", showWarnings = FALSE)
-
-spec.net <- spec.net[order(spec.net$Site),]
-
-## create a dummy variable "Weight" to deal with the data sets being at
-## different levels to get around the issue of having to pass in one
-## data set into brms
-spec.net$YearSR <- paste(spec.net$Year, spec.net$SampleRound, sep=";")
-spec.net$YearSRGenusSpecies <- paste(spec.net$YearSR, spec.net$GenusSpecies, sep=";")
-
-## will need to modify when we have multiple years
-spec.net <- makeDataMultiLevel(spec.net, "Site", "YearSR")
-
-spec.net[, variables.to.log] <- log(spec.net[,variables.to.log])
-
-##  center all of the x variables, need to use unique values to avoid
-##  repetition by the number of specimens
-spec.net <- standardizeVars(spec.net, vars_yearsr, "YearSR")
-
-spec.net <- standardizeVars(spec.net, vars_sp, "YearSRGenusSpecies")
-## create a dumby varaible "WeightPar" for the parasite data. The
-## original intention was to keep stan from dropping data for
-## site-level models, but weight is 0 for parasite models.
-spec.net <- prepParasiteWeights()
-
-spec.all <- spec.net
-
+## Make SEM weights and standardize data.
+spec.net <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1, 
+                        vars_yearsr, vars_sp)
 
 ## bombus only data
-spec.bombus <- spec.all
+spec.bombus <- spec.net
 spec.bombus$WeightsPar[spec.bombus$Genus != "Bombus"] <- 0
 
 ## apis only data
-spec.apis <- spec.all
+spec.apis <- spec.net
 spec.apis$WeightsPar[spec.apis$Genus != "Apis"] <- 0
 
 ## melissodes only data
-spec.melissodes <- spec.all
+spec.melissodes <- spec.net
 spec.melissodes$WeightsPar[spec.melissodes$Genus != "Melissodes"] <- 0
 
-spec.apidae <- spec.all
+spec.apidae <- spec.net
 spec.apidae$WeightsPar[spec.apidae$Family != "Apidae"] <- 0
 
 
