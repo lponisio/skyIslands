@@ -17,21 +17,21 @@ standardizeVars <- function(spec.data, vars, key){
   return(spec.data)
 }
 
-prepParasiteWeights <- function(){
+prepParasiteWeights <- function(spec.data){
   ## create a dummy varaible "WeightPar" for the parasite data. The
   ## intention is to keep stan from dropping data for site-level models,
   ## but weight is 0 for parasite models.
-  spec.net$WeightsPar <- 1
-  spec.net$WeightsPar[spec.net$Apidae == 0 |
-                        is.na(spec.net$Apidae)] <- 0
+  spec.data$WeightsPar <- 1
+  spec.data$WeightsPar[spec.data$Apidae == 0 |
+                        is.na(spec.data$Apidae)] <- 0
   ## stan drops all NA data, so can set AnyParasite to 0 with WeightsPar
   ## to keep it in the models
-  spec.net$ParasitePresence[is.na(spec.net$ParasitePresence)] <- 0
-  spec.net$CrithidiaBombi[is.na(spec.net$CrithidiaBombi)] <- 0
-  spec.net$CrithidiaPresence[is.na(spec.net$CrithidiaPresence)] <- 0
-  spec.net$ApicystisSpp[is.na(spec.net$ApicystisSpp)] <- 0
-  spec.net$Year <- as.factor(spec.net$Year)
-  return(spec.net)
+  spec.data$ParasitePresence[is.na(spec.data$ParasitePresence)] <- 0
+  spec.data$CrithidiaBombi[is.na(spec.data$CrithidiaBombi)] <- 0
+  spec.data$CrithidiaPresence[is.na(spec.data$CrithidiaPresence)] <- 0
+  spec.data$ApicystisSpp[is.na(spec.data$ApicystisSpp)] <- 0
+  spec.data$Year <- as.factor(spec.data$Year)
+  return(spec.data)
 }
 
 
@@ -86,8 +86,10 @@ prepDataSEM <-
     ## site-level models, but weight is 0 for parasite models.
     print("Number of successful parasite screenings")
     print(sum(spec.data$Apidae, na.rm = TRUE))
-    spec.data <- prepParasiteWeights()
+    spec.data <- prepParasiteWeights(spec.data)
     print("Number of of individuals with WeightsPar == 1, should be the same as above")
     print(sum(spec.data$WeightsPar))
+    print("Final dim of data after adding WeightsPar")
+    print(dim(spec.data))
     return(spec.data)
   }
