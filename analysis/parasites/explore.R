@@ -74,9 +74,13 @@ ggplot(spec.all, aes(x= Lat,
                      y=Net_BombusAbundance, color=Site))+
   geom_point()
 ## Relationship between Hb abundance and latitude
-ggplot(spec.all, aes(x= Lat,
-                     y=Net_HBAbundance, color=Site))+
-  geom_point()
+ggplot(spec.net, aes(x= Site,
+                     y=Net_HBAbundance))+
+  geom_boxplot()
+
+ggplot(spec.net, aes(x= Year,
+                     y=Net_HBAbundance))+
+  geom_boxplot()
 
 ## Relationship between other bees abundance and latitude
 ggplot(spec.all, aes(x= Lat,
