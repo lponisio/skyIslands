@@ -2,7 +2,7 @@ rm(list=ls())
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
 ## setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
 setwd('~/Dropbox (University of Oregon)/skyislands')
-ncores <- 1
+ncores <- 3
 
 setwd("analysis/parasites")
 source("src/misc.R")
@@ -23,7 +23,8 @@ vars_sp <- c("MeanITD",
 
 variables.to.log <- "rare.degree"
 
-variables.to.log.1<- "Net_HBAbundance"
+variables.to.log.1<- c("Net_HBAbundance", "Net_BombusAbundance", 
+                       "Net_NonBombusHBAbundance")
                       
 
 ## uses only net specimens, and drops syrphids
@@ -82,7 +83,7 @@ save(fit.community, spec.net, r2, spec.orig,
 ## **********************************************************
 ## full model with all species, parasites
 fit.all <- runParasiteModels(spec.net, species.group="all",
-                                        parasite= "ApicystisSpp",
+                                        parasite= "CrithidiaPresence",
                                         xvars=xvars.multi.species,
                                         iter = 10^4,
                                         chains = 1,
