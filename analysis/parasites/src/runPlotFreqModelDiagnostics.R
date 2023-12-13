@@ -54,8 +54,12 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
       
       this_model_output <- glmmTMB(this_formula, data=this_data,  ziformula = ~1, family = truncated_nbinom2())
       diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
-  
     
+    } else if (this_family=='students') {
+      
+      this_model_output <- glmmTMB(this_formula, data=this_data, family = t_family())
+      diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
+  
     
     } else if (this_family=='negbinomial') {
     this_model_output <- glmmadmb(this_formula, data=this_data, zeroInflation=FALSE, family='nbinom')
