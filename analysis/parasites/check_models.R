@@ -25,8 +25,9 @@ vars_yearsr <- c("MeanFloralAbundance",
 vars_sp <- c("MeanITD",
              "rare.degree")
 
-variables.to.log <- c("rare.degree" ,"Net_HBAbundance", "Net_BombusAbundance"
-                      )
+variables.to.log <- "rare.degree" 
+variables.to.log.1 <- c("Net_HBAbundance", "Net_BombusAbundance", 
+                        "Net_NonBombusHBAbundance")
 
 ## uses only net specimens, and drops syrphids
 source("src/init.R")
@@ -160,40 +161,39 @@ ggsave(freq.bee.div.model, file="figures/BeeDivModelDiagnostics.pdf",
 
 ## bombus abund
 formula.bombus.abund <- formula(Net_BombusAbundance ~
-                                  MeanFloralDiversity +
-                                  #MeanFloralAbundance + 
-                                  Year +
-                                  SRDoy + I(SRDoy^2) +
+                                  MeanFloralAbundance + 
+                                  #Year +
+                                  SRDoy + #I(SRDoy^2) +
                                   Lat + 
                                   (1|Site)
 )
 freq.bombus.abun.model <- run_plot_freq_model_diagnostics(formula.bombus.abund,
                                                           spec.net[spec.net$Weights==1,], this_family = 'gaussian')
-ggsave(freq.bombus.abun.model, file="figures/BombusAbunModelDiagnostics_log_gaussian.pdf",
+ggsave(freq.bombus.abun.model, file="figures/BombusAbunModelDiagnostics_gaussian.pdf",
        height=8, width=11)
 
 ## HB abund
 formula.HB.abund <- formula(Net_HBAbundance ~
-                              MeanFloralAbundance +  Year +
-                              SRDoy + I(SRDoy^2) +
+                              MeanFloralAbundance +  
+                              SRDoy + #I(SRDoy^2) +
                               Lat +
                               (1|Site)
 )
 freq.HB.abun.model <- run_plot_freq_model_diagnostics(formula.HB.abund,
                                                           spec.net[spec.net$Weights==1,], this_family = "gaussian")
-ggsave(freq.HB.abun.model, file="figures/HBAbunModelDiagnostics_log_gaussian.pdf",
+ggsave(freq.HB.abun.model, file="figures/HBAbunModelDiagnostics_gaussian.pdf",
        height=8, width=11)
 
 ## bee abund
 formula.bee.abund <- formula(Net_NonBombusHBAbundance ~
-                               MeanFloralAbundance +  Year +
-                               SRDoy + I(SRDoy^2) +
+                               MeanFloralAbundance +
+                               SRDoy  +
                                Lat +
                                (1|Site)
 )
 freq.bee.abun.model <- run_plot_freq_model_diagnostics(formula.bee.abund,
                                                       spec.net[spec.net$Weights==1,], this_family = 'gaussian')
-ggsave(freq.bee.abun.model, file="figures/NonBombusHBAbunModelDiagnostics.pdf",
+ggsave(freq.bee.abun.model, file="figures/NonBombusHBAbunModelDiagnostics_gaussian.pdf",
        height=8, width=11)
 
 ## parasite
