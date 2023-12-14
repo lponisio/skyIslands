@@ -164,17 +164,35 @@ ids$FinalGenusSpeciesConfirmed  <- NA
 ## confirmed if matches veg
 ids$FinalGenusSpeciesConfirmed[ids$FinalGenusSpeciesInVeg == 1] <- TRUE
 
-
-## confirmed if hand checked
-
+## check if species is possible                       
 ids$FinalGenusSpecies[ids$FinalGenusSpecies %in% not.possible] <- paste("Unknown near", ids$FinalGenusSpecies[ids$FinalGenusSpecies %in% not.possible])
 
 ids$FinalGenusSpeciesConfirmed[ids$FinalGenusSpecies %in% not.possible] <- TRUE
 
 ids$FinalGenusSpeciesInVeg <- NULL
 ids$FinalGenusInVeg <- NULL
+
+## merge data with sequences to do manual checks
+library(dplyr)
+
+datseq <- read.csv('~/Dropbox/skyIslands_saved/SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/Seqs_SampleNames.csv')
+ID_Manual <- ids %>% left_join(datseq, by="Sample")
+write.csv(ID_Manual, "~/Dropbox/skyIslands_saved/SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/ID-Manual-LJJComments.csv",row.names=FALSE) # worked on this file doing manual calls
+
+## hand-checked samples following protocol above with (1) NCBI top 100 hits, (2) SI veg database, (3) USDA plant database, and sparingly (4) Discover Life. 
+## "Conservative" calls have high confidence at that taxonomic resolution (LJJ). 
+## "With uncertainty" calls have low confidence but based on veg data, USDA database, and sometimes missing seq data in NCBI for "likely" calls based on one 
+                       ## of our databases (veg or USDA), one of the calls listed in that column may be correct. 
+                       ## LJJ has some comments on these uncertain calls in the file "ID-Manual-LJJComments.xslx" (open with google sheets or other software that supports comments to view them).
+
+manualcalls <- read.csv('~/Dropbox/skyIslands_saved/SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/PollenID_Manual_LJJ.csv')
+
+## remove bacterial sequences that made it through, "bad" sequences (< 90% identity to any NCBI hits and/or no consistency at the class level for first 100 NCBI hits), 
+## and any plant ID's that don't exist at those sites
+
+manualcalls_clean <- subset(manualcalls, IDCall_Conservative != "BACTERIA" & IDCall_Conservative != "BAD" & USDA_PlantDatabase_CallNearSI != "NO")                     
                        
-write.csv(ids, "~/Dropbox/skyIslands_saved/SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCLworkbook.csv", row.names=FALSE)
+write.csv(manualcalls_clean, "~/Dropbox/skyIslands_saved/SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCLworkbook.csv", row.names=FALSE)
 
 ## editing final csv
 final <- read.csv("~/Dropbox/skyIslands_saved/SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCLworkbook.csv",
