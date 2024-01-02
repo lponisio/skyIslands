@@ -239,7 +239,8 @@ docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)\/skyIslands_
 
 #check paths and working directory are correct
 
-cd ../mnt/SI_pipeline/merged/RBCL
+#cd ../mnt/SI_pipeline/merged/RBCL
+cd ../mnt/SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL
 
 #before filtering, convert our .txt file that has final taxonomic determinations into a qza file called "taxonomyRBCL.qza"
 
@@ -307,7 +308,9 @@ mkdir split
 
 
 qiime feature-table filter-samples --i-table tablefilt2.qza --m-metadata-file maps/R0samples.txt --o-filtered-table split/tableR0.qza
-
+qiime feature-table filter-samples --i-table tablefilt2.qza --m-metadata-file maps/R1samples.txt --o-filtered-table split/tableR1.qza
+qiime feature-table filter-samples --i-table tablefilt2.qza --m-metadata-file maps/R2samples.txt --o-filtered-table split/tableR2.qza
+qiime feature-table filter-samples --i-table tablefilt2.qza --m-metadata-file maps/R3samples.txt --o-filtered-table split/tableR3.qza
 # qiime feature-table filter-samples --i-table tablefilt2.qza --m-metadata-file maps/R1samples.txt --o-filtered-table split/tableR1.qza
 
 
@@ -393,7 +396,12 @@ mkdir f1_taxa_barplots
 
 cd split
 
-qiime feature-table filter-samples --i-table tableR0.qza --m-metadata-file ../maps/R0samplesNoCtrl.txt --o-filtered-table tableR0_f2.qza
+qiime feature-table filter-samples --i-table split/tableR0.qza --m-metadata-file split/R0samplesNoCtrl.txt --o-filtered-table split/tableR0_f2.qza
+qiime feature-table filter-samples --i-table split/tableR1.qza --m-metadata-file split/R1samplesNoCtrl.txt --o-filtered-table split/tableR1_f2.qza
+qiime feature-table filter-samples --i-table split/tableR2.qza --m-metadata-file split/R2samplesNoCtrl.txt --o-filtered-table split/tableR2_f2.qza
+qiime feature-table filter-samples --i-table split/tableR3.qza --m-metadata-file split/R3samplesNoCtrl.txt --o-filtered-table split/tableR3_f2.qza
+
+# qiime feature-table filter-samples --i-table tableR0.qza --m-metadata-file ../maps/R0samplesNoCtrl.txt --o-filtered-table tableR0_f2.qza
 # qiime feature-table filter-samples --i-table tableR1_f1.qza --m-metadata-file R1samplesNoCtrl.txt --o-filtered-table tableR1_f2.qza
 # qiime feature-table filter-samples --i-table tableR2.qza --m-metadata-file R2samplesNoCtrl.txt --o-filtered-table tableR2_f2.qza
 # qiime feature-table filter-samples --i-table tableR3.qza --m-metadata-file R3samplesNoCtrl.txt --o-filtered-table tableR3_f2.qza
@@ -403,7 +411,11 @@ qiime feature-table filter-samples --i-table tableR0.qza --m-metadata-file ../ma
 
 cd ../
 
-qiime taxa barplot --i-table split/tableR0_f2.qza --i-taxonomy taxonomyRBCL.qza --m-metadata-file maps/SI2018mapRBCL.txt --o-visualization split/taxa-bar-plotsR0_f2.qzv
+qiime taxa barplot --i-table split/tableR0_f2.qza --i-taxonomy taxonomyRBCL.qza --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --o-visualization split/taxa-bar-plotsR0_f2.qzv
+qiime taxa barplot --i-table split/tableR1_f2.qza --i-taxonomy taxonomyRBCL.qza --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --o-visualization split/taxa-bar-plotsR1_f2.qzv
+qiime taxa barplot --i-table split/tableR2_f2.qza --i-taxonomy taxonomyRBCL.qza --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --o-visualization split/taxa-bar-plotsR2_f2.qzv
+qiime taxa barplot --i-table split/tableR3_f2.qza --i-taxonomy taxonomyRBCL.qza --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --o-visualization split/taxa-bar-plotsR3_f2.qzv
+# qiime taxa barplot --i-table split/tableR0_f2.qza --i-taxonomy taxonomyRBCL.qza --m-metadata-file maps/SI2018mapRBCL.txt --o-visualization split/taxa-bar-plotsR0_f2.qzv
 # qiime taxa barplot --i-table split/tableR1_f2.qza --i-taxonomy taxonomyRBCL.qza --m-metadata-file maps/SI2019_R1mapRBCL.txt --o-visualization split/taxa-bar-plotsR1_f2.qzv
 # qiime taxa barplot --i-table split/tableR2_f2.qza --i-taxonomy taxonomyRBCL.qza --m-metadata-file maps/SI2019_R2mapRBCLtxt --o-visualization split/taxa-bar-plotsR2_f2.qzv
 # qiime taxa barplot --i-table split/tableR3_f2.qza --i-taxonomy taxonomyRBCL.qza --m-metadata-file maps/SI2019_R3mapRBCL.txt --o-visualization split/taxa-bar-plotsR3_f2.qzv
@@ -419,13 +431,33 @@ qiime taxa barplot --i-table split/tableR0_f2.qza --i-taxonomy taxonomyRBCL.qza 
 #We want to make a rarefaction curve to see how subsampling depths influence our alpha diversity metrics.
 #Open visualization in Qiime2 View and look at visualized table to see impact of different depths
 
+qiime feature-table summarize --i-table split/tableR0_f2.qza --o-visualization split/tableR0_f2.qzv
+
+qiime diversity alpha-rarefaction --i-table split/tableR0_f2.qza --i-phylogeny rooted-treeRBCL.qza --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --o-visualization split/alphararefactRBCLR0_2000.qzv --p-max-depth 2000
+# 1352, retain 66/78 samples (84.62%)
+
+qiime feature-table summarize --i-table split/tableR1_f2.qza --o-visualization split/tableR1_f2.qzv
+
+qiime diversity alpha-rarefaction --i-table split/tableR1_f2.qza --i-phylogeny rooted-treeRBCL.qza --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --o-visualization split/alphararefactRBCLR1_2000.qzv --p-max-depth 2000
+# 1352, retain 54/73 samples (73.97%)
+	## don’t retain more than 80.82% until < 372
+
+qiime feature-table summarize --i-table split/tableR2_f2.qza --o-visualization split/tableR2_f2.qzv
+
+qiime diversity alpha-rarefaction --i-table split/tableR2_f2.qza --i-phylogeny rooted-treeRBCL.qza --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --o-visualization split/alphararefactRBCLR2_2000.qzv --p-max-depth 2000
+# 1352, retain 44/62 samples (70.97%)
+	## don’t retain more than 80.65% until < 358
+
+qiime feature-table summarize --i-table split/tableR3_f2.qza --o-visualization split/tableR3_f2.qzv
+
+qiime diversity alpha-rarefaction --i-table split/tableR3_f2.qza --i-phylogeny rooted-treeRBCL.qza --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --o-visualization split/alphararefactRBCLR3_2000.qzv --p-max-depth 2000
+# 1352, retain 64/74 samples (86.49%)
+
 #For subsampling R0: 1,350  depth.  205 samples (83.67%): samples at the specified
 #sampling depth. Out of 245 samples.
+#qiime diversity alpha-rarefaction --i-table split/tableR0_f2.qza --i-phylogeny rooted-treeRBCL.qza --p-max-depth 1350 --m-metadata-file maps/SI2018mapRBCL.txt --o-visualization split/alphararefactRBCLR0.qzv
 
-
-qiime diversity alpha-rarefaction --i-table split/tableR0_f2.qza --i-phylogeny rooted-treeRBCL.qza --p-max-depth 1350 --m-metadata-file maps/SI2018mapRBCL.txt --o-visualization split/alphararefactRBCLR0.qzv
-
-qiime feature-table summarize --i-table split/tableR0_f2.qza --o-visualization split/tableR0_f2.qzv
+#qiime feature-table summarize --i-table split/tableR0_f2.qza --o-visualization split/tableR0_f2.qzv
 
 #For subsampling R1: XX.  XX (XX%) samples at the specified sampling depth. Out of 318 samples
 
@@ -444,7 +476,23 @@ qiime feature-table summarize --i-table split/tableR0_f2.qza --o-visualization s
 
 mkdir final
 
-qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-table split/tableR0_f2.qza --p-sampling-depth 1076 --m-metadata-file maps/SI2018mapRBCL.txt --output-dir final/core_metricsRBCLR0 --verbose
+qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-table split/tableR0_f2.qza --p-sampling-depth 1352 --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --output-dir final/core_metricsRBCLR0 --verbose
+
+qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-table split/tableR1_f2.qza --p-sampling-depth 1352 --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --output-dir final/core_metricsRBCLR1 --verbose
+
+qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-table split/tableR2_f2.qza --p-sampling-depth 1352 --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --output-dir final/core_metricsRBCLR2 --verbose
+
+qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-table split/tableR3_f2.qza --p-sampling-depth 1352 --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --output-dir final/core_metricsRBCLR3 --verbose
+
+
+ qiime feature-table merge \
+     --i-tables final/core_metricsRBCLR0/rarefied_table.qza \
+        --i-tables final/core_metricsRBCLR1/rarefied_table.qza \
+        --i-tables final/core_metricsRBCLR2/rarefied_table.qza \
+        --i-tables final/core_metricsRBCLR3/rarefied_table.qza \
+  	--o-merged-table master_table_rarefied.qza
+
+# qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-table split/tableR0_f2.qza --p-sampling-depth 1076 --m-metadata-file maps/SI2018mapRBCL.txt --output-dir final/core_metricsRBCLR0 --verbose
 
 # qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-table split/tableR1_f2.qza --p-sampling-depth 1194 --m-metadata-file maps/SI2019_R1mapRBCL.txt --output-dir final/core_metricsRBCLR1 --verbose
 
