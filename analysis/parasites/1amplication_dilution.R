@@ -100,8 +100,18 @@ fit.both.parasites <- runCombinedParasiteModels(spec.net, species.group="all",
                              init=0)
 
 ## bombus
-fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
-                                        parasites=c("CrithidiaPresence"),
+fit.both.bombus <- runCombinedParasiteModels(spec.net, species.group="bombus",
+                                                parasite= c("CrithidiaPresence",
+                                                            "ApicystisSpp"),
+                                                xvars=xvars.multi.species,
+                                                iter = 10^4,
+                                                chains = 1,
+                                                thin=1,
+                                                init=0)
+
+
+fit.bombus <- runParasiteModels(spec.bombus, species.group="bombus",
+                                        parasite ="CrithidiaPresence",
                                         xvars=xvars.multi.species,
                                         iter = 10^4,
                                         chains = 1,
@@ -109,11 +119,10 @@ fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         init=0)
 
 ## bombus
-fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
-                                        parasites=c("CrithidiaPresence",
-                                                    "ApicystisSpp"),
+fit.bombus <- runParasiteModels(spec.bombus, species.group="bombus",
+                                        parasite = "ApicystisSpp",
                                         xvars=xvars.multi.species,
-                                        iter = 10^5,
+                                        iter = 10^4,
                                         chains = 1,
                                         thin=1,
                                         init=0)
@@ -128,6 +137,14 @@ fit.apidae <- runCombinedParasiteModels(spec.apidae, species.group="apidae",
                                         thin=1,
                                         init=0)
 
+fit.apidae <- runParasiteModels(spec.bombus, species.group="apidae",
+                                parasite = "CrithidiaPresence",
+                                xvars=xvars.multi.species,
+                                iter = 10^4,
+                                chains = 1,
+                                thin=1,
+                                init=0)
+
 ## Honey bees
 fit.apis <- runCombinedParasiteModels(spec.apis, species.group="apis",
                                         parasites=c("CrithidiaPresence",
@@ -137,3 +154,11 @@ fit.apis <- runCombinedParasiteModels(spec.apis, species.group="apis",
                                         chains = 1,
                                         thin=1,
                                         init=0)
+
+fit.apidae <- runParasiteModels(spec.bombus, species.group="apidae",
+                                parasite = "CrithidiaPresence",
+                                xvars=xvars.multi.species,
+                                iter = 10^4,
+                                chains = 1,
+                                thin=1,
+                                init=0)
