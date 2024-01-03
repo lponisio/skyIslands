@@ -196,6 +196,31 @@ weightedUFrbclqzaR3 <- read_qza(file.path(qza.rbcl.path,
 
 unweightedUFrbclqzaR3 <- read_qza(file.path(qza.rbcl.path,
                                             'core_metricsRBCLR3/unweighted_unifrac_distance_matrix.qza'))
+# R4
+weightedUFrbclqzaR4 <- read_qza(file.path(qza.rbcl.path,
+                                          'core_metricsRBCLR4/weighted_unifrac_distance_matrix.qza'))
+
+unweightedUFrbclqzaR4 <- read_qza(file.path(qza.rbcl.path,
+                                            'core_metricsRBCLR4/unweighted_unifrac_distance_matrix.qza'))
+# R5
+weightedUFrbclqzaR5 <- read_qza(file.path(qza.rbcl.path,
+                                          'core_metricsRBCLR5/weighted_unifrac_distance_matrix.qza'))
+
+unweightedUFrbclqzaR5 <- read_qza(file.path(qza.rbcl.path,
+                                            'core_metricsRBCLR5/unweighted_unifrac_distance_matrix.qza'))
+# R6
+weightedUFrbclqzaR6 <- read_qza(file.path(qza.rbcl.path,
+                                          'core_metricsRBCLR6/weighted_unifrac_distance_matrix.qza'))
+
+unweightedUFrbclqzaR6 <- read_qza(file.path(qza.rbcl.path,
+                                            'core_metricsRBCLR6/unweighted_unifrac_distance_matrix.qza'))
+
+# R7
+weightedUFrbclqzaR7 <- read_qza(file.path(qza.rbcl.path,
+                                          'core_metricsRBCLR7/weighted_unifrac_distance_matrix.qza'))
+
+unweightedUFrbclqzaR7 <- read_qza(file.path(qza.rbcl.path,
+                                            'core_metricsRBCLR7/unweighted_unifrac_distance_matrix.qza'))
 
 ## access data inside artifacts
 
@@ -212,6 +237,18 @@ phylo.dist.rbclR2 <- unweightedUFrbclqzaR2$data
 # R3
 wphylo.dist.rbclR3 <- weightedUFrbclqzaR3$data
 phylo.dist.rbclR3 <- unweightedUFrbclqzaR3$data
+# R4
+wphylo.dist.rbclR4 <- weightedUFrbclqzaR4$data
+phylo.dist.rbclR4 <- unweightedUFrbclqzaR4$data
+# R5
+wphylo.dist.rbclR5 <- weightedUFrbclqzaR5$data
+phylo.dist.rbclR5 <- unweightedUFrbclqzaR5$data
+# R6
+wphylo.dist.rbclR6 <- weightedUFrbclqzaR6$data
+phylo.dist.rbclR6 <- unweightedUFrbclqzaR6$data
+# R7
+wphylo.dist.rbclR7 <- weightedUFrbclqzaR7$data
+phylo.dist.rbclR7 <- unweightedUFrbclqzaR7$data
 
 ## in the future do the same for other runs
 ## wphylo.dist.rbclR1 <- weightedUFrbclqzaR1$data
@@ -241,6 +278,26 @@ taxonomyRBCLR2 <- taxonomyRBCLR2$data
 taxonomyRBCLR3 <-
   read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR3/rarefied_table.qza")
 taxonomyRBCLR3 <- taxonomyRBCLR3$data
+
+# R4
+taxonomyRBCLR4 <-
+  read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR4/rarefied_table.qza")
+taxonomyRBCLR4 <- taxonomyRBCLR4$data
+
+# R5
+taxonomyRBCLR5 <-
+  read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR5/rarefied_table.qza")
+taxonomyRBCLR5 <- taxonomyRBCLR5$data
+
+# R6
+taxonomyRBCLR6 <-
+  read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR6/rarefied_table.qza")
+taxonomyRBCLR6 <- taxonomyRBCLR6$data
+
+# R7
+taxonomyRBCLR7 <-
+  read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR7/rarefied_table.qza")
+taxonomyRBCLR7 <- taxonomyRBCLR7$data
 
 ## in the future do the same for other runs
 ## taxonomyRBCLR1 <- read_qza("SI_pipeline/merged/RBCL/final/core_metricsRBCLR1/rarefied_table.qza")
@@ -291,6 +348,45 @@ physeqRBCLR3 <- qza_to_phyloseq(
 physeqRBCLR3
 plot(physeqRBCLR3@phy_tree, show.tip.label = FALSE)
 
+#RBCL R4 phylogeny
+physeqRBCLR4 <- qza_to_phyloseq(
+  features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR4/rarefied_table.qza",
+  tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
+  "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
+  metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
+)
+physeqRBCLR4
+plot(physeqRBCLR4@phy_tree, show.tip.label = FALSE)
+
+#RBCL R5 phylogeny
+physeqRBCLR5 <- qza_to_phyloseq(
+  features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR5/rarefied_table.qza",
+  tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
+  "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
+  metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
+)
+physeqRBCLR5
+plot(physeqRBCLR5@phy_tree, show.tip.label = FALSE)
+
+#RBCL R6 phylogeny
+physeqRBCLR6 <- qza_to_phyloseq(
+  features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR6/rarefied_table.qza",
+  tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
+  "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
+  metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
+)
+physeqRBCLR6
+plot(physeqRBCLR6@phy_tree, show.tip.label = FALSE)
+
+#RBCL R7 phylogeny
+physeqRBCLR7 <- qza_to_phyloseq(
+  features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR7/rarefied_table.qza",
+  tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
+  "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
+  metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
+)
+physeqRBCLR7
+plot(physeqRBCLR7@phy_tree, show.tip.label = FALSE)
 ## in the future do the same for other runs
 ## #RBCL R1 phylogeny
 ## physeqRBCLR1 <- qza_to_phyloseq(
@@ -324,6 +420,14 @@ tree.rbclR1 <- phy_tree(physeqRBCLR1, errorIfNULL=TRUE)
 tree.rbclR2 <- phy_tree(physeqRBCLR2, errorIfNULL=TRUE)
 # R3
 tree.rbclR3 <- phy_tree(physeqRBCLR3, errorIfNULL=TRUE)
+# R4
+tree.rbclR4 <- phy_tree(physeqRBCLR4, errorIfNULL=TRUE)
+# R5
+tree.rbclR5 <- phy_tree(physeqRBCLR5, errorIfNULL=TRUE)
+# R6
+tree.rbclR6 <- phy_tree(physeqRBCLR6, errorIfNULL=TRUE)
+# R7
+tree.rbclR7 <- phy_tree(physeqRBCLR7, errorIfNULL=TRUE)
 
 ## in the future do the same for other runs
 ## tree.rbclR1 <- phy_tree(physeqRBCLR1, errorIfNULL=TRUE)
@@ -344,6 +448,22 @@ tree.rbclR2$tip.label  <-  feature.2.tax.rbcl$Taxon[
 # R3
 tree.rbclR3$tip.label  <-  feature.2.tax.rbcl$Taxon[
   match(tree.rbclR3$tip.label,
+        feature.2.tax.rbcl$Feature.ID)]
+# R4
+tree.rbclR4$tip.label  <-  feature.2.tax.rbcl$Taxon[
+  match(tree.rbclR4$tip.label,
+        feature.2.tax.rbcl$Feature.ID)]
+# R5
+tree.rbclR5$tip.label  <-  feature.2.tax.rbcl$Taxon[
+  match(tree.rbclR5$tip.label,
+        feature.2.tax.rbcl$Feature.ID)]
+# R6
+tree.rbclR6$tip.label  <-  feature.2.tax.rbcl$Taxon[
+  match(tree.rbclR6$tip.label,
+        feature.2.tax.rbcl$Feature.ID)]
+# R7
+tree.rbclR7$tip.label  <-  feature.2.tax.rbcl$Taxon[
+  match(tree.rbclR7$tip.label,
         feature.2.tax.rbcl$Feature.ID)]
 
 ## in the future do the same for other runs
@@ -384,6 +504,34 @@ indiv.comm.rbclR3 <-
                                       feature.col="Feature.ID")))
 
 indiv.comm.rbclR3 <- indiv.comm.rbclR3/rowSums(indiv.comm.rbclR3)
+# R4
+indiv.comm.rbclR4 <-
+  bipartite::empty(catchDups(makeComm(taxonomyRBCLR4,
+                                      feature.2.tax.rbcl,
+                                      feature.col="Feature.ID")))
+
+indiv.comm.rbclR4 <- indiv.comm.rbclR4/rowSums(indiv.comm.rbclR4)
+# R5
+indiv.comm.rbclR5 <-
+  bipartite::empty(catchDups(makeComm(taxonomyRBCLR5,
+                                      feature.2.tax.rbcl,
+                                      feature.col="Feature.ID")))
+
+indiv.comm.rbclR5 <- indiv.comm.rbclR5/rowSums(indiv.comm.rbclR5)
+# R6
+indiv.comm.rbclR6 <-
+  bipartite::empty(catchDups(makeComm(taxonomyRBCLR6,
+                                      feature.2.tax.rbcl,
+                                      feature.col="Feature.ID")))
+
+indiv.comm.rbclR6 <- indiv.comm.rbclR6/rowSums(indiv.comm.rbclR6)
+# R7
+indiv.comm.rbclR7 <-
+  bipartite::empty(catchDups(makeComm(taxonomyRBCLR7,
+                                      feature.2.tax.rbcl,
+                                      feature.col="Feature.ID")))
+
+indiv.comm.rbclR7 <- indiv.comm.rbclR7/rowSums(indiv.comm.rbclR7)
 
 ## indiv.comm.rbclR1 <-
 ##     bipartite::empty(catchDups(makeComm(taxonomyRBCLR1,
@@ -397,12 +545,18 @@ indiv.comm.rbclR3 <- indiv.comm.rbclR3/rowSums(indiv.comm.rbclR3)
 # comms <- list(indiv.comm.rbclR0)
 
  bees.rbcl <- c(rownames(indiv.comm.rbclR0),
-               paste0("SF",  rownames(indiv.comm.rbclR1)),
+               paste0("SF", rownames(indiv.comm.rbclR1)),
                paste0("SF", rownames(indiv.comm.rbclR2)),
-                      paste0("SF", rownames(indiv.comm.rbclR3)))
+               paste0("SF", rownames(indiv.comm.rbclR3)),
+               paste0("SF", rownames(indiv.comm.rbclR4)),
+               paste0("SF", rownames(indiv.comm.rbclR5)),
+               paste0("SF", rownames(indiv.comm.rbclR6)),
+               paste0("SF", rownames(indiv.comm.rbclR7)))
 
  comms <- list(indiv.comm.rbclR0, indiv.comm.rbclR1,
-               indiv.comm.rbclR2, indiv.comm.rbclR3)
+               indiv.comm.rbclR2, indiv.comm.rbclR3,
+               indiv.comm.rbclR4, indiv.comm.rbclR5,
+               indiv.comm.rbclR6, indiv.comm.rbclR7)
 
 species.rbcl <- unique(unlist(sapply(comms, colnames)))
 
