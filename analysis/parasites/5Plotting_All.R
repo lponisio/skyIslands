@@ -92,6 +92,7 @@ data.par <- spec.net[spec.net$WeightsPar == 1,]
 ## https://www.rensvandeschoot.com/tutorials/generalised-linear-models-with-brms/
 
 ## parasitism ~ bee diversity
+## Graph showing relationship with Crithidia and bee diversity
 newdata.beediv <- crossing(Net_BeeDiversity =
                              seq(min(data.par$Net_BeeDiversity),
                                  max(data.par$Net_BeeDiversity),
@@ -104,24 +105,24 @@ newdata.beediv <- crossing(Net_BeeDiversity =
                            Net_HBAbundance= mean(data.par$Net_HBAbundance),
                            Net_NonBombusHBAbundance = mean(data.par$Net_NonBombusHBAbundance),
                            Net_BombusAbundance = mean(data.par$Net_BombusAbundance),
-                           Site = "JC", 
-                           GenusSpecies = "Bombus huntii"
+                           Site = data.par$Site, 
+                           GenusSpecies = data.par$GenusSpecies
 )
 
 ## predict values based on generated data and model parameters
 pred_beediv <- fit.parasite %>% 
   epred_draws(newdata = newdata.beediv,
-              resp = c("CrithidiaPresence", "ApicystisSpp"))
+              resp = "CrithidiaPresence")
 
 ## to see range of predicted values
 pred_beediv %>%
   group_by(Net_BeeDiversity) %>%
   summarise(mean(.epred))
 
-p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
+p1.parasitec <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
   stat_lineribbon() +
   scale_fill_brewer(palette = "Blues") +
-  labs(x = "Bee community diversity", y = "Parasite Prevalence",
+  labs(x = "Bee community diversity", y = "Crithidia Spp. Prevalence",
        fill = "Credible interval") +
   theme_ms() +
   theme(legend.position = "bottom") +
@@ -133,11 +134,63 @@ p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
         text = element_text(size=16)) +
  ##theme_dark_black()+
   geom_point(data=data.par,
-             aes(y= SiteParasitismRate, x=Net_BeeDiversity),
+             aes(y= CrithidiaParasitismRate, x=Net_BeeDiversity),
              color="grey40", cex=2)
 
-## parasitism ~ bumble bee abundance
+ggsave(p1.parasitec, file="figures/crithidia_beeDiv.pdf",
+       height=4, width=5)
 
+## Graph showing relationship with apicystis and bee diversity
+
+newdata.beediv <- crossing(Net_BeeDiversity =
+                             seq(min(data.par$Net_BeeDiversity),
+                                 max(data.par$Net_BeeDiversity),
+                                 length.out=10),
+                           Lat = mean(data.par$Lat),
+                           rare.degree = mean(data.par$rare.degree),
+                           MeanITD = mean(data.par$MeanITD),
+                           MeanFloralAbund= mean(data.par$MeanFloralAbundance),
+                           MeanFloralDiversity= mean(data.par$MeanFloralDiversity),
+                           Net_HBAbundance= mean(data.par$Net_HBAbundance),
+                           Net_NonBombusHBAbundance = mean(data.par$Net_NonBombusHBAbundance),
+                           Net_BombusAbundance = mean(data.par$Net_BombusAbundance),
+                           Site = data.par$Site, 
+                           GenusSpecies = data.par$GenusSpecies
+)
+
+## predict values based on generated data and model parameters
+pred_beediv <- fit.parasite %>% 
+  epred_draws(newdata = newdata.beediv,
+              resp = "ApicystisSpp")
+
+## to see range of predicted values
+pred_beediv %>%
+  group_by(Net_BeeDiversity) %>%
+  summarise(mean(.epred))
+
+p1.parasitea <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
+  stat_lineribbon() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(x = "Bee community diversity", y = "Apicystis Spp. Prevalence",
+       fill = "Credible interval") +
+  theme_ms() +
+  theme(legend.position = "bottom") +
+  scale_x_continuous(
+    breaks = axis.bee.div,
+    labels =  labs.bee.div) +
+  theme(axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        text = element_text(size=16)) +
+  ##theme_dark_black()+
+  geom_point(data=data.par,
+             aes(y= ApicystisParasitismRate, x=Net_BeeDiversity),
+             color="grey40", cex=2)
+
+ggsave(p1.parasitea, file="figures/apicystisSpp_beeDiv.pdf",
+       height=4, width=5)
+
+## parasitism ~ bumble bee abundance
+## Crithidia ~ bumble bee abundance
 newdata.bombusabund <- crossing(Net_BombusAbundance =
                                   seq(min(data.par$Net_BombusAbundance),
                                       max(data.par$Net_BombusAbundance),
@@ -157,14 +210,14 @@ newdata.bombusabund <- crossing(Net_BombusAbundance =
 ## predict values based on generated data and model parameters
 pred_bombusabund <- fit.parasite %>% 
   epred_draws(newdata = newdata.bombusabund,
-              resp = c("CrithidiaPresence", "ApicystisSpp"))
+              resp = "CrithidiaPresence")
 
 ## to see range of predicted values
 pred_bombusabund %>%
   group_by(Net_BombusAbundance) %>%
   summarise(mean(.epred))
 
-p2.parasite <- ggplot(pred_bombusabund, aes(x = Net_BombusAbundance, y = .epred)) +
+p2.parasitec <- ggplot(pred_bombusabund, aes(x = Net_BombusAbundance, y = .epred)) +
   stat_lineribbon() +
   scale_fill_brewer(palette = "Blues") +
   labs(x = "Bumble bee Abundance", y = "Parasite Prevalence",
@@ -176,14 +229,65 @@ p2.parasite <- ggplot(pred_bombusabund, aes(x = Net_BombusAbundance, y = .epred)
         text = element_text(size=16)) +
   ##theme_dark_black()+
   geom_point(data=data.par,
-             aes(y= SiteParasitismRate, x=Net_BombusAbundance),
+             aes(y= CrithidiaParasitismRate, x=Net_BombusAbundance),
              color="grey40", cex=2)+
   scale_x_continuous(
     breaks = axis.bombus.abund,
     labels =  labs.bombus.abund) 
 
-## parasitism ~ honey bee abundance
+ggsave(p2.parasitec, file="figures/Crithidia_BombusAbund.pdf",
+       height=4, width=5)
 
+## Apicystis ~ bombus abundance
+newdata.bombusabund <- crossing(Net_BombusAbundance =
+                                  seq(min(data.par$Net_BombusAbundance),
+                                      max(data.par$Net_BombusAbundance),
+                                      length.out=10),
+                                Lat = mean(data.par$Lat),
+                                rare.degree = mean(data.par$rare.degree),
+                                MeanITD = mean(data.par$MeanITD),
+                                MeanFloralAbund= mean(data.par$MeanFloralAbundance),
+                                MeanFloralDiversity= mean(data.par$MeanFloralDiversity),
+                                Net_HBAbundance= mean(data.par$Net_HBAbundance),
+                                Net_NonBombusHBAbundance = mean(data.par$Net_NonBombusHBAbundance),
+                                Net_BeeDiversity = mean(data.par$Net_BeeDiversity),
+                                Site = data.par$Site, 
+                                GenusSpecies = data.par$GenusSpecies
+)
+
+## predict values based on generated data and model parameters
+pred_bombusabund <- fit.parasite %>% 
+  epred_draws(newdata = newdata.bombusabund,
+              resp ="ApicystisSpp")
+
+## to see range of predicted values
+pred_bombusabund %>%
+  group_by(Net_BombusAbundance) %>%
+  summarise(mean(.epred))
+
+p2.parasitea <- ggplot(pred_bombusabund, aes(x = Net_BombusAbundance, y = .epred)) +
+  stat_lineribbon() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(x = "Bumble bee Abundance", y = "Parasite Prevalence",
+       fill = "Credible interval") +
+  theme_ms() +
+  theme(legend.position = "bottom") +
+  theme(axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        text = element_text(size=16)) +
+  ##theme_dark_black()+
+  geom_point(data=data.par,
+             aes(y= ApicystisParasitismRate, x=Net_BombusAbundance),
+             color="grey40", cex=2)+
+  scale_x_continuous(
+    breaks = axis.bombus.abund,
+    labels =  labs.bombus.abund)
+
+ggsave(p2.parasitea, file="figures/Apicystis_BombusAbund.pdf",
+       height=4, width=5)
+
+## parasitism ~ honey bee abundance
+## Crithidia ~ honey bee abundance
 newdata.hbabund <- crossing(Net_HBAbundance =
                                   seq(min(data.par$Net_HBAbundance),
                                       max(data.par$Net_HBAbundance),
@@ -196,24 +300,24 @@ newdata.hbabund <- crossing(Net_HBAbundance =
                                 Net_BombusAbundance= mean(data.par$Net_BombusAbundance),
                                 Net_NonBombusHBAbundance = mean(data.par$Net_NonBombusHBAbundance),
                                 Net_BeeDiversity = mean(data.par$Net_BeeDiversity),
-                                Site = "JC", 
-                                GenusSpecies = "Bombus huntii"
+                                Site = data.par$Site, 
+                                GenusSpecies = data.par$GenusSpecies
 )
 
 ## predict values based on generated data and model parameters
 pred_hbabund <- fit.parasite %>% 
   epred_draws(newdata = newdata.hbabund,
-              resp = c("CrithidiaPresence", "ApicystisSpp"))
+              resp = "CrithidiaPresence")
 
 ## to see range of predicted values
 pred_hbabund %>%
   group_by(Net_HBAbundance) %>%
   summarise(mean(.epred))
 
-p3.parasite <- ggplot(pred_hbabund, aes(x = Net_HBAbundance, y = .epred)) +
+p3.parasitec <- ggplot(pred_hbabund, aes(x = Net_HBAbundance, y = .epred)) +
   stat_lineribbon() +
   scale_fill_brewer(palette = "Blues") +
-  labs(x = "Honey bee Abundance", y = "Parasite Prevalence",
+  labs(x = "Honey bee Abundance", y = "Crithidia Spp. Prevalence",
        fill = "Credible interval") +
   theme_ms() +
   theme(legend.position = "bottom") +
@@ -225,8 +329,60 @@ p3.parasite <- ggplot(pred_hbabund, aes(x = Net_HBAbundance, y = .epred)) +
         text = element_text(size=16)) +
   ##theme_dark_black()+
   geom_point(data=data.par,
-             aes(y= SiteParasitismRate, x=Net_HBAbundance),
+             aes(y= CrithidiaParasitismRate, x=Net_HBAbundance),
              color="grey40", cex=2)
+
+ggsave(p3.parasitec, file="figures/Crithidia_HBAbund.pdf",
+       height=4, width=5)
+
+## Apicystis ~ honey bee abundance
+
+newdata.hbabund <- crossing(Net_HBAbundance =
+                              seq(min(data.par$Net_HBAbundance),
+                                  max(data.par$Net_HBAbundance),
+                                  length.out=10),
+                            Lat = mean(data.par$Lat),
+                            rare.degree = mean(data.par$rare.degree),
+                            MeanITD = mean(data.par$MeanITD),
+                            MeanFloralAbund= mean(data.par$MeanFloralAbundance),
+                            MeanFloralDiversity= mean(data.par$MeanFloralDiversity),
+                            Net_BombusAbundance= mean(data.par$Net_BombusAbundance),
+                            Net_NonBombusHBAbundance = mean(data.par$Net_NonBombusHBAbundance),
+                            Net_BeeDiversity = mean(data.par$Net_BeeDiversity),
+                            Site = data.par$Site, 
+                            GenusSpecies = data.par$GenusSpecies
+)
+
+## predict values based on generated data and model parameters
+pred_hbabund <- fit.parasite %>% 
+  epred_draws(newdata = newdata.hbabund,
+              resp = "ApicystisSpp")
+
+## to see range of predicted values
+pred_hbabund %>%
+  group_by(Net_HBAbundance) %>%
+  summarise(mean(.epred))
+
+p3.parasitea <- ggplot(pred_hbabund, aes(x = Net_HBAbundance, y = .epred)) +
+  stat_lineribbon() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(x = "Honey bee Abundance", y = "Apicystis Spp. Prevalence",
+       fill = "Credible interval") +
+  theme_ms() +
+  theme(legend.position = "bottom") +
+  scale_x_continuous(
+    breaks = axis.HB.abund,
+    labels =  labs.HB.abund) +
+  theme(axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        text = element_text(size=16)) +
+  ##theme_dark_black()+
+  geom_point(data=data.par,
+             aes(y= ApicystisParasitismRate, x=Net_HBAbundance),
+             color="grey40", cex=2)
+
+ggsave(p3.parasitea, file="figures/Apicystis_HBAbund.pdf",
+       height=4, width=5)
 
 ## parasitism ~ other bees abundance
 
@@ -397,7 +553,7 @@ p6.parasite <- ggplot(pred_meanITD, aes(x = MeanITD, y = .epred)) +
         text = element_text(size=16)) +
   ##theme_dark_black()+
   geom_point(data=data.par,
-             aes(y= ApicystisSpp, x= MeanITD),
+             aes(y= SiteParasitismRate, x= MeanITD),
              color="grey40", cex=2)
 
 
