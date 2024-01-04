@@ -221,6 +221,8 @@ calcSummaryStats <- function(spec.method, method){
                   SRDoyPoly1=mean(DoyPoly1),
                   SRDoyPoly2=mean(DoyPoly2),
                   SRDoy=mean(Doy),
+                  CrithidiaParasitismRate=mean(CrithidiaPresence, na.rm=TRUE),
+                  ApicystisParasitismRate=mean(ApicystisSpp, na.rm=TRUE),
                   CrithidiaBombusParasitismRate= mean(CrithidiaPresence[Genus == "Bombus"], 
                                                       na.rm=TRUE),
                   CrithidiaHBParasitismRate= mean (CrithidiaPresence
