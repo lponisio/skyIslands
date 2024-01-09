@@ -1,17 +1,17 @@
-
-runCombinedParasiteModels <- function(spec.data,
-                                      species.group,
-                                      parasites,
-                                      xvars,
+## This function creates and runs the models for the parasites. 
+runCombinedParasiteModels <- function(spec.data,## data
+                                      species.group,## genus of bee group
+                                      parasites,  ## name of the parasites for the model
+                                      xvars,## explanatory variables for the parasite model
                                       iter = 10^4,
                                       chains = 1,
                                       thin=1,
                                       init=0){
-
+  # create a list with the formulas for the different parasites models
   bf.parasite.formulas <- vector(mode="list",
                                  length=length(parasites))
   names(bf.parasite.formulas) <- parasites
-  
+  # Create the models of the parasites using the variables provided in xvars
   for(parasite in parasites){
     formula.parasite  <- as.formula(paste(
       paste(parasite, "| weights(WeightsPar)"),
@@ -21,21 +21,65 @@ runCombinedParasiteModels <- function(spec.data,
     bf.parasite.formulas[[parasite]] <-  bf(formula.parasite,
                                             family="bernoulli")  
   }
-  
+  # When there are two parasites or 1 parasite create a parasite model for each. 
+  # Select the bee abundance based on the species.group.
   if(length(parasites) == 2){
-    bform <- bf.fabund + bf.fdiv +
-      bf.babund + bf.bombusabund + bf.HBabund +
-      bf.bdiv  +    
-      bf.parasite.formulas[[1]]+
-      bf.parasite.formulas[[2]] +
-      set_rescor(FALSE)
+    ## Bombus
+    if(species.group == "bombus"){
+      bform <- bf.fabund + bf.fdiv +
+       bf.bombusabund +
+        bf.bdiv  +    
+        bf.parasite.formulas[[1]]+
+        bf.parasite.formulas[[2]] +
+        set_rescor(FALSE)
+    } ## Apis
+    else if (species.group == "apis"){
+      bform <- bf.fabund + bf.fdiv +
+        bf.HBabund +
+        bf.bdiv  +    
+        bf.parasite.formulas[[1]]+
+        bf.parasite.formulas[[2]] +
+        set_rescor(FALSE)
+    } ## Other bees
+    else (species.group != "bombus" & species.group != "apis" ){
+      bform <- bf.fabund + bf.fdiv +
+        bf.babund +
+        bf.bdiv  +    
+        bf.parasite.formulas[[1]]+
+        bf.parasite.formulas[[2]] +
+        set_rescor(FALSE)
+    }
+    
   }else  if(length(parasites) == 1){
     bform <- bf.fabund + bf.fdiv +
       bf.babund + bf.bombusabund + bf.HBabund +
       bf.bdiv  +    
       bf.parasite.formulas[[1]]+
       set_rescor(FALSE)
-  }
+    ## Bombus
+    if(species.group == "bombus"){
+      bform <- bf.fabund + bf.fdiv +
+        bf.bombusabund +
+        bf.bdiv  +    
+        bf.parasite.formulas[[1]]+
+        set_rescor(FALSE)
+    } ## Apis
+    else if (species.group == "apis"){
+      bform <- bf.fabund + bf.fdiv +
+        bf.HBabund +
+        bf.bdiv  +    
+        bf.parasite.formulas[[1]]+
+        set_rescor(FALSE)
+    } ## Other bees
+    else (species.group != "bombus" & species.group != "apis" ){
+      bform <- bf.fabund + bf.fdiv +
+        bf.babund 
+        bf.bdiv  +    
+        bf.parasite.formulas[[1]]+
+        set_rescor(FALSE)
+    }
+  } 
+  ## Fit brms model to the complete model
 
   fit.parasite <- brm(bform, spec.data,
                       cores=ncores,
@@ -45,18 +89,18 @@ runCombinedParasiteModels <- function(spec.data,
                       init=init,
                       control = list(adapt_delta = 0.99),
                       save_pars = save_pars(all = TRUE))
-
+  ## Create a table with the results. 
   write.ms.table(fit.parasite,
                  sprintf("parasitism_%s_%s",
                          species.group, paste(parasites, collapse="")))
-
+  ## Calculate r2 values 
   r2 <- bayes_R2(fit.parasite)
   print(round(r2, 2))
-
+  ## Save the model results as a rdata file
   save(fit.parasite, spec.data, r2,
        file=sprintf("saved/parasiteFit_%s_%s.Rdata",
                     species.group, paste(parasites, collapse="")))
-
+  ## Plot the residuals
   plot.res(fit.parasite,  sprintf("%s_%s",
                                   species.group, paste(parasites, collapse="")))
 
