@@ -192,6 +192,88 @@ ggsave(sp.turnover.both[[2]], file="figures/microbe_poll/SpeciesTurnoverAbsenceB
 # ggsave(diss.only.shared.rich.dif[[2]], file="figures/microbe_poll/DissimilarityOnlySharedRichDif.pdf", height=4, width=6)
 
 
+## now do the same for the three groups of obligate, parasitic, transient
+
+site_list <- names(spNet_micro)
+
+## obligate symbionts
+these_obligates <- c("Lactobacillus",
+                     "Bifidobacterium",
+                     "Snodgrassella",
+                     "Gilliamella",
+                     "Frischella",
+                     "Bartonella",
+                     "Commensalibacter")
+
+only_obligate_network <- list()
+
+for (x in site_list){
+
+  obligates_rows <- rownames(spNet_micro[[x]])
+
+  ob_rows_to_keep <- grep(paste(these_obligates, collapse = "|"), obligates_rows)
+
+  ob_new_net <- spNet_micro[[x]][ob_rows_to_keep,]
+
+  new_name <- x
+
+  only_obligate_network[[new_name]] <- ob_new_net
+
+}
+
+#### species level networks
+CH <- only_obligate_network$CH
+HM <- only_obligate_network$HM
+JC <- only_obligate_network$JC
+MM <- only_obligate_network$MM 
+PL <- only_obligate_network$PL
+RP <- only_obligate_network$RP
+SC <- only_obligate_network$SC 
+SM <- only_obligate_network$SM
+
+
+lower.order <- "Microbes"
+higher.order <- "Pollinators"
+
+
+obligate_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, RP, SM, SC),
+                                         partitioning="commondenom", binary=FALSE, distofempty='zero', partition.st=TRUE, partition.rr=FALSE)
+
+#View(obligate_poll_betalink)
+
+colnames(obligate_poll_betalink) <- c("Site1",
+                                     "Site2",
+                                     "DissimilaritySpeciesComposition",
+                                     "OnlySharedLinks",
+                                     "WholeNetworkLinks",
+                                     "SpeciesTurnoverLinks",
+                                     paste("TurnoverAbsence",lower.order,sep=""),
+                                     paste("TurnoverAbsence",higher.order,sep=""),
+                                     "TurnoverAbsenceBoth")
+
+
+
+
+
+
+###will need to update LP's function networkBetaDiversity because most of the packages
+### are no longer compatible :( 
+
+geo <- unique(spec.net[, c("Site", "Lat", "Long")])
+geo <- geo[!duplicated(geo$Site),]
+
+geo.dist <- rdist.earth(cbind(geo$Long, geo$Lat),
+                        cbind(geo$Long, geo$Lat))
+colnames(geo.dist) <- rownames(geo.dist) <- geo$Site
+
+## add column for geographic distance between sites
+obligate_poll_betalink$GeoDist <- apply(obligate_poll_betalink, 1, function(x){
+  geo.dist[x["Site1"],  x["Site2"]]
+})
+
+
+
+
 
 # ### facet plots
 # bee_microbe_turnover <- ggarrange(spec.turnover.plot,
