@@ -543,13 +543,13 @@ qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-
 
 qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-table split/tableR3_f2.qza --p-sampling-depth 1352 --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --output-dir final/core_metricsRBCLR3 --verbose
 
-qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-table split/tableR4_f2.qza --p-sampling-depth 1352 --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --output-dir final/core_metricsRBCLR4 --verbose
+qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-table split/tableR4_f2.qza --p-sampling-depth 1130 --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --output-dir final/core_metricsRBCLR4 --verbose
 
-qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-table split/tableR5_f2.qza --p-sampling-depth 1352 --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --output-dir final/core_metricsRBCLR5 --verbose
+qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-table split/tableR5_f2.qza --p-sampling-depth 1130 --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --output-dir final/core_metricsRBCLR5 --verbose
 
-qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-table split/tableR6_f2.qza --p-sampling-depth 1352 --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --output-dir final/core_metricsRBCLR6 --verbose
+qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-table split/tableR6_f2.qza --p-sampling-depth 1130 --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --output-dir final/core_metricsRBCLR6 --verbose
 
-qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-table split/tableR7_f2.qza --p-sampling-depth 1352 --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --output-dir final/core_metricsRBCLR7 --verbose
+qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-treeRBCL.qza --i-table split/tableR7_f2.qza --p-sampling-depth 1130 --m-metadata-file maps/sky2020mapRBCL_combined_repsremoved.txt --output-dir final/core_metricsRBCLR7 --verbose
 
 
  qiime feature-table merge \
