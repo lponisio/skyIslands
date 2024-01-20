@@ -63,7 +63,6 @@ source("src/runPlotFreqModelDiagnostics.R")
 ncores <- 1
 
 
-
 ## QUESTION: should include root = TRUE? if false gives warning 3x
 ## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
 # PD <- apply(spec.microbes[,microbes], 1, function(x){
@@ -164,7 +163,6 @@ ncores <- 1
 flower.abund.vars <- c("Year",
                        "SRDoy",
                        "I(SRDoy^2)",
-                       "Lat",
                        "(1|Site)")
 
 flower.abund.x <- paste(flower.abund.vars, collapse="+")
@@ -388,11 +386,11 @@ fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
                      save_pars = save_pars(all = TRUE),
                      data2 = list(phylo_matrix=phylo_matrix))
 
-write.ms.table(fit.microbe.bombus, "bombus_microbe.ln")
-r2loo.bombus.ln <- loo_R2(fit.microbe.bombus)
-r2.bombus.ln <- rstantools::bayes_R2(fit.microbe.bombus)
+write.ms.table(fit.microbe.bombus, "bombus_microbe")
+r2loo.bombus <- loo_R2(fit.microbe.bombus)
+r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
 save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
-       file="saved/fullMicrobeBombusFit_ln.Rdata")
+       file="saved/fullMicrobeBombusFit.Rdata")
 
 ## run apis model
 # microbe.apis.vars <- c("BeeAbundance",
