@@ -25,15 +25,24 @@ library(pals)
 
 ##probs want to make sure each site in each individual graph is colored uniformly for all graphs 
 
-phylotree_heatmap_byGenus <- function(tree.object, metadata, this.species, presAbsTable, site.order, all_levels=TRUE, levels_to_drop, clade_names=NULL, do_collapse=FALSE){
+phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.species, presAbsTable, site.order, all_levels=TRUE, levels_to_drop, clade_names=NULL, do_collapse=FALSE){
   #filter to include just the unique IDs in the specified genus
-  sp_ids <- metadata %>%
+  if (genus.or.spp=='Species'){
+    sp_ids <- metadata %>%
     filter(GenusSpecies==this.species) %>%
     select(UniqueID)
   
   #pull out all sites that include the specified genus
   my_sites <- unique(metadata$Site[metadata$GenusSpecies==this.species])
-
+  }
+  if (genus.or.spp=='Genus'){
+    sp_ids <- metadata %>%
+      filter(Genus==this.species) %>%
+      select(UniqueID)
+    
+    #pull out all sites that include the specified genus
+    my_sites <- unique(metadata$Site[metadata$Genus==this.species])
+  }
   #remove tips from the tree that are not in the list of unique IDs in the specified genus
   trimmed_tree <- prune_samples(sample_names(tree.object) %in% sp_ids$UniqueID, tree.object)
   
@@ -130,9 +139,9 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, this.species, presA
 
   if(all_levels==FALSE){
     if(final_level == ' s__'){
-      rest_of_label <- ' to genus'
+      rest_of_label <- 'to genus'
     } else if(final_level == ' g__'){
-      rest_of_label <- ' to family'
+      rest_of_label <- 'to family'
     }
     this_level <- paste(": Collapsed", rest_of_label)
   } else {this_level <- ': Full Tree'}
@@ -144,7 +153,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, this.species, presA
   
   matched_id <- matched_pres_meta$UniqueID
   row.names(matched_pres_meta) <- matched_id
-  
+  if (genus.or.spp=='Species'){
   meta_match_sites <- match_shared_ID(metadata, matched_pres_meta) %>%
     select(UniqueID, Site, GenusSpecies) %>%
     mutate(Site = factor(Site)) %>%
@@ -162,7 +171,26 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, this.species, presA
     filter(Site_present > 0) #%>%
     #mutate(Site = factor(Site, levels=site.order))
   #browser()
-  
+  }
+  if (genus.or.spp=='Genus'){
+    meta_match_sites <- match_shared_ID(metadata, matched_pres_meta) %>%
+      select(UniqueID, Site, Genus) %>%
+      mutate(Site = factor(Site)) %>%
+      filter(Genus==this.species) %>%
+      select(!Genus) %>%
+      group_by(UniqueID, Site) %>%
+      count() %>%
+      pivot_wider(names_from=Site,
+                  values_from = n,
+                  names_expand = TRUE,
+                  id_expand=TRUE) %>%
+      pivot_longer(cols=2:length(colnames(.)),
+                   names_to='Site',
+                   values_to='Site_present') %>%
+      filter(Site_present > 0) #%>%
+    #mutate(Site = factor(Site, levels=site.order))
+    #browser()
+  }
   features_site_metadata <- match_shared_ID(matched_pres_meta, meta_match_sites) %>%
     right_join(meta_match_sites, by='UniqueID') %>%
     #browser()
@@ -201,33 +229,42 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, this.species, presA
                   #x=SiteCount,
                   fill=SiteCount, width=0.1),
       show.legend=TRUE) +
+    labs(fill='Number of Sites')+
     scale_fill_gradient(high = "black", low ="lightgrey") +
-    ggtitle(paste(this.species, this_level)) +
+    #ggtitle(paste(this.species, this_level)) +
     new_scale_fill() + 
     geom_tippoint(aes(
-      subset=(grepl('Acetobacteraceae',label,fixed=TRUE)==TRUE)), color="#604E97", size=3) +
+      subset=(grepl("Rosenbergiella",label,fixed=TRUE)==TRUE)), color="#604E97", size=3) +
     geom_tippoint(aes(
-      subset=(grepl('Bifidobacteriaceae',label,fixed=TRUE)==TRUE)), color="#F3C300", size=3)+
+      subset=(grepl("Pseudomonas",label,fixed=TRUE)==TRUE)), color="#F3C300", size=3)+
     geom_tippoint(aes(
-      subset=(grepl('Enterobacteriaceae',label,fixed=TRUE)==TRUE)), color="#B3446C", size=3)+
+      subset=(grepl("Gilliamella",label,fixed=TRUE)==TRUE)), color="#FB9A99", size=3)+
     geom_tippoint(aes(
-      subset=(grepl('Erwiniaceae',label,fixed=TRUE)==TRUE)), color="#F38400", size=3)+
+      subset=(grepl("Lactobacillus",label,fixed=TRUE)==TRUE)), color="#F38400", size=3)+
     geom_tippoint(aes(
-      subset=(grepl('Hafniaceae',label,fixed=TRUE)==TRUE)), color="#A1CAF1", size=3)+
+      subset=(grepl("Caulobacter",label,fixed=TRUE)==TRUE)), color="#A1CAF1", size=3)+
     geom_tippoint(aes(
-      subset=(grepl('Lactobacillaceae',label,fixed=TRUE)==TRUE)), color="#BE0032", size=3)+
+      subset=(grepl("Snodgrassella",label,fixed=TRUE)==TRUE)), color="deeppink1", size=3)+
     geom_tippoint(aes(
-      subset=(grepl('Leuconostocaceae',label,fixed=TRUE)==TRUE)), color="#C2B280", size=3)+
+      subset=(grepl("Acinetobacter",label,fixed=TRUE)==TRUE)), color="#C2B280", size=3)+
     geom_tippoint(aes(
-      subset=(grepl('Moraxellaceae',label,fixed=TRUE)==TRUE)), color="#848482", size=3)+
+      subset=(grepl("Corynebacterium",label,fixed=TRUE)==TRUE)), color="#848482", size=3)+
     geom_tippoint(aes(
-      subset=(grepl('Neisseriaceae',label,fixed=TRUE)==TRUE)), color="#008856", size=3)+
+      subset=(grepl("Sphingomonas",label,fixed=TRUE)==TRUE)), color="#008856", size=3)+
     geom_tippoint(aes(
-      subset=(grepl('Orbaceae',label,fixed=TRUE)==TRUE)), color="#E68FAC", size=3)+
+      subset=(grepl("Commensalibacter",label,fixed=TRUE)==TRUE)), color="#CAB2D6", size=3)+
     geom_tippoint(aes(
-      subset=(grepl('Streptococcaceae',label,fixed=TRUE)==TRUE)), color="#0067A5", size=3)+
+      subset=(grepl("Methylobacterium",label,fixed=TRUE)==TRUE)), color="#0067A5", size=3)+
     geom_tippoint(aes(
-      subset=(grepl('Yersiniaceae',label,fixed=TRUE)==TRUE)), color="#F99379", size=3)
+      subset=(grepl( "Massilia",label,fixed=TRUE)==TRUE)), color="palegreen2", size=3)+
+    geom_tippoint(aes(
+      subset=(grepl( "Stenotrophomonas",label,fixed=TRUE)==TRUE)), color="#E31A1C", size=3)+
+    geom_tippoint(aes(
+      subset=(grepl( "Bifidobacterium",label,fixed=TRUE)==TRUE)), color="yellow3", size=3)+
+    geom_tippoint(aes(
+      subset=(grepl( "Bifidobacterium",label,fixed=TRUE)==TRUE)), color="green4", size=3)+
+    geom_tippoint(aes(
+      subset=(grepl("Bartonella",label,fixed=TRUE)==TRUE)), color="maroon", size=3)
   
 
 
@@ -242,6 +279,21 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, this.species, presA
   
   #browser()
 }
+
+## obligate symbionts
+these_obligates <- c("Lactobacillus",
+                     "Bifidobacterium",
+                     "Snodgrassella",
+                     "Gilliamella",
+                     "Frischella",
+                     "Bartonella",
+                     "Commensalibacter")
+
+core.sp <- c("Rosenbergiella", "Pseudomonas", "Gilliamella",
+             "Lactobacillus", "Caulobacter", "Snodgrassella",
+             "Acinetobacter", "Corynebacterium", "Sphingomonas",
+             "Commensalibacter", "Methylobacterium",
+             "Massilia","Stenotrophomonas", "Bifidobacterium", "Frischella", "Bartonella")
 
 ### what i need to do:
 # figure out what order to do the filtering steps
@@ -267,61 +319,88 @@ comm_presabs <- tibble::rownames_to_column(comm_presabs, "UniqueID") #make rowna
 
 
 
-#apis
-# apis_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", comm_presabs, apis_sites, all_levels=TRUE, do_collapse=FALSE, tree.type='16s')
-# apis_tree
+# #apis
+# # apis_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", comm_presabs, apis_sites, all_levels=TRUE, do_collapse=FALSE, tree.type='16s')
+# # apis_tree
+# # 
+# apis_tree2 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis mellifera", genus.or.spp='Species', comm_presabs, apis_sites, all_levels=TRUE, do_collapse = TRUE)
+# apis_tree2
+# # 
+# apis_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis mellifera", genus.or.spp='Species', comm_presabs, apis_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse=TRUE)
+# apis_tree_drop_s
+# # 
+# apis_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis mellifera", genus.or.spp='Species', comm_presabs, apis_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
+# apis_tree_drop_g
 # 
-apis_tree2 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis mellifera", comm_presabs, apis_sites, all_levels=TRUE, do_collapse = TRUE)
-apis_tree2
 # 
-apis_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis mellifera", comm_presabs, apis_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse=TRUE)
+# 
+# #bombus centralis
+# centralis_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus centralis", genus.or.spp='Species', comm_presabs, bombus_sites, do_collapse = TRUE)
+# centralis_tree
+# 
+# centralis_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus centralis", genus.or.spp='Species', comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
+# centralis_tree_drop_s
+# 
+# centralis_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus centralis", genus.or.spp='Species', comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
+# centralis_tree_drop_g
+# 
+# #bombus huntii
+# huntii_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus huntii", genus.or.spp='Species', comm_presabs, bombus_sites, do_collapse = TRUE)
+# huntii_tree
+# 
+# huntii_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus huntii", genus.or.spp='Species', comm_presabs,  bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
+# huntii_tree_drop_s
+# 
+# huntii_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus huntii", genus.or.spp='Species', comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
+# huntii_tree_drop_g
+# 
+# #bombus bifarius -- only found at one site!
+# # bifarius_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus bifarius", comm_presabs, bombus_sites, do_collapse = TRUE)
+# # bifarius_tree
+# #
+# # bifarius_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus bifarius", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
+# # bifarius_tree_drop_s
+# #
+# # bifarius_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus bifarius", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
+# # bifarius_tree_drop_g
+# 
+# 
+# # melissodes confusus
+# melissodes_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes confusus", genus.or.spp='Species', comm_presabs, bombus_sites, do_collapse = TRUE)
+# melissodes_tree
+# 
+# melissodes_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes confusus", genus.or.spp='Species', comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
+# melissodes_tree_drop_s
+# 
+# melissodes_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes confusus", genus.or.spp='Species', comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
+# melissodes_tree_drop_g
+
+
+## Genus trees
+apis_tree2 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", genus.or.spp='Genus', comm_presabs, apis_sites, all_levels=TRUE, do_collapse = TRUE)
+panelB <- apis_tree2 + labs(tag="B.")
+# 
+apis_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", genus.or.spp='Genus', comm_presabs, apis_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse=TRUE)
 apis_tree_drop_s
 # 
-apis_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis mellifera", comm_presabs, apis_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
-apis_tree_drop_g
 
 
+# melissodes 
+melissodes_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes", genus.or.spp='Genus', comm_presabs, bombus_sites, do_collapse = TRUE)
+panelC <- melissodes_tree + labs(tag="C.")
 
-#bombus centralis
-centralis_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus centralis", comm_presabs, bombus_sites, do_collapse = TRUE)
-centralis_tree
-
-centralis_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus centralis", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
-centralis_tree_drop_s
-
-centralis_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus centralis", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
-centralis_tree_drop_g
-
-#bombus huntii
-huntii_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus huntii", comm_presabs, bombus_sites, do_collapse = TRUE)
-huntii_tree
-
-huntii_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus huntii", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
-huntii_tree_drop_s
-
-huntii_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus huntii", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
-huntii_tree_drop_g
-
-#bombus bifarius -- only found at one site!
-# bifarius_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus bifarius", comm_presabs, bombus_sites, do_collapse = TRUE)
-# bifarius_tree
-#
-# bifarius_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus bifarius", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
-# bifarius_tree_drop_s
-#
-# bifarius_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus bifarius", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
-# bifarius_tree_drop_g
-
-
-# melissodes confusus
-melissodes_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes confusus", comm_presabs, bombus_sites, do_collapse = TRUE)
-melissodes_tree
-
-melissodes_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes confusus", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
+melissodes_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes", genus.or.spp='Genus', comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
 melissodes_tree_drop_s
 
-melissodes_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes confusus", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
-melissodes_tree_drop_g
+
+#bombus tree
+bombus_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus", genus.or.spp='Genus', comm_presabs, bombus_sites, do_collapse = TRUE)
+panelA <- bombus_tree + labs(tag="A.")
+
+bombus_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus", genus.or.spp='Genus', comm_presabs,  bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
+bombus_tree_drop_s
+
+
 
 ## make legend
 
@@ -332,78 +411,53 @@ library("grid")
 library("gridExtra") 
 library("cowplot") 
 
-geom_tippoint(aes(
-  subset=(grepl('Acetobacteraceae',label,fixed=TRUE)==TRUE)), color="#604E97", size=3) +
-  geom_tippoint(aes(
-    subset=(grepl('Bifidobacteriaceae',label,fixed=TRUE)==TRUE)), color="#F3C300", size=3)+
-  geom_tippoint(aes(
-    subset=(grepl('Enterobacteriaceae',label,fixed=TRUE)==TRUE)), color="#B3446C", size=3)+
-  geom_tippoint(aes(
-    subset=(grepl('Erwiniaceae',label,fixed=TRUE)==TRUE)), color="#F38400", size=3)+
-  geom_tippoint(aes(
-    subset=(grepl('Hafniaceae',label,fixed=TRUE)==TRUE)), color="#A1CAF1", size=3)+
-  geom_tippoint(aes(
-    subset=(grepl('Lactobacillaceae',label,fixed=TRUE)==TRUE)), color="#BE0032", size=3)+
-  geom_tippoint(aes(
-    subset=(grepl('Leuconostocaceae',label,fixed=TRUE)==TRUE)), color="#C2B280", size=3)+
-  geom_tippoint(aes(
-    subset=(grepl('Moraxellaceae',label,fixed=TRUE)==TRUE)), color="#848482", size=3)+
-  geom_tippoint(aes(
-    subset=(grepl('Neisseriaceae',label,fixed=TRUE)==TRUE)), color="#008856", size=3)+
-  geom_tippoint(aes(
-    subset=(grepl('Orbaceae',label,fixed=TRUE)==TRUE)), color="#E68FAC", size=3)+
-  geom_tippoint(aes(
-    subset=(grepl('Streptococcaceae',label,fixed=TRUE)==TRUE)), color="#0067A5", size=3)+
-  geom_tippoint(aes(
-    subset=(grepl('Yersiniaceae',label,fixed=TRUE)==TRUE)), color="#F99379", size=3)
-
+core.sp <- c("Rosenbergiella", "Pseudomonas", "Gilliamella",
+             "Lactobacillus", "Caulobacter", "Snodgrassella",
+             "Acinetobacter", "Corynebacterium", "Sphingomonas",
+             "Commensalibacter", "Methylobacterium",
+             "Massilia","Stenotrophomonas", "Bifidobacterium", "Frischella", "Bartonella")
 
 
 
 # Create a DataFrame 
 data <- data.frame( 
-  Xdata = rnorm(12),
-  Ydata = rnorm(12), 
-  Family = c('Acetobacteraceae',
-                 'Bifidobacteriaceae',
-                 'Enterobacteriaceae',
-                 'Erwiniaceae',
-                 'Hafniaceae', 
-                 'Lactobacillaceae',
-                 'Leuconostocaceae',
-                 'Moraxellaceae',  
-                 'Neisseriaceae',
-                 'Orbaceae',
-                 'Streptococcaceae',
-                 'Yersiniaceae'
-                 ),
+  Xdata = rnorm(16),
+  Ydata = rnorm(16), 
+  Family = core.sp,
   leg_color = c("#604E97",
                 "#F3C300",
-                "#B3446C",
+                "#FB9A99",
                 "#F38400",
                 "#A1CAF1",
-                "#BE0032",
+                "deeppink1",
                 "#C2B280",
                 "#848482",
                 "#008856",
-                "#E68FAC",
+                "#CAB2D6",
                 "#0067A5",
-                "#F99379"
+                "palegreen2",
+                "#E31A1C",
+                "yellow3",
+                "green4",
+                "maroon"
                 )) 
 
 # Create a Scatter Plot 
 gplot <- ggplot(data, aes(Xdata, Ydata, color = Family)) +    
-  geom_point(size = 7) + scale_color_manual(values=data$leg_color)
+  geom_point(size = 7) + scale_color_manual(values=data$leg_color) + theme(legend.position='bottom') + labs(color='Bacteria Genus') + 
+  guides(color = guide_legend(nrow = 2))
 
 # Draw Only Legend without plot 
 # Grab legend from gplot 
-legend <- get_legend(gplot)                     
+panelD  <- get_legend(gplot)                     
 
-# Create new plot window 
-grid.newpage()                               
 
-# Draw Only legend  
-grid.draw(legend) 
+#make panel figure
+grid.arrange(panelA,
+             panelB,
+             panelC,
+             panelD,
+             ncol=1)
 # ##########################
 # 
 # ##getting clade labels ready
