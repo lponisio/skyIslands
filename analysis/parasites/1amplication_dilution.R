@@ -1,7 +1,7 @@
 rm(list=ls())
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
-## setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
-setwd('~/Dropbox (University of Oregon)/skyislands')
+ setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
+## setwd('~/Dropbox (University of Oregon)/skyislands')
 ncores <- 3
 
 setwd("analysis/parasites")
@@ -10,7 +10,7 @@ source("src/writeResultsTable.R")
 source("src/makeMultiLevelData.R")
 source("src/runParasiteModels.R")
 source("src/standardize_weights.R")
-source("src/parasiteModelFunctions.R")
+
 ## all of the variables that are explanatory variables and thus need
 ## to be centered
 vars_yearsr <- c("MeanFloralAbundance",
@@ -35,6 +35,14 @@ source("src/plant_poll_models.R")
 unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
                              is.na(spec.net$MeanITD)])
 
+## Load phylogeny 
+load("../../data/community_phylogeny.Rdata")
+## Species that are not in the phylogeny are not used. brms is not allowing an incomplete
+## phylogeny, to avoid the error we changed the species not present to one that is in the phylogeny. 
+## We chose a species for which we did not do parasite screening and should not influence results.
+not_in_phylo <- unique(spec.net$GenusSpecies[!spec.net$GenusSpecies %in% phylo$tip.label])
+spec.bombus$GenusSpecies[spec.bombus$GenusSpecies %in% not_in_phylo]<- "Agapostemon angelicus"
+
 ## **********************************************************
 ## Parasite models set up
 ## **********************************************************
@@ -44,7 +52,9 @@ xvars.multi.species <-  c("Net_NonBombusHBAbundance",
                           "Net_BombusAbundance",
                           "Net_BeeDiversity",
                           "rare.degree", "MeanITD",
-                          "(1|Site)", "(1|GenusSpecies)")
+                          "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))")
+
+#"(1|gr(GenusSpecies, cov = phylo_matrix))"
 ## single species models
 xvars.single.species <-  c("Net_NonBombusHBAbundance",
                            "Net_HBAbundance",
@@ -100,32 +110,16 @@ fit.both.parasites <- runCombinedParasiteModels(spec.net, species.group="all",
                              init=0)
 
 ## bombus
-fit.both.bombus <- runCombinedParasiteModels(spec.net, species.group="bombus",
-                                                parasite= c("CrithidiaPresence",
-                                                            "ApicystisSpp"),
-                                                xvars=xvars.multi.species,
-                                                iter = 10^4,
-                                                chains = 1,
-                                                thin=1,
-                                                init=0)
 
-
-fit.bombus <- runParasiteModels(spec.bombus, species.group="bombus",
-                                        parasite ="CrithidiaPresence",
+fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
+                                        parasite = c("CrithidiaPresence", "ApicystisSpp"),
                                         xvars=xvars.multi.species,
                                         iter = 10^4,
                                         chains = 1,
                                         thin=1,
-                                        init=0)
+                                        init=0, data2= list(phylo_matrix=phylo_matrix))
 
-## bombus
-fit.bombus <- runParasiteModels(spec.bombus, species.group="bombus",
-                                        parasite = "ApicystisSpp",
-                                        xvars=xvars.multi.species,
-                                        iter = 10^4,
-                                        chains = 1,
-                                        thin=1,
-                                        init=0)
+
 
 ## all apidae species (Bombus, Apis, Anthophora, Melissodes)
 fit.apidae <- runCombinedParasiteModels(spec.apidae, species.group="apidae",
