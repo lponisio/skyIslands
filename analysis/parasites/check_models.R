@@ -196,7 +196,7 @@ freq.bee.abun.model <- run_plot_freq_model_diagnostics(formula.bee.abund,
 ggsave(freq.bee.abun.model, file="figures/NonBombusHBAbunModelDiagnostics_gaussian.pdf",
        height=8, width=11)
 
-## parasite
+## parasite- Crithidia
 beta_bi_formula <- formula(CrithidiaPresence ~ Net_NonBombusHBAbundance + 
                              Net_HBAbundance + Net_BombusAbundance + 
                              Net_BeeDiversity + rare.degree + MeanITD + 
@@ -204,11 +204,24 @@ beta_bi_formula <- formula(CrithidiaPresence ~ Net_NonBombusHBAbundance +
 
 freq.parasite.model <- run_plot_freq_model_diagnostics(beta_bi_formula,
                                                        spec.net[spec.net$WeightsPar==1,], 
-                                                       this_family = 'bernoulli')
+                                                       this_family = 'zero_inflated_beta_binomial')
 
-ggsave(freq.parasite.model, file="figures/ParasiteModelDiagnostics.pdf",
+ggsave(freq.parasite.model, file="figures/CrithidiaModelDiagnostics.pdf",
        height=8, width=11)
 
+## parasite- Apicystis
+
+beta_bi_formula <- formula(ApicystisSpp ~ Net_NonBombusHBAbundance + 
+                             Net_HBAbundance + Net_BombusAbundance + 
+                             Net_BeeDiversity + rare.degree + MeanITD + 
+                             (1|Site) + (1|GenusSpecies) + (1|gr(GenusSpecies, cov = phylo_matrix))) 
+
+freq.parasite.model <- run_plot_freq_model_diagnostics(beta_bi_formula,
+                                                       spec.net[spec.net$WeightsPar==1,], 
+                                                       this_family = 'bernoulli')
+
+ggsave(freq.parasite.model, file="figures/ApiscystisModelDiagnostics.pdf",
+       height=8, width=11)
 
 ## Load the model data
 load(file="saved/communityFit.Rdata")
