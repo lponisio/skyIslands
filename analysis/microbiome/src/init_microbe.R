@@ -108,7 +108,7 @@ spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
 
 #change microbe NAs to 0
 spec.net <- spec.net %>%
-  mutate_at(vars(microbes), ~replace_na(PD, 0))
+  mutate_at(vars(all_of(microbes)), ~replace_na(PD, 0))
   
 
 spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
@@ -258,8 +258,8 @@ spec.melissodes$LogWeightsAbund <- log(spec.melissodes$WeightsAbund + 1)
 spec.melissodes$LogWeightsAbund[spec.melissodes$Genus != "Melissodes"] <- 0
 spec.melissodes$WeightsAbund[spec.melissodes$Genus != "Melissodes"] <- 0
 
-spec.apidae <- spec.all
-spec.apidae$WeightsMicrobe[spec.melissodes$Family != "Apidae"] <- 0
+# spec.apidae <- spec.all
+# spec.apidae$WeightsMicrobe[spec.melissodes$Family != "Apidae"] <- 0
 
 ### troubleshooting
 these_are_getting_dropped <- c("Anthidium mormonum","Bombus centralis","Bombus huntii","Dufourea maura","Melissodes confusus")
