@@ -6,7 +6,7 @@ runCombinedParasiteModels <- function(spec.data,## data
                                       iter = 10^4,
                                       chains = 1,
                                       thin=1,
-                                      init=0){
+                                      init=0, data2 = NULL){
   # create a list with the formulas for the different parasites models
   bf.parasite.formulas <- vector(mode="list",
                                  length=length(parasites))
@@ -14,12 +14,12 @@ runCombinedParasiteModels <- function(spec.data,## data
   # Create the models of the parasites using the variables provided in xvars
   for(parasite in parasites){
     formula.parasite  <- as.formula(paste(
-      paste(parasite, "| weights(WeightsPar)"),
+      paste(parasite, "| weights(WeightsPar) + trials(1)"),
       paste(xvars,
             collapse=" + "),
       sep=" ~ "))
     bf.parasite.formulas[[parasite]] <-  bf(formula.parasite,
-                                            family="bernoulli")  
+                                            family="zero_inflated_binomial")  
   }
   # When there are two parasites or 1 parasite create a parasite model for each. 
   # Select the bee abundance based on the species.group.
@@ -41,21 +41,16 @@ runCombinedParasiteModels <- function(spec.data,## data
         bf.parasite.formulas[[2]] +
         set_rescor(FALSE)
     } ## Other bees
-    else (species.group != "bombus" & species.group != "apis" ){
+    else (species.group != "bombus" & species.group != "apis")
       bform <- bf.fabund + bf.fdiv +
         bf.babund +
         bf.bdiv  +    
         bf.parasite.formulas[[1]]+
         bf.parasite.formulas[[2]] +
         set_rescor(FALSE)
-    }
+    
     
   }else  if(length(parasites) == 1){
-    bform <- bf.fabund + bf.fdiv +
-      bf.babund + bf.bombusabund + bf.HBabund +
-      bf.bdiv  +    
-      bf.parasite.formulas[[1]]+
-      set_rescor(FALSE)
     ## Bombus
     if(species.group == "bombus"){
       bform <- bf.fabund + bf.fdiv +
@@ -71,13 +66,13 @@ runCombinedParasiteModels <- function(spec.data,## data
         bf.parasite.formulas[[1]]+
         set_rescor(FALSE)
     } ## Other bees
-    else (species.group != "bombus" & species.group != "apis" ){
+    else (species.group != "bombus" & species.group != "apis")
       bform <- bf.fabund + bf.fdiv +
         bf.babund 
         bf.bdiv  +    
         bf.parasite.formulas[[1]]+
         set_rescor(FALSE)
-    }
+    
   } 
   ## Fit brms model to the complete model
 
@@ -88,7 +83,7 @@ runCombinedParasiteModels <- function(spec.data,## data
                       thin=thin,
                       init=init,
                       control = list(adapt_delta = 0.99),
-                      save_pars = save_pars(all = TRUE))
+                      save_pars = save_pars(all = TRUE), data2 = data2)
   ## Create a table with the results. 
   write.ms.table(fit.parasite,
                  sprintf("parasitism_%s_%s",
