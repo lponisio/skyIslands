@@ -81,7 +81,7 @@ microbe_poll_betalink$GeoDist <- apply(microbe_poll_betalink, 1, function(x){
 
 
 
-###############################################################################
+##############################################################################
 
 # Define a function called 'calculate_and_plot_betalinkr' that takes three arguments: this_component (which dissimilarity component should you make plots for?), 
 #                                                                                     this_network(which network object will be used for input), and label (y axis label).
