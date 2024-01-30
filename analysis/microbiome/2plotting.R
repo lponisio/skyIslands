@@ -114,8 +114,8 @@ load(file="saved/fullMicrobeMelissodesFit.Rdata")
 # bombus.abund.PD <- ggplot(pred_beeabund, aes(x = BeeAbundance, y =
 #                                                      .epred)) +
 #   stat_lineribbon(show.legend = FALSE) +
-#   scale_fill_brewer(palette = "Oranges") +
-#   labs(x = "Bee Abundance", y = "Microbe Phylogenetic Diversity",
+#   scale_fill_brewer(palette = "Blues") +
+#   labs(x = "Bee Abundance", y = "Microbe \nPhylogenetic \nDistance",
 #        fill = "Credible Interval") +
 #   theme(axis.title.x = element_text(size=16),
 #         axis.title.y = element_text(size=16),
@@ -126,11 +126,11 @@ load(file="saved/fullMicrobeMelissodesFit.Rdata")
 #              aes(y=PD, x=BeeAbundance), cex=2, alpha=0.5) +
 #   scale_x_continuous(
 #     breaks = axis.bee.abund,
-#     labels =  labs.bee.abund) + labs(tag='A.', y='Microbe \nPhylogenetic \nDiversity')
+#     labels =  labs.bee.abund) + labs(tag='A.', y='Microbe \nPhylogenetic \nDistance')
 # 
 # 
 # bombus.abund.PD
-# panelA <- bombus.abund.PD
+# #panelA <- bombus.abund.PD
 # 
 # dir.create("figures")
 # 
@@ -166,8 +166,8 @@ load(file="saved/fullMicrobeMelissodesFit.Rdata")
 # bombus.div.PD <- ggplot(pred_beediv, aes(x = BeeDiversity, y =
 #                                                .epred)) +
 #   stat_lineribbon(show.legend=FALSE) +
-#   scale_fill_brewer(palette = "Oranges") +
-#   labs(x = "Bee Diversity", y = "Microbe Phylogenetic Diversity",
+#   scale_fill_brewer(palette = "Blues") +
+#   labs(x = "Bee Diversity", y = "Microbe  \nPhylogenetic \nDistance",
 #        fill = "Credible Interval") +
 #   theme(legend.position = "none")  +
 #   theme(axis.title.x = element_text(size=16),
@@ -178,11 +178,11 @@ load(file="saved/fullMicrobeMelissodesFit.Rdata")
 #              aes(y=PD, x=BeeDiversity), cex=2, alpha=0.5) +
 #   scale_x_continuous(
 #     breaks = axis.bee.div,
-#     labels =  labs.bee.div) + labs(tag='B.', y='Microbe \nPhylogenetic \nDiversity')
+#     labels =  labs.bee.div) + labs(tag='C.', y='Microbe \nPhylogenetic \nDistance')
 # 
 # 
 # bombus.div.PD
-# panelB <- bombus.div.PD
+# panelC <- bombus.div.PD
 # 
 # dir.create("figures")
 # 
@@ -219,7 +219,7 @@ load(file="saved/fullMicrobeMelissodesFit.Rdata")
 # floral.div.PD <- ggplot(pred_beediv, aes(x = MeanFloralDiversity, y =
 #                                            .epred)) +
 #   stat_lineribbon(show.legend=FALSE) +
-#   scale_fill_brewer(palette = "Oranges") +
+#   scale_fill_brewer(palette = "Blues") +
 #   labs(x = "Mean Floral Diversity", y = "Microbe Phylogenetic Diversity",
 #        fill = "Credible Interval") +
 #   theme(legend.position = "none")  +
@@ -231,11 +231,11 @@ load(file="saved/fullMicrobeMelissodesFit.Rdata")
 #              aes(y=PD, x=MeanFloralDiversity), cex=2, alpha=0.5) +
 #   scale_x_continuous(
 #     breaks = axis.floral.div,
-#     labels =  labs.floral.div) + labs(tag="C.", y='Microbe \nPhylogenetic \nDiversity')
+#     labels =  labs.floral.div) + labs(tag="A.", y='Microbe \nPhylogenetic \nDistance')
 # 
 # 
 # floral.div.PD
-# panelC <- floral.div.PD
+# panelA <- floral.div.PD
 # 
 # dir.create("figures")
 # 
@@ -271,7 +271,7 @@ load(file="saved/fullMicrobeMelissodesFit.Rdata")
 # meanITD.PD <- ggplot(pred_beediv, aes(x = MeanITD, y =
 #                                            .epred)) +
 #   stat_lineribbon(show.legend=FALSE) +
-#   scale_fill_brewer(palette = "Oranges") +
+#   scale_fill_brewer(palette = "Blues") +
 #   labs(x = "Body Size (Mean ITD)", y = "Microbe Phylogenetic Diversity",
 #        fill = "Credible Interval") +
 #   theme(legend.position = "none")  +
@@ -283,7 +283,7 @@ load(file="saved/fullMicrobeMelissodesFit.Rdata")
 #              aes(y=PD, x=MeanITD), cex=2, alpha=0.5) +
 #   scale_x_continuous(
 #     breaks = axis.meanITD,
-#     labels =  labs.meanITD) + labs(tag='D.', y='Microbe \nPhylogenetic \nDiversity')
+#     labels =  labs.meanITD) + labs(tag='D.', y='Microbe \nPhylogenetic \nDistance')
 # 
 # 
 # meanITD.PD
@@ -323,7 +323,7 @@ load(file="saved/fullMicrobeMelissodesFit.Rdata")
 # rare.degree.PD <- ggplot(pred_beediv, aes(x = rare.degree, y =
 #                                         .epred)) +
 #   stat_lineribbon(show.legend=FALSE) +
-#   scale_fill_brewer(palette = "Oranges") +
+#   scale_fill_brewer(palette = "Blues") +
 #   labs(x = "Rarefied Degree", y = "Microbe Phylogenetic Diversity",
 #        fill = "Credible Interval") +
 #   theme(legend.position = "none")  +
@@ -335,22 +335,21 @@ load(file="saved/fullMicrobeMelissodesFit.Rdata")
 #              aes(y=PD, x=rare.degree), cex=2, alpha=0.5) +
 #   scale_x_continuous(
 #     breaks = axis.rare.degree,
-#     labels =  labs.rare.degree) + labs(tag='E.', y='Microbe \nPhylogenetic \nDiversity')
+#     labels =  labs.rare.degree) + labs(tag='B.', y='Microbe \nPhylogenetic \nDistance')
 # 
 # 
 # rare.degree.PD
-# panelE <- rare.degree.PD
+# panelB <- rare.degree.PD
 # 
 # dir.create("figures")
 # 
 # ggsave(rare.degree.PD, file="figures/bombusPD_rare.degree.pdf",
 #        height=4, width=5)
 # 
-# ##make paneled fig
+##make paneled fig
 # grid.arrange(panelA, panelB,
-#              panelC, panelD,
-#              panelE, ncol=2)
-# 
+#              panelC, panelD, ncol=2)
+
 
 
 ## **********************************************************
@@ -391,10 +390,10 @@ pred_beeabund <- fit.microbe.apis %>%
 
 apis.abund.PD <- ggplot(pred_beeabund, aes(x = BeeAbundance, y =
                                                .epred)) +
-  stat_lineribbon() +
+  stat_lineribbon(show.legend=FALSE) +
   scale_fill_brewer(palette = "Oranges") +
-  labs(x = "Bee abundance", y = "Microbe phylogenetic distance",
-       fill = "Credible Interval") +
+  labs(x = "Bee Abundance", y = "Microbe \nPhylogenetic \nDistance",
+       fill = "Credible Interval", tag="C.") +
   theme(legend.position = "none")  +
   theme(axis.title.x = element_text(size=16),
         axis.title.y = element_text(size=16),
@@ -408,6 +407,7 @@ apis.abund.PD <- ggplot(pred_beeabund, aes(x = BeeAbundance, y =
 
 
 apis.abund.PD
+panelC <- apis.abund.PD
 
 dir.create("figures")
 
@@ -442,23 +442,24 @@ pred_beediv <- fit.microbe.apis %>%
 
 apis.div.PD <- ggplot(pred_beediv, aes(x = BeeDiversity, y =
                                            .epred)) +
-  stat_lineribbon() +
-  scale_fill_brewer(palette = "Oranges") +
-  labs(x = "Bee Diversity", y = "Microbe phylogenetic distance",
-       fill = "Credible Interval") +
+  stat_lineribbon(show.legend=FALSE) +
+  scale_fill_brewer(palette = "Blues") +
+  labs(x = "Bee Diversity", y = "Microbe \nPhylogenetic \nDistance",
+       fill = "Credible Interval", tag="A.") +
   theme(legend.position = "none")  +
   theme(axis.title.x = element_text(size=16),
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) +
   theme_classic() +
   geom_point(data=data.par,
-             aes(y=PD, x=BeeDiversity), cex=2) +
+             aes(y=PD, x=BeeDiversity), cex=2, alpha=0.5) +
   scale_x_continuous(
     breaks = axis.bee.div,
     labels =  labs.bee.div)
 
 
 apis.div.PD
+panelA <- apis.div.PD
 
 dir.create("figures")
 
@@ -494,23 +495,24 @@ pred_flrdiv <- fit.microbe.apis %>%
 
 floral.div.PD <- ggplot(pred_flrdiv, aes(x = MeanFloralDiversity, y =
                                            .epred)) +
-  stat_lineribbon() +
+  stat_lineribbon(show.legend=FALSE) +
   scale_fill_brewer(palette = "Oranges") +
-  labs(x = "Mean Floral Diversity", y = "Microbe phylogenetic distance",
-       fill = "Credible Interval") +
+  labs(x = "Mean Floral Diversity", y = "Microbe \nPhylogenetic \nDistance",
+       fill = "Credible Interval", tag="D.") +
   theme(legend.position = "none")  +
   theme(axis.title.x = element_text(size=16),
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) +
   theme_classic() +
   geom_point(data=data.par,
-             aes(y=PD, x=MeanFloralDiversity), cex=2) +
+             aes(y=PD, x=MeanFloralDiversity), cex=2, alpha=0.5) +
   scale_x_continuous(
     breaks = axis.floral.div,
     labels =  labs.floral.div)
 
 
 floral.div.PD
+panelD <- floral.div.PD
 
 dir.create("figures")
 
@@ -546,25 +548,30 @@ pred_beediv <- fit.microbe.apis %>%
 
 rare.degree.PD <- ggplot(pred_beediv, aes(x = rare.degree, y =
                                             .epred)) +
-  stat_lineribbon() +
-  scale_fill_brewer(palette = "Oranges") +
-  labs(x = "Rarified degree", y = "Microbe phylogenetic distance",
-       fill = "Credible Interval") +
+  stat_lineribbon(show.legend=FALSE) +
+  scale_fill_brewer(palette = "Blues") +
+  labs(x = "Rarified Degree", y = "Microbe \nPhylogenetic \nDistance",
+       fill = "Credible Interval", tag="B.") +
   theme(legend.position = "none")  +
   theme(axis.title.x = element_text(size=16),
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) +
   theme_classic() +
   geom_point(data=data.par,
-             aes(y=PD, x=rare.degree), cex=2) +
+             aes(y=PD, x=rare.degree), cex=2, alpha=0.5) +
   scale_x_continuous(
     breaks = axis.rare.degree,
     labels =  labs.rare.degree)
 
 
 rare.degree.PD
+panelB <- rare.degree.PD
 
 dir.create("figures")
 
 ggsave(rare.degree.PD, file="figures/apisPD_rare.degree.pdf",
        height=4, width=5)
+
+##make paneled fig
+grid.arrange(panelA, panelB,
+             panelC, panelD, ncol=2)
