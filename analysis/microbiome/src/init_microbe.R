@@ -219,6 +219,10 @@ spec.net <- join(spec.net, abund_csv)
 #multiply weightspar by abundance to get abundance weights
 spec.net$WeightsAbund <- spec.net$WeightsMicrobe * spec.net$AbundanceSYR
 spec.net$LogWeightsAbund <- log(spec.net$WeightsAbund + 1)
+spec.net$BombusWeights <- ifelse(spec.net$Genus=='Bombus'&spec.net$LogWeightsAbund>0, spec.net$LogWeightsAbund, 0)
+spec.net$ApisWeights <- ifelse(spec.net$Genus=='Apis'&spec.net$LogWeightsAbund>0, spec.net$LogWeightsAbund, 0)
+spec.net$MelissodesWeights <- ifelse(spec.net$Genus=='Melissodes'&spec.net$LogWeightsAbund>0, spec.net$LogWeightsAbund, 0)
+
 
 
 spec.all <- spec.net
