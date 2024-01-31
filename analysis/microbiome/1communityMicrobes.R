@@ -63,96 +63,6 @@ source("src/runPlotFreqModelDiagnostics.R")
 ncores <- 1
 
 
-## QUESTION: should include root = TRUE? if false gives warning 3x
-## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
-# PD <- apply(spec.microbes[,microbes], 1, function(x){
-#   this.bee <- x[x > 0]
-#   this.tree <- prune.sample(t(this.bee), tree.16s)
-#   #browser()
-#   picante::pd(t(this.bee), this.tree, include.root = TRUE)
-# })
-# 
-# PD <- do.call(rbind, PD)
-# 
-# spec.microbes <- cbind(spec.microbes, PD)
-# 
-# spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
-# 
-# ## check which individuals don't have microbe data
-# drop.PD.NA <- unique(spec.net$UniqueID[spec.net$WeightsPar == 1 &
-#                                          is.na(spec.net$PD)])
-# 
-# ## drop individuals that had parasite screen but not microbe
-# ## filling in zeros for NAs in PD
-# spec.net <- spec.net[!(spec.net$UniqueID %in% drop.PD.NA),] %>%
-#   mutate(PD = ifelse(!is.na(PD), PD, 0))
-# 
-# 
-# ##load tree from :
-# ##Henriquez Piskulich, Patricia Andrea; Hugall, Andrew F.; Stuart-Fox, Devi (2023). A supermatrix phylogeny of the world’s bees (Hymenoptera: Anthophila) [Dataset]. Dryad. https://doi.org/10.5061/dryad.80gb5mkw1
-# 
-# phylo <- ape::read.tree("../../data/BEE_mat7_fulltree.nwk")
-# 
-# 
-# ## i think we need to drop the tips that aren't in our dataset
-# ## changing sp labels to match phylogeny
-# spec.net$GenusSpecies <- gsub("Megachile gemula fulvogemula", "Megachile gemula", spec.net$GenusSpecies)
-# spec.net$GenusSpecies <- gsub("Megachile melanophaea rohweri", "Megachile melanophaea", spec.net$GenusSpecies)
-# 
-# 
-# ##clean up unwanted portion of labels
-# pattern <- "(_n\\d+m\\d+_[A-Za-z0-9]+)?$"
-# phylo$tip.label <- gsub(pattern, "", phylo$tip.label)
-# 
-# ## replace underscore with space
-# phylo$tip.label <- gsub("_", " ", phylo$tip.label)
-# 
-# ## i think we need to drop the tips that aren't in our dataset
-# ## changing sp labels to match phylogeny
-# species_to_keep <- na.omit(unique(spec.net$GenusSpecies))
-# 
-# ## megachile comate and megachile subexilis are not in phylogeny so will drop these
-# species_to_keep <- species_to_keep[!species_to_keep %in% c("Megachile comata", "Megachile subexilis")]
-# 
-# phylo_tips <- phylo$tip.label
-# #only keep tips that match our species
-# phylo <- ape::keep.tip(phylo, species_to_keep[species_to_keep %in% phylo_tips])
-# 
-# phylo_matrix <- ape::vcv.phylo(phylo)
-# 
-# 
-# ## dropping species not in the phylogeny from the dataset
-# ## megachile comate and megachile subexilis are not in phylogeny so will drop these
-# spec.net <- spec.net[!spec.net$GenusSpecies %in% c("Megachile comata", "Megachile subexilis"),]
-# # spec.net$GenusSpecies[spec.net$GenusSpecies == 'NA'] <- NA
-# spec.net <- spec.net %>%
-#   filter(is.na(GenusSpecies) == FALSE)
-# 
-# ## QUESTION: should there be NAs? not sure what check ids means
-# ## check ids
-# unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
-#                                is.na(spec.net$MeanITD)])
-
-#dropping genus species with NA -- 
-# spec.net <- spec.net[!is.na(spec.net$GenusSpecies),]
-
-## adding one to bombus abundance to make it non negative
-# spec.net$Net_BombusAbundance <- spec.net$Net_BombusAbundance + 1
-# spec.net$Net_HBAbundance <- spec.net$Net_HBAbundance + 1
-# spec.net$Net_NonBombusHBAbundance <- spec.net$Net_NonBombusHBAbundance + 1
-
-
-#squared transformed net bee abundance
-#spec.net$Net_BeeAbundance <- (spec.net$Net_BeeAbundance)^2
-
-## making site a factor so it works with gamma dist
-#spec.net$Site <- as.factor(spec.net$Site)
-
-##  center all of the x variables, need to use unique values to avoid
-##  repetition by the number of specimens
-
-#spec.net <- standardizeVars(spec.net, vars_yearsr, "YearSR")
-
 
 
 ## **********************************************************
@@ -364,18 +274,51 @@ formula.microbe.bombus <- as.formula(paste(microbe.bombus.y, "~",
                                       microbe.bombus.x))
 
 
-bf.microbe.bombus <- bf(formula.microbe.bombus, family='lognormal')
+bf.microbe.bombus <- bf(formula.microbe.bombus)
+
+##Apis
+microbe.apis.vars <- c("BeeAbundance",
+                       "BeeDiversity", "Lat", #check this doesn't make VIF high
+                       "MeanFloralDiversity",# "MeanITD",
+                       "(1|Site)", "rare.degree"#, "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+)
+
+
+microbe.apis.x <- paste(microbe.apis.vars, collapse="+")
+microbe.apis.y <- "PD | weights(LogWeightsAbund)"
+formula.microbe.apis <- as.formula(paste(microbe.apis.y, "~",
+                                         microbe.apis.x))
+
+
+bf.microbe.apis <- bf(formula.microbe.apis)
+
+## run melissodes model
+microbe.melissodes.vars <- c("BeeAbundance",
+                             "BeeDiversity", "Lat", #check this doesn't make VIF high
+                             "MeanFloralDiversity", #"MeanITD",
+                             "(1|Site)", "rare.degree") #, "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+
+
+
+microbe.melissodes.x <- paste(microbe.melissodes.vars, collapse="+")
+microbe.melissodes.y <- "PD | weights(LogWeightsAbund)"
+formula.microbe.melissodes <- as.formula(paste(microbe.melissodes.y, "~",
+                                               microbe.melissodes.x))
+
+
+bf.microbe.melissodes <- bf(formula.microbe.melissodes)
+
 
 #combine forms
 bform.bombus <- bf.fabund +
     bf.fdiv +
     bf.tot.babund +
     bf.tot.bdiv  +
-    bf.microbe.bombus +
+    bf.microbe.bombus + bf.microbe.apis + bf.microbe.melissodes +
     set_rescor(FALSE)
 
 
-fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
+fit.microbe.all <- brm(bform.bombus , spec.bombus,
                      cores=ncores,
                      iter = 10000,
                      chains =1,
@@ -393,20 +336,20 @@ save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
        file="saved/fullMicrobeBombusFit.Rdata")
 
 ## run apis model
-# microbe.apis.vars <- c("BeeAbundance",
-#                        "BeeDiversity", "Lat", #check this doesn't make VIF high
-#                        "MeanFloralDiversity",# "MeanITD",
-#                        "(1|Site)", "rare.degree"#, "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
-# )
-# 
-# 
-# microbe.apis.x <- paste(microbe.apis.vars, collapse="+")
-# microbe.apis.y <- "PD | weights(LogWeightsAbund)"
-# formula.microbe.apis <- as.formula(paste(microbe.apis.y, "~",
-#                                          microbe.apis.x))
-# 
-# 
-# bf.microbe.apis <- bf(formula.microbe.apis)
+microbe.apis.vars <- c("BeeAbundance",
+                       "BeeDiversity", "Lat", #check this doesn't make VIF high
+                       "MeanFloralDiversity",# "MeanITD",
+                       "(1|Site)", "rare.degree"#, "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+)
+
+
+microbe.apis.x <- paste(microbe.apis.vars, collapse="+")
+microbe.apis.y <- "PD | weights(LogWeightsAbund)"
+formula.microbe.apis <- as.formula(paste(microbe.apis.y, "~",
+                                         microbe.apis.x))
+
+
+bf.microbe.apis <- bf(formula.microbe.apis)
 # 
 # #combine forms
 # bform.apis <- bf.fabund +
@@ -432,22 +375,22 @@ save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
 # save(fit.microbe.apis, spec.apis, r2.apis, r2loo.apis,
 #      file="saved/fullMicrobeApisFit.Rdata")
 
-# ## run melissodes model
-# microbe.melissodes.vars <- c("BeeAbundance",
-#                          "BeeDiversity", "Lat", #check this doesn't make VIF high
-#                          "MeanFloralDiversity", #"MeanITD",
-#                          "(1|Site)", "rare.degree") #, "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
-# 
-# 
-# 
-# microbe.melissodes.x <- paste(microbe.melissodes.vars, collapse="+")
-# microbe.melissodes.y <- "PD | weights(LogWeightsAbund)"
-# formula.microbe.melissodes <- as.formula(paste(microbe.melissodes.y, "~",
-#                                            microbe.melissodes.x))
-# 
-# 
-# bf.microbe.melissodes <- bf(formula.microbe.melissodes)
-# 
+## run melissodes model
+microbe.melissodes.vars <- c("BeeAbundance",
+                         "BeeDiversity", "Lat", #check this doesn't make VIF high
+                         "MeanFloralDiversity", #"MeanITD",
+                         "(1|Site)", "rare.degree") #, "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+
+
+
+microbe.melissodes.x <- paste(microbe.melissodes.vars, collapse="+")
+microbe.melissodes.y <- "PD | weights(LogWeightsAbund)"
+formula.microbe.melissodes <- as.formula(paste(microbe.melissodes.y, "~",
+                                           microbe.melissodes.x))
+
+
+bf.microbe.melissodes <- bf(formula.microbe.melissodes)
+
 # #combine forms
 # bform.melissodes <- bf.fabund +
 #   bf.fdiv +
