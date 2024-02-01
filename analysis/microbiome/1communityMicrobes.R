@@ -276,64 +276,31 @@ formula.microbe.bombus <- as.formula(paste(microbe.bombus.y, "~",
 
 bf.microbe.bombus <- bf(formula.microbe.bombus)
 
-##Apis
-microbe.apis.vars <- c("BeeAbundance",
-                       "BeeDiversity", "Lat", #check this doesn't make VIF high
-                       "MeanFloralDiversity",# "MeanITD",
-                       "(1|Site)", "rare.degree"#, "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
-)
-
-
-microbe.apis.x <- paste(microbe.apis.vars, collapse="+")
-microbe.apis.y <- "PD | weights(LogWeightsAbund)"
-formula.microbe.apis <- as.formula(paste(microbe.apis.y, "~",
-                                         microbe.apis.x))
-
-
-bf.microbe.apis <- bf(formula.microbe.apis)
-
-## run melissodes model
-microbe.melissodes.vars <- c("BeeAbundance",
-                             "BeeDiversity", "Lat", #check this doesn't make VIF high
-                             "MeanFloralDiversity", #"MeanITD",
-                             "(1|Site)", "rare.degree") #, "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
-
-
-
-microbe.melissodes.x <- paste(microbe.melissodes.vars, collapse="+")
-microbe.melissodes.y <- "PD | weights(LogWeightsAbund)"
-formula.microbe.melissodes <- as.formula(paste(microbe.melissodes.y, "~",
-                                               microbe.melissodes.x))
-
-
-bf.microbe.melissodes <- bf(formula.microbe.melissodes)
-
-
 #combine forms
 bform.bombus <- bf.fabund +
     bf.fdiv +
     bf.tot.babund +
     bf.tot.bdiv  +
-    bf.microbe.bombus + bf.microbe.apis + bf.microbe.melissodes +
+    bf.microbe.bombus +
     set_rescor(FALSE)
 
-
-fit.microbe.all <- brm(bform.bombus , spec.bombus,
-                     cores=ncores,
-                     iter = 10000,
-                     chains =1,
-                     thin=1,
-                     init=0,
-                     open_progress = FALSE,
-                     control = list(adapt_delta = 0.99),
-                     save_pars = save_pars(all = TRUE),
-                     data2 = list(phylo_matrix=phylo_matrix))
-
-write.ms.table(fit.microbe.bombus, "bombus_microbe")
-r2loo.bombus <- loo_R2(fit.microbe.bombus)
-r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
-save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
-       file="saved/fullMicrobeBombusFit.Rdata")
+# 
+# fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
+#                      cores=ncores,
+#                      iter = 10000,
+#                      chains =1,
+#                      thin=1,
+#                      init=0,
+#                      open_progress = FALSE,
+#                      control = list(adapt_delta = 0.99),
+#                      save_pars = save_pars(all = TRUE),
+#                      data2 = list(phylo_matrix=phylo_matrix))
+# 
+# write.ms.table(fit.microbe.bombus, "bombus_microbe")
+# r2loo.bombus <- loo_R2(fit.microbe.bombus)
+# r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
+# save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
+#        file="saved/fullMicrobeBombusFit.Rdata")
 
 ## run apis model
 microbe.apis.vars <- c("BeeAbundance",
@@ -344,14 +311,14 @@ microbe.apis.vars <- c("BeeAbundance",
 
 
 microbe.apis.x <- paste(microbe.apis.vars, collapse="+")
-microbe.apis.y <- "PD | weights(LogWeightsAbund)"
+microbe.apis.y <- "PD | weights(ApisWeights)"
 formula.microbe.apis <- as.formula(paste(microbe.apis.y, "~",
                                          microbe.apis.x))
 
 
 bf.microbe.apis <- bf(formula.microbe.apis)
-# 
-# #combine forms
+
+#combine forms
 # bform.apis <- bf.fabund +
 #   bf.fdiv +
 #   bf.tot.babund +
@@ -359,7 +326,7 @@ bf.microbe.apis <- bf(formula.microbe.apis)
 #   bf.microbe.apis +
 #   set_rescor(FALSE)
 # 
-# fit.microbe.apis <- brm(bform.apis , spec.apis,
+# fit.microbe.apis <- brm(bform.apis , spec.net,
 #                         cores=ncores,
 #                         iter = 10000,
 #                         chains =1,
@@ -372,10 +339,10 @@ bf.microbe.apis <- bf(formula.microbe.apis)
 # write.ms.table(fit.microbe.apis, "apis_microbe")
 # r2loo.apis <- loo_R2(fit.microbe.apis)
 # r2.apis <- rstantools::bayes_R2(fit.microbe.apis)
-# save(fit.microbe.apis, spec.apis, r2.apis, r2loo.apis,
+# save(fit.microbe.apis, spec.net, r2.apis, r2loo.apis,
 #      file="saved/fullMicrobeApisFit.Rdata")
 
-## run melissodes model
+# ## run melissodes model
 microbe.melissodes.vars <- c("BeeAbundance",
                          "BeeDiversity", "Lat", #check this doesn't make VIF high
                          "MeanFloralDiversity", #"MeanITD",
@@ -384,37 +351,37 @@ microbe.melissodes.vars <- c("BeeAbundance",
 
 
 microbe.melissodes.x <- paste(microbe.melissodes.vars, collapse="+")
-microbe.melissodes.y <- "PD | weights(LogWeightsAbund)"
+microbe.melissodes.y <- "PD | weights(MelissodesWeights)"
 formula.microbe.melissodes <- as.formula(paste(microbe.melissodes.y, "~",
                                            microbe.melissodes.x))
 
 
 bf.microbe.melissodes <- bf(formula.microbe.melissodes)
 
-# #combine forms
-# bform.melissodes <- bf.fabund +
-#   bf.fdiv +
-#   bf.tot.babund +
-#   bf.tot.bdiv  +
-#   bf.microbe.melissodes +
-#   set_rescor(FALSE)
-# 
-# fit.microbe.melissodes <- brm(bform.melissodes , spec.melissodes,
-#                           cores=ncores,
-#                           iter = 10000,
-#                           chains =1,
-#                           thin=1,
-#                           init=0,
-#                           open_progress = FALSE,
-#                           control = list(adapt_delta = 0.99),
-#                           save_pars = save_pars(all = TRUE))
-# 
-# write.ms.table(fit.microbe.melissodes, "melissodes_microbe")
-# r2loo.melissodes <- loo_R2(fit.microbe.melissodes)
-# r2.melissodes <- rstantools::bayes_R2(fit.microbe.melissodes)
-# save(fit.microbe.melissodes, spec.melissodes, r2.melissodes, r2loo.melissodes,
-#      file="saved/fullMicrobeMelissodesFit.Rdata")
-# 
+#combine forms
+bform.melissodes <- bf.fabund +
+  bf.fdiv +
+  bf.tot.babund +
+  bf.tot.bdiv  +
+  bf.microbe.melissodes +
+  set_rescor(FALSE)
+
+fit.microbe.melissodes <- brm(bform.melissodes , spec.net,
+                          cores=ncores,
+                          iter = 10000,
+                          chains =1,
+                          thin=1,
+                          init=0,
+                          open_progress = FALSE,
+                          control = list(adapt_delta = 0.99),
+                          save_pars = save_pars(all = TRUE))
+
+write.ms.table(fit.microbe.melissodes, "melissodes_microbe")
+r2loo.melissodes <- loo_R2(fit.microbe.melissodes)
+r2.melissodes <- rstantools::bayes_R2(fit.microbe.melissodes)
+save(fit.microbe.melissodes, spec.net, r2.melissodes, r2loo.melissodes,
+     file="saved/fullMicrobeMelissodesFit.Rdata")
+
 
 
 ## **********************************************************
