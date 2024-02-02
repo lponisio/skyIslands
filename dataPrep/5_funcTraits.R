@@ -22,7 +22,9 @@ traits$GenusSpecies <- fix.white.space(traits$GenusSpecies)
 
 traits <- traits[traits$GenusSpecies %in% spec.net$GenusSpecies,]
 
-bee.traits <- c("NestLocation", "PrimaryNestMaterial","NestConstruction","Lecty",
+bee.traits <- c("NestLocation",
+                "PrimaryNestMaterial","NestConstruction",
+                "Lecty",
                  "MeanITD", "Sociality")
 
 rownames(traits) <- traits$GenusSpecies
@@ -32,7 +34,7 @@ traits$GenusSpecies <- NULL
 ## example, we have 3 nesting-related traits, so weighted each one by
 ## 1/3. This will avoid overweighting any trait type.
 
-bee.weights <- c(rep(1/2, 3), rep(1, 3))
+bee.weights <- c(rep(1/3, 3), rep(1, 3))
 
 ## *****************************************************************
 ## species-level function diversity metrics

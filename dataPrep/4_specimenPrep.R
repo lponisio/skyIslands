@@ -9,11 +9,10 @@ library(RSQLite)
 library(tidyr)
 library(readr)
 
-## dir.bombus <-
-##     '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
-dir.bombus <- '~/Dropbox (University of Oregon)/skyIslands'
-## dir.bombus <- "C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands"
-##dir.bombus <- '/Volumes/bombus/rhayes/Dropbox (University of Oregon)/skyIslands'
+source("lab_paths.R")
+local.path
+
+dir.bombus <- file.path(local.path, "skyIslands")
  
 ## *****************************************************************
 ## create relational database, add species IDs
@@ -31,19 +30,11 @@ source('dataPrep/relational/3join.R')
 ## *****************************************************************
 ## prep specimen data
 ## *****************************************************************
-dir.bombus <- '~/Dropbox (University of Oregon)/skyIslands'
-## dir.bombus <- "C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands"
-## dir.bombus <-
-##     '/Volumes/bombus/Dropbox (University of Oregon)/skyIslands'
-## dir.bombus <- '/Volumes/bombus/rhayes/Dropbox (University of Oregon)/skyIslands'
-
-setwd(file.path(dir.bombus, "dataPrep"))
-
-src.dir <- '../../skyIslands_saved/data/relational/relational/traditional/'
 spec <-
-    read.csv(file.path(src.dir, "specimens-complete.csv"),
+    read.csv('traditional/specimens-complete.csv',
              stringsAsFactors=FALSE)
 
+setwd("../../../../skyIslands/dataPrep")
 source("src/misc.R")
 source("src/prepNets.R")
 source("src/specialization.R")
