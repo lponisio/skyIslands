@@ -81,36 +81,33 @@ dir.create(path="saved/tables", showWarnings = FALSE)
 
 spec.net <- spec.net[order(spec.net$Site),]
 
-
+## pull out 16s columns
 microbes <- colnames(spec.net)[grepl("16s:", colnames(spec.net))] 
 
+## check which only have NAs in these columns (not screened) and drop them
 screened.microbes <- apply(spec.net, 1, function(x) all(is.na(x[microbes])))
-
 spec.microbes <- spec.net[!screened.microbes, ]
-
-spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
 
 ## QUESTION: should include root = TRUE? if false gives warning 3x
 ## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
+
+## phylogenetic distance function, modified from picante
 PD <- apply(spec.microbes[,microbes], 1, function(x){
   this.bee <- x[x > 0]
   this.tree <- prune.sample(t(this.bee), tree.16s)
-  #browser()
   picante::pd(t(this.bee), this.tree, include.root = TRUE)
 })
 
 PD <- do.call(rbind, PD)
-
 spec.microbes <- cbind(spec.microbes, PD)
 
+## Merge back onto specimen data
 spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
 
-
-#change microbe NAs to 0
+## change microbe NAs to 0
 spec.net <- spec.net %>%
   mutate_at(vars(all_of(microbes)), ~replace_na(PD, 0))
   
-
 spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 
 #the 6 species getting dropped are still present at this step

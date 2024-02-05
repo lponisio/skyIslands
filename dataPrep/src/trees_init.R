@@ -1,11 +1,11 @@
-
+rm(list=ls())
 
 ## packages
-# if (!require("BiocManager", quietly = TRUE))
-#   install.packages("BiocManager")
-# 
-# BiocManager::install("ggtreeExtra")
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
 
+BiocManager::install("ggtreeExtra")
+BiocManager::install("phyloseq")
 
 library(ggtree)
 library(tidyverse)
@@ -21,21 +21,26 @@ library(phyloseq)
 library(randomcoloR)
 library(phytools)
 
-## working dir
+## local directory based on person running
+## local.path <- "C:/Users/rah10/"
+local.path <- "~/"
 
-wdpath <- 'C:/Users/rah10/Dropbox (University of Oregon)/skyIslands/data'
+wdpath <-
+  file.path(local.path, 'Dropbox (University of Oregon)/skyIslands/data')
+
 setwd(wdpath)
 
-#rm(list=ls())
 ## Data imports
-
 spec16s <- read.csv('spec_RBCL_16s.csv') %>%
   filter(Apidae==1) 
 
-names(spec16s) <- gsub(x = names(spec16s), pattern = "X1", replacement = "1")  
-names(spec16s) <- gsub(x = names(spec16s), pattern = "RBCL.", replacement = "RBCL:")  
+names(spec16s) <- gsub(x = names(spec16s), pattern = "X1",
+                       replacement = "1")  
+names(spec16s) <- gsub(x = names(spec16s), pattern = "RBCL.",
+                       replacement = "RBCL:")  
 
-meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'GenusSpecies', 'Sex', 'Site', 'Meadow')
+meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species',
+               'GenusSpecies', 'Sex', 'Site', 'Meadow')
 
 # meta <- spec16s %>%
 #   select(all_of(meta_cols), Apidae, starts_with('16s')) %>%
@@ -51,7 +56,8 @@ meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'GenusSpecies', 'Sex', 
 #                                     "CH")))
 
 
-##can probs figure out a way to do this automatically but was getting frustrated so hard coded this
+## can probs figure out a way to do this automatically but was getting
+## frustrated so hard coded this
 apis_sites <- c('MM', 'HM', 'PL', 'CH')
 bombus_sites <- c('JC', 'SM', 'SC', 'MM', 'HM', 'PL', 'CH')
 anthophora_sites <- c('JC', 'SM', 'SC', 'MM', 'HM')
