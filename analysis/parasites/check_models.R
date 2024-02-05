@@ -204,26 +204,60 @@ beta_bi_formula <- formula(CrithidiaPresence ~ Net_NonBombusHBAbundance +
 
 freq.parasite.model <- run_plot_freq_model_diagnostics(beta_bi_formula,
                                                        spec.net[spec.net$WeightsPar==1,], 
-                                                       this_family = 'zero_inflated_beta_binomial')
+                                                       this_family = 'zero_inflated_binomial')
 
 ggsave(freq.parasite.model, file="figures/CrithidiaModelDiagnostics.pdf",
        height=8, width=11)
 
 ## parasite- Apicystis
 
-beta_bi_formula <- formula(ApicystisSpp ~ Net_NonBombusHBAbundance + 
-                             Net_HBAbundance + Net_BombusAbundance + 
+## Load phylogeny 
+load("../../data/bombus_phylogeny.Rdata")
+## Species that are not in the phylogeny are not used. brms is not allowing an incomplete
+## phylogeny, to avoid the error we changed the species not present to one that is in the phylogeny. 
+## We chose a species for which we did not do parasite screening and should not influence results.
+not_in_phylo <- unique(spec.net$GenusSpecies[!spec.net$GenusSpecies %in% phylo$tip.label])
+spec.bombus$GenusSpecies[spec.bombus$GenusSpecies %in% not_in_phylo]<- "Bombus mixtus"
+
+
+parasite_formula <- formula(ApicystisSpp | weights(WeightsPar) + trials(1)  ~ Net_BombusAbundance + 
                              Net_BeeDiversity + rare.degree + MeanITD + 
-                             (1|Site) + (1|GenusSpecies) + (1|gr(GenusSpecies, cov = phylo_matrix))) 
+                             (1|Site) + (1|gr(GenusSpecies, cov = phylo_matrix))) 
 
-freq.parasite.model <- run_plot_freq_model_diagnostics(beta_bi_formula,
-                                                       spec.net[spec.net$WeightsPar==1,], 
-                                                       this_family = 'bernoulli')
+parasitecheck1 <- brms::brm(parasite_formula,
+                          data = spec.bombus, family = "zero_inflated_binomial",  chains = 1,
+                          iter = 1000, data2 = list(phylo_matrix=phylo_matrix))
+pp_check(parasitecheck1)
 
-ggsave(freq.parasite.model, file="figures/ApiscystisModelDiagnostics.pdf",
-       height=8, width=11)
+spec.bombus %>%
+  add_residual_draws(parasitecheck1, allow_new_levels = TRUE) %>%
+  median_qi() %>%
+  ggplot(aes(sample = .residual)) +
+  geom_qq() +
+  geom_qq_line()
+
+## parasite- Crithidia
+
+parasite_formula_2 <- formula(CrithidiaPresence | weights(WeightsPar) + trials(1) ~ Net_BombusAbundance + 
+                              Net_BeeDiversity + rare.degree + MeanITD + 
+                              (1|Site) + (1|gr(GenusSpecies, cov = phylo_matrix))) 
+
+parasitecheck2 <- brms::brm(parasite_formula_2,
+                            data = spec.bombus, family = "zero_inflated_binomial",  chains = 1,
+                            iter = 1000, data2 = list(phylo_matrix=phylo_matrix))
+pp_check(parasitecheck2)
+spec.bombus %>%
+  add_residual_draws(parasitecheck2) %>%
+  median_qi() %>%
+  ggplot(aes(sample = .residual)) +
+  geom_qq() +
+  geom_qq_line()
 
 ## Load the model data
 load(file="saved/communityFit.Rdata")
 ## Posterior predictive check for the community model with students t distribution
 pp_check(fit.community, Net_BombusAbundance)
+
+
+## load(file="saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp.Rdata")
+

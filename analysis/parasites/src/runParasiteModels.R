@@ -26,6 +26,7 @@ runCombinedParasiteModels <- function(spec.data,## data
   if(length(parasites) == 2){
     ## Bombus
     if(species.group == "bombus"){
+      print("Bombus")
       bform <- bf.fabund + bf.fdiv +
        bf.bombusabund +
         bf.bdiv  +    
@@ -34,6 +35,7 @@ runCombinedParasiteModels <- function(spec.data,## data
         set_rescor(FALSE)
     } ## Apis
     else if (species.group == "apis"){
+      print("Apis")
       bform <- bf.fabund + bf.fdiv +
         bf.HBabund +
         bf.bdiv  +    
@@ -41,18 +43,20 @@ runCombinedParasiteModels <- function(spec.data,## data
         bf.parasite.formulas[[2]] +
         set_rescor(FALSE)
     } ## Other bees
-    else (species.group != "bombus" & species.group != "apis")
+    else if (species.group != "bombus" & species.group != "apis"){
+      print("Other")
       bform <- bf.fabund + bf.fdiv +
         bf.babund +
         bf.bdiv  +    
         bf.parasite.formulas[[1]]+
         bf.parasite.formulas[[2]] +
         set_rescor(FALSE)
-    
+    }
     
   }else  if(length(parasites) == 1){
     ## Bombus
     if(species.group == "bombus"){
+      print("Bombus")
       bform <- bf.fabund + bf.fdiv +
         bf.bombusabund +
         bf.bdiv  +    
@@ -60,18 +64,21 @@ runCombinedParasiteModels <- function(spec.data,## data
         set_rescor(FALSE)
     } ## Apis
     else if (species.group == "apis"){
+      print("Apis")
       bform <- bf.fabund + bf.fdiv +
         bf.HBabund +
         bf.bdiv  +    
         bf.parasite.formulas[[1]]+
         set_rescor(FALSE)
     } ## Other bees
-    else (species.group != "bombus" & species.group != "apis")
+    else if (species.group != "bombus" & species.group != "apis"){
+      print("Other")
       bform <- bf.fabund + bf.fdiv +
         bf.babund 
         bf.bdiv  +    
         bf.parasite.formulas[[1]]+
         set_rescor(FALSE)
+    }
     
   } 
   ## Fit brms model to the complete model

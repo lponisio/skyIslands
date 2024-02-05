@@ -37,9 +37,9 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
     
     
     
-  } else if (this_family=='zero_inflated_negbinomial') {
+  } else if (this_family=='zero_inflated_binomial') {
     
-    this_model_output <- glmmTMB(this_formula, data=this_data, ziformula = ~1, family = nbinom2)
+    this_model_output <- glmmTMB(this_formula, data=this_data, ziformula = ~1, family = binomial)
     diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
   
     
@@ -65,7 +65,10 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
     this_model_output <- glmmadmb(this_formula, data=this_data, zeroInflation=FALSE, family='nbinom')
     diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
   
-    
+    }else if (this_family=='bernoulli') {
+      this_model_output <- glmmTMB(this_formula, data=this_data, family='betabinomial')
+      diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
+      
     
     } else if (this_family == 'Gamma'){
     #run model

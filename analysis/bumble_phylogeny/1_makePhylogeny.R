@@ -1,9 +1,9 @@
 ## Generate phylogeny of Bombus
-
+rm(list=ls())
 setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
 
 setwd("analysis/bumble_phylogeny")
-rm(list=ls())
+
 
 ## load tree from :
 ## Henriquez Piskulich, Patricia Andrea; Hugall, Andrew F.; Stuart-Fox, Devi (2023). 

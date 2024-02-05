@@ -47,18 +47,19 @@ spec.bombus$GenusSpecies[spec.bombus$GenusSpecies %in% not_in_phylo]<- "Agaposte
 ## Parasite models set up
 ## **********************************************************
 ## Multi species models
-xvars.multi.species <-  c("Net_NonBombusHBAbundance",
-                          "Net_HBAbundance",
-                          "Net_BombusAbundance",
+xvars.multi.bombus <-  c("Net_BombusAbundance",
                           "Net_BeeDiversity",
                           "rare.degree", "MeanITD",
                           "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))")
 
-#"(1|gr(GenusSpecies, cov = phylo_matrix))"
+xvars.multi.species <-  c("Net_NonBombusHBAbundance",
+                          "Net_BeeDiversity",
+                          "rare.degree", "MeanITD",
+                          "(1|Site)", "(1|GenusSpecies)")
+
+
 ## single species models
-xvars.single.species <-  c("Net_NonBombusHBAbundance",
-                           "Net_HBAbundance",
-                           "Net_BombusAbundance",
+xvars.single.species <-  c("Net_HBAbundance",
                            "Net_BeeDiversity",
                            "rare.degree",
                            "(1|Site)")
@@ -91,16 +92,10 @@ save(fit.community, spec.net, r2, spec.orig,
 ## **********************************************************
 ## Parasite presence
 ## **********************************************************
-## full model with all species, parasites
-fit.all <- runParasiteModels(spec.net, species.group="all",
-                                        parasite= "CrithidiaPresence",
-                                        xvars=xvars.multi.species,
-                                        iter = 10^4,
-                                        chains = 1,
-                                        thin=1,
-                                        init=0)
+## full model with Melissodes, parasites
 
-fit.both.parasites <- runCombinedParasiteModels(spec.net, species.group="all",
+
+fit.parasites <- runCombinedParasiteModels(spec.net, species.group="melissodes",
                              parasite= c("CrithidiaPresence",
                                          "ApicystisSpp"),
                              xvars=xvars.multi.species,
@@ -113,7 +108,7 @@ fit.both.parasites <- runCombinedParasiteModels(spec.net, species.group="all",
 
 fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         parasite = c("CrithidiaPresence", "ApicystisSpp"),
-                                        xvars=xvars.multi.species,
+                                        xvars=xvars.multi.bombus,
                                         iter = 10^4,
                                         chains = 1,
                                         thin=1,
@@ -131,13 +126,7 @@ fit.apidae <- runCombinedParasiteModels(spec.apidae, species.group="apidae",
                                         thin=1,
                                         init=0)
 
-fit.apidae <- runParasiteModels(spec.bombus, species.group="apidae",
-                                parasite = "CrithidiaPresence",
-                                xvars=xvars.multi.species,
-                                iter = 10^4,
-                                chains = 1,
-                                thin=1,
-                                init=0)
+
 
 ## Honey bees
 fit.apis <- runCombinedParasiteModels(spec.apis, species.group="apis",
@@ -149,10 +138,4 @@ fit.apis <- runCombinedParasiteModels(spec.apis, species.group="apis",
                                         thin=1,
                                         init=0)
 
-fit.apidae <- runParasiteModels(spec.bombus, species.group="apidae",
-                                parasite = "CrithidiaPresence",
-                                xvars=xvars.multi.species,
-                                iter = 10^4,
-                                chains = 1,
-                                thin=1,
-                                init=0)
+

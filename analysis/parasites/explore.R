@@ -117,4 +117,13 @@ ggplot(spec.all, aes(x= MeanFloralAbundance,
                      y=Net_BeeDiversity, color=Site))+
   geom_point()
 
-## 
+## Boxplot of bumble bee species and their parasite rate
+
+spec.net %>% 
+  filter(Genus == "Bombus") %>% 
+  group_by(GenusSpecies, Site) %>% 
+  summarise(ParasitismRate = mean(ParasitePresence, na.rm = TRUE)) %>% 
+  ggplot(aes(GenusSpecies, ParasitismRate))+
+  geom_boxplot()+
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))+
+  facet_wrap(~Site)
