@@ -35,7 +35,7 @@ ggplot(spec.all, aes(Site, MeanFloralDiversity)) + geom_boxplot()
 ###############################################################################
 ## Parasite prevalence by meadows
 
-sick.totals <- spec.all %>%
+sick.totals <- spec.net %>%
   
   
 ## Subset to Weights == 1
@@ -119,11 +119,82 @@ ggplot(spec.all, aes(x= MeanFloralAbundance,
 
 ## Boxplot of bumble bee species and their parasite rate
 
-spec.net %>% 
+Bombus_ParasiteRate<- spec.net %>% 
   filter(Genus == "Bombus") %>% 
   group_by(GenusSpecies, Site) %>% 
   summarise(ParasitismRate = mean(ParasitePresence, na.rm = TRUE)) %>% 
   ggplot(aes(GenusSpecies, ParasitismRate))+
   geom_boxplot()+
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))+
-  facet_wrap(~Site)
+  labs(x = "Bombus Species", y = "Parasitism Rate")+
+  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
+        axis.title.y = element_text(size=10),
+        text = element_text(size=10))
+
+ggsave(Bombus_ParasiteRate, file="figures/Bombus_ParasiteRate.pdf",
+       height=4, width=5)
+
+
+## Parasite prevalence in different groups of bees. 
+
+parasites_bees<-pivot_longer(spec.net, cols = c(ApicystisSpp, AscosphaeraSpp, CrithidiaBombi, CrithidiaExpoeki, 
+                        CrithidiaPresence, NosemaCeranae, NosemaBombi), names_to = "Parasites") 
+parasite_prevalence <- parasites_bees %>%   
+  filter(Genus == c("Melissodes", "Anthophora", "Apis", "Bombus")) %>% 
+  filter(!is.na(value)) %>% 
+  group_by(Site, Genus, Parasites) %>% 
+  summarise(ParasitismRate = mean(value, na.rm = TRUE)) %>% 
+  ggplot(aes(Parasites, ParasitismRate))+
+  geom_boxplot()+
+  labs(x = "Parasites", y = "Parasitism Rate")+
+  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
+        axis.title.y = element_text(size=10),
+        text = element_text(size=10))+
+  facet_wrap(~ Genus)
+
+ggsave(parasite_prevalence, file="figures/parasite_prevalence_by_genus.pdf",
+       height=4, width=5)
+
+## Bar plot of parasite prevalence per sites for each genus
+parasite_prevalence_sites <- parasites_bees %>%   
+  filter(Genus == c("Bombus", "Melissodes", "Apis", "Anthophora")) %>% 
+  filter(Parasites != "NosemaBombi" & Parasites != "NosemaCeranae") %>% 
+  filter(Site != "VC" & Site != "UK" & Site != "SS")%>% 
+  filter(!is.na(value)) %>% 
+  group_by(Site, Genus, Parasites) %>% 
+  summarise(ParasitismRate = mean(value, na.rm = TRUE)) %>%  
+  ggplot(aes(x=Site, y=ParasitismRate, fill = Genus)) +
+  geom_bar(stat="identity", position = "dodge") + theme_minimal() + coord_flip()+
+  scale_fill_brewer(palette = "Oranges")
+
+ggsave(parasite_prevalence_sites, file="figures/prevalence_by_sites.pdf",
+       height=4, width=5)
+## Looking at parasitism of each of the parasites per each genus
+
+parasite_prevalence_genus <- parasites_bees %>%   
+  filter(Genus == c("Bombus", "Melissodes", "Apis", "Anthophora")) %>% 
+  filter(Parasites != "NosemaBombi" & Parasites != "NosemaCeranae") %>% 
+  filter(Site != "VC" & Site != "UK" & Site != "SS")%>% 
+  filter(!is.na(value)) %>% 
+  group_by(Site, Genus, Parasites) %>% 
+  summarise(ParasitismRate = mean(value, na.rm = TRUE)) %>%  
+  ggplot(aes(x=Parasites, y=ParasitismRate, fill = Genus)) +
+  geom_bar(stat="identity", position = "dodge") + theme_minimal() + coord_flip()+
+  scale_fill_brewer(palette = "Oranges")
+
+ggsave(parasite_prevalence_genus, file="figures/prevalence_by_genus.pdf",
+       height=4, width=5)
+
+## Looking at total screened bees per site and num of positives
+parasites_bees$value <- as.factor(parasites_bees$value)
+parasites_bees %>%   
+  filter(Genus == c("Bombus", "Melissodes", "Apis", "Anthophora")) %>% 
+  filter(Parasites != "NosemaBombi" & Parasites != "NosemaCeranae") %>% 
+  filter(Site != "VC" & Site != "UK" & Site != "SS")%>% 
+  filter(!is.na(value)) %>% 
+  group_by(Site, Genus, value) %>% 
+  summarise(TestedTotals = length(value)) %>% 
+  ggplot(aes(x=Site)) +
+  geom_bar(aes(y = TestedTotals, fill = value), stat="identity", position = "dodge")+
+  theme_minimal() + coord_flip()+
+  facet_wrap(~Genus)
+  
