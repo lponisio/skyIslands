@@ -467,10 +467,10 @@ print(paste("Specimens", nrow(spec)))
 ## *******************************************************************
 
 bloom <-
-    read.csv(file.path(src.dir, "bloom-complete.csv"),
+    read.csv("../../skyIslands_saved/data/relational/relational/traditional/bloom-complete.csv",
              stringsAsFactors=FALSE)
 veg <-
-    read.csv(file.path(src.dir, "veg-complete.csv"),
+    read.csv("../../skyIslands_saved/data/relational/relational/traditional/veg-complete.csv",
              stringsAsFactors=FALSE)
 
 veg$PlantGenusSpecies <-  fix.white.space(paste(veg$PlantGenus,
