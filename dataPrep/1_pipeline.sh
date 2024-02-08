@@ -131,13 +131,13 @@ qiime tools view sky2020map16s_2.qzv
 exit
 
 #docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
-docker run -itv /Users/andrena/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
+docker run -itv /Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
 
 
-cd ../../mnt/SI_pipeline/
+cd ../../mnt/SI_pipeline
 #cd R2018/2023_sequence_results_raw/lane1 #or whichever run you're working on
+#cd R2018/2023_sequence_results_raw/lane1
 cd R2018/2023_sequence_results_raw/lane2
-
 #note: this step takes ~2 hours!
 #qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020map16s_1.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza 
 
@@ -176,12 +176,21 @@ qiime feature-table tabulate-seqs --i-data dada2-16s/rep-seqs-dada2-16s.qza --o-
 qiime feature-table summarize --i-table dada2-16s/table16s.qza --o-visualization dada2-16s/table16s.qzv
 
 ## repeat the steps for RBCL
+exit
 
-## ***** need to fix duplicate ID issue before demuxing rbcl!! but i think can move forward rn with 16s
+#docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
+docker run -itv /Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
+
+
+cd ../../mnt/SI_pipeline
+
+#cd R2018/2023_sequence_results_raw/lane1
+cd R2018/2023_sequence_results_raw/lane2
 
 ## 2020 run 2
-cd ../lane2
+#cd ../lane2
 
+#qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020mapRBCL_1.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demuxRBCL.qza 
 qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020mapRBCL_2.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demuxRBCL.qza 
 
 #9a: Visualize Results
@@ -191,6 +200,7 @@ qiime tools view demuxRBCL.qzv
 
 ## The truncation length will vary between each run! Make sure to
 ## adjust the numbers pasted below.
+#this step takes like ~1 hr
 
 ## R0 RBCL:  f = 180, r = 218
 
@@ -203,7 +213,6 @@ qiime dada2 denoise-paired  \
 --output-dir dada2-RBCL  \
  --o-representative-sequences dada2-RBCL/rep-seqs-dada2-RBCL.qza  \
  --o-table dada2-RBCL/tableRBCL.qza
-
 
 qiime feature-table tabulate-seqs --i-data dada2-RBCL/rep-seqs-dada2-RBCL.qza --o-visualization dada2-RBCL/rep-seqs-dada2-RBCL.qzv
 
@@ -260,7 +269,8 @@ qiime feature-table merge-seqs \
 ### 2. RBCL ### *see note below before proceeding
 # 2a: first merge the table files
 qiime feature-table merge \
- --i-tables R2018/dada2-RBCL/tableRBCL.qza \
+ --i-tables lane1/dada2-RBCL/tableRBCL.qza \
+ --i-tables lane2/dada2-RBCL/tableRBCL.qza \
  --o-merged-table merged/RBCL/tableRBCL.qza
       
  # --i-tables R1/dada2-RBCL/tableRBCL.qza \
@@ -272,7 +282,8 @@ qiime feature-table merge \
  
 # 2b: next merge the rep-seqs
 qiime feature-table merge-seqs \
- --i-data R2018/dada2-RBCL/rep-seqs-dada2-RBCL.qza \
+ --i-data lane1/dada2-RBCL/rep-seqs-dada2-RBCL.qza \
+ --i-data lane2/dada2-RBCL/rep-seqs-dada2-RBCL.qza \
  --o-merged-data merged/RBCL/rep-seqs-RBCL.qza
 
 
