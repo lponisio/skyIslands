@@ -2,10 +2,11 @@ rm(list=ls())
 library(FD)
 library(vegan)
 
-setwd('~/Dropbox (University of Oregon)/skyIslands')
-## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyIslands')
+source("lab_paths.R")
+local.path
 
-setwd('dataPrep')
+dir.bombus <- file.path(local.path, "skyIslands/dataPrep")
+setwd(dir.bombus)
 
 ## calculate trait uniqueness and originality based on Coux et al. 2016
 ## currently traits are across all SI, need to update to be meadow
