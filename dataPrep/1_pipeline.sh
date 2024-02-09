@@ -125,11 +125,11 @@ cd R2018/
 qiime tools import --type EMPPairedEndSequences --input-path parsed_barcodes/ --output-path seqs.qza
 
 ## Run 2 2023
-cd R2023/lane1
+cd ../R2023/lane1
 qiime tools import --type EMPPairedEndSequences --input-path parsed_barcodes/ --output-path seqs.qza
 
 #Run 2
-cd R2023/lane2
+cd ../lane2
 qiime tools import --type EMPPairedEndSequences --input-path parsed_barcodes/ --output-path seqs.qza
 
 
@@ -140,14 +140,17 @@ qiime tools import --type EMPPairedEndSequences --input-path parsed_barcodes/ --
 #with one to start with (e.g. 16s)
 
 ## 2018 run 1
+cd ../../R2018/
 qiime metadata tabulate --m-input-file maps/sky2018map16s.txt --o-visualization sky2018map16s.qzv
 qiime tools view sky2018map16s.qzv
 
 ## 2020 run 2
+cd ../R2023/lane1
 qiime metadata tabulate --m-input-file maps/sky2020map16s_1.txt --o-visualization sky2020map16s_1.qzv
 qiime tools view sky2020map16s_1.qzv
 
 ## 2020 run 3
+cd ../lane2
 qiime metadata tabulate --m-input-file maps/sky2020map16s_2.txt --o-visualization sky2020map16s_2.qzv
 qiime tools view sky2020map16s_2.qzv
 
