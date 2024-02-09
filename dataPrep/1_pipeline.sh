@@ -108,7 +108,7 @@ mv reads2.fastq.gz reverse.fastq.gz
 #6: Exit Qiime1 and use docker to open the environment for Qiime 2. 
 exit
 
-docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
+docker run -itv /Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
 source activate qiime2
 
 #6: Test that the container for Qiime 2 is properly associated, then
