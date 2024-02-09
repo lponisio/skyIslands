@@ -154,26 +154,37 @@ cd ../lane2
 qiime metadata tabulate --m-input-file maps/sky2020map16s_2.txt --o-visualization sky2020map16s_2.qzv
 qiime tools view sky2020map16s_2.qzv
 
+exit
 
 #9: Demultiplex 16s reads first. Only works in version Qiime2 2019.1
-
-exit
+#note: this step takes ~2 hours!
 
 docker run -itv /Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
 
 cd ../../mnt/SI_pipeline
-#cd R2018/2023_sequence_results_raw/lane1 #or whichever run you're working on
-#cd R2018/2023_sequence_results_raw/lane1
-cd R2018/2023_sequence_results_raw/lane2
-#note: this step takes ~2 hours!
-#qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020map16s_1.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza 
 
+# Run 1
+cd R2018/
 qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020map16s_2.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza 
 
-#9a: Visualize Results
-
+## visualize the results
 qiime demux summarize --i-data demux16s.qza --o-visualization demux16s.qzv
+qiime tools view demux16s.qzv
 
+# Run 2
+cd ../R2023/lane1
+qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020map16s_2.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza 
+
+## visualize the results
+qiime demux summarize --i-data demux16s.qza --o-visualization demux16s.qzv
+qiime tools view demux16s.qzv
+
+# Run 3
+cd ../lane2
+qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020map16s_2.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza 
+
+## visualize the results
+qiime demux summarize --i-data demux16s.qza --o-visualization demux16s.qzv
 qiime tools view demux16s.qzv
 
 ## when interpretating the quality boxes, you can use the bottom of
@@ -184,10 +195,12 @@ qiime tools view demux16s.qzv
 
 ## The truncation length will vary between each run! Make sure to adjust the numbers pasted below. 
 ## R2018 16s: f = 180 , r = 220
-## R2023 16s: f = 180 , r = 220
+## R2023 16s lane 1: f = 180 , r = 218 (??????)
+## R2023 16s lane 2: f = 180 , r = 218 (??????)
 
 #note this step takes hours!
 
+## Run 1 2018
 qiime dada2 denoise-paired  \
 --i-demultiplexed-seqs demux16s.qza  \
 --p-trunc-len-f 180  \
