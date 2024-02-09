@@ -165,7 +165,7 @@ cd ../../mnt/SI_pipeline
 
 # Run 1
 cd R2018/
-qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020map16s_2.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza 
+qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2018map16s.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demux16s.qza 
 
 ## visualize the results
 qiime demux summarize --i-data demux16s.qza --o-visualization demux16s.qzv

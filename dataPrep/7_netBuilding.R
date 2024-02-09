@@ -1,6 +1,8 @@
 #Network building for 16s and rbcL FFAR 2019
- setwd('~/Dropbox (University of Oregon)')
+setwd('~/Dropbox (University of Oregon)')
+#dir.bombus <- '/Volumes/bombus/rhayes/Dropbox (University of Oregon)'
 
+#setwd(dir.bombus)
 rm(list=ls())
 ## setwd('~')
 setwd('skyIslands_saved')
@@ -167,53 +169,53 @@ save(indivNetSums_micro, indivNetSums_microBinary,
 
 
 # parasite networks not working right now!
-
-
-#get columns of parasite presence to feed into illumSplit
-
-names.Para <- c("AscosphaeraSpp","ApicystisSpp", "AspergillusSpp",
-                "CrithidiaBombi", "CrithidiaExpoeki",
-                "NosemaCeranae", "NosemaBombi" )
-
-## no       "CrithidiaSpp",
-
-spec.net[, names.Para] <- apply(spec.net[, names.Para], 2, as.numeric)
-seq.para <- spec.net[apply(spec.net[, names.Para], 1, function(x) !all(is.na(x))),]
-
-indivNet_para  <-  illumSplit(seq.para,"Site",names.Para)
-
-
-pol.sp.para <- lapply(indivNet_para,
-                function(x){
-                    spec.net$GenusSpecies[match(colnames(x),
-                                            spec.net$UniqueID)]
-})
-
-## species level
-pol.abund.site.para <- pol.abund.site[names(indivNet_para)]
-
-## species level network
-spNet_para <-  mapply(makeSpNet,
-    indiv.nets = indivNet_para,
-    sp.names = pol.sp.para,
-    sp.abund=pol.abund.site.para,
-    SIMPLIFY = FALSE)
-
-
-#save networks themselves
-save(indivNet_para, spNet_para, pol.abund.site.para,
-     file =file.path(save.dir, 'paraNets.RData'))
-
-#calculate network summary statistics
-
-indivNetSums_para  <-  netSums(indivNet_para, spec=spec.net)
-
-# spNetSums_para  <-  netSums(spNet_para, spec=spec.net,
-#                             type="sp", FUN=lapply)
-
-
-save(indivNetSums_para, #spNetSums_para,
-     file = file.path(save.dir, 'NetSums_para.RData'))
+# 
+# 
+# #get columns of parasite presence to feed into illumSplit
+# 
+# names.Para <- c("AscosphaeraSpp","ApicystisSpp", "AspergillusSpp",
+#                 "CrithidiaBombi", "CrithidiaExpoeki",
+#                 "NosemaCeranae", "NosemaBombi" )
+# 
+# ## no       "CrithidiaSpp",
+# 
+# spec.net[, names.Para] <- apply(spec.net[, names.Para], 2, as.numeric)
+# seq.para <- spec.net[apply(spec.net[, names.Para], 1, function(x) !all(is.na(x))),]
+# 
+# indivNet_para  <-  illumSplit(seq.para,"Site",names.Para)
+# 
+# 
+# pol.sp.para <- lapply(indivNet_para,
+#                 function(x){
+#                     spec.net$GenusSpecies[match(colnames(x),
+#                                             spec.net$UniqueID)]
+# })
+# 
+# ## species level
+# pol.abund.site.para <- pol.abund.site[names(indivNet_para)]
+# 
+# ## species level network
+# spNet_para <-  mapply(makeSpNet,
+#     indiv.nets = indivNet_para,
+#     sp.names = pol.sp.para,
+#     sp.abund=pol.abund.site.para,
+#     SIMPLIFY = FALSE)
+# 
+# 
+# #save networks themselves
+# save(indivNet_para, spNet_para, pol.abund.site.para,
+#      file =file.path(save.dir, 'paraNets.RData'))
+# 
+# #calculate network summary statistics
+# 
+# indivNetSums_para  <-  netSums(indivNet_para, spec=spec.net)
+# 
+# # spNetSums_para  <-  netSums(spNet_para, spec=spec.net,
+# #                             type="sp", FUN=lapply)
+# 
+# 
+# save(indivNetSums_para, #spNetSums_para,
+#      file = file.path(save.dir, 'NetSums_para.RData'))
 
 ## ***********************************************************************
 ## combined dataframe of all the network metrics
@@ -295,22 +297,22 @@ all.indiv.mets.binary <- merge(all.indiv.mets.binary, spec.net)
 
 
 ## merge with specimen data at individual level
-load('../skyIslands/data/spec_traits.Rdata')
+#load('../skyIslands/data/spec_traits.Rdata')
 
 ## names.Para <- c("Ascosphaera","Apicystis",
 ##                 "CrithidiaSpp", "CrithidiaBombi", "CrithidiaExpoeki",
 ##                 "NosemaCeranae", "NosemaBombi" )
 
-spec.net[, names.Para] <- NULL
+#spec.net[, names.Para] <- NULL
 all.indiv.mets <- merge(all.indiv.mets, spec.net)
 ## all.indiv.mets.binary <- merge(all.indiv.mets.binary, spec.net)
 
 
 ## species level merge
-sp.by.site <- read.csv("../skyIslands/data/spstats.csv")
+#sp.by.site <- read.csv("../skyIslands/data/spstats.csv")
 
-all.sp.mets <- merge(all.sp.mets, sp.by.site)
-all.sp.mets.binary <- merge(all.sp.mets.binary, sp.by.site)
+#all.sp.mets <- merge(all.sp.mets, sp.by.site)
+#all.sp.mets.binary <- merge(all.sp.mets.binary, sp.by.site)
 
 
 save(all.sp.mets.binary, all.sp.mets,
