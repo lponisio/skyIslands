@@ -9,7 +9,7 @@
 # container for qiime1
 
 #only need to do this docker pull step once per user
-#docker pull mbari/qiime1
+docker pull mbari/qiime1
 
 #Helpful notes:
 # 1. if running on the shared lab computer, you may get errors if your zipped sequence results are not synched 
@@ -20,44 +20,46 @@
 #     on the local computer, you can fix this by logging in and making all dropbox files online only. This should
 #     clear up enough space to fix this error.
 
-#sequences from 2020
-#running on Rebecca's username (andrena)
-docker run -itv /Users/andrena/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline_2023 mbari/qiime1
-source activate qiime1
-#sequences from 2018
-#docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline sglim2/qiime-1.9.1
+## m1 mac specific flag: --platform linux/amd64 ???
 
+docker run -itv ~/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline mbari/qiime1
 
-# 2: cd into the correct folder within the container, verify that the files you need are there
+source activate qiime1 
 
-cd ../../mnt/SI_pipeline_2023/
+# 2 for 2018 cd into the correct folder within the container, verify that the files you need are there
+
+cd ../../mnt/SI_pipeline/
 ls
-
 
 #3: If your reads are in *fasta.gz format, unzip them with qiime, then
 #rename them "forward.fastq" and "reverse.fastq". Quinn designed the
 #barcodes in reverse so flowcell1 is the reverse and flowcell2 is the
 #forward
 
-## Run 1 2018
-#cd R2018/
-#gunzip *.gz
+cd R2018/
+gunzip *.gz
 
-#mv 4376_S0_L001_R1_001.fastq rawreverse.fastq
-#mv 4376_S0_L001_R2_001.fastq rawforward.fastq
+mv 4376_S0_L001_R1_001.fastq rawreverse.fastq
+mv 4376_S0_L001_R2_001.fastq rawforward.fastq
+
+## Run 1 2018
+gunzip GC3F-JZ-7102---6632_S1_L001_R1_001.fastq.gz
+gunzip GC3F-JZ-7102---6632_S1_L001_R2_001.fastq.gz
+
+mv GC3F-JZ-7102---6632_S1_L001_R1_001.fastq rawreverse.fastq
+mv GC3F-JZ-7102---6632_S1_L001_R2_001.fastq rawforward.fastq
 
 ## Run 1 2020
-# cd R2018/2023_sequence_results_raw/lane1
-# 
-# gunzip GC3F-JZ-7102---6632_S1_L001_R1_001.fastq.gz
-# gunzip GC3F-JZ-7102---6632_S1_L001_R2_001.fastq.gz
-# 
-# mv GC3F-JZ-7102---6632_S1_L001_R1_001.fastq rawreverse.fastq
-# mv GC3F-JZ-7102---6632_S1_L001_R2_001.fastq rawforward.fastq
+cd R2023/lane1
+
+gunzip GC3F-JZ-7102---6632_S1_L001_R1_001.fastq.gz
+gunzip GC3F-JZ-7102---6632_S1_L001_R2_001.fastq.gz
+
+mv GC3F-JZ-7102---6632_S1_L001_R1_001.fastq rawreverse.fastq
+mv GC3F-JZ-7102---6632_S1_L001_R2_001.fastq rawforward.fastq
 
 ## Run 2 2020
-
-cd R2018/2023_sequence_results_raw/lane2
+cd R2023/lane2
 
 gunzip GC3F-JZ-7632---7075_S1_L001_R1_001.fastq.gz
 gunzip GC3F-JZ-7632---7075_S1_L001_R2_001.fastq.gz
@@ -65,24 +67,47 @@ gunzip GC3F-JZ-7632---7075_S1_L001_R2_001.fastq.gz
 mv GC3F-JZ-7632---7075_S1_L001_R1_001.fastq rawreverse.fastq
 mv GC3F-JZ-7632---7075_S1_L001_R2_001.fastq rawforward.fastq
 
-
-#4: parse the barcodes in the files, putting our data into a format
+#4a: parse the barcodes in the files, putting our data into a format
 #qiime2 will be able to use. -- NOTE this step takes ~40 minutes to run!
-
+cd R2018/
 extract_barcodes.py -f rawforward.fastq -r rawreverse.fastq  -c barcode_paired_end --bc1_len 8 --bc2_len 8 -o parsed_barcodes
 
-#5: re-zip the output files
-
+#5a: re-zip the output files
 cd parsed_barcodes
 gzip *.fastq
 
 mv reads1.fastq.gz forward.fastq.gz
 mv reads2.fastq.gz reverse.fastq.gz
 
-#5: Exit Qiime1 and use docker to open the environment for Qiime 2. 
+#4b: parse the barcodes in the files, putting our data into a format
+#qiime2 will be able to use. -- NOTE this step takes ~40 minutes to run!
+cd R2023/lane1
+extract_barcodes.py -f rawforward.fastq -r rawreverse.fastq  -c barcode_paired_end --bc1_len 8 --bc2_len 8 -o parsed_barcodes
+
+#5b: re-zip the output files
+cd parsed_barcodes
+gzip *.fastq
+
+mv reads1.fastq.gz forward.fastq.gz
+mv reads2.fastq.gz reverse.fastq.gz
+
+#4c: parse the barcodes in the files, putting our data into a format
+#qiime2 will be able to use. -- NOTE this step takes ~40 minutes to run!
+cd R2023/lane2
+extract_barcodes.py -f rawforward.fastq -r rawreverse.fastq  -c barcode_paired_end --bc1_len 8 --bc2_len 8 -o parsed_barcodes
+
+#5c: re-zip the output files
+cd parsed_barcodes
+gzip *.fastq
+
+mv reads1.fastq.gz forward.fastq.gz
+mv reads2.fastq.gz reverse.fastq.gz
+
+#6: Exit Qiime1 and use docker to open the environment for Qiime 2. 
 exit
 
-docker run -itv /Users/andrena/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline_2023 qiime2/core
+docker run -itv ~/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline_2023 qiime2/core
+
 #source activate qiime2
 
 #6: Test that the container for Qiime 2 is properly associated, then
