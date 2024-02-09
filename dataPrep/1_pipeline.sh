@@ -36,6 +36,8 @@ ls
 #barcodes in reverse so flowcell1 is the reverse and flowcell2 is the
 #forward
 
+## Step 3 only need to be run once ever.
+
 cd R2018/
 gunzip *.gz
 
@@ -49,7 +51,7 @@ gunzip GC3F-JZ-7102---6632_S1_L001_R2_001.fastq.gz
 mv GC3F-JZ-7102---6632_S1_L001_R1_001.fastq rawreverse.fastq
 mv GC3F-JZ-7102---6632_S1_L001_R2_001.fastq rawforward.fastq
 
-## Run 1 2020
+## Run 2 2020
 cd R2023/lane1
 
 gunzip GC3F-JZ-7102---6632_S1_L001_R1_001.fastq.gz
@@ -58,7 +60,7 @@ gunzip GC3F-JZ-7102---6632_S1_L001_R2_001.fastq.gz
 mv GC3F-JZ-7102---6632_S1_L001_R1_001.fastq rawreverse.fastq
 mv GC3F-JZ-7102---6632_S1_L001_R2_001.fastq rawforward.fastq
 
-## Run 2 2020
+## Run 3 2020
 cd R2023/lane2
 
 gunzip GC3F-JZ-7632---7075_S1_L001_R1_001.fastq.gz
@@ -106,33 +108,28 @@ mv reads2.fastq.gz reverse.fastq.gz
 #6: Exit Qiime1 and use docker to open the environment for Qiime 2. 
 exit
 
-docker run -itv ~/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline_2023 qiime2/core
-
-#source activate qiime2
+docker run -itv ~/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
+source activate qiime2
 
 #6: Test that the container for Qiime 2 is properly associated, then
-#make sure you are in the root directory using ls, then set working
+#make sure you are in the root directory using ls and/or pwd, then set working
 #directory to the mounted volume
 
 #7: Import your parser barcodes into an object you can demultiplex in
 #Qiime 2. Make sure working directory is set correctly.
 cd ../../
-cd mnt/SI_pipeline_2023/
+cd mnt/SI_pipeline/
 
+## Run 1 2018
+cd R2018/
+qiime tools import --type EMPPairedEndSequences --input-path parsed_barcodes/ --output-path seqs.qza
 
-## R2018
-#cd R2018/
-#or whichever run you're working on 
-
-#2020 reads
-#Run 1
-# cd R2018/2023_sequence_results_raw/lane1
-# 
-# qiime tools import --type EMPPairedEndSequences --input-path parsed_barcodes/ --output-path seqs.qza
+## Run 2 2023
+cd R2023/lane1
+qiime tools import --type EMPPairedEndSequences --input-path parsed_barcodes/ --output-path seqs.qza
 
 #Run 2
-cd R2018/2023_sequence_results_raw/lane2
-
+cd R2023/lane2
 qiime tools import --type EMPPairedEndSequences --input-path parsed_barcodes/ --output-path seqs.qza
 
 
@@ -142,11 +139,15 @@ qiime tools import --type EMPPairedEndSequences --input-path parsed_barcodes/ --
 #If you are examining multiple amplicon types, pick a map associated
 #with one to start with (e.g. 16s)
 
-#2020 run 1
-# qiime metadata tabulate --m-input-file maps/sky2020map16s_1.txt --o-visualization sky2020map16s_1.qzv
-# qiime tools view sky2020map16s_1.qzv
+#2018 run 1
+qiime metadata tabulate --m-input-file maps/sky2018map16s.txt --o-visualization sky2018map16s.qzv
+qiime tools view sky2018map16s.qzv
 
-#2020 run2
+#2020 run 2
+qiime metadata tabulate --m-input-file maps/sky2020map16s_1.txt --o-visualization sky2020map16s_1.qzv
+qiime tools view sky2020map16s_1.qzv
+
+#2020 run 3
 qiime metadata tabulate --m-input-file maps/sky2020map16s_2.txt --o-visualization sky2020map16s_2.qzv
 qiime tools view sky2020map16s_2.qzv
 
