@@ -187,20 +187,25 @@ qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020map16s_2.
 qiime demux summarize --i-data demux16s.qza --o-visualization demux16s.qzv
 qiime tools view demux16s.qzv
 
+## click the tab Interactive Quality from the main visualization tab
+
 ## when interpretating the quality boxes, you can use the bottom of
 ## the black box as a conservative measure for the phred score (not the
-## whiskers and not the middleo f the box)
+## whiskers and not the middle of the box). Quality score around 30 is
+## acceptable, lower not so good. Select the number before the
+## quality degings to decline. 
 
 ## watch out for mnt
 
 ## The truncation length will vary between each run! Make sure to adjust the numbers pasted below. 
 ## R2018 16s: f = 180 , r = 220
-## R2023 16s lane 1: f = 180 , r = 218 (??????)
-## R2023 16s lane 2: f = 180 , r = 218 (??????)
+## R2023 16s lane 1: f = 205, r = 237
+## R2023 16s lane 2: f = 147, r = 192
 
 #note this step takes hours!
 
 ## Run 1 2018
+cd ../../R2018/
 qiime dada2 denoise-paired  \
 --i-demultiplexed-seqs demux16s.qza  \
 --p-trunc-len-f 180  \
@@ -212,7 +217,36 @@ qiime dada2 denoise-paired  \
  --o-table dada2-16s/table16s.qza
 
 qiime feature-table tabulate-seqs --i-data dada2-16s/rep-seqs-dada2-16s.qza --o-visualization dada2-16s/rep-seqs-dada2-16s.qzv
+qiime feature-table summarize --i-table dada2-16s/table16s.qza --o-visualization dada2-16s/table16s.qzv
 
+## Run 2 2023 lane1
+cd ../R2023/lane1
+qiime dada2 denoise-paired  \
+--i-demultiplexed-seqs demux16s.qza  \
+--p-trunc-len-f 205  \
+--p-trunc-len-r 237  \
+--p-trim-left-f 0  \
+--p-n-threads 2  \
+--output-dir dada2-16s  \
+ --o-representative-sequences dada2-16s/rep-seqs-dada2-16s.qza  \
+ --o-table dada2-16s/table16s.qza
+
+qiime feature-table tabulate-seqs --i-data dada2-16s/rep-seqs-dada2-16s.qza --o-visualization dada2-16s/rep-seqs-dada2-16s.qzv
+qiime feature-table summarize --i-table dada2-16s/table16s.qza --o-visualization dada2-16s/table16s.qzv
+
+## Run 2 2023 lane1
+cd ../lane2
+qiime dada2 denoise-paired  \
+--i-demultiplexed-seqs demux16s.qza  \
+--p-trunc-len-f 147  \
+--p-trunc-len-r 192  \
+--p-trim-left-f 0  \
+--p-n-threads 2  \
+--output-dir dada2-16s  \
+ --o-representative-sequences dada2-16s/rep-seqs-dada2-16s.qza  \
+ --o-table dada2-16s/table16s.qza
+
+qiime feature-table tabulate-seqs --i-data dada2-16s/rep-seqs-dada2-16s.qza --o-visualization dada2-16s/rep-seqs-dada2-16s.qzv
 qiime feature-table summarize --i-table dada2-16s/table16s.qza --o-visualization dada2-16s/table16s.qzv
 
 ## repeat the steps for RBCL
@@ -220,21 +254,13 @@ exit
 
 #docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
 docker run -itv /Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
-
-
 cd ../../mnt/SI_pipeline
 
-#cd R2018/2023_sequence_results_raw/lane1
-cd R2018/2023_sequence_results_raw/lane2
-
-## 2020 run 2
-#cd ../lane2
-
-#qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020mapRBCL_1.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demuxRBCL.qza 
-qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020mapRBCL_2.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demuxRBCL.qza 
+## Run 1 2018
+cd R2018/
+qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2018mapRBCL.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demuxRBCL.qza 
 
 #9a: Visualize Results
-
 qiime demux summarize --i-data demuxRBCL.qza --o-visualization demuxRBCL.qzv
 qiime tools view demuxRBCL.qzv
 
@@ -242,8 +268,7 @@ qiime tools view demuxRBCL.qzv
 ## adjust the numbers pasted below.
 #this step takes like ~1 hr
 
-## R0 RBCL:  f = 180, r = 218
-
+## Run 1 2018 RBCL:  f = 180, r = 218
 qiime dada2 denoise-paired  \
 --i-demultiplexed-seqs demuxRBCL.qza  \
 --p-trunc-len-f 180  \
@@ -255,13 +280,55 @@ qiime dada2 denoise-paired  \
  --o-table dada2-RBCL/tableRBCL.qza
 
 qiime feature-table tabulate-seqs --i-data dada2-RBCL/rep-seqs-dada2-RBCL.qza --o-visualization dada2-RBCL/rep-seqs-dada2-RBCL.qzv
+qiime feature-table summarize --i-table dada2-RBCL/tableRBCL.qza --o-visualization dada2-RBCL/tableRBCL.qzv
 
+## next run 2
+cd ../R2023/lane1
+qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020mapRBCL_1.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demuxRBCL.qza 
+
+#9a: Visualize Results
+qiime demux summarize --i-data demuxRBCL.qza --o-visualization demuxRBCL.qzv
+qiime tools view demuxRBCL.qzv
+
+## Run 2 2023 RBCL:  f = 232, r = 225
+qiime dada2 denoise-paired  \
+--i-demultiplexed-seqs demuxRBCL.qza  \
+--p-trunc-len-f 232  \
+--p-trunc-len-r 225  \
+--p-trim-left-f 0  \
+--p-n-threads 2  \
+--output-dir dada2-RBCL  \
+ --o-representative-sequences dada2-RBCL/rep-seqs-dada2-RBCL.qza  \
+ --o-table dada2-RBCL/tableRBCL.qza
+
+qiime feature-table tabulate-seqs --i-data dada2-RBCL/rep-seqs-dada2-RBCL.qza --o-visualization dada2-RBCL/rep-seqs-dada2-RBCL.qzv
+qiime feature-table summarize --i-table dada2-RBCL/tableRBCL.qza --o-visualization dada2-RBCL/tableRBCL.qzv
+
+## next run 3
+cd ../lane2
+qiime demux emp-paired --i-seqs seqs.qza --m-barcodes-file maps/sky2020mapRBCL_1.txt --m-barcodes-column barcodesequence --o-per-sample-sequences demuxRBCL.qza 
+
+#9a: Visualize Results
+qiime demux summarize --i-data demuxRBCL.qza --o-visualization demuxRBCL.qzv
+qiime tools view demuxRBCL.qzv
+
+## Run 3 2023 RBCL:  f = 138, r = 192
+qiime dada2 denoise-paired  \
+--i-demultiplexed-seqs demuxRBCL.qza  \
+--p-trunc-len-f 138  \
+--p-trunc-len-r 192  \
+--p-trim-left-f 0  \
+--p-n-threads 2  \
+--output-dir dada2-RBCL  \
+ --o-representative-sequences dada2-RBCL/rep-seqs-dada2-RBCL.qza  \
+ --o-table dada2-RBCL/tableRBCL.qza
+
+qiime feature-table tabulate-seqs --i-data dada2-RBCL/rep-seqs-dada2-RBCL.qza --o-visualization dada2-RBCL/rep-seqs-dada2-RBCL.qzv
 qiime feature-table summarize --i-table dada2-RBCL/tableRBCL.qza --o-visualization dada2-RBCL/tableRBCL.qzv
 
 # check outputs to make sure you didn't lose too many samples. 
 # We found being more conservative and doing shorter truncations gives you the same number of sequences, 
 # but sorted into fewer features, likely cause trimmed off poor quality reads
-
 
 ## *****************************************************************************
 ##       MERGE files from runs ONCE THEY EXIST
@@ -272,7 +339,8 @@ qiime feature-table summarize --i-table dada2-RBCL/tableRBCL.qza --o-visualizati
 # cd back to your main folder (in this case SI_pipeline) that has the separate run folders
 # make a couple new directories
 
-cd ../ 
+## cd back into before you do into R2023
+cd ../../ 
 mkdir merged
 cd merged
 mkdir 16s
@@ -282,67 +350,30 @@ cd ../
 #### 1. 16s ###
 # 1a. first merge the table files. do this from your main SI_pipeline folder
 qiime feature-table merge \
-      --i-tables lane1/dada2-16s/table16s.qza \
-      --i-tables lane2/dada2-16s/table16s.qza \
+      --i-tables R2018/dada2-16s/table16s.qza \
+      --i-tables R2023/lane1/dada2-16s/table16s.qza \
+      --i-tables R2023/lane2/dada2-16s/table16s.qza \
       --o-merged-table merged/16s/table16s.qza
-
- # --i-tables R1/dada2-16s/table16s.qza \
- # --i-tables R2/dada2-16s/table16s.qza \
- # --i-tables R3/dada2-16s/table16s.qza \
- # --i-tables R4/dada2-16s/table16s.qza \
- # --i-tables R2018/dada2-16soutput/table16s.qza \
- # --o-merged-table merge/16s/table16s.qza
 
 # 1b: next merge the rep-seqs
 qiime feature-table merge-seqs \
-       --i-data lane1/dada2-16s/rep-seqs-dada2-16s.qza \
-       --i-data lane2/dada2-16s/rep-seqs-dada2-16s.qza \
-	--o-merged-data merged/16s/rep-seqs-16s.qza
+      --i-data R2018/dada2-16s/rep-seqs-dada2-16s.qza \
+      --i-data R2023/lane1/dada2-16s/rep-seqs-dada2-16s.qza \
+      --i-data R2023/lane2/dada2-16s/rep-seqs-dada2-16s.qza \
+      --o-merged-data merged/16s/rep-seqs-16s.qza
 
- # --i-data R1/dada2-16s/rep-seqs-dada2-16s.qza \
- # --i-data R2/dada2-16s/rep-seqs-dada2-16s.qza \
- # --i-data R3/dada2-16s/rep-seqs-dada2-16s.qza \
- # --i-data R4/dada2-16s/rep-seqs-dada2-16s.qza \
- # --i-data R0_2018/dada2-16soutput/rep-seqs-dada2-16s.qza \
- # --o-merged-data merge/16s/rep-seqs-16s.qza
- 
 ### 2. RBCL ### *see note below before proceeding
 # 2a: first merge the table files
 qiime feature-table merge \
- --i-tables lane1/dada2-RBCL/tableRBCL.qza \
- --i-tables lane2/dada2-RBCL/tableRBCL.qza \
- --o-merged-table merged/RBCL/tableRBCL.qza
-      
- # --i-tables R1/dada2-RBCL/tableRBCL.qza \
- # --i-tables R2/dada2-RBCL/tableRBCL.qza \
- # --i-tables R3/dada2-RBCL/tableRBCL.qza \
- # --i-tables R4/dada2-RBCL/tableRBCL.qza \
- # --i-tables R0_2018/dada2RBCLoutput/tableRBCL.qza \
- # --o-merged-table merged/RBCL/tableRBCL.qza
- 
+      --i-tables R2018/dada2-RBCL/tableRBCL.qza \
+      --i-tables R2023/lane1/dada2-RBCL/tableRBCL.qza \
+      --i-tables R2023/lane2/dada2-RBCL/tableRBCL.qza \
+      --o-merged-table merged/RBCL/tableRBCL.qza
+
 # 2b: next merge the rep-seqs
 qiime feature-table merge-seqs \
- --i-data lane1/dada2-RBCL/rep-seqs-dada2-RBCL.qza \
- --i-data lane2/dada2-RBCL/rep-seqs-dada2-RBCL.qza \
- --o-merged-data merged/RBCL/rep-seqs-RBCL.qza
-
-
- # --i-data R1/dada2-RBCL/rep-seqs-dada2-RBCL.qza \
- # --i-data R2/dada2-RBCL/rep-seqs-dada2-RBCL.qza \
- # --i-data R3/dada2-RBCL/rep-seqs-dada2-RBCL.qza \
- # --i-data R4/dada2-RBCL/rep-seqs-dada2-RBCL.qza \
-
-# * note: When we ran this code, got an error. leaving the code below, where we fixed it, annotated out, cause not relevant for future orojecs
-# we have sample 16s 4285 in both in 16s R1 and R4. decided to remove from R4. kept this in the plate maps, but took out by filtering.
-# i called the new filtered table and repseqs outputs in R4 "clean", but then manually renamed them to replace the old artifats
-# need to filter out sample 4285 from RBCL of round R4 table16s and rep seqs and then merge
-
-# make a txt file with the list of IDs for samples you want to keep, where you remove control IDs. called "samplestokeep.txt"
-# qiime feature-table filter-samples --i-table dada2-RBCL/tableRBCL.qza --m-metadata-file dada2-RBCL/samplestokeep.txt --o-filtered-table dada2-RBCL/tableRBCLclean.qza
-
-# filter out repseqs
-# qiime feature-table filter-seqs --i-data dada2-RBCL/rep-seqs-dada2-RBCL.qza --i-table dada2-RBCL/tableRBCLclean.qza --o-filtered-data dada2-RBCL/rep-seqs-dada2-RBCLclean.qza
-# qiime feature-table tabulate-seqs --i-data dada2-RBCL/rep-seqs-dada2-RBCLclean.qza --o-visualization dada2-RBCL/rep-seqs-dada2-RBCLclean.qzv
-# qiime tools view dada2-RBCL/rep-seqs-dada2-RBCLclean.qzv
-
+      --i-data R2018/dada2-RBCL/rep-seqs-dada2-RBCL.qza \
+      --i-data R2023/lane1/dada2-RBCL/rep-seqs-dada2-RBCL.qza \
+      --i-data R2023/lane2/dada2-RBCL/rep-seqs-dada2-RBCL.qza \
+      --o-merged-data merged/RBCL/rep-seqs-RBCL.qza
 
