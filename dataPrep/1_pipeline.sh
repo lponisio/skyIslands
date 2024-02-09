@@ -22,7 +22,7 @@ docker pull mbari/qiime1
 
 ## m1 mac specific flag: --platform linux/amd64 ???
 
-docker run -itv ~/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline mbari/qiime1
+docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline mbari/qiime1
 
 source activate qiime1 
 
@@ -108,7 +108,7 @@ mv reads2.fastq.gz reverse.fastq.gz
 #6: Exit Qiime1 and use docker to open the environment for Qiime 2. 
 exit
 
-docker run -itv ~/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
+docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
 source activate qiime2
 
 #6: Test that the container for Qiime 2 is properly associated, then
@@ -139,15 +139,15 @@ qiime tools import --type EMPPairedEndSequences --input-path parsed_barcodes/ --
 #If you are examining multiple amplicon types, pick a map associated
 #with one to start with (e.g. 16s)
 
-#2018 run 1
+## 2018 run 1
 qiime metadata tabulate --m-input-file maps/sky2018map16s.txt --o-visualization sky2018map16s.qzv
 qiime tools view sky2018map16s.qzv
 
-#2020 run 2
+## 2020 run 2
 qiime metadata tabulate --m-input-file maps/sky2020map16s_1.txt --o-visualization sky2020map16s_1.qzv
 qiime tools view sky2020map16s_1.qzv
 
-#2020 run 3
+## 2020 run 3
 qiime metadata tabulate --m-input-file maps/sky2020map16s_2.txt --o-visualization sky2020map16s_2.qzv
 qiime tools view sky2020map16s_2.qzv
 
@@ -156,9 +156,7 @@ qiime tools view sky2020map16s_2.qzv
 
 exit
 
-#docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
 docker run -itv /Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
-
 
 cd ../../mnt/SI_pipeline
 #cd R2018/2023_sequence_results_raw/lane1 #or whichever run you're working on
