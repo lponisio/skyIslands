@@ -205,7 +205,7 @@ qiime tools view demux16s.qzv
 #note this step takes hours!
 
 ## Run 1 2018
-cd ../../R2018/
+cd R2018/
 qiime dada2 denoise-paired  \
 --i-demultiplexed-seqs demux16s.qza  \
 --p-trunc-len-f 180  \
@@ -215,6 +215,7 @@ qiime dada2 denoise-paired  \
 --output-dir dada2-16s  \
  --o-representative-sequences dada2-16s/rep-seqs-dada2-16s.qza  \
  --o-table dada2-16s/table16s.qza
+
 
 qiime feature-table tabulate-seqs --i-data dada2-16s/rep-seqs-dada2-16s.qza --o-visualization dada2-16s/rep-seqs-dada2-16s.qzv
 qiime feature-table summarize --i-table dada2-16s/table16s.qza --o-visualization dada2-16s/table16s.qzv
@@ -234,8 +235,8 @@ qiime dada2 denoise-paired  \
 qiime feature-table tabulate-seqs --i-data dada2-16s/rep-seqs-dada2-16s.qza --o-visualization dada2-16s/rep-seqs-dada2-16s.qzv
 qiime feature-table summarize --i-table dada2-16s/table16s.qza --o-visualization dada2-16s/table16s.qzv
 
-## Run 2 2023 lane1
-cd ../lane2
+## Run 3 2023 lane2
+cd R2023/lane2
 qiime dada2 denoise-paired  \
 --i-demultiplexed-seqs demux16s.qza  \
 --p-trunc-len-f 147  \
