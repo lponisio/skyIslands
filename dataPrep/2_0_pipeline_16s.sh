@@ -34,7 +34,8 @@
 ## go back into qiime
 docker run -itv /Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core:2019.1
 
-cd ../mnt/SI_pipeline/R2018/2023_sequence_results_raw/16s-trainingclassifier/
+#updated silva classifier is in R2023 folder
+cd ../mnt/SI_pipeline/R2023/16s-trainingclassifier/
 
 ## 99 is 99% match between our seq and the database
 # qiime tools import \
@@ -76,23 +77,18 @@ qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads ref-seqs
 #CD to the main SI_pipeline folder where the classifiers are
 #cd ../../
 
-#2021 samps
-qiime feature-classifier classify-sklearn --i-classifier classifier16s.qza --i-reads  ../merged/16s/rep-seqs-16s.qza --o-classification  ../merged/16s/taxonomy16s.qza
 
-#2018 samps -- reclassifying with updated silva database
-qiime feature-classifier classify-sklearn --i-classifier classifier16s.qza --i-reads  ../../../merged/16s/rep-seqs-16s.qza --o-classification  ../merged/16s/taxonomy16s-2018.qza
+qiime feature-classifier classify-sklearn --i-classifier classifier16s.qza --i-reads  ../../merged/16s/rep-seqs-16s.qza --o-classification  ../../merged/16s/taxonomy16s.qza
 
-## switch to the newest version of qiime
+# switch to the newest version of qiime
 exit
 docker run -itv /Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
 
 # visualize. navigate back to where you have your taxonomy files
-cd ../mnt/SI_pipeline/R2018/2023_sequence_results_raw/merged/16s
+cd ../mnt/SI_pipeline/merged/16s
 
-#2021
 qiime metadata tabulate --m-input-file taxonomy16s.qza --o-visualization taxonomy16s.qzv
-#2018
-qiime metadata tabulate --m-input-file taxonomy16s-2018.qza --o-visualization taxonomy16s-2018.qzv
+
 
 #cant do this step without a master map, which we don't have for the merged files. 
 #skip for now. we still wanna do the other steps on the merged files
@@ -121,7 +117,6 @@ cd merged/16s/
 
 qiime feature-table tabulate-seqs --i-data rep-seqs-16s.qza --o-visualization rep-seqs-16s.qzv
 
-qiime feature-table tabulate-seqs --i-data rep-seqs-16s-2018.qza --o-visualization rep-seqs-16s-2018.qzv
 
 # using these two documents, select the sequence corresponding with the feature ids for L. kunkeei
 
@@ -142,19 +137,12 @@ qiime tools import \
 qiime taxa filter-table --i-table table16s.qza --i-taxonomy taxonomy16s.qza --p-exclude mitochondria,chloroplast --o-filtered-table tablefilt1.qza
 qiime feature-table summarize --i-table tablefilt1.qza --o-visualization tablefilt1.qzv 
 
-#2018
-qiime taxa filter-table --i-table table16s-2018.qza --i-taxonomy taxonomy16s-2018.qza --p-exclude mitochondria,chloroplast --o-filtered-table tablefilt1-2018.qza
-qiime feature-table summarize --i-table tablefilt1-2018.qza --o-visualization tablefilt1-2018.qzv 
 
 #2c. filter 2: remove sequences only found in one sample 
 
 #2021
 qiime feature-table filter-features --i-table tablefilt1.qza --p-min-samples 2 --o-filtered-table tablefilt2.qza
 qiime feature-table summarize --i-table tablefilt2.qza --o-visualization tablefilt2.qzv
-
-#2018
-qiime feature-table filter-features --i-table tablefilt1-2018.qza --p-min-samples 2 --o-filtered-table tablefilt2-2018.qza
-qiime feature-table summarize --i-table tablefilt2-2018.qza --o-visualization tablefilt2-2018.qzv
 
 
 #2d: Filter our rep seqs file so that you can see what samples you have left after filtering and subsampling
@@ -164,31 +152,28 @@ qiime feature-table filter-seqs --i-data rep-seqs-16s.qza --i-table tablefilt2.q
 qiime feature-table tabulate-seqs --i-data rep-seqs-16s-filtered.qza --o-visualization rep-seqs-16s-filtered.qzv
 qiime tools view rep-seqs-16s-filtered.qzv
 
-#2018
-qiime feature-table filter-seqs --i-data rep-seqs-16s-2018.qza --i-table tablefilt2-2018.qza --o-filtered-data rep-seqs-16s-filtered-2018.qza
-qiime feature-table tabulate-seqs --i-data rep-seqs-16s-filtered-2018.qza --o-visualization rep-seqs-16s-filtered-2018.qzv
-qiime tools view rep-seqs-16s-filtered-2018.qzv
 
 
-#merging repseqs between 2018 and 2021
-qiime feature-table merge-seqs \
-       --i-data rep-seqs-16s-filtered.qza \
-       --i-data rep-seqs-16s-filtered-2018.qza \
-	--o-merged-data rep-seqs-16s-filtered-combined.qza
-	
-	#merging freq tables between 2018 and 2021
-qiime feature-table merge \
-       --i-tables table16s.qza \
-       --i-tables table16s-2018.qza \
-	--o-merged-table tables-combined.qza
-	
-
-
-qiime feature-table merge-taxa \
-  --i-data taxonomy16s.qza \
-  --i-data taxonomy16s-2018.qza \
-  --o-merged-data combined-taxonomy.qza
-  
+# 
+# #merging repseqs between 2018 and 2021
+# qiime feature-table merge-seqs \
+#        --i-data rep-seqs-16s-filtered.qza \
+#        --i-data rep-seqs-16s-filtered-2018.qza \
+# 	--o-merged-data rep-seqs-16s-filtered-combined.qza
+# 	
+# 	#merging freq tables between 2018 and 2021
+# qiime feature-table merge \
+#        --i-tables table16s.qza \
+#        --i-tables table16s-2018.qza \
+# 	--o-merged-table tables-combined.qza
+# 	
+# 
+# 
+# qiime feature-table merge-taxa \
+#   --i-data taxonomy16s.qza \
+#   --i-data taxonomy16s-2018.qza \
+#   --o-merged-data combined-taxonomy.qza
+#   
 ## here is a step we are changing for 2023 -- since we are using the trees to determine microbial phylogenetic distance, we need to 
 ## filter out unwanted sequences before we generate the trees.
 ## also, we will not split sequences into runs and instead will filter out contaminants across all runs
@@ -201,46 +186,46 @@ qiime feature-table merge-taxa \
 # they include  Halomonas, Shewanella, Oceanospirillales, and the acne bacteria Propionibacterium. 
 
 
-qiime taxa filter-table --i-table tables-combined.qza --i-taxonomy combined-taxonomy.qza --p-exclude halomonas,lautropia,rothia,haemophilus,desulfuromonadales,pseudomonas,devosia,sphingomonas,solirubrobacterales,escherichia-shigella,staphylococcus,prevotellaceae,blastococcus,aeromonas,streptococcus,shewanella,oceanospirillales,propionibacteriales --o-filtered-table table-combined-f1.qza
+qiime taxa filter-table --i-table tables16s.qza --i-taxonomy taxonomy16s.qza --p-exclude halomonas,lautropia,rothia,haemophilus,desulfuromonadales,pseudomonas,devosia,sphingomonas,solirubrobacterales,escherichia-shigella,staphylococcus,prevotellaceae,blastococcus,aeromonas,streptococcus,shewanella,oceanospirillales,propionibacteriales --o-filtered-table tablef1.qza
 
 # 5b. Let's specifically look at sequences in our controls and remove the bacteria that are in them
 
 
-qiime taxa barplot --i-table table-combined-f1.qza --i-taxonomy combined-taxonomy.qza --m-metadata-file maps/combined-map-2018-2021.txt --o-visualization taxa-bar-plots-combined-f1.qzv
+qiime taxa barplot --i-table tablef1.qza --i-taxonomy taxonomy16s.qza --m-metadata-file maps/combined-map-2018-2021.txt --o-visualization taxa-bar-plots-f1.qzv
 
 #now filter out taxa that are in the controls!
 
 #2018 controls
-qiime taxa filter-table --i-table table-combined-f1.qza --i-taxonomy combined-taxonomy.qza --p-mode exact --p-exclude "d__Bacteria;p__Actinobacteria;c__Actinobacteria;o__Micrococcales;f__Microbacteriaceae;g__Galbitalea",\
+qiime taxa filter-table --i-table tablef1.qza --i-taxonomy taxonomy16s.qza --p-mode exact --p-exclude "d__Bacteria;p__Actinobacteria;c__Actinobacteria;o__Micrococcales;f__Microbacteriaceae;g__Galbitalea",\
 "d__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Chitinophagales;f__Chitinophagaceae",\
 "d__Bacteria;p__Tenericutes;c__Mollicutes;o__Entomoplasmatales;f__Spiroplasmataceae;g__Spiroplasma",\
 "d__Bacteria;p__Actinobacteria;c__Actinobacteria;o__Kineosporiales;f__Kineosporiaceae;g__Kineosporia;s__uncultured;bacterium",\
 "d__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Chitinophagales;f__Chitinophagaceae;g__Segetibacter",\
 "d__Bacteria",\
-"Unassigned" --o-filtered-table table-combined-f2.qza
+"Unassigned" --o-filtered-table tablef2.qza
 
-qiime taxa barplot --i-table table-combined-f2.qza --i-taxonomy combined-taxonomy.qza --m-metadata-file maps/combined-map-2018-2021.txt --o-visualization taxa-bar-plots-combined-f2.qzv
+qiime taxa barplot --i-table tablef2.qza --i-taxonomy taxonomy16s.qza --m-metadata-file maps/combined-map-2018-2021.txt --o-visualization taxa-bar-plots-f2.qzv
 
 #2021 controls
-qiime taxa filter-table --i-table table-combined-f2.qza --i-taxonomy combined-taxonomy.qza --p-mode exact --p-exclude "d__Bacteria;p__Proteobacteria;c__Alphaproteobacteria;o__Rhizobiales;f__Xanthobacteraceae;g__Bradyrhizobium;__",\
+qiime taxa filter-table --i-table tablef2.qza --i-taxonomy taxonomy16s.qza --p-mode exact --p-exclude "d__Bacteria;p__Proteobacteria;c__Alphaproteobacteria;o__Rhizobiales;f__Xanthobacteraceae;g__Bradyrhizobium;__",\
 "d__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Burkholderiales;f__Comamonadaceae",\
 "d__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Burkholderiales;f__Comamonadaceae;g__Acidovorax",\
 "d__Bacteria;p__Fusobacteriota;c__Fusobacteriia;o__Fusobacteriales;f__Fusobacteriaceae;g__Fusobacterium",\
 "d__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Burkholderiales;f__Burkholderiaceae;g__Ralstonia",\
 "d__Bacteria;p__Firmicutes;c__Bacilli;o__Bacillales;f__Bacillaceae;g__Bacillus",\
 "d__Bacteria;p__Proteobacteria;c__Alphaproteobacteria;o__Caulobacterales;f__Caulobacteraceae;g__Phenylobacterium",\
-"Unassigned" --o-filtered-table table-combined-f3.qza
+"Unassigned" --o-filtered-table tablef3.qza
 
-qiime taxa barplot --i-table table-combined-f3.qza --i-taxonomy combined-taxonomy.qza --m-metadata-file maps/combined-map-2018-2021.txt --o-visualization taxa-bar-plots-combined-f3.qzv
+qiime taxa barplot --i-table tablef3.qza --i-taxonomy taxonomy16s.qza --m-metadata-file maps/combined-map-2018-2021.txt --o-visualization taxa-bar-plots-f3.qzv
 
 #Filter out controls by making new map file excluding controls
-qiime feature-table filter-samples --i-table table-combined-f3.qza --m-metadata-file maps/combined-map-2018-2021-noCtrl.txt --o-filtered-table table-combined-f4.qza
+qiime feature-table filter-samples --i-table tablef3.qza --m-metadata-file maps/combined-map-2018-2021-noCtrl.txt --o-filtered-table tablef4.qza
 
 #now need to filter the rep-seqs FeatureTable[sequence] to the updated fitered FeatureTable[frequency]
 
 qiime feature-table filter-seqs \
---i-data rep-seqs-16s-filtered-combined.qza \
---i-table table-combined-f4.qza \
+--i-data rep-seqs-16s-filtered.qza \
+--i-table tablef4.qza \
 --o-filtered-data rep-seqs-16s-final-filter.qza
   
   
@@ -251,30 +236,30 @@ qiime feature-table filter-seqs \
 # generate a tree with the merged data
 
 #Now alignment of the reads using MAFFT.
-qiime alignment mafft --i-sequences rep-seqs-16s-final-filter.qza --o-alignment aligned_repseqs16s-combined.qza
+qiime alignment mafft --i-sequences rep-seqs-16s-final-filter.qza --o-alignment aligned_repseqs16s.qza
 
 #Then filter out the unconserved, highly gapped columns from alignment
-qiime alignment mask --i-alignment aligned_repseqs16s-combined.qza --o-masked-alignment masked_aligned_repseqs16s-combined.qza
+qiime alignment mask --i-alignment aligned_repseqs16s.qza --o-masked-alignment masked_aligned_repseqs16s.qza
 
 #And make a tree with Fasttree which creates a maximum likelihood phylogenetic trees from aligned sequences
 #for more information on fastree, http://www.microbesonline.org/fasttree/
-qiime phylogeny fasttree --i-alignment masked_aligned_repseqs16s-combined.qza --o-tree unrooted_tree16s-combined.qza
+qiime phylogeny fasttree --i-alignment masked_aligned_repseqs16s.qza --o-tree unrooted_tree16s.qza
 
 #now root it
-qiime phylogeny midpoint-root --i-tree unrooted_tree16s-combined.qza --o-rooted-tree rooted-tree16s-combined.qza
+qiime phylogeny midpoint-root --i-tree unrooted_tree16s.qza --o-rooted-tree rooted-tree16s.qza
 
 
-qiime phylogeny align-to-tree-mafft-fasttree --i-sequences rep-seqs-16s-final-filter.qza --o-alignment aligned_repseqs16s-combined.qza --o-masked-alignment masked_aligned_repseqs16s-combined.qza --o-tree unrooted_tree16s-combined.qza --o-rooted-tree rooted-tree16s-combined.qza
+qiime phylogeny align-to-tree-mafft-fasttree --i-sequences rep-seqs-16s-final-filter.qza --o-alignment aligned_repseqs16s.qza --o-masked-alignment masked_aligned_repseqs16s.qza --o-tree unrooted_tree16s.qza --o-rooted-tree rooted-tree16s.qza
 
 
 ## now to fix the error: The table does not appear to be completely represented by the phylogeny.
 #need to drop from the tree faetures not in the table anymore after filtering
 
 qiime fragment-insertion filter-features \
---i-table table-combined-f4.qza \
---i-tree rooted-tree16s-combined.qza \
---o-filtered-table table-f5.qza \
---o-removed-table removed-table-f5.qza
+--i-table tablef4.qza \
+--i-tree rooted-tree16s.qza \
+--o-filtered-table tablef5.qza \
+--o-removed-table removed-tablef5.qza
 ### *************************************************************************
 #6. DETERMINE SUBSAMPLE DEPTH
 ### *************************************************************************
@@ -284,9 +269,9 @@ qiime fragment-insertion filter-features \
 
 #For subsampling R0:  1019 reads.  894 (97.70%) samples at the specifed sampling depth.Retained 910,986 (5.30%) features
 
-qiime diversity alpha-rarefaction --i-table table-f5.qza --i-phylogeny rooted-tree16s-combined.qza --p-max-depth 10000 --m-metadata-file maps/combined-map-2018-2021.txt --o-visualization alphararefact16s-combined.qzv
+qiime diversity alpha-rarefaction --i-table tablef5.qza --i-phylogeny rooted-tree16s.qza --p-max-depth 10000 --m-metadata-file maps/combined-map-2018-2021.txt --o-visualization alphararefact16s.qzv
 
-qiime feature-table summarize --i-table table-f5.qza --o-visualization table-f5.qzv
+qiime feature-table summarize --i-table tablef5.qza --o-visualization tablef5.qzv
 
 
 
@@ -301,7 +286,7 @@ qiime feature-table summarize --i-table table-f5.qza --o-visualization table-f5.
 
 mkdir final
 
-qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-tree16s-combined.qza --i-table table-f5.qza --p-sampling-depth 1019 --m-metadata-file maps/combined-map-2018-2021.txt --output-dir final/core_metrics16s-combined --verbose
+qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-tree16s.qza --i-table tablef5.qza --p-sampling-depth 1019 --m-metadata-file maps/combined-map-2018-2021.txt --output-dir final/core_metrics16s --verbose
 
 # qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-tree16s.qza --i-table split/tableR1_f3.qza --p-sampling-depth 1130 --m-metadata-file maps/SI2019_R1map16s.txt --output-dir final/core_metrics16sR1 --verbose
 
@@ -316,7 +301,7 @@ qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-tree16s-combined.
 
 #now we have lots of files in that core_metrics directory. gotta export rarefied_table.qza so we can get a qzv and convert to a csv
 #NOT SURE WHAT MAP TO USE HERE, the map or the RnoCtrl file.....
-qiime taxa barplot --i-table final/core_metrics16s-combined/rarefied_table.qza --i-taxonomy combined-taxonomy.qza --m-metadata-file maps/combined-map-2018-2021-noCtrl.txt --o-visualization final/core_metrics16s-combined/rarefiedtable16s.qzv
+qiime taxa barplot --i-table final/core_metrics16s/rarefied_table.qza --i-taxonomy taxonomy16s.qza --m-metadata-file maps/combined-map-2018-2021-noCtrl.txt --o-visualization final/core_metrics16s/rarefiedtable16s.qzv
 
 #### merging master maps
 # 
