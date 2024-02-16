@@ -424,10 +424,9 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                               temp.id= c("BBSL1073334")),
 
 
-
     Lasioglossum_arcanum_f = list(Genus="Lasioglossum",
-                                  SubGenus ="Dialictus",
-                                  Species="arcanum species complex",
+                                  SubGenus ="Dialictus", 
+                                  Species="arcanum", #species complex
                                   SubSpecies="",
                                   Sex="f", Author = "",
                                   Determiner = "J. Gardener",
@@ -436,7 +435,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
 
     Lasioglossum_viridatum_f = list(Genus="Lasioglossum",
                                     SubGenus ="Dialictus",
-                                    Species="viridatum species group",
+                                    Species="viridatum", # species group
                                     SubSpecies="",
                                     Sex="m", Author = "",
                                     Determiner = "J. Gardener",
@@ -445,7 +444,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
 
     Lasioglossum_veganum_f = list(Genus="Lasioglossum",
                                   SubGenus ="Dialictus",
-                                  Species="veganum species complex",
+                                  Species="veganum", # species complex
                                   SubSpecies="",
                                   Sex="f", Author = "",
                                   Determiner = "J. Gardener",
@@ -486,7 +485,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
 
     Lasioglossum_tegulare_f = list(Genus="Lasioglossum",
                                    SubGenus ="Dialictus",
-                                   Species="mountain tegulare species group",
+                                   Species="tegulare", # mountain tegulare species group
                                    SubSpecies="",
                                    Sex="f", Author = "",
                                    Determiner = "J. Gardener",
@@ -522,7 +521,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
 
     Lasioglossum_knereri_f = list(Genus="Lasioglossum",
                                   SubGenus ="Dialictus",
-                                  Species="knereri*",
+                                  Species="knereri", # species complex
                                   SubSpecies="",
                                   Sex="f", Author = "Gibbs, 2010",
                                   Determiner = "J. Gardener",
@@ -1087,8 +1086,8 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
 
     Lasioglossum_perparvum_f= list(Genus="Lasioglossum",
                                    SubGenus ="Dialictus",
-                                   Species="aff. perparvum",
-                                   SubSpecies="",
+                                   Species="perparvum",
+                                   SubSpecies="aff.",
                                    Sex="f",
                                    Author = "",
                                    Determiner = "J. Gardener",

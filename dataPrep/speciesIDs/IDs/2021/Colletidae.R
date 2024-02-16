@@ -5,7 +5,7 @@ sp.ids <- list(
                              SubGenus="",
                              Species="nigrifrons",
                              SubSpecies="", Sex="f",
-                             Author = "",
+                             Author = "Titus",
                              Determiner="L. Best",
                              temp.id= c(31369, 31372)),
 
@@ -37,7 +37,7 @@ sp.ids <- list(
                                        34455)),
 
     Colletes_gilensis_f= list(Genus="Colletes",
-                             SubGenus="",
+                             SubGenus="Productus",
                              Species="gilensis",
                              SubSpecies="", Sex="f",
                              Author = "Cockerell",
@@ -52,7 +52,7 @@ sp.ids <- list(
                                        33849)),
 
     Colletes_gilensis_m= list(Genus="Colletes",
-                             SubGenus="",
+                             SubGenus="Productus",
                              Species="gilensis",
                              SubSpecies="", Sex="m",
                              Author = "Cockerell",

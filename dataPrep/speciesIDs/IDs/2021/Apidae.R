@@ -605,7 +605,7 @@ sp.ids <- list(
                                  temp.id= c(34903)),
 
     Brachymelecta_californica_f= list(Genus="Brachymelecta",
-                                 SubGenus ="",
+                                 SubGenus ="Melectomorpha",
                                  Species="californica",
                                  SubSpecies="",
                                  Sex="f",

@@ -33,7 +33,7 @@ sp.ids <- list(
  
  
  Colletes_sp4= list(Genus="Colletes", SubGenus ="",
-                          Species="sp.", SubSpecies="4", Sex="f", Author = "Timberlake",
+                          Species="sp.", SubSpecies="4", Sex="f", Author = "",
                           Determiner="T. Griswold", 
                           temp.id= c("18298")), 
  
@@ -97,7 +97,7 @@ sp.ids <- list(
                                          "18375", "17894", "18414", "18418",
                                          "18419", "18417", "18385", "18374")),
 
-    Colletes_gilensis_f= list(Genus="Colletes", SubGenus ="",
+    Colletes_gilensis_f= list(Genus="Colletes", SubGenus ="Productus",
                               Species="gilensis", SubSpecies="",
                               Sex="f",
                               Author = "Cockerell",
@@ -126,14 +126,14 @@ sp.ids <- list(
     Hylaeus_morphoa_f = list(Genus="Hylaeus", SubGenus ="Hylaeus",
                              Species="sp.", SubSpecies="a",
                              Sex="f",
-                             Author = "Linnaeus",
+                             Author = "",
                              Determiner = "D. Yanega",
                              temp.id= c("18570")),
 
     Hylaeus_morphob_f = list(Genus="Hylaeus", SubGenus ="Hylaeus",
                              Species="sp.", SubSpecies="b",
                              Sex="f",
-                             Author = "Linnaeus",
+                             Author = "",
                              Determiner = "D. Yanega",
                              temp.id= c("18672")),
 
@@ -141,7 +141,7 @@ sp.ids <- list(
     Hylaeus_morphoc_f = list(Genus="Hylaeus", SubGenus ="Hylaeus",
                              Species="sp.", SubSpecies="c",
                              Sex="f",
-                             Author = "Linnaeus",
+                             Author = "",
                              Determiner = "D. Yanega",
                              temp.id= c("18062", "18094", "18700",
                                         "18309", "18300", "18299", "18115",

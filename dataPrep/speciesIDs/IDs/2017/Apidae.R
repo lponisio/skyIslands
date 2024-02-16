@@ -1180,13 +1180,13 @@ sp.ids <- list(
                                      SubGenus="Melectomorpha",
                                      Species="californica",
                                      SubSpecies="", Sex="f",
-                                     Author = "Cresson, 1878)",
+                                     Author = "Cresson",
                                      Determiner="T. Griswold",
 
                                      temp.id= c("BBSL1073307")),
 
 
-    Brachymelecta_californica_m = list(Genus="Xeromelecta",
+    Brachymelecta_californica_m = list(Genus="Brachymelecta",
                                      SubGenus="Melectomorpha",
                                      Species="californica",
                                      SubSpecies="",
@@ -1344,7 +1344,7 @@ sp.ids <- list(
                                    "21434","21433","21440","22160",
                                    "20801","21289","30463","20817",
                                    "21381","20818","22765","21398",
-                                   "21377","21390")),
+                                   "21377","21390", "BBSL1072144","BBSL1072145","BBSL1072146","BBSL1072147","BBSL1072698","BBSL1072688","BBSL1072689","BBSL1072675","BBSL1072671","BBSL1072672","BBSL1072673","BBSL1072973","BBSL1072912","BBSL1072674","BBSL1072796","BBSL1072891","BBSL1074098")),
 
     Melissodes_tristis_m= list(Genus="Melissodes",
                              SubGenus="Eumelissodes",
@@ -1366,7 +1366,7 @@ sp.ids <- list(
                                    "BBSL1072765","BBSL1070502","BBSL1070503","BBSL1072777","BBSL1084472","BBSL1086976","BBSL1087052","BBSL1086973","BBSL1086831")),
     
     Melissodes_gilensis_f= list(Genus="Melissodes",
-                             SubGenus="",
+                             SubGenus="Melissodes",
                              Species="gilensis",
                              SubSpecies="",
                              Sex="f",
@@ -1380,7 +1380,7 @@ sp.ids <- list(
                                    "BBSL1072635","24739","20982","22825")), 
     
     Melissodes_gilensis_m= list(Genus="Melissodes",
-                             SubGenus="",
+                             SubGenus="Melissodes",
                              Species="gilensis",
                              SubSpecies="",
                              Sex="m",
@@ -1483,18 +1483,8 @@ sp.ids <- list(
                                    SubSpecies="", Sex="m",
                                    Author = "Cockerell",
                                    Determiner="J.L. Neff",
-                                   temp.id= c("22554")),
+                                   temp.id= c("22554"))
     
-     Melissodes_tristis_f = list(Genus="Melissodes",
-                                   SubGenus="",
-                                   Species="tristis",
-                                   SubSpecies="", Sex="f",
-                                   Author = "Cockerell",
-                                   Determiner="J.L. Neff",
-                                   temp.id= c("BBSL1072144","BBSL1072145","BBSL1072146","BBSL1072147","BBSL1072698","BBSL1072688","BBSL1072689","BBSL1072675","BBSL1072671","BBSL1072672","BBSL1072673","BBSL1072973","BBSL1072912","BBSL1072674","BBSL1072796","BBSL1072891","BBSL1074098"
-                                   ))
-
-
 
 
 )

@@ -250,7 +250,7 @@ sp.ids <- list(
     Halictus_confusus = list(Genus="Halictus", SubGenus ="Seladonia",
                              Species="confusus",
                              SubSpecies="", Sex="f",
-                             Author = "",
+                             Author = "Smith",
                              Determiner = "L. Best",
                              temp.id= c(33468, 33460, 33599, 33608,
                                         33598, 33589)),
@@ -352,7 +352,7 @@ sp.ids <- list(
 
     Lasioglossum_potosi_m = list(Genus="Lasioglossum",
                                  SubGenus ="",
-                                 Species="potosi(?)",
+                                 Species="potosi", # ID uncertain
                                  SubSpecies="",
                                  Sex="m", Author = "McGinley",
                                  Determiner = "L. Best",

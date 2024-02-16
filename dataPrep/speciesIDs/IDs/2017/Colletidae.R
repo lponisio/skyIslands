@@ -175,7 +175,7 @@ sp.ids <- list(
                              Determiner = "T. Griswold",
                              temp.id= c("BBSL1071104", "BBSL1071069")),
 
- Colletes_gilensis_m= list(Genus="Colletes", SubGenus ="",
+ Colletes_gilensis_m= list(Genus="Colletes", SubGenus ="Productus",
                            Species="gilensis", SubSpecies="",
                            Sex="m",
                            Author = "Cockerell",
