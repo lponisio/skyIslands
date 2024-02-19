@@ -121,7 +121,7 @@ pred_beediv %>%
 p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
   stat_lineribbon() +
   scale_fill_brewer(palette = "Blues") +
-  labs(x = "Bee community diversity", y = "Parasite Prevalence",
+  labs(x = "Bombus community diversity", y = "Crithidia Prevalence",
        fill = "Credible interval") +
   theme_ms() +
   theme(legend.position = "bottom") +
@@ -133,7 +133,7 @@ p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
         text = element_text(size=16)) +
  ##theme_dark_black()+
   geom_point(data=data.par,
-             aes(y= CrithidiaBombusParasitismRate, x=Net_BeeDiversity),
+             aes(y= SpCrithidiaBombusParasitismRate, x=Net_BeeDiversity),
              color="grey40", cex=2)
 
 ## parasitism ~ bumble bee abundance

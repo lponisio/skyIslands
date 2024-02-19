@@ -161,7 +161,14 @@ calcSummaryStats <- function(spec.method, method){
     site.sp <- spec.method %>%
         group_by(Site, Year, SampleRound, GenusSpecies) %>%
         summarise(Abundance = length(GenusSpecies),
-                  SpParasitismRate=mean(ParasitePresence, na.rm=TRUE))
+                  SpParasitismRate=mean(ParasitePresence, na.rm=TRUE),
+                  SpCrithidiaParasitismRate=mean(CrithidiaPresence, na.rm=TRUE),
+                  SpApicystisParasitismRate=mean(ApicystisSpp, na.rm=TRUE),
+                  SpCrithidiaBombusParasitismRate= mean(CrithidiaPresence[Genus == "Bombus"], 
+                                                      na.rm=TRUE),
+                  SpCrithidiaHBParasitismRate= mean (CrithidiaPresence
+                                                   [GenusSpecies == "Apis mellifera"],
+                                                   na.rm=TRUE))
 
     site.sum <- spec.method %>%
         group_by(Site, Year, SampleRound) %>%
@@ -410,8 +417,20 @@ par.bees.yr <- makeNets(prep.para, net.type="Yr",
 spec.net <- merge(spec.net, bees.yr, all.x=TRUE)
 spec.net$SpSiteYear <- NULL
 
-save(spec.net, file="../data/spec_net.Rdata")
 
+## Load the csv with the parasitism rate by site/SR/year/spp. Create a key that matches
+## the spec.net dataset and then merge the species level information to the full dataset. 
+spec.indiv <- spec.indiv <- read_csv("../data/spstats_net.csv")
+spec.indiv$SiteSRYearSpp <- paste(spec.indiv$Site, spec.indiv$Year, spec.indiv$SampleRound, 
+                                spec.indiv$GenusSpecies, sep = "_")
+spec.indiv <- subset(spec.indiv, select = -c(Site, Year, SampleRound, GenusSpecies))
+
+spec.net$SiteSRYearSpp <- paste(spec.net$Site, spec.net$Year, spec.net$SampleRound, 
+                                spec.net$GenusSpecies, sep = "_")
+
+spec.net<- merge(spec.net, spec.indiv, all.x=TRUE)
+spec.net$SiteSRYearSpp <- NULL
+save(spec.net, file="../data/spec_net.Rdata")
 ## *******************************************************************
 ##  Data checks
 ## *******************************************************************
