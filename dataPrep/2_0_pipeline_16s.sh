@@ -113,7 +113,6 @@ qiime metadata tabulate --m-input-file taxonomy16s.qza --o-visualization taxonom
 ## unmerged
 # qiime feature-table tabulate-seqs --i-data dada2-16s/rep-seqs-dada2-16s.qza --o-visualization dada2-16s/rep-seqs-dada2-16s.qzv
 
-cd merged/16s/
 
 qiime feature-table tabulate-seqs --i-data rep-seqs-16s.qza --o-visualization rep-seqs-16s.qzv
 
@@ -123,77 +122,57 @@ qiime feature-table tabulate-seqs --i-data rep-seqs-16s.qza --o-visualization re
 # Make corrections to taxonomy16sfixed.tsv. convert it to txt manually on your computer.
 # Convert this text file back into a qza object using qiime
 
+# we didnt have to end making these modifications in sky islands or SI 2019 because we didnt have L. kunkeei or michinerii. but left this for future projects
+# if you have to make these changes,  make sure to change the paths below appropraitely. we kept everything labeled taxonomy16s.qza, NOT fixed
+
+
 qiime tools import \
 --type 'FeatureData[Taxonomy]' \
 --input-path taxonomy16s.qza/taxonomy16sfixed.txt \
 --output-path taxonomy16s.qza/taxonomy16sfixed.qza
 
-# we didnt have to end making these modifications in sky islands or SI 2019 because we didnt have L. kunkeei or michinerii. but left this for future projects
-# if you have to make these changes,  make sure to change the paths below appropraitely. we kept everything labeled taxonomy16s.qza, NOT fixed
 
 #2b. filter 1: out the chloroplast and mitochondria reads 
 
-#2021
 qiime taxa filter-table --i-table table16s.qza --i-taxonomy taxonomy16s.qza --p-exclude mitochondria,chloroplast --o-filtered-table tablefilt1.qza
 qiime feature-table summarize --i-table tablefilt1.qza --o-visualization tablefilt1.qzv 
 
 
 #2c. filter 2: remove sequences only found in one sample 
 
-#2021
 qiime feature-table filter-features --i-table tablefilt1.qza --p-min-samples 2 --o-filtered-table tablefilt2.qza
 qiime feature-table summarize --i-table tablefilt2.qza --o-visualization tablefilt2.qzv
 
 
 #2d: Filter our rep seqs file so that you can see what samples you have left after filtering and subsampling
 
-#2021
+
 qiime feature-table filter-seqs --i-data rep-seqs-16s.qza --i-table tablefilt2.qza --o-filtered-data rep-seqs-16s-filtered.qza
 qiime feature-table tabulate-seqs --i-data rep-seqs-16s-filtered.qza --o-visualization rep-seqs-16s-filtered.qzv
-qiime tools view rep-seqs-16s-filtered.qzv
+#view rep-seqs-16s-filtered.qzv in qiime2 viewer in browser
 
 
-
-# 
-# #merging repseqs between 2018 and 2021
-# qiime feature-table merge-seqs \
-#        --i-data rep-seqs-16s-filtered.qza \
-#        --i-data rep-seqs-16s-filtered-2018.qza \
-# 	--o-merged-data rep-seqs-16s-filtered-combined.qza
-# 	
-# 	#merging freq tables between 2018 and 2021
-# qiime feature-table merge \
-#        --i-tables table16s.qza \
-#        --i-tables table16s-2018.qza \
-# 	--o-merged-table tables-combined.qza
-# 	
-# 
-# 
-# qiime feature-table merge-taxa \
-#   --i-data taxonomy16s.qza \
-#   --i-data taxonomy16s-2018.qza \
-#   --o-merged-data combined-taxonomy.qza
-#   
 ## here is a step we are changing for 2023 -- since we are using the trees to determine microbial phylogenetic distance, we need to 
 ## filter out unwanted sequences before we generate the trees.
 ## also, we will not split sequences into runs and instead will filter out contaminants across all runs
 
-#moving the filtering B steps up here
 
-# 5a. Filter out large taxonomic groups of bacteria that are known to be contaminants
+
+# 2e. Filter out large taxonomic groups of bacteria that are known to be contaminants
 
 # there are known bacteria are salt-loving and often found in buffers. 
 # they include  Halomonas, Shewanella, Oceanospirillales, and the acne bacteria Propionibacterium. 
 
 
-qiime taxa filter-table --i-table tables16s.qza --i-taxonomy taxonomy16s.qza --p-exclude halomonas,lautropia,rothia,haemophilus,desulfuromonadales,pseudomonas,devosia,sphingomonas,solirubrobacterales,escherichia-shigella,staphylococcus,prevotellaceae,blastococcus,aeromonas,streptococcus,shewanella,oceanospirillales,propionibacteriales --o-filtered-table tablef1.qza
+qiime taxa filter-table --i-table table16s.qza --i-taxonomy taxonomy16s.qza --p-exclude halomonas,lautropia,rothia,haemophilus,desulfuromonadales,pseudomonas,devosia,sphingomonas,solirubrobacterales,escherichia-shigella,staphylococcus,prevotellaceae,blastococcus,aeromonas,streptococcus,shewanella,oceanospirillales,propionibacteriales --o-filtered-table tablef1.qza
 
-# 5b. Let's specifically look at sequences in our controls and remove the bacteria that are in them
+# 2f. Let's specifically look at sequences in our controls and remove the bacteria that are in them
 
 
 qiime taxa barplot --i-table tablef1.qza --i-taxonomy taxonomy16s.qza --m-metadata-file maps/combined-map-2018-2021.txt --o-visualization taxa-bar-plots-f1.qzv
 
-#now filter out taxa that are in the controls!
+# now filter out taxa that are in the controls!
+# manually selected from the table16s file which ASVs were found in controls and wrote them down here
 
 #2018 controls
 qiime taxa filter-table --i-table tablef1.qza --i-taxonomy taxonomy16s.qza --p-mode exact --p-exclude "d__Bacteria;p__Actinobacteria;c__Actinobacteria;o__Micrococcales;f__Microbacteriaceae;g__Galbitalea",\
@@ -261,13 +240,14 @@ qiime fragment-insertion filter-features \
 --o-filtered-table tablef5.qza \
 --o-removed-table removed-tablef5.qza
 ### *************************************************************************
-#6. DETERMINE SUBSAMPLE DEPTH
+#4. DETERMINE SUBSAMPLE DEPTH
 ### *************************************************************************
 
 #We want to make a rarefaction curve to see how subsampling depths influence our alpha diversity metrics.
-#Open visualization in Qiime2 View and look at visualized table to see impact of different depths
+#Open visualization in Qiime2 for tablef5. View interactive sample detail and look at visualized table to see impact of different depths
+# record number of reads, number of samples at specified sampling depth, and how many features retained
 
-#For subsampling R0:  1019 reads.  894 (97.70%) samples at the specifed sampling depth.Retained 910,986 (5.30%) features
+#For subsampling:  840 reads.  715 (90.62%) samples at the specifed sampling depth.Retained 600,600 (5.71%) features
 
 qiime diversity alpha-rarefaction --i-table tablef5.qza --i-phylogeny rooted-tree16s.qza --p-max-depth 10000 --m-metadata-file maps/combined-map-2018-2021.txt --o-visualization alphararefact16s.qzv
 
@@ -278,7 +258,7 @@ qiime feature-table summarize --i-table tablef5.qza --o-visualization tablef5.qz
 
 
 ### *************************************************************************
-# 7. ALPHA AND BETA DIVERSITY
+# 5. ALPHA AND BETA DIVERSITY
 ### *************************************************************************
 
 #Generate core metrics folder. This command makes the new directory and outputs a bunch of files in it
@@ -286,33 +266,16 @@ qiime feature-table summarize --i-table tablef5.qza --o-visualization tablef5.qz
 
 mkdir final
 
-qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-tree16s.qza --i-table tablef5.qza --p-sampling-depth 1019 --m-metadata-file maps/combined-map-2018-2021.txt --output-dir final/core_metrics16s --verbose
+qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-tree16s.qza --i-table tablef5.qza --p-sampling-depth 840 --m-metadata-file maps/combined-map-2018-2021.txt --output-dir final/core_metrics16s --verbose
 
-# qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-tree16s.qza --i-table split/tableR1_f3.qza --p-sampling-depth 1130 --m-metadata-file maps/SI2019_R1map16s.txt --output-dir final/core_metrics16sR1 --verbose
-
-# qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-tree16s.qza --i-table split/tableR2_f3.qza --p-sampling-depth 1090 --m-metadata-file maps/SI2019_R2map16s.txt --output-dir final/core_metrics16sR2 --verbose
-
-# qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-tree16s.qza --i-table split/tableR3_f3.qza --p-sampling-depth 1729 --m-metadata-file maps/SI2019_R3map16s.txt --output-dir final/core_metrics16sR3 --verbose
-
-# qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-tree16s.qza --i-table split/tableR4_f3.qza --p-sampling-depth 1752 --m-metadata-file maps/SI2019_R4map16s.txt --output-dir final/core_metrics16sR4 --verbose
 
 #if you want to specify the number of parallel cores running, add this to the code
 --p-n-jobs 8
 
 #now we have lots of files in that core_metrics directory. gotta export rarefied_table.qza so we can get a qzv and convert to a csv
-#NOT SURE WHAT MAP TO USE HERE, the map or the RnoCtrl file.....
+#using combined full map
 qiime taxa barplot --i-table final/core_metrics16s/rarefied_table.qza --i-taxonomy taxonomy16s.qza --m-metadata-file maps/combined-map-2018-2021-noCtrl.txt --o-visualization final/core_metrics16s/rarefiedtable16s.qzv
 
-#### merging master maps
-# 
-# qiime feature-table merge \
-#        --i-tables final/core_metrics16sR0/rarefied_table.qza \
-#        --i-tables final/core_metrics16sR1/rarefied_table.qza \
-#        --i-tables final/core_metrics16sR2/rarefied_table.qza \
-#        --i-tables final/core_metrics16sR3/rarefied_table.qza \
-#        --i-tables final/core_metrics16sR4/rarefied_table.qza \
-#        --i-tables final/core_metrics16sR5/rarefied_table.qza \
-#   	--o-merged-table master_table_rarefied.qza
 
-#drag the new qzv into qiime 2 view, and download a csv! put this into "final asv tables" folder
+#drag the new qzv into qiime 2 view, set taxonomic level to 7, and download a csv! put this into "final asv tables" folder
 
