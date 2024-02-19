@@ -151,7 +151,7 @@ parasite_prevalence <- parasites_bees %>%
         text = element_text(size=10))+
   facet_wrap(~ Genus)
 
-ggsave(parasite_prevalence, file="figures/parasite_prevalence_by_genus.pdf",
+ggsave(parasite_prevalence, file="figures/parasite_prevalence_by_genus.jpg",
        height=4, width=5)
 
 ## Bar plot of parasite prevalence per sites for each genus
@@ -166,7 +166,7 @@ parasite_prevalence_sites <- parasites_bees %>%
   geom_bar(stat="identity", position = "dodge") + theme_minimal() + coord_flip()+
   scale_fill_brewer(palette = "Oranges")
 
-ggsave(parasite_prevalence_sites, file="figures/prevalence_by_sites.pdf",
+ggsave(parasite_prevalence_sites, file="figures/prevalence_by_sites.jpg",
        height=4, width=5)
 ## Looking at parasitism of each of the parasites per each genus
 
@@ -181,12 +181,31 @@ parasite_prevalence_genus <- parasites_bees %>%
   geom_bar(stat="identity", position = "dodge") + theme_minimal() + coord_flip()+
   scale_fill_brewer(palette = "Oranges")
 
-ggsave(parasite_prevalence_genus, file="figures/prevalence_by_genus.pdf",
+ggsave(parasite_prevalence_genus, file="figures/prevalence_by_genus.jpg",
        height=4, width=5)
 
 ## Looking at total screened bees per site and num of positives
 parasites_bees$value <- as.factor(parasites_bees$value)
-parasites_bees %>%   
+tested_pos_neg<- parasites_bees %>%   
+  filter(Genus == c("Bombus", "Melissodes", "Apis", "Anthophora")) %>% 
+  filter(Parasites != "NosemaBombi" & Parasites != "NosemaCeranae") %>% 
+  filter(Site != "VC" & Site != "UK" & Site != "SS")%>% 
+  filter(!is.na(value)) %>% 
+  group_by(Site, value) %>% 
+  summarise(TestedTotals = length(value), 
+            Positives = length(which(value == 1))) %>% 
+  ggplot(aes(x=Site)) +
+  geom_bar(aes(y = TestedTotals, fill = value), stat ="identity")+
+  theme_minimal() + coord_flip()+
+  theme(legend.title=element_blank())+
+  scale_fill_manual(col = c("grey", "#feb24c"), labels = c("Screened", "Positives"))
+                     
+ggsave(tested_pos_neg, file="figures/tested_totals_pos_neg.jpg",
+       height=4, width=5)
+
+## Looking at total screened bees per site and num of positives by genus groups
+
+tested_pos_neg_genus <- parasites_bees %>%   
   filter(Genus == c("Bombus", "Melissodes", "Apis", "Anthophora")) %>% 
   filter(Parasites != "NosemaBombi" & Parasites != "NosemaCeranae") %>% 
   filter(Site != "VC" & Site != "UK" & Site != "SS")%>% 
@@ -196,5 +215,27 @@ parasites_bees %>%
   ggplot(aes(x=Site)) +
   geom_bar(aes(y = TestedTotals, fill = value), stat="identity", position = "dodge")+
   theme_minimal() + coord_flip()+
+  theme(legend.title=element_blank())+
+  scale_fill_discrete(labels = c("Negatives", "Positives"))+
   facet_wrap(~Genus)
-  
+
+ggsave(tested_pos_neg_genus, file="figures/tested_totals_by_genus.jpg",
+       height=4, width=5)
+
+spec.net %>% 
+  filter(Apidae == 1) %>% 
+summarize(TestedTotals = length(Apidae))
+
+par.counts <- table(spec.net$ParasiteRichness[spec.net$Apidae == 1])
+par.counts <- par.counts/sum(par.counts)
+par.counts <- as.data.frame(par.counts)
+
+p <- ggplot(data=par.counts, aes(x=Var1, y=Freq)) +
+  geom_bar(stat="identity", fill= "#feb24c") +
+  theme_minimal() + coord_flip() +
+  theme(axis.text=element_text(size=12),
+        axis.title=element_text(size=14,face="bold")) +
+  xlab("Number of parasites/individual") +
+  ylab("Proportion of screened bees")
+ggsave(p, file="figures/proportion_pos.jpg",
+       height=4, width=5)

@@ -3,6 +3,7 @@ runCombinedParasiteModels <- function(spec.data,## data
                                       species.group,## genus of bee group
                                       parasites,  ## name of the parasites for the model
                                       xvars,## explanatory variables for the parasite model
+                                      ncores, ## number of cores
                                       iter = 10^4,
                                       chains = 1,
                                       thin=1,
@@ -14,12 +15,12 @@ runCombinedParasiteModels <- function(spec.data,## data
   # Create the models of the parasites using the variables provided in xvars
   for(parasite in parasites){
     formula.parasite  <- as.formula(paste(
-      paste(parasite, "| weights(WeightsPar) + trials(1)"),
+      paste(parasite, "| weights(WeightsPar)"),
       paste(xvars,
             collapse=" + "),
       sep=" ~ "))
     bf.parasite.formulas[[parasite]] <-  bf(formula.parasite,
-                                            family="zero_inflated_binomial")  
+                                            family="bernoulli")  
   }
   # When there are two parasites or 1 parasite create a parasite model for each. 
   # Select the bee abundance based on the species.group.
@@ -84,7 +85,7 @@ runCombinedParasiteModels <- function(spec.data,## data
   ## Fit brms model to the complete model
 
   fit.parasite <- brm(bform, spec.data,
-                      cores=ncores,
+                      cores= ncores,
                       iter = iter,
                       chains = chains,
                       thin=thin,

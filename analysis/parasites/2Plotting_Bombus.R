@@ -111,7 +111,7 @@ newdata.beediv <- crossing(Net_BeeDiversity =
 ## predict values based on generated data and model parameters
 pred_beediv <- fit.parasite %>% 
   epred_draws(newdata = newdata.beediv,
-              resp = c("CrithidiaPresence", "ApicystisSpp"))
+              resp = "CrithidiaPresence")
 
 ## to see range of predicted values
 pred_beediv %>%
@@ -133,7 +133,7 @@ p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
         text = element_text(size=16)) +
  ##theme_dark_black()+
   geom_point(data=data.par,
-             aes(y= BombusSiteParasitismRate, x=Net_BeeDiversity),
+             aes(y= CrithidiaBombusParasitismRate, x=Net_BeeDiversity),
              color="grey40", cex=2)
 
 ## parasitism ~ bumble bee abundance
@@ -179,15 +179,15 @@ p2.parasite <- ggplot(pred_bombusabund, aes(x = Net_BombusAbundance, y = .epred)
         text = element_text(size=16)) +
   ##theme_dark_black()+
   geom_point(data=data.par,
-             aes(y= CrithidiaPresence, x=Net_BombusAbundance),
+             aes(y=CrithidiaBombusParasitismRate , x=Net_BombusAbundance),
              color="grey40", cex=2)
 
 
 
-ggsave(p1.parasite, file="figures/parasite_beeDiv.pdf",
+ggsave(p1.parasite, file="figures/parasite_beeDiv.jpg",
        height=4, width=5)
 
-ggsave(p2.parasite, file="figures/parasite_bombusAbund.pdf",
+ggsave(p2.parasite, file="figures/parasite_bombusAbund.jpg",
        height=4, width=5)
 
 

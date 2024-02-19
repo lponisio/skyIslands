@@ -10,7 +10,7 @@ setwd("analysis/bumble_phylogeny")
 ## A supermatrix phylogeny of the world’s bees (Hymenoptera: Anthophila) [Dataset]. 
 ## Dryad. https://doi.org/10.5061/dryad.80gb5mkw1
 
-phylo <- ape::read.tree("../../data/BEE_mat7_fulltree.nwk")
+phylo <- ape::read.tree("../../../skyIslands_saved/data/BEE_mat7_fulltree.nwk")
 
 ##clean up unwanted portion of labels
 pattern <- "(_n\\d+m\\d+_[A-Za-z0-9]+)?$"
