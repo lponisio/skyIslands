@@ -2,7 +2,7 @@ rm(list=ls())
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
  setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
 ## setwd('~/Dropbox (University of Oregon)/skyislands')
-ncores <- 3
+ncores <- 5
 
 setwd("analysis/parasites")
 source("src/misc.R")
@@ -16,12 +16,12 @@ source("src/standardize_weights.R")
 vars_yearsr <- c("MeanFloralAbundance",
           "MeanFloralDiversity",
           "Net_BeeDiversity",
-          "Lat", "SRDoy"  
+          "Year", "SRDoy"  
           )
 vars_sp <- c("MeanITD",
           "rare.degree")
 
-variables.to.log <- "rare.degree"
+variables.to.log <- c("rare.degree", "MeanITD")
 
 variables.to.log.1<- c("Net_HBAbundance", "Net_BombusAbundance", 
                        "Net_NonBombusHBAbundance")
