@@ -99,13 +99,9 @@ newdata.beediv <- crossing(Net_BeeDiversity =
                            Lat = mean(data.par$Lat),
                            rare.degree = mean(data.par$rare.degree),
                            MeanITD = mean(data.par$MeanITD),
-                           MeanFloralAbund= mean(data.par$MeanFloralAbundance),
-                           MeanFloralDiversity= mean(data.par$MeanFloralDiversity),
-                           Net_HBAbundance= mean(data.par$Net_HBAbundance),
-                           Net_NonBombusHBAbundance = mean(data.par$Net_NonBombusHBAbundance),
                            Net_BombusAbundance = mean(data.par$Net_BombusAbundance),
                            Site = "JC", 
-                           GenusSpecies = "Bombus huntii"
+                           GenusSpecies = "Bombus centralis"
 )
 
 ## predict values based on generated data and model parameters
@@ -133,8 +129,8 @@ p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
         text = element_text(size=16)) +
  ##theme_dark_black()+
   geom_point(data=data.par,
-             aes(y= SpCrithidiaBombusParasitismRate, x=Net_BeeDiversity),
-             color="grey40", cex=2)
+             aes(y= SpCrithidiaBombusParasitismRate, x=Net_BeeDiversity, colour = GenusSpecies),
+              cex=2)
 
 ## parasitism ~ bumble bee abundance
 
