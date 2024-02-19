@@ -161,12 +161,12 @@ calcSummaryStats <- function(spec.method, method){
     site.sp <- spec.method %>%
         group_by(Site, Year, SampleRound, GenusSpecies) %>%
         summarise(Abundance = length(GenusSpecies),
-                  SpParasitismRate=mean(ParasitePresence, na.rm=TRUE),
-                  SpCrithidiaParasitismRate=mean(CrithidiaPresence, na.rm=TRUE),
-                  SpApicystisParasitismRate=mean(ApicystisSpp, na.rm=TRUE),
-                  SpCrithidiaBombusParasitismRate= mean(CrithidiaPresence[Genus == "Bombus"], 
+                  SpParasitismRate = mean(ParasitePresence, na.rm=TRUE),
+                  SpCrithidiaParasitismRate = mean(CrithidiaPresence, na.rm=TRUE),
+                  SpApicystisParasitismRate = mean(ApicystisSpp, na.rm=TRUE),
+                  SpCrithidiaBombusParasitismRate = mean(CrithidiaPresence[Genus == "Bombus"], 
                                                       na.rm=TRUE),
-                  SpCrithidiaHBParasitismRate= mean (CrithidiaPresence
+                  SpCrithidiaHBParasitismRate = mean (CrithidiaPresence
                                                    [GenusSpecies == "Apis mellifera"],
                                                    na.rm=TRUE))
 
