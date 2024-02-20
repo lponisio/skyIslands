@@ -69,7 +69,7 @@ save(physeq16sR0, file= "../skyIslands/data/physeq16s.Rdata")
 ## plot(physeq16sR0@phy_tree, show.tip.label = FALSE)
 
 feature.2.tax.16s <-
-    read.table("SI_pipeline/merged/16s/taxonomy16s.txt", sep="\t",
+    read.table("SI_pipeline/merged/16s/taxonomy.tsv", sep="\t",
                header=TRUE)
 
 feature.2.tax.16s$Taxon <- paste("16s", feature.2.tax.16s$Taxon, sep=':')
@@ -93,6 +93,9 @@ matching_tips <- grep('^16s:D_0__Bacteria$', tree.16sR0$tip.label)
 # Drop the matching tips
 tree.16sR0 <- drop.tip(tree.16sR0, matching_tips)
 
+# Drop the tips that are NA
+tree.16sR0 <- drop.tip(tree.16sR0, tree.16sR0$tip.label[is.na(tree.16sR0$tip.label)])
+
 plot(tree.16sR0, show.tip.label = FALSE)
 
 
@@ -102,6 +105,9 @@ plot(tree.16sR0, show.tip.label = FALSE)
 ## 16s networks
 ## ***********************************************************************
 
+##something going wrong here, the make indiv.comm.16sR0 object is coming back blank
+
+#2018 samples 
 
 indiv.comm.16sR0 <-
     bipartite::empty(catchDups(makeComm(taxonomy16sR0,
@@ -139,10 +145,11 @@ rownames(merged.comm.16s) <- bees.16s
 ## ***********************************************************************
 ## working with a merged 16s tree
 ## ***********************************************************************
+#2018 samples!!
 
 # upload our mega 16s phylogenetic tree
 
-mega16sdata <- read_qza("SI_pipeline/merged/16s/rooted-tree16s.qza")
+mega16sdata <- read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/rooted-tree16s-combined.qza")
 
 tree.16s <- mega16sdata$data
 
