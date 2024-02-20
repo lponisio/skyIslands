@@ -4,12 +4,16 @@
 ## tutorial also have some good pcoa plots and heatmaps, which arent
 ## on here
 #dir.bombus <- '/Volumes/bombus/Dropbox (University of Oregon)'
+rm(list=ls())
+setwd("~/")
+source("lab_paths.R")
+local.path
 
-dir.bombus <- '~/Dropbox (University of Oregon)'
+dir.bombus <- file.path(local.path, "skyIslands")
 
 setwd(dir.bombus)
-setwd('skyIslands_saved')
-rm(list=ls())
+setwd('../skyIslands_saved')
+
 
 library(tidyr)
 library(dplyr)
@@ -25,15 +29,15 @@ source("../skyIslands/dataPrep/src/misc.R")
 
 # 2018 Samples!!
 ## reading artifacts
-qza.16s.path  <- "SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/final"
-qza.rbcl.path  <- "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final"
+qza.16s.path  <- "SI_pipeline/merged/16s/final"
+qza.rbcl.path  <- "SI_pipeline/merged/RBCL/final"
 
 # 16s
 weightedUF16sqzaR0 <- read_qza(file.path(qza.16s.path,
-                      'core_metrics16s-combined/weighted_unifrac_distance_matrix.qza'))
+                      'core_metrics16s/weighted_unifrac_distance_matrix.qza'))
 
 unweightedUF16sqzaR0 <- read_qza(file.path(qza.16s.path,
-                      'core_metrics16s-combined/unweighted_unifrac_distance_matrix.qza'))
+                      'core_metrics16s/unweighted_unifrac_distance_matrix.qza'))
 
 # 16s
 wphylo.dist.16sR0 <- weightedUF16sqzaR0$data
@@ -45,7 +49,7 @@ phylo.dist.16sR0 <-unweightedUF16sqzaR0$data
 ## is provided:
 
 taxonomy16sR0 <- read_qza(
-    file.path(qza.16s.path, "core_metrics16s-combined/rarefied_table.qza"))
+    file.path(qza.16s.path, "core_metrics16s/rarefied_table.qza"))
 
 taxonomy16sR0 <- taxonomy16sR0$data
 
@@ -53,10 +57,10 @@ taxonomy16sR0 <- taxonomy16sR0$data
 
 physeq16sR0 <- qza_to_phyloseq(
     features=
-        file.path(qza.16s.path, "core_metrics16s-combined/rarefied_table.qza"),
-    tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/rooted-tree16s-combined.qza",
-    "SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/combined-taxonomy.qza",
-    metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/maps/combined-map-2018-2021.txt"
+        file.path(qza.16s.path, "core_metrics16s/rarefied_table.qza"),
+    tree="SI_pipeline/merged/16s/rooted-tree16s.qza",
+    "SI_pipeline/merged/16s/taxonomy16s.qza",
+    metadata = "SI_pipeline/merged/16s/maps/combined-map-2018-2021.txt"
 )
 
 save(physeq16sR0, file= "../skyIslands/data/physeq16s.Rdata")
@@ -65,7 +69,7 @@ save(physeq16sR0, file= "../skyIslands/data/physeq16s.Rdata")
 ## plot(physeq16sR0@phy_tree, show.tip.label = FALSE)
 
 feature.2.tax.16s <-
-    read.table("SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/1efec88b-38a0-454b-a858-11c17590b86e/data/taxonomy.tsv", sep="\t",
+    read.table("SI_pipeline/merged/16s/taxonomy16s.txt", sep="\t",
                header=TRUE)
 
 feature.2.tax.16s$Taxon <- paste("16s", feature.2.tax.16s$Taxon, sep=':')
@@ -98,8 +102,6 @@ plot(tree.16sR0, show.tip.label = FALSE)
 ## 16s networks
 ## ***********************************************************************
 
-
-#2018 samples 
 
 indiv.comm.16sR0 <-
     bipartite::empty(catchDups(makeComm(taxonomy16sR0,
@@ -137,11 +139,10 @@ rownames(merged.comm.16s) <- bees.16s
 ## ***********************************************************************
 ## working with a merged 16s tree
 ## ***********************************************************************
-#2018 samples!!
 
 # upload our mega 16s phylogenetic tree
 
-mega16sdata <- read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/rooted-tree16s-combined.qza")
+mega16sdata <- read_qza("SI_pipeline/merged/16s/rooted-tree16s.qza")
 
 tree.16s <- mega16sdata$data
 
