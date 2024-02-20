@@ -1,4 +1,4 @@
-rm(list=ls())
+m(list=ls())
 library(FD)
 library(vegan)
 
@@ -28,8 +28,16 @@ bee.traits <- c("NestLocation",
                 "Lecty",
                  "MeanITD", "Sociality")
 
+m.traits<- traits$GenusSpecies[apply(traits[, bee.traits], 1, 
+                           function(x) any(is.na(x))
+                           )]
+
+write.csv(m.traits,
+          file="../../skyIslands_saved/data/checks/missing_traits.csv")
+
 rownames(traits) <- traits$GenusSpecies
 traits$GenusSpecies <- NULL
+
 
 ## We grouped the traits based on what they are related to. For
 ## example, we have 3 nesting-related traits, so weighted each one by

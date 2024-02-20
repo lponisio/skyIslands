@@ -27,7 +27,7 @@ spec.data$SiteSubSite <-  paste0(spec.data$Site, spec.data$SubSite)
 print(paste("original number of specimens", nrow(spec.data)))
 
 ## BEWARE CHECK DATE FORMAT
-spec.date.format <- "%m/%d/%Y"
+spec.date.format <- "%m/%d/%y"
 print(spec.date.format)
 print(spec.data$Date[1])
 spec.data$Date <- as.Date(spec.data$Date, spec.date.format)
@@ -110,7 +110,7 @@ weather.data$SiteSubSite <-  paste0(weather.data$Site,
                                     weather.data$SubSite)
 
 ## BEWARE CHECK DATE
-w.date.format <- "%m/%d/%Y"
+w.date.format <- "%m/%d/%y"
 print(w.date.format)
 print(weather.data$Date[1])
 weather.data$Date <- as.Date(weather.data$Date, w.date.format)
