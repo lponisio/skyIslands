@@ -110,9 +110,12 @@ catchDups <- function(indiv.comm){
 
 makeComm <- function(taxonomy, features, feature.col="Feature.ID"){
     ## this function make a specimne by species matrix
+    rownames(taxonomy) <- gsub("X16s", "16s", rownames(taxonomy))
     rownames(taxonomy) <- features$Taxon[match(rownames(taxonomy),
-                                                           features[, feature.col])]
-
+                                               features[, feature.col])]
+    
+    
     indiv.comm <- t(taxonomy)
+    #browser()
     return(indiv.comm)
 }

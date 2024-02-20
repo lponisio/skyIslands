@@ -9,9 +9,9 @@ setwd("~/")
 source("lab_paths.R")
 local.path
 
-dir.bombus <- file.path(local.path, "skyIslands")
 
-setwd(dir.bombus)
+setwd(local.path)
+setwd('skyIslands')
 setwd('../skyIslands_saved')
 
 
@@ -49,7 +49,8 @@ phylo.dist.16sR0 <-unweightedUF16sqzaR0$data
 ## is provided:
 
 taxonomy16sR0 <- read_qza(
-    file.path(qza.16s.path, "core_metrics16s/rarefied_table.qza"))
+    file.path(qza.16s.path,
+              "core_metrics16s/rarefied_table.qza"))
 
 taxonomy16sR0 <- taxonomy16sR0$data
 
@@ -88,13 +89,20 @@ library(ape)
 
 
 # Identify tips with labels exactly matching '16s:D_0__Bacteria'
-matching_tips <- grep('^16s:D_0__Bacteria$', tree.16sR0$tip.label)
+matching_tips <- grep('^16s:d__Bacteria$', tree.16sR0$tip.label)
 
 # Drop the matching tips
 tree.16sR0 <- drop.tip(tree.16sR0, matching_tips)
 
+# # Drop the tips that are NA
+tree.16sR0 <- drop.tip(tree.16sR0, tree.16sR0$tip.label[is.na(tree.16sR0$tip.label)])
+
+#drop unassigned tips
+unassigned_tips <- grep('^16s:Unassigned$', tree.16sR0$tip.label)
+
 # Drop the tips that are NA
 tree.16sR0 <- drop.tip(tree.16sR0, tree.16sR0$tip.label[is.na(tree.16sR0$tip.label)])
+
 
 plot(tree.16sR0, show.tip.label = FALSE)
 
@@ -105,7 +113,9 @@ plot(tree.16sR0, show.tip.label = FALSE)
 ## 16s networks
 ## ***********************************************************************
 
-##something going wrong here, the make indiv.comm.16sR0 object is coming back blank
+## something going wrong here, the make indiv.comm.16sR0 object is coming back blank
+## filtering step maybe not working?
+
 
 #2018 samples 
 
@@ -119,16 +129,6 @@ save(indiv.comm.16sR0, file= "../skyIslands/data/presAbsTable.Rdata")
 bees.16s <- c(rownames(indiv.comm.16sR0))
 
 comms <- list(indiv.comm.16sR0)
-
-## bees.16s <- c(rownames(indiv.comm.16sR0),
-##               paste0("SF",  rownames(indiv.comm.16sR1)),
-##               paste0("SF", rownames(indiv.comm.16sR2)),
-##                      paste0("SF", rownames(indiv.comm.16sR3)),
-##               paste0("SF", rownames(indiv.comm.16sR4)))
-
-## comms <- list(indiv.comm.16sR0, indiv.comm.16sR1,
-##               indiv.comm.16sR2, indiv.comm.16sR3,
-##               indiv.comm.16sR4)
 
 species.16s <- unique(unlist(sapply(comms, colnames)))
 
@@ -149,7 +149,7 @@ rownames(merged.comm.16s) <- bees.16s
 
 # upload our mega 16s phylogenetic tree
 
-mega16sdata <- read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/rooted-tree16s-combined.qza")
+mega16sdata <- read_qza("SI_pipeline/merged/16s/rooted-tree16s.qza")
 
 tree.16s <- mega16sdata$data
 
