@@ -96,11 +96,12 @@ catchDups <- function(indiv.comm){
     ## this function combine columns with duplicate names in the
     ## community matrix
     dups  <-
-        unique(colnames(indiv.comm)[(duplicated(colnames(indiv.comm)))])
-    browser()
+        na.omit(unique(colnames(indiv.comm)[(duplicated(colnames(indiv.comm)))]))
+    #browser()
     print(length(dups))
     for(dup in dups){
         columnstomerge <- indiv.comm[,colnames(indiv.comm) == dup]
+        
         indiv.comm <- indiv.comm[,!colnames(indiv.comm) == dup]
         indiv.comm <- cbind(indiv.comm, apply(columnstomerge, 1, sum))
         colnames(indiv.comm)[colnames(indiv.comm) == ""] <- dup
