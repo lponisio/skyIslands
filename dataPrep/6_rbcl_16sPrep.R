@@ -113,16 +113,9 @@ plot(tree.16sR0, show.tip.label = FALSE)
 ## 16s networks
 ## ***********************************************************************
 
-## something going wrong here, the make indiv.comm.16sR0 object is coming back blank
-## filtering step maybe not working?
-
-
-#2018 samples 
-# comm.matrix <- makeComm(taxonomy16sR0,
-#                              feature.2.tax.16s)
-# 
-# 
-# deduplicated.matrix <- catchDups(comm.matrix)
+## something going wrong here
+## only 197 specimens in indiv.comm.16sR0 instead of 780 ish
+## double check merge worked in pipeline, not sure why so many are being dropped
 
 indiv.comm.16sR0 <-
     bipartite::empty(catchDups(makeComm(taxonomy16sR0,
@@ -627,6 +620,7 @@ save(spec.net, file= "../skyIslands/data/spec_RBCL_16s.Rdata")
 write.csv(spec.net, file= "../skyIslands/data/spec_RBCL_16s.csv",
           row.names=FALSE)
 
-save(tree.16s, tree.rbcl, file="../skyIslands/data/trees.Rdata")
+save(tree.16s, #tree.rbcl,
+     file="../skyIslands/data/trees.Rdata")
 
 
