@@ -1,11 +1,14 @@
 #Network building for 16s and rbcL FFAR 2019
 setwd('~/Dropbox (University of Oregon)')
-#dir.bombus <- '/Volumes/bombus/rhayes/Dropbox (University of Oregon)'
 
-#setwd(dir.bombus)
 rm(list=ls())
-## setwd('~')
+setwd("~/")
+source("lab_paths.R")
+local.path
+setwd(local.path)
 setwd('skyIslands_saved')
+
+
 library(bipartite)
 library(parallel)
 source('../skyIslands/dataPrep/src/nets_init.R')
