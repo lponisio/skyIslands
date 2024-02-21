@@ -96,14 +96,19 @@ microbe_poll_betalink$GeoDist <- apply(microbe_poll_betalink, 1, function(x){
 calculate_and_plot_betalinkr <- function(this_component, this_network, label){
   
   # Assign the value of 'this_component' to a new variable 'y'.
-  y <- "DissimilaritySpeciesComposition"
+  y <- this_component
   
-  # Define a formula for linear mixed-effects modeling with 'y' as the response variable,
+  #brms won't let me run the model unless there is a column called this_component, so I copied the variable of interest into a new
+  # column called this_component.... janky? maybe
+  this_network$this_component <- this_network[[this_component]]
+  
+  #browser()
+  # Define a formula for brms with this_component the response variable,
   # 'GeoDist' as a fixed effect, and 'Site1' and 'Site2' as random effects.
-  forms <- bf(formula(y~GeoDist + (1|Site1) + (1|Site2)))
+  forms <- bf(formula(this_component~GeoDist + (1|Site1) + (1|Site2)))
   
   # Fit a linear mixed-effects model using the 'lmer' function, providing the formula, data, and specifying REML to be FALSE.
-  mod1 <- brm(forms, microbe_poll_betalink,
+  mod1 <-  brm(forms, this_network,
               cores=1,
               iter = 10000,
               chains = 1,
@@ -112,8 +117,10 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label){
               control = list(adapt_delta = 0.99),
               save_pars = save_pars(all = TRUE))
   
-  newdata.mod <- tidyr::crossing(GeoDist = seq(min(microbe_poll_betalink$GeoDist),
-                                            max(microbe_poll_betalink$GeoDist),
+  mod_summary <- summary(mod1)
+  
+  newdata.mod <- tidyr::crossing(GeoDist = seq(min(this_network$GeoDist),
+                                            max(this_network$GeoDist),
                                             length.out=10),
                                       Site1="CH",
                                       Site2="JC")
@@ -121,63 +128,25 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label){
   #predictions
   pred_mod <- mod1 %>%
     epred_draws(newdata = newdata.mod ,
-                resp = y,
+                resp = this_component,
                 allow_new_levels = TRUE)
   
   
   fig <- ggplot(pred_mod, aes(x = GeoDist, y =.epred)) +
     stat_lineribbon(show.legend = FALSE) +
-    scale_fill_brewer(palette = "Blues") +
-    labs(x = "Geographic Distance", y = "Dissimilarity: \nSpecies Composition",
+    scale_fill_brewer(palette = "Oranges") +
+    labs(x = "Geographic Distance", y = label,
          fill = "Credible Interval") +
     theme(axis.title.x = element_text(size=16),
           axis.title.y = element_text(size=16),
           text = element_text(size=16),
           legend.position = "none") +
     theme_classic() +
-    geom_point(data=microbe_poll_betalink,
-               aes(y=DissimilaritySpeciesComposition, x=GeoDist), cex=2, alpha=0.5) +
-    scale_x_continuous(
-      breaks = axis.bee.abund,
-      labels =  labs.bee.abund) 
-  
-  bombus.abund.PD
-  
-  
-  # Create a reference grid 'gr1' based on the model, keeping 'GeoDist' as a covariate.
-  gr1 <- ref_grid(mod1, cov.keep= c('GeoDist'))
-  
-  # Compute estimated marginal means (emmeans) for 'GeoDist' at a 95% confidence level and store it in 'emm1'.
-  emm1 <- data.frame(emmeans(gr1, spec= c("GeoDist"), level= 0.95))
-  
-  # Determine the upper bound based on 'emm1' and set it to 1.05 if the upper confidence limit is greater than 1, or 1 otherwise.
-  if(max(emm1$upper.CL) > 1){
-    upper.bound = 1.05
-  } else {
-    upper.bound = 1
-  }
-  
-  # Determine the lower bound based on 'emm1' and set it to -0.10 if the lower confidence limit is less than 0, or 0 otherwise.
-  if(min(emm1$lower.CL) < 0){
-    lower.bound = -0.15
-  } else {
-    lower.bound = 0
-  }
-  # Create a ggplot for plotting the data in 'this_network' with 'GeoDist' on the x-axis and 'this_component' on the y-axis.
-  
-  turnover.plot <- ggplot(this_network, 
-                          aes(x=GeoDist, y=this_component)) +
-    # Add a ribbon to the plot based on 'emm1' for visualizing confidence intervals.
-    geom_ribbon(data= emm1, aes(ymin= lower.CL, ymax= upper.CL, y= NULL), fill= ribbon_col, alpha=0.5) +
-    # Add a line to the plot based on 'emm1' for the estimated marginal means.
-    geom_line(data= emm1, aes(y= emmean)) +
-    geom_point() + 
-    theme_classic() + 
-    labs(x='Geographic Distance (km)', y=label) +
-    # Set the y-axis limits based on the computed lower and upper bounds.
-    scale_y_continuous(limits=c(lower.bound,upper.bound))
+    geom_point(data=this_network,
+               aes(y=this_component, x=GeoDist), cex=2, alpha=0.5) 
+
   # Return a list containing the model summary[1] and the generated 'turnover.plot'[2].
-  return(list(mod_summary, turnover.plot))
+  return(list(mod_summary, fig))
   
   
 }
@@ -189,7 +158,7 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label){
 dir.create("figures", showWarnings = FALSE)
 dir.create("figures/microbe_poll", showWarnings = FALSE)
 
-species.turnover <- calculate_and_plot_betalinkr(microbe_poll_betalink$DissimilaritySpeciesComposition,
+species.turnover <- calculate_and_plot_betalinkr("DissimilaritySpeciesComposition",
                                                  microbe_poll_betalink,
                                                  "Dissimilarity: \nSpecies Composition")
 ggsave(species.turnover[[2]], file="figures/microbe_poll/DissimilaritySpeciesTurnover.pdf", height=4, width=6)
