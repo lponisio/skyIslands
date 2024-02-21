@@ -118,6 +118,11 @@ plot(tree.16sR0, show.tip.label = FALSE)
 
 
 #2018 samples 
+comm.matrix <- makeComm(taxonomy16sR0,
+                             feature.2.tax.16s)
+
+
+deduplicated.matrix <- catchDups(comm.matrix)
 
 indiv.comm.16sR0 <-
     bipartite::empty(catchDups(makeComm(taxonomy16sR0,
