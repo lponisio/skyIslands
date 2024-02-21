@@ -117,16 +117,28 @@ plot(tree.16sR0, show.tip.label = FALSE)
 ## only 197 specimens in indiv.comm.16sR0 instead of 780 ish
 ## double check merge worked in pipeline, not sure why so many are being dropped
 
-indiv.comm.16sR0 <-
-    bipartite::empty(catchDups(makeComm(taxonomy16sR0,
-                                        feature.2.tax.16s)))
-indiv.comm.16sR0 <- indiv.comm.16sR0/rowSums(indiv.comm.16sR0)
+finalASVtable <- read.csv(file.path(qza.16s.path, "final_asv_table/16s_final_asv_table.csv"))
 
-save(indiv.comm.16sR0, file= "../skyIslands/data/presAbsTable.Rdata")
+rownames(finalASVtable) <- finalASVtable[,1]
 
-bees.16s <- c(rownames(indiv.comm.16sR0))
+finalASVtable[,1] <- NULL
 
-comms <- list(indiv.comm.16sR0)
+## drop the barcode cols
+finalASVtable <- finalASVtable %>%
+  select(!c(forwardbarcode, revbarcode, barcodesequence, forwardgenomicprimer, revgenomicprimer))
+
+colnames(finalASVtable) <- paste("16s", colnames(finalASVtable), sep=':')
+
+# indiv.comm.16sR0 <-
+#     bipartite::empty(catchDups(makeComm(taxonomy16sR0,
+#                                         feature.2.tax.16s)))
+finalASVtable <- finalASVtable/rowSums(finalASVtable)
+
+save(finalASVtable, file= "../skyIslands/data/presAbsTable.Rdata")
+
+bees.16s <- c(rownames(finalASVtable))
+
+comms <- list(finalASVtable)
 
 species.16s <- unique(unlist(sapply(comms, colnames)))
 
@@ -143,7 +155,7 @@ rownames(merged.comm.16s) <- bees.16s
 ## ***********************************************************************
 ## working with a merged 16s tree
 ## ***********************************************************************
-#2018 samples!!
+
 
 # upload our mega 16s phylogenetic tree
 
