@@ -134,6 +134,8 @@ colnames(finalASVtable) <- paste("16s", colnames(finalASVtable), sep=':')
 #                                         feature.2.tax.16s)))
 finalASVtable <- finalASVtable/rowSums(finalASVtable)
 
+finalASVtable <- as.matrix(finalASVtable)
+
 save(finalASVtable, file= "../skyIslands/data/presAbsTable.Rdata")
 
 bees.16s <- c(rownames(finalASVtable))
