@@ -117,7 +117,7 @@ plot(tree.16sR0, show.tip.label = FALSE)
 ## only 197 specimens in indiv.comm.16sR0 instead of 780 ish
 ## double check merge worked in pipeline, not sure why so many are being dropped
 
-finalASVtable <- read.csv(file.path(qza.16s.path, "final_asv_table/16s_final_asv_table.csv"))
+finalASVtable <- read.csv(file.path(qza.16s.path, "final_asv_table/16s_final_asv_table.csv"), header=TRUE)
 
 rownames(finalASVtable) <- finalASVtable[,1]
 
@@ -125,9 +125,14 @@ finalASVtable[,1] <- NULL
 
 ## drop the barcode cols
 finalASVtable <- finalASVtable %>%
-  select(!c(forwardbarcode, revbarcode, barcodesequence, forwardgenomicprimer, revgenomicprimer))
+  dplyr::select(starts_with("d__"))
 
+#fixing naming inconsistency
 colnames(finalASVtable) <- paste("16s", colnames(finalASVtable), sep=':')
+
+colnames(finalASVtable) <- gsub("\\.__", "", colnames(finalASVtable))
+
+colnames(finalASVtable) <- gsub("\\.", "; ", colnames(finalASVtable))
 
 # indiv.comm.16sR0 <-
 #     bipartite::empty(catchDups(makeComm(taxonomy16sR0,
@@ -135,8 +140,6 @@ colnames(finalASVtable) <- paste("16s", colnames(finalASVtable), sep=':')
 finalASVtable <- finalASVtable/rowSums(finalASVtable)
 
 finalASVtable <- as.matrix(finalASVtable)
-
-save(finalASVtable, file= "../skyIslands/data/presAbsTable.Rdata")
 
 bees.16s <- c(rownames(finalASVtable))
 
@@ -151,6 +154,157 @@ dim(merged.comm.16s)
 length(species.16s)
 
 rownames(merged.comm.16s) <- bees.16s
+
+
+length(tree.16sR0$tip.label[tree.16sR0$tip.label %in% colnames(finalASVtable)])
+labels_mismatch <- tree.16sR0$tip.label[!(tree.16sR0$tip.label %in% colnames(finalASVtable))]
+print(length(labels_mismatch)) #85
+
+
+# fixing subgroup 1 issue
+tree.16sR0$tip.label[grep("Subgroup_1", tree.16sR0$tip.label)]
+colnames(finalASVtable)[grep("Subgroup_1", colnames(finalASVtable))]
+
+colnames(finalASVtable) <- gsub("f__Acidobacteriaceae_; Subgroup_1; ", "f__Acidobacteriaceae_(Subgroup_1)", colnames(finalASVtable))
+colnames(finalASVtable)[grep("Subgroup_1", colnames(finalASVtable))]
+
+# check labels again
+labels_mismatch <- tree.16sR0$tip.label[!(tree.16sR0$tip.label %in% colnames(finalASVtable))]
+print(length(labels_mismatch)) #80
+
+# fixing apibacter_sp. issue
+tree.16sR0$tip.label[grep("Apibacter_sp.", tree.16sR0$tip.label)]
+colnames(finalASVtable)[grep("Apibacter_sp", colnames(finalASVtable))]
+
+colnames(finalASVtable) <- gsub("_sp; ", "_sp.", colnames(finalASVtable))
+
+# check labels again
+labels_mismatch <- tree.16sR0$tip.label[!(tree.16sR0$tip.label %in% colnames(finalASVtable))]
+print(length(labels_mismatch)) #67
+
+# fixing actinobacter issue
+tree.16sR0$tip.label[grep("uncultured_actinobacterium", tree.16sR0$tip.label)]
+colnames(finalASVtable)[grep("uncultured_actinobacterium", colnames(finalASVtable))]
+
+
+colnames(finalASVtable) <- gsub("c__Actinobacteria; o__0319; 7L14; f__0319; 7L14; g__0319; 7L14; ", "c__Actinobacteria; o__0319-7L14; f__0319-7L14; g__0319-7L14; ", colnames(finalASVtable))
+# check labels again
+labels_mismatch <- tree.16sR0$tip.label[!(tree.16sR0$tip.label %in% colnames(finalASVtable))]
+print(length(labels_mismatch)) #65
+
+# fixing marine group issue
+tree.16sR0$tip.label[grep("marine_group", tree.16sR0$tip.label)]
+colnames(finalASVtable)[grep("marine_group", colnames(finalASVtable))]
+colnames(finalASVtable) <- gsub("g__CL500; 29_marine_group", "g__CL500-29_marine_group", colnames(finalASVtable))
+
+# check labels again
+labels_mismatch <- tree.16sR0$tip.label[!(tree.16sR0$tip.label %in% colnames(finalASVtable))]
+print(length(labels_mismatch)) #64
+
+# fixing clostridia issue
+tree.16sR0$tip.label[grep("g__W5053", tree.16sR0$tip.label)]
+colnames(finalASVtable)[grep("g__W5053", colnames(finalASVtable))]
+colnames(finalASVtable) <- gsub("o__Peptostreptococcales; Tissierellales; f__Peptostreptococcales; Tissierellales",
+                                "o__Peptostreptococcales-Tissierellales; f__Peptostreptococcales-Tissierellales",
+                                colnames(finalASVtable))
+
+# check labels again
+labels_mismatch <- tree.16sR0$tip.label[!(tree.16sR0$tip.label %in% colnames(finalASVtable))]
+print(length(labels_mismatch)) #62
+
+# fixing hafnia issue
+tree.16sR0$tip.label[grep("Obesumbacterium", tree.16sR0$tip.label)]
+colnames(finalASVtable)[grep("Obesumbacterium", colnames(finalASVtable))]
+colnames(finalASVtable) <- gsub("g__Hafnia; Obesumbacterium",
+                                "g__Hafnia-Obesumbacterium",
+                                colnames(finalASVtable))
+
+# check labels again
+labels_mismatch <- tree.16sR0$tip.label[!(tree.16sR0$tip.label %in% colnames(finalASVtable))]
+print(length(labels_mismatch)) #57
+
+# fixing methylobacter issue
+tree.16sR0$tip.label[grep("cerastii", tree.16sR0$tip.label)]
+colnames(finalASVtable)[grep("cerastii", colnames(finalASVtable))]
+colnames(finalASVtable) <- gsub("g__Methylobacterium; Methylorubrum",
+                                "g__Methylobacterium-Methylorubrum",
+                                colnames(finalASVtable))
+
+# check labels again
+labels_mismatch <- tree.16sR0$tip.label[!(tree.16sR0$tip.label %in% colnames(finalASVtable))]
+print(length(labels_mismatch)) #37
+
+# fixing uncultured soil issue
+tree.16sR0$tip.label[grep("uncultured_soil", tree.16sR0$tip.label)]
+colnames(finalASVtable)[grep("uncultured_soil", colnames(finalASVtable))]
+colnames(finalASVtable) <- gsub("g__1174; 901; 12",
+                                "g__1174-901-12",
+                                colnames(finalASVtable))
+
+# check labels again
+labels_mismatch <- tree.16sR0$tip.label[!(tree.16sR0$tip.label %in% colnames(finalASVtable))]
+print(length(labels_mismatch)) #27
+
+# fixing allorhizobium issue
+tree.16sR0$tip.label[grep("g__Allorhizobium", tree.16sR0$tip.label)]
+colnames(finalASVtable)[grep("g__Allorhizobium", colnames(finalASVtable))]
+colnames(finalASVtable) <- gsub("g__Allorhizobium; Neorhizobium; Pararhizobium; Rhizobium",
+                                "g__Allorhizobium-Neorhizobium-Pararhizobium-Rhizobium",
+                                colnames(finalASVtable))
+
+# check labels again
+labels_mismatch <- tree.16sR0$tip.label[!(tree.16sR0$tip.label %in% colnames(finalASVtable))]
+print(length(labels_mismatch)) #12
+
+# fixing rhizobiales issue
+tree.16sR0$tip.label[grep("Rhizobiales_bacterium", tree.16sR0$tip.label)]
+colnames(finalASVtable)[grep("Rhizobiales_bacterium", colnames(finalASVtable))]
+colnames(finalASVtable) <- gsub("f__D05; 2; g__D05; 2",
+                                "f__D05-2; g__D05-2",
+                                colnames(finalASVtable))
+
+# check labels again
+labels_mismatch <- tree.16sR0$tip.label[!(tree.16sR0$tip.label %in% colnames(finalASVtable))]
+print(length(labels_mismatch)) #11
+
+# fixing burkholderia issue
+tree.16sR0$tip.label[grep("uncultured_Burkholderia", tree.16sR0$tip.label)]
+colnames(finalASVtable)[grep("uncultured_Burkholderia", colnames(finalASVtable))]
+colnames(finalASVtable) <- gsub("f__TRA3; 20; g__TRA3; 20",
+                                "f__TRA3-20; g__TRA3-20",
+                                colnames(finalASVtable))
+colnames(finalASVtable) <- gsub("f__SC; I; 84; g__SC; I; 84",
+                                "f__SC-I-84; g__SC-I-84",
+                                colnames(finalASVtable))
+
+
+# check labels again
+labels_mismatch <- tree.16sR0$tip.label[!(tree.16sR0$tip.label %in% colnames(finalASVtable))]
+print(length(labels_mismatch)) #7
+
+# fixing paraburkholderia issue
+tree.16sR0$tip.label[grep("Paraburkholderia", tree.16sR0$tip.label)]
+colnames(finalASVtable)[grep("Paraburkholderia", colnames(finalASVtable))]
+colnames(finalASVtable) <- gsub("g__Burkholderia; Caballeronia; Paraburkholderia",
+                                "g__Burkholderia-Caballeronia-Paraburkholderia",
+                                colnames(finalASVtable))
+
+# check labels again
+labels_mismatch <- tree.16sR0$tip.label[!(tree.16sR0$tip.label %in% colnames(finalASVtable))]
+print(length(labels_mismatch)) #1
+
+# fixing numbering hyphen issue
+tree.16sR0$tip.label[grep("o__0319", tree.16sR0$tip.label)]
+colnames(finalASVtable)[grep("o__0319", colnames(finalASVtable))]
+colnames(finalASVtable) <- gsub("o__0319; 6G20; f__0319; 6G20; g__0319; 6G20",
+                                "o__0319-6G20; f__0319-6G20; g__0319-6G20",
+                                colnames(finalASVtable))
+
+# check labels again
+labels_mismatch <- tree.16sR0$tip.label[!(tree.16sR0$tip.label %in% colnames(finalASVtable))]
+print(length(labels_mismatch)) #0! yay
+
+save(finalASVtable, file= "../skyIslands/data/presAbsTable.Rdata")
 
 
 
@@ -613,7 +767,7 @@ indiv.comm.rbcl <- as.data.frame(merged.comm.rbcl)
 pollen <- colnames(indiv.comm.rbcl)
 indiv.comm.rbcl$UniqueID <- rownames(indiv.comm.rbcl)
 
-#2018 16s
+#16s
 indiv.comm.16s <- as.data.frame(merged.comm.16s)
 bact <- colnames(indiv.comm.16s)
 indiv.comm.16s$UniqueID <- rownames(indiv.comm.16s)
