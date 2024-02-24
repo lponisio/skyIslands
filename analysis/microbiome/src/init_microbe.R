@@ -20,7 +20,7 @@ library(RColorBrewer)
 library(rstantools)
 library(performance)
 library(bayestestR)
-library(see)
+#library(see)
 
 save.dir <- "saved/tables"
 if(!dir.exists(save.dir)) {
@@ -83,10 +83,14 @@ spec.net <- spec.net[order(spec.net$Site),]
 
 ## pull out 16s columns
 microbes <- colnames(spec.net)[grepl("16s:", colnames(spec.net))] 
+microbes <- microbes[microbes %in% tree.16s$tip.label]
 
 ## check which only have NAs in these columns (not screened) and drop them
 screened.microbes <- apply(spec.net, 1, function(x) all(is.na(x[microbes])))
 spec.microbes <- spec.net[!screened.microbes, ]
+
+#3 rows have 0 for all microbes, need to drop
+spec.microbes <- spec.microbes[rowSums(spec.microbes[,microbes])!=0,]
 
 ## QUESTION: should include root = TRUE? if false gives warning 3x
 ## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
@@ -96,6 +100,7 @@ PD <- apply(spec.microbes[,microbes], 1, function(x){
   this.bee <- x[x > 0]
   this.tree <- prune.sample(t(this.bee), tree.16s)
   picante::pd(t(this.bee), this.tree, include.root = TRUE)
+  #browser()
 })
 
 PD <- do.call(rbind, PD)
