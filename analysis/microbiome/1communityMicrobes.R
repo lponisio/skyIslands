@@ -1,11 +1,10 @@
-## setwd('C:/Users/na_ma/Dropbox (University of Oregon)/Rotation/skyIslands')
-## setwd('~/Dropbox (University of Oregon)/skyIslands')
-setwd('~/Dropbox (University of Oregon)/skyIslands')
-#setwd("/Volumes/bombus/rhayes/Dropbox (University of Oregon)/skyIslands")
-
-setwd("analysis/microbiome/")
-
 rm(list=ls())
+setwd("~/")
+source("lab_paths.R")
+local.path
+setwd(local.path)
+setwd("skyIslands/analysis/microbiome/")
+
 
 run.diagnostics = FALSE
 
@@ -17,7 +16,7 @@ library(bayesplot)
 library(pscl)
 library(brms)
 library(performance)
-library(lme4)
+#library(lme4)
 library(glmmADMB)
 library(R2admb)
 library(shinystan)
@@ -284,23 +283,23 @@ bform.bombus <- bf.fabund +
     bf.microbe.bombus +
     set_rescor(FALSE)
 
-# 
-# fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
-#                      cores=ncores,
-#                      iter = 10000,
-#                      chains =1,
-#                      thin=1,
-#                      init=0,
-#                      open_progress = FALSE,
-#                      control = list(adapt_delta = 0.99),
-#                      save_pars = save_pars(all = TRUE),
-#                      data2 = list(phylo_matrix=phylo_matrix))
-# 
-# write.ms.table(fit.microbe.bombus, "bombus_microbe")
-# r2loo.bombus <- loo_R2(fit.microbe.bombus)
-# r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
-# save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
-#        file="saved/fullMicrobeBombusFit.Rdata")
+
+fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
+                     cores=ncores,
+                     iter = 10000,
+                     chains =1,
+                     thin=1,
+                     init=0,
+                     open_progress = FALSE,
+                     control = list(adapt_delta = 0.99),
+                     save_pars = save_pars(all = TRUE),
+                     data2 = list(phylo_matrix=phylo_matrix))
+
+write.ms.table(fit.microbe.bombus, "bombus_microbe")
+r2loo.bombus <- loo_R2(fit.microbe.bombus)
+r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
+save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
+       file="saved/fullMicrobeBombusFit.Rdata")
 
 ## run apis model
 microbe.apis.vars <- c("BeeAbundance",
@@ -319,28 +318,28 @@ formula.microbe.apis <- as.formula(paste(microbe.apis.y, "~",
 bf.microbe.apis <- bf(formula.microbe.apis)
 
 #combine forms
-# bform.apis <- bf.fabund +
-#   bf.fdiv +
-#   bf.tot.babund +
-#   bf.tot.bdiv  +
-#   bf.microbe.apis +
-#   set_rescor(FALSE)
-# 
-# fit.microbe.apis <- brm(bform.apis , spec.net,
-#                         cores=ncores,
-#                         iter = 10000,
-#                         chains =1,
-#                         thin=1,
-#                         init=0,
-#                         open_progress = FALSE,
-#                         control = list(adapt_delta = 0.99),
-#                         save_pars = save_pars(all = TRUE))
-# 
-# write.ms.table(fit.microbe.apis, "apis_microbe")
-# r2loo.apis <- loo_R2(fit.microbe.apis)
-# r2.apis <- rstantools::bayes_R2(fit.microbe.apis)
-# save(fit.microbe.apis, spec.net, r2.apis, r2loo.apis,
-#      file="saved/fullMicrobeApisFit.Rdata")
+bform.apis <- bf.fabund +
+  bf.fdiv +
+  bf.tot.babund +
+  bf.tot.bdiv  +
+  bf.microbe.apis +
+  set_rescor(FALSE)
+
+fit.microbe.apis <- brm(bform.apis , spec.net,
+                        cores=ncores,
+                        iter = 10000,
+                        chains =1,
+                        thin=1,
+                        init=0,
+                        open_progress = FALSE,
+                        control = list(adapt_delta = 0.99),
+                        save_pars = save_pars(all = TRUE))
+
+write.ms.table(fit.microbe.apis, "apis_microbe")
+r2loo.apis <- loo_R2(fit.microbe.apis)
+r2.apis <- rstantools::bayes_R2(fit.microbe.apis)
+save(fit.microbe.apis, spec.net, r2.apis, r2loo.apis,
+     file="saved/fullMicrobeApisFit.Rdata")
 
 # ## run melissodes model
 microbe.melissodes.vars <- c("BeeAbundance",
