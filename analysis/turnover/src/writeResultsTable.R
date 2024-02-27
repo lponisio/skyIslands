@@ -1,5 +1,5 @@
 write.summ.table <- function(mod.output){
-    sum.mod <- as.data.frame(round(summary(mod.output)$fixed,2))
+    sum.mod <- as.data.frame(round(summary(mod.output)$fixed,4))
 
     coeffs <- c(paste0("b_",
                        rownames(sum.mod)),
