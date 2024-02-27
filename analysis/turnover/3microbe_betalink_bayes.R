@@ -22,6 +22,8 @@ library(fields)
 library(brms)
 library(tidybayes)
 library(gridExtra)
+library(bayesplot)
+library(performance)
 
 load("../../data/networks/microNets.RData")
 
@@ -117,7 +119,9 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label){
               control = list(adapt_delta = 0.99),
               save_pars = save_pars(all = TRUE))
   
-  mod_summary <- write.ms.table(mod1)
+  mod_summary <- write.summ.table(mod1)
+  
+  diag <- plot(check_model(mod1, panel = TRUE))
   
   newdata.mod <- tidyr::crossing(GeoDist = seq(min(this_network$GeoDist),
                                             max(this_network$GeoDist),
@@ -146,7 +150,7 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label){
                aes(y=this_component, x=GeoDist), cex=2, alpha=0.5) + ylim(0,1)
 
   # Return a list containing the model summary[1] and the generated 'turnover.plot'[2].
-  return(list(mod_summary, fig))
+  return(list(mod_summary, fig, diag, mod1))
   
   
 }
@@ -156,49 +160,70 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label){
 
 
 dir.create("figures", showWarnings = FALSE)
+dir.create("saved", showWarnings = FALSE)
+dir.create("figures/diagnostic_plots", showWarnings = FALSE)
 dir.create("figures/microbe_poll", showWarnings = FALSE)
 
 species.turnover <- calculate_and_plot_betalinkr("DissimilaritySpeciesComposition",
                                                  microbe_poll_betalink,
                                                  "Dissimilarity: \nSpecies Composition")
 ggsave(species.turnover[[2]], file="figures/microbe_poll/DissimilaritySpeciesTurnover.pdf", height=4, width=6)
+ggsave(species.turnover[[3]], file="figures/diagnostic_plots/DissimilaritySpeciesTurnover.pdf", height=8, width=11)
 write.csv(species.turnover[[1]], file="tables/DissimilaritySpeciesTurnover.csv")
+save(species.turnover, file="saved/DissimilaritySpeciesTurnover.Rdata")
 
 interaction.turnover <- calculate_and_plot_betalinkr("WholeNetworkLinks",
                                                      microbe_poll_betalink,
                                                      "Dissimilarity: \nInteraction Turnover")
 ggsave(interaction.turnover[[2]], file="figures/microbe_poll/DissimilarityInteractionTurnover.pdf", height=4, width=6)
+ggsave(interaction.turnover[[3]], file="figures/diagnostic_plots/DissimilarityInteractionTurnover.pdf", height=8, width=11)
 write.csv(interaction.turnover[[1]], file="tables/DissimilarityInteractionTurnover.csv")
+save(interaction.turnover, file="saved/DissimilarityInteractionTurnover.Rdata")
+
 
 int.turnover.rewiring <- calculate_and_plot_betalinkr("OnlySharedLinks",
                                                       microbe_poll_betalink,
                                                       "Interaction Turnover: \nRewiring")
 ggsave(int.turnover.rewiring[[2]], file="figures/microbe_poll/InteractionDissimilarityRewiring.pdf", height=4, width=6)
+ggsave(int.turnover.rewiring[[3]], file="figures/diagnostic_plots/InteractionDissimilarityRewiring.pdf", height=8, width=11)
 write.csv(int.turnover.rewiring[[1]], file="tables/InteractionDissimilarityRewiring.csv")
+save(int.turnover.rewiring, file="saved/InteractionDissimilarityRewiring.Rdata")
+
 
 int.turnover.species.turnover <- calculate_and_plot_betalinkr("SpeciesTurnoverLinks",
                                                               microbe_poll_betalink,
                                                               "Interaction Turnover: \nSpecies Turnover")
 ggsave(int.turnover.species.turnover[[2]], file="figures/microbe_poll/InteractionTurnoverSpeciesComp.pdf", height=4, width=6)
+ggsave(int.turnover.species.turnover[[3]], file="figures/diagnostic_plots/InteractionTurnoverSpeciesComp.pdf", height=8, width=11)
 write.csv(int.turnover.species.turnover[[1]], file="tables/InteractionTurnoverSpeciesComp.csv")
+save(int.turnover.species.turnover, file="saved/InteractionTurnoverSpeciesComp.Rdata")
+
 
 sp.turnover.microbes <- calculate_and_plot_betalinkr("TurnoverAbsenceMicrobes",
                                                      microbe_poll_betalink,
                                                      "Species Turnover: \nAbsence of Microbes")
 ggsave(sp.turnover.microbes[[2]], file="figures/microbe_poll/SpeciesTurnoverAbsenceMicrobes.pdf", height=4, width=6)
+ggsave(sp.turnover.microbes[[3]], file="figures/diagnostic_plots/SpeciesTurnoverAbsenceMicrobes.pdf", height=8, width=11)
 write.csv(sp.turnover.microbes[[1]], file="tables/SpeciesTurnoverAbsenceMicrobes.csv")
+save(sp.turnover.microbes, file="saved/SpeciesTurnoverAbsenceMicrobes.Rdata")
+
 
 sp.turnover.bees <- calculate_and_plot_betalinkr("TurnoverAbsencePollinators",
                                                  microbe_poll_betalink,
                                                  "Species Turnover: \nAbsence of Bees")
 ggsave(sp.turnover.bees[[2]], file="figures/microbe_poll/SpeciesTurnoverAbsenceBees.pdf", height=4, width=6)
+ggsave(sp.turnover.bees[[3]], file="figures/diagnostic_plots/SpeciesTurnoverAbsenceBees.pdf", height=8, width=11)
 write.csv(sp.turnover.bees[[1]], file="tables/SpeciesTurnoverAbsenceBees.csv")
+save(sp.turnover.bees, file="saved/SpeciesTurnoverAbsenceBees.Rdata")
+
 
 sp.turnover.both <- calculate_and_plot_betalinkr("TurnoverAbsenceBoth",
                                                  microbe_poll_betalink,
                                                  "Species Turnover: \nAbsence of Both")
 ggsave(sp.turnover.both[[2]], file="figures/microbe_poll/SpeciesTurnoverAbsenceBoth.pdf", height=4, width=6)
+ggsave(sp.turnover.both[[3]], file="figures/diagnostic_plots/SpeciesTurnoverAbsenceBoth.pdf", height=8, width=11)
 write.csv(sp.turnover.both[[1]], file="tables/SpeciesTurnoverAbsenceBoth.csv")
+save(sp.turnover.both, file="saved/SpeciesTurnoverAbsenceBoth.Rdata")
 
 # diss.whole.network.replace <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkReplaced, microbe_poll_betalink, "Dissimilarity: Whole Network Replacement")
 # ggsave(diss.whole.network.replace[[2]], file="figures/microbe_poll/DissimilarityWholeNetReplace.pdf", height=4, width=6)
