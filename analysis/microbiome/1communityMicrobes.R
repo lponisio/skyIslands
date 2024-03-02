@@ -178,27 +178,27 @@ bf.tot.bdiv <- bf(formula.tot.bee.div)
 ## community model
 ## **********************************************************
 # 
-# bform.community <- bf.fabund +
-#   bf.fdiv +
-#   bf.tot.babund +
-#   bf.tot.bdiv  +
-#   set_rescor(FALSE)
-# 
-# fit.community <- brm(bform.community, spec.net,
-#                      cores=ncores,
-#                      iter = 10000,
-#                      chains = 1,
-#                      thin=1,
-#                      init=0,
-#                      control = list(adapt_delta = 0.99),
-#                      save_pars = save_pars(all = TRUE))
-# write.ms.table(fit.community,
-#                sprintf("community_%s_%s",
-#                        species.group="all", parasite="none"))
-# r2loo <- loo_R2(fit.community)
-# r2 <- rstantools::bayes_R2(fit.community)
-# save(fit.community, spec.net, r2,
-#      file="saved/communityFit.Rdata")
+bform.community <- bf.fabund +
+  bf.fdiv +
+  bf.tot.babund +
+  bf.tot.bdiv  +
+  set_rescor(FALSE)
+
+fit.community <- brm(bform.community, spec.net,
+                     cores=ncores,
+                     iter = 10000,
+                     chains = 1,
+                     thin=1,
+                     init=0,
+                     control = list(adapt_delta = 0.99),
+                     save_pars = save_pars(all = TRUE))
+write.ms.table(fit.community,
+               sprintf("community_%s_%s",
+                       species.group="all", parasite="none"))
+r2loo <- loo_R2(fit.community)
+r2 <- rstantools::bayes_R2(fit.community)
+save(fit.community, spec.net, r2,
+     file="saved/communityFit.Rdata")
 
 
 ## **********************************************************
@@ -310,7 +310,7 @@ microbe.apis.vars <- c("BeeAbundance",
 
 
 microbe.apis.x <- paste(microbe.apis.vars, collapse="+")
-microbe.apis.y <- "PD | weights(ApisWeights)"
+microbe.apis.y <- "PD | weights(LogWeightsAbund)"
 formula.microbe.apis <- as.formula(paste(microbe.apis.y, "~",
                                          microbe.apis.x))
 
@@ -325,7 +325,7 @@ bform.apis <- bf.fabund +
   bf.microbe.apis +
   set_rescor(FALSE)
 
-fit.microbe.apis <- brm(bform.apis , spec.net,
+fit.microbe.apis <- brm(bform.apis , spec.apis,
                         cores=ncores,
                         iter = 10000,
                         chains =1,
@@ -350,7 +350,7 @@ microbe.melissodes.vars <- c("BeeAbundance",
 
 
 microbe.melissodes.x <- paste(microbe.melissodes.vars, collapse="+")
-microbe.melissodes.y <- "PD | weights(MelissodesWeights)"
+microbe.melissodes.y <- "PD | weights(LogWeightsAbund)"
 formula.microbe.melissodes <- as.formula(paste(microbe.melissodes.y, "~",
                                            microbe.melissodes.x))
 
@@ -365,7 +365,7 @@ bform.melissodes <- bf.fabund +
   bf.microbe.melissodes +
   set_rescor(FALSE)
 
-fit.microbe.melissodes <- brm(bform.melissodes , spec.net,
+fit.microbe.melissodes <- brm(bform.melissodes , spec.melissodes,
                           cores=ncores,
                           iter = 10000,
                           chains =1,
