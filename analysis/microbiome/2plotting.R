@@ -80,63 +80,63 @@ load(file="saved/fullMicrobeMelissodesFit.Rdata")
 ## Bombus model
 ## **********************************************************
 
-data.par <- spec.net[spec.net$BombusWeights != 0, ]
-#
-## PD ~ bee abundance
-labs.bee.abund <- (pretty(c(0, spec.bombus.orig$BeeAbundance), n=8))
-axis.bee.abund <-  standardize.axis(labs.bee.abund,
-                                    spec.bombus.orig$BeeAbundance)
-
-newdata.beeabund <- tidyr::crossing(BeeAbundance =
-                                      seq(min(data.par$BeeAbundance),
-                                          max(data.par$BeeAbundance),
-                                          length.out=10),
-                                    MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
-                                    Site=data.par$Site,
-                                    rare.degree=mean(data.par$rare.degree),
-                                    MeanITD=mean(data.par$MeanITD),
-                                    Year = data.par$Year,
-                                    DoyStart = data.par$DoyStart,
-                                    Lat = mean(data.par$Lat),
-                                    BeeDiversity = mean(data.par$BeeDiversity),
-)
-
-pred_beeabund <- fit.microbe.bombus %>%
-  epred_draws(newdata = newdata.beeabund ,
-              resp = "PD",
-              allow_new_levels = TRUE)
-
-## to see range of predicted values
-# pred_beeabund %>%
-#   group_by(BeeAbundance) %>%
-#   summarise(mean(.epred))
-
-
-bombus.abund.PD <- ggplot(pred_beeabund, aes(x = BeeAbundance, y =
-                                                     .epred)) +
-  stat_lineribbon(show.legend = FALSE) +
-  scale_fill_brewer(palette = "Blues") +
-  labs(x = "Bee Abundance", y = "Microbe \nPhylogenetic \nDistance",
-       fill = "Credible Interval") +
-  theme(axis.title.x = element_text(size=16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16),
-        legend.position = "none") +
-  theme_classic() +
-  geom_point(data=data.par,
-             aes(y=PD, x=BeeAbundance), cex=2, alpha=0.5) +
-  scale_x_continuous(
-    breaks = axis.bee.abund,
-    labels =  labs.bee.abund) + labs(tag='C.', y='Microbe \nPhylogenetic \nDistance')
-
-
-bombus.abund.PD
-panelC <- bombus.abund.PD
-
-dir.create("figures")
-
-ggsave(bombus.abund.PD, file="figures/bombusPD_beeAbund.pdf",
-       height=4, width=5)
+# data.par <- spec.net[spec.net$BombusWeights != 0, ]
+# #
+# ## PD ~ bee abundance
+# labs.bee.abund <- (pretty(c(0, spec.bombus.orig$BeeAbundance), n=8))
+# axis.bee.abund <-  standardize.axis(labs.bee.abund,
+#                                     spec.bombus.orig$BeeAbundance)
+# 
+# newdata.beeabund <- tidyr::crossing(BeeAbundance =
+#                                       seq(min(data.par$BeeAbundance),
+#                                           max(data.par$BeeAbundance),
+#                                           length.out=10),
+#                                     MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
+#                                     Site=data.par$Site,
+#                                     rare.degree=mean(data.par$rare.degree),
+#                                     MeanITD=mean(data.par$MeanITD),
+#                                     Year = data.par$Year,
+#                                     DoyStart = data.par$DoyStart,
+#                                     Lat = mean(data.par$Lat),
+#                                     BeeDiversity = mean(data.par$BeeDiversity),
+# )
+# 
+# pred_beeabund <- fit.microbe.bombus %>%
+#   epred_draws(newdata = newdata.beeabund ,
+#               resp = "PD",
+#               allow_new_levels = TRUE)
+# 
+# ## to see range of predicted values
+# # pred_beeabund %>%
+# #   group_by(BeeAbundance) %>%
+# #   summarise(mean(.epred))
+# 
+# 
+# bombus.abund.PD <- ggplot(pred_beeabund, aes(x = BeeAbundance, y =
+#                                                      .epred)) +
+#   stat_lineribbon(show.legend = FALSE) +
+#   scale_fill_brewer(palette = "Blues") +
+#   labs(x = "Bee Abundance", y = "Microbe \nPhylogenetic \nDistance",
+#        fill = "Credible Interval") +
+#   theme(axis.title.x = element_text(size=16),
+#         axis.title.y = element_text(size=16),
+#         text = element_text(size=16),
+#         legend.position = "none") +
+#   theme_classic() +
+#   geom_point(data=data.par,
+#              aes(y=PD, x=BeeAbundance), cex=2, alpha=0.5) +
+#   scale_x_continuous(
+#     breaks = axis.bee.abund,
+#     labels =  labs.bee.abund) + labs(tag='C.', y='Microbe \nPhylogenetic \nDistance')
+# 
+# 
+# bombus.abund.PD
+# panelC <- bombus.abund.PD
+# 
+# dir.create("figures")
+# 
+# ggsave(bombus.abund.PD, file="figures/bombusPD_beeAbund.pdf",
+#        height=4, width=5)
 
 # # #################################
 # ## PD ~ bee diversity
@@ -385,10 +385,10 @@ pred_beeabund <- fit.microbe.apis %>%
               resp = "PD",
               allow_new_levels = TRUE)
 
-## to see range of predicted values
-#pred_beeabund %>%
-#  group_by(BeeAbundance) %>%
-#  summarise(mean(.epred))
+# to see range of predicted values
+pred_beeabund %>%
+ group_by(BeeAbundance) %>%
+ summarise(mean(.epred))
 
 
 apis.abund.PD <- ggplot(pred_beeabund, aes(x = BeeAbundance, y =
@@ -619,7 +619,7 @@ lat.PD <- ggplot(pred_beediv, aes(x = Lat, y =
 
 
 lat.PD
-panelE <- rare.lat.PD
+panelE <- lat.PD
 
 dir.create("figures")
 
