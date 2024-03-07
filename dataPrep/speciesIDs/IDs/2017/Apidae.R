@@ -1441,15 +1441,9 @@ sp.ids <- list(
                                    SubSpecies="", Sex="f",
                                    Author = "Sandhouse",
                                    Determiner="J.L. Neff",
-                                   temp.id= c("22614","21018","21017","24742","21032","21029","21340","20798","36384")),
+                                   temp.id= c("36384"))
   
-    Lasioglossum_deludens_f = list(Genus="Lassioglossum",
-                                   SubGenus="dialictus",
-                                   Species="deludens",
-                                   SubSpecies="", Sex="f",
-                                   Author = "Gardner & Gibbs",
-                                   Determiner="J.L. Neff",
-                                   temp.id= c("23212","23083","23077","21710","23631","23622","22500","23616","23612","23617","23614","23398","22502","22493","23402","23621"))
+
    
 
 
