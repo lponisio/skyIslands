@@ -284,22 +284,22 @@ bform.bombus <- bf.fabund +
     set_rescor(FALSE)
 
 
-# fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
-#                      cores=ncores,
-#                      iter = 10000,
-#                      chains =1,
-#                      thin=1,
-#                      init=0,
-#                      open_progress = FALSE,
-#                      control = list(adapt_delta = 0.99),
-#                      save_pars = save_pars(all = TRUE),
-#                      data2 = list(phylo_matrix=phylo_matrix))
-# 
-# write.ms.table(fit.microbe.bombus, "bombus_microbe")
-# r2loo.bombus <- loo_R2(fit.microbe.bombus)
-# r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
-# save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
-#        file="saved/fullMicrobeBombusFit.Rdata")
+fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
+                     cores=ncores,
+                     iter = 100000,
+                     chains =4,
+                     thin=1,
+                     init=0,
+                     open_progress = FALSE,
+                     control = list(adapt_delta = 0.99),
+                     save_pars = save_pars(all = TRUE),
+                     data2 = list(phylo_matrix=phylo_matrix))
+
+write.ms.table(fit.microbe.bombus, "bombus_microbe")
+r2loo.bombus <- loo_R2(fit.microbe.bombus)
+r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
+save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
+       file="saved/fullMicrobeBombusFit.Rdata")
 
 ## run apis model
 microbe.apis.vars <- c("BeeAbundance",
