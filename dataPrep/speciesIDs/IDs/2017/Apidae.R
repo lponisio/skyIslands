@@ -1454,22 +1454,6 @@ sp.ids <- list(
 
 
 
-
-    Hylaeus_mesillae_f = list(Genus="Hylaeus",
-                                   SubGenus="",
-                                   Species="mesillae",
-                                   SubSpecies="", Sex="f",
-                                   Author = "Cockerell",
-                                   Determiner="J.L. Neff",
-                                   temp.id= c("23153","20939","21358","22549","19885","22291","22085","21806","22047")),
-    
-    Hylaeus_mesillae_m = list(Genus="Hylaeus",
-                                   SubGenus="",
-                                   Species="mesillae",
-                                   SubSpecies="", Sex="m",
-                                   Author = "Cockerell",
-                                   Determiner="J.L. Neff",
-                                   temp.id= c("22554"))
     
 
 
