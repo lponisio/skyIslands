@@ -1441,7 +1441,7 @@ sp.ids <- list(
                                    SubSpecies="", Sex="f",
                                    Author = "Sandhouse",
                                    Determiner="J.L. Neff",
-                                   temp.id= c("22614","21018","20286","21017","24742","21032","30946","21029","21340","20798","36384")),
+                                   temp.id= c("22614","21018","21017","24742","21032","21029","21340","20798","36384")),
   
     Lasioglossum_deludens_f = list(Genus="Lassioglossum",
                                    SubGenus="dialictus",
@@ -1451,21 +1451,9 @@ sp.ids <- list(
                                    Determiner="J.L. Neff",
                                    temp.id= c("23212","23083","23077","21710","23631","23622","22500","23616","23612","23617","23614","23398","22502","22493","23402","23621")),
    
-    Lasioglossum_ruidosensis_f = list(Genus="Lassioglossum",
-                                   SubGenus="dialictus",
-                                   Species="ruidosensis",
-                                   SubSpecies="", Sex="f",
-                                   Author = "Cockerell",
-                                   Determiner="J.L. Neff",
-                                   temp.id= c("35739","35737","35751","35756","22156","36258")),
 
-    Lasioglossum_semicaeruleum_f = list(Genus="Lassioglossum",
-                                   SubGenus="dialictus",
-                                   Species="semicaeruleum",
-                                   SubSpecies="", Sex="f",
-                                   Author = "Cockerell",
-                                   Determiner="J.L. Neff",
-                                   temp.id= c("36071","35794","35455","34731")),
+
+
 
     Hylaeus_mesillae_f = list(Genus="Hylaeus",
                                    SubGenus="",
@@ -1473,7 +1461,7 @@ sp.ids <- list(
                                    SubSpecies="", Sex="f",
                                    Author = "Cockerell",
                                    Determiner="J.L. Neff",
-                                   temp.id= c("23153","20939","21358","22549","19885","22291","22085","21806","22047","36266","36262","35533","35580","36265","35686","35662")),
+                                   temp.id= c("23153","20939","21358","22549","19885","22291","22085","21806","22047")),
     
     Hylaeus_mesillae_m = list(Genus="Hylaeus",
                                    SubGenus="",
