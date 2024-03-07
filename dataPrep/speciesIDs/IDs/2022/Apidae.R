@@ -20,7 +20,7 @@ sp.ids <- list(
                               Determiner="J.L. Neff",
                               temp.id= c(38334, 38379, 38338, 37309, 37254,
                                         37189, 37415, 37462, 37506, 37505,
-                                        37289, 38300)),
+                                        37289, 38300, 37303, 37163)),
 
 
       Melissodes_agilis_f= list(Genus="Melissodes",
