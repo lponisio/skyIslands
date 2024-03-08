@@ -275,7 +275,7 @@ sp.ids <- list(
     scaeva_affinis_f= list(Genus="Scaeva", SubGenus="",
                            Species="affinis", SubSpecies="", Sex="f", Author = "Say",
                            Determiner="M.Hauser",
-                           temp.id= c("18208","17804","18217","18061","18603",
+                           temp.id= c("18208","17804","18217","18601","18603",
                                       "18180", "18620","18714","18211",
                                       "18206","17837","17672","17878",
                                       "18044","18040","17644","17639",
