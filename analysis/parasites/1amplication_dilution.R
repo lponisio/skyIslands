@@ -2,13 +2,14 @@ rm(list=ls())
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
  setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
 ## setwd('~/Dropbox (University of Oregon)/skyislands')
-ncores <- 5
+ncores <- 3
 
 setwd("analysis/parasites")
 source("src/misc.R")
 source("src/writeResultsTable.R")
 source("src/makeMultiLevelData.R")
 source("src/runParasiteModels.R")
+source("src/community_Model.R")
 source("src/standardize_weights.R")
 
 ## all of the variables that are explanatory variables and thus need
@@ -16,7 +17,7 @@ source("src/standardize_weights.R")
 vars_yearsr <- c("MeanFloralAbundance",
           "MeanFloralDiversity",
           "Net_BeeDiversity",
-          "Year", "SRDoy"  
+          "Lat", "SRDoy"  
           )
 vars_sp <- c("MeanITD",
           "rare.degree")
@@ -50,12 +51,12 @@ spec.bombus$GenusSpecies[spec.bombus$GenusSpecies %in% not_in_phylo]<- "Agaposte
 xvars.multi.bombus <-  c("Net_BombusAbundance",
                           "Net_BeeDiversity",
                           "rare.degree", "MeanITD",
-                          "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))")
+                           "(1|gr(GenusSpecies, cov = phylo_matrix))")
 
 xvars.multi.species <-  c("Net_NonBombusHBAbundance",
                           "Net_BeeDiversity",
                           "rare.degree", "MeanITD",
-                          "(1|Site)", "(1|GenusSpecies)")
+                           "(1|GenusSpecies)")
 
 
 ## single species models
@@ -74,20 +75,14 @@ bform.community <- bf.fabund + bf.fdiv +
   bf.bdiv  +
   set_rescor(FALSE)
 
-fit.community <- brm(bform.community, spec.net,
-                     cores=ncores,
-                     iter = 10^4,
-                     chains = 1,
-                     thin=1,
-                     control = list(adapt_delta = 0.99),
-                     save_pars = save_pars(all = TRUE))
-write.ms.table(fit.community,
-               sprintf("parasitism_%s_%s",
-                       species.group="all", parasite="none"))
-r2loo <- loo_R2(fit.community)
-r2 <- rstantools::bayes_R2(fit.community)
-save(fit.community, spec.net, r2, spec.orig,
-     file="saved/communityFit.Rdata")
+fit.community <- runCommunityModels(bform.community, spec.net, 
+                   ncores, 
+                   iter = 10^4,
+                   chains = 1,
+                   thin=1,
+                   init=0)
+
+
 
 ## **********************************************************
 ## Parasite presence
@@ -106,7 +101,7 @@ fit.parasites <- runCombinedParasiteModels(spec.net, species.group="melissodes",
 
 ## bombus
 
-fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
+fit.bombus.lat <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         parasite = c("CrithidiaPresence", "ApicystisSpp"),
                                         xvars=xvars.multi.bombus,
                                         ncores,

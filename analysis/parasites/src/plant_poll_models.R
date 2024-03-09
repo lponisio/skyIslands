@@ -5,14 +5,12 @@
 formula.flower.div <- formula(MeanFloralDiversity | weights(Weights) ~
                                 Lat +
                                   Year +
-                                  SRDoy + I(SRDoy^2) +
-                                  (1|Site)
+                                  SRDoy + I(SRDoy^2) 
                               )
 ## flower abund
 formula.flower.abund <- formula(MeanFloralAbundance | weights(Weights) ~
                                   Year+ Lat + 
-                                    SRDoy + I(SRDoy^2) +
-                                    (1|Site)
+                                    SRDoy + I(SRDoy^2) 
                                 )
 
 ## **********************************************************
@@ -21,30 +19,25 @@ formula.flower.abund <- formula(MeanFloralAbundance | weights(Weights) ~
 ## bee diversity
 formula.bee.div <- formula(Net_BeeDiversity | weights(Weights)~
                              MeanFloralDiversity +
-                               Lat + Year +
-                               SRDoy + I(SRDoy^2) +
-                               (1|Site)
+                             Lat  + Year+ SRDoy + I(SRDoy^2) 
                            )
 ## bombus abund
 formula.bombus.abund <- formula(Net_BombusAbundance | weights(Weights)~
                                   MeanFloralAbundance + 
-                                    SRDoy +
-                                    Lat + 
-                                    (1|Site)
+                                    SRDoy + I(SRDoy^2) +
+                                    Lat
                                 )
 ## HB abund
 formula.HB.abund <- formula(Net_HBAbundance | weights(Weights)~
                               MeanFloralAbundance +  
-                                SRDoy +
-                                Lat +
-                                (1|Site)
+                                SRDoy + I(SRDoy^2)+
+                                Lat 
                             )
 ## bee abund
 formula.bee.abund <- formula(Net_NonBombusHBAbundance | weights(Weights)~
                                MeanFloralAbundance +  
-                                 SRDoy +
-                                 Lat +
-                                 (1|Site)
+                                 SRDoy + I(SRDoy^2)+
+                                 Lat 
                              )
 
 ## **********************************************************

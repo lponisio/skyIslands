@@ -25,7 +25,8 @@ vars_yearsr <- c("MeanFloralAbundance",
 vars_sp <- c("MeanITD",
              "rare.degree")
 
-variables.to.log <- "rare.degree" 
+variables.to.log <- c("MeanITD",
+                      "rare.degree") 
 variables.to.log.1 <- c("Net_HBAbundance", "Net_BombusAbundance", 
                         "Net_NonBombusHBAbundance")
 
@@ -85,14 +86,14 @@ hist(spec.net$MeanFloralAbundance)
 
 
 
-
-formula.flower.div <- formula(MeanFloralDiversity | weights(Weights) ~
-                                Lat + SRDoy + I(SRDoy^2) + Year +
-                                (1|Site)
+formula.bee.div <- formula(Net_BeeDiversity | weights(Weights)~
+                                                   MeanFloralDiversity +
+                                                   Lat  + I(SRDoy^2) +
+                                                   (1|Site)
 )
 
 #checking posterior
-flowercheck1 <- brms::brm(formula.flower.div,
+divcheck1 <- brms::brm(formula.bee.div,
                           data = spec.net, chains = 1,
                           iter = 1000)
 ## Get residuals
@@ -103,7 +104,7 @@ spec.net %>%
 
 
 spec.net %>%
-  add_residual_draws(flowercheck1) %>%
+  add_residual_draws(divcheck1) %>%
   median_qi() %>%
   ggplot(aes(sample = .residual)) +
   geom_qq() +
@@ -150,8 +151,7 @@ ggsave(freq.flower.abun.model, file="figures/FloralAbunModelDiagnostics.pdf",
 ## bee diversity
 formula.bee.div <- formula(Net_BeeDiversity ~
                              MeanFloralDiversity +
-                             Lat + Year +
-                             SRDoy + I(SRDoy^2) +
+                            Lat + I(SRDoy^2) +
                              (1|Site)
 )
 freq.bee.div.model <- run_plot_freq_model_diagnostics(formula.bee.div,
