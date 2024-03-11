@@ -9,7 +9,7 @@ standardizeVars <- function(spec.data, vars, key){
   spec.data <- merge(spec.data, unique.site.vals, all.x=TRUE)
   print("Dimensions of the data after merging the standardize data")
   print(dim(spec.data))
-  layout(matrix(1:(2*round(length(vars)/2)), nrow=2))
+  layout(matrix(1:(2*round(length(vars)/2)), nrow= 2))
   for(var in vars){
     hist(unique.site.vals[, var], main=var)
   }
