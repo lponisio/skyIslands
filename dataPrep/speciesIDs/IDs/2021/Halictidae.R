@@ -203,13 +203,6 @@ sp.ids <- list(
                              temp.id= c(35801)),
 
      
-    Halictus_tripartitus_f= list(Genus="Halictus",
-                                 SubGenus ="Seladonia",
-                                 Species="tripartitus",
-                                 SubSpecies="", Sex="f",
-                                 Author = "Cockerell",
-                                 Determiner = "L. Best",
-                                 temp.id= c(31913, 31128)),
 
 
     Halictus_farinosus_f = list(Genus="Halictus", SubGenus ="Nealictus",
