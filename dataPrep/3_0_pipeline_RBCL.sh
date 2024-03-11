@@ -31,6 +31,8 @@
 #Download "rbcl_utax_trained.zip" and "rbcl_rdp_trained_reference_database" 
 #into a folder called RBCLclassifierRDP in your local working directory. unzip the files.
 
+
+## skip if already done once!
 mkdir RBCLclassifierRDP
 cd ../RBCLclassifierRDP
 
@@ -52,10 +54,9 @@ unzip rbcL_utax_trained.zip
 # qiime2/core
 
 # *****************************************************************************
-docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
+docker run -itv /Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline qiime2/core
 
-#cd ../mnt/SI_pipeline/merged/
-cd ../mnt/SI_pipeline/R2018/2023_sequence_results_raw/merged
+cd ../mnt/SI_pipeline/merged/
 
 qiime tools export --input-path RBCL/rep-seqs-RBCL.qza --output-path RBCL
   
@@ -85,11 +86,10 @@ exit
 ## https://www.oracle.com/java/technologies/javase-jdk15-downloads.html
 
 
-cd /Volumes/bombus/Dropbox (University of Oregon)/skyIslands_saved/SI_pipeline
+cd ~/../../Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline
 
 #this one gives taxonomy to species (we ended up only using this one)
-#java -Xmx2g -jar classifiers/RBCLclassifierRDP/qiime-master-rdp_classifier_2.2/rdp_classifier_2.2/rdp_classifier-2.2.jar classify -t classifiers/RBCLclassifierRDP/rbcL_rdp_trained/rbcL.properties -o merged/RBCL/rbcl_classified_rdp.txt -q merged/RBCL/rep-seqs-RBCL.fasta
-java -Xmx2g -jar classifiers/RBCLclassifierRDP/qiime-master-rdp_classifier_2.2/rdp_classifier_2.2/rdp_classifier-2.2.jar classify -t classifiers/RBCLclassifierRDP/rbcL_rdp_trained/rbcL.properties -o R2018/2023_sequence_results_raw/merged/RBCL/rbcl_classified_rdp.txt -q R2018/2023_sequence_results_raw/merged/RBCL/rep-seqs-RBCL.fasta
+java -Xmx2g -jar classifiers/RBCLclassifierRDP/qiime-master-rdp_classifier_2.2/rdp_classifier_2.2/rdp_classifier-2.2.jar classify -t classifiers/RBCLclassifierRDP/rbcL_rdp_trained/rbcL.properties -o merged/RBCL/rbcl_classified_rdp.txt -q merged/RBCL/rep-seqs-RBCL.fasta
 
 #Our resulting taxonomic IDs are found in two sheets in the merged/RBCL folder
 
@@ -137,10 +137,13 @@ mkdir RBCLclassifierNCBI
 ## ncbi-blast-2.10.0+ bin to your $PATH! Just drag and drop it in
 ## Users/Ponisio/perl5, for example
 
+## NOTE: try running this code in terminal if having trouble finding the correct directory
+## export PATH=$PATH:/Volumes/bombus
+
 # #Use the fasta file to create a database that we'll then use in
 # #BioPerl
 
-cd classifiers/
+cd classifiers
 
 ## KAYE THINKS WE CAN SUBSET THE FASTA FILE TO THE SPECIES WE ARE
 ## INTERESTED IN AND THEN USE THAT IN SUBSEQENT STEPS
