@@ -123,19 +123,9 @@ sp.ids <- list(
                                           "19465","19080","19865","22072",
                                           "19742","19866","19468")),
 
-    Hylaeus_morphoa_f = list(Genus="Hylaeus", SubGenus ="Hylaeus",
-                             Species="sp.", SubSpecies="a",
-                             Sex="f",
-                             Author = "",
-                             Determiner = "D. Yanega",
-                             temp.id= c("18570")),
 
-    Hylaeus_morphob_f = list(Genus="Hylaeus", SubGenus ="Hylaeus",
-                             Species="sp.", SubSpecies="b",
-                             Sex="f",
-                             Author = "",
-                             Determiner = "D. Yanega",
-                             temp.id= c("18672")),
+
+
 
 
     Hylaeus_morphoc_f = list(Genus="Hylaeus", SubGenus ="Hylaeus",
@@ -143,9 +133,7 @@ sp.ids <- list(
                              Sex="f",
                              Author = "",
                              Determiner = "D. Yanega",
-                             temp.id= c("18062", "18094", "18700",
-                                        "18309", "18300", "18299", "18115",
-                                        "18565", "18569", "18688"))
+                             temp.id= c("18688"))
 
 
 
