@@ -8,7 +8,7 @@ library(dplyr)
 library(RSQLite)
 library(tidyr)
 library(readr)
-
+setwd("~/")
 source("lab_paths.R")
 local.path
 
