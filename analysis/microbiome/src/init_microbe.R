@@ -69,17 +69,12 @@ traits <- merge(traits, net.traits, by="GenusSpecies", all.x=TRUE)
 spec.net <- merge(spec.net, traits, all.x=TRUE, by="GenusSpecies")
 
 
-
-
-
-#the 6 species getting dropped are still present at this step
-
-
-
 dir.create(path="saved", showWarnings = FALSE)
 dir.create(path="saved/tables", showWarnings = FALSE)
 
 spec.net <- spec.net[order(spec.net$Site),]
+
+## FULL MICROBE DATASET
 
 ## pull out 16s columns
 microbes <- colnames(spec.net)[grepl("16s:", colnames(spec.net))] 
@@ -91,6 +86,7 @@ spec.microbes <- spec.net[!screened.microbes, ]
 
 #3 rows have 0 for all microbes, need to drop
 spec.microbes <- spec.microbes[rowSums(spec.microbes[,microbes])!=0,]
+
 
 ## QUESTION: should include root = TRUE? if false gives warning 3x
 ## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
@@ -115,7 +111,39 @@ spec.net <- spec.net %>%
   
 spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 
-#the 6 species getting dropped are still present at this step
+
+## ONLY OBLIGATE MICROBES DATASET
+
+
+## splitting out obligate bee microbes based on Zheng and Moran paper
+bee.obligates <- "Lactobacillus|Bifidobacterium|Snodgrassella|Gilliamella|Frischella|Bartonella|Commensalibacter"
+
+## this is a list of the microbe strains that contain the known obligate bee microbe genera
+bee.obligate.microbes <- microbes[grepl(bee.obligates, microbes, fixed=FALSE)]
+
+## now need to subset spec.microbes to be just the microbe columns with bee obligates and calculate PD
+
+## phylogenetic distance function, modified from picante
+PD.obligate <- apply(spec.microbes[,bee.obligate.microbes], 1, function(x){
+  this.bee <- x[x > 0]
+  this.tree <- prune.sample(t(this.bee), tree.16s)
+  picante::pd(t(this.bee), this.tree, include.root = TRUE)
+  #browser()
+})
+
+PD <- do.call(rbind, PD)
+spec.microbes <- cbind(spec.microbes, PD)
+
+## Merge back onto specimen data
+spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
+
+## change microbe NAs to 0
+spec.net <- spec.net %>%
+  mutate_at(vars(all_of(microbes)), ~replace_na(PD, 0))
+
+spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
+
+
 
 ## create a dumby varaible "Weight" to deal with the data sets being at
 ## different levels to get around the issue of having to pass in one
@@ -146,7 +174,7 @@ spec.net <- standardizeVars(spec.net, vars_sp, "YearSRGenusSpecies")
 ##load tree from :
 ##Henriquez Piskulich, Patricia Andrea; Hugall, Andrew F.; Stuart-Fox, Devi (2023). A supermatrix phylogeny of the world’s bees (Hymenoptera: Anthophila) [Dataset]. Dryad. https://doi.org/10.5061/dryad.80gb5mkw1
 
-phylo <- ape::read.tree("../../data/BEE_mat7_fulltree.nwk")
+phylo <- ape::read.tree("../data/BEE_mat7_fulltree.nwk")
 
 
 ## i think we need to drop the tips that aren't in our dataset
