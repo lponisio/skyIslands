@@ -120,16 +120,37 @@ bee.obligates <- "Lactobacillus|Bifidobacterium|Snodgrassella|Gilliamella|Frisch
 
 ## this is a list of the microbe strains that contain the known obligate bee microbe genera
 bee.obligate.microbes <- microbes[grepl(bee.obligates, microbes, fixed=FALSE)]
-
+bee.obligate.microbes <- bee.obligate.microbes[bee.obligate.microbes %in% tree.16s$tip.label]
 ## now need to subset spec.microbes to be just the microbe columns with bee obligates and calculate PD
 
 ## phylogenetic distance function, modified from picante
 PD.obligate <- apply(spec.microbes[,bee.obligate.microbes], 1, function(x){
-  this.bee <- x[x > 0]
-  this.tree <- prune.sample(t(this.bee), tree.16s)
-  picante::pd(t(this.bee), this.tree, include.root = TRUE)
-  #browser()
+  tryCatch({
+    this.bee <- x[x > 0]
+    this.tree <- prune.sample(t(this.bee), tree.16s)
+    pd_value <- picante::pd(t(this.bee), this.tree, include.root = TRUE)
+    if (is.null(pd_value) || length(pd_value) == 0) pd_value <- 0  # Assign zero if PD is NULL or empty list
+    else pd_value[[1]]  # Extract the first element if PD is a list
+    #browser()
+    # Return PD and SR as a list
+    #data.frame(PD = pd_value[[1]], SR = pd_value[[2]])
+  }, error = function(e) {
+    if (grepl("Tree has no branch lengths", e$message)) {
+      # If error is due to tree having no branch lengths, return zero for PD and SR
+      return(list(PD = 0, SR = 0))
+    } else {
+      # If it's a different error, re-raise it
+      stop(e)
+    }
+  })
 })
+
+# Convert the result into a dataframe
+result_df <- do.call(rbind, PD.obligate)
+rownames(result_df) <- NULL  # Remove row names
+
+# Optionally, you can rename the columns
+colnames(result_df) <- c("PD", "SR")
 
 PD <- do.call(rbind, PD)
 spec.microbes <- cbind(spec.microbes, PD)
