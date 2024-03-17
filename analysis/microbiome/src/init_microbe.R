@@ -107,7 +107,7 @@ spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
 
 ## change microbe NAs to 0
 spec.net <- spec.net %>%
-  mutate_at(vars(all_of(microbes)), ~replace_na(PD, 0))
+  mutate(PD = replace_na(PD, 0))
   
 spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 
@@ -158,7 +158,7 @@ spec.net <- merge(spec.net, spec.microbes, all.x=TRUE, all.y=TRUE)
 
 ## change microbe NAs to 0
 spec.net <- spec.net %>%
-  mutate_at(vars(all_of(microbes)), ~replace_na(PD.obligate, 0))
+  mutate(PD.obligate = replace_na(PD.obligate, 0))
 
 spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 
@@ -207,7 +207,7 @@ spec.net <- merge(spec.net, spec.microbes, all.x=TRUE, all.y=TRUE)
 
 ## change microbe NAs to 0
 spec.net <- spec.net %>%
-  mutate_at(vars(all_of(microbes)), ~replace_na(PD.transient, 0))
+  mutate(PD.transient = replace_na(PD.transient, 0))
 
 spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 
