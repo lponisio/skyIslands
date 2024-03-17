@@ -275,12 +275,48 @@ formula.microbe.bombus <- as.formula(paste(microbe.bombus.y, "~",
 
 bf.microbe.bombus <- bf(formula.microbe.bombus)
 
+## obligate PD model
+ob.microbe.bombus.vars <- c("BeeAbundance",
+                         "BeeDiversity", "Lat", #check this doesn't make VIF high
+                         "MeanFloralDiversity", "MeanITD",  "rare.degree",
+                         "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+## NA check
+check_for_NA(ob.microbe.bombus.vars)
+
+
+ob.microbe.bombus.x <- paste(ob.microbe.bombus.vars, collapse="+")
+ob.microbe.bombus.y <- "PD.obligate | weights(LogWeightsAbund)"
+formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
+                                           ob.microbe.bombus.x))
+
+
+bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus)
+
+
+## non ob PD model
+non.ob.microbe.bombus.vars <- c("BeeAbundance",
+                            "BeeDiversity", "Lat", #check this doesn't make VIF high
+                            "MeanFloralDiversity", "MeanITD",  "rare.degree",
+                            "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+## NA check
+check_for_NA(non.ob.microbe.bombus.vars)
+
+
+non.ob.microbe.bombus.x <- paste(ob.microbe.bombus.vars, collapse="+")
+non.ob.microbe.bombus.y <- "PD.transient | weights(LogWeightsAbund)"
+formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
+                                              non.ob.microbe.bombus.x))
+
+
+bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus)
+
 #combine forms
 bform.bombus <- bf.fabund +
     bf.fdiv +
     bf.tot.babund +
     bf.tot.bdiv  +
-    bf.microbe.bombus +
+    bf.ob.microbe.bombus +
+    bf.non.ob.microbe.bombus +
     set_rescor(FALSE)
 
 
@@ -317,12 +353,39 @@ formula.microbe.apis <- as.formula(paste(microbe.apis.y, "~",
 
 bf.microbe.apis <- bf(formula.microbe.apis)
 
+## run apis model
+microbe.apis.vars <- c("BeeAbundance",
+                       "BeeDiversity", "Lat", #check this doesn't make VIF high
+                       "MeanFloralDiversity",# "MeanITD",
+                       "(1|Site)", "rare.degree"#, "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+)
+
+
+ob.microbe.apis.x <- paste(microbe.apis.vars, collapse="+")
+ob.microbe.apis.y <- "PD.obligate | weights(LogWeightsAbund)"
+formula.ob.microbe.apis <- as.formula(paste(ob.microbe.apis.y, "~",
+                                         ob.microbe.apis.x))
+
+
+bf.ob.microbe.apis <- bf(formula.ob.microbe.apis)
+
+# non obligate
+
+non.ob.microbe.apis.x <- paste(microbe.apis.vars, collapse="+")
+non.ob.microbe.apis.y <- "PD.transient | weights(LogWeightsAbund)"
+formula.non.ob.microbe.apis <- as.formula(paste(non.ob.microbe.apis.y, "~",
+                                            non.ob.microbe.apis.x))
+
+
+bf.non.ob.microbe.apis <- bf(formula.non.ob.microbe.apis)
+
 #combine forms
 bform.apis <- bf.fabund +
   bf.fdiv +
   bf.tot.babund +
   bf.tot.bdiv  +
-  bf.microbe.apis +
+  bf.ob.microbe.apis +
+  bf.non.ob.microbe.apis +
   set_rescor(FALSE)
 
 # fit.microbe.apis <- brm(bform.apis , spec.apis,
@@ -357,12 +420,35 @@ formula.microbe.melissodes <- as.formula(paste(microbe.melissodes.y, "~",
 
 bf.microbe.melissodes <- bf(formula.microbe.melissodes)
 
+## obligate
+
+
+ob.microbe.melissodes.x <- paste(microbe.melissodes.vars, collapse="+")
+ob.microbe.melissodes.y <- "PD.obligate | weights(LogWeightsAbund)"
+formula.ob.microbe.melissodes <- as.formula(paste(ob.microbe.melissodes.y, "~",
+                                               ob.microbe.melissodes.x))
+
+
+bf.ob.microbe.melissodes <- bf(formula.ob.microbe.melissodes)
+
+## non obligate
+
+
+non.ob.microbe.melissodes.x <- paste(microbe.melissodes.vars, collapse="+")
+non.ob.microbe.melissodes.y <- "PD.transient | weights(LogWeightsAbund)"
+formula.non.ob.microbe.melissodes <- as.formula(paste(non.ob.microbe.melissodes.y, "~",
+                                                  non.ob.microbe.melissodes.x))
+
+
+bf.non.ob.microbe.melissodes <- bf(formula.non.ob.microbe.melissodes)
+
 #combine forms
 bform.melissodes <- bf.fabund +
   bf.fdiv +
   bf.tot.babund +
   bf.tot.bdiv  +
-  bf.microbe.melissodes +
+  bf.ob.microbe.melissodes +
+  bf.non.ob.microbe.melissodes +
   set_rescor(FALSE)
 
 fit.microbe.melissodes <- brm(bform.melissodes , spec.melissodes,
