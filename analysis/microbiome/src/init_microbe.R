@@ -162,7 +162,54 @@ spec.net <- spec.net %>%
 
 spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 
+## ONLY TRANSIENT MICROBES DATASET
 
+## splitting out obligate bee microbes based on Zheng and Moran paper
+bee.obligates <- "Lactobacillus|Bifidobacterium|Snodgrassella|Gilliamella|Frischella|Bartonella|Commensalibacter"
+
+## this is a list of the microbe strains that contain the known transient bee microbe genera
+bee.transient.microbes <- microbes[!grepl(bee.obligates, microbes, fixed=FALSE)]
+bee.transient.microbes <- bee.transient.microbes[bee.transient.microbes %in% tree.16s$tip.label]
+## now need to subset spec.microbes to be just the microbe columns with bee transients and calculate PD
+
+## phylogenetic distance function, modified from picante
+PD.transient <- apply(spec.microbes[,bee.transient.microbes], 1, function(x){
+  tryCatch({
+    this.bee <- x[x > 0]
+    this.tree <- prune.sample(t(this.bee), tree.16s)
+    pd_value <- picante::pd(t(this.bee), this.tree, include.root = TRUE)
+    if (is.null(pd_value) || length(pd_value) == 0) pd_value <- 0  # Assign zero if PD is NULL or empty list
+    else pd_value[[1]]  # Extract the first element if PD is a list
+    data.frame(PD = pd_value[[1]], SR = pd_value[[2]])
+  }, error = function(e) {
+    if (grepl("Tree has no branch lengths", e$message)) {
+      # If error is due to tree having no branch lengths, return zero for PD and SR
+      return(data.frame(PD = 0, SR = 0))
+    } else {
+      # If it's a different error, re-raise it
+      stop(e)
+    }
+  })
+})
+
+# Convert the result into a dataframe
+trans_df <- do.call(rbind, PD.transient) 
+
+# Rename column names to indicate these are the transient only pd and sr
+names(trans_df)[names(trans_df) == "PD"] <- "PD.transient"
+names(trans_df)[names(trans_df) == "SR"] <- "SR.transient"
+
+
+spec.microbes <- cbind(spec.microbes, trans_df)
+
+## Merge back onto specimen data
+spec.net <- merge(spec.net, spec.microbes, all.x=TRUE, all.y=TRUE)
+
+## change microbe NAs to 0
+spec.net <- spec.net %>%
+  mutate_at(vars(all_of(microbes)), ~replace_na(PD.transient, 0))
+
+spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 
 ## create a dumby varaible "Weight" to deal with the data sets being at
 ## different levels to get around the issue of having to pass in one
