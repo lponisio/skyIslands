@@ -2,7 +2,7 @@ rm(list=ls())
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
  setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
 ## setwd('~/Dropbox (University of Oregon)/skyislands')
-ncores <- 6
+ncores <- 5
 
 setwd("analysis/parasites")
 source("src/misc.R")
@@ -19,8 +19,9 @@ vars_yearsr <- c("MeanFloralAbundance",
           "Net_BeeDiversity",
           "Lat", "SRDoy"  
           )
-vars_sp <- c("MeanITD",
-          "rare.degree")
+vars_yearsrsp <- "rare.degree"
+vars_sp <- "MeanITD"
+          
 
 variables.to.log <- c("rare.degree", "MeanITD")
 
@@ -30,6 +31,25 @@ variables.to.log.1<- c("Net_HBAbundance", "Net_BombusAbundance",
 
 ## uses only net specimens, and drops syrphids
 source("src/init.R")
+## Make SEM weights and standardize data.
+spec.net <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1, 
+                        vars_yearsr = vars_yearsr, vars_sp = vars_sp, 
+                        vars_yearsrsp = vars_yearsrsp)
+
+## bombus only data
+spec.bombus <- spec.net
+spec.bombus$WeightsPar[spec.bombus$Genus != "Bombus"] <- 0
+
+## apis only data
+spec.apis <- spec.net
+spec.apis$WeightsPar[spec.apis$Genus != "Apis"] <- 0
+
+## melissodes only data
+spec.melissodes <- spec.net
+spec.melissodes$WeightsPar[spec.melissodes$Genus != "Melissodes"] <- 0
+
+spec.apidae <- spec.net
+spec.apidae$WeightsPar[spec.apidae$Family != "Apidae"] <- 0
 ## define all the formulas for the different parts of the models
 source("src/plant_poll_models.R")
 ## check ids
@@ -50,12 +70,13 @@ spec.bombus$GenusSpecies[spec.bombus$GenusSpecies %in% not_in_phylo]<- "Agaposte
 ## Multi species models
 xvars.multi.bombus <-  c("Net_BombusAbundance",
                           "Net_BeeDiversity",
-                          "rare.degree", "MeanITD",
+                          "rare.degree", "MeanITD", "(1|Site)",
                            "(1|gr(GenusSpecies, cov = phylo_matrix))")
 
 xvars.multi.species <-  c("Net_NonBombusHBAbundance",
                           "Net_BeeDiversity",
                           "rare.degree", "MeanITD",
+                          "(1|Site)", 
                            "(1|GenusSpecies)")
 
 
@@ -105,7 +126,7 @@ fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         parasite = c("CrithidiaPresence", "ApicystisSpp"),
                                         xvars=xvars.multi.bombus,
                                         ncores,
-                                        iter = 2*(10^4),
+                                        iter = 10^4,
                                         chains = 1,
                                         thin=1,
                                         init=0, data2= list(phylo_matrix=phylo_matrix))

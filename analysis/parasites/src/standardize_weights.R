@@ -1,19 +1,23 @@
-standardizeVars <- function(spec.data, vars, key){
+standardizeVars <- function(spec.data, vars, key, by.site = TRUE){
   ##  center all of the x variables, need to use unique values to avoid
   ##  repetition by the number of specimens
-  unique.site.vals <-  unique(spec.data[,c("Site", key, vars)])
-  unique.site.vals[, vars] <- apply(unique.site.vals[, vars], 2, standardize)
+  if(by.site){
+    unique.site.vals <-  unique(spec.data[,c("Site", key, vars)])
+  } else {
+    unique.site.vals <-  unique(spec.data[,c(key, vars)])
+  }
+  unique.site.vals[, vars] <- apply(as.matrix(unique.site.vals[, vars]), 2, standardize)
   print("Dimensions of the data before merging the standardize data")
   print(dim(spec.data))
   spec.data[, vars] <- NULL
   spec.data <- merge(spec.data, unique.site.vals, all.x=TRUE)
   print("Dimensions of the data after merging the standardize data")
   print(dim(spec.data))
-  layout(matrix(1:(2*round(length(vars)/2)), nrow= 2))
+  layout(matrix(1:(2*round(length(vars)/2)), nrow=2))
   for(var in vars){
     hist(unique.site.vals[, var], main=var)
   }
-                
+  
   return(spec.data)
 }
 
@@ -40,7 +44,8 @@ prepDataSEM <-
            variables.to.log = NULL, #variables to be logged
            variables.to.log.1 = NULL, #variables to be logged + 1
            vars_yearsr = NULL,#variables to standardize at year site sampling round level 
-           vars_sp = NULL) #variables to standardize at year site sampling round at the species level
+           vars_sp = NULL,#variables to standardize at the species level
+           vars_yearsrsp = NULL) #variables to standardize at year site sampling round at the species level
   {
     ## Function for making the SEM weights and standarizing variables.
     spec.data <- spec.data[order(spec.data$Site), ]
@@ -75,10 +80,15 @@ prepDataSEM <-
       print("Standardizing variables with year, sampling round, site combinations")
       spec.data <- standardizeVars(spec.data, vars_yearsr, "YearSR")
     }
-    if(!is.null(vars_sp)){
+    if(!is.null(vars_yearsrsp)){
       print("Standardizing variables with year, sampling round,site, individual species")
       spec.data <-
-        standardizeVars(spec.data, vars_sp, "YearSRGenusSpecies")
+        standardizeVars(spec.data, vars_yearsrsp, "YearSRGenusSpecies")
+    }
+    if(!is.null(vars_sp)){
+      print("Standardizing variables with individual species")
+      spec.data <-
+        standardizeVars(spec.data, vars_sp, "GenusSpecies", by.site = FALSE)
     }
     
     ## create a dumby varaible "WeightPar" for the parasite data. The

@@ -19,17 +19,37 @@ vars_yearsr <- c("MeanFloralAbundance",
                  "Net_BeeDiversity",
                  "Lat", "SRDoy"  
 )
-vars_sp <- c("MeanITD",
-             "rare.degree")
+vars_yearsrsp <- "rare.degree"
+vars_sp <- "MeanITD"
 
-variables.to.log <- c("MeanITD",
-                      "rare.degree")
+
+variables.to.log <- c("rare.degree", "MeanITD")
 
 variables.to.log.1<- c("Net_HBAbundance", "Net_BombusAbundance", 
                        "Net_NonBombusHBAbundance")
 
 ## uses only net specimens, and drops syrphids
 source("src/init.R")
+
+## Make SEM weights and standardize data.
+spec.net <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1, 
+                        vars_yearsr = vars_yearsr, vars_sp = vars_sp, 
+                        vars_yearsrsp = vars_yearsrsp)
+
+## bombus only data
+spec.bombus <- spec.net
+spec.bombus$WeightsPar[spec.bombus$Genus != "Bombus"] <- 0
+
+## apis only data
+spec.apis <- spec.net
+spec.apis$WeightsPar[spec.apis$Genus != "Apis"] <- 0
+
+## melissodes only data
+spec.melissodes <- spec.net
+spec.melissodes$WeightsPar[spec.melissodes$Genus != "Melissodes"] <- 0
+
+spec.apidae <- spec.net
+spec.apidae$WeightsPar[spec.apidae$Family != "Apidae"] <- 0
 
 #spec.orig <- spec.net
 site.orig <- site.sum 

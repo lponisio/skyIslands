@@ -4,13 +4,12 @@
 ## flower diversity
 formula.flower.div <- formula(MeanFloralDiversity | weights(Weights) ~
                                 Lat +
-                                  Year +
-                                  SRDoy + I(SRDoy^2) 
+                                Year + (1|Site)
                               )
 ## flower abund
 formula.flower.abund <- formula(MeanFloralAbundance | weights(Weights) ~
-                                  Year+ Lat + 
-                                    SRDoy + I(SRDoy^2) 
+                                  Year + 
+                                  (1|Site) 
                                 )
 
 ## **********************************************************
@@ -19,25 +18,22 @@ formula.flower.abund <- formula(MeanFloralAbundance | weights(Weights) ~
 ## bee diversity
 formula.bee.div <- formula(Net_BeeDiversity | weights(Weights)~
                              MeanFloralDiversity +
-                             Lat  + Year+ SRDoy + I(SRDoy^2) 
+                             Lat + (1|Site) 
                            )
 ## bombus abund
 formula.bombus.abund <- formula(Net_BombusAbundance | weights(Weights)~
-                                  MeanFloralAbundance + 
-                                    SRDoy + I(SRDoy^2) +
-                                    Lat
+                                  MeanFloralAbundance +
+                                    Year + (1|Site)
                                 )
 ## HB abund
 formula.HB.abund <- formula(Net_HBAbundance | weights(Weights)~
-                              MeanFloralAbundance +  
-                                SRDoy + I(SRDoy^2)+
-                                Lat 
+                              MeanFloralAbundance +
+                                Year + (1|Site)
                             )
 ## bee abund
 formula.bee.abund <- formula(Net_NonBombusHBAbundance | weights(Weights)~
                                MeanFloralAbundance +  
-                                 SRDoy + I(SRDoy^2)+
-                                 Lat 
+                                 Year + (1|Site)
                              )
 
 ## **********************************************************

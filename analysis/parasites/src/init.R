@@ -51,23 +51,6 @@ print("After merge with specimen traits")
 print(dim(spec.net))
 spec.orig <- spec.net
 
-## Make SEM weights and standardize data.
-spec.net <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1, 
-                        vars_yearsr, vars_sp)
 
-## bombus only data
-spec.bombus <- spec.net
-spec.bombus$WeightsPar[spec.bombus$Genus != "Bombus"] <- 0
-
-## apis only data
-spec.apis <- spec.net
-spec.apis$WeightsPar[spec.apis$Genus != "Apis"] <- 0
-
-## melissodes only data
-spec.melissodes <- spec.net
-spec.melissodes$WeightsPar[spec.melissodes$Genus != "Melissodes"] <- 0
-
-spec.apidae <- spec.net
-spec.apidae$WeightsPar[spec.apidae$Family != "Apidae"] <- 0
 
 
