@@ -131,13 +131,11 @@ PD.obligate <- apply(spec.microbes[,bee.obligate.microbes], 1, function(x){
     pd_value <- picante::pd(t(this.bee), this.tree, include.root = TRUE)
     if (is.null(pd_value) || length(pd_value) == 0) pd_value <- 0  # Assign zero if PD is NULL or empty list
     else pd_value[[1]]  # Extract the first element if PD is a list
-    #browser()
-    # Return PD and SR as a list
-    #data.frame(PD = pd_value[[1]], SR = pd_value[[2]])
+    data.frame(PD = pd_value[[1]], SR = pd_value[[2]])
   }, error = function(e) {
     if (grepl("Tree has no branch lengths", e$message)) {
       # If error is due to tree having no branch lengths, return zero for PD and SR
-      return(list(PD = 0, SR = 0))
+      return(data.frame(PD = 0, SR = 0))
     } else {
       # If it's a different error, re-raise it
       stop(e)
@@ -146,21 +144,21 @@ PD.obligate <- apply(spec.microbes[,bee.obligate.microbes], 1, function(x){
 })
 
 # Convert the result into a dataframe
-result_df <- do.call(rbind, PD.obligate)
-rownames(result_df) <- NULL  # Remove row names
+result_df <- do.call(rbind, PD.obligate) 
 
-# Optionally, you can rename the columns
-colnames(result_df) <- c("PD", "SR")
+# Rename column names to indicate these are the obligate only pd and sr
+names(result_df)[names(result_df) == "PD"] <- "PD.obligate"
+names(result_df)[names(result_df) == "SR"] <- "SR.obligate"
 
-PD <- do.call(rbind, PD)
-spec.microbes <- cbind(spec.microbes, PD)
+
+spec.microbes.obligate <- cbind(spec.microbes, result_df)
 
 ## Merge back onto specimen data
-spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
+spec.net <- merge(spec.net, spec.microbes.obligate, all.x=TRUE)
 
 ## change microbe NAs to 0
 spec.net <- spec.net %>%
-  mutate_at(vars(all_of(microbes)), ~replace_na(PD, 0))
+  mutate_at(vars(all_of(microbes)), ~replace_na(PD.obligate, 0))
 
 spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 
