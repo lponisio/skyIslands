@@ -240,7 +240,7 @@ spec.net <- standardizeVars(spec.net, vars_sp, "YearSRGenusSpecies")
 ##load tree from :
 ##Henriquez Piskulich, Patricia Andrea; Hugall, Andrew F.; Stuart-Fox, Devi (2023). A supermatrix phylogeny of the world’s bees (Hymenoptera: Anthophila) [Dataset]. Dryad. https://doi.org/10.5061/dryad.80gb5mkw1
 
-phylo <- ape::read.tree("../data/BEE_mat7_fulltree.nwk")
+phylo <- ape::read.tree("../../data/BEE_mat7_fulltree.nwk")
 
 
 ## i think we need to drop the tips that aren't in our dataset
@@ -361,6 +361,3 @@ spec.melissodes$WeightsAbund[spec.melissodes$Genus != "Melissodes"] <- 0
 # spec.apidae <- spec.all
 # spec.apidae$WeightsMicrobe[spec.melissodes$Family != "Apidae"] <- 0
 
-### troubleshooting
-these_are_getting_dropped <- c("Anthidium mormonum","Bombus centralis","Bombus huntii","Dufourea maura","Melissodes confusus")
-#View(spec.net[spec.net$GenusSpecies %in% these_are_getting_dropped,])
