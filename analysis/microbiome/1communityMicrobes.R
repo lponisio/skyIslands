@@ -301,7 +301,6 @@ non.ob.microbe.bombus.vars <- c("BeeAbundance",
 ## NA check
 check_for_NA(non.ob.microbe.bombus.vars)
 
-
 non.ob.microbe.bombus.x <- paste(ob.microbe.bombus.vars, collapse="+")
 non.ob.microbe.bombus.y <- "PD.transient | weights(LogWeightsAbund)"
 formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
