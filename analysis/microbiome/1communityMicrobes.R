@@ -59,7 +59,7 @@ source("src/runParasiteModels.R")
 source("src/runPlotFreqModelDiagnostics.R")
 
 
-ncores <- 1
+ncores <- 8
 
 
 
@@ -281,7 +281,7 @@ ob.microbe.bombus.vars <- c("BeeAbundance",
                          "MeanFloralDiversity", "MeanITD",  "rare.degree",
                          "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
 ## NA check
-check_for_NA(ob.microbe.bombus.vars)
+#check_for_NA(ob.microbe.bombus.vars)
 
 
 ob.microbe.bombus.x <- paste(ob.microbe.bombus.vars, collapse="+")
@@ -290,7 +290,7 @@ formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
 
-bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus)
+bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus, family=hurdle_lognormal())
 
 
 ## non ob PD model
@@ -301,13 +301,13 @@ non.ob.microbe.bombus.vars <- c("BeeAbundance",
 ## NA check
 check_for_NA(non.ob.microbe.bombus.vars)
 
-non.ob.microbe.bombus.x <- paste(ob.microbe.bombus.vars, collapse="+")
+non.ob.microbe.bombus.x <- paste(non.ob.microbe.bombus.vars, collapse="+")
 non.ob.microbe.bombus.y <- "PD.transient | weights(LogWeightsAbund)"
 formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
                                               non.ob.microbe.bombus.x))
 
 
-bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus)
+bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus, family=hurdle_lognormal())
 
 #combine forms
 bform.bombus <- bf.fabund +
@@ -318,11 +318,12 @@ bform.bombus <- bf.fabund +
     bf.non.ob.microbe.bombus +
     set_rescor(FALSE)
 
+## hurdle lognormal requires resp greater than or equal 0
 
 fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
                      cores=ncores,
-                     iter = 100000,
-                     chains =4,
+                      iter = 10000,
+                     chains = 1,
                      thin=1,
                      init=0,
                      open_progress = FALSE,
@@ -450,21 +451,21 @@ bform.melissodes <- bf.fabund +
   bf.non.ob.microbe.melissodes +
   set_rescor(FALSE)
 
-fit.microbe.melissodes <- brm(bform.melissodes , spec.melissodes,
-                          cores=ncores,
-                          iter = 10000,
-                          chains =1,
-                          thin=1,
-                          init=0,
-                          open_progress = FALSE,
-                          control = list(adapt_delta = 0.99),
-                          save_pars = save_pars(all = TRUE))
+# fit.microbe.melissodes <- brm(bform.melissodes , spec.melissodes,
+#                           cores=ncores,
+#                           iter = 10000,
+#                           chains =1,
+#                           thin=1,
+#                           init=0,
+#                           open_progress = FALSE,
+#                           control = list(adapt_delta = 0.99),
+#                           save_pars = save_pars(all = TRUE))
 
-write.ms.table(fit.microbe.melissodes, "melissodes_microbe")
-r2loo.melissodes <- loo_R2(fit.microbe.melissodes)
-r2.melissodes <- rstantools::bayes_R2(fit.microbe.melissodes)
-save(fit.microbe.melissodes, spec.melissodes, r2.melissodes, r2loo.melissodes,
-     file="saved/fullMicrobeMelissodesFit.Rdata")
+# write.ms.table(fit.microbe.melissodes, "melissodes_microbe")
+# r2loo.melissodes <- loo_R2(fit.microbe.melissodes)
+# r2.melissodes <- rstantools::bayes_R2(fit.microbe.melissodes)
+# save(fit.microbe.melissodes, spec.melissodes, r2.melissodes, r2loo.melissodes,
+#      file="saved/fullMicrobeMelissodesFit.Rdata")
 
 
 
