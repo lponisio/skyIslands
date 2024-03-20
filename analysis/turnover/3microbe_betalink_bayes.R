@@ -30,6 +30,11 @@ load("../../data/networks/microNets.RData")
 load("../../data/spec_RBCL_16s.RData")
 
 
+whole.microbe.network = FALSE
+
+obligate.microbe.network = FALSE
+
+transient.microbe.network = TRUE
 #reworking script to run brms models
 
 ##adapted from Lauren's 1betalink in skyIslands folder
@@ -157,7 +162,7 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label){
 
 ################################################################################
 
-
+if(whole.microbe.network){
 
 dir.create("figures", showWarnings = FALSE)
 dir.create("saved", showWarnings = FALSE)
@@ -252,10 +257,10 @@ grid.arrange(panelA,
              panelD,
              panelE,
              panelF,
-             ncol=2)
+             ncol=2)}
 #################################################################
 
-
+if(obligate.microbe.network==TRUE){
 
 ## now do the same for the three groups of obligate, parasitic, transient
 
@@ -384,8 +389,9 @@ grid.arrange(panelA,
              panelE,
              panelF,
              ncol=2)
+}
 
-
+if(transient.microbe.network==TRUE){
 
 ## now do for non obligate
 dir.create("figures", showWarnings = FALSE)
@@ -512,3 +518,4 @@ grid.arrange(panelA,
              panelF,
              ncol=2)
 
+}
