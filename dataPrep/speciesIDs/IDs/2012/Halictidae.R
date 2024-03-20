@@ -341,7 +341,7 @@ Halictus_rubicundus_m = list(Genus="Halictus", SubGenus ="Protohalictus",
                                             "SC_072012_200")),
 
     ## "MM_073112_3" duplicated with bombus huntii
-
+##not sure if duplication is a data entry mistake or physical one but there is a bee with MM_073112_3 in the lassioglossum sisymbrii male box
 
 Lasioglossum_sisymbrii = list(Genus="Lasioglossum", SubGenus
                               ="Lasioglossum", Species="sisymbrii", SubSpecies="", Sex="f",
@@ -375,7 +375,9 @@ Lasioglossum_sisymbrii = list(Genus="Lasioglossum", SubGenus
                                           "JC_071712_123",
                                           "JC_071212_102",
                                           "JC_071212_23",
-                                          "JC_071712_201")),
+                                          "JC_071712_201", 
+                                         #added HBL 3/20/24
+                                          "JC_071612_129")),
 
     Dufourea_fimbriata_m= list(Genus="Dufourea", SubGenus ="",
                                Species="fimbriata", SubSpecies="",
