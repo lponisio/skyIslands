@@ -64,9 +64,11 @@ sp.ids <- list(
                                               "PL_081112_221",
                                               "PL_081212_55",
                                               "PL_081312_161",
-                                              "CH_082012_116")),
+                                              "CH_082012_116",
+                                              #added by HBL 2/13/23
+                                              "JC_071212_38")),
 
-                                        # "JC_071212_38" duplicated with bombus ruf
+                                        # "JC_071212_38" duplicated with bombus ruf, but is supposed to be in halictidae box under Agapostemon_angelicus_f
 
     Agapostemon_angelicus_m = list(Genus="Agapostemon", SubGenus ="Agapostemon",
                                    Species="angelicus", SubSpecies="",
