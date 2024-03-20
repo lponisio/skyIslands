@@ -135,8 +135,22 @@ sp.ids <- list(
                              SubSpecies="", Sex="f",
                              Author = "Dalla Torre",
                              Determiner = "T. Griswold",
-                             temp.id= c("SC_072912_50"))
-
+                             temp.id= c("SC_072912_50")),
+ #added catagories
+  Megachile_lippiae_f = list(Genus="Megachile",
+                             SubGenus ="Litomegachile", Species="lippiae",
+                             SubSpecies="", Sex="f",
+                             Author = "Cockerell",
+                             Determiner = "T. Griswold",
+                             temp.id= c("JC_071512_80", "SC_072712_2")),
+  
+  Heriades_cressoni_f = list(Genus="Heriades",
+                             SubGenus ="Neotrypetes",
+                             Species="cressoni",
+                             SubSpecies="", Sex="f",
+                             Author = "Michener",
+                             Determiner = "T. Griswold",
+                             temp.id= c("JC_071712_119"))
 
 )
 
