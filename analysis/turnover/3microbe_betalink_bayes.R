@@ -388,28 +388,25 @@ grid.arrange(panelA,
 
 
 ## now do for non obligate
+dir.create("figures", showWarnings = FALSE)
+dir.create("figures/transient_microbe_poll", showWarnings = FALSE)
 
 site_list <- names(spNet_micro)
 
 ## obligate symbionts
-these_obligates <- c("Lactobacillus",
-                     "Bifidobacterium",
-                     "Snodgrassella",
-                     "Gilliamella",
-                     "Frischella",
-                     "Bartonella",
-                     "Commensalibacter")
+bee.obligates <- "Lactobacillus|Bifidobacterium|Snodgrassella|Gilliamella|Frischella|Bartonella|Commensalibacter"
+
 
 
 only_transient_network <- list()
 
 for (x in site_list){
-  
+
   trans_rows <- rownames(spNet_micro[[x]])
   
-  trans_rows_to_keep <- grep(paste(these_obligates, collapse = "|"), trans_rows)
+  trans_rows_to_keep <- !grep(bee.obligates, trans_rows)
   
-  trans_new_net <- spNet_micro[[x]][!ob_rows_to_keep,]
+  trans_new_net <- spNet_micro[[x]][!trans_rows_to_keep,]
   
   new_name <- x
   
