@@ -908,7 +908,6 @@ sp.ids <- list(
                                             "JC_071412_30",
                                             "JC_071412_31",
                                             "JC_071412_32",
-                                            "JC_071212_38",
                                             "JC_071212_104",
                                             "JC_071212_24",
                                             "JC_071212_123",
@@ -921,7 +920,7 @@ sp.ids <- list(
                                             "JC_071712_153",
                                             "JC_071712_157",
                                             "JC_071712_37")),
-
+# removed "JC_071212_38" from bombus ruf bc duplicate ID, real bee is in the halictidae box under Agapostemon_angelicus_f
     Bombus_centralis_f = list(Genus = "Bombus", SubGenus="Pyrobombus",
                               Species =
                                   "centralis", SubSpecies = "",
