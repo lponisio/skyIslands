@@ -78,7 +78,9 @@ sp.ids <- list(
     Colletes_sp1_m= list(Genus="Colletes", SubGenus ="",
                              Species="sp.", SubSpecies="1", Sex="m", Author = "",
                              Determiner="T. Griswold",
-                             temp.id= c("BBSL1071075")),
+                             temp.id= c("BBSL1071075",  
+                                        #added by HBL 2/13/24
+                                        "BBSL1071088")),
     
     Colletes_sp2_m= list(Genus="Colletes", SubGenus ="",
                          Species="sp.", SubSpecies="2", Sex="m", Author = "",
