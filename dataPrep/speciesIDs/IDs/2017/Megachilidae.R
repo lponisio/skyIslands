@@ -554,7 +554,9 @@ sp.ids <- list(
                              SubSpecies="", Sex="f",
                              Author = "Cresson",
                              Determiner = "T. Griswold",
-                             temp.id= c("BBSL1071060", "BBSL1071031", "BBSL1071128", "22602")),
+                             temp.id= c("BBSL1071060", "BBSL1071031", "BBSL1071128", "22602", 
+                                        #added HBL 3/20/24
+                                        "BBSL1084670")),
 
     Osmia_inurbana_f = list(Genus="Osmia",
                             SubGenus ="Melanosmia", Species="inurbana",
