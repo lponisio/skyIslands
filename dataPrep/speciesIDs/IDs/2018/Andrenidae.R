@@ -55,7 +55,10 @@ sp.ids <- list(
                                                  "18088","17953",
                                                  "18167","19793",
                                                  "19747","17759",
-                                                 "19942")),
+                                                 "19942", 
+                                                #added HBL 2/13/24
+                                                 "18259", "18353", 
+                                                 "18679", "18340",)),
 
 
     Pseudopanurgus_atricornis_m= list(Genus="Pseudopanurgus",
