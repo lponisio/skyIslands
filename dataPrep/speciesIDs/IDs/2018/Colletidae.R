@@ -76,7 +76,9 @@ sp.ids <- list(
                               Determiner="D. Yanega",
                               temp.id= c("18177", "18586", "18587",
                                          "18453", "18219", "17986",
-                                         "18454", "20612")),
+                                         "18454", "20612", 
+                                        #added HBL 2/13/24
+                                         "17880")),
 
     Colletes_skinneri_m= list(Genus="Colletes", SubGenus ="",
                               Species="skinneri",
