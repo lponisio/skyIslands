@@ -94,7 +94,9 @@ sp.ids <- list(
                                            "20759",
                                            "20694",
                                            "20649",
-                                           "20427")),
+                                           "20427", 
+                                          #added HBL 3/20/24
+                                           "18597")),
 
     Megachile_frigida_m = list(Genus="Megachile",
                                SubGenus ="Xanthosarus",
