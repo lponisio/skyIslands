@@ -57,7 +57,9 @@ sp.ids <- list(
                                                  37765, 37662, 37290,
                                                  37560, 37660,
                                                  37640, 37664, 37836,
-                                                 37559)),
+                                                 37559, 
+                                                #added HBL 2/13/24
+                                                 37838)),
 
 
     Pseudopanurgus_albitarsis_f= list(Genus="Pseudopanurgus", SubGenus ="",
@@ -84,7 +86,14 @@ sp.ids <- list(
                                                  38128,
                                                  38186,
                                                  38147)),
-
+    #added HBL 2/13/24
+    Protandrena_stathamae_a= list(Genus="Protandrena", SubGenus ="",
+                                  Species="Stathamae",
+                                  SubSpecies="a",
+                                  Sex="f", Author = "Cresson",
+                                  Determiner="NA",
+                                  temp.id= c(38340, 38296)),
+  
     ##   Panurginus_cressoniellus_f= list(Genus="Panurginus", SubGenus ="",
     ##                                  Species="cressoniellus",
     ##                                  SubSpecies="",
@@ -233,7 +242,9 @@ sp.ids <- list(
                                           37187, 37193, 37463, 37392, 37475,
                                           37044, 36503, 36773, 36914, 36697,
                                           37101, 37078, 37692, 36877, 37411,
-                                          37401, 37295)),
+                                          37401, 37295, 
+                                          #added by hbl 2/13/24
+                                          37230)),
 
     Andrena_apacheorum_m= list(Genus="Andrena",
                                SubGenus ="Cnemidandrena",
