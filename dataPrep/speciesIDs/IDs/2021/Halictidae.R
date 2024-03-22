@@ -123,7 +123,9 @@ sp.ids <- list(
                            Species="maura", SubSpecies="",
                            Sex="f", Author = "Cresson",
                            Determiner = "L. Best",
-                           temp.id= c(33448, 33449)),
+                           temp.id= c(33448, 33449, 
+                                      #added HBL 3/20/24
+                                      36327)),
 
     Dufourea_maura_f= list(Genus="Dufourea", SubGenus ="",
                            Species="maura", SubSpecies="",
@@ -188,7 +190,9 @@ sp.ids <- list(
                              Species="ligatus", SubSpecies="",
                              Sex="f", Author = "Say",
                              Determiner = "L. Best",
-                             temp.id= c(34321, 32776)),
+                             temp.id= c(34321, 32776, 
+                                       #added 3/20/24
+                                       34318, 33452)),
 
     Halictus_ligatus_f= list(Genus="Halictus", SubGenus ="Odontalictus",
                              Species="ligatus", SubSpecies="",
@@ -202,9 +206,18 @@ sp.ids <- list(
                              Determiner = "J.L. Neff",
                              temp.id= c(35801)),
 
-     
-
-
+     Halictus_tripartitus_f= list(Genus="Halictus",
+                                 SubGenus ="Seladonia",
+                                 Species="tripartitus",
+                                 SubSpecies="", Sex="f",
+                                 Author = "Cockerell",
+                                 Determiner = "L. Best",
+                                 temp.id= c(31913, 31128, 35484, 35617, 35620, 
+                                 35623, 35639, 35644, 35649, 35650, 
+                                 35657, 35661, 35671, 35675, 35677, 
+                                 35680, 35689, 35690, 35983, 35747, 
+                                 36069, 36052, 36330, 36248, 35883)),
+   
     Halictus_farinosus_f = list(Genus="Halictus", SubGenus ="Nealictus",
                                 Species="farinosus",
                                 SubSpecies="", Sex="f",
@@ -436,7 +449,9 @@ sp.ids <- list(
                                               35938, 36022, 35949,
                                               32714, 36222, 35913, 
                                               35739, 35737, 35751, 
-                                              35756, 36258)),
+                                              35756, 36258, 
+                                             #added HBL 3/20/24
+                                              32575, 31249)),
 
     Lasioglossum_ruidosense_m= list(Genus="Lasioglossum", SubGenus
                                     ="Dialictus", Species="ruidosense",
