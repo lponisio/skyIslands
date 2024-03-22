@@ -236,7 +236,9 @@ sp.ids <- list(
                                    SubSpecies="", Sex="m",
                                    Author = "Cresson",
                                    Determiner = "J.L. Neff",
-                                   temp.id= c(32770, 34105, 32771)),
+                                   temp.id= c(32770, 34105, 32771, 
+                                             ##added HBL 3/20/24
+                                              37731)),
 
     Megachile_comata_f = list(Genus="Megachile",
                               SubGenus ="Xanthosarus",
