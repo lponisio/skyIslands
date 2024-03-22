@@ -75,13 +75,13 @@ sp.ids <- list(
                                      temp.id= c(30909, 30908, 31132, 30910)),
 
 
-    ## Lithurgopsis_apicalis_m = list(Genus="Lithurgopsis",
-    ##                              SubGenus ="",
-    ##                              Species="apicalis",
-    ##                              SubSpecies="", Sex="m",
-    ##                              Author = "Cresson",
-    ##                              Determiner = "L. Best",
-    ##                              temp.id= c()),
+     Lithurgopsis_apicalis_m = list(Genus="Lithurgopsis",
+                                  SubGenus ="",
+                                  Species="apicalis",
+                                  SubSpecies="", Sex="m",
+                                  Author = "Cresson",
+                                  Determiner = "L. Best",
+                                  temp.id= c(30796)),
 
 
     Megachile_fidelis_f = list(Genus="Megachile",
