@@ -80,7 +80,7 @@ load(file="saved/fullMicrobeMelissodesFit.Rdata")
 ## Bombus model
 ## **********************************************************
 
-data.par <- spec.bombus[spec.net$LogWeightsAbund != 0, ] %>%
+data.par <- spec.bombus[spec.bombus$LogWeightsAbund != 0, ] %>%
   subset(., rowSums(is.na(.)) != ncol(.))
 #
 ## PD ~ bee abundance
@@ -99,13 +99,14 @@ newdata.beeabund <- tidyr::crossing(BeeAbundance =
                                     Year = data.par$Year,
                                     DoyStart = data.par$DoyStart,
                                     Lat = mean(data.par$Lat),
-                                    BeeDiversity = mean(data.par$BeeDiversity)
+                                    BeeDiversity = mean(data.par$BeeDiversity),
+                                    GenusSpecies = "Bombus centralis"
 )
 
 pred_beeabund <- fit.microbe.bombus %>%
   epred_draws(newdata = newdata.beeabund ,
               resp = "PDobligate",
-              allow_new_levels = TRUE)
+              allow_new_levels = FALSE)
 
 ## to see range of predicted values
 pred_beeabund %>%
@@ -157,18 +158,19 @@ newdata.beediv <- tidyr::crossing(BeeDiversity =
                                     DoyStart = data.par$DoyStart,
                                     Lat = mean(data.par$Lat),
                                     BeeAbundance = mean(data.par$BeeAbundance),
+                                  GenusSpecies = "Bombus centralis"
 )
 
 pred_beediv <- fit.microbe.bombus %>%
   epred_draws(newdata = newdata.beediv ,
-              resp = "PD",
-              allow_new_levels = TRUE)
+              resp = "PDobligate",
+              allow_new_levels = FALSE)
 
 
 bombus.div.PD <- ggplot(pred_beediv, aes(x = BeeDiversity, y =
                                                .epred)) +
   stat_lineribbon(show.legend=FALSE) +
-  scale_fill_brewer(palette = "Oranges") +
+  scale_fill_brewer(palette = "Greens") +
   labs(x = "Bee Diversity", y = "Microbe  \nPhylogenetic \nDistance",
        fill = "Credible Interval") +
   theme(legend.position = "none")  +
@@ -177,7 +179,7 @@ bombus.div.PD <- ggplot(pred_beediv, aes(x = BeeDiversity, y =
         text = element_text(size=16)) +
   theme_classic() +
   geom_point(data=data.par,
-             aes(y=PD, x=BeeDiversity), cex=2, alpha=0.5) +
+             aes(y=PD.obligate, x=BeeDiversity), cex=2, alpha=0.5) +
   scale_x_continuous(
     breaks = axis.bee.div,
     labels =  labs.bee.div) + labs(tag='C.', y='Microbe \nPhylogenetic \nDistance')
