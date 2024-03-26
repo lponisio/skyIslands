@@ -32,7 +32,7 @@ load("../../data/spec_RBCL_16s.RData")
 
 whole.microbe.network = FALSE
 
-obligate.microbe.network = TRUE
+obligate.microbe.network = FALSE
 
 transient.microbe.network = TRUE
 #reworking script to run brms models
@@ -125,19 +125,20 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label, ne
               save_pars = save_pars(all = TRUE))
   
   mod_summary <- write.summ.table(mod1)
+  model_geodist <- mod_summary[rownames(mod_summary) == "GeoDist",]
   
   if(network_type == "Obligate") {
-  if(mod_summary[GeoDist,mod_summary$Pgt0 >= 0.97]){
+  if(model_geodist$Pgt0 >= 0.97){
     ribbon_color <- "Greens"
-  } else if (mod_summary[GeoDist,mod_summary$Pgt0 <= 0.03]) {
+  } else if (model_geodist$Pgt0 <= 0.03) {
     ribbon_color <- "Greens"
   } else {ribbon_color <- "Greys"}
   }
   
   if(network_type == "Transient") {
-    if(mod_summary[GeoDist,mod_summary$Pgt0 >= 0.97]){
+    if(model_geodist$Pgt0 >= 0.97){
       ribbon_color <- "Oranges"
-    } else if (mod_summary[GeoDist,mod_summary$Pgt0 <= 0.03]) {
+    } else if (model_geodist$Pgt0 <= 0.03) {
       ribbon_color <- "Oranges"
       } else {ribbon_color <- "Greys"}
   }
@@ -491,37 +492,44 @@ dir.create("figures/transient_microbe_poll", showWarnings = FALSE)
 
 species.turnover <- calculate_and_plot_betalinkr("DissimilaritySpeciesComposition",
                                                  transient_poll_betalink,
-                                                 "Dissimilarity: \nSpecies Composition")
+                                                 "Dissimilarity: \nSpecies Composition",
+                                                 network_type = 'Transient')
 ggsave(species.turnover[[2]], file="figures/transient_microbe_poll/DissimilaritySpeciesTurnover.pdf", height=6, width=6)
 
 interaction.turnover <- calculate_and_plot_betalinkr("WholeNetworkLinks",
                                                      transient_poll_betalink,
-                                                     "Dissimilarity: \nInteraction Turnover")
+                                                     "Dissimilarity: \nInteraction Turnover",
+                                                     network_type = 'Transient')
 ggsave(interaction.turnover[[2]], file="figures/transient_microbe_poll/DissimilarityInteractionTurnover.pdf", height=6, width=6)
 
 int.turnover.rewiring <- calculate_and_plot_betalinkr("OnlySharedLinks",
                                                       transient_poll_betalink,
-                                                      "Interaction Turnover: \nRewiring")
+                                                      "Interaction Turnover: \nRewiring",
+                                                      network_type = 'Transient')
 ggsave(int.turnover.rewiring[[2]], file="figures/transient_microbe_poll/InteractionDissimilarityRewiring.pdf", height=6, width=6)
 
 int.turnover.species.turnover <- calculate_and_plot_betalinkr("SpeciesTurnoverLinks",
                                                               transient_poll_betalink,
-                                                              "Interaction Turnover: \nSpecies Turnover")
+                                                              "Interaction Turnover: \nSpecies Turnover",
+                                                              network_type = 'Transient')
 ggsave(int.turnover.species.turnover[[2]], file="figures/transient_microbe_poll/InteractionTurnoverSpeciesComp.pdf", height=6, width=6)
 
 sp.turnover.microbes <- calculate_and_plot_betalinkr("TurnoverAbsenceMicrobes",
                                                      transient_poll_betalink,
-                                                     "Species Turnover: \nAbsence of Microbes")
+                                                     "Species Turnover: \nAbsence of Microbes",
+                                                     network_type = 'Transient')
 ggsave(sp.turnover.microbes[[2]], file="figures/transient_microbe_poll/SpeciesTurnoverAbsenceMicrobes.pdf", height=6, width=6)
 
 sp.turnover.bees <- calculate_and_plot_betalinkr("TurnoverAbsencePollinators",
                                                  transient_poll_betalink,
-                                                 "Species Turnover: \nAbsence of Bees")
+                                                 "Species Turnover: \nAbsence of Bees",
+                                                 network_type = 'Transient')
 ggsave(sp.turnover.bees[[2]], file="figures/transient_microbe_poll/SpeciesTurnoverAbsenceBees.pdf", height=6, width=6)
 
 sp.turnover.both <- calculate_and_plot_betalinkr("TurnoverAbsenceBoth",
                                                  transient_poll_betalink,
-                                                 "Species Turnover: \nAbsence of Both")
+                                                 "Species Turnover: \nAbsence of Both",
+                                                 network_type = 'Transient')
 ggsave(sp.turnover.both[[2]], file="figures/transient_microbe_poll/SpeciesTurnoverAbsenceBoth.pdf", height=6, width=6)
 
 ## make panel figure
