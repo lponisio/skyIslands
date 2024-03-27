@@ -59,7 +59,7 @@ source("src/runParasiteModels.R")
 source("src/runPlotFreqModelDiagnostics.R")
 
 
-ncores <- 8
+ncores <- 1
 
 
 
@@ -70,8 +70,8 @@ ncores <- 8
 
 ## flower abundance variables 
 flower.abund.vars <- c("Year",
-                       "SRDoy",
-                       "I(SRDoy^2)",
+                       #"SRDoy",
+                       #"I(SRDoy^2)",
                        "(1|Site)")
 
 flower.abund.x <- paste(flower.abund.vars, collapse="+")
@@ -88,8 +88,8 @@ formula.flower.abund <- as.formula(paste(flower.abund.y, "~",flower.abund.x))
 
 ## flower abundance variables 
 flower.div.vars <- c("Year",
-                     "SRDoy",
-                     "I(SRDoy^2)",
+                     #"SRDoy",
+                     #"I(SRDoy^2)",
                      "Lat",
                      "(1|Site)")
 
@@ -108,8 +108,8 @@ formula.flower.div <- as.formula(paste(flower.div.y, "~",flower.div.x))
 ## bee abund total
 tot.bee.abund.vars <- c("MeanFloralAbundance",
                         "Year",
-                        "SRDoy",
-                        "I(SRDoy^2)",
+                        #"SRDoy",
+                        #"I(SRDoy^2)",
                         "(1|Site)")
 
 tot.bee.abund.x <- paste(tot.bee.abund.vars, collapse="+")
@@ -123,8 +123,8 @@ formula.tot.bee.abund <- as.formula(paste(tot.bee.abund.y, "~",tot.bee.abund.x))
 ## bee abund total
 net.bee.abund.vars <- c("MeanFloralAbundance",
                         "Year",
-                        "SRDoy",
-                        "I(SRDoy^2)",
+                        #"SRDoy",
+                        #"I(SRDoy^2)",
                         "(1|Site)")
 
 net.bee.abund.x <- paste(net.bee.abund.vars, collapse="+")
@@ -142,8 +142,8 @@ formula.net.bee.abund <- as.formula(paste(net.bee.abund.y, "~",net.bee.abund.x))
 
 bee.div.vars <- c("MeanFloralDiversity",
                   "Year",
-                  "SRDoy",
-                  "I(SRDoy^2)",
+                  #"SRDoy",
+                  #"I(SRDoy^2)",
                   "Lat",
                   "(1|Site)")
 
@@ -154,8 +154,8 @@ formula.bee.div <- as.formula(paste(bee.div.y, "~",bee.div.x))
 ## bee div total
 tot.bee.div.vars <- c("MeanFloralDiversity",
                       "Year",
-                      "SRDoy",
-                      "I(SRDoy^2)",
+                      #"SRDoy",
+                      #"I(SRDoy^2)",
                       "Lat",
                       "(1|Site)")
 
@@ -264,7 +264,7 @@ microbe.bombus.vars <- c("BeeAbundance",
                                     "MeanFloralDiversity", "MeanITD",  "rare.degree",
                                     "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
 ## NA check
-check_for_NA(microbe.bombus.vars)
+#check_for_NA(microbe.bombus.vars)
 
 
 microbe.bombus.x <- paste(microbe.bombus.vars, collapse="+")
@@ -290,7 +290,7 @@ formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
 
-bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus, family=hurdle_lognormal())
+bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus, family = hurdle_lognormal())
 
 
 ## non ob PD model
@@ -367,7 +367,7 @@ formula.ob.microbe.apis <- as.formula(paste(ob.microbe.apis.y, "~",
                                          ob.microbe.apis.x))
 
 
-bf.ob.microbe.apis <- bf(formula.ob.microbe.apis)
+bf.ob.microbe.apis <- bf(formula.ob.microbe.apis, family=hurdle_lognormal())
 
 # non obligate
 
@@ -377,7 +377,7 @@ formula.non.ob.microbe.apis <- as.formula(paste(non.ob.microbe.apis.y, "~",
                                             non.ob.microbe.apis.x))
 
 
-bf.non.ob.microbe.apis <- bf(formula.non.ob.microbe.apis)
+bf.non.ob.microbe.apis <- bf(formula.non.ob.microbe.apis, family=hurdle_lognormal())
 
 #combine forms
 bform.apis <- bf.fabund +
@@ -429,7 +429,7 @@ formula.ob.microbe.melissodes <- as.formula(paste(ob.microbe.melissodes.y, "~",
                                                ob.microbe.melissodes.x))
 
 
-bf.ob.microbe.melissodes <- bf(formula.ob.microbe.melissodes)
+bf.ob.microbe.melissodes <- bf(formula.ob.microbe.melissodes, family=hurdle_lognormal())
 
 ## non obligate
 
@@ -440,7 +440,7 @@ formula.non.ob.microbe.melissodes <- as.formula(paste(non.ob.microbe.melissodes.
                                                   non.ob.microbe.melissodes.x))
 
 
-bf.non.ob.microbe.melissodes <- bf(formula.non.ob.microbe.melissodes)
+bf.non.ob.microbe.melissodes <- bf(formula.non.ob.microbe.melissodes, family=hurdle_lognormal())
 
 #combine forms
 bform.melissodes <- bf.fabund +
@@ -451,21 +451,21 @@ bform.melissodes <- bf.fabund +
   bf.non.ob.microbe.melissodes +
   set_rescor(FALSE)
 
-# fit.microbe.melissodes <- brm(bform.melissodes , spec.melissodes,
-#                           cores=ncores,
-#                           iter = 10000,
-#                           chains =1,
-#                           thin=1,
-#                           init=0,
-#                           open_progress = FALSE,
-#                           control = list(adapt_delta = 0.99),
-#                           save_pars = save_pars(all = TRUE))
+fit.microbe.melissodes <- brm(bform.melissodes , spec.melissodes,
+                           cores=ncores,
+                           iter = 10000,
+                           chains =1,
+                           thin=1,
+                           init=0,
+                           open_progress = FALSE,
+                           control = list(adapt_delta = 0.99),
+                           save_pars = save_pars(all = TRUE))
 
-# write.ms.table(fit.microbe.melissodes, "melissodes_microbe")
-# r2loo.melissodes <- loo_R2(fit.microbe.melissodes)
-# r2.melissodes <- rstantools::bayes_R2(fit.microbe.melissodes)
-# save(fit.microbe.melissodes, spec.melissodes, r2.melissodes, r2loo.melissodes,
-#      file="saved/fullMicrobeMelissodesFit.Rdata")
+write.ms.table(fit.microbe.melissodes, "melissodes_microbe")
+r2loo.melissodes <- loo_R2(fit.microbe.melissodes)
+r2.melissodes <- rstantools::bayes_R2(fit.microbe.melissodes)
+save(fit.microbe.melissodes, spec.melissodes, r2.melissodes, r2loo.melissodes,
+      file="saved/fullMicrobeMelissodesFit.Rdata")
 
 
 
