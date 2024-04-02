@@ -17,8 +17,8 @@ formula.flower.abund <- formula(MeanFloralAbundance | weights(Weights) ~
 ## **********************************************************
 ## bee diversity
 formula.bee.div <- formula(Net_BeeDiversity | weights(Weights)~
-                             MeanFloralDiversity +
-                             Lat + (1|Site) 
+                             MeanFloralDiversity + SRDoy + (SRDoy)^2 +
+                             Year + (1|Site) 
                            )
 ## bombus abund
 formula.bombus.abund <- formula(Net_BombusAbundance | weights(Weights)~
