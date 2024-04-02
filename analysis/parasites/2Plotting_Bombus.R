@@ -123,7 +123,7 @@ newdata.beediv <- crossing(Net_BeeDiversity =
                            MeanITD = mean(data.par$MeanITD),
                            Net_BombusAbundance = mean(data.par$Net_BombusAbundance),
                            Site = "JC", 
-                           GenusSpecies = "Bombus centralis"
+                           GenusSpecies = "Bombus centralis",
 )
 
 ## predict values based on generated data and model parameters

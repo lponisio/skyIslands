@@ -2,7 +2,7 @@ rm(list=ls())
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
  setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
 ## setwd('~/Dropbox (University of Oregon)/skyislands')
-ncores <- 5
+ncores <- 6
 
 setwd("analysis/parasites")
 source("src/misc.R")
@@ -122,7 +122,8 @@ fit.parasites <- runCombinedParasiteModels(spec.net, species.group="melissodes",
 
 ## bombus
 
-fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
+fit.bombus <- runCombinedParasiteModels(
+  spec.bombus, species.group="bombus",
                                         parasite = c("CrithidiaPresence", "ApicystisSpp"),
                                         xvars=xvars.multi.bombus,
                                         ncores,
