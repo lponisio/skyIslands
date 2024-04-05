@@ -619,8 +619,7 @@ if(run.diagnostics){
   }
   
   ## all PD together
-  freq.ob.microbe.bombus.vars <- c("BeeAbundance",
-                                   "BeeDiversity", "Lat", #check this doesn't make VIF high
+  freq.ob.microbe.bombus.vars <- c("BeeAbundance","BeeDiversity", "Lat", #check this doesn't make VIF high
                                    "MeanFloralDiversity", "MeanITD",  "rare.degree", 
                                    "(1|Site)", "(1|GenusSpecies)") #removing random effects to visualize diags
   
