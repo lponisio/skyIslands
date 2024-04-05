@@ -569,12 +569,9 @@ if(run.diagnostics){
   
   # microbe check
   ## all PD together
-  freq.ob.microbe.bombus.vars <- c("BeeAbundance",
-                              "BeeDiversity", "Lat", #check this doesn't make VIF high
-                              "MeanFloralDiversity", "MeanITD",  "rare.degree", 
-                              "(1|Site)", "(1|GenusSpecies)") #removing random effects to visualize diags
+  freq.ob.microbe.bombus.xvars <- paste(c("BeeAbundance","BeeDiversity", "Lat", "MeanFloralDiversity", "MeanITD",  "rare.degree", "(1|Site)", "(1|GenusSpecies)"), collapse="+")
   
-  freq.formula.microbe <- as.formula(paste("PD", "~", freq.ob.microbe.bombus.vars))
+  freq.formula.microbe <- as.formula(paste("PD", "~", freq.ob.microbe.bombus.xvars))
   
   spec.bombus$LogPD.obligate <- log(spec.bombus$PD.obligate + 1)
 
@@ -594,12 +591,9 @@ if(run.diagnostics){
   }
   
   ## all PD together
-  freq.ob.microbe.bombus.vars <- c("BeeAbundance",
-                                   "BeeDiversity", "Lat", #check this doesn't make VIF high
-                                   "MeanFloralDiversity", "MeanITD",  "rare.degree", 
-                                   "(1|Site)", "(1|GenusSpecies)") #removing random effects to visualize diags
+  freq.ob.microbe.bombus.xvars <- paste(c("BeeAbundance","BeeDiversity", "Lat", "MeanFloralDiversity", "MeanITD",  "rare.degree", "(1|Site)", "(1|GenusSpecies)"), collapse="+")
   
-  freq.formula.microbe <- as.formula(paste("PD.obligate", "~", freq.ob.microbe.bombus.vars))
+  freq.formula.microbe <- as.formula(paste("PD.obligate", "~", freq.ob.microbe.bombus.xvars))
   
   spec.bombus$LogPD.obligate <- log(spec.bombus$PD.obligate + 1)
   
@@ -619,11 +613,9 @@ if(run.diagnostics){
   }
   
   ## all PD together
-  freq.ob.microbe.bombus.vars <- c("BeeAbundance","BeeDiversity", "Lat", #check this doesn't make VIF high
-                                   "MeanFloralDiversity", "MeanITD",  "rare.degree", 
-                                   "(1|Site)", "(1|GenusSpecies)") #removing random effects to visualize diags
+  freq.ob.microbe.bombus.xvars <- paste(c("BeeAbundance","BeeDiversity", "Lat", "MeanFloralDiversity", "MeanITD",  "rare.degree", "(1|Site)", "(1|GenusSpecies)"), collapse="+")
   
-  freq.formula.microbe <- as.formula(paste("PD.transient", "~", freq.ob.microbe.bombus.vars))
+  freq.formula.microbe <- as.formula(paste("PD.transient", "~", freq.ob.microbe.bombus.xvars))
   
   spec.bombus$LogPD.obligate <- log(spec.bombus$PD.obligate + 1)
   
@@ -644,12 +636,9 @@ if(run.diagnostics){
   
   # microbe check
   ## bombus PD model
-  freq.ob.microbe.bombus.vars <- c("BeeAbundance",
-                                   "BeeDiversity", "Lat", #check this doesn't make VIF high
-                                   "MeanFloralDiversity", "MeanITD",  "rare.degree", 
-                                   "(1|Site)", "(1|GenusSpecies)") #removing random effects to visualize diags
+  freq.ob.microbe.bombus.xvars <- paste(c("BeeAbundance","BeeDiversity", "Lat", "MeanFloralDiversity", "MeanITD",  "rare.degree", "(1|Site)", "(1|GenusSpecies)"), collapse="+")
   
-  freq.formula.microbe <- as.formula(paste("PD", "~", freq.ob.microbe.bombus.vars))
+  freq.formula.microbe <- as.formula(paste("PD", "~", freq.ob.microbe.bombus.xvars))
   
   spec.bombus$LogPD.obligate <- log(spec.bombus$PD.obligate + 1)
   
@@ -670,12 +659,10 @@ if(run.diagnostics){
   
   # microbe check
   ## bombus obligate PD model
-  freq.ob.microbe.bombus.vars <- c("BeeAbundance",
-                                   "BeeDiversity", "Lat", #check this doesn't make VIF high
-                                   "MeanFloralDiversity", "MeanITD",  "rare.degree", 
-                                   "(1|Site)", "(1|GenusSpecies)") #removing random effects to visualize diags
+  freq.ob.microbe.bombus.xvars <- paste(c("BeeAbundance","BeeDiversity", "Lat", "MeanFloralDiversity", "MeanITD",  "rare.degree", "(1|Site)", "(1|GenusSpecies)"), collapse="+") #removing random effects to visualize diags
+ #removing random effects to visualize diagnostics
   
-  freq.formula.microbe <- as.formula(paste("PD.obligate", "~", freq.ob.microbe.bombus.vars))
+  freq.formula.microbe <- as.formula(paste("PD.obligate", "~", freq.ob.microbe.bombus.xvars))
   
   spec.bombus$LogPD.obligate <- log(spec.bombus$PD.obligate + 1)
   
@@ -696,12 +683,9 @@ if(run.diagnostics){
   
   # microbe check
   ## bombus transient PD model
-  freq.ob.microbe.bombus.vars <- c("BeeAbundance",
-                                   "BeeDiversity", "Lat", #check this doesn't make VIF high
-                                   "MeanFloralDiversity", "MeanITD",  "rare.degree", 
-                                   "(1|Site)", "(1|GenusSpecies)") #removing random effects to visualize diags
+  freq.ob.microbe.bombus.xvars <- paste(c("BeeAbundance","BeeDiversity", "Lat", "MeanFloralDiversity", "MeanITD",  "rare.degree", "(1|Site)", "(1|GenusSpecies)"), collapse="+")
   
-  freq.formula.microbe <- as.formula(paste("PD.transient", "~", freq.ob.microbe.bombus.vars))
+  freq.formula.microbe <- as.formula(paste("PD.transient", "~", freq.ob.microbe.bombus.xvars))
   
   spec.bombus$LogPD.obligate <- log(spec.bombus$PD.obligate + 1)
   
@@ -720,3 +704,8 @@ if(run.diagnostics){
            height=8, width=11)
   }
 }
+
+freq.ob.microbe.bombus.xvars <- paste(c("BeeAbundance","BeeDiversity", "Lat", "MeanFloralDiversity", "MeanITD",  "rare.degree", "(1|Site)", "(1|GenusSpecies)"), collapse="+") #removing random effects to visualize diags
+
+freq.formula.microbe <- formula(paste(freq.ob.microbe.bombus.vars, collapse = "+"))
+as.formula(paste("PD.obligate", "~", freq.ob.microbe.bombus.vars))
