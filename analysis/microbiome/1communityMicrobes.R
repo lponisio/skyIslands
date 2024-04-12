@@ -63,9 +63,9 @@ source("src/runPlotFreqModelDiagnostics.R")
 
 ncores <- 1
 
+spec.bombus$PD.obligate.log <- log(spec.bombus$PD.obligate + 1)
 
-
-
+spec.bombus$PD.transient.log <- log(spec.bombus$PD.transient + 1)
 ## **********************************************************
 ## Flower abundance
 ## **********************************************************
@@ -287,7 +287,7 @@ ob.microbe.bombus.vars <- c("BeeAbundance",
 
 
 ob.microbe.bombus.x <- paste(ob.microbe.bombus.vars, collapse="+")
-ob.microbe.bombus.y <- "PD.obligate | weights(LogWeightsAbund)"
+ob.microbe.bombus.y <- "PD.obligate.log | weights(LogWeightsAbund)"
 formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
@@ -304,7 +304,7 @@ non.ob.microbe.bombus.vars <- c("BeeAbundance",
 check_for_NA(non.ob.microbe.bombus.vars)
 
 non.ob.microbe.bombus.x <- paste(non.ob.microbe.bombus.vars, collapse="+")
-non.ob.microbe.bombus.y <- "PD.transient | weights(LogWeightsAbund)"
+non.ob.microbe.bombus.y <- "PD.transient.log | weights(LogWeightsAbund)"
 formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
                                               non.ob.microbe.bombus.x))
 
