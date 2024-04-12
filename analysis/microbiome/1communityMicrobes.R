@@ -6,10 +6,9 @@ setwd(local.path)
 setwd("skyIslands/analysis/microbiome/")
 
 
-
-run.diagnostics = TRUE
-make.plots = TRUE
-run.bombus = FALSE
+run.diagnostics = FALSE
+make.plots = FALSE
+run.bombus = TRUE
 run.apis = FALSE
 run.melissodes = FALSE
 
@@ -276,7 +275,7 @@ formula.microbe.bombus <- as.formula(paste(microbe.bombus.y, "~",
                                       microbe.bombus.x))
 
 
-bf.microbe.bombus <- bf(formula.microbe.bombus)
+bf.microbe.bombus <- bf(formula.microbe.bombus, family='student')
 
 ## obligate PD model
 ob.microbe.bombus.vars <- c("BeeAbundance",
@@ -293,7 +292,7 @@ formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
 
-bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus)
+bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus, family="student")
 
 
 ## non ob PD model
@@ -310,7 +309,7 @@ formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
                                               non.ob.microbe.bombus.x))
 
 
-bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus)
+bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus, family='student')
 
 #combine forms
 bform.bombus <- bf.fabund +
@@ -353,7 +352,7 @@ formula.microbe.apis <- as.formula(paste(microbe.apis.y, "~",
                                          microbe.apis.x))
 
 
-bf.microbe.apis <- bf(formula.microbe.apis)
+bf.microbe.apis <- bf(formula.microbe.apis, family='student')
 
 ## run apis model
 microbe.apis.vars <- c("BeeAbundance",
@@ -369,7 +368,7 @@ formula.ob.microbe.apis <- as.formula(paste(ob.microbe.apis.y, "~",
                                          ob.microbe.apis.x))
 
 
-bf.ob.microbe.apis <- bf(formula.ob.microbe.apis)
+bf.ob.microbe.apis <- bf(formula.ob.microbe.apis, family='student')
 
 # non obligate
 
@@ -379,7 +378,7 @@ formula.non.ob.microbe.apis <- as.formula(paste(non.ob.microbe.apis.y, "~",
                                             non.ob.microbe.apis.x))
 
 
-bf.non.ob.microbe.apis <- bf(formula.non.ob.microbe.apis)
+bf.non.ob.microbe.apis <- bf(formula.non.ob.microbe.apis, family='student')
 
 #combine forms
 bform.apis <- bf.fabund +
@@ -421,7 +420,7 @@ formula.microbe.melissodes <- as.formula(paste(microbe.melissodes.y, "~",
                                            microbe.melissodes.x))
 
 
-bf.microbe.melissodes <- bf(formula.microbe.melissodes)
+bf.microbe.melissodes <- bf(formula.microbe.melissodes, family='student')
 
 ## obligate
 
@@ -432,7 +431,7 @@ formula.ob.microbe.melissodes <- as.formula(paste(ob.microbe.melissodes.y, "~",
                                                ob.microbe.melissodes.x))
 
 
-bf.ob.microbe.melissodes <- bf(formula.ob.microbe.melissodes)
+bf.ob.microbe.melissodes <- bf(formula.ob.microbe.melissodes, family='student')
 
 ## non obligate
 
@@ -478,234 +477,109 @@ save(fit.microbe.melissodes, spec.melissodes, r2.melissodes, r2loo.melissodes,
 ## **********************************************************
 #VegAbund check
 if(run.diagnostics){
-  freq.formula.flower.abund <- as.formula(paste("MeanFloralAbundance", "~", flower.abund.x ))
-
-  #for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+  # freq.formula.flower.abund <- as.formula(paste("MeanFloralAbundance", "~", flower.abund.x ))
+  # 
+  # #for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
   # if(run.diagnostics){
   #   freq.model.flower.abund <- run_plot_freq_model_diagnostics(
   #     freq.formula.flower.abund,
-  #     spec.bombus[spec.bombus$Weights==1,],
+  #     spec.net[spec.net$Weights==1,],
   #     this_family = 'gaussian')
-  # 
+  #   
   #   ggsave(freq.model.flower.abund,
   #          file="figures/diagnostics/SI_VegAbundModelDiagnostics.pdf",
   #          height=8, width=11)
   # }
-
-  #Vegdiv check
-  freq.formula.flower.div <- as.formula(paste("MeanFloralDiversity", "~", flower.div.x ))
-
-  #for this_data, use spec.bombus[spec.bombus$Weights==1,] to incorporate weights into frequentist models
+  # 
+  # #Vegdiv check
+  # freq.formula.flower.div <- as.formula(paste("MeanFloralDiversity", "~", flower.div.x ))
+  # 
+  # #for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
   # if(run.diagnostics){
   #   freq.model.flower.div <- run_plot_freq_model_diagnostics(
   #     freq.formula.flower.div,
-  #     spec.bombus[spec.bombus$Weights==1,],
+  #     spec.net[spec.net$Weights==1,],
   #     this_family = 'gaussian')
-  # 
+  #   
   #   ggsave(freq.model.flower.div,
   #          file="figures/diagnostics/SI_VegDivModelDiagnostics.pdf",
   #          height=8, width=11)
   # }
-
-  # bee abund check
-  freq.formula.tot.bee.abund <- as.formula(paste("BeeAbundance", "~", tot.bee.abund.x ))
-
-  ##for this_data, use spec.bombus[spec.bombus$Weights==1,] to incorporate weights into frequentist models
+  # 
+  # # bee abund check
+  # freq.formula.tot.bee.abund <- as.formula(paste("BeeAbundance", "~", tot.bee.abund.x ))
+  # 
+  # ##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
   # if(run.diagnostics){
   #   freq.model.tot.bee.abund <- run_plot_freq_model_diagnostics(
   #     freq.formula.tot.bee.abund,
-  #     spec.bombus[spec.bombus$Weights==1,],
+  #     spec.net[spec.net$Weights==1,],
   #     this_family = "gaussian")
-  # 
+  #   
   #   ggsave(freq.model.tot.bee.abund,
   #          file="figures/diagnostics/SI_TotalBeeAbundModelDiagnostics.pdf",
   #          height=8, width=11)
   # }
-
-  # # bee abund check
-  # freq.formula.net.bee.abund <- as.formula(paste("Net_BeeAbundance", "~", net.bee.abund.x ))
-  #
-  # ##for this_data, use spec.bombus[spec.bombus$Weights==1,] to incorporate weights into frequentist models
-  # if(run.diagnostics){
-  #   freq.model.net.bee.abund <- run_plot_freq_model_diagnostics(
-  #     freq.formula.net.bee.abund,
-  #     spec.bombus[spec.bombus$Weights==1,],
-  #     this_family = "gaussian")
-  #
-  #   ggsave(freq.model.net.bee.abund,
-  #          file="figures/diagnostics/SI_NetBeeAbundModelDiagnostics.pdf",
-  #          height=8, width=11)
-  # }
-
-  # # bee div check
-  # freq.formula.bee.div <- as.formula(paste("Net_BeeDiversity", "~", bee.div.x ))
-  #
-  # ##for this_data, use spec.bombus[spec.bombus$Weights==1,] to incorporate weights into frequentist models
-  # if(run.diagnostics){
-  #   freq.model.bee.div <- run_plot_freq_model_diagnostics(
-  #     freq.formula.bee.div,
-  #     spec.bombus[spec.bombus$Weights==1,],
-  #     this_family = "gaussian")
-  #
-  #   ggsave(freq.model.bee.div,
-  #          file="figures/diagnostics/SI_BeeDiversityModelDiagnostics.pdf",
-  #          height=8, width=11)
-  # }
-
-  # total bee div check
+  # 
+  # # # bee abund check
+  # # freq.formula.net.bee.abund <- as.formula(paste("Net_BeeAbundance", "~", net.bee.abund.x ))
+  # # 
+  # # ##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+  # # if(run.diagnostics){
+  # #   freq.model.net.bee.abund <- run_plot_freq_model_diagnostics(
+  # #     freq.formula.net.bee.abund,
+  # #     spec.net[spec.net$Weights==1,],
+  # #     this_family = "gaussian")
+  # #   
+  # #   ggsave(freq.model.net.bee.abund,
+  # #          file="figures/diagnostics/SI_NetBeeAbundModelDiagnostics.pdf",
+  # #          height=8, width=11)
+  # # }
+  # 
+  # # # bee div check
+  # # freq.formula.bee.div <- as.formula(paste("Net_BeeDiversity", "~", bee.div.x ))
+  # # 
+  # # ##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
+  # # if(run.diagnostics){
+  # #   freq.model.bee.div <- run_plot_freq_model_diagnostics(
+  # #     freq.formula.bee.div,
+  # #     spec.net[spec.net$Weights==1,],
+  # #     this_family = "gaussian")
+  # #   
+  # #   ggsave(freq.model.bee.div,
+  # #          file="figures/diagnostics/SI_BeeDiversityModelDiagnostics.pdf",
+  # #          height=8, width=11)
+  # # }
+  # 
+  # # total bee div check
   # freq.formula.tot.bee.div <- as.formula(paste("BeeDiversity", "~", tot.bee.div.x ))
   # 
-  # ##for this_data, use spec.bombus[spec.bombus$Weights==1,] to incorporate weights into frequentist models
+  # ##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
   # if(run.diagnostics){
   #   freq.model.tot.bee.div <- run_plot_freq_model_diagnostics(
   #     freq.formula.tot.bee.div,
-  #     spec.bombus[spec.bombus$Weights==1,],
+  #     spec.net[spec.net$Weights==1,],
   #     this_family = "gaussian")
-  # 
+  #   
   #   ggsave(freq.model.tot.bee.div,
   #          file="figures/diagnostics/SI_TotalBeeDivModelDiagnostics.pdf",
   #          height=8, width=11)
   # }
   
   # microbe check
-  ## all PD together
-  freq.ob.microbe.bombus.xvars <- paste(c("BeeAbundance","BeeDiversity", "Lat", "MeanFloralDiversity", "MeanITD",  "rare.degree", "(1|Site)", "(1|GenusSpecies)"), collapse="+")
+  freq.formula.microbe <- as.formula(paste("PD", "~", microbe.x ))
   
-  freq.formula.microbe <- as.formula(paste("PD", "~", freq.ob.microbe.bombus.xvars))
-  
-  spec.bombus$LogPD.obligate <- log(spec.bombus$PD.obligate + 1)
-
-  
-  ##for this_data, use spec.bombus[spec.bombus$Weights==1,] to incorporate weights into frequentist models
+  ##for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
   if(run.diagnostics){
     freq.model.microbe <- run_plot_freq_model_diagnostics(
       freq.formula.microbe,
-      spec.net[spec.net$LogWeightsAbund!=0,],
+      spec.net[spec.net$WeightsPar==1,],
       this_family = "gaussian",
       launch.shiny = FALSE,
       examine.pairs = FALSE)
     
     ggsave(freq.model.microbe,
-           file="figures/diagnostics/SI_AllMicrobeModelDiagnostics.pdf",
-           height=8, width=11)
-  }
-  
-  ## all PD together
-  freq.ob.microbe.bombus.xvars <- paste(c("BeeAbundance","BeeDiversity", "Lat", "MeanFloralDiversity", "MeanITD",  "rare.degree", "(1|Site)", "(1|GenusSpecies)"), collapse="+")
-  
-  freq.formula.microbe <- as.formula(paste("PD.obligate", "~", freq.ob.microbe.bombus.xvars))
-  
-  spec.bombus$LogPD.obligate <- log(spec.bombus$PD.obligate + 1)
-  
-  
-  ##for this_data, use spec.bombus[spec.bombus$Weights==1,] to incorporate weights into frequentist models
-  if(run.diagnostics){
-    freq.model.microbe <- run_plot_freq_model_diagnostics(
-      freq.formula.microbe,
-      spec.net[spec.net$LogWeightsAbund!=0,],
-      this_family = "gaussian",
-      launch.shiny = FALSE,
-      examine.pairs = FALSE)
-    
-    ggsave(freq.model.microbe,
-           file="figures/diagnostics/SI_AllObligateMicrobeModelDiagnostics.pdf",
-           height=8, width=11)
-  }
-  
-  ## all PD together
-  freq.ob.microbe.bombus.xvars <- paste(c("BeeAbundance","BeeDiversity", "Lat", "MeanFloralDiversity", "MeanITD",  "rare.degree", "(1|Site)", "(1|GenusSpecies)"), collapse="+")
-  
-  freq.formula.microbe <- as.formula(paste("PD.transient", "~", freq.ob.microbe.bombus.xvars))
-  
-  spec.bombus$LogPD.obligate <- log(spec.bombus$PD.obligate + 1)
-  
-  
-  ##for this_data, use spec.bombus[spec.bombus$Weights==1,] to incorporate weights into frequentist models
-  if(run.diagnostics){
-    freq.model.microbe <- run_plot_freq_model_diagnostics(
-      freq.formula.microbe,
-      spec.net[spec.net$LogWeightsAbund!=0,],
-      this_family = "gaussian",
-      launch.shiny = FALSE,
-      examine.pairs = FALSE)
-    
-    ggsave(freq.model.microbe,
-           file="figures/diagnostics/SI_AllTransientMicrobeModelDiagnostics.pdf",
-           height=8, width=11)
-  }
-  
-  # microbe check
-  ## bombus PD model
-  freq.ob.microbe.bombus.xvars <- paste(c("BeeAbundance","BeeDiversity", "Lat", "MeanFloralDiversity", "MeanITD",  "rare.degree", "(1|Site)", "(1|GenusSpecies)"), collapse="+")
-  
-  freq.formula.microbe <- as.formula(paste("PD", "~", freq.ob.microbe.bombus.xvars))
-  
-  spec.bombus$LogPD.obligate <- log(spec.bombus$PD.obligate + 1)
-  
-  
-  ##for this_data, use spec.bombus[spec.bombus$Weights==1,] to incorporate weights into frequentist models
-  if(run.diagnostics){
-    freq.model.microbe <- run_plot_freq_model_diagnostics(
-      freq.formula.microbe,
-      spec.bombus[spec.bombus$LogWeightsAbund!=0,],
-      this_family = "gaussian",
-      launch.shiny = FALSE,
-      examine.pairs = FALSE)
-    
-    ggsave(freq.model.microbe,
-           file="figures/diagnostics/SI_BombusAllMicrobeModelDiagnostics.pdf",
-           height=8, width=11)
-  }
-  
-  # microbe check
-  ## bombus obligate PD model
-  freq.ob.microbe.bombus.xvars <- paste(c("BeeAbundance","BeeDiversity", "Lat", "MeanFloralDiversity", "MeanITD",  "rare.degree", "(1|Site)", "(1|GenusSpecies)"), collapse="+") #removing random effects to visualize diags
- #removing random effects to visualize diagnostics
-  
-  freq.formula.microbe <- as.formula(paste("PD.obligate", "~", freq.ob.microbe.bombus.xvars))
-  
-  spec.bombus$LogPD.obligate <- log(spec.bombus$PD.obligate + 1)
-  
-  
-  ##for this_data, use spec.bombus[spec.bombus$Weights==1,] to incorporate weights into frequentist models
-  if(run.diagnostics){
-    freq.model.microbe <- run_plot_freq_model_diagnostics(
-      freq.formula.microbe,
-      spec.bombus[spec.bombus$LogWeightsAbund!=0,],
-      this_family = "gaussian",
-      launch.shiny = FALSE,
-      examine.pairs = FALSE)
-    
-    ggsave(freq.model.microbe,
-           file="figures/diagnostics/SI_BombusObligateMicrobeModelDiagnostics.pdf",
-           height=8, width=11)
-  }
-  
-  # microbe check
-  ## bombus transient PD model
-  freq.ob.microbe.bombus.xvars <- paste(c("BeeAbundance","BeeDiversity", "Lat", "MeanFloralDiversity", "MeanITD",  "rare.degree", "(1|Site)", "(1|GenusSpecies)"), collapse="+")
-  
-  freq.formula.microbe <- as.formula(paste("PD.transient", "~", freq.ob.microbe.bombus.xvars))
-  
-  spec.bombus$LogPD.obligate <- log(spec.bombus$PD.obligate + 1)
-  
-  
-  ##for this_data, use spec.bombus[spec.bombus$Weights==1,] to incorporate weights into frequentist models
-  if(run.diagnostics){
-    freq.model.microbe <- run_plot_freq_model_diagnostics(
-      freq.formula.microbe,
-      spec.bombus[spec.bombus$LogWeightsAbund!=0,],
-      this_family = "gaussian",
-      launch.shiny = FALSE,
-      examine.pairs = FALSE)
-    
-    ggsave(freq.model.microbe,
-           file="figures/diagnostics/SI_BombusTransientMicrobeModelDiagnostics.pdf",
+           file="figures/diagnostics/SI_MicrobeModelDiagnostics.pdf",
            height=8, width=11)
   }
 }
-
-freq.ob.microbe.bombus.xvars <- paste(c("BeeAbundance","BeeDiversity", "Lat", "MeanFloralDiversity", "MeanITD",  "rare.degree", "(1|Site)", "(1|GenusSpecies)"), collapse="+") #removing random effects to visualize diags
-
-freq.formula.microbe <- formula(paste(freq.ob.microbe.bombus.vars, collapse = "+"))
-as.formula(paste("PD.obligate", "~", freq.ob.microbe.bombus.vars))
