@@ -8,9 +8,9 @@ setwd("skyIslands/analysis/microbiome/")
 
 run.diagnostics = FALSE
 make.plots = FALSE
-run.bombus = TRUE
+run.bombus = FALSE
 run.apis = FALSE
-run.melissodes = FALSE
+run.melissodes = TRUE
 
 library(picante)
 library(plyr)
@@ -66,6 +66,16 @@ ncores <- 1
 spec.bombus$PD.obligate.log <- log(spec.bombus$PD.obligate + 1)
 
 spec.bombus$PD.transient.log <- log(spec.bombus$PD.transient + 1)
+
+spec.apis$PD.obligate.log <- log(spec.apis$PD.obligate + 1)
+
+spec.apis$PD.transient.log <- log(spec.apis$PD.transient + 1)
+
+spec.melissodes$PD.obligate.log <- log(spec.melissodes$PD.obligate + 1)
+
+spec.melissodes$PD.transient.log <- log(spec.melissodes$PD.transient + 1)
+
+
 ## **********************************************************
 ## Flower abundance
 ## **********************************************************
@@ -363,7 +373,7 @@ microbe.apis.vars <- c("BeeAbundance",
 
 
 ob.microbe.apis.x <- paste(microbe.apis.vars, collapse="+")
-ob.microbe.apis.y <- "PD.obligate | weights(LogWeightsAbund)"
+ob.microbe.apis.y <- "PD.obligate.log | weights(LogWeightsAbund)"
 formula.ob.microbe.apis <- as.formula(paste(ob.microbe.apis.y, "~",
                                          ob.microbe.apis.x))
 
@@ -373,7 +383,7 @@ bf.ob.microbe.apis <- bf(formula.ob.microbe.apis, family='student')
 # non obligate
 
 non.ob.microbe.apis.x <- paste(microbe.apis.vars, collapse="+")
-non.ob.microbe.apis.y <- "PD.transient | weights(LogWeightsAbund)"
+non.ob.microbe.apis.y <- "PD.transient.log | weights(LogWeightsAbund)"
 formula.non.ob.microbe.apis <- as.formula(paste(non.ob.microbe.apis.y, "~",
                                             non.ob.microbe.apis.x))
 
@@ -426,7 +436,7 @@ bf.microbe.melissodes <- bf(formula.microbe.melissodes, family='student')
 
 
 ob.microbe.melissodes.x <- paste(microbe.melissodes.vars, collapse="+")
-ob.microbe.melissodes.y <- "PD.obligate | weights(LogWeightsAbund)"
+ob.microbe.melissodes.y <- "PD.obligate.log | weights(LogWeightsAbund)"
 formula.ob.microbe.melissodes <- as.formula(paste(ob.microbe.melissodes.y, "~",
                                                ob.microbe.melissodes.x))
 
@@ -437,7 +447,7 @@ bf.ob.microbe.melissodes <- bf(formula.ob.microbe.melissodes, family='student')
 
 
 non.ob.microbe.melissodes.x <- paste(microbe.melissodes.vars, collapse="+")
-non.ob.microbe.melissodes.y <- "PD.transient | weights(LogWeightsAbund)"
+non.ob.microbe.melissodes.y <- "PD.transient.log | weights(LogWeightsAbund)"
 formula.non.ob.microbe.melissodes <- as.formula(paste(non.ob.microbe.melissodes.y, "~",
                                                   non.ob.microbe.melissodes.x))
 
