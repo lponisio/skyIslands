@@ -8,8 +8,8 @@ setwd("skyIslands/analysis/microbiome/")
 
 run.diagnostics = FALSE
 make.plots = FALSE
-run.bombus = FALSE
-run.apis = FALSE
+run.bombus = TRUE
+run.apis = TRUE
 run.melissodes = TRUE
 
 library(picante)
@@ -61,7 +61,7 @@ source("src/runParasiteModels.R")
 source("src/runPlotFreqModelDiagnostics.R")
 
 
-ncores <- 1
+ncores <- 3
 
 spec.bombus$PD.obligate.log <- log(spec.bombus$PD.obligate + 1)
 
@@ -302,7 +302,7 @@ formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
 
-bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus, family="student")
+bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus)
 
 
 ## non ob PD model
@@ -319,7 +319,7 @@ formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
                                               non.ob.microbe.bombus.x))
 
 
-bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus, family='student')
+bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus)
 
 #combine forms
 bform.bombus <- bf.fabund +
@@ -378,7 +378,7 @@ formula.ob.microbe.apis <- as.formula(paste(ob.microbe.apis.y, "~",
                                          ob.microbe.apis.x))
 
 
-bf.ob.microbe.apis <- bf(formula.ob.microbe.apis, family='student')
+bf.ob.microbe.apis <- bf(formula.ob.microbe.apis)
 
 # non obligate
 
@@ -388,7 +388,7 @@ formula.non.ob.microbe.apis <- as.formula(paste(non.ob.microbe.apis.y, "~",
                                             non.ob.microbe.apis.x))
 
 
-bf.non.ob.microbe.apis <- bf(formula.non.ob.microbe.apis, family='student')
+bf.non.ob.microbe.apis <- bf(formula.non.ob.microbe.apis)
 
 #combine forms
 bform.apis <- bf.fabund +
@@ -430,7 +430,7 @@ formula.microbe.melissodes <- as.formula(paste(microbe.melissodes.y, "~",
                                            microbe.melissodes.x))
 
 
-bf.microbe.melissodes <- bf(formula.microbe.melissodes, family='student')
+bf.microbe.melissodes <- bf(formula.microbe.melissodes)
 
 ## obligate
 
@@ -441,7 +441,7 @@ formula.ob.microbe.melissodes <- as.formula(paste(ob.microbe.melissodes.y, "~",
                                                ob.microbe.melissodes.x))
 
 
-bf.ob.microbe.melissodes <- bf(formula.ob.microbe.melissodes, family='student')
+bf.ob.microbe.melissodes <- bf(formula.ob.microbe.melissodes)
 
 ## non obligate
 
