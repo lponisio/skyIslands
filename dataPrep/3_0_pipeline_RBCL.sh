@@ -149,7 +149,9 @@ cd classifiers
 ## INTERESTED IN AND THEN USE THAT IN SUBSEQENT STEPS
 
 #makeblastdb -in -taxid_map gi_taxid_nucl.dmp RBCLclassifierNCBI/rbcL_only_NCBI.fasta -out RBCLclassifierNCBI/rbcL_only_DB -parse_seqids -dbtype nucl
-makeblastdb -in -taxid_map gi_taxid_nucl.dmp RBCLclassifierNCBI/rbcL_only_NCBI_Updated_2023.fasta -out RBCLclassifierNCBI/2023_rbcL_only_DB -parse_seqids -dbtype nucl
+## can't find .dmp file on ncbi website anymore....
+## makeblastdb -in -taxid_map gi_taxid_nucl.dmp RBCLclassifierNCBI/rbcL_only_NCBI_Updated_2023.fasta -out RBCLclassifierNCBI/2023_rbcL_only_DB -parse_seqids -dbtype nucl 
+
 
 ## if this all worked, you should get a series of files called
 ## "rbcL_only_DB" with some extension or numerical at the end. These
@@ -170,7 +172,7 @@ makeblastdb -in -taxid_map gi_taxid_nucl.dmp RBCLclassifierNCBI/rbcL_only_NCBI_U
 
 # docker run -itv ~/Dropbox/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline ncbi/blast
 
-docker run -itv /Volumes/bombus/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline ncbi/blast
+docker run -itv /Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline ncbi/blast
 
 cpan App::cpanminus
 
@@ -195,10 +197,10 @@ cd ../mnt/SI_pipeline #[or whichever run you're working on]
 
 ## top match
 #perl classifiers/RBCLclassifierNCBI/BlastToTableexistingdb.pl merged/RBCL/rep-seqs-RBCL.fasta classifiers/RBCLclassifierNCBI/rbcL_only_DB > merged/RBCL/rbcl_classified_NCBI.txt
-perl classifiers/RBCLclassifierNCBI/BlastToTableexistingdb.pl R2018/2023_sequence_results_raw/merged/RBCL/rep-seqs-dada2RBCL.fasta classifiers/RBCLclassifierNCBI/2023_rbcL_only_DB > R2018/2023_sequence_results_raw/merged/RBCL/rbcl_classified_NCBI.txt
+perl classifiers/RBCLclassifierNCBI/BlastToTableexistingdb.pl merged/RBCL/rep-seqs-RBCL.fasta classifiers/RBCLclassifierNCBI/2023_rbcL_only_DB > merged/RBCL/rbcl_classified_NCBI.txt
 
 ## top 10 matches (did this work????)
-perl classifiers/RBCLclassifierNCBI/BlastToTableexistingdb_top_10.pl merged/RBCL/rep-seqs-RBCL.fasta classifiers/RBCLclassifierNCBI/rbcL_only_DB > merged/RBCL/rbcl_classified_NCBI_top_10.txt
+perl classifiers/RBCLclassifierNCBI/BlastToTableexistingdb_top_10.pl merged/RBCL/rep-seqs-RBCL.fasta classifiers/RBCLclassifierNCBI/2023_rbcL_only_DB > merged/RBCL/rbcl_classified_NCBI_top_10.txt
 
 ## *****************************************************************************
 # 2. ASSIGN TAXONOMY in R SCRIPT and MANUALLY
