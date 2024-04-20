@@ -82,8 +82,8 @@ load(file="saved/fullMicrobeMelissodesFit.Rdata")
 
 ## obligate microbes
 
-data.par <- spec.bombus[spec.bombus$LogWeightsAbund != 0, ] %>%
-  subset(., rowSums(is.na(.)) != ncol(.))
+data.par <- spec.bombus[spec.bombus$LogWeightsAbund != 0, ] #%>%
+  #subset(., rowSums(is.na(.)) != ncol(.))
 #
 ## PD ~ bee abundance
 labs.bee.abund <- (pretty(c(0, spec.bombus.orig$BeeAbundance), n=8))
@@ -107,8 +107,8 @@ newdata.beeabund <- tidyr::crossing(BeeAbundance =
 
 pred_beeabund <- fit.microbe.bombus %>%
   epred_draws(newdata = newdata.beeabund ,
-              resp = "PDobligate",
-              allow_new_levels = FALSE)
+              resp = "PDobligatelog",
+              allow_new_levels = TRUE)
 
 ## to see range of predicted values
 pred_beeabund %>%
@@ -128,7 +128,7 @@ bombus.abund.PD <- ggplot(pred_beeabund, aes(x = BeeAbundance, y =
         legend.position = "none") +
   theme_classic() +
   geom_point(data=data.par,
-             aes(y=PD.obligate, x=BeeAbundance), cex=2, alpha=0.5) +
+             aes(y=PD.obligate.log, x=BeeAbundance), cex=2, alpha=0.5) +
   scale_x_continuous(breaks = axis.bee.abund, 
                      labels =  labs.bee.abund) +
   labs(tag='C.', y='Microbe \nPhylogenetic \nDistance')
