@@ -1,7 +1,7 @@
-m(list=ls())
+rm(list=ls())
 library(FD)
 library(vegan)
-
+setwd("~/")
 source("lab_paths.R")
 local.path
 
