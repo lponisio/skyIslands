@@ -171,6 +171,11 @@ cd classifiers
 ## the container includes blastn in usr
 
 # docker run -itv ~/Dropbox/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline ncbi/blast
+exit
+
+## need to add this so that docker app doesn't close when computer tries to shut down
+
+docker run -it -d ncbi/blast /bin/bash
 
 docker run -itv /Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline ncbi/blast
 
