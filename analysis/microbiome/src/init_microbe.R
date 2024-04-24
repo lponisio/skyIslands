@@ -317,6 +317,7 @@ spec.net <- join(spec.net, abund_csv)
 
 #multiply weightspar by abundance to get abundance weights
 spec.net$WeightsAbund <- spec.net$WeightsMicrobe * spec.net$AbundanceSYR
+spec.net$WeightsObligateAbund <- spec.net$WeightsObligateMicrobe * spec.net$AbundanceSYR
 spec.net$LogWeightsAbund <- log(spec.net$WeightsAbund + 1)
 spec.net$BombusWeights <- ifelse(spec.net$Genus=='Bombus'&spec.net$LogWeightsAbund>0, spec.net$LogWeightsAbund, 0)
 spec.net$ApisWeights <- ifelse(spec.net$Genus=='Apis'&spec.net$LogWeightsAbund>0, spec.net$LogWeightsAbund, 0)
@@ -330,6 +331,9 @@ spec.all <- spec.net
 spec.bombus <- spec.all
 #multiply weightsMicrobe by abundance to get abundance weights
 spec.bombus$WeightsAbund <- spec.bombus$WeightsMicrobe * spec.bombus$AbundanceSYR
+spec.bombus$WeightsObligateAbund <- spec.bombus$WeightsObligateMicrobe * spec.bombus$AbundanceSYR
+spec.bombus$LogWeightsObligateAbund <- log(spec.bombus$WeightsObligateAbund + 1)
+spec.bombus$LogWeightsObligateAbund[spec.bombus$Genus != "Bombus"] <- 0
 spec.bombus$LogWeightsAbund <- log(spec.bombus$WeightsAbund + 1)
 spec.bombus$LogWeightsAbund[spec.bombus$Genus != "Bombus"] <- 0
 spec.bombus$WeightsAbund[spec.bombus$Genus != "Bombus"] <- 0
@@ -352,14 +356,21 @@ spec.apis$WeightsAbund <- spec.apis$WeightsMicrobe * spec.apis$AbundanceSYR
 spec.apis$LogWeightsAbund <- log(spec.apis$WeightsAbund + 1)
 spec.apis$LogWeightsAbund[spec.apis$Genus != "Apis"] <- 0
 spec.apis$WeightsAbund[spec.apis$Genus != "Apis"] <- 0
+spec.apis$WeightsObligateAbund <- spec.apis$WeightsObligateMicrobe * spec.apis$AbundanceSYR
+spec.apis$LogWeightsObligateAbund <- log(spec.apis$WeightsObligateAbund + 1)
+spec.apis$LogWeightsObligateAbund[spec.apis$Genus != "Apis"] <- 0
 
 ## melissodes only data
 spec.melissodes <- spec.all
+
 #multiply weightsMicrobe by abundance to get abundance weights
 spec.melissodes$WeightsAbund <- spec.melissodes$WeightsMicrobe * spec.melissodes$AbundanceSYR
 spec.melissodes$LogWeightsAbund <- log(spec.melissodes$WeightsAbund + 1)
 spec.melissodes$LogWeightsAbund[spec.melissodes$Genus != "Melissodes"] <- 0
 spec.melissodes$WeightsAbund[spec.melissodes$Genus != "Melissodes"] <- 0
+spec.melissodes$WeightsObligateAbund <- spec.melissodes$WeightsObligateMicrobe * spec.melissodes$AbundanceSYR
+spec.melissodes$LogWeightsObligateAbund <- log(spec.melissodes$WeightsObligateAbund + 1)
+spec.melissodes$LogWeightsObligateAbund[spec.melissodes$Genus != "Melissodes"] <- 0
 
 # spec.apidae <- spec.all
 # spec.apidae$WeightsMicrobe[spec.melissodes$Family != "Apidae"] <- 0
