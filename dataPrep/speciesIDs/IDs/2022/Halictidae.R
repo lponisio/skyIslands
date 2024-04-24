@@ -333,7 +333,7 @@ sp.ids <- list(
                            SubSpecies="", Sex="m",
                            Author = "McGinley",
                            Determiner = "J.L. Neff",
-                           temp.id=  c(38345, 38376, 38378, 30645, 32884, 31130, 31113, 37077, 33590, 33476, 30651))
+                           temp.id=  c(38345, 38376, 38378, 30645, 32884, 31130, 31113, 37077, 33590, 33476, 30651)),
 
    Lasioglossum_rupticristum_f= list(Genus="Lasioglossum", SubGenus
                            ="", Species="rupticristum",
