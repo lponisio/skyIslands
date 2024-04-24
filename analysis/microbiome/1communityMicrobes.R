@@ -297,7 +297,7 @@ ob.microbe.bombus.vars <- c("BeeAbundance",
 
 
 ob.microbe.bombus.x <- paste(ob.microbe.bombus.vars, collapse="+")
-ob.microbe.bombus.y <- "PD.obligate.log | weights(LogWeightsAbund)"
+ob.microbe.bombus.y <- "PD.obligate.log | weights(LogWeightsObligateAbund)"
 formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
@@ -373,7 +373,7 @@ microbe.apis.vars <- c("BeeAbundance",
 
 
 ob.microbe.apis.x <- paste(microbe.apis.vars, collapse="+")
-ob.microbe.apis.y <- "PD.obligate.log | weights(LogWeightsAbund)"
+ob.microbe.apis.y <- "PD.obligate.log | weights(LogWeightsObligateAbund)"
 formula.ob.microbe.apis <- as.formula(paste(ob.microbe.apis.y, "~",
                                          ob.microbe.apis.x))
 
@@ -436,7 +436,7 @@ bf.microbe.melissodes <- bf(formula.microbe.melissodes)
 
 
 ob.microbe.melissodes.x <- paste(microbe.melissodes.vars, collapse="+")
-ob.microbe.melissodes.y <- "PD.obligate.log | weights(LogWeightsAbund)"
+ob.microbe.melissodes.y <- "PD.obligate.log | weights(LogWeightsObligateAbund)"
 formula.ob.microbe.melissodes <- as.formula(paste(ob.microbe.melissodes.y, "~",
                                                ob.microbe.melissodes.x))
 
