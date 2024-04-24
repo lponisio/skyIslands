@@ -61,7 +61,7 @@ source("src/runParasiteModels.R")
 source("src/runPlotFreqModelDiagnostics.R")
 
 
-ncores <- 3
+ncores <- 1
 
 spec.bombus$PD.obligate.log <- log(spec.bombus$PD.obligate + 1)
 
