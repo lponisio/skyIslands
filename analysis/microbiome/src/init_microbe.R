@@ -151,7 +151,10 @@ names(result_df)[names(result_df) == "PD"] <- "PD.obligate"
 names(result_df)[names(result_df) == "SR"] <- "SR.obligate"
 
 
-spec.microbes <- cbind(spec.microbes, result_df)
+spec.microbes <- cbind(spec.microbes, result_df) 
+
+spec.microbes <- spec.microbes %>%
+  filter(PD.obligate > 0)
 
 ## Merge back onto specimen data
 spec.net <- merge(spec.net, spec.microbes, all.x=TRUE, all.y=TRUE)
