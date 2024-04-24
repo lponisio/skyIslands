@@ -1,7 +1,7 @@
 standardizeVars <- function(spec.data, vars, key){
   ##  center all of the x variables, need to use unique values to avoid
   ##  repetition by the number of specimens
-  browser()
+  #browser()
   unique.site.vals <-  unique(spec.data[,c("Site", key, vars)])
   unique.site.vals[, vars] <- apply(unique.site.vals[, vars], 2, standardize)
   print(dim(spec.data))
@@ -26,6 +26,9 @@ prepParasiteWeights <- function(){
   spec.net$WeightsMicrobe <- 1
   spec.net$WeightsMicrobe[spec.net$Apidae == 0 |
                         is.na(spec.net$Apidae)] <- 0
+  spec.net$WeightsObligateMicrobe <- 1
+  spec.net$WeightsObligateMicrobe[spec.net$WeightsMicrobe == 1 |
+                            spec.net$PD.obligate == 0] <- 0
   ## stan drops all NA data, so can set AnyParasite to 0 with WeightsPar
   ## to keep it in the models
   spec.net$ParasitePresence[is.na(spec.net$ParasitePresence)] <- 0
