@@ -118,7 +118,6 @@ newdata.beediv <- crossing(Net_BeeDiversity =
                              seq(min(data.par$Net_BeeDiversity),
                                  max(data.par$Net_BeeDiversity),
                                  length.out=10),
-                           #Lat = mean(data.par$Lat),
                            rare.degree = mean(data.par$rare.degree),
                            MeanITD = mean(data.par$MeanITD),
                            Net_BombusAbundance = mean(data.par$Net_BombusAbundance),
