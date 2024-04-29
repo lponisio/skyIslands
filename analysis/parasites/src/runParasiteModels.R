@@ -7,7 +7,9 @@ runCombinedParasiteModels <- function(spec.data,## data
                                       iter = 10^4,
                                       chains = 1,
                                       thin=1,
-                                      init=0, data2 = NULL){
+                                      init=0, data2 = NULL,
+                                      SEM = TRUE){
+  if(SEM){
   # create a list with the formulas for the different parasites models
   bf.parasite.formulas <- vector(mode="list",
                                  length=length(parasites))
@@ -81,7 +83,23 @@ runCombinedParasiteModels <- function(spec.data,## data
         set_rescor(FALSE)
     }
     
-  } 
+  }}
+  else {
+  bf.parasite.formulas <- vector(mode="list",
+                                        length=length(parasites))
+  names(bf.parasite.formulas) <- parasites
+  # Create the models of the parasites using the variables provided in xvars
+  for(parasite in parasites){
+    formula.parasite  <- as.formula(paste(
+      paste(parasite, "| weights(WeightsPar)"),
+      paste(xvars,
+            collapse=" + "),
+      sep=" ~ "))
+    bf.parasite.formulas[[parasite]] <-  bf(formula.parasite,
+                                            family="bernoulli")  
+  }
+  bform <- bf.parasite.formulas[[1]]+
+    bf.parasite.formulas[[2]]}
   ## Fit brms model to the complete model
 
   fit.parasite <- brm(bform, spec.data,
