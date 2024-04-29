@@ -223,12 +223,12 @@ spec.net$YearSRGenusSpecies <- paste(spec.net$YearSR, spec.net$GenusSpecies, sep
 ## will need to modify when we have multiple years
 spec.net <- makeDataMultiLevel(spec.net, "Site", "YearSR")
 
-#the 6 species getting dropped are still present at this step
+
 
 if(make.plots == FALSE){
   spec.net[, variables.to.log] <- log(spec.net[,variables.to.log])
 }
-#the 6 species getting dropped are still present at this step
+
 
 ##  center all of the x variables, need to use unique values to avoid
 ##  repetition by the number of specimens
@@ -236,7 +236,7 @@ if(make.plots == FALSE){
 if(make.plots == FALSE){
 spec.net <- standardizeVars(spec.net, vars_yearsr, "YearSR")
 
-#the 6 species getting dropped are still present at this step
+
 
 spec.net <- standardizeVars(spec.net, vars_sp, "YearSRGenusSpecies")
 }
@@ -266,8 +266,6 @@ species_to_keep <- na.omit(unique(spec.net$GenusSpecies))
 ## megachile comate and megachile subexilis are not in phylogeny so will drop these
 species_to_keep <- species_to_keep[!species_to_keep %in% c("Megachile comata", "Megachile subexilis")]
 
-#the 6 species getting dropped are still present at this step
-
 phylo_tips <- phylo$tip.label
 #only keep tips that match our species
 phylo <- ape::keep.tip(phylo, species_to_keep[species_to_keep %in% phylo_tips])
@@ -283,13 +281,13 @@ spec.net <- spec.net[!spec.net$GenusSpecies %in% drop.species,]
 ## site-level models, but weight is 0 for parasite models.
 spec.net <- prepParasiteWeights()
 
-#the 6 species getting dropped are still present at this step
+
 
 #genus_pd_fit <- function(spec.net, this_genus, num_iter){
 
 
 
-#the 6 species getting dropped are still present at this step
+
 
 ## check which individuals don't have microbe data
 drop.PD.NA <- unique(spec.net$UniqueID[spec.net$WeightsMicrobe == 1 &
@@ -300,7 +298,7 @@ drop.PD.NA <- unique(spec.net$UniqueID[spec.net$WeightsMicrobe == 1 &
 spec.net <- spec.net[!(spec.net$UniqueID %in% drop.PD.NA),] %>%
   mutate(PD = ifelse(!is.na(PD), PD, 0))
 
-#the 6 species getting dropped are still present at this step
+
 
 ##adding abundance weights column
 abund_csv <- data.frame(read.csv("../../data/sp_year_site_round.csv"))
@@ -309,7 +307,7 @@ abund_csv <- data.frame(read.csv("../../data/sp_year_site_round.csv"))
 spec.net <- join(spec.net, abund_csv)
 
 
-#the 6 species getting dropped are still present at this step
+
 
 #genus.microbes <- spec.microbes[spec.microbes$Genus == this_genus, ]
 
