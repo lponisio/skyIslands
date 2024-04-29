@@ -8,8 +8,8 @@ setwd("skyIslands/analysis/microbiome/")
 
 run.diagnostics = FALSE
 make.plots = FALSE
-run.bombus = TRUE
-run.apis = TRUE
+run.bombus = FALSE
+run.apis = FALSE
 run.melissodes = TRUE
 
 library(picante)
