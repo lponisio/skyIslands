@@ -2,17 +2,17 @@ library(sf)
 library(ggplot2)
 library(raster)
 
-library(gdalUtils)
+library(gdalUtilities)
 library(rgdal)
 
 library(spatstat)
-library(maptools)
+#library(maptools)
+source("lab_paths.R")
+#setwd("~/Dropbox/skyIslands_saved/data/spatial")
 
-setwd("~/Dropbox/skyIslands_saved/data/spatial")
+sp.dir <- local.path
 
-sp.dir <- getwd()
-
-geo <- read.csv("../relational/original/geography.csv")
+geo <- read.csv("skyIslands_saved/data/relational/original/geography.csv")
 
 crs.std <- "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"
 
