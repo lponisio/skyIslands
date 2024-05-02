@@ -19,6 +19,11 @@ write.csv(spec, file=spec.data.file, row.names=FALSE)
 
 ## 2022 field season
 
+print("********2022 Andrenidae")
+source(file.path(save.dir, 'IDs/2022/Andrenidae.R'))
+add.to.data(sp.ids=sp.ids, case='bee', "Andrenidae","2022",
+            data.file=spec.data.file)
+
 print("********2022 Apidae")
 source(file.path(save.dir, 'IDs/2022/Apidae.R'))
 add.to.data(sp.ids=sp.ids, case='bee', "Apidae","2022",
@@ -74,6 +79,12 @@ add.to.data(sp.ids=sp.ids,
             case='fly',"Syrphidae", "2021",
             data.file=spec.data.file)
 
+print("********2021 Andrenidae")
+source(file.path(save.dir, 'IDs/2021/Andrenidae.R'))
+add.to.data(sp.ids=sp.ids, case='bee', "Andrenidae","2021",
+            data.file=spec.data.file)
+
+
 print("*********2021 Apidae")
 source(file.path(save.dir, 'IDs/2021/Apidae.R'))
 add.to.data(sp.ids=sp.ids, case='bee', "Apidae","2021",
@@ -109,6 +120,11 @@ print("*********2018 Syrphidae")
 source(file.path(save.dir, 'IDs/2018/Syrphidae.R'))
 add.to.data(sp.ids=sp.ids,
             case='fly',"Syrphidae", "2019",
+            data.file=spec.data.file)
+
+print("********2018 Andrenidae")
+source(file.path(save.dir, 'IDs/2018/Andrenidae.R'))
+add.to.data(sp.ids=sp.ids, case='bee', "Andrenidae","2018",
             data.file=spec.data.file)
 
 print("*********2018 Apidae")
@@ -153,6 +169,11 @@ add.to.data(sp.ids=sp.ids,
             case='fly',"Syrphidae", "2019",
             data.file=spec.data.file)
 
+print("********2017 Andrenidae")
+source(file.path(save.dir, 'IDs/2017/Andrenidae.R'))
+add.to.data(sp.ids=sp.ids, case='bee', "Andrenidae","2017",
+            data.file=spec.data.file)
+
 print("*********2017 Apidae")
 source(file.path(save.dir, 'IDs/2017/Apidae.R'))
 add.to.data(sp.ids=sp.ids,
@@ -192,6 +213,12 @@ add.to.data(sp.ids=sp.ids,
 
 
 ## 2012 field season
+
+print("********2012 Andrenidae")
+source(file.path(save.dir, 'IDs/2012/Andrenidae.R'))
+add.to.data(sp.ids=sp.ids, case='bee', "Andrenidae","2012",
+            data.file=spec.data.file)
+
 print("*********2012 Apidae")
 source(file.path(save.dir, 'IDs/2012/Apidae.R'))
 add.to.data(sp.ids=sp.ids,

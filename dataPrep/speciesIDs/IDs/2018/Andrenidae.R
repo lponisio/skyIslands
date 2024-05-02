@@ -58,7 +58,7 @@ sp.ids <- list(
                                                  "19942", 
                                                 #added HBL 2/13/24
                                                  "18259", "18353", 
-                                                 "18679", "18340",)),
+                                                 "18679", "18340")),
 
 
     Pseudopanurgus_atricornis_m= list(Genus="Pseudopanurgus",
@@ -96,7 +96,7 @@ sp.ids <- list(
                                                  "17951", "18123",
                                                  "18522", "18461",
                                                  "18428", "17748",
-                                                 "17754", "17745"
+                                                 "17754", "17745",
                                                  "17640", "20354")),
 
       Panurginus_cressoniellus_f= list(Genus="Panurginus", SubGenus ="",

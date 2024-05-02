@@ -491,7 +491,7 @@ sp.ids <- list(
                             Species="segregans", SubSpecies="",
                             Sex="f", Author ="Cockerell",
                             Determiner="RW Thorp",
-                            temp.id= c("SC_072612_251")),
+                            temp.id= c("SC_072612_251"))
 
 
 )

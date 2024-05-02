@@ -356,7 +356,7 @@ sp.ids <- list(
                               Sex="f",
                               Author = "Cockerell",
                               Determiner="J.L. Neff",
-                              temp.id= c(37066))
+                              temp.id= c(37066)),
 
 
     Andrena_thaspii_f= list(Genus="Andrena",
