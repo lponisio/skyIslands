@@ -308,7 +308,7 @@ sp.ids <- list(
 
     Andrena_cyanophila_f= list(Genus="Andrena",
                                SubGenus ="",
-                               Species="Cyanophila",
+                               Species="cyanophila",
                                SubSpecies="",
                                Sex="f",
                                Author = "Cockerell",
