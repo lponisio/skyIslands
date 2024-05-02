@@ -84,7 +84,7 @@ map <-ggplot() +
 
 map
 setwd("../../skyIslands/analysis/microbiome/figures/")
-ggsave(map, file="map.pdf")
+ggsave(map, file="map.pdf", height=6, width=4)
 
 
 
