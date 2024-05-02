@@ -24,6 +24,8 @@ library(basemaps)
 
 crs.std <- "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"
 
+microbes_screened_sites <- c("CH", "HM","JC", "MM", "PL", "RP", "SC", "SM")
+
 ## site points spatvector
 sites_sf <- terra::vect("sites.shp", crs=crs.std) %>%
   st_as_sf()
@@ -41,6 +43,7 @@ set_defaults(map_service = "mapbox",
 
 ## Change the CRS to match the basemaps
 site_points <- st_transform(sites_sf, crs = st_crs(3857))
+site_points$ScreenedMicrobes <- ifelse(site_points$Site %in% microbes_screened_sites, 1, 0)
 
 ## Create a new bounding box to avoid points in the corners
 bbox_new <- st_bbox(site_points) # current bounding box
@@ -59,11 +62,17 @@ bbox_new <- bbox_new %>%  # take the bounding box make it a spatial object
 
 map <-ggplot() +
   basemap_gglayer(bbox_new) + # Use new bbox to download the basemap
-  geom_sf(data = site_points, 
+  geom_sf(data = subset(site_points, ScreenedMicrobes == "1"), 
           color = "black",
           fill = "green",
           pch=25,
           size=3,
+          stroke=1.1) +
+  geom_sf(data = subset(site_points, ScreenedMicrobes == "0"), 
+          color = "black",
+          fill = "orange",
+          pch=21,
+          size=2,
           stroke=1.1) +
   coord_sf(xlim = st_coordinates(bbox_new)[c(1,2),1], # min & max of x values
            ylim = st_coordinates(bbox_new)[c(2,3),2], expand = FALSE) +
