@@ -5,6 +5,7 @@ setwd("~/")
 source("lab_paths.R")
 local.path
 
+library(dplyr)
 dir.bombus <- file.path(local.path, "skyIslands/dataPrep")
 setwd(dir.bombus)
 
@@ -20,15 +21,23 @@ load('../data/spec_net.Rdata')
 
 traits <- read.csv("../../skyIslands_saved/data/raw/bee_traits.csv")
 traits$GenusSpecies <- fix.white.space(traits$GenusSpecies)
+traits$Genus <- sapply(strsplit(traits$GenusSpecies, "\\ "),
+                       function(x) x[1])
 
 traits <- traits[traits$GenusSpecies %in% spec.net$GenusSpecies,]
 
-bee.traits <- c("NestLocation",
-                "PrimaryNestMaterial","NestConstruction",
-                "Lecty",
-                 "MeanITD", "Sociality")
+itd <- traits %>%
+  group_by(Genus) %>%
+  summarize(MeanITD = mean(MeanITD, na.rm=TRUE))
 
-m.traits<- traits$GenusSpecies[apply(traits[, bee.traits], 1, 
+traits$MeanITD[is.na(traits$MeanITD)] <- itd$MeanITD[
+  match(traits$Genus[is.na(traits$MeanITD)], itd$Genus)]
+
+bee.traits <- c("NestLocation", "PrimaryNestMaterial",
+                "NestConstruction","NestPartitions","Sociality",
+                "MeanITD")
+
+m.traits <- traits$GenusSpecies[apply(traits[, bee.traits], 1, 
                            function(x) any(is.na(x))
                            )]
 

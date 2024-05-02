@@ -60,12 +60,6 @@ collections <- data.frame(unique(cbind(spec$Site, spec$Year,
                                        spec$SampleRound)))
 colnames(collections) <- c("Site", "Year", "SampleRound")
 
-bee.families <- c("Andrenidae", "Apidae", "Colletidae", "Halictidae",
-                  "Megachilidae")
-
-## DECISION POINT: drop non bees but keep the syrphids
-spec <- spec[spec$Family %in% c(bee.families, "Syrphidae"),]
-
 ## calculate orthoganol polynomials for doy
 spec$DoyPoly <- poly(spec$Doy, degree=2)
 spec$DoyPoly1 <- spec$DoyPoly[,'1']
@@ -130,6 +124,14 @@ spec[spec$Apidae != 1  | is.na(spec$Apidae), "CrithidiaRichness"] <-
   NA
 spec[spec$Apidae != 1  | is.na(spec$Apidae), "CrithidiaPresence"] <- NA
 
+check.spec <- spec[!is.na(spec$Apidae),]
+check.spec <- check.spec[check.spec$GenusSpecies == "",]
+
+write.csv(check.spec,
+ file="../../skyIslands_saved/data/checks/screened_no_ID.csv",
+ row.names=FALSE)
+
+
 write.csv(spec, file="../data/spec_all_methods.csv", row.names=FALSE)
 
 spec.net <- spec[spec$Method == "Net",]
@@ -156,6 +158,14 @@ write.csv(spec, file="../data/spec_net_pan.csv", row.names=FALSE)
 ## ***********************************************************************
 ## site/species level insect data
 ## ***********************************************************************
+
+
+bee.families <- c("Andrenidae", "Apidae", "Colletidae", "Halictidae",
+                  "Megachilidae")
+
+## DECISION POINT: drop non bees but keep the syrphids
+# spec <- spec[spec$Family %in% c(bee.families, "Syrphidae"),]
+
 
 calcSummaryStats <- function(spec.method, method){
     site.sp <- spec.method %>%
@@ -348,6 +358,9 @@ agg.spec.para <- aggregate(agg.spec.sub[, parasites],
 
 para.gensp.counts <- table(agg.spec.sub$GenusSpecies)
 para.gensp.counts
+
+para.gen.counts <- table(agg.spec.sub$Genus)
+para.gen.counts
 
 ## proportion of individuals screened
 agg.spec.para[, parasites] <- agg.spec.para[, parasites]/
