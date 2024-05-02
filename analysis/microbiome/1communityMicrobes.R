@@ -8,7 +8,7 @@ setwd("skyIslands/analysis/microbiome/")
 
 run.diagnostics = FALSE
 make.plots = FALSE
-run.bombus = FALSE
+run.bombus = TRUE
 run.apis = FALSE
 run.melissodes = TRUE
 
