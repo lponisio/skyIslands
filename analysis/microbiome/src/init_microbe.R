@@ -14,7 +14,7 @@ library(viridis)
 library(tidybayes)
 library(gridExtra)
 library(grid)
-library(scales)
+#library(scales)
 library(RColorBrewer)
 
 library(rstantools)
@@ -104,6 +104,7 @@ spec.microbes <- cbind(spec.microbes, PD)
 
 ## Merge back onto specimen data
 spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
+spec.net$ScreenedMicrobes <- ifelse(spec.net$Site %in% unique(spec.microbes$Site), 1, 0)
 
 ## change microbe NAs to 0
 spec.net <- spec.net %>%
