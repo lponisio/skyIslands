@@ -5,6 +5,8 @@ local.path
 setwd(local.path)
 setwd("skyIslands_saved/spatial")
 
+load("../../skyIslands/data/spec_microbes.Rdata")
+
 ## map making for SI project
 
 ## packages
@@ -71,7 +73,9 @@ map <-ggplot() +
   annotation_scale(location = "br") +
   theme_minimal()
 
-map 
+map
+setwd("../../skyIslands/analysis/microbiome/figures/")
+ggsave(map, file="map.pdf")
 
 
 
