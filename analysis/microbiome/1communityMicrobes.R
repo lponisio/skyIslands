@@ -302,7 +302,7 @@ non.ob.microbe.bombus.vars <- c("BeeAbundance",
 check_for_NA(non.ob.microbe.bombus.vars)
 
 non.ob.microbe.bombus.x <- paste(non.ob.microbe.bombus.vars, collapse="+")
-non.ob.microbe.bombus.y <- "PD.transient.log | weights(LogWeightsAbund)"
+non.ob.microbe.bombus.y <- "PD.transient.log | weights(LogWeightsTransientAbund)"
 formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
                                               non.ob.microbe.bombus.x))
 
@@ -371,7 +371,7 @@ bf.ob.microbe.apis <- bf(formula.ob.microbe.apis)
 # non obligate
 
 non.ob.microbe.apis.x <- paste(microbe.apis.vars, collapse="+")
-non.ob.microbe.apis.y <- "PD.transient.log | weights(LogWeightsAbund)"
+non.ob.microbe.apis.y <- "PD.transient.log | weights(LogWeightsTransientAbund)"
 formula.non.ob.microbe.apis <- as.formula(paste(non.ob.microbe.apis.y, "~",
                                             non.ob.microbe.apis.x))
 
@@ -435,7 +435,7 @@ bf.ob.microbe.melissodes <- bf(formula.ob.microbe.melissodes)
 
 
 non.ob.microbe.melissodes.x <- paste(microbe.melissodes.vars, collapse="+")
-non.ob.microbe.melissodes.y <- "PD.transient.log | weights(LogWeightsAbund)"
+non.ob.microbe.melissodes.y <- "PD.transient.log | weights(LogWeightsTransientAbund)"
 formula.non.ob.microbe.melissodes <- as.formula(paste(non.ob.microbe.melissodes.y, "~",
                                                   non.ob.microbe.melissodes.x))
 
