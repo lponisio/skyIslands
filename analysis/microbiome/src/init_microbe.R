@@ -374,3 +374,4 @@ spec.melissodes$LogWeightsObligateAbund[spec.melissodes$Genus != "Melissodes"] <
 # spec.apidae <- spec.all
 # spec.apidae$WeightsMicrobe[spec.melissodes$Family != "Apidae"] <- 0
 
+save(spec.net, "../../data/spec.microbes.Rdata")
