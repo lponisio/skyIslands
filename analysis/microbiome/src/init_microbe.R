@@ -374,4 +374,18 @@ spec.melissodes$LogWeightsObligateAbund[spec.melissodes$Genus != "Melissodes"] <
 # spec.apidae <- spec.all
 # spec.apidae$WeightsMicrobe[spec.melissodes$Family != "Apidae"] <- 0
 
+
+spec.bombus$PD.obligate.log <- log(spec.bombus$PD.obligate + 1)
+
+spec.bombus$PD.transient.log <- log(spec.bombus$PD.transient + 1)
+
+spec.apis$PD.obligate.log <- log(spec.apis$PD.obligate + 1)
+
+spec.apis$PD.transient.log <- log(spec.apis$PD.transient + 1)
+
+spec.melissodes$PD.obligate.log <- log(spec.melissodes$PD.obligate + 1)
+
+spec.melissodes$PD.transient.log <- log(spec.melissodes$PD.transient + 1)
+
+
 save(spec.net, "../../data/spec.microbes.Rdata")
