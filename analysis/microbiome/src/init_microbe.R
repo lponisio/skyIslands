@@ -334,6 +334,9 @@ spec.bombus$LogWeightsObligateAbund[spec.bombus$Genus != "Bombus"] <- 0
 spec.bombus$LogWeightsAbund <- log(spec.bombus$WeightsAbund + 1)
 spec.bombus$LogWeightsAbund[spec.bombus$Genus != "Bombus"] <- 0
 spec.bombus$WeightsAbund[spec.bombus$Genus != "Bombus"] <- 0
+spec.bombus$WeightsTransientAbund <- spec.bombus$WeightsTransientMicrobe * spec.bombus$AbundanceSYR
+spec.bombus$LogWeightsTransientAbund <- log(spec.bombus$WeightsTransientAbund + 1)
+spec.bombus$LogWeightsTransientAbund[spec.bombus$Genus != "Bombus"] <- 0
 
 # 
 # ## megachile comate and megachile subexilis are not in phylogeny so will drop these
@@ -356,6 +359,9 @@ spec.apis$WeightsAbund[spec.apis$Genus != "Apis"] <- 0
 spec.apis$WeightsObligateAbund <- spec.apis$WeightsObligateMicrobe * spec.apis$AbundanceSYR
 spec.apis$LogWeightsObligateAbund <- log(spec.apis$WeightsObligateAbund + 1)
 spec.apis$LogWeightsObligateAbund[spec.apis$Genus != "Apis"] <- 0
+spec.apis$WeightsTransientAbund <- spec.apis$WeightsTransientMicrobe * spec.apis$AbundanceSYR
+spec.apis$LogWeightsTransientAbund <- log(spec.apis$WeightsTransientAbund + 1)
+spec.apis$LogWeightsTransientAbund[spec.apis$Genus != "Apis"] <- 0
 
 ## melissodes only data
 spec.melissodes <- spec.all
@@ -368,6 +374,9 @@ spec.melissodes$WeightsAbund[spec.melissodes$Genus != "Melissodes"] <- 0
 spec.melissodes$WeightsObligateAbund <- spec.melissodes$WeightsObligateMicrobe * spec.melissodes$AbundanceSYR
 spec.melissodes$LogWeightsObligateAbund <- log(spec.melissodes$WeightsObligateAbund + 1)
 spec.melissodes$LogWeightsObligateAbund[spec.melissodes$Genus != "Melissodes"] <- 0
+spec.melissodes$WeightsTransientAbund <- spec.melissodes$WeightsTransientMicrobe * spec.melissodes$AbundanceSYR
+spec.melissodes$LogWeightsTransientAbund <- log(spec.melissodes$WeightsTransientAbund + 1)
+spec.melissodes$LogWeightsTransientAbund[spec.melissodes$Genus != "Melissodes"] <- 0
 
 # spec.apidae <- spec.all
 # spec.apidae$WeightsMicrobe[spec.melissodes$Family != "Apidae"] <- 0
