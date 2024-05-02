@@ -305,7 +305,8 @@ dim(site.sum)
 sites <- unique(data.frame(Site=spec$Site,
                            Lat= spec$Lat,
                            Area=spec$Area,
-                           Elev=spec$Elev))
+                           Elev=spec$Elev,
+                           Year=spec$Year))
 site.sum <- merge(site.sum, sites)
 site.sum$Year <- as.factor(site.sum$Year)
 
