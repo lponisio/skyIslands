@@ -29,6 +29,9 @@ prepParasiteWeights <- function(){
   spec.net$WeightsObligateMicrobe <- 1
   spec.net$WeightsObligateMicrobe[spec.net$WeightsMicrobe == 1 &
                             spec.net$PD.obligate == 0] <- 0
+  spec.net$WeightsTransientMicrobe <- 1
+  spec.net$WeightsTransientMicrobe[spec.net$WeightsMicrobe == 1 &
+                                    spec.net$PD.transient == 0] <- 0
   ## stan drops all NA data, so can set AnyParasite to 0 with WeightsPar
   ## to keep it in the models
   spec.net$ParasitePresence[is.na(spec.net$ParasitePresence)] <- 0
