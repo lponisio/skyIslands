@@ -109,7 +109,11 @@ load(file="saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp.Rdata")
 
 data.par <- spec.bombus[spec.bombus$WeightsPar == 1,]
 
-
+data.par<- data.par %>% 
+  group_by(GenusSpecies, Site, YearSR, Year) %>% 
+  summarize(Net_BeeDiversity = mean(Net_BeeDiversity), rare.degree = mean(rare.degree),
+            MeanITD = mean(MeanITD), Net_BombusAbundance = mean(Net_BombusAbundance), 
+            SpCrithidiaParasitismRate = mean(SpCrithidiaParasitismRate))
 ## https://www.rensvandeschoot.com/tutorials/generalised-linear-models-with-brms/
 
 ## parasitism ~ bee diversity
@@ -149,9 +153,10 @@ p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) +
  ##theme_dark_black()+
-  geom_point(data=data.par,
-             aes(y= SpCrithidiaParasitismRate, x=Net_BeeDiversity, colour = GenusSpecies),
-              cex=2)
+  geom_jitter(data=data.par,
+             aes(y= SpCrithidiaParasitismRate, x=Net_BeeDiversity, colour = GenusSpecies, shape = Site),
+              cex=2, width = 0.25)+
+  facet_wrap(~Year)
 
 ## parasitism ~ bumble bee abundance
 
@@ -198,7 +203,7 @@ p2.parasite <- ggplot(pred_bombusabund, aes(x = Net_BombusAbundance, y = .epred)
 
 
 ggsave(p1.parasite, file="figures/parasite_beeDiv.jpg",
-       height=4, width=5)
+       height=6, width=10)
 
 ggsave(p2.parasite, file="figures/parasite_bombusAbund.jpg",
        height=4, width=5)

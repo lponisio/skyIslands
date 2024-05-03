@@ -122,6 +122,38 @@ fit.parasites <- runCombinedParasiteModels(spec.net, species.group="melissodes",
 
 ## bombus
 
+crithidia.formula <- formula(CrithidiaPresence | weights(Weights) + trials(1) ~
+                              Net_BombusAbundance + Net_BeeDiversity +
+                              rare.degree + MeanITD + (1|Site)+ 
+                              (1|gr(GenusSpecies, cov = phylo_matrix))
+)
+
+bf.crithidia <- bf(crithidia.formula,
+                   family="zero_inflated_binomial") 
+
+fit.bombus.crithidia <- brm(bf.crithidia, spec.bombus,
+                            cores= ncores,
+                            iter = 10^4,
+                            chains = 1,
+                            thin= 1,
+                            init= 0,
+                            control = list(adapt_delta = 0.99),
+                            save_pars = save_pars(all = TRUE), data2 = list(phylo_matrix=phylo_matrix))
+
+write.ms.table(fit.bombus.crithidia,
+               sprintf("parasitism_%s_%s",
+                       "Bombus", paste("Crithidia", collapse="")))
+## Calculate r2 values 
+r2 <- bayes_R2(fit.bombus.crithidia)
+print(round(r2, 2))
+## Save the model results as a rdata file
+save(fit.bombus.crithidia, spec.bombus, r2,
+     file=sprintf("saved/parasiteFit_%s_%s.Rdata",
+                  "Bombus", paste("Crithidia", collapse="")))
+## Plot the residuals
+plot.res(fit.bombus.crithidia,  sprintf("%s_%s",
+                                "Bombus", paste("Crithidia", collapse="")))
+
 fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         parasite = c("CrithidiaPresence", "ApicystisSpp"),
                                         xvars=xvars.multi.bombus,
