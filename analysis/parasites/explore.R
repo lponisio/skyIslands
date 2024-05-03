@@ -1,4 +1,10 @@
+rm(list=ls())
 library(tidyverse)
+source("lab_paths.R")
+local.path
+dir.bombus <- file.path(local.path, "skyIslands")
+
+spec.net<- spec.net[order(spec.net$Lat, decreasing = TRUE),]  
 
 ## Plots by meadow
 ## Bee abundances by meadows
@@ -238,4 +244,18 @@ p <- ggplot(data=par.counts, aes(x=Var1, y=Freq)) +
   xlab("Number of parasites/individual") +
   ylab("Proportion of screened bees")
 ggsave(p, file="figures/proportion_pos.jpg",
+       height=4, width=5)
+
+# Boxplot of sites and  rate of crithidia in bombus species
+
+parasite_prevalence_sites <- spec.net %>%  
+  filter(Site != "VC" & Site != "UK" & Site != "SS") %>% 
+  ggplot(aes(x= reorder(Site, Lat, decreasing = TRUE), y= SpCrithidiaBombusParasitismRate, fill = GenusSpecies)) +
+  geom_boxplot()+
+  labs(x = "Bombus Species", y = "Crithidia Parasitism Rate")+
+  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
+        axis.title.y = element_text(size=10),
+        text = element_text(size=10))
+
+ggsave(parasite_prevalence_sites, file="figures/prevalence_by_sites.jpg",
        height=4, width=5)
