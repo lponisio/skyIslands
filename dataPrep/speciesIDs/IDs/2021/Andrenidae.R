@@ -454,10 +454,10 @@ sp.ids <- list(
         Protandrena_stathamae= list(Genus="Protandrena",
                                SubGenus ="Pterosarus",
                                Species="stathamae",
-                               SubSpecies="?",
+                               SubSpecies="",
                                Sex="",
                                Author = "Timberlake",
-                               Determiner="",
+                               Determiner="J.L. Neff",
                                temp.id= c(38340,38296,34115)),
 
      Psuedopanurgus_bakeri_m= list(Genus="Pseudopanurgus",
