@@ -1,5 +1,4 @@
-#Network building for 16s and rbcL FFAR 2019
-setwd('~/Dropbox (University of Oregon)')
+#Network building for 16s and rbcL SI
 
 rm(list=ls())
 setwd("~/")
@@ -151,19 +150,19 @@ indivNetSums_microBinary  <-  netSums(indivNet_micro,
                                       FUN=mclapply,
                                       m=ndim.func)
 
-# spNetSums_micro  <-  netSums(spNet_micro, binary=FALSE,
-#                              spec=spec.net,
-#                              FUN=mclapply,
-#                              type="sp")
-# 
-# spNetSums_microBinary  <-  netSums(spNet_micro, binary=TRUE,
-#                                    spec=spec.net,
-#                                    FUN=mclapply,
-#                                    type="sp")
+spNetSums_micro  <-  netSums(spNet_micro, binary=FALSE,
+                             spec=spec.net,
+                             FUN=mclapply,
+                             type="sp")
+
+spNetSums_microBinary  <-  netSums(spNet_micro, binary=TRUE,
+                                   spec=spec.net,
+                                   FUN=mclapply,
+                                   type="sp")
 
 
 save(indivNetSums_micro, indivNetSums_microBinary,
-     #spNetSums_micro, spNetSums_microBinary,
+     spNetSums_micro, spNetSums_microBinary,
      file =file.path(save.dir, 'NetSums_micro.RData'))
 
 ## ***********************************************************************
