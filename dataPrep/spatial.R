@@ -71,6 +71,7 @@ nm.az.r <- raster(file.path(sp.dir,
 #writeOGR(sites, file.path(sp.dir, "sites.shp"), "sites",
 #         driver="ESRI Shapefile")
 
+geo <- geo %>% filter(SubSite == 0 & !is.na(MtRange))
 ## Create shapefile
 sites_sf<- st_as_sf(geo,
          coords = c("Long", "Lat"),
@@ -98,11 +99,13 @@ bbox_new[4] <- bbox_new[4] + (0.1 * yrange) # ymax - top
 bbox_new <- bbox_new %>%  # take the bounding box make it a spatial object
   st_as_sfc()
 
-map <-ggplot() +
+map <- ggplot() +
   basemap_gglayer(bbox_new) + # Use new bbox to download the basemap
-  geom_sf(data = site_points, color = "orange", fill = "transparent") +
+  geom_sf(data = site_points, color = "black") +
   coord_sf(xlim = st_coordinates(bbox_new)[c(1,2),1], # min & max of x values
            ylim = st_coordinates(bbox_new)[c(2,3),2], expand = FALSE) +
+  geom_sf_text(data = site_points, aes(label = MtRange), size = 2.5,
+    color = "black", nudge_y = 16500) +
   scale_fill_identity()+ 
   xlab("Longitude") + ylab("Latitude") +
   annotation_north_arrow(location = "tl", style = north_arrow_fancy_orienteering)+
