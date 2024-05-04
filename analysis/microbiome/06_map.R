@@ -66,6 +66,10 @@ labels_to_plot <- site_points %>%
   select(Site, ScreenedMicrobes) %>%
   distinct() 
 
+## dropping sites where we didn't sample
+site_points <- site_points[!(site_points$Site %in% c("JM", "CC", "SH")),]
+
+
 these_rows <- c()
 
 for (i in site_points$Site){
@@ -74,6 +78,7 @@ for (i in site_points$Site){
   } else {}
   these_rows <- unique(these_rows)
 }
+
 
 
 map <-ggplot() +
