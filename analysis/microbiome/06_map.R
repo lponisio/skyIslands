@@ -90,11 +90,6 @@ map <-ggplot() +
           pch=21,
           size=2,
           stroke=1.1) +
-  geom_sf(data = subset(site_points[these_rows,]), 
-          color = "black",
-          fill = "orange",
-          pch=21,
-          size=0) +
   geom_sf_label_repel(data=subset(site_points[these_rows,]),
                       aes(label=Site, geometry=geometry),
                       #point.padding = 10,
