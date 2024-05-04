@@ -19,7 +19,7 @@ library(terra)
 library(ggplot2)
 devtools::install_github("16EAGLE/basemaps")
 library(basemaps)
-
+library(ggspatial)
 ## load in data
 
 crs.std <- "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"
@@ -60,23 +60,51 @@ bbox_new[4] <- bbox_new[4] + (0.1 * yrange) # ymax - top
 bbox_new <- bbox_new %>%  # take the bounding box make it a spatial object
   st_as_sfc()
 
+## setting up plot labels
+labels_to_plot <- site_points %>%
+  group_by(Site) %>%
+  select(Site, ScreenedMicrobes) %>%
+  distinct() 
+
+these_rows <- c()
+
+for (i in site_points$Site){
+  if (!(i %in% these_rows)){
+    these_rows <- base::append(match(i, site_points$Site), these_rows)
+  } else {}
+  these_rows <- unique(these_rows)
+}
+
+
 map <-ggplot() +
-  basemap_gglayer(bbox_new) + # Use new bbox to download the basemap
-  geom_sf(data = subset(site_points, ScreenedMicrobes == "1"), 
+  basemap_gglayer(bbox_new) + 
+  geom_sf(data = subset(site_points[these_rows,], ScreenedMicrobes == "1"), 
           color = "black",
           fill = "green",
           pch=25,
           size=3,
           stroke=1.1) +
-  geom_sf(data = subset(site_points, ScreenedMicrobes == "0"), 
+  geom_sf(data = subset(site_points[these_rows,], ScreenedMicrobes == "0"), 
           color = "black",
           fill = "orange",
           pch=21,
           size=2,
           stroke=1.1) +
+  geom_sf(data = subset(site_points[these_rows,]), 
+          color = "black",
+          fill = "orange",
+          pch=21,
+          size=0) +
+  geom_sf_label_repel(data=subset(site_points[these_rows,]),
+                      aes(label=Site, geometry=geometry),
+                      #point.padding = 10,
+                      min.segment.length = 0,
+                      box.padding = 0.5,
+                      nudge_x=1,
+                      seed=21) +
   coord_sf(xlim = st_coordinates(bbox_new)[c(1,2),1], # min & max of x values
            ylim = st_coordinates(bbox_new)[c(2,3),2], expand = FALSE) +
-  scale_fill_identity()+ 
+  scale_fill_identity() + 
   xlab("Longitude") + ylab("Latitude") +
   annotation_north_arrow(location = "tl", style = north_arrow_fancy_orienteering)+
   annotation_scale(location = "br") +
