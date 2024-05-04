@@ -28,6 +28,10 @@ fixPlantNames <- function(data.to.fix, ## specimen or veg data
 }
 
 
+## standardize a vector
+standardize <- function(x)
+  (x-mean(x, na.rm=TRUE))/sd(x, na.rm=TRUE)
+
 
 ## This functions takes site-species-abundance data and creates a
 ## matrix where the sites are columns and the rows are species.

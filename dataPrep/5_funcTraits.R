@@ -5,7 +5,7 @@ setwd("~/")
 source("lab_paths.R")
 local.path
 
-library(dplyr)
+library(tidyverse)
 dir.bombus <- file.path(local.path, "skyIslands/dataPrep")
 setwd(dir.bombus)
 
@@ -44,15 +44,21 @@ m.traits <- traits$GenusSpecies[apply(traits[, bee.traits], 1,
 write.csv(m.traits,
           file="../../skyIslands_saved/data/checks/missing_traits.csv")
 
+
+## an assumption to try to get things to run
+traits$Sociality[traits$Genus == "Lasioglossum"] <- "solitary"
+
 rownames(traits) <- traits$GenusSpecies
 traits$GenusSpecies <- NULL
 
+## check on unique values 
+apply(traits[, bee.traits], 2, unique)
 
 ## We grouped the traits based on what they are related to. For
 ## example, we have 3 nesting-related traits, so weighted each one by
 ## 1/3. This will avoid overweighting any trait type.
 
-bee.weights <- c(rep(1/3, 3), rep(1, 3))
+bee.weights <- c(rep(1/4, 4), rep(1, 2))
 
 ## *****************************************************************
 ## species-level function diversity metrics
@@ -91,3 +97,31 @@ write.csv(spec.net, file="../data/spec_traits.csv", row.names=FALSE)
 ## *****************************************************************
 ## site-level function diversity metrics
 ## *****************************************************************
+
+spec.net$SiteYearSr <- paste(spec.net$Site, spec.net$Year,
+                             spec.net$SampleRound,
+                             sep=";")
+## only working with bees
+bee.families <- c("Andrenidae", "Apidae", "Colletidae", "Halictidae",
+                  "Megachilidae")
+spec.net <- spec.net[spec.net$Family %in% bee.families,]
+
+spec.comm <- spec.net[, c("GenusSpecies", "SiteYearSr")]
+spec.comm <- spec.comm[spec.comm$GenusSpecies != "",]
+
+comms <- spec.comm %>% pivot_longer(cols = -SiteYearSr) %>%
+  group_by(SiteYearSr,value) %>% summarise(N=n()) %>%
+  pivot_wider(names_from = value, values_from=N) %>%
+  replace(is.na(.),0)
+
+comms <- as.data.frame(comms)
+rownames(comms) <- comms$SiteYearSr
+comms$SiteYearSr <- NULL
+
+bee.func <- calcFuncUniqOrig(traits,
+                             traits.2.keep=bee.traits,
+                             weights=bee.weights,
+                             type="networks",
+                             a = comms,
+                             w.abun=TRUE
+)

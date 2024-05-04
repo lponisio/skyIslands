@@ -91,7 +91,7 @@ sp.ids <- list(
                                   Species="Stathamae",
                                   SubSpecies="a",
                                   Sex="f", Author = "Cresson",
-                                  Determiner="NA",
+                                  Determiner="J.L. Neff",
                                   temp.id= c(38340, 38296)),
   
     ##   Panurginus_cressoniellus_f= list(Genus="Panurginus", SubGenus ="",
@@ -299,7 +299,7 @@ sp.ids <- list(
 
     Andrena_cerasifolii_f= list(Genus="Andrena",
                                 SubGenus ="Trachandrena",
-                                Species="Cerasifolii",
+                                Species="cerasifolii",
                                 SubSpecies="",
                                 Sex="f",
                                 Author = "Cockerell",

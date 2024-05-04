@@ -269,7 +269,7 @@ sp.ids <- list(
 
     Megachile_perihirta_f = list(Genus="Megachile",
                                  SubGenus ="Xanthosarus",
-                                 Species="",
+                                 Species="perihirta",
                                  SubSpecies="", Sex="f",
                                  Author = "Cockerell",
                                  Determiner = "J.L. Neff",
@@ -277,7 +277,7 @@ sp.ids <- list(
 
     Megachile_lippiae_f = list(Genus="Megachile",
                                SubGenus ="Litomegachile",
-                               Species="",
+                               Species="lippiae",
                                SubSpecies="", Sex="f",
                                Author = "Cockerell",
                                Determiner = "J.L. Neff",
@@ -285,7 +285,7 @@ sp.ids <- list(
 
     Megachile_onobrychidis_m = list(Genus="Megachile",
                                     SubGenus ="Litomegachile",
-                                    Species="",
+                                    Species="onobrychidis",
                                     SubSpecies="", Sex="m",
                                     Author = "Cockerell",
                                     Determiner = "J.L. Neff",
