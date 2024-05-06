@@ -118,6 +118,8 @@ comms <- as.data.frame(comms)
 rownames(comms) <- comms$SiteYearSr
 comms$SiteYearSr <- NULL
 
+colnames(comms)[!colnames(comms) %in% rownames(traits)]
+
 bee.func <- calcFuncUniqOrig(traits,
                              traits.2.keep=bee.traits,
                              weights=bee.weights,
