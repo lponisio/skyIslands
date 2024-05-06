@@ -23,6 +23,7 @@ library(brms)
 library(tidybayes)
 library(gridExtra)
 library(bayesplot)
+library(glmmTMB)
 library(performance)
 
 load("../../data/networks/microNets.RData")
@@ -47,10 +48,13 @@ transient.microbe.network = TRUE
 
 #### species level networks
 CH <- spNet_micro$CH
+CH <- CH[,colnames(CH)!=""]
 HM <- spNet_micro$HM
 JC <- spNet_micro$JC
 MM <- spNet_micro$MM 
+MM <- MM[,colnames(MM)!=""]
 PL <- spNet_micro$PL
+PL <- PL[,colnames(PL)!=""]
 RP <- spNet_micro$RP
 SC <- spNet_micro$SC 
 SM <- spNet_micro$SM
@@ -314,10 +318,13 @@ for (x in site_list){
 
 #### species level networks
 CH <- only_obligate_network$CH
+CH <- CH[,colnames(CH)!=""]
 HM <- only_obligate_network$HM
 JC <- only_obligate_network$JC
 MM <- only_obligate_network$MM 
+MM <- MM[,colnames(MM)!=""]
 PL <- only_obligate_network$PL
+PL <- PL[,colnames(PL)!=""]
 RP <- only_obligate_network$RP
 SC <- only_obligate_network$SC 
 SM <- only_obligate_network$SM
@@ -449,10 +456,13 @@ for (x in site_list){
 
 #### species level networks
 CH <- only_transient_network$CH
+CH <- CH[,colnames(CH)!=""]
 HM <- only_transient_network$HM
 JC <- only_transient_network$JC
 MM <- only_transient_network$MM 
+MM <- MM[,colnames(MM)!=""]
 PL <- only_transient_network$PL
+PL <- PL[,colnames(PL)!=""]
 RP <- only_transient_network$RP
 SC <- only_transient_network$SC 
 SM <- only_transient_network$SM
