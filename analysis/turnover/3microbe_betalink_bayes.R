@@ -32,14 +32,18 @@ load("../../data/spec_RBCL_16s.RData")
 
 whole.microbe.network = FALSE
 
-obligate.microbe.network = FALSE
+obligate.microbe.network = TRUE
 
 transient.microbe.network = TRUE
 #reworking script to run brms models
 
 ##adapted from Lauren's 1betalink in skyIslands folder
 
+## NEED TO TROUBLESHOOT
 
+## giving an error when a column in the networks doesn't have a species name
+## need to figure out what is going on
+## CH, MM, PL, all have one bee species that isn't labeled... check network code
 
 #### species level networks
 CH <- spNet_micro$CH
@@ -53,7 +57,6 @@ SM <- spNet_micro$SM
 
 lower.order <- "Microbes"
 higher.order <- "Pollinators"
-
 
 microbe_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, RP, SM, SC),
                                          partitioning="commondenom", binary=FALSE, distofempty='zero', partition.st=TRUE, partition.rr=FALSE)
