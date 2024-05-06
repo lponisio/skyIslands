@@ -35,7 +35,7 @@ calcFuncUniqOrig <- function(traits, traits.2.keep,
   site.func.mets <- dbFD(these.traits,
                          w=weights,
                          corr="lingoes", print.pco=T, ...)
-  browser()
+  #browser()
   coords <- site.func.mets$x.axes
   centr <- apply(coords, 2, mean)
 
