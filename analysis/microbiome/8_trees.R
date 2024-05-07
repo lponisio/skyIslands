@@ -1,15 +1,19 @@
 
 ## tutorial: https://bioconductor.org/packages/devel/bioc/vignettes/ggtreeExtra/inst/doc/ggtreeExtra.html
 rm(list=ls())
-
+setwd("~/")
+source("lab_paths.R")
+local.path
+setwd(local.path)
 #####
-setwd('~/Dropbox (University of Oregon)/skyIslands/')
+setwd('skyIslands/')
 
 
 source('dataPrep/src/trees_init.R')
 load('presAbsTable.Rdata')
 load('spec_RBCL_16s.Rdata')
 load('physeq16s.Rdata')
+load('networks/microNets.Rdata')
 ##import community presence/absence file
 setwd("../../skyIslands_saved")
 
