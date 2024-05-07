@@ -74,7 +74,7 @@ sp.ids <- list(
 
     
     Protandrena_sp_b= list(Genus="Protandrena", SubGenus ="",
-                           Species="n. sp.",
+                           Species="sp.",
                            SubSpecies="b",
                            Sex="f", Author = "",
                            Determiner="D. Yanega",
@@ -540,8 +540,8 @@ sp.ids <- list(
 
     Perdita_sp2= list(Genus="Perdita",
                       SubGenus="Perdita",
-                      Species="sp. 2",
-                      SubSpecies="", Sex="f",
+                      Species="sp.",
+                      SubSpecies="2", Sex="f",
                       Author = "",
                       Determiner="T.  Griswold",
                       temp.id= c("BBSL1072169")),

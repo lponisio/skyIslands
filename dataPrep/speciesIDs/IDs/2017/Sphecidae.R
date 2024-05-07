@@ -84,8 +84,8 @@ sp.ids <- list(
        "BBSL1058646", "BBSL1058684")),
 
 ## ammophila 2017
-ammophila= list(Genus="Ammophila", SubGenus ="sp.",
-                 Species="a", SubSpecies="", Sex="",
+ammophila= list(Genus="Ammophila", SubGenus ="",
+                 Species="sp.", SubSpecies="a", Sex="",
                  Author = "",
                  Determiner="J. Schlauch", temp.id
                 =c("BBSL1087079","BBSL1087213","BBSL1084508",
