@@ -289,7 +289,6 @@ ob.microbe.bombus.y <- "PD.obligate.log | weights(LogWeightsObligateAbund)"
 formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
-
 bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus)
 
 
