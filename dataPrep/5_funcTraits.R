@@ -126,9 +126,6 @@ comms$SiteYearSr <- NULL
 ## check that all the species in the community matrix are in traits
 colnames(comms)[!colnames(comms) %in% rownames(traits)]
 
-## alphabatize the community matrix
-comms <- comms[,order(colnames(comms))]
-
 bee.func <- calcFuncUniqOrig(traits,
                              traits.2.keep=bee.traits,
                              weights=bee.weights,
