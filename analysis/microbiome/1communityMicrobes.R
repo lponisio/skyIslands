@@ -291,7 +291,6 @@ formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
 
 bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus)
 
-
 ## non ob PD model
 non.ob.microbe.bombus.vars <- c("BeeAbundance",
                             "BeeDiversity", "Lat", #check this doesn't make VIF high
