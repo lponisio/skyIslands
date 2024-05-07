@@ -33,9 +33,9 @@ load("../../data/spec_RBCL_16s.RData")
 
 whole.microbe.network = FALSE
 
-obligate.microbe.network = TRUE
+obligate.microbe.network = FALSE
 
-transient.microbe.network = FALSE
+transient.microbe.network = TRUE
 #reworking script to run brms models
 
 ##adapted from Lauren's 1betalink in skyIslands folder
