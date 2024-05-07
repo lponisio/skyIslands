@@ -9,11 +9,8 @@ library(tidyverse)
 dir.bombus <- file.path(local.path, "skyIslands/dataPrep")
 setwd(dir.bombus)
 
-## calculate trait uniqueness and originality based on Coux et al. 2016
-## currently traits are across all SI, need to update to be meadow
-## specific
-
-## also many bees are missing traits, need to fill in
+## calculate trait uniqueness and originality based on Coux et
+## al. 2016 for each site-year-round
 
 source("src/calcFuncUniqOrig.R")
 source("src/misc.R")

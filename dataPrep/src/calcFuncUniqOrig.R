@@ -80,7 +80,7 @@ calcFuncUniqOrig <- function(traits, traits.2.keep,
                              w.abun=TRUE,
                              ...){
   ## this function calculates trait uniqueness and originality based
-  ## coux et al.
+  ## coux et al. The centroid is calculate for each site, year round. 
 
   ## drop unwanted traits
   these.traits <- traits[, traits.2.keep]
