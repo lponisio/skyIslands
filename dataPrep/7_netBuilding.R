@@ -169,66 +169,59 @@ save(indivNetSums_micro, indivNetSums_microBinary,
 ## Parasite networks
 ## ***********************************************************************
 
+## get columns of parasite presence to feed into illumSplit
 
-# parasite networks not working right now!
-# 
-# 
-# #get columns of parasite presence to feed into illumSplit
-# 
-# names.Para <- c("AscosphaeraSpp","ApicystisSpp", "AspergillusSpp",
-#                 "CrithidiaBombi", "CrithidiaExpoeki",
-#                 "NosemaCeranae", "NosemaBombi" )
-# 
-# ## no       "CrithidiaSpp",
-# 
-# spec.net[, names.Para] <- apply(spec.net[, names.Para], 2, as.numeric)
-# seq.para <- spec.net[apply(spec.net[, names.Para], 1, function(x) !all(is.na(x))),]
-# 
-# indivNet_para  <-  illumSplit(seq.para,"Site",names.Para)
-# 
-# 
-# pol.sp.para <- lapply(indivNet_para,
-#                 function(x){
-#                     spec.net$GenusSpecies[match(colnames(x),
-#                                             spec.net$UniqueID)]
-# })
-# 
-# ## species level
-# pol.abund.site.para <- pol.abund.site[names(indivNet_para)]
-# 
-# ## species level network
-# spNet_para <-  mapply(makeSpNet,
-#     indiv.nets = indivNet_para,
-#     sp.names = pol.sp.para,
-#     sp.abund=pol.abund.site.para,
-#     SIMPLIFY = FALSE)
-# 
-# 
-# #save networks themselves
-# save(indivNet_para, spNet_para, pol.abund.site.para,
-#      file =file.path(save.dir, 'paraNets.RData'))
-# 
-# #calculate network summary statistics
-# 
-# indivNetSums_para  <-  netSums(indivNet_para, spec=spec.net)
-# 
-# # spNetSums_para  <-  netSums(spNet_para, spec=spec.net,
-# #                             type="sp", FUN=lapply)
-# 
-# 
-# save(indivNetSums_para, #spNetSums_para,
-#      file = file.path(save.dir, 'NetSums_para.RData'))
+names.Para <- c("AscosphaeraSpp","ApicystisSpp",
+                "CrithidiaBombi", "CrithidiaExpoeki",
+                "NosemaCeranae", "NosemaBombi", "CrithidiaSpp")
+
+spec.net[, names.Para] <- apply(spec.net[, names.Para], 2, as.numeric)
+seq.para <- spec.net[apply(spec.net[, names.Para], 1, function(x) !all(is.na(x))),]
+
+indivNet_para  <-  illumSplit(seq.para,"Site",names.Para)
+
+
+pol.sp.para <- lapply(indivNet_para,
+                function(x){
+                    spec.net$GenusSpecies[match(colnames(x),
+                                            spec.net$UniqueID)]
+})
+
+## species level
+pol.abund.site.para <- pol.abund.site[names(indivNet_para)]
+
+## species level network
+spNet_para <-  mapply(makeSpNet,
+    indiv.nets = indivNet_para,
+    sp.names = pol.sp.para,
+    sp.abund=pol.abund.site.para,
+    SIMPLIFY = FALSE)
+
+
+#save networks themselves
+save(indivNet_para, spNet_para, pol.abund.site.para,
+     file =file.path(save.dir, 'paraNets.RData'))
+
+#calculate network summary statistics
+
+indivNetSums_para  <-  netSums(indivNet_para, spec=spec.net)
+
+spNetSums_para  <-  netSums(spNet_para, spec=spec.net,
+                            type="sp", FUN=lapply)
+
+
+save(indivNetSums_para, spNetSums_para,
+     file = file.path(save.dir, 'NetSums_para.RData'))
 
 ## ***********************************************************************
 ## combined dataframe of all the network metrics
 ## ***************************************************************
 load( file =file.path(save.dir, 'NetSums_micro.RData'))
 load(   file=file.path(save.dir, 'NetSums_rbcl.RData'))
-#load(   file=file.path(save.dir, 'NetSums_para.RData'))
+load(   file=file.path(save.dir, 'NetSums_para.RData'))
 
-
-#net.metrics <- colnames(indivNetSums_para)[!
-#    colnames(indivNetSums_para) %in% c("Site", "GenusSpecies", "UniqueID")]
+net.metrics <- colnames(indivNetSums_para)[!
+   colnames(indivNetSums_para) %in% c("Site", "GenusSpecies", "UniqueID")]
 
 net.metrics <- colnames(indivNetSums_micro)[!
    colnames(indivNetSums_micro) %in% c("Site", "GenusSpecies", "UniqueID")]

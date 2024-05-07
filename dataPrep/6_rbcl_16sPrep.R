@@ -9,11 +9,8 @@ setwd("~/")
 source("lab_paths.R")
 local.path
 
-
 setwd(local.path)
-setwd('skyIslands')
-setwd('../skyIslands_saved')
-
+setwd('skyIslands_saved')
 
 library(tidyr)
 library(dplyr)
@@ -21,6 +18,8 @@ library(bipartite)
 library(phyloseq)
 library(TreeTools)
 library(devtools)
+library(ape)
+
 
 devtools::install_github("jbisanz/qiime2R")
 library(qiime2R)
@@ -84,9 +83,6 @@ tree.16sR0$tip.label  <-  feature.2.tax.16s$Taxon[match(tree.16sR0$tip.label,
 
 
 ## 10-24-2023 Rebecca is dropping all sequences that are only resolved to the first level D_0__Bacteria
-# Load the required package
-library(ape)
-
 
 # Identify tips with labels exactly matching '16s:D_0__Bacteria'
 matching_tips <- grep('^16s:d__Bacteria$', tree.16sR0$tip.label)
@@ -103,19 +99,11 @@ unassigned_tips <- grep('^16s:Unassigned$', tree.16sR0$tip.label)
 # Drop the tips that are NA
 tree.16sR0 <- drop.tip(tree.16sR0, tree.16sR0$tip.label[is.na(tree.16sR0$tip.label)])
 
-
 plot(tree.16sR0, show.tip.label = FALSE)
-
-
-
 
 ## ***********************************************************************
 ## 16s networks
 ## ***********************************************************************
-
-## something going wrong here
-## only 197 specimens in indiv.comm.16sR0 instead of 780 ish
-## double check merge worked in pipeline, not sure why so many are being dropped
 
 finalASVtable <- read.csv(file.path(qza.16s.path, "final_asv_table/16s_final_asv_table.csv"), header=TRUE)
 
@@ -312,7 +300,6 @@ save(finalASVtable, file= "../skyIslands/data/presAbsTable.Rdata")
 ## working with a merged 16s tree
 ## ***********************************************************************
 
-
 # upload our mega 16s phylogenetic tree
 
 mega16sdata <- read_qza("SI_pipeline/merged/16s/rooted-tree16s.qza")
@@ -332,7 +319,6 @@ drop_dupes <- function(tree, thres=1e-5){
 ## what is a good cutoff?
 tree.16s <- drop_dupes(tree.16s, thres=1e-3)
 
-
 # make distance matrix
 
 tree.16s$tip.label  <-  feature.2.tax.16s$Taxon[match(tree.16s$tip.label,
@@ -345,44 +331,49 @@ tree.16s <- drop.tip(tree.16s, which(duplicated(tree.16s$tip.label)))
 ## ***********************************************************************
 ## RBCL
 ## ***********************************************************************
-# R0
+## R0
 weightedUFrbclqzaR0 <- read_qza(file.path(qza.rbcl.path,
                                           'core_metricsRBCLR0/weighted_unifrac_distance_matrix.qza'))
 
 unweightedUFrbclqzaR0 <- read_qza(file.path(qza.rbcl.path,
                                             'core_metricsRBCLR0/unweighted_unifrac_distance_matrix.qza'))
-# R1
+
+## R1
 weightedUFrbclqzaR1 <- read_qza(file.path(qza.rbcl.path,
                                           'core_metricsRBCLR1/weighted_unifrac_distance_matrix.qza'))
 
 unweightedUFrbclqzaR1 <- read_qza(file.path(qza.rbcl.path,
                                             'core_metricsRBCLR1/unweighted_unifrac_distance_matrix.qza'))
-# R2
+
+## R2
 weightedUFrbclqzaR2 <- read_qza(file.path(qza.rbcl.path,
                                           'core_metricsRBCLR2/weighted_unifrac_distance_matrix.qza'))
 
 unweightedUFrbclqzaR2 <- read_qza(file.path(qza.rbcl.path,
                                             'core_metricsRBCLR2/unweighted_unifrac_distance_matrix.qza'))
 
-# R3
+## R3
 weightedUFrbclqzaR3 <- read_qza(file.path(qza.rbcl.path,
                                           'core_metricsRBCLR3/weighted_unifrac_distance_matrix.qza'))
 
 unweightedUFrbclqzaR3 <- read_qza(file.path(qza.rbcl.path,
                                             'core_metricsRBCLR3/unweighted_unifrac_distance_matrix.qza'))
-# R4
+
+## R4
 weightedUFrbclqzaR4 <- read_qza(file.path(qza.rbcl.path,
                                           'core_metricsRBCLR4/weighted_unifrac_distance_matrix.qza'))
 
 unweightedUFrbclqzaR4 <- read_qza(file.path(qza.rbcl.path,
                                             'core_metricsRBCLR4/unweighted_unifrac_distance_matrix.qza'))
-# R5
+
+## R5
 weightedUFrbclqzaR5 <- read_qza(file.path(qza.rbcl.path,
                                           'core_metricsRBCLR5/weighted_unifrac_distance_matrix.qza'))
 
 unweightedUFrbclqzaR5 <- read_qza(file.path(qza.rbcl.path,
                                             'core_metricsRBCLR5/unweighted_unifrac_distance_matrix.qza'))
-# R6
+
+## R6
 weightedUFrbclqzaR6 <- read_qza(file.path(qza.rbcl.path,
                                           'core_metricsRBCLR6/weighted_unifrac_distance_matrix.qza'))
 
@@ -586,56 +577,56 @@ feature.2.tax.rbcl <-
 feature.2.tax.rbcl$Taxon  <- gsub(" ", "_", feature.2.tax.rbcl$Taxon)
 feature.2.tax.rbcl$Taxon <- paste("RBCL", feature.2.tax.rbcl$Taxon,
                                   sep=':')
-#R0
+## R0
 tree.rbclR0 <- phy_tree(physeqRBCLR0, errorIfNULL=TRUE)
-# R1
+## R1
 tree.rbclR1 <- phy_tree(physeqRBCLR1, errorIfNULL=TRUE)
-# R2
+## R2
 tree.rbclR2 <- phy_tree(physeqRBCLR2, errorIfNULL=TRUE)
-# R3
+## R3
 tree.rbclR3 <- phy_tree(physeqRBCLR3, errorIfNULL=TRUE)
-# R4
+## R4
 tree.rbclR4 <- phy_tree(physeqRBCLR4, errorIfNULL=TRUE)
-# R5
+## R5
 tree.rbclR5 <- phy_tree(physeqRBCLR5, errorIfNULL=TRUE)
-# R6
+## R6
 tree.rbclR6 <- phy_tree(physeqRBCLR6, errorIfNULL=TRUE)
-# R7
+## R7
 tree.rbclR7 <- phy_tree(physeqRBCLR7, errorIfNULL=TRUE)
 
 ## in the future do the same for other runs
 ## tree.rbclR1 <- phy_tree(physeqRBCLR1, errorIfNULL=TRUE)
 
 ## match the tip labs to the table with feature ID and Taxon
-# R0
+## R0
 tree.rbclR0$tip.label  <-  feature.2.tax.rbcl$Taxon[
                            match(tree.rbclR0$tip.label,
                            feature.2.tax.rbcl$Feature.ID)]
-# R1
+## R1
 tree.rbclR1$tip.label  <-  feature.2.tax.rbcl$Taxon[
   match(tree.rbclR1$tip.label,
         feature.2.tax.rbcl$Feature.ID)]
-# R2
+## R2
 tree.rbclR2$tip.label  <-  feature.2.tax.rbcl$Taxon[
   match(tree.rbclR2$tip.label,
         feature.2.tax.rbcl$Feature.ID)]
-# R3
+## R3
 tree.rbclR3$tip.label  <-  feature.2.tax.rbcl$Taxon[
   match(tree.rbclR3$tip.label,
         feature.2.tax.rbcl$Feature.ID)]
-# R4
+## R4
 tree.rbclR4$tip.label  <-  feature.2.tax.rbcl$Taxon[
   match(tree.rbclR4$tip.label,
         feature.2.tax.rbcl$Feature.ID)]
-# R5
+## R5
 tree.rbclR5$tip.label  <-  feature.2.tax.rbcl$Taxon[
   match(tree.rbclR5$tip.label,
         feature.2.tax.rbcl$Feature.ID)]
-# R6
+## R6
 tree.rbclR6$tip.label  <-  feature.2.tax.rbcl$Taxon[
   match(tree.rbclR6$tip.label,
         feature.2.tax.rbcl$Feature.ID)]
-# R7
+## R7
 tree.rbclR7$tip.label  <-  feature.2.tax.rbcl$Taxon[
   match(tree.rbclR7$tip.label,
         feature.2.tax.rbcl$Feature.ID)]
@@ -654,52 +645,53 @@ tree.rbclR7$tip.label  <-  feature.2.tax.rbcl$Taxon[
 indiv.comm.rbclR0 <-
     bipartite::empty(catchDups(makeComm(taxonomyRBCLR0,
                                         feature.2.tax.rbcl,
-                                        feature.col="Feature.ID"))) # changed to "Feature.ID" to match 'makeComm' function
+                                        feature.col="Feature.ID")))
+                                        # changed to "Feature.ID" to match 'makeComm' function
 
 indiv.comm.rbclR0 <- indiv.comm.rbclR0/rowSums(indiv.comm.rbclR0)
-# R1
+## R1
 indiv.comm.rbclR1 <-
   bipartite::empty(catchDups(makeComm(taxonomyRBCLR1,
                                       feature.2.tax.rbcl,
                                       feature.col="Feature.ID")))
 
 indiv.comm.rbclR1 <- indiv.comm.rbclR1/rowSums(indiv.comm.rbclR1)
-# R2
+## R2
 indiv.comm.rbclR2 <-
   bipartite::empty(catchDups(makeComm(taxonomyRBCLR2,
                                       feature.2.tax.rbcl,
                                       feature.col="Feature.ID")))
 
 indiv.comm.rbclR2 <- indiv.comm.rbclR2/rowSums(indiv.comm.rbclR2)
-# R3
+## R3
 indiv.comm.rbclR3 <-
   bipartite::empty(catchDups(makeComm(taxonomyRBCLR3,
                                       feature.2.tax.rbcl,
                                       feature.col="Feature.ID")))
 
 indiv.comm.rbclR3 <- indiv.comm.rbclR3/rowSums(indiv.comm.rbclR3)
-# R4
+## R4
 indiv.comm.rbclR4 <-
   bipartite::empty(catchDups(makeComm(taxonomyRBCLR4,
                                       feature.2.tax.rbcl,
                                       feature.col="Feature.ID")))
 
 indiv.comm.rbclR4 <- indiv.comm.rbclR4/rowSums(indiv.comm.rbclR4)
-# R5
+## R5
 indiv.comm.rbclR5 <-
   bipartite::empty(catchDups(makeComm(taxonomyRBCLR5,
                                       feature.2.tax.rbcl,
                                       feature.col="Feature.ID")))
 
 indiv.comm.rbclR5 <- indiv.comm.rbclR5/rowSums(indiv.comm.rbclR5)
-# R6
+## R6
 indiv.comm.rbclR6 <-
   bipartite::empty(catchDups(makeComm(taxonomyRBCLR6,
                                       feature.2.tax.rbcl,
                                       feature.col="Feature.ID")))
 
 indiv.comm.rbclR6 <- indiv.comm.rbclR6/rowSums(indiv.comm.rbclR6)
-# R7
+## R7
 indiv.comm.rbclR7 <-
   bipartite::empty(catchDups(makeComm(taxonomyRBCLR7,
                                       feature.2.tax.rbcl,
@@ -719,13 +711,13 @@ indiv.comm.rbclR7 <- indiv.comm.rbclR7/rowSums(indiv.comm.rbclR7)
 # comms <- list(indiv.comm.rbclR0)
 
  bees.rbcl <- c(rownames(indiv.comm.rbclR0),
-               paste0("SF", rownames(indiv.comm.rbclR1)),
-               paste0("SF", rownames(indiv.comm.rbclR2)),
-               paste0("SF", rownames(indiv.comm.rbclR3)),
-               paste0("SF", rownames(indiv.comm.rbclR4)),
-               paste0("SF", rownames(indiv.comm.rbclR5)),
-               paste0("SF", rownames(indiv.comm.rbclR6)),
-               paste0("SF", rownames(indiv.comm.rbclR7)))
+               rownames(indiv.comm.rbclR1),
+               rownames(indiv.comm.rbclR2)),
+               rownames(indiv.comm.rbclR3)),
+               rownames(indiv.comm.rbclR4)),
+               rownames(indiv.comm.rbclR5)),
+               rownames(indiv.comm.rbclR6)),
+               rownames(indiv.comm.rbclR7))
 
  comms <- list(indiv.comm.rbclR0, indiv.comm.rbclR1,
                indiv.comm.rbclR2, indiv.comm.rbclR3,
@@ -742,7 +734,6 @@ length(species.rbcl)
 
 rownames(merged.comm.rbcl) <- bees.rbcl
 
-
 megaRBCLdata <- read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza")
 tree.rbcl <- megaRBCLdata$data
 
@@ -758,10 +749,8 @@ tree.rbcl$tip.label  <-  feature.2.tax.rbcl$Taxon[match(tree.rbcl$tip.label,
 ## Make mega dataset
 ## ***********************************************************************
 
-
 ## spec already includes parasite data
-load('../skyIslands/data/spec_net.Rdata')
-
+load('../skyIslands/data/spec_net_fdiv.Rdata')
 
 indiv.comm.rbcl <- as.data.frame(merged.comm.rbcl)
 pollen <- colnames(indiv.comm.rbcl)
@@ -779,8 +768,7 @@ spec.net <-cbind(spec.net, indiv.comm.16s[, bact][match(spec.net$UniqueID,
 spec.net <-cbind(spec.net, indiv.comm.rbcl[, pollen][match(spec.net$UniqueID,
                            indiv.comm.rbcl$UniqueID),])
 
-
-#drop duplicate sampleIDs
+## drop duplicate sampleIDs
 spec.net <- spec.net[!duplicated(spec.net$UniqueID),]
   
 save(spec.net, file= "../skyIslands/data/spec_RBCL_16s.Rdata")
