@@ -122,14 +122,14 @@ fit.parasites <- runCombinedParasiteModels(spec.net, species.group="melissodes",
 
 ## bombus
 
-crithidia.formula <- formula(CrithidiaPresence | weights(Weights) + trials(1) ~
-                              Net_BombusAbundance + Net_BeeDiversity +
-                              rare.degree + MeanITD + (1|Site)+ 
+crithidia.formula <- formula(CrithidiaPresence | weights(Weights) ~
+                              Net_BombusAbundance + Net_BeeDiversity*Site +
+                              rare.degree + MeanITD + 
                               (1|gr(GenusSpecies, cov = phylo_matrix))
 )
 
 bf.crithidia <- bf(crithidia.formula,
-                   family="zero_inflated_binomial") 
+                   family="bernoulli") 
 
 fit.bombus.crithidia <- brm(bf.crithidia, spec.bombus,
                             cores= ncores,
