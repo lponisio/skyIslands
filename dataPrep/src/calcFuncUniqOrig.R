@@ -161,6 +161,18 @@ calcFuncUniqOrig <- function(traits, traits.2.keep,
   by.comm.mets <- lapply(coords.comm, calcSiteLevelSpMets)
   names(by.comm.mets) <- rownames(a)
 
+  for(i in 1:length(by.comm.mets)){
+    this.name <-  names(by.comm.mets)[i]
+    this.comm <- by.comm.mets[[i]]
+    this.comm$SiteYearSr <- this.name
+    this.comm$GenusSpecies <- rownames(this.comm)
+    rownames(this.comm) <- NULL
+    by.comm.mets[[i]] <- this.comm
+  }
+
+  by.comm.mets <- do.call(rbind, by.comm.mets)
+  rownames(by.comm.mets) <- NULL
+  
   return(list(fd=   site.func.mets,
               by.comm.mets = by.comm.mets))
 }

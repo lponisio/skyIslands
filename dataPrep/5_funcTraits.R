@@ -145,3 +145,9 @@ rownames(fd) <- NULL
 spec.net <- merge(spec.net, fd, all.x=TRUE,
                   by="SiteYearSr")
 dim(spec.net)
+
+spec.net <- merge(spec.net, bee.func$by.comm.mets, all.x=TRUE)
+dim(spec.net)
+
+
+save(spec.net, file='../data/spec_net_fdiv.Rdata')
