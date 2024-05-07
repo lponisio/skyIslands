@@ -136,6 +136,7 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label, ne
   model_geodist <- mod_summary[rownames(mod_summary) == "GeoDist",]
   
   if(network_type == "Obligate") {
+    point_color <- "darkgreen"
   if(model_geodist$Pgt0 >= 0.97){
     ribbon_color <- "Greens"
   } else if (model_geodist$Pgt0 <= 0.03) {
@@ -144,6 +145,7 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label, ne
   }
   
   if(network_type == "Transient") {
+    point_color <- "darkorange"
     if(model_geodist$Pgt0 >= 0.97){
       ribbon_color <- "Oranges"
     } else if (model_geodist$Pgt0 <= 0.03) {
@@ -171,13 +173,13 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label, ne
     scale_fill_brewer(palette = ribbon_color) +
     labs(x = "Geographic Distance (km)", y = label,
          fill = "Credible Interval") +
+    theme_classic() +
+    geom_point(data=this_network,
+               aes(y=this_component, x=GeoDist), fill=point_color, color="black", pch=21, cex=2, alpha=0.9) + ylim(0,1) +
     theme(axis.title.x = element_text(size=16),
           axis.title.y = element_text(size=16),
           text = element_text(size=16),
-          legend.position = "none") +
-    theme_classic() +
-    geom_point(data=this_network,
-               aes(y=this_component, x=GeoDist), cex=2, alpha=0.5) + ylim(0,1)
+          legend.position = "none")
 
   # Return a list containing the model summary[1] and the generated 'turnover.plot'[2].
   return(list(mod_summary, fig, mod1))
