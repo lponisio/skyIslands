@@ -33,7 +33,7 @@ load("../../data/spec_RBCL_16s.RData")
 
 whole.microbe.network = FALSE
 
-obligate.microbe.network = TRUE
+obligate.microbe.network = FALSE
 
 transient.microbe.network = TRUE
 #reworking script to run brms models
@@ -130,6 +130,7 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label, ne
               init=0,
               control = list(adapt_delta = 0.99),
               save_pars = save_pars(all = TRUE))
+  #browser()
   
   mod_summary <- write.summ.table(mod1)
   model_geodist <- mod_summary[rownames(mod_summary) == "GeoDist",]
@@ -150,7 +151,7 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label, ne
       } else {ribbon_color <- "Greys"}
   }
   
-  diag <- plot(check_model(mod1, panel = TRUE))
+  #diag <- plot(check_model(mod1, panel = TRUE))
   
   newdata.mod <- tidyr::crossing(GeoDist = seq(min(this_network$GeoDist),
                                             max(this_network$GeoDist),
@@ -179,7 +180,7 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label, ne
                aes(y=this_component, x=GeoDist), cex=2, alpha=0.5) + ylim(0,1)
 
   # Return a list containing the model summary[1] and the generated 'turnover.plot'[2].
-  return(list(mod_summary, fig, diag, mod1))
+  return(list(mod_summary, fig, mod1))
   
   
 }
