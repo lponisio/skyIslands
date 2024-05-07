@@ -250,9 +250,12 @@ ggsave(p, file="figures/proportion_pos.jpg",
 
 parasite_prevalence_sites <- spec.net %>%  
   filter(Site != "VC" & Site != "UK" & Site != "SS") %>% 
-  ggplot(aes(x= reorder(Site, Lat, decreasing = TRUE), y= SpCrithidiaBombusParasitismRate, fill = GenusSpecies)) +
-  geom_boxplot()+
-  labs(x = "Bombus Species", y = "Crithidia Parasitism Rate")+
+  filter(Genus == "Bombus") %>% 
+  ggplot(aes(x= reorder(Site, Lat, decreasing = TRUE), y= SpCrithidiaBombusParasitismRate, 
+              color = GenusSpecies )) +
+  geom_box_plot() +
+ # geom_bar(stat="identity", position = "dodge") + theme_minimal() +
+  labs(x = "Sites", y = "Crithidia Parasitism Rate")+
   theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
         axis.title.y = element_text(size=10),
         text = element_text(size=10))

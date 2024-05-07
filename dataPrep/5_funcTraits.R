@@ -9,11 +9,8 @@ library(tidyverse)
 dir.bombus <- file.path(local.path, "skyIslands/dataPrep")
 setwd(dir.bombus)
 
-## calculate trait uniqueness and originality based on Coux et al. 2016
-## currently traits are across all SI, need to update to be meadow
-## specific
-
-## also many bees are missing traits, need to fill in
+## calculate trait uniqueness and originality based on Coux et
+## al. 2016 for each site-year-round
 
 source("src/calcFuncUniqOrig.R")
 source("src/misc.R")
@@ -45,6 +42,7 @@ write.csv(m.traits,
           file="../../skyIslands_saved/data/checks/missing_traits.csv")
 
 
+## FIX THIS EVENTUALLY
 ## an assumption to try to get things to run
 traits$Sociality[traits$Genus == "Lasioglossum"] <- "solitary"
 
@@ -60,39 +58,43 @@ apply(traits[, bee.traits], 2, unique)
 
 bee.weights <- c(rep(1/4, 4), rep(1, 2))
 
+traits <- traits[, bee.traits]
+
+
 ## *****************************************************************
 ## species-level function diversity metrics
 ## *****************************************************************
 ## calculates data for two new columns we are adding to database,
 ## "originality" and "uniq"
-bee.func <- calcFuncUniqOrig(traits,
-                             traits.2.keep=bee.traits,
-                             weights=bee.weights,
-                             type="all spec")
 
-bee.func$GenusSpecies <- rownames(bee.func)
-traits$GenusSpecies <- rownames(traits)
-rownames(traits) <- NULL
-rownames(bee.func) <- NULL
+## bee.func <- calcFuncUniqOrig(traits,
+##                              traits.2.keep=bee.traits,
+##                              weights=bee.weights,
+##                              type="all spec")
 
-traits <- merge(traits, bee.func, by="GenusSpecies")
+## bee.func$GenusSpecies <- rownames(bee.func)
+## traits$GenusSpecies <- rownames(traits)
+## rownames(traits) <- NULL
+## rownames(bee.func) <- NULL
 
-all.traits <- colnames(traits)[!colnames(traits) %in%
-                               c("GenusSpecies")]
-## save prepped data
-spec.net <- cbind(spec.net, traits[, all.traits][match(spec.net$GenusSpecies,
-                           traits$GenusSpecies),])
+## traits <- merge(traits, bee.func, by="GenusSpecies")
 
-## spec.net$r.degree <- as.numeric(spec.net$r.degree)
+## all.traits <- colnames(traits)[!colnames(traits) %in%
+##                                c("GenusSpecies")]
+## ## save prepped data
+## spec.net <- cbind(spec.net, traits[, all.traits][match(spec.net$GenusSpecies,
+##                            traits$GenusSpecies),])
 
-print(paste("missing trait data",
-            sort(unique(spec.net$GenusSpecies[is.na(spec.net$Lecty)]))))
+## ## spec.net$r.degree <- as.numeric(spec.net$r.degree)
 
-write.csv(traits, file="../data/traits.csv",
-          row.names=FALSE)
+## print(paste("missing trait data",
+##             sort(unique(spec.net$GenusSpecies[is.na(spec.net$Lecty)]))))
 
-save(spec.net, file="../data/spec_traits.Rdata")
-write.csv(spec.net, file="../data/spec_traits.csv", row.names=FALSE)
+## write.csv(traits, file="../data/traits.csv",
+##           row.names=FALSE)
+
+## save(spec.net, file="../data/spec_traits.Rdata")
+## write.csv(spec.net, file="../data/spec_traits.csv", row.names=FALSE)
 
 ## *****************************************************************
 ## site-level function diversity metrics
@@ -104,9 +106,9 @@ spec.net$SiteYearSr <- paste(spec.net$Site, spec.net$Year,
 ## only working with bees
 bee.families <- c("Andrenidae", "Apidae", "Colletidae", "Halictidae",
                   "Megachilidae")
-spec.net <- spec.net[spec.net$Family %in% bee.families,]
 
-spec.comm <- spec.net[, c("GenusSpecies", "SiteYearSr")]
+spec.comm <- spec.net[spec.net$Family %in% bee.families,]
+spec.comm <- spec.comm[, c("GenusSpecies", "SiteYearSr")]
 spec.comm <- spec.comm[spec.comm$GenusSpecies != "",]
 
 comms <- spec.comm %>% pivot_longer(cols = -SiteYearSr) %>%
@@ -118,12 +120,31 @@ comms <- as.data.frame(comms)
 rownames(comms) <- comms$SiteYearSr
 comms$SiteYearSr <- NULL
 
+## check that all the species in the community matrix are in traits
 colnames(comms)[!colnames(comms) %in% rownames(traits)]
 
 bee.func <- calcFuncUniqOrig(traits,
                              traits.2.keep=bee.traits,
                              weights=bee.weights,
-                             type="networks",
+                             type="all spec",
                              a = comms,
                              w.abun=TRUE
-)
+                             )
+
+
+## merge the site-year-round level functional diversity metrics
+dim(spec.net)
+fd <- data.frame(BeeFDis=bee.func$fd$FDis,
+                   BeeFEve=bee.func$fd$FEve,
+                   SiteYearSr=names(bee.func$fd$FDis))
+rownames(fd) <- NULL
+
+spec.net <- merge(spec.net, fd, all.x=TRUE,
+                  by="SiteYearSr")
+dim(spec.net)
+
+spec.net <- merge(spec.net, bee.func$by.comm.mets, all.x=TRUE)
+dim(spec.net)
+
+
+save(spec.net, file='../data/spec_net_fdiv.Rdata')
