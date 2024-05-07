@@ -33,9 +33,9 @@ load("../../data/spec_RBCL_16s.RData")
 
 whole.microbe.network = FALSE
 
-obligate.microbe.network = FALSE
+obligate.microbe.network = TRUE
 
-transient.microbe.network = TRUE
+transient.microbe.network = FALSE
 #reworking script to run brms models
 
 ##adapted from Lauren's 1betalink in skyIslands folder
@@ -169,7 +169,7 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label, ne
   fig <- ggplot(pred_mod, aes(x = GeoDist, y =.epred)) +
     stat_lineribbon(show.legend = FALSE) +
     scale_fill_brewer(palette = ribbon_color) +
-    labs(x = "Geographic Distance", y = label,
+    labs(x = "Geographic Distance (km)", y = label,
          fill = "Credible Interval") +
     theme(axis.title.x = element_text(size=16),
           axis.title.y = element_text(size=16),
@@ -282,7 +282,19 @@ grid.arrange(panelA,
              panelD,
              panelE,
              panelF,
-             ncol=2)}
+             ncol=2)
+
+pdf("figures/grid_all_microbes.pdf", width = 8.5, height = 11) # Open a new pdf file
+grid.arrange(panelA,
+             panelB,
+             panelC,
+             panelD,
+             panelE,
+             panelF,
+             ncol=2) # Write the grid.arrange in the file
+dev.off()
+
+}
 #################################################################
 
 if(obligate.microbe.network==TRUE){
@@ -417,13 +429,16 @@ panelE <- sp.turnover.microbes[[2]] + labs(tag="E.")
 panelF <- int.turnover.rewiring[[2]] + labs(tag="F.")
 
 
+
+pdf("figures/obligate_microbe_poll/grid_obligate_microbes.pdf", width = 8.5, height = 11) # Open a new pdf file
 grid.arrange(panelA,
              panelB,
              panelC,
              panelD,
              panelE,
              panelF,
-             ncol=2)
+             ncol=2) # Write the grid.arrange in the file
+dev.off()
 }
 
 if(transient.microbe.network==TRUE){
@@ -555,12 +570,14 @@ panelE <- sp.turnover.microbes[[2]] + labs(tag="E.")
 panelF <- int.turnover.rewiring[[2]] + labs(tag="F.")
 
 
+pdf("figures/transient_microbe_poll/grid_transient_microbes.pdf", width = 8.5, height = 11) # Open a new pdf file
 grid.arrange(panelA,
              panelB,
              panelC,
              panelD,
              panelE,
              panelF,
-             ncol=2)
+             ncol=2) # Write the grid.arrange in the file
+dev.off()
 
 }
