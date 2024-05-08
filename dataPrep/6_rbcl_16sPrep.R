@@ -122,9 +122,9 @@ colnames(finalASVtable) <- gsub("\\.__", "", colnames(finalASVtable))
 
 colnames(finalASVtable) <- gsub("\\.", "; ", colnames(finalASVtable))
 
-# indiv.comm.16sR0 <-
-#     bipartite::empty(catchDups(makeComm(taxonomy16sR0,
-#                                         feature.2.tax.16s)))
+indiv.comm.16sR0 <-
+    bipartite::empty(catchDups(makeComm(taxonomy16sR0,
+                                        feature.2.tax.16s)))
 finalASVtable <- finalASVtable/rowSums(finalASVtable)
 
 finalASVtable <- as.matrix(finalASVtable)
@@ -712,11 +712,11 @@ indiv.comm.rbclR7 <- indiv.comm.rbclR7/rowSums(indiv.comm.rbclR7)
 
  bees.rbcl <- c(rownames(indiv.comm.rbclR0),
                rownames(indiv.comm.rbclR1),
-               rownames(indiv.comm.rbclR2)),
-               rownames(indiv.comm.rbclR3)),
-               rownames(indiv.comm.rbclR4)),
-               rownames(indiv.comm.rbclR5)),
-               rownames(indiv.comm.rbclR6)),
+               rownames(indiv.comm.rbclR2),
+               rownames(indiv.comm.rbclR3),
+               rownames(indiv.comm.rbclR4),
+               rownames(indiv.comm.rbclR5),
+               rownames(indiv.comm.rbclR6),
                rownames(indiv.comm.rbclR7))
 
  comms <- list(indiv.comm.rbclR0, indiv.comm.rbclR1,
