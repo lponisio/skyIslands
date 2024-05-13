@@ -1,5 +1,6 @@
 rm(list=ls())
-setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
+source("lab_paths.R")
+setwd(local.path)
 library(loo)
 library(brms)
 library(bayesplot)
@@ -8,13 +9,15 @@ library(lme4)
 library(performance)
 library(glmmTMB)
 
-setwd("analysis/parasites")
+setwd("skyIslands/analysis/parasites")
 source("src/misc.R")
 source("src/writeResultsTable.R")
 source("src/makeMultiLevelData.R")
 source("src/runParasiteModels.R")
+source("src/community_Model.R")
 source("src/standardize_weights.R")
 source("src/runPlotFreqModelDiagnostics.R")
+
 ## all of the variables that are explanatory variables and thus need
 ## to be centered
 vars_yearsr <- c("MeanFloralAbundance",
@@ -22,16 +25,37 @@ vars_yearsr <- c("MeanFloralAbundance",
                  "Net_BeeDiversity",
                  "Lat", "SRDoy"  
 )
-vars_sp <- c("MeanITD",
-             "rare.degree")
+vars_yearsrsp <- "rare.degree"
+vars_sp <- "MeanITD"
 
-variables.to.log <- c("MeanITD",
-                      "rare.degree") 
-variables.to.log.1 <- c("Net_HBAbundance", "Net_BombusAbundance", 
-                        "Net_NonBombusHBAbundance")
+
+variables.to.log <- c("rare.degree", "MeanITD")
+
+variables.to.log.1<- c("Net_HBAbundance", "Net_BombusAbundance", 
+                       "Net_NonBombusHBAbundance")
+
 
 ## uses only net specimens, and drops syrphids
 source("src/init.R")
+## Make SEM weights and standardize data.
+spec.net <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1, 
+                        vars_yearsr = vars_yearsr, vars_sp = vars_sp, 
+                        vars_yearsrsp = vars_yearsrsp)
+
+## bombus only data
+spec.bombus <- spec.net
+spec.bombus$WeightsPar[spec.bombus$Genus != "Bombus"] <- 0
+
+## apis only data
+spec.apis <- spec.net
+spec.apis$WeightsPar[spec.apis$Genus != "Apis"] <- 0
+
+## melissodes only data
+spec.melissodes <- spec.net
+spec.melissodes$WeightsPar[spec.melissodes$Genus != "Melissodes"] <- 0
+
+spec.apidae <- spec.net
+spec.apidae$WeightsPar[spec.apidae$Family != "Apidae"] <- 0
 ## Testing the fit of the parasite models. 
 
 
@@ -211,47 +235,33 @@ ggsave(freq.parasite.model, file="figures/CrithidiaModelDiagnostics.pdf",
 
 ## parasite- Apicystis
 
-## Load phylogeny 
-load("../../data/bombus_phylogeny.Rdata")
-## Species that are not in the phylogeny are not used. brms is not allowing an incomplete
-## phylogeny, to avoid the error we changed the species not present to one that is in the phylogeny. 
-## We chose a species for which we did not do parasite screening and should not influence results.
-not_in_phylo <- unique(spec.net$GenusSpecies[!spec.net$GenusSpecies %in% phylo$tip.label])
-spec.bombus$GenusSpecies[spec.bombus$GenusSpecies %in% not_in_phylo]<- "Bombus mixtus"
+parasite_formula_1 <- formula(ApicystisSpp ~ Year + (1|GenusSpecies) + (1|Site)) 
 
 
-parasite_formula <- formula(ApicystisSpp | weights(WeightsPar) + trials(1)  ~ Net_BombusAbundance + 
-                             Net_BeeDiversity + rare.degree + MeanITD + 
-                             (1|Site) + (1|gr(GenusSpecies, cov = phylo_matrix))) 
+parasitecheck1 <- glmer(parasite_formula_1, spec.bombus[spec.bombus$WeightsPar==1,],
+                          #ziformula = ~1,
+                        family = binomial(link = logit)
+)
 
-parasitecheck1 <- brms::brm(parasite_formula,
-                          data = spec.bombus, family = "zero_inflated_binomial",  chains = 1,
-                          iter = 1000, data2 = list(phylo_matrix=phylo_matrix))
-pp_check(parasitecheck1)
-
-spec.bombus %>%
-  add_residual_draws(parasitecheck1, allow_new_levels = TRUE) %>%
-  median_qi() %>%
-  ggplot(aes(sample = .residual)) +
-  geom_qq() +
-  geom_qq_line()
-
+plot(check_model(parasitecheck1, panel = TRUE))
+binned_residuals(parasitecheck1)
+summary(parasitecheck1)
 ## parasite- Crithidia
 
-parasite_formula_2 <- formula(CrithidiaPresence | weights(WeightsPar) + trials(1) ~ Net_BombusAbundance + 
-                              Net_BeeDiversity + rare.degree + MeanITD + 
-                              (1|Site) + (1|gr(GenusSpecies, cov = phylo_matrix))) 
+parasite_formula_2 <- formula(CrithidiaPresence ~ Year +
+                                (1|GenusSpecies)) 
 
-parasitecheck2 <- brms::brm(parasite_formula_2,
-                            data = spec.bombus, family = "zero_inflated_binomial",  chains = 1,
-                            iter = 1000, data2 = list(phylo_matrix=phylo_matrix))
-pp_check(parasitecheck2)
-spec.bombus %>%
-  add_residual_draws(parasitecheck2) %>%
-  median_qi() %>%
-  ggplot(aes(sample = .residual)) +
-  geom_qq() +
-  geom_qq_line()
+parasitecheck2 <- glmmTMB(parasite_formula_2, spec.bombus[spec.bombus$WeightsPar==1,],ziformula = ~1,
+                        family = binomial(link = logit))
+
+summary(parasitecheck2)
+binned_residuals(parasitecheck2)
+
+
+diagnostics_plots <- plot(check_model(parasitecheck2, panel = TRUE))
+ggsave(diagnostics_plots, file="figures/CrithidiaModelDiagnostics.pdf",
+       height=8, width=11)
+
 
 ## Load the model data
 load(file="saved/communityFit.Rdata")
