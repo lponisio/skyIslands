@@ -173,9 +173,10 @@ cd classifiers
 # docker run -itv ~/Dropbox/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline ncbi/blast
 exit
 
-## need to add this so that docker app doesn't close when computer tries to shut down
-
-docker run -it -d ncbi/blast /bin/bash
+## if running overnight on lab computer or other mac, could be useful to open
+## a mac terminal and run the caffeinate command which will prevent computer from 
+## forcing a shutdown overnight that will close the docker container
+## once completed, you can manually close the terminal
 
 docker run -itv /Volumes/bombus/rhayes/Dropbox\ \(University\ of\ Oregon\)/skyIslands_saved/SI_pipeline:/mnt/SI_pipeline ncbi/blast
 
