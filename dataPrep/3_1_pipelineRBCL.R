@@ -12,15 +12,37 @@
 ## 7 	 We have data for what bees were caught on. There are a couple species that bees were caught on, but their pollen rbcL matched with something else as the top hit. 
 ##       What they had been caught on did match in NCBI though, with only a single snp difference causing the known species to not be the first hit (e.g., 176/179 bp matches for Ipomoea wrightii vs 175/179 for Convolvulus arvensis). 
 ##       Following this logic, we manually changed I. wrightii to Con arv, and Arctotheca calendula to H. annuus.   
-
-
 rm(list=ls())
+setwd("~/")
+source("lab_paths.R")
+local.path
+setwd(local.path)
+setwd("skyIslands_saved")
+library(dplyr)
 
-ncbi <- read.table("~/Dropbox/skyIslands_saved/SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rbcl_classified_NCBI.txt",
-                   sep="\t", header=TRUE)
+ncbi <- read.csv("SI_pipeline/merged/RBCL/rbcl_classified_NCBI.csv")
 
-rdp <- read.table("~/Dropbox/skyIslands_saved/SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rbcl_classified_rdp.txt",
+rdp <- read.table("SI_pipeline/merged/RBCL/rbcl_classified_rdp.txt",
+                  sep="\t", header=FALSE)
+
+## loading old rdp run to pull column names from
+rdp_old <- read.table("SI_pipeline/merged/RBCL/rbcl_classified_rdp_old.txt",
                   sep="\t", header=TRUE)
+
+old_colnames <- colnames(rdp_old)
+
+cols_to_drop <- c(7,10,13,16,19,22,25)
+
+rdp <- rdp %>% select(!cols_to_drop)
+
+colnames(rdp) <- old_colnames
+
+## read.table is counting the first row as the header, we need
+## to add in the right column names
+
+## colnames ID kingdom	kingdom_match	phylum	phylum_match
+## 
+
 ## rdp cleaning
 rdp$clean_family <- gsub("f__", "", rdp$family)
 rdp$clean_family <- sapply(strsplit(rdp$clean_family, "_"),
@@ -46,6 +68,7 @@ ncbi$GenusSpecies <- paste(ncbi$genus, ncbi$species)
 # Identify which samples were dropped from NCBI (looks like they blast to non-plant DNA)
 library(arsenal)
 ncbi$ID <- ncbi$Query
+
 summary(comparedf(rdp, ncbi, by='ID'))
 
 ## plants IDed by hand at sites
