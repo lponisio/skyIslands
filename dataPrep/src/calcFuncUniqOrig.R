@@ -3,7 +3,7 @@ library(FD)
 
  calcFuncUniqOrig <- function(traits, traits.2.keep,
                               weights,
-                              type = "networksgit",
+                              type = "networks",
                               ...){
    ## this function calculates trait uniqueness and originality based
 ##   ## coux et al. FOR A SINGLE COMMUNITY
