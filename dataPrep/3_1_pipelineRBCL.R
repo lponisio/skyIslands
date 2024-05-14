@@ -20,7 +20,16 @@ setwd(local.path)
 setwd("skyIslands_saved")
 library(dplyr)
 
+
+## ncbi output is in txt format but gives error about number of columns not matching the number of colnames
+## to get around this, i opened excel, imported data from the txt file, and copied over everything 
+## except for the header into a new excel, then saved it as a csv to import here, which fixed that error
+
 ncbi <- read.csv("SI_pipeline/merged/RBCL/rbcl_classified_NCBI.csv")
+
+## colnames are not included in this file and instead it was reading the first row of data as the headers,
+## set header = FALSE if this happens, then follow the below steps to get the correct filenames from the
+## old rdp file
 
 rdp <- read.table("SI_pipeline/merged/RBCL/rbcl_classified_rdp.txt",
                   sep="\t", header=FALSE)
@@ -73,7 +82,7 @@ summary(comparedf(rdp, ncbi, by='ID'))
 
 ## plants IDed by hand at sites
 
-plants <- read.csv(" ~/Dropbox/skyIslands_saved/data/relational/relational/traditional/veg-complete.csv")
+plants <- read.csv("data/relational/relational/traditional/veg-complete.csv")
                        
 veg.genera <- unique(plants$PlantGenus)
 veg.genera <- veg.genera[!is.na(veg.genera)]
@@ -196,11 +205,10 @@ ids$FinalGenusSpeciesInVeg <- NULL
 ids$FinalGenusInVeg <- NULL
 
 ## merge data with sequences to do manual checks
-library(dplyr)
 
-datseq <- read.csv('~/Dropbox/skyIslands_saved/SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/Seqs_SampleNames.csv')
+datseq <- read.csv('SI_pipeline/R2023/merged/RBCL/Seqs_FeatureNames.csv')
 ID_Manual <- ids %>% left_join(datseq, by="Sample")
-write.csv(ID_Manual, "~/Dropbox/skyIslands_saved/SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/ID-Manual-LJJComments.csv",row.names=FALSE) # worked on this file doing manual calls
+write.csv(ID_Manual, "SI_pipeline/merged/RBCL/ID-Manual-RH.csv",row.names=FALSE) # worked on this file doing manual calls
 
 ## hand-checked samples following protocol above with (1) NCBI top 100 hits, (2) SI veg database, (3) USDA plant database, and sparingly (4) Discover Life. 
 ## "Conservative" calls have high confidence at that taxonomic resolution (LJJ). 
