@@ -40,6 +40,7 @@ rdp_old <- read.table("SI_pipeline/merged/RBCL/rbcl_classified_rdp_old.txt",
 
 old_colnames <- colnames(rdp_old)
 
+## these cols just store the level of taxonomy, which is included in the title, so can be dropped
 cols_to_drop <- c(7,10,13,16,19,22,25)
 
 rdp <- rdp %>% select(!cols_to_drop)
