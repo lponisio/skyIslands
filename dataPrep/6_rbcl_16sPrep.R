@@ -415,10 +415,6 @@ phylo.dist.rbclR6 <- unweightedUFrbclqzaR6$data
 wphylo.dist.rbclR7 <- weightedUFrbclqzaR7$data
 phylo.dist.rbclR7 <- unweightedUFrbclqzaR7$data
 
-## in the future do the same for other runs
-## wphylo.dist.rbclR1 <- weightedUFrbclqzaR1$data
-## phylo.dist.rbclR1 <- unweightedUFrbclqzaR1$data
-
 #Note, when taxonomy is imported, a single string is returned along
 #with a confidence score.  For many analysis we will want to break up
 #this string and for that purpose the parse_taxonomy() function is
@@ -768,9 +764,10 @@ spec.net <-cbind(spec.net, indiv.comm.16s[, bact][match(spec.net$UniqueID,
 spec.net <-cbind(spec.net, indiv.comm.rbcl[, pollen][match(spec.net$UniqueID,
                            indiv.comm.rbcl$UniqueID),])
 
-## drop duplicate sampleIDs
-spec.net <- spec.net[!duplicated(spec.net$UniqueID),]
-  
+## drop duplicate sampleID. LP: This should not happen?
+## spec.net <- spec.net[!duplicated(spec.net$UniqueID),]
+any(duplicated(spec.net$UniqueID))
+
 save(spec.net, file= "../skyIslands/data/spec_RBCL_16s.Rdata")
 
 write.csv(spec.net, file= "../skyIslands/data/spec_RBCL_16s.csv",
