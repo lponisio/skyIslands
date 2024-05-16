@@ -318,7 +318,7 @@ bform.bombus <- bf.fdiv +
 if(run.bombus){
 fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
                      cores=ncores,
-                      iter = 10000,
+                      iter = 20000,
                      chains = 1,
                      thin=1,
                      init=0,
@@ -331,6 +331,18 @@ write.ms.table(fit.microbe.bombus, "bombus_microbe")
 r2loo.bombus <- loo_R2(fit.microbe.bombus)
 r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
 save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
+       file="saved/fullMicrobeBombusFit.Rdata")
+
+}
+update.bombus = TRUE
+if(update.bombus == TRUE){
+  fit.microbe.bombus <- update(fit.microbe.bombus,
+                               iter=30000,
+                               control=list(max_treedepth=15))
+  write.ms.table(fit.microbe.bombus, "bombus_microbe")
+  r2loo.bombus <- loo_R2(fit.microbe.bombus)
+  r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
+  save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
        file="saved/fullMicrobeBombusFit.Rdata")
 }
 ## run apis model
