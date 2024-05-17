@@ -102,7 +102,7 @@ ggplot(spec.all, aes(x= Year,
 ################################################################################
 ## Relationships with bee diversity
 ## Relationship between bee diversity and year
-ggplot(spec.all, aes(x= Year,
+ggplot(spec.net, aes(x= Lat,
                      y=Net_BeeDiversity, color=Site))+
   geom_point()
 

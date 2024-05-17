@@ -35,7 +35,9 @@ source("src/init.R")
 spec.net <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1, 
                         vars_yearsr = vars_yearsr, vars_sp = vars_sp, 
                         vars_yearsrsp = vars_yearsrsp)
-
+spec.net <- filter(spec.net, Site != "VC" & Site != "UK" & Site != "SS")
+spec.net$Site <- factor(spec.net$Site, levels = c("JC", "SM", "SC", "MM", 
+                                                   "HM", "PL", "CH", "RP"))
 ## bombus only data
 spec.bombus <- spec.net
 spec.bombus$WeightsPar[spec.bombus$Genus != "Bombus"] <- 0
@@ -123,9 +125,9 @@ fit.parasites <- runCombinedParasiteModels(spec.net, species.group="melissodes",
 ## bombus
 
 crithidia.formula <- formula(CrithidiaPresence | weights(Weights) ~
-                              Net_BombusAbundance + Net_BeeDiversity*Year +
-                              rare.degree + MeanITD + (1|Site) +
-                              (1|gr(GenusSpecies, cov = phylo_matrix))
+                               Net_BombusAbundance + Net_BeeDiversity*Year +
+                               rare.degree + MeanITD + (1|Site) +
+                               (1|gr(GenusSpecies, cov = phylo_matrix))
 )
 
 bf.crithidia <- bf(crithidia.formula,
@@ -152,7 +154,7 @@ save(fit.bombus.crithidia, spec.bombus, r2,
                   "Bombus", paste("Crithidia", collapse="")))
 ## Plot the residuals
 plot.res(fit.bombus.crithidia,  sprintf("%s_%s",
-                                "Bombus", paste("Crithidia", collapse="")))
+                                        "Bombus", paste("Crithidia", collapse="")))
 
 fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         parasite = c("CrithidiaPresence", "ApicystisSpp"),
@@ -162,7 +164,7 @@ fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         chains = 1,
                                         thin=1,
                                         init=0, data2= list(phylo_matrix=phylo_matrix),
-                                        SEM = FALSE)
+                                        SEM = TRUE)
 
 
 

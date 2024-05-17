@@ -138,21 +138,16 @@ spec.net %>%
 ## Using the performance package to get the R2
 ## Function by Rebecca
 
-
-#Floral Diversity brms formula
-formula.flower.div <- formula(MeanFloralDiversity | weights(Weights) ~
-                                Lat +
-                                  SRDoy*Year + I(SRDoy^2)*Year +
-                                  SRDoy*Lat + I(SRDoy^2)*Lat +
-                                  (1|Site)
-)
 #Floral Diversity freq formula
 formula.flower.div <- formula(MeanFloralDiversity ~
-                                Lat +
+                                Site +
                                 Year +
-                                SRDoy + I(SRDoy^2) +
-                                (1|Site)
+                                SRDoy + I(SRDoy^2)
 )
+## Trying out glm because because Site is now a fixed effect. 
+freq_flower_div_model <- glm(formula.flower.div, family = gaussian, data = spec.net[spec.net$Weights==1,])
+summary(freq_flower_div_model)
+check_model(freq_flower_div_model)
 #for this_data, use spec.net[spec.net$Weights==1,] to incorporate weights into frequentist models
 freq.flower.div.model <- run_plot_freq_model_diagnostics(freq.formula.flower.div,
                                                          spec.net[spec.net$Weights==1,], this_family = 'gaussian')
@@ -161,11 +156,13 @@ ggsave(freq.flower.div.model, file="figures/FloralDiversityModelDiagnostics.pdf"
        height=8, width=11)
 
 ## flower abund
-formula.flower.abund <- formula(MeanFloralAbundance ~
-                                                          Year+ Lat + 
-                                                          SRDoy + I(SRDoy^2) +
-                                                          (1|Site)
+formula.flower.abund <- formula(MeanFloralAbundance ~ Year + SRDoy + 
+                                  I(SRDoy^2) + Site
 )
+
+freq_flower_abun_model <- glm(formula.flower.abund, family = gaussian, data = spec.net[spec.net$Weights==1,])
+summary(freq_flower_abun_model)
+check_model(freq_flower_abun_model)
 
 freq.flower.abun.model <- run_plot_freq_model_diagnostics(formula.flower.abund,
                                                          spec.net[spec.net$Weights==1,], this_family = 'gaussian')
@@ -173,11 +170,13 @@ ggsave(freq.flower.abun.model, file="figures/FloralAbunModelDiagnostics.pdf",
        height=8, width=11)
 
 ## bee diversity
-formula.bee.div <- formula(Net_BeeDiversity ~
-                             MeanFloralDiversity +
-                            Lat + I(SRDoy^2) +
-                             (1|Site)
+formula.bee.div <- formula(Net_BeeDiversity ~ MeanFloralDiversity +
+                            Site + I(SRDoy^2) + SRDoy + Year 
 )
+freq_bee_div_model <- glm(formula.bee.div, family = gaussian, data = spec.net[spec.net$Weights==1,])
+summary(freq_bee_div_model)
+check_model(freq_bee_div_model)
+
 freq.bee.div.model <- run_plot_freq_model_diagnostics(formula.bee.div,
                                                           spec.net[spec.net$Weights==1,], this_family = 'gaussian')
 ggsave(freq.bee.div.model, file="figures/BeeDivModelDiagnostics.pdf",
@@ -186,11 +185,15 @@ ggsave(freq.bee.div.model, file="figures/BeeDivModelDiagnostics.pdf",
 ## bombus abund
 formula.bombus.abund <- formula(Net_BombusAbundance ~
                                   MeanFloralAbundance + 
-                                  #Year +
-                                  SRDoy + #I(SRDoy^2) +
-                                  Lat + 
-                                  (1|Site)
+                                  Year +
+                                  SRDoy + I(SRDoy^2) +
+                                  Site 
 )
+
+freq_bombus_abund_model <- glm(formula.bombus.abund, family = gaussian, data = spec.net[spec.net$Weights==1,])
+summary(freq_bombus_abund_model)
+check_model(freq_bombus_abund_model)
+
 freq.bombus.abun.model <- run_plot_freq_model_diagnostics(formula.bombus.abund,
                                                           spec.net[spec.net$Weights==1,], this_family = 'gaussian')
 ggsave(freq.bombus.abun.model, file="figures/BombusAbunModelDiagnostics_gaussian.pdf",
@@ -199,10 +202,14 @@ ggsave(freq.bombus.abun.model, file="figures/BombusAbunModelDiagnostics_gaussian
 ## HB abund
 formula.HB.abund <- formula(Net_HBAbundance ~
                               MeanFloralAbundance +  
-                              SRDoy + #I(SRDoy^2) +
-                              Lat +
-                              (1|Site)
+                              SRDoy + I(SRDoy^2) +
+                              Site + Year
 )
+
+freq_HB_abund_model <- glm(formula.HB.abund, family = gaussian, data = spec.net[spec.net$Weights==1,])
+summary(freq_HB_abund_model)
+check_model(freq_HB_abund_model)
+
 freq.HB.abun.model <- run_plot_freq_model_diagnostics(formula.HB.abund,
                                                           spec.net[spec.net$Weights==1,], this_family = "gaussian")
 ggsave(freq.HB.abun.model, file="figures/HBAbunModelDiagnostics_gaussian.pdf",
@@ -211,10 +218,16 @@ ggsave(freq.HB.abun.model, file="figures/HBAbunModelDiagnostics_gaussian.pdf",
 ## bee abund
 formula.bee.abund <- formula(Net_NonBombusHBAbundance ~
                                MeanFloralAbundance +
-                               SRDoy  +
-                               Lat +
-                               (1|Site)
+                               SRDoy  + I(SRDoy^2) +
+                               Year + Site
 )
+
+
+freq_bee_abund_model <- glm(formula.bee.abund, family = gaussian, data = spec.net[spec.net$Weights==1,])
+summary(freq_bee_abund_model)
+check_model(freq_bee_abund_model)
+
+
 freq.bee.abun.model <- run_plot_freq_model_diagnostics(formula.bee.abund,
                                                       spec.net[spec.net$Weights==1,], this_family = 'gaussian')
 ggsave(freq.bee.abun.model, file="figures/NonBombusHBAbunModelDiagnostics_gaussian.pdf",
@@ -235,7 +248,9 @@ ggsave(freq.parasite.model, file="figures/CrithidiaModelDiagnostics.pdf",
 
 ## parasite- Apicystis
 
-parasite_formula_1 <- formula(ApicystisSpp ~ Year + (1|GenusSpecies) + (1|Site)) 
+parasite_formula_1 <- formula(ApicystisSpp ~  
+                               rare.degree + MeanITD +
+                                (1|Site) + (1|GenusSpecies)) 
 
 
 parasitecheck1 <- glmer(parasite_formula_1, spec.bombus[spec.bombus$WeightsPar==1,],
@@ -243,15 +258,15 @@ parasitecheck1 <- glmer(parasite_formula_1, spec.bombus[spec.bombus$WeightsPar==
                         family = binomial(link = logit)
 )
 
-plot(check_model(parasitecheck1, panel = TRUE))
+check_model(parasitecheck1)
 binned_residuals(parasitecheck1)
 summary(parasitecheck1)
 ## parasite- Crithidia
 
-parasite_formula_2 <- formula(CrithidiaPresence ~ Year +
-                                (1|GenusSpecies)) 
+parasite_formula_2 <- formula(CrithidiaPresence ~ Net_BombusAbundance +
+                                (1|Site) + (1|GenusSpecies)) 
 
-parasitecheck2 <- glmmTMB(parasite_formula_2, spec.bombus[spec.bombus$WeightsPar==1,],ziformula = ~1,
+parasitecheck2 <- glmer(parasite_formula_2, spec.bombus[spec.bombus$WeightsPar==1,],
                         family = binomial(link = logit))
 
 summary(parasitecheck2)

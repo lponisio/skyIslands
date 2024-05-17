@@ -3,13 +3,13 @@
 ## **********************************************************
 ## flower diversity
 formula.flower.div <- formula(MeanFloralDiversity | weights(Weights) ~
-                                SRDoy + (SRDoy)^2 +
-                                Year + (1|Site)
+                                SRDoy + I(SRDoy)^2 +
+                                Year + Site
                               )
 ## flower abund
 formula.flower.abund <- formula(MeanFloralAbundance | weights(Weights) ~
-                                  Year + SRDoy + (SRDoy)^2 +
-                                  (1|Site) 
+                                  Year + SRDoy + I(SRDoy)^2 +
+                                  Site
                                 )
 
 ## **********************************************************
@@ -18,22 +18,22 @@ formula.flower.abund <- formula(MeanFloralAbundance | weights(Weights) ~
 ## bee diversity
 formula.bee.div <- formula(Net_BeeDiversity | weights(Weights)~
                              MeanFloralDiversity + SRDoy + (SRDoy)^2 +
-                             Year + (1|Site) 
+                             Year + Site 
                            )
 ## bombus abund
 formula.bombus.abund <- formula(Net_BombusAbundance | weights(Weights)~
                                   MeanFloralAbundance + SRDoy + (SRDoy)^2 +
-                                    Year + (1|Site)
+                                    Year + Site
                                 )
 ## HB abund
 formula.HB.abund <- formula(Net_HBAbundance | weights(Weights)~
                               MeanFloralAbundance + SRDoy + (SRDoy)^2 +
-                                Year + (1|Site)
+                                Year + Site
                             )
 ## bee abund
 formula.bee.abund <- formula(Net_NonBombusHBAbundance | weights(Weights)~
                                MeanFloralAbundance + SRDoy + (SRDoy)^2 +
-                                 Year + (1|Site)
+                                 Year + Site
                              )
 
 ## **********************************************************
