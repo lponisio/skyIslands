@@ -1,5 +1,7 @@
 
 ## tutorial: https://bioconductor.org/packages/devel/bioc/vignettes/ggtreeExtra/inst/doc/ggtreeExtra.html
+
+
 rm(list=ls())
 setwd("~/")
 source("lab_paths.R")
@@ -10,10 +12,12 @@ setwd('skyIslands/')
 
 
 source('dataPrep/src/trees_init.R')
+load("indiv.comm16sR0.Rdata")
 load('presAbsTable.Rdata')
 load('spec_RBCL_16s.Rdata')
 load('physeq16s.Rdata')
 load('networks/microNets.Rdata')
+load('spec_RBCL_16s.Rdata')
 ##import community presence/absence file
 setwd("../../skyIslands_saved")
 
@@ -55,7 +59,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
   
   #read in the taxonomic info for each feature
   feature.2.tax.16s <-
-    read.table("SI_pipeline/R2018/2023_sequence_results_raw/merged/16s/taxonomy.tsv", sep="\t",
+    read.table("SI_pipeline/merged/16s/taxonomy.tsv", sep="\t",
                header=TRUE)
   
   #make labels from the taxonomic info
@@ -370,6 +374,7 @@ comm_presabs <- tibble::rownames_to_column(comm_presabs, "UniqueID") #make rowna
 ## Genus trees
 apis_tree2 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", genus.or.spp='Genus', comm_presabs, apis_sites, all_levels=TRUE, do_collapse = TRUE)
 panelB <- apis_tree2 + labs(tag="B.")
+panelB
 # 
 apis_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", genus.or.spp='Genus', comm_presabs, apis_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse=TRUE)
 apis_tree_drop_s
