@@ -125,6 +125,9 @@ colnames(finalASVtable) <- gsub("\\.", "; ", colnames(finalASVtable))
 indiv.comm.16sR0 <-
     bipartite::empty(catchDups(makeComm(taxonomy16sR0,
                                         feature.2.tax.16s)))
+## saving this out so we can make the tree visualizations
+save(indiv.comm.16sR0, file="../skyIslands/data/indiv.comm16sR0.Rdata")
+
 finalASVtable <- finalASVtable/rowSums(finalASVtable)
 
 finalASVtable <- as.matrix(finalASVtable)
