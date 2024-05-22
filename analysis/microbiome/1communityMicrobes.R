@@ -273,7 +273,7 @@ formula.microbe.bombus <- as.formula(paste(microbe.bombus.y, "~",
                                       microbe.bombus.x))
 
 
-bf.microbe.bombus <- bf(formula.microbe.bombus, family='student')
+bf.microbe.bombus <- bf(formula.microbe.bombus)
 
 ## obligate PD model
 ob.microbe.bombus.vars <- c("BeeAbundance",
@@ -289,7 +289,7 @@ ob.microbe.bombus.y <- "PD.obligate.log | weights(LogWeightsObligateAbund)"
 formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
-bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus, family=student)
+bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus)
 
 ## non ob PD model
 non.ob.microbe.bombus.vars <- c("BeeAbundance",
@@ -305,7 +305,7 @@ formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
                                               non.ob.microbe.bombus.x))
 
 
-bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus, family=student)
+bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus)
 
 #combine forms
 bform.bombus <- bf.fdiv +
@@ -359,7 +359,7 @@ formula.microbe.apis <- as.formula(paste(microbe.apis.y, "~",
                                          microbe.apis.x))
 
 
-bf.microbe.apis <- bf(formula.microbe.apis, family='student')
+bf.microbe.apis <- bf(formula.microbe.apis)
 
 ## run apis model
 microbe.apis.vars <- c("BeeAbundance",
@@ -375,7 +375,7 @@ formula.ob.microbe.apis <- as.formula(paste(ob.microbe.apis.y, "~",
                                          ob.microbe.apis.x))
 
 
-bf.ob.microbe.apis <- bf(formula.ob.microbe.apis, family=student)
+bf.ob.microbe.apis <- bf(formula.ob.microbe.apis)
 
 # non obligate
 
@@ -385,7 +385,7 @@ formula.non.ob.microbe.apis <- as.formula(paste(non.ob.microbe.apis.y, "~",
                                             non.ob.microbe.apis.x))
 
 
-bf.non.ob.microbe.apis <- bf(formula.non.ob.microbe.apis, family=student)
+bf.non.ob.microbe.apis <- bf(formula.non.ob.microbe.apis)
 
 #combine forms
 bform.apis <- bf.fdiv +
@@ -437,7 +437,7 @@ formula.ob.microbe.melissodes <- as.formula(paste(ob.microbe.melissodes.y, "~",
                                                ob.microbe.melissodes.x))
 
 
-bf.ob.microbe.melissodes <- bf(formula.ob.microbe.melissodes, family=student)
+bf.ob.microbe.melissodes <- bf(formula.ob.microbe.melissodes)
 
 ## non obligate
 
@@ -448,7 +448,7 @@ formula.non.ob.microbe.melissodes <- as.formula(paste(non.ob.microbe.melissodes.
                                                   non.ob.microbe.melissodes.x))
 
 
-bf.non.ob.microbe.melissodes <- bf(formula.non.ob.microbe.melissodes, family=student)
+bf.non.ob.microbe.melissodes <- bf(formula.non.ob.microbe.melissodes)
 
 #combine forms
 bform.melissodes <- bf.fdiv +
