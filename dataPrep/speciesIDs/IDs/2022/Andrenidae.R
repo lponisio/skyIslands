@@ -274,17 +274,7 @@ sp.ids <- list(
                            Sex="f",
                            Author = "LaBerge",
                            Determiner="J.L. Neff",
-                           temp.id= c(30923, 31477,
-                                      32557, 32687, 32409, 30803, 31365)),
-
-    Andrena_livida_m= list(Genus="Andrena",
-                           SubGenus ="Thysandrena",
-                           Species="livida",
-                           SubSpecies="",
-                           Sex="m",
-                           Author = "LaBerge",
-                           Determiner="J.L. Neff",
-                           temp.id= c(30923, 31477,
+                           temp.id= c((30923, 31477,
                                       32557, 32687, 32409, 30803, 31365)),
 
     Andrena_cerasifolii_f= list(Genus="Andrena",
