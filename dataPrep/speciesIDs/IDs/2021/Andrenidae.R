@@ -514,7 +514,7 @@ sp.ids <- list(
                                           33946, 33947, 33334, 31244,
                                           30931, 31374, 32287, 31920,
                                           31897, 31903, 32289, 32529,
-                                          31228, 32572, 31225)),
+                                          31228, 32572)),
 
   Andrena_apacheorum_m= list(Genus="Andrena",
                              SubGenus ="Cnemidandrena",
