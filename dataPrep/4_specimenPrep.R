@@ -178,7 +178,12 @@ calcSummaryStats <- function(spec.method, method){
                                                       na.rm=TRUE),
                   SpCrithidiaHBParasitismRate = mean (CrithidiaPresence
                                                    [GenusSpecies == "Apis mellifera"],
-                                                   na.rm=TRUE))
+                                                   na.rm=TRUE),
+                  SpParasitism = sum(ParasitePresence, na.rm=TRUE),
+                  SpCrithidiaParasitism = sum(CrithidiaPresence, na.rm=TRUE),
+                  SpApicystisParasitism = sum(ApicystisSpp, na.rm=TRUE),
+                  SpParasitismScreened = sum(!is.na(Apidae))
+                  )
 
     site.sum <- spec.method %>%
         group_by(Site, Year, SampleRound) %>%
