@@ -248,7 +248,7 @@ ggsave(freq.parasite.model, file="figures/CrithidiaModelDiagnostics.pdf",
 
 ## parasite- Apicystis
 
-parasite_formula_1 <- formula(ApicystisSpp ~  
+parasite_formula_1 <- formula(ApicystisSpp ~  as.factor(Year)+ Net_BeeDiversity +
                                rare.degree + MeanITD +
                                 (1|Site) + (1|GenusSpecies)) 
 
@@ -263,7 +263,8 @@ binned_residuals(parasitecheck1)
 summary(parasitecheck1)
 ## parasite- Crithidia
 
-parasite_formula_2 <- formula(CrithidiaPresence ~ Net_BombusAbundance +
+parasite_formula_2 <- formula(CrithidiaPresence ~ Net_BeeDiversity + as.factor(Year)+
+                                rare.degree + 
                                 (1|Site) + (1|GenusSpecies)) 
 
 parasitecheck2 <- glmer(parasite_formula_2, spec.bombus[spec.bombus$WeightsPar==1,],
