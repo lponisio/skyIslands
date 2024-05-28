@@ -37,7 +37,8 @@ spec.net <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1,
                         vars_yearsrsp = vars_yearsrsp)
 spec.net <- filter(spec.net, Site != "VC" & Site != "UK" & Site != "SS")
 spec.net$Site <- factor(spec.net$Site, levels = c("JC", "SM", "SC", "MM", 
-                                                   "HM", "PL", "CH", "RP"))
+                                                 "HM", "PL", "CH", "RP"))
+spec.net$Year <- as.factor(spec.net$Year)  
 ## bombus only data
 spec.bombus <- spec.net
 spec.bombus$WeightsPar[spec.bombus$Genus != "Bombus"] <- 0
@@ -70,20 +71,23 @@ spec.bombus$GenusSpecies[spec.bombus$GenusSpecies %in% not_in_phylo]<- "Agaposte
 ## Parasite models set up
 ## **********************************************************
 ## Multi species models
-xvars.multi.bombus <-  c("Net_BombusAbundance",
-                          "Net_BeeDiversity",
-                          "rare.degree", "MeanITD", "(1|Site)",
+xvars.multi.bombus <-  c("Net_BeeDiversity", "Year",
+                          "rare.degree",  "(1|Site)",
                            "(1|gr(GenusSpecies, cov = phylo_matrix))")
+## For apicystis MeanITD makes sense but for crithidia it decreases the fit
+xvars.multi.bombus2 <-  c("Net_BeeDiversity", "Year",
+                         "rare.degree", "MeanITD", "(1|Site)",
+                         "(1|gr(GenusSpecies, cov = phylo_matrix))")
 
-xvars.multi.species <-  c("Net_NonBombusHBAbundance",
+xvars.multi.species <-  c("Year",
                           "Net_BeeDiversity",
-                          "rare.degree", "MeanITD",
+                          "rare.degree",
                           "(1|Site)", 
                            "(1|GenusSpecies)")
 
 
 ## single species models
-xvars.single.species <-  c("Net_HBAbundance",
+xvars.single.species <-  c("Year",
                            "Net_BeeDiversity",
                            "rare.degree",
                            "(1|Site)")
@@ -124,40 +128,9 @@ fit.parasites <- runCombinedParasiteModels(spec.net, species.group="melissodes",
 
 ## bombus
 
-crithidia.formula <- formula(CrithidiaPresence | weights(Weights) ~
-                               Net_BombusAbundance + Net_BeeDiversity*Year +
-                               rare.degree + MeanITD + (1|Site) +
-                               (1|gr(GenusSpecies, cov = phylo_matrix))
-)
-
-bf.crithidia <- bf(crithidia.formula,
-                   family="bernoulli") 
-
-fit.bombus.crithidia <- brm(bf.crithidia, spec.bombus,
-                            cores= ncores,
-                            iter = 20000,
-                            chains = 1,
-                            thin= 1,
-                            init= 0,
-                            control = list(adapt_delta = 0.99),
-                            save_pars = save_pars(all = TRUE), data2 = list(phylo_matrix=phylo_matrix))
-
-write.ms.table(fit.bombus.crithidia,
-               sprintf("parasitism_%s_%s",
-                       "Bombus", paste("Crithidia", collapse="")))
-## Calculate r2 values 
-r2 <- bayes_R2(fit.bombus.crithidia)
-print(round(r2, 2))
-## Save the model results as a rdata file
-save(fit.bombus.crithidia, spec.bombus, r2,
-     file=sprintf("saved/parasiteFit_%s_%s.Rdata",
-                  "Bombus", paste("Crithidia", collapse="")))
-## Plot the residuals
-plot.res(fit.bombus.crithidia,  sprintf("%s_%s",
-                                        "Bombus", paste("Crithidia", collapse="")))
 
 fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
-                                        parasite = c("CrithidiaPresence", "ApicystisSpp"),
+                                        parasite = c("CrithidiaPresence"),
                                         xvars=xvars.multi.bombus,
                                         ncores,
                                         iter = 10^4,
