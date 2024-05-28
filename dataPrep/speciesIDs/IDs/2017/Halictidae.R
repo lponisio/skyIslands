@@ -1276,9 +1276,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                    "23407", "21386", "21393", "22355",
                    "21052", "21144", "22757", "22808", "22566",
                    "22404", "21173", "21446", "20889", "20837",
-                   "21385", "BBSL1087120", 
-                   #added HBL 2/13/24
-                   "20868")),
+                   "21385", "BBSL1087120")),
 
     Dufourea_harveyi_m = list(Genus="Dufourea", SubGenus ="",
                               Species="harveyi",
