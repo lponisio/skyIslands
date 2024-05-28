@@ -8,13 +8,15 @@ runCombinedParasiteModels <- function(spec.data,## data
                                       chains = 1,
                                       thin=1,
                                       init=0, data2 = NULL,
-                                      SEM = TRUE){
+                                      SEM = TRUE,
+                                      neg.binomial = FALSE){
   if(SEM){
   # create a list with the formulas for the different parasites models
   bf.parasite.formulas <- vector(mode="list",
                                  length=length(parasites))
   names(bf.parasite.formulas) <- parasites
   # Create the models of the parasites using the variables provided in xvars
+  if(neg.binomial = FALSE){ 
   for(parasite in parasites){
     formula.parasite  <- as.formula(paste(
       paste(parasite, "| weights(WeightsPar)"),
@@ -23,6 +25,16 @@ runCombinedParasiteModels <- function(spec.data,## data
       sep=" ~ "))
     bf.parasite.formulas[[parasite]] <-  bf(formula.parasite,
                                             family="bernoulli")  
+  }
+  } else{
+    for(parasite in parasites){
+      formula.parasite  <- as.formula(paste(
+        paste(parasite, "| weights(WeightsPar)"),
+        paste(xvars,
+              collapse=" + "),
+        sep=" ~ "))
+      bf.parasite.formulas[[parasite]] <-  bf(formula.parasite,
+                                              family="negbinomial") 
   }
   # When there are two parasites or 1 parasite create a parasite model for each. 
   # Select the bee abundance based on the species.group.
