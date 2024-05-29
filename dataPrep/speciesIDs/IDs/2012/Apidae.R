@@ -982,8 +982,7 @@ sp.ids <- list(
                                           "PL_081312_169",
                                           "PL_080912_132",
                                           "PL_081012_287",
-                                          "PL_081012_101",
-                                          "MM_080212_218")),
+                                          "PL_081012_101")),
 
     Bombus_bifarius_f = list(Genus = "Bombus", SubGenus="Pyrobombus",
                              Species = "bifarius",
