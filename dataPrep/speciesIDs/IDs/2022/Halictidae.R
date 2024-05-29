@@ -248,7 +248,7 @@ sp.ids <- list(
                                    SubSpecies="cf.", Sex="m",
                                    Author = "Cockerell",
                                    Determiner = "",
-                                   temp.id=c(38364, 34468, 31793, 34440, 31127, 31124, 31125, 34330, 32698, 32699)),
+                                   temp.id=c(38364, 34468)),
 
 
   Lasioglossum_pacatum_viridatulum_f=
