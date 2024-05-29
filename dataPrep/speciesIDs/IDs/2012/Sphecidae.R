@@ -5,7 +5,7 @@ sp.ids <- list(
  podalonia_luctuosa = list(Genus="Podalonia", SubGenus ="",
     Species="luctuosa", SubSpecies="", Sex="f", Author = "Smith",
     Determiner="J. Schlauch", temp.id
-    =c("PL_081312_191","PL_081312_60","PL_081312_39","PL_081312_57",
+    =c("PL_081312_191","PL_081312_60","PL_081312_57",
        "PL_081312_189","MM_080212_188","MM_080212_187",
        "MM_080212_288","MM_080312_38","PL_081012_102","PL_081012_232",
        "MM_080212_49","MM_080212_108","MM_080212_152","MM_080212_151",
