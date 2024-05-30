@@ -11,10 +11,8 @@ dir.create(path="saved/tables", showWarnings = FALSE)
 
 load('../../data/spec_net.Rdata')
 site.sum <- read.csv("../../data/sitestats.csv")
+sp.sum <- read.csv("../../data/spstats_net.csv")
 
-spec.net <- spec.net[!is.na(spec.net$GenusSpecies),]
-
-spec.net <- spec.net[spec.net$Family != "Syrphidae",]
 
 parasites <- c(#"AspergillusSpp", ## problematic parasite!
   "AscosphaeraSpp",
@@ -28,9 +26,17 @@ parasites <- c(#"AspergillusSpp", ## problematic parasite!
 ## Merging specimen data with site characteristic data.
 print("Before merge with site characteristics")
 print(dim(spec.net))
-spec.net <- merge(spec.net, site.sum, all.x=TRUE)
+spec.net <- merge(spec.net, site.sum, all.xy=TRUE)
 print("After merge with site characteristics")
 print(dim(spec.net))
+
+## Merging species data with individual level data. 
+print("Before merge with ind level data")
+print(dim(spec.net))
+spec.net <- merge(spec.net, sp.sum, all.x= TRUE)
+print("After merge with ind level data")
+print(dim(spec.net))
+
 
 ## Merging specimen data with trait data and network trait data.
 traits <-
