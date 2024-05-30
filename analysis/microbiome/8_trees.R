@@ -242,7 +242,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
   # [9] "#CC6677" "#AA4466"
   # [11] "#882255" "#AA4499"
   
-  p2
+  return(list(p2, features_site_metadata))
   
   
 }
@@ -288,29 +288,27 @@ finalASV <- tibble::rownames_to_column(finalASV, "UniqueID") #make rownames (Uni
 
 
 ## Genus trees
-apis_tree2 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", genus.or.spp='Genus', finalASV, apis_sites, all_levels=TRUE, do_collapse = TRUE)
-panelB <- apis_tree2 + labs(tag="B.")
+apis_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", genus.or.spp='Genus', finalASV, apis_sites, all_levels=TRUE, do_collapse = TRUE)
+panelB <- apis_tree[[1]] + labs(tag="B. Apis")
+apis_meta <- apis_tree[[2]]
 panelB
-# 
-apis_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", genus.or.spp='Genus', comm_presabs, apis_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse=TRUE)
-apis_tree_drop_s
-# 
+
 
 
 # melissodes 
-melissodes_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes", genus.or.spp='Genus', comm_presabs, bombus_sites, do_collapse = TRUE)
-panelC <- melissodes_tree + labs(tag="C.")
+melissodes_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes", genus.or.spp='Genus', finalASV, melissodes_sites, do_collapse = TRUE)
+panelC <- melissodes_tree[[1]] + labs(tag="C. Melissodes")
+melissodes_meta <- melissodes_tree[[2]]
+panelC
 
-melissodes_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes", genus.or.spp='Genus', comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
-melissodes_tree_drop_s
 
 
 #bombus tree
-bombus_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus", genus.or.spp='Genus', comm_presabs, bombus_sites, do_collapse = TRUE)
-panelA <- bombus_tree + labs(tag="A.")
+bombus_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus", genus.or.spp='Genus', finalASV, bombus_sites, do_collapse = TRUE)
+panelA <- bombus_tree[[1]] + labs(tag="A. Bombus")
+bombus_meta <- bombus_tree[[2]]
+panelA
 
-bombus_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus", genus.or.spp='Genus', comm_presabs,  bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
-bombus_tree_drop_s
 
 
 
