@@ -58,7 +58,6 @@ prepDataSEM <-
     spec.data$YearSRGenusSpecies <-
       paste(spec.data$YearSR, spec.data$GenusSpecies, sep = ";")
     
-    ## will need to modify when we have multiple years
     print("Number of unique site, year, sampling round combinations")
     print(length(unique(paste(spec.data$Site, spec.data$YearSR))))
     spec.data <- makeDataMultiLevel(spec.data, "Site", "YearSR")
@@ -101,5 +100,15 @@ prepDataSEM <-
     print(sum(spec.data$WeightsPar))
     print("Final dim of data after adding WeightsPar")
     print(dim(spec.data))
+   
+    print("Number of unique GenusSpecies, site, year, sampling round combinations")
+    print(length(unique(paste(spec.data$Site, spec.data$YearSRGenusSpecies))))
+    spec.data <- makeDataMultiLevel(spec.data, "Site", "YearSRGenusSpecies",
+                                    weight.col.name="WeightsSp",
+                                    site.id.col.name="SiteIDsSp")
+    print("Number of individuals with Weights == 1, should be the same as above")
+    print(sum(spec.data$WeightsSp))
+    spec.data$WeightsSp <- spec.data$WeightsSp * spec.data$WeightsPar
+    
     return(spec.data)
   }
