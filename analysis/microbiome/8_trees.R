@@ -91,7 +91,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     }
   }
   
-  
+  #browser()
   
 # if(all_levels==FALSE){
 # for (level in levels_to_drop) {
@@ -130,33 +130,34 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
   
   #browser()
     #print(length(gentree$tip.label))
-  if (do_collapse == TRUE){
-    #pull out unique tip labels
-    original_nodes <- gentree %>% as_tibble() 
-    groups <- unique(gentree$tip.label)
-    #browser()
-    
-    #collapse branches that have the same label
-    for (this.group in groups){
-      gentree <- collapse_identical_tips(gentree, this.group)
-    }
-    new_nodes <- gentree %>% as_tibble()
-  }
+  # if (do_collapse == TRUE){
+  #   #pull out unique tip labels
+  #   original_nodes <- gentree %>% as_tibble() 
+  #   groups <- unique(gentree$tip.label)
+  #   #browser()
+  #   
+  #   #collapse branches that have the same label
+  #   for (this.group in groups){
+  #     gentree <- collapse_identical_tips(gentree, this.group)
+  #   }
+  #   new_nodes <- gentree %>% as_tibble()
+  # }
   #print(length(gentree$tip.label))
   #browser()
 
-  if(all_levels==FALSE){
-    if(final_level == ' s__'){
-      rest_of_label <- 'to genus'
-    } else if(final_level == ' g__'){
-      rest_of_label <- 'to family'
-    }
-    this_level <- paste(": Collapsed", rest_of_label)
-  } else {this_level <- ': Full Tree'}
+  # if(all_levels==FALSE){
+  #   if(final_level == ' s__'){
+  #     rest_of_label <- 'to genus'
+  #   } else if(final_level == ' g__'){
+  #     rest_of_label <- 'to family'
+  #   }
+  #   this_level <- paste(": Collapsed", rest_of_label)
+  # } else {this_level <- ': Full Tree'}
 
   
   matched_presabs <- match_shared_tiplabels(gentree, presAbsTable)
-  
+  ## dropping lots of tiplabels here...
+  browser()
   matched_pres_meta <- match_shared_ID(matched_presabs, metadata)
   
   matched_id <- matched_pres_meta$UniqueID
@@ -224,7 +225,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
   
   p <- ggtree(gentree, layout='rectangular') 
   p
-  
+  browser()
   p2 <- p +
     new_scale_fill() + 
     #geom_tiplab(align=TRUE, size=2) + 
