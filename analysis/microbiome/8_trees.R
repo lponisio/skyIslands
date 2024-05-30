@@ -193,7 +193,12 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     gentree <- drop.tip(gentree, final_drop)
   }
   
+  ## save out order of tips
+  is_tip <- gentree$edge[,2] <= length(gentree$tip.label)
   
+  ordered_tips <- gentree$edge[is_tip, 2]
+  
+  tip.order <- gentree$tip.label[ordered_tips]
   
   p <- ggtree(gentree, layout='rectangular') 
   p
@@ -242,7 +247,9 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
   # [9] "#CC6677" "#AA4466"
   # [11] "#882255" "#AA4499"
   
-  return(list(p2, features_site_metadata))
+  ## list [[1]] is tree, [[2]] is metadata, [[3]] is tip.order
+  
+  return(list(p2, features_site_metadata, tip.order))
   
   
 }
