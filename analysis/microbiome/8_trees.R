@@ -107,7 +107,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     new_nodes <- gentree %>% as_tibble()
   }
   print(length(gentree$tip.label))
-  browser()
+  
 
   # if(all_levels==FALSE){
   #   if(final_level == ' s__'){
@@ -124,6 +124,8 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
   #browser()
   matched_pres_meta <- match_shared_ID(matched_presabs, metadata)
   
+  
+  
   matched_id <- matched_pres_meta$UniqueID
   row.names(matched_pres_meta) <- matched_id
   if (genus.or.spp=='Species'){
@@ -133,7 +135,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     filter(GenusSpecies==this.species) %>%
     select(!GenusSpecies) %>%
     group_by(UniqueID, Site) %>%
-    count() %>%
+    mutate(n= n()) %>%
     pivot_wider(names_from=Site,
                 values_from = n,
                 names_expand = TRUE,
@@ -145,6 +147,8 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     #mutate(Site = factor(Site, levels=site.order))
   #browser()
   }
+  browser()
+  
   if (genus.or.spp=='Genus'){
     meta_match_sites <- match_shared_ID(metadata, matched_pres_meta) %>%
       select(UniqueID, Site, Genus) %>%
@@ -152,7 +156,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
       filter(Genus==this.species) %>%
       select(!Genus) %>%
       group_by(UniqueID, Site) %>%
-      count() %>%
+      dplyr::count() %>%
       pivot_wider(names_from=Site,
                   values_from = n,
                   names_expand = TRUE,
