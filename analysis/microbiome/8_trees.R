@@ -107,7 +107,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     new_nodes <- gentree %>% as_tibble()
   }
   print(length(gentree$tip.label))
-  #browser()
+  browser()
 
   # if(all_levels==FALSE){
   #   if(final_level == ' s__'){
@@ -164,6 +164,8 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     #mutate(Site = factor(Site, levels=site.order))
     #browser()
   }
+  
+  
   features_site_metadata <- match_shared_ID(matched_pres_meta, meta_match_sites) %>%
     right_join(meta_match_sites, by='UniqueID') %>%
     #browser()
@@ -187,7 +189,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     gentree <- drop.tip(gentree, final_drop)
   }
   
-  browser()
+  
   
   p <- ggtree(gentree, layout='rectangular') 
   p
@@ -279,63 +281,6 @@ comm_presabs <- tibble::rownames_to_column(comm_presabs, "UniqueID") #make rowna
 finalASV <- as.data.frame(finalASVtable)
 finalASV[finalASV > 0] <- 1 #change all rel abund to 1
 finalASV <- tibble::rownames_to_column(finalASV, "UniqueID") #make rownames (UniqueID) into column
-
-
-# #apis
-# # apis_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", comm_presabs, apis_sites, all_levels=TRUE, do_collapse=FALSE, tree.type='16s')
-# # apis_tree
-# # 
-# apis_tree2 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis mellifera", genus.or.spp='Species', comm_presabs, apis_sites, all_levels=TRUE, do_collapse = TRUE)
-# apis_tree2
-# # 
-# apis_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis mellifera", genus.or.spp='Species', comm_presabs, apis_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse=TRUE)
-# apis_tree_drop_s
-# # 
-# apis_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis mellifera", genus.or.spp='Species', comm_presabs, apis_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
-# apis_tree_drop_g
-# 
-# 
-# 
-# #bombus centralis
-# centralis_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus centralis", genus.or.spp='Species', comm_presabs, bombus_sites, do_collapse = TRUE)
-# centralis_tree
-# 
-# centralis_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus centralis", genus.or.spp='Species', comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
-# centralis_tree_drop_s
-# 
-# centralis_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus centralis", genus.or.spp='Species', comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
-# centralis_tree_drop_g
-# 
-# #bombus huntii
-# huntii_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus huntii", genus.or.spp='Species', comm_presabs, bombus_sites, do_collapse = TRUE)
-# huntii_tree
-# 
-# huntii_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus huntii", genus.or.spp='Species', comm_presabs,  bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
-# huntii_tree_drop_s
-# 
-# huntii_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus huntii", genus.or.spp='Species', comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
-# huntii_tree_drop_g
-# 
-# #bombus bifarius -- only found at one site!
-# # bifarius_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus bifarius", comm_presabs, bombus_sites, do_collapse = TRUE)
-# # bifarius_tree
-# #
-# # bifarius_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus bifarius", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
-# # bifarius_tree_drop_s
-# #
-# # bifarius_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus bifarius", comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
-# # bifarius_tree_drop_g
-# 
-# 
-# # melissodes confusus
-# melissodes_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes confusus", genus.or.spp='Species', comm_presabs, bombus_sites, do_collapse = TRUE)
-# melissodes_tree
-# 
-# melissodes_tree_drop_s <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes confusus", genus.or.spp='Species', comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=' s__', do_collapse = TRUE)
-# melissodes_tree_drop_s
-# 
-# melissodes_tree_drop_g <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes confusus", genus.or.spp='Species', comm_presabs, bombus_sites, all_levels=FALSE, levels_to_drop=c(' s__', ' g__'), do_collapse = TRUE)
-# melissodes_tree_drop_g
 
 
 ## Genus trees
