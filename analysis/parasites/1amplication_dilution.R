@@ -31,28 +31,33 @@ variables.to.log.1<- c("Net_HBAbundance", "Net_BombusAbundance",
 
 ## uses only net specimens, and drops syrphids
 source("src/init.R")
+spec.net <- filter(spec.net, Site != "VC" & Site != "UK" & Site != "SS")
+
+
 ## Make SEM weights and standardize data.
 spec.net <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1, 
                         vars_yearsr = vars_yearsr, vars_sp = vars_sp, 
                         vars_yearsrsp = vars_yearsrsp)
-spec.net <- filter(spec.net, Site != "VC" & Site != "UK" & Site != "SS")
 spec.net$Site <- factor(spec.net$Site, levels = c("JC", "SM", "SC", "MM", 
-                                                 "HM", "PL", "CH", "RP"))
+                                                  "HM", "PL", "CH", "RP"))
 spec.net$Year <- as.factor(spec.net$Year)  
 ## bombus only data
 spec.bombus <- spec.net
 spec.bombus$WeightsPar[spec.bombus$Genus != "Bombus"] <- 0
+spec.bombus$WeightsSp[spec.bombus$Genus != "Bombus"] <- 0
 
 ## apis only data
 spec.apis <- spec.net
 spec.apis$WeightsPar[spec.apis$Genus != "Apis"] <- 0
-
+spec.apis$WeightsSp[spec.apis$Genus != "Apis"] <- 0
 ## melissodes only data
 spec.melissodes <- spec.net
 spec.melissodes$WeightsPar[spec.melissodes$Genus != "Melissodes"] <- 0
+spec.melissodes$WeightsSp[spec.melissodes$Genus != "Melissodes"] <- 0
 
 spec.apidae <- spec.net
 spec.apidae$WeightsPar[spec.apidae$Family != "Apidae"] <- 0
+spec.apidae$WeightsSp[spec.apidae$Family != "Apidae"] <- 0
 ## define all the formulas for the different parts of the models
 source("src/plant_poll_models.R")
 ## check ids
@@ -137,7 +142,7 @@ fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         chains = 1,
                                         thin=1,
                                         init=0, data2= list(phylo_matrix=phylo_matrix),
-                                        SEM = TRUE)
+                                        SEM = TRUE, neg.binomial = TRUE)
 
 
 
