@@ -51,8 +51,9 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     #pull out all sites that include the specified genus
     my_sites <- unique(metadata$Site[metadata$Genus==this.species])
   }
+  
   #remove tips from the tree that are not in the list of unique IDs in the specified genus
-  trimmed_tree <- prune_samples(sample_names(tree.object) %in% sp_ids$UniqueID, tree.object)
+  trimmed_tree <- prune_samples(rownames(tree.object@sam_data) %in% sp_ids$UniqueID, tree.object)
   
   #remove taxa from the tree where there were less than zero observations
   pruned_tree <- prune_taxa(taxa_sums(trimmed_tree) > 0, trimmed_tree)
@@ -91,58 +92,21 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     }
   }
   
-  #browser()
   
-# if(all_levels==FALSE){
-# for (level in levels_to_drop) {
-#       tips_to_drop <- grep(level, gentree$tip.label)
-#       print(paste('tip drop len', length(tips_to_drop)))
-#       if (length(tips_to_drop) > 0) {
-#         gentree <- drop.tip(gentree, tips_to_drop)
-#         new_len <- length(gentree$tip.label)
-#         percent_drop <- (length(tips_to_drop)/orig_len)*100
-#         print(paste(level, "percent tips dropped", percent_drop))
-#         final_level <- level
-#       }
-#     }
-# }
-  if (all_levels == FALSE) {
-    for (level in levels_to_drop) {
-      #make a list of tip labels that include the specified level
-      tips_to_modify <- grep(level, gentree$tip.label)
-      orig.tip.location <- as_tibble(gentree) %>%
-        select(node, label) %>%
-        mutate(do_modify = {ifelse(.$node %in% tips_to_modify, 1, 0)})
-      #browser()
-      if (length(tips_to_modify) > 0) {
-        # Replace the pattern and everything following it with an empty string
-        gentree$tip.label[tips_to_modify] <- gsub(paste0(";", level, ".*"), "", gentree$tip.label[tips_to_modify])
-        this.tip.level.label <- paste(level)
-        new.tip.location <- orig.tip.location %>%
-          mutate(!!this.tip.level.label := {ifelse(do_modify == 1, gsub(paste0(";", level, ".*"), "", label), label)})
-        new_len <- length(gentree$tip.label)
-        percent_drop <- (length(tips_to_modify) / orig_len) * 100
-        print(paste(level, "percent tips dropped", percent_drop))
-        final_level <- level
-      }
-      }
+  print(length(gentree$tip.label))
+  if (do_collapse == TRUE){
+     #pull out unique tip labels
+     original_nodes <- gentree %>% as_tibble()
+     groups <- unique(gentree$tip.label)
+     
+  
+ # collapse branches that have the same label
+    for (this.group in groups){
+      gentree <- collapse_identical_tips(gentree, this.group)
+    }
+    new_nodes <- gentree %>% as_tibble()
   }
-  
-  #browser()
-    #print(length(gentree$tip.label))
-  # if (do_collapse == TRUE){
-  #   #pull out unique tip labels
-  #   original_nodes <- gentree %>% as_tibble() 
-  #   groups <- unique(gentree$tip.label)
-  #   #browser()
-  #   
-  #   #collapse branches that have the same label
-  #   for (this.group in groups){
-  #     gentree <- collapse_identical_tips(gentree, this.group)
-  #   }
-  #   new_nodes <- gentree %>% as_tibble()
-  # }
-  #print(length(gentree$tip.label))
+  print(length(gentree$tip.label))
   #browser()
 
   # if(all_levels==FALSE){
@@ -157,7 +121,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
   
   matched_presabs <- match_shared_tiplabels(gentree, presAbsTable)
   ## dropping lots of tiplabels here...
-  browser()
+  #browser()
   matched_pres_meta <- match_shared_ID(matched_presabs, metadata)
   
   matched_id <- matched_pres_meta$UniqueID
@@ -223,9 +187,11 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     gentree <- drop.tip(gentree, final_drop)
   }
   
+  browser()
+  
   p <- ggtree(gentree, layout='rectangular') 
   p
-  browser()
+  
   p2 <- p +
     new_scale_fill() + 
     #geom_tiplab(align=TRUE, size=2) + 
@@ -272,7 +238,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
   
   p2
   
-  #browser()
+  
 }
 
 ## obligate symbionts
@@ -310,9 +276,9 @@ comm_presabs <- as.data.frame(indiv.comm.16sR0) #load in the pres/abs table
 comm_presabs[comm_presabs > 0] <- 1 #change all rel abund to 1
 comm_presabs <- tibble::rownames_to_column(comm_presabs, "UniqueID") #make rownames (UniqueID) into column
 
-
-
-
+finalASV <- as.data.frame(finalASVtable)
+finalASV[finalASV > 0] <- 1 #change all rel abund to 1
+finalASV <- tibble::rownames_to_column(finalASV, "UniqueID") #make rownames (UniqueID) into column
 
 
 # #apis
@@ -373,7 +339,7 @@ comm_presabs <- tibble::rownames_to_column(comm_presabs, "UniqueID") #make rowna
 
 
 ## Genus trees
-apis_tree2 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", genus.or.spp='Genus', comm_presabs, apis_sites, all_levels=TRUE, do_collapse = TRUE)
+apis_tree2 <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", genus.or.spp='Genus', finalASV, apis_sites, all_levels=TRUE, do_collapse = TRUE)
 panelB <- apis_tree2 + labs(tag="B.")
 panelB
 # 
