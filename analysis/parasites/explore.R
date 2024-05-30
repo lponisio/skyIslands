@@ -23,83 +23,92 @@ variables.to.log <- c("rare.degree", "MeanITD")
 variables.to.log.1<- c("Net_HBAbundance", "Net_BombusAbundance", 
                        "Net_NonBombusHBAbundance")
 source("src/init.R")
-
+## These sites were only visited once. 
 spec.orig <- filter(spec.orig, Site != "VC" & Site != "UK" & Site != "SS")
+## Chiricahua has two meadows so renamed them to be able to show both meadows in
+## all the community graphs. 
+for(i in 1:nrow(spec.orig)){
+  if(spec.orig$Site[i] == "CH" ){
+  spec.orig$MtRange[i] <- "Chiricahua A"
+  } else if(spec.orig$Site[i] == "RP"){
+  spec.orig$MtRange[i] <- "Chiricahua B"
+  }
+} 
+
 
 ## Plots by meadow
 ## Bee abundances by meadows
 ###############################################################################
 ##Bombus
-bombus_abundance<- spec.orig %>% 
-ggplot(aes(reorder(Site, Lat, decreasing = TRUE), Net_BombusAbundance))+ 
+bombus_abundance<- spec.orig %>%  
+ggplot(aes(reorder(MtRange, Lat, decreasing = TRUE), Net_BombusAbundance))+ 
   geom_boxplot()+ geom_point(aes(color = as.factor(Year)))+
-  labs(x = "Sites", y = "Bombus Abundance", color = "Year")+
+  labs(x = "Meadows", y = "Bombus Abundance", color = "Year")+
   theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
         axis.title.y = element_text(size=10),
-        text = element_text(size=10))+
-  theme_bw()
+        text = element_text(size=10))
+  
 
 
 ##Apis
 HB_abundance<- spec.orig %>% 
-  ggplot(aes(reorder(Site, Lat, decreasing = TRUE), Net_HBAbundance))+ 
+  ggplot(aes(reorder(MtRange, Lat, decreasing = TRUE), Net_HBAbundance))+ 
   geom_boxplot()+ geom_point(aes(color = as.factor(Year)))+
-  labs(x = "Sites", y = "Apis Abundance", color = "Year")+
+  labs(x = "Meadows", y = "Apis Abundance", color = "Year")+
   theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
         axis.title.y = element_text(size=10),
-        text = element_text(size=10))+
-  theme_bw()
+        text = element_text(size=10))
+  
 
 
 ##Other bees
 melissodes_abundance<- spec.orig %>% 
   filter(Genus == "Melissodes") %>% 
-  ggplot(aes(reorder(Site, Lat, decreasing = TRUE), Net_NonBombusHBAbundance))+ 
+  ggplot(aes(reorder(MtRange, Lat, decreasing = TRUE), Net_NonBombusHBAbundance))+ 
   geom_boxplot()+ geom_point(aes(color = as.factor(Year)))+
-  labs(x = "Sites", y = "Melissodes Abundance", color = "Year")+
+  labs(x = "Meadows", y = "Melissodes Abundance", color = "Year")+
   theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
         axis.title.y = element_text(size=10),
-        text = element_text(size=10))+
-  theme_bw()
+        text = element_text(size=10))
+  
 
 ################################################################################
 ## Bee Diversity by meadows
 bee_diversity<- spec.orig %>% 
-  ggplot(aes(reorder(Site, Lat, decreasing = TRUE), Net_BeeDiversity))+ 
+  ggplot(aes(reorder(MtRange, Lat, decreasing = TRUE), Net_BeeDiversity))+ 
   geom_boxplot()+ geom_point(aes(color = as.factor(Year)))+
-  labs(x = "Sites", y = "Bee Diversity", color = "Year")+
+  labs(x = "Meadows", y = "Bee Diversity", color = "Year")+
   theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
         axis.title.y = element_text(size=10),
-        text = element_text(size=10))+
-  theme_bw()
+        text = element_text(size=10))
+  
 
 
 ###############################################################################
 ## Floral abundance by meadows
 floral_abundance<- spec.orig %>% 
-  ggplot(aes(reorder(Site, Lat, decreasing = TRUE), MeanFloralAbundance))+ 
+  ggplot(aes(reorder(MtRange, Lat, decreasing = TRUE), MeanFloralAbundance))+ 
   geom_boxplot()+ geom_point(aes(color = as.factor(Year)))+
-  labs(x = "Sites", y = "Mean Floral Abundance", color = "Year")+
+  labs(x = "Meadows", y = "Mean Floral Abundance", color = "Year")+
   theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
         axis.title.y = element_text(size=10),
-        text = element_text(size=10))+
-  theme_bw()
+        text = element_text(size=10))
+  
 
 
 ## Floral diversity by meadows
 
 floral_diversity<- spec.orig %>% 
-  ggplot(aes(reorder(Site, Lat, decreasing = TRUE), MeanFloralDiversity))+ 
+  ggplot(aes(reorder(MtRange, Lat, decreasing = TRUE), MeanFloralDiversity))+ 
   geom_boxplot()+ geom_point(aes(color = as.factor(Year)))+
-  labs(x = "Year", y = "Mean Floral Diversity", color = "Year")+
-  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
+  labs(x = "Meadows", y = "Mean Floral Diversity", color = "Year")+
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size=10), 
         axis.title.y = element_text(size=10),
-        text = element_text(size=10))+
-  theme_bw()
+        text = element_text(size=10))
 
 bombus_abundance + HB_abundance + melissodes_abundance + bee_diversity + 
   floral_abundance + floral_diversity + plot_layout(ncol = 3)+ 
-  plot_annotation(tag_levels = "A")
+  plot_annotation(tag_levels = "A")+ plot_layout(guides = "collect")
 
 
 ###############################################################################
@@ -218,7 +227,7 @@ parasite_prevalence <- parasites_bees %>%
   labs(x = "Parasites", y = "Parasitism Rate")+
   theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
         axis.title.y = element_text(size=10),
-        text = element_text(size=10))+
+        text = element_text(size=10))
   facet_wrap(~ Genus)
 
 ggsave(parasite_prevalence, file="figures/parasite_prevalence_by_genus.jpg",
