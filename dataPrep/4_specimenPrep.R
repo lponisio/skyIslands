@@ -180,9 +180,9 @@ calcSummaryStats <- function(spec.method, method){
                                                    [GenusSpecies == "Apis mellifera"],
                                                    na.rm=TRUE),
                   SpParasitism = sum(ParasitePresence, na.rm=TRUE),
-                  SpCrithidiaParasitism = sum(CrithidiaPresence, na.rm=TRUE),
-                  SpApicystisParasitism = sum(ApicystisSpp, na.rm=TRUE),
-                  SpParasitismScreened = sum(!is.na(Apidae))
+                  SpCrithidiaPresence= sum(CrithidiaPresence, na.rm=TRUE),
+                  SpApicystisSpp = sum(ApicystisSpp, na.rm=TRUE),
+                  SpScreened = sum(!is.na(Apidae))
                   )
 
     site.sum <- spec.method %>%
