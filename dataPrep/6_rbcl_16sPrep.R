@@ -21,6 +21,13 @@ library(devtools)
 library(ape)
 
 
+
+
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install("TreeSummarizedExperiment")
+library(TreeSummarizedExperiment)
+if (!requireNamespace("devtools", quietly = TRUE)){install.packages("devtools")}
 devtools::install_github("jbisanz/qiime2R")
 library(qiime2R)
 
@@ -63,7 +70,7 @@ physeq16sR0 <- qza_to_phyloseq(
     metadata = "SI_pipeline/merged/16s/maps/combined-map-2018-2021.txt"
 )
 
-save(physeq16sR0, file= "../skyIslands/data/physeq16s.Rdata")
+
 
 #physeq16sR0
 ## plot(physeq16sR0@phy_tree, show.tip.label = FALSE)
@@ -100,7 +107,7 @@ unassigned_tips <- grep('^16s:Unassigned$', tree.16sR0$tip.label)
 tree.16sR0 <- drop.tip(tree.16sR0, tree.16sR0$tip.label[is.na(tree.16sR0$tip.label)])
 
 plot(tree.16sR0, show.tip.label = FALSE)
-
+save(physeq16sR0, tree.16sR0, file= "../skyIslands/data/physeq16s.Rdata")
 ## ***********************************************************************
 ## 16s networks
 ## ***********************************************************************
