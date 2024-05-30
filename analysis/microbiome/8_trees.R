@@ -147,7 +147,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     #mutate(Site = factor(Site, levels=site.order))
   #browser()
   }
-  browser()
+  #browser()
   
   if (genus.or.spp=='Genus'){
     meta_match_sites <- match_shared_ID(metadata, matched_pres_meta) %>%
@@ -156,7 +156,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
       filter(Genus==this.species) %>%
       select(!Genus) %>%
       group_by(UniqueID, Site) %>%
-      dplyr::count() %>%
+      mutate(n= n()) %>%
       pivot_wider(names_from=Site,
                   values_from = n,
                   names_expand = TRUE,
