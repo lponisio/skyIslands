@@ -33,7 +33,7 @@ load("../../data/spec_RBCL_16s.RData")
 
 whole.microbe.network = FALSE
 
-obligate.microbe.network = FALSE
+obligate.microbe.network = TRUE
 
 transient.microbe.network = TRUE
 #reworking script to run brms models
@@ -394,7 +394,7 @@ ggsave(interaction.turnover[[2]], file="figures/obligate_microbe_poll/Dissimilar
 
 int.turnover.rewiring <- calculate_and_plot_betalinkr("OnlySharedLinks",
                                                       obligate_poll_betalink,
-                                                      "Interaction Turnover: \nRewiring",
+                                                      "Rewiring",
                                                       network_type="Obligate")
 ggsave(int.turnover.rewiring[[2]], file="figures/obligate_microbe_poll/InteractionDissimilarityRewiring.pdf", height=6, width=6)
 
@@ -406,42 +406,47 @@ ggsave(int.turnover.species.turnover[[2]], file="figures/obligate_microbe_poll/I
 
 sp.turnover.microbes <- calculate_and_plot_betalinkr("TurnoverAbsenceMicrobes",
                                                      obligate_poll_betalink,
-                                                     "Species Turnover: \nAbsence of Microbes",
+                                                     "Microbe-driven Turnover",
                                                      network_type="Obligate")
 ggsave(sp.turnover.microbes[[2]], file="figures/obligate_microbe_poll/SpeciesTurnoverAbsenceMicrobes.pdf", height=6, width=6)
 
 sp.turnover.bees <- calculate_and_plot_betalinkr("TurnoverAbsencePollinators",
                                                  obligate_poll_betalink,
-                                                 "Species Turnover: \nAbsence of Bees",
+                                                 "Host-driven Turnover",
                                                  network_type="Obligate")
 ggsave(sp.turnover.bees[[2]], file="figures/obligate_microbe_poll/SpeciesTurnoverAbsenceBees.pdf", height=6, width=6)
 
 sp.turnover.both <- calculate_and_plot_betalinkr("TurnoverAbsenceBoth",
                                                  obligate_poll_betalink,
-                                                 "Species Turnover: \nAbsence of Both",
+                                                 "Complete Turnover",
                                                  network_type="Obligate")
 ggsave(sp.turnover.both[[2]], file="figures/obligate_microbe_poll/SpeciesTurnoverAbsenceBoth.pdf", height=6, width=6)
 
+}
+
 ## make panel figure
-panelA <- species.turnover[[2]] + labs(tag="A.")
-panelB <- interaction.turnover[[2]] + labs(tag="B.")
-panelC <- sp.turnover.bees[[2]] + labs(tag="C.")
-panelD <- int.turnover.species.turnover[[2]] + labs(tag="D.")
-panelE <- sp.turnover.microbes[[2]] + labs(tag="E.")
-panelF <- int.turnover.rewiring[[2]] + labs(tag="F.")
+# panelA <- species.turnover[[2]] + labs(tag="A.")
+# panelB <- interaction.turnover[[2]] + labs(tag="B.")
+# panelC <- sp.turnover.bees[[2]] + labs(tag="C.")
+# panelD <- int.turnover.species.turnover[[2]] + labs(tag="D.")
+# panelE <- sp.turnover.microbes[[2]] + labs(tag="E.")
+# panelF <- int.turnover.rewiring[[2]] + labs(tag="F.")
 
-
+## updated panel fig
+## rewiring
+panelA <- int.turnover.rewiring[[2]] + labs(tag="A.")
+panelB <- sp.turnover.bees[[2]] + labs(tag="B.")
+panelC <- sp.turnover.microbes[[2]] + labs(tag="C.")
+panelD <- sp.turnover.both[[2]] + labs(tag="D.")
 
 pdf("figures/obligate_microbe_poll/grid_obligate_microbes.pdf", width = 8.5, height = 11) # Open a new pdf file
 grid.arrange(panelA,
              panelB,
              panelC,
              panelD,
-             panelE,
-             panelF,
              ncol=2) # Write the grid.arrange in the file
 dev.off()
-}
+
 
 if(transient.microbe.network==TRUE){
 
@@ -535,7 +540,7 @@ ggsave(interaction.turnover[[2]], file="figures/transient_microbe_poll/Dissimila
 
 int.turnover.rewiring <- calculate_and_plot_betalinkr("OnlySharedLinks",
                                                       transient_poll_betalink,
-                                                      "Interaction Turnover: \nRewiring",
+                                                      "Rewiring",
                                                       network_type = 'Transient')
 ggsave(int.turnover.rewiring[[2]], file="figures/transient_microbe_poll/InteractionDissimilarityRewiring.pdf", height=6, width=6)
 
@@ -547,29 +552,35 @@ ggsave(int.turnover.species.turnover[[2]], file="figures/transient_microbe_poll/
 
 sp.turnover.microbes <- calculate_and_plot_betalinkr("TurnoverAbsenceMicrobes",
                                                      transient_poll_betalink,
-                                                     "Species Turnover: \nAbsence of Microbes",
+                                                     "Microbe-driven Turnover",
                                                      network_type = 'Transient')
 ggsave(sp.turnover.microbes[[2]], file="figures/transient_microbe_poll/SpeciesTurnoverAbsenceMicrobes.pdf", height=6, width=6)
 
 sp.turnover.bees <- calculate_and_plot_betalinkr("TurnoverAbsencePollinators",
                                                  transient_poll_betalink,
-                                                 "Species Turnover: \nAbsence of Bees",
+                                                 "Host-driven Turnover",
                                                  network_type = 'Transient')
 ggsave(sp.turnover.bees[[2]], file="figures/transient_microbe_poll/SpeciesTurnoverAbsenceBees.pdf", height=6, width=6)
 
 sp.turnover.both <- calculate_and_plot_betalinkr("TurnoverAbsenceBoth",
                                                  transient_poll_betalink,
-                                                 "Species Turnover: \nAbsence of Both",
+                                                 "Complete Turnover",
                                                  network_type = 'Transient')
 ggsave(sp.turnover.both[[2]], file="figures/transient_microbe_poll/SpeciesTurnoverAbsenceBoth.pdf", height=6, width=6)
+}
 
 ## make panel figure
-panelA <- species.turnover[[2]] + labs(tag="A.")
-panelB <- interaction.turnover[[2]] + labs(tag="B.")
-panelC <- sp.turnover.bees[[2]] + labs(tag="C.")
-panelD <- int.turnover.species.turnover[[2]] + labs(tag="D.")
-panelE <- sp.turnover.microbes[[2]] + labs(tag="E.")
-panelF <- int.turnover.rewiring[[2]] + labs(tag="F.")
+# panelA <- species.turnover[[2]] + labs(tag="A.")
+# panelB <- interaction.turnover[[2]] + labs(tag="B.")
+# panelC <- sp.turnover.bees[[2]] + labs(tag="C.")
+# panelD <- int.turnover.species.turnover[[2]] + labs(tag="D.")
+# panelE <- sp.turnover.microbes[[2]] + labs(tag="E.")
+# panelF <- int.turnover.rewiring[[2]] + labs(tag="F.")
+
+panelA <- int.turnover.rewiring[[2]] + labs(tag="A.")
+panelB <- sp.turnover.bees[[2]] + labs(tag="B.")
+panelC <- sp.turnover.microbes[[2]] + labs(tag="C.")
+panelD <- sp.turnover.both[[2]] + labs(tag="D.")
 
 
 pdf("figures/transient_microbe_poll/grid_transient_microbes.pdf", width = 8.5, height = 11) # Open a new pdf file
@@ -577,9 +588,7 @@ grid.arrange(panelA,
              panelB,
              panelC,
              panelD,
-             panelE,
-             panelF,
              ncol=2) # Write the grid.arrange in the file
 dev.off()
 
-}
+
