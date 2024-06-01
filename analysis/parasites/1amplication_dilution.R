@@ -135,14 +135,14 @@ fit.parasites <- runCombinedParasiteModels(spec.net, species.group="melissodes",
 
 
 fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
-                                        parasite = c("CrithidiaPresence"),
+                                        parasite = c("CrithidiaPresence", "ApicystisSpp"),
                                         xvars=xvars.multi.bombus,
                                         ncores,
                                         iter = 10^4,
                                         chains = 1,
                                         thin=1,
                                         init=0, data2= list(phylo_matrix=phylo_matrix),
-                                        SEM = TRUE, neg.binomial = TRUE)
+                                        SEM = FALSE, neg.binomial = TRUE)
 
 
 
