@@ -462,7 +462,7 @@ write.table(sp.turnover.both[[1]],
 write.csv(sp.turnover.both[[1]],
           file=sprintf("tables/obligate_microbe_poll/complete-turnover.csv"))
 
-pdf("figures/obligate_microbe_poll/grid_obligate_microbes.pdf", width = 8.5, height = 11) # Open a new pdf file
+pdf("figures/obligate_microbe_poll/grid_obligate_microbes.pdf", width = 8.5, height = 8.5) # Open a new pdf file
 grid.arrange(panelA,
              panelB,
              panelC,
@@ -626,7 +626,7 @@ write.table(sp.turnover.both[[1]],
 write.csv(sp.turnover.both[[1]],
           file=sprintf("tables/transient_microbe_poll/complete-turnover.csv"))
 
-pdf("figures/transient_microbe_poll/grid_transient_microbes.pdf", width = 8.5, height = 11) # Open a new pdf file
+pdf("figures/transient_microbe_poll/grid_transient_microbes.pdf", width = 8.5, height = 8.5) # Open a new pdf file
 grid.arrange(panelA,
              panelB,
              panelC,
