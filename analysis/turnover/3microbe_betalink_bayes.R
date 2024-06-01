@@ -30,6 +30,8 @@ load("../../data/networks/microNets.RData")
 
 load("../../data/spec_RBCL_16s.RData")
 
+source("src/writeResultsTable.R")
+
 
 whole.microbe.network = FALSE
 
@@ -124,7 +126,7 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label, ne
   # Fit model
   mod1 <-  brm(forms, this_network,
               cores=1,
-              iter = 10000,
+              iter = 20000,
               chains = 1,
               thin=1,
               init=0,
@@ -434,10 +436,31 @@ ggsave(sp.turnover.both[[2]], file="figures/obligate_microbe_poll/SpeciesTurnove
 
 ## updated panel fig
 ## rewiring
+dir.create("tables/obligate_microbe_poll", showWarnings = FALSE)
+
 panelA <- int.turnover.rewiring[[2]] + labs(tag="A.")
+write.table(int.turnover.rewiring[[1]],
+            file=sprintf("tables/obligate_microbe_poll/rewiring.txt"), sep="&")
+write.csv(int.turnover.rewiring[[1]],
+          file=sprintf("tables/obligate_microbe_poll/rewiring.csv"))
+
 panelB <- sp.turnover.bees[[2]] + labs(tag="B.")
+write.table(sp.turnover.bees[[1]],
+            file=sprintf("tables/obligate_microbe_poll/host-driven.txt"), sep="&")
+write.csv(sp.turnover.bees[[1]],
+          file=sprintf("tables/obligate_microbe_poll/host-driven.csv"))
+
 panelC <- sp.turnover.microbes[[2]] + labs(tag="C.")
+write.table(sp.turnover.microbes[[1]],
+            file=sprintf("tables/obligate_microbe_poll/microbe-driven.txt"), sep="&")
+write.csv(sp.turnover.microbes[[1]],
+          file=sprintf("tables/obligate_microbe_poll/microbe-driven.csv"))
+
 panelD <- sp.turnover.both[[2]] + labs(tag="D.")
+write.table(sp.turnover.both[[1]],
+            file=sprintf("tables/obligate_microbe_poll/complete-turnover.txt"), sep="&")
+write.csv(sp.turnover.both[[1]],
+          file=sprintf("tables/obligate_microbe_poll/complete-turnover.csv"))
 
 pdf("figures/obligate_microbe_poll/grid_obligate_microbes.pdf", width = 8.5, height = 11) # Open a new pdf file
 grid.arrange(panelA,
@@ -577,11 +600,31 @@ ggsave(sp.turnover.both[[2]], file="figures/transient_microbe_poll/SpeciesTurnov
 # panelE <- sp.turnover.microbes[[2]] + labs(tag="E.")
 # panelF <- int.turnover.rewiring[[2]] + labs(tag="F.")
 
-panelA <- int.turnover.rewiring[[2]] + labs(tag="A.")
-panelB <- sp.turnover.bees[[2]] + labs(tag="B.")
-panelC <- sp.turnover.microbes[[2]] + labs(tag="C.")
-panelD <- sp.turnover.both[[2]] + labs(tag="D.")
+dir.create("tables/transient_microbe_poll", showWarnings = FALSE)
 
+panelA <- int.turnover.rewiring[[2]] + labs(tag="A.")
+write.table(int.turnover.rewiring[[1]],
+            file=sprintf("tables/transient_microbe_poll/rewiring.txt"), sep="&")
+write.csv(int.turnover.rewiring[[1]],
+          file=sprintf("tables/transient_microbe_poll/rewiring.csv"))
+
+panelB <- sp.turnover.bees[[2]] + labs(tag="B.")
+write.table(sp.turnover.bees[[1]],
+            file=sprintf("tables/transient_microbe_poll/host-driven.txt"), sep="&")
+write.csv(sp.turnover.bees[[1]],
+          file=sprintf("tables/transient_microbe_poll/host-driven.csv"))
+
+panelC <- sp.turnover.microbes[[2]] + labs(tag="C.")
+write.table(sp.turnover.microbes[[1]],
+            file=sprintf("tables/transient_microbe_poll/microbe-driven.txt"), sep="&")
+write.csv(sp.turnover.microbes[[1]],
+          file=sprintf("tables/transient_microbe_poll/microbe-driven.csv"))
+
+panelD <- sp.turnover.both[[2]] + labs(tag="D.")
+write.table(sp.turnover.both[[1]],
+            file=sprintf("tables/transient_microbe_poll/complete-turnover.txt"), sep="&")
+write.csv(sp.turnover.both[[1]],
+          file=sprintf("tables/transient_microbe_poll/complete-turnover.csv"))
 
 pdf("figures/transient_microbe_poll/grid_transient_microbes.pdf", width = 8.5, height = 11) # Open a new pdf file
 grid.arrange(panelA,
