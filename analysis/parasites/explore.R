@@ -34,6 +34,9 @@ for(i in 1:nrow(spec.orig)){
   spec.orig$MtRange[i] <- "Chiricahua B"
   }
 } 
+spec.orig %>% 
+  group_by(MtRange, Meadow, Site, Lat) %>% 
+  summarize (n = n())
 
 
 ## Plots by meadow
@@ -108,7 +111,7 @@ floral_diversity<- spec.orig %>%
 
 bombus_abundance + HB_abundance + melissodes_abundance + bee_diversity + 
   floral_abundance + floral_diversity + plot_layout(ncol = 3)+ 
-  plot_annotation(tag_levels = "A")+ plot_layout(guides = "collect")
+  plot_annotation(tag_levels = "A")+ plot_layout(guides = "collect", axis_titles = "collect")
 
 
 ###############################################################################
@@ -215,7 +218,8 @@ ggsave(Bombus_ParasiteRate, file="figures/Bombus_ParasiteRate.pdf",
 
 ## Parasite prevalence in different groups of bees. 
 
-parasites_bees<-pivot_longer(spec.net, cols = c(ApicystisSpp, AscosphaeraSpp, CrithidiaBombi, CrithidiaExpoeki, 
+
+parasites_bees<-pivot_longer(spec.orig, cols = c(ApicystisSpp, AscosphaeraSpp, CrithidiaBombi, CrithidiaExpoeki, 
                         CrithidiaPresence, NosemaCeranae, NosemaBombi), names_to = "Parasites") 
 parasite_prevalence <- parasites_bees %>%   
   filter(Genus == c("Melissodes", "Anthophora", "Apis", "Bombus")) %>% 
@@ -264,20 +268,25 @@ ggsave(parasite_prevalence_genus, file="figures/prevalence_by_genus.jpg",
        height=4, width=5)
 
 ## Looking at total screened bees per site and num of positives
-parasites_bees$value <- as.factor(parasites_bees$value)
-tested_pos_neg<- parasites_bees %>%   
-  filter(Genus == c("Bombus", "Melissodes", "Apis", "Anthophora")) %>% 
-  filter(Parasites != "NosemaBombi" & Parasites != "NosemaCeranae") %>% 
-  filter(Site != "VC" & Site != "UK" & Site != "SS")%>% 
-  filter(!is.na(value)) %>% 
-  group_by(Site, value) %>% 
-  summarise(TestedTotals = length(value), 
-            Positives = length(which(value == 1))) %>% 
-  ggplot(aes(x=Site)) +
-  geom_bar(aes(y = TestedTotals, fill = value), stat ="identity")+
+
+
+tested_pos_neg<- spec.orig %>%   
+  filter(Genus == "Melissodes" | Genus == "Bombus"| Genus == "Apis") %>% 
+  filter(Apidae == 1) %>% 
+  group_by(MtRange) %>% 
+  summarize(TestedTotals = sum(Apidae, na.rm = TRUE),
+            Positives = sum(ParasitePresence,na.rm=TRUE)) %>% 
+  pivot_longer(cols = c(TestedTotals, Positives), 
+               names_to = "Category", 
+               values_to = "Screenings") %>% 
+  ggplot(aes(x= MtRange, fill = Category)) +
+  geom_bar(aes(y = Screenings), stat ="identity", 
+           position = "dodge")+
+  labs(x = "Meadows", y = "Number of Screened Bees")+
   theme_minimal() + coord_flip()+
   theme(legend.title=element_blank())+
-  scale_fill_manual(col = c("grey", "#feb24c"), labels = c("Screened", "Positives"))
+  scale_fill_manual(values = c("#feb24c", "grey"), 
+                    labels = c("Positives", "Screened")) 
                      
 ggsave(tested_pos_neg, file="figures/tested_totals_pos_neg.jpg",
        height=4, width=5)
