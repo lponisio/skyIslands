@@ -139,18 +139,18 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label, ne
   
   if(network_type == "Obligate") {
     point_color <- "darkgreen"
-  if(model_geodist$Pgt0 >= 0.97){
+  if(model_geodist$Pgt0 >= 0.95){
     ribbon_color <- "Greens"
-  } else if (model_geodist$Pgt0 <= 0.03) {
+  } else if (model_geodist$Pgt0 <= 0.05) {
     ribbon_color <- "Greens"
   } else {ribbon_color <- "Greys"}
   }
   
   if(network_type == "Transient") {
     point_color <- "darkorange"
-    if(model_geodist$Pgt0 >= 0.97){
+    if(model_geodist$Pgt0 >= 0.95){
       ribbon_color <- "Oranges"
-    } else if (model_geodist$Pgt0 <= 0.03) {
+    } else if (model_geodist$Pgt0 <= 0.05) {
       ribbon_color <- "Oranges"
       } else {ribbon_color <- "Greys"}
   }
