@@ -300,7 +300,7 @@ non.ob.microbe.bombus.vars <- c("BeeAbundance",
 check_for_NA(non.ob.microbe.bombus.vars)
 
 non.ob.microbe.bombus.x <- paste(non.ob.microbe.bombus.vars, collapse="+")
-non.ob.microbe.bombus.y <- "PD.transient.log | weights(LogWeightsTransientAbund)"
+non.ob.microbe.bombus.y <- "PD.transient | weights(LogWeightsTransientAbund)"
 formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
                                               non.ob.microbe.bombus.x))
 
@@ -316,14 +316,11 @@ bform.bombus <- bf.fdiv +
     bf.non.ob.microbe.bombus +
     set_rescor(FALSE)
 
-## trying models with dropping all 0 for PD just to see
-spec.bombus <- spec.bombus[spec.bombus$PD.obligate > 0,]
-spec.bombus <- spec.bombus[spec.bombus$PD.transient > 0,]
 
 if(run.bombus){
 fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
                      cores=ncores,
-                      iter = 10000,
+                      iter = 1000,
                      chains = 1,
                      thin=1,
                      init=0,
