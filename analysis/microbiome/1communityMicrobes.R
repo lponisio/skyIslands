@@ -285,7 +285,7 @@ ob.microbe.bombus.vars <- c("BeeAbundance",
 
 
 ob.microbe.bombus.x <- paste(ob.microbe.bombus.vars, collapse="+")
-ob.microbe.bombus.y <- "PD.obligate.log | weights(LogWeightsObligateAbund)"
+ob.microbe.bombus.y <- "PD.obligate | weights(LogWeightsObligateAbund)"
 formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
@@ -305,6 +305,7 @@ formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
                                               non.ob.microbe.bombus.x))
 
 
+
 bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus)
 
 #combine forms
@@ -315,10 +316,14 @@ bform.bombus <- bf.fdiv +
     bf.non.ob.microbe.bombus +
     set_rescor(FALSE)
 
+## trying models with dropping all 0 for PD just to see
+spec.bombus <- spec.bombus[spec.bombus$PD.obligate > 0,]
+spec.bombus <- spec.bombus[spec.bombus$PD.transient > 0,]
+
 if(run.bombus){
 fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
                      cores=ncores,
-                      iter = 20000,
+                      iter = 10000,
                      chains = 1,
                      thin=1,
                      init=0,
@@ -334,7 +339,7 @@ save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
        file="saved/fullMicrobeBombusFit.Rdata")
 
 }
-update.bombus = TRUE
+update.bombus = FALSE
 if(update.bombus == TRUE){
   fit.microbe.bombus <- update(fit.microbe.bombus,
                                iter=30000,
