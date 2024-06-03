@@ -22,6 +22,9 @@ load('spec_RBCL_16s.Rdata')
 setwd("../../skyIslands_saved")
 
 library(pals)
+library(cowplot)
+library(ggpubr)
+library(gridExtra)
 
 
 #######################################
@@ -181,7 +184,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     group_by(bacteria) %>%
     add_count(Site, name="n_individuals") %>%
     mutate(SiteCount = as.numeric(n_distinct(Site))) %>%
-    mutate(Obligate = as.numeric(str_detect(bacteria, "Lactobacillus|Bifidobacterium|Snodgrassella|Gilliamella|Frischella|Bartonella|Commensalibacter")))
+    mutate(Obligate = as.numeric(str_detect(bacteria, "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonellaceae|Acetobacteraceae")))
    #browser() 
   tree_tip_labs <- gentree$tip.label
   
@@ -220,25 +223,23 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     scale_fill_gradient(high = "black", low ="lightgrey") +
     #ggtitle(paste(this.species, this_level)) +
     new_scale_fill() + 
-    #geom_tippoint(aes(
+    # geom_tippoint(aes(
     #  subset=(!grepl("Lactobacillus|Bifidobacterium|Snodgrassella|Gilliamella|Frischella|Bartonella|Commensalibacter",label,fixed=TRUE)==TRUE)), pch=15, color='black')+
     geom_tippoint(aes(
-      subset=(grepl("Gilliamella",label,fixed=TRUE)==TRUE)), pch=21, fill="#E69F00", size=3)+
+      subset=(grepl("Orbaceae",label,fixed=TRUE)==TRUE)), pch=21, fill="#8DB600", size=4)+
     geom_tippoint(aes(
-      subset=(grepl("Lactobacillus",label,fixed=TRUE)==TRUE)), pch=21, fill="#56B4E9", size=3)+
+      subset=(grepl("Lactobacillaceae",label,fixed=TRUE)==TRUE)), pch=21, fill="#882D17", size=4)+
     geom_tippoint(aes(
-      subset=(grepl("Snodgrassella",label,fixed=TRUE)==TRUE)), pch=21, fill="#009E73", size=3)+
+      subset=(grepl("Neisseriaceae",label,fixed=TRUE)==TRUE)), pch=21, fill="#DCD300", size=4)+
     geom_tippoint(aes(
-      subset=(grepl("Commensalibacter",label,fixed=TRUE)==TRUE)), pch=21, fill="#F0E442", size=3)+
+      subset=(grepl( "Bifidobacteriaceae",label,fixed=TRUE)==TRUE)), pch=21, fill="#B3446C", size=4)+
     geom_tippoint(aes(
-      subset=(grepl( "Bifidobacterium",label,fixed=TRUE)==TRUE)), pch=21, fill="#0072B2", size=3)+
+      subset=(grepl( "Acetobacteraceae",label,fixed=TRUE)==TRUE)), pch=21, fill="#F6A600", size=4)+
     geom_tippoint(aes(
-      subset=(grepl( "Frischella",label,fixed=TRUE)==TRUE)), pch=21, fill="#CC79A7", size=3)+
-    geom_tippoint(aes(
-      subset=(grepl("Bartonella",label,fixed=TRUE)==TRUE)), pch=21, fill="#D55E00", size=3) 
+      subset=(grepl("Bartonella",label,fixed=TRUE)==TRUE)), pch=21, fill="#604E97", size=4) 
   
   
-
+ # "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonellaceae|Acetobacteraceae"
 
   # "#332288" "#6699CC"
   # [3] "#88CCEE" "#44AA99"
@@ -254,14 +255,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
   
 }
 
-## obligate symbionts
-these_obligates <- c("Gilliamella",
-                     "Lactobacillus",
-                     "Snodgrassella",
-                     "Commensalibacter",
-                     "Bifidobacterium",
-                     "Frischella",
-                     "Bartonella")
+
 
 # core.sp <- c("Rosenbergiella", "Pseudomonas", "Gilliamella",
 #              "Lactobacillus", "Caulobacter", "Snodgrassella",
@@ -334,35 +328,28 @@ core.sp <- c("Rosenbergiella", "Pseudomonas", "Gilliamella",
              "Commensalibacter", "Methylobacterium",
              "Massilia","Stenotrophomonas", "Bifidobacterium", "Frischella", "Bartonella")
 
-geom_tippoint(aes(
-  subset=(grepl("Gilliamella",label,fixed=TRUE)==TRUE)), pch=21, fill="#E69F00", size=3)+
-  geom_tippoint(aes(
-    subset=(grepl("Lactobacillus",label,fixed=TRUE)==TRUE)), pch=21, fill="#56B4E9", size=3)+
-  geom_tippoint(aes(
-    subset=(grepl("Snodgrassella",label,fixed=TRUE)==TRUE)), pch=21, fill="#009E73", size=3)+
-  geom_tippoint(aes(
-    subset=(grepl("Commensalibacter",label,fixed=TRUE)==TRUE)), pch=21, fill="#F0E442", size=3)+
-  geom_tippoint(aes(
-    subset=(grepl( "Bifidobacterium",label,fixed=TRUE)==TRUE)), pch=21, fill="#0072B2", size=3)+
-  geom_tippoint(aes(
-    subset=(grepl( "Frischella",label,fixed=TRUE)==TRUE)), pch=21, fill="#CC79A7", size=3)+
-  geom_tippoint(aes(
-    subset=(grepl("Bartonella",label,fixed=TRUE)==TRUE)), pch=21, fill="#D55E00", size=3)
+## obligate symbionts
+these_obligates <- c("Acetobacteraceae",
+                     "Bartonellaceae",
+                     "Bifidobacteriaceae",
+                     "Lactobacillaceae",
+                     "Neisseriaceae",
+                     "Orbaceae")
 
-leg_col_order <- c("#D55E00", #Bartonella
-                   "#0072B2", #Bifidobacterium
-                   "#F0E442", #commensalibacter
-                   "#CC79A7", #Frischella
-                   "#E69F00", #gilliamella
-                   "#56B4E9", #lactobacillus
-                   "#009E73" )#snodgrassella
+
+leg_col_order <- c("#F6A600", #Acetobacteriaceae
+                   "#604E97", #Bartonellaceae
+                   "#B3446C", #Bifidobacteriaceae
+                   "#882D17", #Lactobacillaceae
+                   "#DCD300", #Neisseriaceae
+                   "#8DB600") #Orbaceae
 
 
 
 # Create a DataFrame 
-data <- data.frame( 
-  Xdata = rnorm(7),
-  Ydata = rnorm(7), 
+data.leg <- data.frame( 
+  Xdata = rnorm(6),
+  Ydata = rnorm(6), 
   Family = these_obligates,
   leg_color = leg_col_order)
                 
@@ -378,9 +365,9 @@ data <- data.frame(
     
 
 # Create a Scatter Plot 
-gplot <- ggplot(data, aes(Xdata, Ydata, color = Family)) +    
+gplot <- ggplot(data.leg, aes(Xdata, Ydata, color = Family)) +    
   geom_point(size = 7) +
-  scale_color_manual(values=data$leg_color) +
+  scale_color_manual(values=data.leg$leg_color) +
   theme(legend.position='bottom') +
   labs(color='Bacteria Genus') +
   guides(colour = guide_legend(nrow = 1)) +  theme(legend.key=element_blank())
@@ -394,7 +381,7 @@ plot(get_legend(gplot) )
 grid.arrange(panelA,
              panelB,
              panelC,
-             #panelD,
-             ncol=3)
-             #layout_matrix = cbind(c(1,4), c(2,4), c(3,4)))
+             panelD, 
+             layout_matrix = cbind(c(1,4), c(2,4), c(3,4)),
+             heights=c(9,1))
 
