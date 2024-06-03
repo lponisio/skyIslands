@@ -72,7 +72,7 @@ physeq16sR0 <- qza_to_phyloseq(
 
 
 
-#physeq16sR0
+physeq16sR0
 ## plot(physeq16sR0@phy_tree, show.tip.label = FALSE)
 
 feature.2.tax.16s <-
@@ -773,6 +773,147 @@ spec.net <-cbind(spec.net, indiv.comm.16s[, bact][match(spec.net$UniqueID,
 
 spec.net <-cbind(spec.net, indiv.comm.rbcl[, pollen][match(spec.net$UniqueID,
                            indiv.comm.rbcl$UniqueID),])
+
+## adding in PD code to merge to spec.net
+## FULL MICROBE DATASET
+
+## pull out 16s columns
+microbes <- colnames(spec.net)[grepl("16s:", colnames(spec.net))] 
+microbes <- microbes[microbes %in% tree.16s$tip.label]
+
+## check which only have NAs in these columns (not screened) and drop them
+screened.microbes <- apply(spec.net, 1, function(x) all(is.na(x[microbes])))
+spec.microbes <- spec.net[!screened.microbes, ]
+
+#3 rows have 0 for all microbes, need to drop
+spec.microbes <- spec.microbes[rowSums(spec.microbes[,microbes])!=0,]
+
+
+## QUESTION: should include root = TRUE? if false gives warning 3x
+## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
+
+## phylogenetic distance function, modified from picante
+PD <- apply(spec.microbes[,microbes], 1, function(x){
+  this.bee <- x[x > 0]
+  this.tree <- prune.sample(t(this.bee), tree.16s)
+  picante::pd(t(this.bee), this.tree, include.root = TRUE)
+  #browser()
+})
+
+PD <- do.call(rbind, PD)
+spec.microbes <- cbind(spec.microbes, PD)
+
+## Merge back onto specimen data
+spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
+spec.net$ScreenedMicrobes <- ifelse(spec.net$Site %in% unique(spec.microbes$Site), 1, 0)
+
+## change microbe NAs to 0
+spec.net <- spec.net %>%
+  mutate(PD = replace_na(PD, 0))
+
+spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
+
+
+## ONLY OBLIGATE MICROBES DATASET
+
+
+## splitting out obligate bee microbes based on Zheng and Moran paper
+bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonellaceae|Acetobacteraceae"
+
+## this is a list of the microbe strains that contain the known obligate bee microbe genera
+bee.obligate.microbes <- microbes[grepl(bee.obligates, microbes, fixed=FALSE)]
+bee.obligate.microbes <- bee.obligate.microbes[bee.obligate.microbes %in% tree.16s$tip.label]
+## now need to subset spec.microbes to be just the microbe columns with bee obligates and calculate PD
+
+## phylogenetic distance function, modified from picante
+PD.obligate <- apply(spec.microbes[,bee.obligate.microbes], 1, function(x){
+  tryCatch({
+    this.bee <- x[x > 0]
+    this.tree <- prune.sample(t(this.bee), tree.16s)
+    pd_value <- picante::pd(t(this.bee), this.tree, include.root = TRUE)
+    if (is.null(pd_value) || length(pd_value) == 0) pd_value <- 0  # Assign zero if PD is NULL or empty list
+    else pd_value[[1]]  # Extract the first element if PD is a list
+    data.frame(PD = pd_value[[1]], SR = pd_value[[2]])
+  }, error = function(e) {
+    if (grepl("Tree has no branch lengths", e$message)) {
+      # If error is due to tree having no branch lengths, return zero for PD and SR
+      return(data.frame(PD = 0, SR = 0))
+    } else {
+      # If it's a different error, re-raise it
+      stop(e)
+    }
+  })
+})
+
+# Convert the result into a dataframe
+result_df <- do.call(rbind, PD.obligate) 
+
+# Rename column names to indicate these are the obligate only pd and sr
+names(result_df)[names(result_df) == "PD"] <- "PD.obligate"
+names(result_df)[names(result_df) == "SR"] <- "SR.obligate"
+
+
+spec.microbes <- cbind(spec.microbes, result_df) 
+
+
+## Merge back onto specimen data
+spec.net <- merge(spec.net, spec.microbes, all.x=TRUE, all.y=TRUE)
+
+## change microbe NAs to 0
+spec.net <- spec.net %>%
+  mutate(PD.obligate = replace_na(PD.obligate, 0))
+
+spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
+
+## ONLY TRANSIENT MICROBES DATASET
+
+## splitting out obligate bee microbes based on Zheng and Moran paper
+bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonellaceae|Acetobacteraceae"
+
+## this is a list of the microbe strains that contain the known transient bee microbe genera
+bee.transient.microbes <- microbes[!grepl(bee.obligates, microbes, fixed=FALSE)]
+bee.transient.microbes <- bee.transient.microbes[bee.transient.microbes %in% tree.16s$tip.label]
+## now need to subset spec.microbes to be just the microbe columns with bee transients and calculate PD
+
+## phylogenetic distance function, modified from picante
+PD.transient <- apply(spec.microbes[,bee.transient.microbes], 1, function(x){
+  tryCatch({
+    this.bee <- x[x > 0]
+    this.tree <- prune.sample(t(this.bee), tree.16s)
+    pd_value <- picante::pd(t(this.bee), this.tree, include.root = TRUE)
+    if (is.null(pd_value) || length(pd_value) == 0) pd_value <- 0  # Assign zero if PD is NULL or empty list
+    else pd_value[[1]]  # Extract the first element if PD is a list
+    data.frame(PD = pd_value[[1]], SR = pd_value[[2]])
+  }, error = function(e) {
+    if (grepl("Tree has no branch lengths", e$message)) {
+      # If error is due to tree having no branch lengths, return zero for PD and SR
+      return(data.frame(PD = 0, SR = 0))
+    } else {
+      # If it's a different error, re-raise it
+      stop(e)
+    }
+  })
+})
+
+# Convert the result into a dataframe
+trans_df <- do.call(rbind, PD.transient) 
+
+# Rename column names to indicate these are the transient only pd and sr
+names(trans_df)[names(trans_df) == "PD"] <- "PD.transient"
+names(trans_df)[names(trans_df) == "SR"] <- "SR.transient"
+
+
+spec.microbes <- cbind(spec.microbes, trans_df)
+
+## Merge back onto specimen data
+spec.net <- merge(spec.net, spec.microbes, all.x=TRUE, all.y=TRUE)
+
+## change microbe NAs to 0
+spec.net <- spec.net %>%
+  mutate(PD.transient = replace_na(PD.transient, 0))
+
+spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
+
 
 ## drop duplicate sampleID. LP: This should not happen?
 ## spec.net <- spec.net[!duplicated(spec.net$UniqueID),]
