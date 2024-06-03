@@ -19,7 +19,7 @@ library(phyloseq)
 library(TreeTools)
 library(devtools)
 library(ape)
-
+library(picante)
 
 
 
