@@ -245,23 +245,25 @@ spec.melissodes$LogWeightsTransientAbund[spec.melissodes$Genus != "Melissodes"] 
 # spec.apidae$WeightsMicrobe[spec.melissodes$Family != "Apidae"] <- 0
 
 ## 6-3-24 RH removing the +1 since we are dropping zeros anyway
+## 6-4-24 RH leaving +1 in because logging the tiny numbers is making the distribution even weirder
+## which seemingly negates the point of transforming the data... 
 
-spec.bombus$PD.obligate.log <- log(spec.bombus$PD.obligate)
+spec.bombus$PD.obligate.log <- log(spec.bombus$PD.obligate + 1)
 spec.bombus$PD.obligate.log <- ifelse(is.na(spec.bombus$PD.obligate.log), 0, spec.bombus$PD.obligate.log)
 
-spec.bombus$PD.transient.log <- log(spec.bombus$PD.transient)
+spec.bombus$PD.transient.log <- log(spec.bombus$PD.transient + 1)
 spec.bombus$PD.transient.log <- ifelse(is.na(spec.bombus$PD.transient.log), 0, spec.bombus$PD.transient.log)
 
-spec.apis$PD.obligate.log <- log(spec.apis$PD.obligate)
+spec.apis$PD.obligate.log <- log(spec.apis$PD.obligate + 1)
 spec.apis$PD.obligate.log <- ifelse(is.na(spec.apis$PD.obligate.log), 0, spec.apis$PD.obligate.log)
 
-spec.apis$PD.transient.log <- log(spec.apis$PD.transient)
+spec.apis$PD.transient.log <- log(spec.apis$PD.transient + 1)
 spec.apis$PD.transient.log <- ifelse(is.na(spec.apis$PD.transient.log), 0, spec.apis$PD.transient.log)
 
-spec.melissodes$PD.obligate.log <- log(spec.melissodes$PD.obligate)
+spec.melissodes$PD.obligate.log <- log(spec.melissodes$PD.obligate + 1)
 spec.melissodes$PD.obligate.log <- ifelse(is.na(spec.melissodes$PD.obligate.log), 0, spec.melissodes$PD.obligate.log)
 
-spec.melissodes$PD.transient.log <- log(spec.melissodes$PD.transient)
+spec.melissodes$PD.transient.log <- log(spec.melissodes$PD.transient + 1)
 spec.melissodes$PD.transient.log <- ifelse(is.na(spec.melissodes$PD.transient.log), 0, spec.melissodes$PD.transient.log)
 
 
