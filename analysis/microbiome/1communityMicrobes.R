@@ -285,7 +285,7 @@ ob.microbe.bombus.vars <- c("BeeAbundance",
 
 
 ob.microbe.bombus.x <- paste(ob.microbe.bombus.vars, collapse="+")
-ob.microbe.bombus.y <- "PD.obligate | weights(LogWeightsObligateAbund)"
+ob.microbe.bombus.y <- "PD.obligate.log | weights(LogWeightsObligateAbund)"
 formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
@@ -300,7 +300,7 @@ non.ob.microbe.bombus.vars <- c("BeeAbundance",
 check_for_NA(non.ob.microbe.bombus.vars)
 
 non.ob.microbe.bombus.x <- paste(non.ob.microbe.bombus.vars, collapse="+")
-non.ob.microbe.bombus.y <- "PD.transient | weights(LogWeightsTransientAbund)"
+non.ob.microbe.bombus.y <- "PD.transient.log | weights(LogWeightsTransientAbund)"
 formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
                                               non.ob.microbe.bombus.x))
 
@@ -314,8 +314,8 @@ bform.bombus <- bf.ob.microbe.bombus +
     set_rescor(FALSE)
 
 ## rerunning models with just PD layers and dataset filtered to exclude any 0s in PD
-spec.bombus <- spec.bombus[spec.bombus$PD.obligate != 0,]
-spec.bombus <- spec.bombus[spec.bombus$PD.transient != 0,]
+spec.bombus <- spec.bombus[spec.bombus$PD.obligate.log != 0,]
+spec.bombus <- spec.bombus[spec.bombus$PD.transient.log != 0,]
 
 if(run.bombus){
 fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
@@ -332,7 +332,7 @@ fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
 write.ms.table(fit.microbe.bombus, "bombus_microbe")
 #r2loo.bombus <- loo_R2(fit.microbe.bombus)
 r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
-save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
+save(fit.microbe.bombus, spec.bombus, r2.bombus, #r2loo.bombus,
        file="saved/fullMicrobeBombusFit.Rdata")
 
 }
