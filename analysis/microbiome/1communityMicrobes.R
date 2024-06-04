@@ -289,7 +289,7 @@ ob.microbe.bombus.y <- "PD.obligate | weights(LogWeightsObligateAbund)"
 formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
-bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus)
+bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus, family=skew_normal())
 
 ## non ob PD model
 non.ob.microbe.bombus.vars <- c("BeeAbundance",
@@ -306,7 +306,7 @@ formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
 
 
 
-bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus)
+bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus, family=skew_normal())
 
 #combine forms
 bform.bombus <- bf.ob.microbe.bombus +
@@ -330,7 +330,7 @@ fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
                      data2 = list(phylo_matrix=phylo_matrix))
 
 write.ms.table(fit.microbe.bombus, "bombus_microbe")
-r2loo.bombus <- loo_R2(fit.microbe.bombus)
+#r2loo.bombus <- loo_R2(fit.microbe.bombus)
 r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
 save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
        file="saved/fullMicrobeBombusFit.Rdata")
