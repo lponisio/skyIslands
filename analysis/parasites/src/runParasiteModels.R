@@ -10,23 +10,24 @@ runCombinedParasiteModels <- function(spec.data,## data
                                       init=0, data2 = NULL,
                                       SEM = TRUE,
                                       neg.binomial = FALSE){
-  if(SEM){
-  # create a list with the formulas for the different parasites models
+  ## Create a list with the formulas for the different parasites models
   bf.parasite.formulas <- vector(mode="list",
                                  length=length(parasites))
   names(bf.parasite.formulas) <- parasites
-  # Create the models of the parasites using the variables provided in xvars
-  if(neg.binomial == FALSE){ 
-  for(parasite in parasites){
-    formula.parasite  <- as.formula(paste(
-      paste(parasite, "| weights(WeightsPar)"),
-      paste(xvars,
-            collapse=" + "),
-      sep=" ~ "))
-    bf.parasite.formulas[[parasite]] <-  bf(formula.parasite,
-                                            family="bernoulli")
-  }
+  ## Create the models of the parasites using the variables provided in xvars
+  if(!neg.binomial){
+    print("binomial")
+    for(parasite in parasites){
+      formula.parasite  <- as.formula(paste(
+        paste(parasite, "| weights(WeightsPar)"),
+        paste(xvars,
+              collapse=" + "),
+        sep=" ~ "))
+      bf.parasite.formulas[[parasite]] <-  bf(formula.parasite,
+                                              family="bernoulli")
+    }
   } else{
+    print("negbinomial")
     for(parasite in parasites){
       formula.parasite  <- as.formula(paste(
         paste(paste0("Sp", parasite), "| weights(WeightsSp)"),
@@ -36,83 +37,80 @@ runCombinedParasiteModels <- function(spec.data,## data
       bf.parasite.formulas[[parasite]] <-  bf(formula.parasite,
                                               family="negbinomial") 
     }}
-  
-  # When there are two parasites or 1 parasite create a parasite model for each. 
-  # Select the bee abundance based on the species.group.
-  if(length(parasites) == 2){
-    ## Bombus
-    if(species.group == "bombus"){
-      print("Bombus")
-      bform <- bf.fabund + bf.fdiv +
-       bf.bombusabund +
+
+  if(SEM){
+    ## When there are two parasites or 1 parasite create a parasite model for each. 
+    ## Select the bee abundance based on the species.group.
+    if(length(parasites) == 2){
+      ## Bombus
+      if(species.group == "bombus"){
+        print("Bombus")
+        bform <- bf.fabund + bf.fdiv +
+          bf.bombusabund +
+          bf.bdiv  +    
+          bf.parasite.formulas[[1]]+
+          bf.parasite.formulas[[2]] +
+          set_rescor(FALSE)
+      } ## Apis
+      else if (species.group == "apis"){
+        print("Apis")
+        bform <- bf.fabund + bf.fdiv +
+          bf.HBabund +
+          bf.bdiv  +    
+          bf.parasite.formulas[[1]]+
+          bf.parasite.formulas[[2]] +
+          set_rescor(FALSE)
+      } ## Other bees
+      else if (species.group != "bombus" & species.group != "apis"){
+        print("Other")
+        bform <- bf.fabund + bf.fdiv +
+          bf.babund +
+          bf.bdiv  +    
+          bf.parasite.formulas[[1]]+
+          bf.parasite.formulas[[2]] +
+          set_rescor(FALSE)
+      }
+    }else  if(length(parasites) == 1){
+      ## Bombus
+      if(species.group == "bombus"){
+        print("Bombus")
+        bform <- bf.fabund + bf.fdiv +
+          bf.bombusabund +
+          bf.bdiv  +    
+          bf.parasite.formulas[[1]]+
+          set_rescor(FALSE)
+      } ## Apis
+      else if (species.group == "apis"){
+        print("Apis")
+        bform <- bf.fabund + bf.fdiv +
+          bf.HBabund +
+          bf.bdiv  +    
+          bf.parasite.formulas[[1]]+
+          set_rescor(FALSE)
+      } ## Other bees
+      else if (species.group != "bombus" & species.group != "apis"){
+        print("Other")
+        bform <- bf.fabund + bf.fdiv +
+          bf.babund 
         bf.bdiv  +    
+          bf.parasite.formulas[[1]]+
+          set_rescor(FALSE)
+      }
+    }
+  } else {
+    ## When there are two parasites or 1 parasite create a parasite model for each. 
+    ## Select the bee abundance based on the species.group.
+    if(length(parasites) == 2){
+      bform <- 
         bf.parasite.formulas[[1]]+
         bf.parasite.formulas[[2]] +
-        set_rescor(FALSE)
-    } ## Apis
-    else if (species.group == "apis"){
-      print("Apis")
-      bform <- bf.fabund + bf.fdiv +
-        bf.HBabund +
-        bf.bdiv  +    
-        bf.parasite.formulas[[1]]+
-        bf.parasite.formulas[[2]] +
-        set_rescor(FALSE)
-    } ## Other bees
-    else if (species.group != "bombus" & species.group != "apis"){
-      print("Other")
-      bform <- bf.fabund + bf.fdiv +
-        bf.babund +
-        bf.bdiv  +    
-        bf.parasite.formulas[[1]]+
-        bf.parasite.formulas[[2]] +
+        set_rescor(FALSE)      
+    }else  if(length(parasites) == 1){
+      bform <- 
+        bf.parasite.formulas[[1]] +
         set_rescor(FALSE)
     }
-    
-  }else  if(length(parasites) == 1){
-    ## Bombus
-    if(species.group == "bombus"){
-      print("Bombus")
-      bform <- bf.fabund + bf.fdiv +
-        bf.bombusabund +
-        bf.bdiv  +    
-        bf.parasite.formulas[[1]]+
-        set_rescor(FALSE)
-    } ## Apis
-    else if (species.group == "apis"){
-      print("Apis")
-      bform <- bf.fabund + bf.fdiv +
-        bf.HBabund +
-        bf.bdiv  +    
-        bf.parasite.formulas[[1]]+
-        set_rescor(FALSE)
-    } ## Other bees
-    else if (species.group != "bombus" & species.group != "apis"){
-      print("Other")
-      bform <- bf.fabund + bf.fdiv +
-        bf.babund 
-        bf.bdiv  +    
-        bf.parasite.formulas[[1]]+
-        set_rescor(FALSE)
-    }
-    
-  }}
-  else {
-  bf.parasite.formulas <- vector(mode="list",
-                                        length=length(parasites))
-  names(bf.parasite.formulas) <- parasites
-  # Create the models of the parasites using the variables provided in xvars
-  for(parasite in parasites){
-    formula.parasite  <- as.formula(paste(
-      paste(parasite, "| weights(WeightsPar)"),
-      paste(xvars,
-            collapse=" + "),
-      sep=" ~ "))
-    bf.parasite.formulas[[parasite]] <-  bf(formula.parasite,
-                                            family="bernoulli")  
   }
-  bform <- bf.parasite.formulas[[1]]+
-    bf.parasite.formulas[[2]]}
   ## Fit brms model to the complete model
 
   fit.parasite <- brm(bform, spec.data,

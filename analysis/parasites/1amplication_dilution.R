@@ -1,8 +1,8 @@
 rm(list=ls())
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
- setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
-## setwd('~/Dropbox (University of Oregon)/skyislands')
-ncores <- 6
+ ## setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
+setwd('~/Dropbox (University of Oregon)/skyislands')
+ncores <- 1
 
 setwd("analysis/parasites")
 source("src/misc.R")
@@ -76,7 +76,7 @@ spec.bombus$GenusSpecies[spec.bombus$GenusSpecies %in% not_in_phylo]<- "Agaposte
 ## Parasite models set up
 ## **********************************************************
 ## Multi species models
-xvars.multi.bombus <-  c("Net_BeeDiversity", "Net_BombusAbudance",
+xvars.multi.bombus <-  c("Net_BeeDiversity", "Net_BombusAbundance",
                           "rare.degree",  "(1|Site)",
                            "(1|gr(GenusSpecies, cov = phylo_matrix))")
 ## For apicystis MeanITD makes sense but for crithidia it decreases the fit

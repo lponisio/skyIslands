@@ -61,10 +61,10 @@ collections <- data.frame(unique(cbind(spec$Site, spec$Year,
 colnames(collections) <- c("Site", "Year", "SampleRound")
 
 ## calculate orthoganol polynomials for doy
-spec$DoyPoly <- poly(spec$Doy, degree=2)
-spec$DoyPoly1 <- spec$DoyPoly[,'1']
-spec$DoyPoly2 <- spec$DoyPoly[,'2']
-spec$DoyPoly <- NULL
+##spec$DoyPoly <- poly(spec$Doy, degree=2)
+##spec$DoyPoly1 <- spec$DoyPoly[,'1']
+##spec$DoyPoly2 <- spec$DoyPoly[,'2']
+##spec$DoyPoly <- NULL
 
 ## also for Latitude
 spec$LatPoly <- poly(spec$Lat, degree=2)
