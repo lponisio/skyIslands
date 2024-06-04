@@ -23,9 +23,8 @@ library(picante)
 
 
 
-if (!require("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
-BiocManager::install("TreeSummarizedExperiment")
+if (!require("BiocManager", quietly = TRUE)){install.packages("BiocManager")}
+#BiocManager::install("TreeSummarizedExperiment")
 library(TreeSummarizedExperiment)
 if (!requireNamespace("devtools", quietly = TRUE)){install.packages("devtools")}
 devtools::install_github("jbisanz/qiime2R")
@@ -818,7 +817,7 @@ spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 
 
 ## splitting out obligate bee microbes based on Zheng and Moran paper
-bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonellaceae|Acetobacteraceae"
+bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae"
 
 ## this is a list of the microbe strains that contain the known obligate bee microbe genera
 bee.obligate.microbes <- microbes[grepl(bee.obligates, microbes, fixed=FALSE)]
@@ -868,7 +867,7 @@ spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 ## ONLY TRANSIENT MICROBES DATASET
 
 ## splitting out obligate bee microbes based on Zheng and Moran paper
-bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonellaceae|Acetobacteraceae"
+bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae"
 
 ## this is a list of the microbe strains that contain the known transient bee microbe genera
 bee.transient.microbes <- microbes[!grepl(bee.obligates, microbes, fixed=FALSE)]
