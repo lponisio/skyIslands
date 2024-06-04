@@ -289,7 +289,7 @@ ob.microbe.bombus.y <- "PD.obligate.log | weights(LogWeightsObligateAbund)"
 formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
-bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus, family=student())
+bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus)
 
 ## non ob PD model
 non.ob.microbe.bombus.vars <- c("BeeAbundance",
@@ -306,7 +306,7 @@ formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
 
 
 
-bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus, family=student())
+bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus)
 
 #combine forms
 bform.bombus <- bf.ob.microbe.bombus +
