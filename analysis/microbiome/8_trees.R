@@ -214,7 +214,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
       data=features_site_metadata,
       geom=geom_tile,
       pwidth=0.1,
-      offset=0.2,
+      offset=0.1,
       mapping=aes(y=bacteria,
                   #x=SiteCount,
                   fill=SiteCount, width=0.1),
@@ -223,6 +223,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     scale_fill_gradient(high = "black", low ="lightgrey") +
     #ggtitle(paste(this.species, this_level)) +
     new_scale_fill() + 
+    #geom_tiplab(align=TRUE, linetype='dashed', aes(label = "")) +
     # geom_tippoint(aes(
     #  subset=(!grepl("Lactobacillus|Bifidobacterium|Snodgrassella|Gilliamella|Frischella|Bartonella|Commensalibacter",label,fixed=TRUE)==TRUE)), pch=15, color='black')+
     geom_tippoint(aes(
@@ -369,8 +370,10 @@ gplot <- ggplot(data.leg, aes(Xdata, Ydata, color = Family)) +
   geom_point(size = 7) +
   scale_color_manual(values=data.leg$leg_color) +
   theme(legend.position='bottom') +
-  labs(color='Bacteria Genus') +
-  guides(colour = guide_legend(nrow = 1)) +  theme(legend.key=element_blank())
+  labs(color='Bacteria Family') +
+  guides(colour = guide_legend(nrow = 1)) + theme(legend.key=element_blank(),
+                                                   legend.text=element_text(size=12),
+                                                  legend.title=element_text(size=12))
 
 # Draw Only Legend without plot 
 # Grab legend from gplot 
