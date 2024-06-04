@@ -76,7 +76,7 @@ spec.bombus$GenusSpecies[spec.bombus$GenusSpecies %in% not_in_phylo]<- "Agaposte
 ## Parasite models set up
 ## **********************************************************
 ## Multi species models
-xvars.multi.bombus <-  c("Net_BeeDiversity", "Year",
+xvars.multi.bombus <-  c("Net_BeeDiversity", "Net_BombusAbudance",
                           "rare.degree",  "(1|Site)",
                            "(1|gr(GenusSpecies, cov = phylo_matrix))")
 ## For apicystis MeanITD makes sense but for crithidia it decreases the fit
