@@ -279,48 +279,48 @@ bf.microbe.bombus <- bf(formula.microbe.bombus)
 ob.microbe.bombus.vars <- c("BeeAbundance",
                          "BeeDiversity", "Lat", #check this doesn't make VIF high
                          "MeanFloralDiversity", "MeanITD",  "rare.degree",
-                         "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+                         "Site", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
 ## NA check
 #check_for_NA(ob.microbe.bombus.vars)
 
 
 ob.microbe.bombus.x <- paste(ob.microbe.bombus.vars, collapse="+")
-ob.microbe.bombus.y <- "PD.obligate | weights(LogWeightsObligateAbund)"
+ob.microbe.bombus.y <- "PD.obligate.log | weights(LogWeightsObligateAbund)"
 formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
-bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus)
+bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus, family=student())
 
 ## non ob PD model
 non.ob.microbe.bombus.vars <- c("BeeAbundance",
                             "BeeDiversity", "Lat", #check this doesn't make VIF high
                             "MeanFloralDiversity", "MeanITD",  "rare.degree",
-                            "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+                            "Site", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
 ## NA check
 check_for_NA(non.ob.microbe.bombus.vars)
 
 non.ob.microbe.bombus.x <- paste(non.ob.microbe.bombus.vars, collapse="+")
-non.ob.microbe.bombus.y <- "PD.transient | weights(LogWeightsTransientAbund)"
+non.ob.microbe.bombus.y <- "PD.transient.log | weights(LogWeightsTransientAbund)"
 formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
                                               non.ob.microbe.bombus.x))
 
 
 
-bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus)
+bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus, family=student())
 
 #combine forms
-bform.bombus <- bf.fdiv +
-    bf.tot.babund +
-    bf.tot.bdiv  +
-    bf.ob.microbe.bombus +
+bform.bombus <- bf.ob.microbe.bombus +
     bf.non.ob.microbe.bombus +
     set_rescor(FALSE)
 
+## rerunning models with just PD layers and dataset filtered to exclude any 0s in PD
+spec.bombus <- spec.bombus[spec.bombus$PD.obligate.log != 0,]
+spec.bombus <- spec.bombus[spec.bombus$PD.transient.log != 0,]
 
 if(run.bombus){
 fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
                      cores=ncores,
-                      iter = 1000,
+                      iter = 10000,
                      chains = 1,
                      thin=1,
                      init=0,
