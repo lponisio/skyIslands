@@ -61,6 +61,10 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
   #remove taxa from the tree where there were less than zero observations
   pruned_tree <- prune_taxa(taxa_sums(trimmed_tree) > 0, trimmed_tree)
   
+  ## for apis drop the incorrect bifidobacterium that is sorting with orbaceae
+  pruned_tree <- prune_taxa(!"16s:d__Bacteria; p__Actinobacteriota; c__Actinobacteria; o__Bifidobacteriales; f__Bifidobacteriaceae; g__Bifidobacterium; s__Bifidobacterium_coryneforme", pruned_tree)
+  
+  
   #read in the taxonomic info for each feature
   feature.2.tax.16s <-
     read.table("SI_pipeline/merged/16s/taxonomy.tsv", sep="\t",
@@ -111,7 +115,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
   }
   print(length(gentree$tip.label))
   
-
+  
   # if(all_levels==FALSE){
   #   if(final_level == ' s__'){
   #     rest_of_label <- 'to genus'
@@ -184,7 +188,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     group_by(bacteria) %>%
     add_count(Site, name="n_individuals") %>%
     mutate(SiteCount = as.numeric(n_distinct(Site))) %>%
-    mutate(Obligate = as.numeric(str_detect(bacteria, "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonellaceae|Acetobacteraceae")))
+    mutate(Obligate = as.numeric(str_detect(bacteria, "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae")))
    #browser() 
   tree_tip_labs <- gentree$tip.label
   
@@ -202,6 +206,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
   ordered_tips <- gentree$edge[is_tip, 2]
   
   tip.order <- gentree$tip.label[ordered_tips]
+  
   
   p <- ggtree(gentree, layout='rectangular') 
   p
