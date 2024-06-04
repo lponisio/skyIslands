@@ -4,8 +4,8 @@ rm(list=ls())
 if (!require("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 
-BiocManager::install("ggtreeExtra")
-BiocManager::install("phyloseq")
+#BiocManager::install("ggtreeExtra")
+#BiocManager::install("phyloseq")
 
 library(ggtree)
 library(tidyverse)
