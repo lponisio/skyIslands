@@ -142,7 +142,7 @@ fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         chains = 1,
                                         thin=1,
                                         init=0, data2= list(phylo_matrix=phylo_matrix),
-                                        SEM = FALSE, neg.binomial = TRUE)
+                                        SEM = TRUE, neg.binomial = TRUE)
 
 
 
