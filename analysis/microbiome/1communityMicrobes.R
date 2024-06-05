@@ -289,7 +289,9 @@ ob.microbe.bombus.y <- "PD.obligate.log | weights(LogWeightsObligateAbund)"
 formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
-bf.ob.microbe.bombus <- bf(formula.ob.microbe.bombus, family=skew_normal())
+bf.ob.microbe.bombus.skew <- bf(formula.ob.microbe.bombus, family=skew_normal())
+bf.ob.microbe.bombus.student <- bf(formula.ob.microbe.bombus, family=student())
+bf.ob.microbe.bombus.g <- bf(formula.ob.microbe.bombus)
 
 ## non ob PD model
 non.ob.microbe.bombus.vars <- c("BeeAbundance",
@@ -306,19 +308,31 @@ formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
 
 
 
-bf.non.ob.microbe.bombus <- bf(formula.non.ob.microbe.bombus, family=skew_normal())
+bf.non.ob.microbe.bombus.skew <- bf(formula.non.ob.microbe.bombus, family=skew_normal())
+bf.non.ob.microbe.bombus.student <- bf(formula.non.ob.microbe.bombus, family=student())
+bf.non.ob.microbe.bombus.g <- bf(formula.non.ob.microbe.bombus)
 
 #combine forms
-bform.bombus <- bf.ob.microbe.bombus +
-    bf.non.ob.microbe.bombus +
+bform.bombus.skew <- bf.ob.microbe.bombus.skew +
+    bf.non.ob.microbe.bombus.skew +
     set_rescor(FALSE)
 
+#combine forms
+bform.bombus.student <- bf.ob.microbe.bombus.student +
+  bf.non.ob.microbe.bombus.student +
+  set_rescor(FALSE)
+#combine forms
+bform.bombus.g <- bf.ob.microbe.bombus.g +
+  bf.non.ob.microbe.bombus.g +
+  set_rescor(FALSE)
+
 ## rerunning models with just PD layers and dataset filtered to exclude any 0s in PD
-spec.bombus <- spec.bombus[spec.bombus$PD.obligate.log != 0,]
-spec.bombus <- spec.bombus[spec.bombus$PD.transient.log != 0,]
+spec.bombus2 <- spec.bombus[spec.bombus$PD.obligate.log != 0,]
+spec.bombus2 <- spec.bombus[spec.bombus$PD.transient.log != 0,]
 
 if(run.bombus){
-fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
+  ## skew mod
+fit.microbe.bombus.skew <- brm(bform.bombus.skew , spec.bombus2,
                      cores=ncores,
                       iter = 10000,
                      chains = 1,
@@ -329,11 +343,47 @@ fit.microbe.bombus <- brm(bform.bombus , spec.bombus,
                      save_pars = save_pars(all = TRUE),
                      data2 = list(phylo_matrix=phylo_matrix))
 
-write.ms.table(fit.microbe.bombus, "bombus_microbe")
+write.ms.table(fit.microbe.bombus.skew, "bombus_microbe_skew")
 #r2loo.bombus <- loo_R2(fit.microbe.bombus)
-r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
-save(fit.microbe.bombus, spec.bombus, r2.bombus, #r2loo.bombus,
-       file="saved/fullMicrobeBombusFit.Rdata")
+r2.bombus.skew <- rstantools::bayes_R2(fit.microbe.bombus.skew)
+save(fit.microbe.bombus.skew, spec.bombus2, r2.bombus.skew, #r2loo.bombus,
+       file="saved/fullMicrobeBombusFit_skew.Rdata")
+
+## student mod
+fit.microbe.bombus.student <- brm(bform.bombus.student , spec.bombus2,
+                               cores=ncores,
+                               iter = 10000,
+                               chains = 1,
+                               thin=1,
+                               init=0,
+                               open_progress = FALSE,
+                               control = list(adapt_delta = 0.99),
+                               save_pars = save_pars(all = TRUE),
+                               data2 = list(phylo_matrix=phylo_matrix))
+
+write.ms.table(fit.microbe.bombus.student, "bombus_microbe_student")
+#r2loo.bombus <- loo_R2(fit.microbe.bombus)
+r2.bombus.student <- rstantools::bayes_R2(fit.microbe.bombus.student)
+save(fit.microbe.bombus.student, spec.bombus2, r2.bombus.student, #r2loo.bombus,
+     file="saved/fullMicrobeBombusFit_student.Rdata")
+
+## gaussian mod
+fit.microbe.bombus.g <- brm(bform.bombus.g , spec.bombus2,
+                                  cores=ncores,
+                                  iter = 10000,
+                                  chains = 1,
+                                  thin=1,
+                                  init=0,
+                                  open_progress = FALSE,
+                                  control = list(adapt_delta = 0.99),
+                                  save_pars = save_pars(all = TRUE),
+                                  data2 = list(phylo_matrix=phylo_matrix))
+
+write.ms.table(fit.microbe.bombus.g, "bombus_microbe_g")
+#r2loo.bombus <- loo_R2(fit.microbe.bombus)
+r2.bombus.g <- rstantools::bayes_R2(fit.microbe.bombus.g)
+save(fit.microbe.bombus.g, spec.bombus2, r2.bombus.g, #r2loo.bombus,
+     file="saved/fullMicrobeBombusFit_g.Rdata")
 
 }
 update.bombus = FALSE
