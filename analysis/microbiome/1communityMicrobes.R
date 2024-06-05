@@ -338,8 +338,10 @@ fit.microbe.bombus.skew <- brm(bform.bombus.skew , spec.bombus2,
                      chains = 1,
                      thin=1,
                      init=0,
+                     max_treedepth=11,
                      open_progress = FALSE,
-                     control = list(adapt_delta = 0.99),
+                     control = list(adapt_delta = 0.99,
+                                    max_treedepth=11),
                      save_pars = save_pars(all = TRUE),
                      data2 = list(phylo_matrix=phylo_matrix))
 
@@ -357,7 +359,8 @@ fit.microbe.bombus.student <- brm(bform.bombus.student , spec.bombus2,
                                thin=1,
                                init=0,
                                open_progress = FALSE,
-                               control = list(adapt_delta = 0.99),
+                               control = list(adapt_delta = 0.99,
+                                              max_treedepth=11),
                                save_pars = save_pars(all = TRUE),
                                data2 = list(phylo_matrix=phylo_matrix))
 
@@ -375,7 +378,8 @@ fit.microbe.bombus.g <- brm(bform.bombus.g , spec.bombus2,
                                   thin=1,
                                   init=0,
                                   open_progress = FALSE,
-                                  control = list(adapt_delta = 0.99),
+                                  control = list(adapt_delta = 0.99,
+                                                 max_treedepth=11),
                                   save_pars = save_pars(all = TRUE),
                                   data2 = list(phylo_matrix=phylo_matrix))
 
