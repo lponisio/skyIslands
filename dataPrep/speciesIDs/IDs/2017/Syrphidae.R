@@ -303,8 +303,7 @@ sp.ids <- list(
                      temp.id= c("BBSL1084943", "BBSL1058729",
                                 "BBSL1070541", "BBSL1071067",
                                 "BBSL1073114", "BBSL1073948",
-                                "BBSL1073949", "22634","19445",
-                                "17669")),
+                                "BBSL1073949", "22634")),
 
     scaeva_f= list(Genus="Scaeva",
                    SubGenus="",
