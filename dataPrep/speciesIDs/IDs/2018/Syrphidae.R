@@ -257,7 +257,7 @@ sp.ids <- list(
                               Species="volucris", SubSpecies="", Sex="f",
                               Author = "Osten Sacken",
                               Determiner="M.Hauser",
-                              temp.id= c( "17669","22634","19445")),
+                              temp.id= c( "17669","19445")),
 
     eupeodes_volucris_m= list(Genus="Eupeodes", SubGenus="",
                               Species="volucris", SubSpecies="", Sex="m",
