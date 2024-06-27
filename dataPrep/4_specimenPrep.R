@@ -30,11 +30,17 @@ source('dataPrep/relational/3join.R')
 ## *****************************************************************
 ## prep specimen data
 ## *****************************************************************
+
+rm(list=ls())
+setwd("~/")
+source("lab_paths.R")
+setwd(file.path(local.path, "skyIslands_saved"))
+
 spec <-
-    read.csv('traditional/specimens-complete.csv',
+    read.csv('data/relational/relational/traditional/specimens-complete.csv',
              stringsAsFactors=FALSE)
 
-setwd("../../../../skyIslands/dataPrep")
+setwd("../skyIslands/dataPrep")
 source("src/misc.R")
 source("src/prepNets.R")
 source("src/specialization.R")
@@ -67,10 +73,10 @@ colnames(collections) <- c("Site", "Year", "SampleRound")
 ##spec$DoyPoly <- NULL
 
 ## also for Latitude
-spec$LatPoly <- poly(spec$Lat, degree=2)
-spec$LatPoly1 <- spec$LatPoly[,'1']
-spec$LatPoly2 <- spec$LatPoly[,'2']
-spec$LatPoly <- NULL
+##spec$LatPoly <- poly(spec$Lat, degree=2)
+##spec$LatPoly1 <- spec$LatPoly[,'1']
+##spec$LatPoly2 <- spec$LatPoly[,'2']
+##spec$LatPoly <- NULL
 
 ## check plant names
 ## library(Taxonstand)
@@ -231,8 +237,8 @@ calcSummaryStats <- function(spec.method, method){
                   BombusSiteParasitismRate=mean(
                       ParasitePresence[Genus == "Bombus"],
                     na.rm=TRUE),
-                  SRDoyPoly1=mean(DoyPoly1),
-                  SRDoyPoly2=mean(DoyPoly2),
+                  ## SRDoyPoly1=mean(DoyPoly1),
+                  ## SRDoyPoly2=mean(DoyPoly2),
                   SRDoy=mean(Doy),
                   CrithidiaParasitismRate=mean(CrithidiaPresence, na.rm=TRUE),
                   ApicystisParasitismRate=mean(ApicystisSpp, na.rm=TRUE),

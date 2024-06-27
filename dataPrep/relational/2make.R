@@ -349,8 +349,8 @@ print(paste("veg without plants IDs",
 bloom$PlantFK <- plants$PlantPK[match(bloom$PlantGenusSpecies,
                                           plants.plant.sp)]
 
-print(paste("veg without plants IDs",
-            unique(veg$PlantGenusSpecies[is.na(veg$PlantFK)])))
+print(paste("bloom without plants IDs",
+            unique(bloom$PlantGenusSpecies[is.na(bloom$PlantFK)])))
 
 
 write.csv(dbReadTable(con, 'tblPlant'),
