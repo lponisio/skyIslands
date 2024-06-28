@@ -9,7 +9,8 @@ runCombinedParasiteModels <- function(spec.data,## data
                                       thin=1,
                                       init=0, data2 = NULL,
                                       SEM = TRUE,
-                                      neg.binomial = FALSE){
+                                      neg.binomial = FALSE,
+                                      site.lat="Lat"){
   ## Create a list with the formulas for the different parasites models
   bf.parasite.formulas <- vector(mode="list",
                                  length=length(parasites))
@@ -19,7 +20,7 @@ runCombinedParasiteModels <- function(spec.data,## data
     print("binomial")
     for(parasite in parasites){
       formula.parasite  <- as.formula(paste(
-        paste(parasite, "| weights(WeightsPar)"),
+        paste(parasite, "| subset(WeightsPar)"),
         paste(xvars,
               collapse=" + "),
         sep=" ~ "))
@@ -30,7 +31,7 @@ runCombinedParasiteModels <- function(spec.data,## data
     print("negbinomial")
     for(parasite in parasites){
       formula.parasite  <- as.formula(paste(
-        paste(paste0("Sp", parasite), "| weights(WeightsSp)"),
+        paste(paste0("Sp", parasite), "| subset(WeightsSp)"),
         paste(c(xvars,"offset(SpScreened)"),
               collapse=" + "),
         sep=" ~ "))
@@ -123,18 +124,18 @@ runCombinedParasiteModels <- function(spec.data,## data
                       save_pars = save_pars(all = TRUE), data2 = data2)
   ## Create a table with the results. 
   write.ms.table(fit.parasite,
-                 sprintf("parasitism_%s_%s",
-                         species.group, paste(parasites, collapse="")))
+                 sprintf("parasitism_%s_%s_%s",
+                         species.group, paste(parasites, collapse=""), site.lat))
   ## Calculate r2 values 
   r2 <- bayes_R2(fit.parasite)
   print(round(r2, 2))
   ## Save the model results as a rdata file
   save(fit.parasite, spec.data, r2,
-       file=sprintf("saved/parasiteFit_%s_%s.Rdata",
-                    species.group, paste(parasites, collapse="")))
+       file=sprintf("saved/parasiteFit_%s_%s_%s.Rdata",
+                    species.group, paste(parasites, collapse=""), site.lat))
   ## Plot the residuals
-  plot.res(fit.parasite,  sprintf("%s_%s",
-                                  species.group, paste(parasites, collapse="")))
+  plot.res(fit.parasite,  sprintf("%s_%s_%s",
+                                  species.group, paste(parasites, collapse=""), site.lat))
 
   return(list(fit=fit.parasite, r2=r2))
 }

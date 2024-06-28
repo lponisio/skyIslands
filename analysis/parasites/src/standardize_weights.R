@@ -45,7 +45,10 @@ prepDataSEM <-
            variables.to.log.1 = NULL, #variables to be logged + 1
            vars_yearsr = NULL,#variables to standardize at year site sampling round level 
            vars_sp = NULL,#variables to standardize at the species level
-           vars_yearsrsp = NULL) #variables to standardize at year site sampling round at the species level
+           vars_yearsrsp = NULL, #variables to standardize at year
+                                 #site sampling round at the species
+                                 #level
+           vars_site = NULL)
   {
     ## Function for making the SEM weights and standarizing variables.
     spec.data <- spec.data[order(spec.data$Site), ]
@@ -89,6 +92,11 @@ prepDataSEM <-
       spec.data <-
         standardizeVars(spec.data, vars_sp, "GenusSpecies", by.site = FALSE)
     }
+      if(!is.null(vars_site)){
+          print("Standardizing variables at the site level")
+          spec.data <-
+              standardizeVars(spec.data, vars_site, "Site", by.site = FALSE)
+      }
     
     ## create a dumby varaible "WeightPar" for the parasite data. The
     ## original intention was to keep stan from dropping data for

@@ -67,10 +67,9 @@ collections <- data.frame(unique(cbind(spec$Site, spec$Year,
 colnames(collections) <- c("Site", "Year", "SampleRound")
 
 ## calculate orthoganol polynomials for doy
-##spec$DoyPoly <- poly(spec$Doy, degree=2)
-##spec$DoyPoly1 <- spec$DoyPoly[,'1']
-##spec$DoyPoly2 <- spec$DoyPoly[,'2']
-##spec$DoyPoly <- NULL
+DoyPoly <- poly(spec$Doy, degree=2)
+spec$DoyPoly1 <- DoyPoly[,'1']
+spec$DoyPoly2 <- DoyPoly[,'2']
 
 ## also for Latitude
 ##spec$LatPoly <- poly(spec$Lat, degree=2)
@@ -237,8 +236,8 @@ calcSummaryStats <- function(spec.method, method){
                   BombusSiteParasitismRate=mean(
                       ParasitePresence[Genus == "Bombus"],
                     na.rm=TRUE),
-                  ## SRDoyPoly1=mean(DoyPoly1),
-                  ## SRDoyPoly2=mean(DoyPoly2),
+                  SRDoyPoly1=mean(DoyPoly1),
+                  SRDoyPoly2=mean(DoyPoly2),
                   SRDoy=mean(Doy),
                   CrithidiaParasitismRate=mean(CrithidiaPresence, na.rm=TRUE),
                   ApicystisParasitismRate=mean(ApicystisSpp, na.rm=TRUE),
@@ -442,20 +441,6 @@ par.bees.yr <- makeNets(prep.para, net.type="Yr",
 spec.net <- merge(spec.net, bees.yr, all.x=TRUE)
 spec.net$SpSiteYear <- NULL
 
-
-## Load the csv with the parasitism rate by site/SR/year/spp. Create a key that matches
-## the spec.net dataset and then merge the species level information to the full dataset. 
-spec.indiv <- spec.indiv <- read_csv("../data/spstats_net.csv")
-spec.indiv$SiteSRYearSpp <- paste(spec.indiv$Site, spec.indiv$Year, spec.indiv$SampleRound, 
-                                spec.indiv$GenusSpecies, sep = "_")
-spec.indiv <- subset(spec.indiv, select = -c(Site, Year, SampleRound, GenusSpecies))
-
-spec.net$SiteSRYearSpp <- paste(spec.net$Site, spec.net$Year, spec.net$SampleRound, 
-                                spec.net$GenusSpecies, sep = "_")
-
-spec.net<- merge(spec.net, spec.indiv, all.x=TRUE)
-spec.net$SiteSRYearSpp <- NULL
-save(spec.net, file="../data/spec_net.Rdata")
 ## *******************************************************************
 ##  Data checks
 ## *******************************************************************
@@ -671,7 +656,67 @@ veg.year.sum <- veg.blooming %>%
     group_by(Site, Year) %>%
     summarise(TotalFloralRichness= length(unique(PlantGenusSpecies)))
 
-write.csv(veg.year.sum, file="../data/veg_species_richness.csv", row.names=FALSE)
+write.csv(veg.year.sum, file="../data/veg_species_richness.csv",
+          row.names=FALSE)
+
+
+## *******************************************************************
+## merging site and spec data
+## *******************************************************************
+
+## Merging specimen data with site characteristic data.
+print("Before merge with site characteristics")
+print(dim(spec.net))
+spec.net <- merge(spec.net, site.sum, all.xy=TRUE)
+print("After merge with site characteristics")
+print(dim(spec.net))
+
+## Load the csv with the parasitism rate by site/SR/year/spp. Create a
+## key that matches the spec.net dataset and then merge the species
+## level information to the full dataset.
+spec.indiv <- read_csv("../data/spstats_net.csv")
+spec.indiv$SiteSRYearSpp <- paste(spec.indiv$Site, spec.indiv$Year, spec.indiv$SampleRound, 
+                                spec.indiv$GenusSpecies, sep = "_")
+spec.indiv <- subset(spec.indiv, select = -c(Site, Year, SampleRound, GenusSpecies))
+
+spec.net$SiteSRYearSpp <- paste(spec.net$Site, spec.net$Year, spec.net$SampleRound, 
+                                spec.net$GenusSpecies, sep = "_")
+
+## Merging species data with individual level data. 
+print("Before merge with ind level data")
+print(dim(spec.net))
+spec.net <- merge(spec.net, spec.indiv, all.x=TRUE)
+spec.net$SiteSRYearSpp <- NULL
+print("After merge with ind level data")
+print(dim(spec.net))
+
+## bee taits
+bee.traits <-
+    read.csv("../../skyIslands_saved/data/raw/bee_traits.csv")
+bee.traits$GenusSpecies <- fix.white.space(bee.traits$GenusSpecies)
+bee.traits <- bee.traits[, c("GenusSpecies", "Sociality", "Lecty", "MeanITD"),]
+
+## network traits 
+net.traits <- read.csv("../data/networks_traits.csv")
+net.traits <- net.traits[, c("GenusSpecies", "r.degree"),]
+
+## merge network traits to specimen data
+print("Before merge with network traits to species bee.traits")
+print(dim(bee.traits))
+all.traits <- merge(bee.traits, net.traits,
+                    by="GenusSpecies", all.x=TRUE)
+print("After merge with network bee.traits to species bee.traits")
+print(dim(all.traits))
+
+print("Before merge with traits")
+print(dim(spec.net))
+spec.net <- merge(spec.net, all.traits, all.x=TRUE)
+print("After merge with traits")
+print(dim(spec.net))
+
+spec.net$GenusSpecies[is.na(spec.net$GenusSpecies)] <- ""
+save(spec.net, file="../data/spec_net.Rdata")
+
 
 ## not using site-level bloom data currently, has not been checked
 ## over as of Nov 2022
