@@ -88,18 +88,7 @@ xvars.multi.bombus <-  c("Net_BeeDiversity", "Net_BombusAbundance",
                           "rare.degree",  "(1|Site)",
                            "(1|gr(GenusSpecies, cov = phylo_matrix))")
 
-
-## For apicystis MeanITD makes sense but for crithidia it decreases the fit
-xvars.multi.bombus2 <-  c("Net_BeeDiversity", "Year",
-                         "rare.degree", "MeanITD", "(1|Site)",
-                         "(1|gr(GenusSpecies, cov = phylo_matrix))")
-
-xvars.multi.species <-  c("Year",
-                          "Net_BeeDiversity",
-                          "Net_BeeAbundance",
-                          "rare.degree",
-                          "(1|Site)", 
-                           "(1|GenusSpecies)")
+## mean ITD causing problems
 
 ## single species models
 xvars.single.species <-  c("Year",
@@ -109,58 +98,45 @@ xvars.single.species <-  c("Year",
                            "(1|Site)")
 
 ## Apis
-xvars.single.species <-  c("Year",
-                           "Net_BeeDiversity",
-                           "Net_HBAbundance",
-                           "rare.degree",
-                           "(1|Site)")
+xvars.apis <-  c("Year",
+                 "Net_BeeDiversity",
+                 "Net_HBAbundance",
+                 "rare.degree",
+                 "(1|Site)")
 
 
 ## **********************************************************
 ## community model, check assumptions first before adding parasites
 ## **********************************************************
 
-run_plot_freq_model_diagnostics(formula.flower.div.nosub,
+run_plot_freq_model_diagnostics(remove_subset_formula(formula.flower.div),
                                 this_data=spec.net[spec.net$Weights == 1,],
-                                this_family="students")
+                                this_family="students", site.lat=site.or.lat)
 
-run_plot_freq_model_diagnostics(formula.flower.abund.nosub,
+run_plot_freq_model_diagnostics(remove_subset_formula(formula.flower.abund),
                                 this_data=spec.net[spec.net$Weights == 1,],
-                                this_family="students")
+                                this_family="students",site.lat=site.or.lat)
 
-run_plot_freq_model_diagnostics(formula.bee.abund.nosub,
+run_plot_freq_model_diagnostics(remove_subset_formula(formula.bee.abund),
                                 this_data=spec.net[spec.net$Weights == 1,],
-                                this_family="students")
+                                this_family="students", site.lat=site.or.lat)
 
-run_plot_freq_model_diagnostics(formula.bombus.abund.nosub,
+run_plot_freq_model_diagnostics(remove_subset_formula(formula.bombus.abund),
                                 this_data=spec.net[spec.net$Weights == 1,],
-                                this_family="students")
+                                this_family="students", site.lat=site.or.lat)
 
-run_plot_freq_model_diagnostics(formula.HB.abund.nosub,
+run_plot_freq_model_diagnostics(remove_subset_formula(formula.HB.abund),
                                 this_data=spec.net[spec.net$Weights == 1,],
-                                this_family="students")
+                                this_family="students", site.lat=site.or.lat)
 
-run_plot_freq_model_diagnostics(formula.bee.div.nosub,
+run_plot_freq_model_diagnostics(remove_subset_formula(formula.bee.div),
                                 this_data=spec.net[spec.net$Weights == 1,],
-                                this_family="gaussian")
+                                this_family="gaussian",
+                                site.lat=site.or.lat)
 
 ## **********************************************************
 ## Parasite presence
 ## **********************************************************
-## full model with Melissodes 
-fit.melissodes <- runCombinedParasiteModels(spec.melissodes, species.group="melissodes",
-                                            parasite = c("CrithidiaPresence", "ApicystisSpp"),
-                                            xvars=xvars.single.species,
-                                            ncores,
-                                            iter = 10^4,
-                                            chains = 1,
-                                            thin=1,
-                                            init=0,
-                                            SEM = TRUE, neg.binomial =
-                                                            TRUE,
-                                            site.lat=site.or.lat)
-
-
 ## bombus
 fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         parasite = c("CrithidiaPresence", "ApicystisSpp"),
@@ -175,12 +151,25 @@ fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         site.lat=site.or.lat)
 
 
-## Honey bees
-fit.apis <- runCombinedParasiteModels(spec.melissdoes, species.group="apis",
+## melissodes 
+fit.melissodes <- runCombinedParasiteModels(spec.melissodes, species.group="melissodes",
                                             parasite = c("CrithidiaPresence", "ApicystisSpp"),
                                             xvars=xvars.single.species,
                                             ncores,
-                                            iter = 10^4,
+                                            iter = 2*10^4,
+                                            chains = 1,
+                                            thin=1,
+                                            init=0,
+                                            SEM = TRUE, neg.binomial =
+                                                            TRUE,
+                                            site.lat=site.or.lat)
+
+## Honey bees
+fit.apis <- runCombinedParasiteModels(spec.apis, species.group="apis",
+                                            parasite = c("CrithidiaPresence", "ApicystisSpp"),
+                                            xvars=xvars.apis,
+                                            ncores,
+                                            iter = 4*10^4,
                                             chains = 1,
                                             thin=1,
                                             init=0,
@@ -189,3 +178,4 @@ fit.apis <- runCombinedParasiteModels(spec.melissdoes, species.group="apis",
                                             site.lat=site.or.lat)
 
 
+fit.apis$fit <- update(fit.apis$fit)

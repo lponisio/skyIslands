@@ -56,8 +56,6 @@ spec.melissodes$WeightsPar[spec.melissodes$Genus != "Melissodes"] <- 0
 
 spec.apidae <- spec.net
 spec.apidae$WeightsPar[spec.apidae$Family != "Apidae"] <- 0
-## Testing the fit of the parasite models. 
-
 
 ## Models
 ## **********************************************************

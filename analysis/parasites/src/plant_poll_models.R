@@ -1,9 +1,13 @@
+
 remove_subset_formula <- function(form){
     char.form <- as.character(form)
-    no.sub <-  gsub(" \\| subset\\(Weights\\)",  "", char.form[2])
+    no.sub <-
+        gsub("\\| subset\\(Weights[:alpha:⁠]*\\)",
+             "", char.form[2])
     form.out <- formula(paste(no.sub, "~", char.form[3]))
     return(form.out)
 }
+
 
 if(site.or.lat ==  "lat"){
 
@@ -12,25 +16,18 @@ if(site.or.lat ==  "lat"){
                                       SRDoyPoly1 + SRDoyPoly2 +
                                           Year + (1|Site) + Lat 
                                   )
-    formula.flower.div.nosub <- remove_subset_formula(formula.flower.div)
-
     ## flower abund
     formula.flower.abund <- formula(MeanFloralAbundance | subset(Weights) ~
                                         Year +
                                             SRDoyPoly1 + SRDoyPoly2 +
                                             (1|Site) + Lat 
                                     )
-    formula.flower.abund.nosub <- remove_subset_formula(formula.flower.abund)
-
     ## bee diversity
     formula.bee.div <- formula(Net_BeeDiversity | subset(Weights)~
                                    MeanFloralDiversity +
                                        SRDoyPoly1 + SRDoyPoly2 +
                                        Year + (1|Site) + Lat  
                                )
-    formula.bee.div.nosub <-
-        remove_subset_formula(formula.bee.div)
-
     ## bombus abund
     formula.bombus.abund <- formula(Net_BombusAbundance | subset(Weights)~
                                         MeanFloralAbundance +
@@ -38,9 +35,6 @@ if(site.or.lat ==  "lat"){
                                             SRDoyPoly1 + SRDoyPoly2 +
                                             Year + (1|Site) + Lat 
                                     )
-    formula.bombus.abund.nosub <-
-        remove_subset_formula(formula.bombus.abund)
-
     ## HB abund
     formula.HB.abund <- formula(Net_HBAbundance | subset(Weights)~
                                     MeanFloralAbundance +
@@ -48,9 +42,6 @@ if(site.or.lat ==  "lat"){
                                         SRDoyPoly1 + SRDoyPoly2 +
                                         Year + (1|Site) + Lat 
                                 )
-    formula.HB.abund.nosub <-
-        remove_subset_formula(formula.HB.abund)
-
     ## bee abund
     formula.bee.abund <- formula(Net_BeeAbundance | subset(Weights)~
                                      MeanFloralAbundance +
@@ -58,9 +49,6 @@ if(site.or.lat ==  "lat"){
                                          SRDoyPoly1 + SRDoyPoly2 +
                                          Year + (1|Site) + Lat 
                                  )
-    formula.bee.abund.nosub <-
-        remove_subset_formula(formula.bee.abund)
-
 } else{
     
     ## flower diversity
@@ -68,25 +56,18 @@ if(site.or.lat ==  "lat"){
                                       SRDoyPoly1 + SRDoyPoly2 +
                                           Year + Site 
                                   )
-    formula.flower.div.nosub <- remove_subset_formula(formula.flower.div)
-
     ## flower abund
     formula.flower.abund <- formula(MeanFloralAbundance | subset(Weights) ~
                                         Year +
                                             SRDoyPoly1 + SRDoyPoly2 +
                                             Site
                                     )
-    formula.flower.abund.nosub <- remove_subset_formula(formula.flower.abund)
-
     ## bee diversity
     formula.bee.div <- formula(Net_BeeDiversity | subset(Weights)~
                                    MeanFloralDiversity +
                                        SRDoyPoly1 + SRDoyPoly2 +
                                        Year + Site 
                                )
-    formula.bee.div.nosub <-
-        remove_subset_formula(formula.bee.div)
-
     ## bombus abund
     formula.bombus.abund <- formula(Net_BombusAbundance | subset(Weights)~
                                         MeanFloralAbundance +
@@ -94,9 +75,6 @@ if(site.or.lat ==  "lat"){
                                             SRDoyPoly1 + SRDoyPoly2 +
                                             Year + Site
                                     )
-    formula.bombus.abund.nosub <-
-        remove_subset_formula(formula.bombus.abund)
-
     ## HB abund
     formula.HB.abund <- formula(Net_HBAbundance | subset(Weights)~
                                     MeanFloralAbundance +
@@ -104,9 +82,6 @@ if(site.or.lat ==  "lat"){
                                         SRDoyPoly1 + SRDoyPoly2 +
                                         Year + Site
                                 )
-    formula.HB.abund.nosub <-
-        remove_subset_formula(formula.HB.abund)
-
     ## bee abund
     formula.bee.abund <- formula(Net_BeeAbundance | subset(Weights)~
                                      MeanFloralAbundance +
@@ -114,8 +89,6 @@ if(site.or.lat ==  "lat"){
                                          SRDoyPoly1 + SRDoyPoly2 +
                                          Year + Site
                                  )
-    formula.bee.abund.nosub <-
-        remove_subset_formula(formula.bee.abund)
 
 }
 

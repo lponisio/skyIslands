@@ -9,7 +9,9 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
                                             launch.shiny=FALSE,
                                             examine.pairs=FALSE,
                                             this_family, #model family
-                                            fig.path = "figures/diagnostics"
+                                            fig.path =
+                                            "figures/diagnostics",
+                                            site.lat="lat", ...
                                             ){
 
     
@@ -79,14 +81,12 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
         
 
     } else if (this_family=='negbinomial') {
-        this_model_output <- glmmadmb(this_formula, data=this_data,
-                                      zeroInflation=FALSE,
-                                      family='nbinom')
+        this_model_output <- glmer.nb(this_formula, data=this_data, ...)
         diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
         
 
     }else if (this_family=='bernoulli') {
-        this_model_output <- glmmTMB(this_formula, data=this_data, family='betabinomial')
+        this_model_output <- glmmTMB(this_formula, data=this_data, family='binomial')
         diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
         
         
@@ -150,9 +150,9 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
     if (examine.pairs == TRUE){pairs(this_model_output)}
 
     if(class(this_formula)[1] == "brmsformula"){
-        file.name <- paste0(as.character(this_formula)[4], ".pdf")
+        file.name <- paste0(as.character(this_formula)[4], site.lat, ".pdf")
     }else{
-        file.name <- paste0(as.character(this_formula)[2], ".pdf")
+        file.name <- paste0(as.character(this_formula)[2], site.lat, ".pdf")
     }
     ggsave(diagnostic.plots, file= file.path(fig.path, file.name))
     return(diagnostic.plots)
