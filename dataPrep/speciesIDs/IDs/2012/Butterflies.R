@@ -133,7 +133,7 @@ sp.ids <- list(
   Hesperia_comma = list(Genus = "Hesperia", SubGenus="",Species =
     "comma", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
     "Hesperiidae", Determiner="L.Ponisio", temp.id = c("PL_081312_261", "PL_081312_269",
-    "PL_081212_251", "PL_081212_231", "PL_081112_256",
+    "PL_081212_251", "PL_081212_231",
     "PL_080912_422", "PL_080912_416", "PL_080912_364",
     "PL_080912_375", "PL_081212_229", "PL_080912_371B",
     "PL_080912_362", "PL_080912_424", "PL_080912_386",
