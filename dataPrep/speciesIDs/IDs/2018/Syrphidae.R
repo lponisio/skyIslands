@@ -126,9 +126,7 @@ sp.ids <- list(
                                 Author = "Osten Sacken",
                                 Determiner="M.Hauser",
                                 temp.id = c("18169","17727","18046",
-                                            "17991","18012","18233",
-                                            "24704","23103","23276",
-                                            "22764","24703","24711")),
+                                            "17991","18012","18233")),
 
     Eristalis_bellardii_f= list(Genus = "Eristalis", SubGenus="",
                                 Species = "bellardii", SubSpecies="",
