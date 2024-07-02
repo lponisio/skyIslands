@@ -63,7 +63,7 @@ sp.ids <- list(
     "JC_071212_127", "PL_081112_277", "PL_081112_274",
     "PL_081212_291", "PL_081012_334", "CH_082112_199",
     "PL_081012_335", "CH_082112_186", "CH_082012_189",
-    "CH_082112_187", "SC_072712_266", "SC_072712_268",
+    "CH_082112_187", "SC_072712_268",
     "PL_081012_336", "PL_081012_325", "PL_081312_276",
     "MM_080212_335", "SC_072712_266", "SC_072712_263",
     "SC_072712_264", "SC_072612_283", "MM_080112_241",
@@ -229,7 +229,7 @@ sp.ids <- list(
 
   Achalarus_casica = list(Genus = "Achalarus", SubGenus="", Species = "casica",
     SubSpecies = "", Sex = "", Author = "Herrich-Schaffer", Family =
-    "Hesperiidae", Determiner="L.Ponisio", temp.id =c("PL_081312_285", "PL_081312_244",
+    "Hesperiidae", Determiner="L.Ponisio", temp.id =c("PL_081312_244",
     "PL_081312_277","PL_081312_285")),
 
   Papilio_multicaudata = list(Genus = "Papilio", SubGenus="", Species
