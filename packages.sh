@@ -17,3 +17,6 @@ Rscript -e 'install.packages("effects", repos="http://cran.r-project.org")'
 Rscript -e 'install.packages("viridis", repos="http://cran.r-project.org")'
 Rscript -e 'install.packages("SYNCSA", repos="http://cran.r-project.org")'
 
+Rscript -e 'install.packages("performance", repos="http://cran.r-project.org")'
+Rscript -e 'install.packages("brms", repos="http://cran.r-project.org")'
+Rscript -e 'install.packages("glmmTMB", repos="http://cran.r-project.org")

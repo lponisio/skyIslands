@@ -13,6 +13,7 @@ source("src/community_Model.R")
 source("src/standardize_weights.R")
 source("src/runPlotFreqModelDiagnostics.R")
 
+## site or lat as the geographic variable
 site.or.lat <- "lat"
 
 ## all of the variables that are explanatory variables and thus need
@@ -48,12 +49,15 @@ spec.net <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1,
                         vars_site=vars_site)
 spec.net$Site <- factor(spec.net$Site, levels = c("JC", "SM", "SC", "MM", 
                                                   "HM", "PL", "CH", "RP"))
-spec.net$Year <- as.factor(spec.net$Year)  
+
+## otherwise levels with no data are not properly dropped using subset
+spec.net$Year <- as.character(spec.net$Year)
+spec.net$GenusSpecies <- as.character(spec.net$GenusSpecies)
+
 ## bombus only data
 spec.bombus <- spec.net
 spec.bombus$WeightsPar[spec.bombus$Genus != "Bombus"] <- 0
 spec.bombus$WeightsSp[spec.bombus$Genus != "Bombus"] <- 0
-
 ## apis only data
 spec.apis <- spec.net
 spec.apis$WeightsPar[spec.apis$Genus != "Apis"] <- 0
@@ -85,21 +89,22 @@ spec.bombus$GenusSpecies[spec.bombus$GenusSpecies %in% not_in_phylo]<- "Agaposte
 ## **********************************************************
 ## Multi species models
 xvars.multi.bombus <-  c("Net_BeeDiversity", "Net_BombusAbundance",
-                          "rare.degree",  "(1|Site)",
-                           "(1|gr(GenusSpecies, cov = phylo_matrix))")
+                         "rare.degree",
+                         "MeanFloralAbundance",
+                         "MeanFloralDiversity",
+                         "(1|Site)",
+                         "(1|gr(GenusSpecies, cov = phylo_matrix))")
 
 ## mean ITD causing problems
 
 ## single species models
-xvars.single.species <-  c("Year",
-                           "Net_BeeDiversity",
+xvars.single.species <-  c("Net_BeeDiversity",
                            "Net_BeeAbundance",
                            "rare.degree",
                            "(1|Site)")
 
 ## Apis
-xvars.apis <-  c("Year",
-                 "Net_BeeDiversity",
+xvars.apis <-  c("Net_BeeDiversity",
                  "Net_HBAbundance",
                  "rare.degree",
                  "(1|Site)")
@@ -151,7 +156,11 @@ fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         site.lat=site.or.lat)
 
 
-## melissodes 
+## melissodes
+## there are not enough positives to get this model to converge
+table(spec.melissodes$CrithidiaPresence[spec.melissodes$WeightsPar == 1])
+table(spec.melissodes$ApicystisSpp[spec.melissodes$WeightsPar ==1 ])
+
 fit.melissodes <- runCombinedParasiteModels(spec.melissodes, species.group="melissodes",
                                             parasite = c("CrithidiaPresence", "ApicystisSpp"),
                                             xvars=xvars.single.species,
@@ -165,6 +174,10 @@ fit.melissodes <- runCombinedParasiteModels(spec.melissodes, species.group="meli
                                             site.lat=site.or.lat)
 
 ## Honey bees
+## there are not enough positives to get this model to converge
+table(spec.apis$CrithidiaPresence[spec.melissodes$WeightsPar == 1])
+table(spec.apis$ApicystisSpp[spec.melissodes$WeightsPar ==1 ])
+
 fit.apis <- runCombinedParasiteModels(spec.apis, species.group="apis",
                                             parasite = c("CrithidiaPresence", "ApicystisSpp"),
                                             xvars=xvars.apis,
@@ -177,5 +190,3 @@ fit.apis <- runCombinedParasiteModels(spec.apis, species.group="apis",
                                                             TRUE,
                                             site.lat=site.or.lat)
 
-
-fit.apis$fit <- update(fit.apis$fit)

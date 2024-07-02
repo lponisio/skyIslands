@@ -10,7 +10,7 @@ runCombinedParasiteModels <- function(spec.data,## data
                                       init=0, data2 = NULL,
                                       SEM = TRUE,
                                       neg.binomial = FALSE,
-                                      site.lat="Lat"){
+                                      site.lat="lat", ...){
     ## Create a list with the formulas for the different parasites models
     bf.parasite.formulas <- vector(mode="list",
                                    length=length(parasites))
@@ -20,7 +20,7 @@ runCombinedParasiteModels <- function(spec.data,## data
         print("binomial")
         for(parasite in parasites){
             formula.parasite  <- as.formula(paste(
-                paste(parasite, "| subset(WeightsPar)"),
+                paste(parasite, "| weights(WeightsPar)"),
                 paste(xvars,
                       collapse=" + "),
                 sep=" ~ "))
@@ -32,7 +32,7 @@ runCombinedParasiteModels <- function(spec.data,## data
         print("negbinomial")
         for(parasite in parasites){
             formula.parasite  <- as.formula(paste(
-                paste(paste0("Sp", parasite), "| subset(WeightsSp)"),
+                paste(paste0("Sp", parasite), "|  subset(WeightsSp)"),
                 paste(c(xvars,"offset(SpScreened)"),
                       collapse=" + "),
                 sep=" ~ "))
@@ -134,7 +134,10 @@ runCombinedParasiteModels <- function(spec.data,## data
                         thin=thin,
                         init=init,
                         control = list(adapt_delta = 0.99),
-                        save_pars = save_pars(all = TRUE), data2 = data2)
+                        save_pars = save_pars(all = TRUE),
+                        data2 = data2,
+                        drop_unused_levels = TRUE,
+                        ...)
     ## Create a table with the results. 
     write.ms.table(fit.parasite,
                    sprintf("parasitism_%s_%s_%s",
