@@ -64,7 +64,7 @@ sp.ids <- list(
     "JC_071212_127", "PL_081112_277", "PL_081112_274",
     "PL_081212_291", "PL_081012_334", "CH_082112_199",
     "PL_081012_335", "CH_082112_186", "CH_082012_189",
-    "CH_082112_187", "SC_072712_266", "SC_072712_268",
+    "CH_082112_187", "SC_072712_268",
     "PL_081012_336", "PL_081012_325", "PL_081312_276",
     "MM_080212_335", "SC_072712_266", "SC_072712_263",
     "SC_072712_264", "SC_072612_283", "MM_080112_241",
@@ -126,7 +126,7 @@ sp.ids <- list(
     "PL_080912_370", "PL_081112_115", "PL_080912_367",
     "PL_081012_306", "PL_080912_368", "PL_080912_360",
     "PL_081112_257", "PL_081212_232", "PL_081212_250",
-    "PL_081112_253B", "PL_081112_254", "PL_081112_285",
+    "PL_081112_253B", "PL_081112_254A", "PL_081112_285",
     "PL_081212_238", "PL_081212_237", "PL_081312_271",
     "PL_081312_270", "PL_081312_245", "PL_081312_247",
     "PL_081312_262", "PL_081312_263")),
@@ -134,7 +134,7 @@ sp.ids <- list(
   Hesperia_comma = list(Genus = "Hesperia", SubGenus="",Species =
     "comma", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
     "Hesperiidae", Determiner="L.Ponisio", temp.id = c("PL_081312_261", "PL_081312_269",
-    "PL_081212_251", "PL_081212_231", "PL_081112_256",
+    "PL_081212_251", "PL_081212_231",
     "PL_080912_422", "PL_080912_416", "PL_080912_364",
     "PL_080912_375", "PL_081212_229", "PL_080912_371B",
     "PL_080912_362", "PL_080912_424", "PL_080912_386",
@@ -225,12 +225,12 @@ sp.ids <- list(
     "Hesperiidae", Determiner="L.Ponisio", temp.id =c("PL_081012_324", "PL_081112_106",
     "PL_081112_281", "PL_081112_280", "PL_081212_297",
     "PL_081212_296", "PL_081212_298", "PL_080912_372",
-    "PL_080912_406", "PL_081112_254", "PL_081312_279",
+    "PL_080912_406", "PL_081112_254B", "PL_081312_279",
     "PL_081312_240", "PL_081112_256", "PL_081112_255")),
 
   Achalarus_casica = list(Genus = "Achalarus", SubGenus="", Species = "casica",
     SubSpecies = "", Sex = "", Author = "Herrich-Schaffer", Family =
-    "Hesperiidae", Determiner="L.Ponisio", temp.id =c("PL_081312_285", "PL_081312_244",
+    "Hesperiidae", Determiner="L.Ponisio", temp.id =c("PL_081312_244",
     "PL_081312_277","PL_081312_285")),
 
   Papilio_multicaudata = list(Genus = "Papilio", SubGenus="", Species
@@ -322,14 +322,6 @@ sp.ids <- list(
     "pylades", SubSpecies = "", Sex = "", Author = "Scudder", Family =
     "Hesperiidae", Determiner="L.Ponisio", temp.id = c("PL_081112_105", "PL_080912_355",
     "PL_080912_392", "PL_081112_104", "PL_081212_235")),
-
-  Erynnis_morpho1 = list(Genus = "Erynnis", SubGenus="", Species =
-    "sp.", SubSpecies = "a", Sex = "", Author = "", Family =
-    "Hesperiidae", Determiner="L.Ponisio", temp.id = c("PL_081312_244")),
-
-  Erynnis_morpho2 = list(Genus = "Erynnis", SubGenus="", Species =
-    "sp.", SubSpecies = "b", Sex = "", Author = "", Family =
-    "Hesperiidae", Determiner="L.Ponisio", temp.id = c("PL_081312_277")),
   
    Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
     "lineata", SubSpecies = "", Sex = "", Author = "Fabricius", Family =
