@@ -274,3 +274,10 @@ add.to.data(sp.ids=sp.ids,
             case='fly', "Bombyliidae","2020",
             data.file=spec.data.file)
 
+
+print("*********2012 Buttterflies/moths")
+source(file.path(save.dir, 'IDs/2012/Butterflies.R'))
+add.to.data(sp.ids=sp.ids,
+            case='lep',"","2012",
+            data.file=spec.data.file)
+
