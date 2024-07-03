@@ -20,12 +20,24 @@ runCombinedParasiteModels <- function(spec.data,## data
         print("binomial")
         for(parasite in parasites){
             formula.parasite  <- as.formula(paste(
-                paste(parasite, "| weights(WeightsPar)"),
+                paste(parasite, "| subset(WeightsPar)"),
                 paste(xvars,
                       collapse=" + "),
                 sep=" ~ "))
             bf.parasite.formulas[[parasite]] <-  bf(formula.parasite,
                                                     family="bernoulli")
+
+            freq.formula <- as.formula(paste(
+                parasite,
+                paste(xvars[-length(xvars)], ## last xvar must by the phylogeny!!!!
+                      collapse=" + "),
+                sep=" ~ "))
+            
+            run_plot_freq_model_diagnostics(
+                freq.formula,
+                this_data=spec.data[spec.data$WeightsPar == 1,],
+                this_family="bernoulli",
+                site.lat=site.or.lat)
 
         }
     } else{

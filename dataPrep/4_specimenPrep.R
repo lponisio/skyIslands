@@ -179,14 +179,20 @@ calcSummaryStats <- function(spec.method, method){
                   SpParasitismRate = mean(ParasitePresence, na.rm=TRUE),
                   SpCrithidiaParasitismRate = mean(CrithidiaPresence, na.rm=TRUE),
                   SpApicystisParasitismRate = mean(ApicystisSpp, na.rm=TRUE),
-                  SpCrithidiaBombusParasitismRate = mean(CrithidiaPresence[Genus == "Bombus"], 
-                                                      na.rm=TRUE),
-                  SpCrithidiaHBParasitismRate = mean (CrithidiaPresence
-                                                   [GenusSpecies == "Apis mellifera"],
-                                                   na.rm=TRUE),
+                  ## SpCrithidiaBombusParasitismRate = mean(CrithidiaPresence[Genus == "Bombus"], 
+                  ##                                     na.rm=TRUE),
+                  ## SpCrithidiaHBParasitismRate = mean (CrithidiaPresence
+                  ##                                  [GenusSpecies == "Apis mellifera"],
+                  ##                                  na.rm=TRUE),
                   SpParasitism = sum(ParasitePresence, na.rm=TRUE),
                   SpCrithidiaPresence= sum(CrithidiaPresence, na.rm=TRUE),
                   SpApicystisSpp = sum(ApicystisSpp, na.rm=TRUE),
+                  SpNosemaBombi= sum(NosemaBombi, na.rm=TRUE),
+                  SpNosemaCeranae = sum(NosemaCeranae, na.rm=TRUE),
+                  SpAscosphaeraSpp= sum(AscosphaeraSpp, na.rm=TRUE),
+                  SpCrithidiaExpoeki = sum(CrithidiaExpoeki, na.rm=TRUE),
+                  SpCrithidiaBombi = sum(CrithidiaBombi, na.rm=TRUE),
+                  SpCrithidiaSpp = sum(CrithidiaSpp, na.rm=TRUE),
                   SpScreened = sum(!is.na(Apidae))
                   )
 

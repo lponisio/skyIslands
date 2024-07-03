@@ -47,7 +47,7 @@ spec.net <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1,
                         vars_yearsr = vars_yearsr, vars_sp = vars_sp, 
                         vars_yearsrsp = vars_yearsrsp,
                         vars_site=vars_site)
-spec.net$Site <- factor(spec.net$Site, levels = c("JC", "SM", "SC", "MM", 
+# spec.net$Site <- factor(spec.net$Site, levels = c("JC", "SM", "SC", "MM", 
                                                   "HM", "PL", "CH", "RP"))
 
 ## otherwise levels with no data are not properly dropped using subset
@@ -88,10 +88,11 @@ spec.bombus$GenusSpecies[spec.bombus$GenusSpecies %in% not_in_phylo]<- "Agaposte
 ## Parasite models set up
 ## **********************************************************
 ## Multi species models
-xvars.multi.bombus <-  c("Net_BeeDiversity", "Net_BombusAbundance",
+xvars.multi.bombus <-  c("Net_BeeDiversity*Year", "Net_BombusAbundance",
                          "rare.degree",
                          "MeanFloralAbundance",
                          "MeanFloralDiversity",
+                         "MeanITD",
                          "(1|Site)",
                          "(1|gr(GenusSpecies, cov = phylo_matrix))")
 
@@ -100,12 +101,16 @@ xvars.multi.bombus <-  c("Net_BeeDiversity", "Net_BombusAbundance",
 ## single species models
 xvars.single.species <-  c("Net_BeeDiversity",
                            "Net_BeeAbundance",
+                           "MeanFloralAbundance",
+                           "MeanFloralDiversity",
                            "rare.degree",
                            "(1|Site)")
 
 ## Apis
 xvars.apis <-  c("Net_BeeDiversity",
                  "Net_HBAbundance",
+                 "MeanFloralAbundance",
+                 "MeanFloralDiversity",
                  "rare.degree",
                  "(1|Site)")
 
@@ -114,30 +119,30 @@ xvars.apis <-  c("Net_BeeDiversity",
 ## community model, check assumptions first before adding parasites
 ## **********************************************************
 
-run_plot_freq_model_diagnostics(remove_subset_formula(formula.flower.div),
-                                this_data=spec.net[spec.net$Weights == 1,],
-                                this_family="students", site.lat=site.or.lat)
+## run_plot_freq_model_diagnostics(remove_subset_formula(formula.flower.div),
+##                                 this_data=spec.net[spec.net$Weights == 1,],
+##                                 this_family="students", site.lat=site.or.lat)
 
-run_plot_freq_model_diagnostics(remove_subset_formula(formula.flower.abund),
-                                this_data=spec.net[spec.net$Weights == 1,],
-                                this_family="students",site.lat=site.or.lat)
+## run_plot_freq_model_diagnostics(remove_subset_formula(formula.flower.abund),
+##                                 this_data=spec.net[spec.net$Weights == 1,],
+##                                 this_family="students",site.lat=site.or.lat)
 
-run_plot_freq_model_diagnostics(remove_subset_formula(formula.bee.abund),
-                                this_data=spec.net[spec.net$Weights == 1,],
-                                this_family="students", site.lat=site.or.lat)
+## run_plot_freq_model_diagnostics(remove_subset_formula(formula.bee.abund),
+##                                 this_data=spec.net[spec.net$Weights == 1,],
+##                                 this_family="students", site.lat=site.or.lat)
 
-run_plot_freq_model_diagnostics(remove_subset_formula(formula.bombus.abund),
-                                this_data=spec.net[spec.net$Weights == 1,],
-                                this_family="students", site.lat=site.or.lat)
+## run_plot_freq_model_diagnostics(remove_subset_formula(formula.bombus.abund),
+##                                 this_data=spec.net[spec.net$Weights == 1,],
+##                                 this_family="students", site.lat=site.or.lat)
 
-run_plot_freq_model_diagnostics(remove_subset_formula(formula.HB.abund),
-                                this_data=spec.net[spec.net$Weights == 1,],
-                                this_family="students", site.lat=site.or.lat)
+## run_plot_freq_model_diagnostics(remove_subset_formula(formula.HB.abund),
+##                                 this_data=spec.net[spec.net$Weights == 1,],
+##                                 this_family="students", site.lat=site.or.lat)
 
-run_plot_freq_model_diagnostics(remove_subset_formula(formula.bee.div),
-                                this_data=spec.net[spec.net$Weights == 1,],
-                                this_family="gaussian",
-                                site.lat=site.or.lat)
+## run_plot_freq_model_diagnostics(remove_subset_formula(formula.bee.div),
+##                                 this_data=spec.net[spec.net$Weights == 1,],
+##                                 this_family="gaussian",
+##                                 site.lat=site.or.lat)
 
 ## **********************************************************
 ## Parasite presence
@@ -151,8 +156,7 @@ fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         chains = 1,
                                         thin=1,
                                         init=0, data2= list(phylo_matrix=phylo_matrix),
-                                        SEM = TRUE, neg.binomial =
-                                                        TRUE,
+                                        SEM = TRUE, neg.binomial =  FALSE,
                                         site.lat=site.or.lat)
 
 
@@ -169,8 +173,8 @@ fit.melissodes <- runCombinedParasiteModels(spec.melissodes, species.group="meli
                                             chains = 1,
                                             thin=1,
                                             init=0,
-                                            SEM = TRUE, neg.binomial =
-                                                            TRUE,
+                                            SEM = TRUE,
+                                            neg.binomial = TRUE,
                                             site.lat=site.or.lat)
 
 ## Honey bees
@@ -179,14 +183,123 @@ table(spec.apis$CrithidiaPresence[spec.melissodes$WeightsPar == 1])
 table(spec.apis$ApicystisSpp[spec.melissodes$WeightsPar ==1 ])
 
 fit.apis <- runCombinedParasiteModels(spec.apis, species.group="apis",
-                                            parasite = c("CrithidiaPresence", "ApicystisSpp"),
-                                            xvars=xvars.apis,
-                                            ncores,
-                                            iter = 4*10^4,
-                                            chains = 1,
-                                            thin=1,
-                                            init=0,
-                                            SEM = TRUE, neg.binomial =
-                                                            TRUE,
-                                            site.lat=site.or.lat)
+                                      parasite = c("CrithidiaPresence", "ApicystisSpp"),
+                                      xvars=xvars.apis,
+                                      ncores,
+                                      iter = 4*10^4,
+                                      chains = 1,
+                                      thin=1,
+                                      init=0,
+                                      SEM = TRUE,
+                                      neg.binomial = TRUE,
+                                      site.lat=site.or.lat)
+
+
+
+## heat maps
+
+getParComm <- function(parasite, spec){
+    parasite <- aggregate(list(Parasite=spec[, parasite]),
+                          list(GenusSpecies=spec$GenusSpecies,
+                               Site=spec$Site),
+                          function(x) sum(x) / length(x))
+
+    parasite.comm <- samp2site.spp(parasite$Site,
+                                   parasite$GenusSpecies,
+                                   parasite$Parasite)
+    return(parasite.comm)
+}
+
+
+## screened
+rownames(spec.net) <- NULL
+spec.screened <- spec.net[spec.net$WeightsPar == 1,]
+sp.n <- c(table(spec.screened$GenusSpecies))
+sp.n <- sp.n[sp.n >=4]
+spec.screened <- spec.screened[spec.screened$GenusSpecies %in% names(sp.n),]
+
+spec.screened <- spec.screened[spec.screened$WeightsSp ==1,]
+
+parasite.cols <- c( "SpCrithidiaPresence",
+                   paste0("Sp", parasites))
+
+spec.screened <- spec.screened[, c("GenusSpecies", "Genus", "Site",
+                                   "SampleRound", "Year",
+                                   "SpScreened",
+                                   parasite.cols)]
+
+sum.genus.screened <- spec.screened  %>%
+    group_by(Site, Genus) %>%
+    summarise(
+        SpCrithidiaPresence= sum(SpCrithidiaPresence),
+        SpApicystisSpp = sum(SpApicystisSpp),
+        SpNosemaBombi= sum(SpNosemaBombi),
+        SpNosemaCeranae = sum(SpNosemaCeranae),
+        SpAscosphaeraSpp= sum(SpAscosphaeraSpp),
+        SpCrithidiaExpoeki = sum(SpCrithidiaExpoeki),
+        SpCrithidiaBombi = sum(SpCrithidiaBombi),
+        SpCrithidiaSpp = sum(SpCrithidiaSpp),
+        SpScreened = sum(SpScreened)
+    )
+
+
+sum.screened <- spec.screened  %>%
+    group_by(Site, GenusSpecies) %>%
+    summarise(
+        SpCrithidiaPresence= sum(SpCrithidiaPresence),
+        SpApicystisSpp = sum(SpApicystisSpp),
+        SpNosemaBombi= sum(SpNosemaBombi),
+        SpNosemaCeranae = sum(SpNosemaCeranae),
+        SpAscosphaeraSpp= sum(SpAscosphaeraSpp),
+        SpCrithidiaExpoeki = sum(SpCrithidiaExpoeki),
+        SpCrithidiaBombi = sum(SpCrithidiaBombi),
+        SpCrithidiaSpp = sum(SpCrithidiaSpp),
+        SpScreened = sum(SpScreened)
+        )
+
+sum.screened[, parasite.cols ] <- sum.screened[, parasite.cols
+                                               ]/sum.screened$SpScreened
+sum.genus.screened[, parasite.cols ] <-
+    sum.genus.screened[, parasite.cols ]/sum.genus.screened$SpScreened
+
+sum.screened$SpScreened <- NULL
+sum.genus.screened$SpScreened <- NULL
+
+
+
+### need to update samp to site species
+source("src/misc.R")
+getParComm <- function(par.sum.dat, bee.col, par.name){
+    parasite.comm <- samp2site.spp(par.sum.dat$Site,
+                                   par.sum.dat[, bee.col],
+                                   par.sum.dat[, par.name])
+    return(parasite.comm)
+}
+
+
+getParComm(sum.screened, "GenusSpecies", "SpApicystisSpp")
+
+## heat maps of # of infected individuals
+
+plotParasiteMap <- function(){
+    colfunc <- colorRampPalette(c("white", "red"))
+    par(oma=c(8,4,3,2), mar=c(1,2,2,1),
+        mgp=c(1.5,0.5,0))
+    heatmap.2(parasite.comms[[parasite]],
+              trace="none",
+              col=colfunc,
+              breaks=seq(0, 1, 0.1))
+    mtext(parasite, 3, line=2.5)
+}
+
+parasite.comms <- lapply(parasites, getParComm)
+names(parasite.comms) <- parasites
+
+
+
+for(parasite in parasites){
+    pdf.f(plotParasiteMap,
+          file=sprintf("figures/heatmaps/%s.pdf", parasite),
+          width=8, height=7)
+}
 
