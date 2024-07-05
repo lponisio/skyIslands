@@ -522,27 +522,23 @@ bloom$PlantGenusSpecies <-  fix.white.space(paste(bloom$PlantGenus,
                                           bloom$PlantVar))
 bloom <- bloom[bloom$PlantGenusSpecies != "",]
 
-## check plant names, run Nov 2022
-## library(Taxonstand)
-## bloom.checked.plant.names <- TPL(id(bloom$PlantGenusSpecies))
-## write.csv(bloom.checked.plant.names,
-## file="../../skyIslands_saved/data/checks/bloom_plant_names_check.csv")
+## check plant names, run july 2024
+scientificName <- unique(c(id(bloom$PlantGenusSpecies), id(veg$PlantGenusSpecies)))
+write.csv(scientificName,
+          file="../../skyIslands_saved/data/checks/all_plants.csv",
+          row.names=FALSE)
 
-## veg.checked.plant.names <- TPL(id(veg$PlantGenusSpecies))
-## write.csv(veg.checked.plant.names,
-## file="../../skyIslands_saved/data/checks/veg_plant_names_check.csv")
+## use gbif backbone  https://www.gbif.org/tools/species-lookup
 
 ## update plant names
-veg.checked.plant.names <-
-    read.csv(file="../../skyIslands_saved/data/checks/veg_plant_names_check.csv")
+checked.plant.names <-
+    read.csv(file="../../skyIslands_saved/data/checks/normalized_plants.csv")
 
-bloom.checked.plant.names <-
-    read.csv(file="../../skyIslands_saved/data/checks/bloom_plant_names_check.csv")
+veg <- fixPlantNamesgBIF(veg, "PlantGenusSpecies",
+                     checked.plant.names)
 
-veg <- fixPlantNames(veg, "PlantGenusSpecies",
-                     veg.checked.plant.names)
-bloom <- fixPlantNames(bloom, "PlantGenusSpecies",
-                     bloom.checked.plant.names)
+bloom <- fixPlantNamesgBIF(bloom, "PlantGenusSpecies",
+                     checked.plant.names)
 
 id(veg$PlantGenusSpecies)
 id(bloom$PlantGenusSpecies)
@@ -664,7 +660,6 @@ veg.year.sum <- veg.blooming %>%
 
 write.csv(veg.year.sum, file="../data/veg_species_richness.csv",
           row.names=FALSE)
-
 
 ## *******************************************************************
 ## merging site and spec data

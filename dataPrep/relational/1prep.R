@@ -180,7 +180,7 @@ highergeog <- data.frame(Site = c("JC", "VC", "JM", "SC", "MM", "SM",
                                "Magdalena", "San Mateo", "Sacramento",
                                "Sacramento", "Sacramento",
                                "Chiricahua", "Chiricahua",
-                               "Pina Leno", "Gila"))
+                               "Pinaleno", "Gila"))
 
 geo <- merge(geo, highergeog, key="Site", all.x=TRUE)
 
@@ -268,8 +268,7 @@ para.data <- data.frame(UniqueID=Apidae,
                              CrithidiaExpoeki=0,
                              CrithidiaBombi=0,
                              CrithidiaSpp=0,
-                             NosemaCeranae=0, ## change to 0 after
-                             ## the screenings are completed
+                             NosemaCeranae=0,
                              NosemaBombi=0)
 
 para.data$AscosphaeraSpp[para.data$UniqueID %in%
@@ -282,6 +281,8 @@ para.data$CrithidiaBombi[para.data$UniqueID %in%
                               CrithidiaBombi] <- 1
 para.data$CrithidiaSpp[para.data$UniqueID %in%
                               CrithidiaSpp] <- 1
+para.data$NosemaCeranae[para.data$UniqueID %in%
+                              NosemaCeranae] <- 1
 
 ## contaminated samples
 para.data$ApicystisSpp[para.data$UniqueID %in%

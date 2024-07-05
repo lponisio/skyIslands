@@ -1,28 +1,51 @@
 
 ## Function for updating plant names based on output of Taxonstand
 
-fixPlantNames <- function(data.to.fix, ## specimen or veg data
+## fixPlantNames <- function(data.to.fix, ## specimen or veg data
+##                           col.name.to.fix="PlantGenusSpecies", ## column name of plant species
+##                           checked.plant.names ## output of Taxonstand
+##                           ){
+##     plant.names <- data.frame(newNames = fix.white.space(paste(checked.plant.names$New.Genus,
+##                                                                checked.plant.names$New.Species,
+##                                                                checked.plant.names$New.Infraspecific.rank,
+##                                                                checked.plant.names$New.Infraspecific)),
+##                               oldNames = checked.plant.names$Taxon)
+##     data.to.fix$PlantFamily  <- NA
+##     data.to.fix$PlantFamily <- checked.plant.names$Family[match(data.to.fix[, col.name.to.fix],
+##                                                                 checked.plant.names$Taxon)]
+
+##     data.to.fix$PlantGenus <- NA
+##     data.to.fix$PlantGenus <- checked.plant.names$New.Genus[match(data.to.fix[, col.name.to.fix],
+##                                                                   checked.plant.names$Taxon)]
+    
+##     data.to.fix[, col.name.to.fix] <-
+##         plant.names$newNames[match(data.to.fix[, col.name.to.fix],
+##                                    plant.names$oldNames)]
+##     return(data.to.fix)
+
+## }
+
+
+
+fixPlantNamesgBIF <- function(data.to.fix, ## specimen or veg data
                           col.name.to.fix="PlantGenusSpecies", ## column name of plant species
                           checked.plant.names ## output of Taxonstand
                           ){
-
-    plant.names <- data.frame(newNames = fix.white.space(paste(checked.plant.names$New.Genus,
-                                                               checked.plant.names$New.Species,
-                                                               checked.plant.names$New.Infraspecific.rank,
-                                                               checked.plant.names$New.Infraspecific)),
-                              oldNames = checked.plant.names$Taxon)
-
-    data.to.fix[, col.name.to.fix] <-
-        plant.names$newNames[match(data.to.fix[, col.name.to.fix],
-                                   plant.names$oldNames)]
-
+    plant.names <- data.frame(newNames = checked.plant.names$canonicalName,
+                              oldNames = checked.plant.names$verbatimScientificName)
     data.to.fix$PlantFamily  <- NA
-    data.to.fix$PlantFamily <- checked.plant.names$Family[match(data.to.fix[, col.name.to.fix],
-                                                                checked.plant.names$Taxon)]
+    data.to.fix$PlantFamily <- checked.plant.names$family[match(data.to.fix[, col.name.to.fix],
+                                                   checked.plant.names$verbatimScientificName)]
 
     data.to.fix$PlantGenus <- NA
-    data.to.fix$PlantGenus <- checked.plant.names$New.Genus[match(data.to.fix[, col.name.to.fix],
-                                                                  checked.plant.names$Taxon)]
+    data.to.fix$PlantGenus <- checked.plant.names$genus[match(data.to.fix[, col.name.to.fix],
+                                                   checked.plant.names$verbatimScientificName)]
+
+    data.to.fix[, col.name.to.fix] <-
+        checked.plant.names$canonicalName[
+            match(data.to.fix[, col.name.to.fix],
+                  checked.plant.names$verbatimScientificName)]
+   
     return(data.to.fix)
 
 }
