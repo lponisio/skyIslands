@@ -89,7 +89,7 @@ sp.ids <- list(
                                                         "SC_072312_266",
                                                         "SC_072312_296",
                                                         "SC_072012_76",
-                                                        "SC_072612_129",
+                                                        "SC_072612_129A",
                                                         "SC_072912_75")),
 
   spilogaster = list(Genus="Ancistrocerus", SubGenus ="",
