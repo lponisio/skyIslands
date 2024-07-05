@@ -157,8 +157,7 @@ sp.ids <- list(
                SubSpecies="a", Sex="f",
                Author = "",
                Determiner="J.S. Ascher",
-               temp.id =c("SC_072312_243",
-                          "PL_080912_291",
+               temp.id =c("PL_080912_291",
                           "SC_072312_238"
                           )),
 
