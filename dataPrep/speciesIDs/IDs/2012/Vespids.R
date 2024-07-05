@@ -186,11 +186,6 @@ sp.ids <- list(
               Determiner="M. van Dam", temp.id
               =c("CH_082112_2", "PL_081212_29", "CH_082012_91", "CH_082112_1", "CH_082112_172", "PL_081212_30")), 
                  
-                 
-                     Pepsis =  list(Genus="Pepsis", SubGenus ="", Species="formosa",
-              SubSpecies="formosa", Sex="f", Author = "",
-              Determiner="M. van Dam", temp.id
-              =c("PL_081212_32", "CH_082112_95", "CH_082012_162", "CH_082112_76", "CH_082012_6")), 
               
                Pepsis =  list(Genus="Pepsis", SubGenus ="", Species="formosa",
               SubSpecies="formosa", Sex="m", Author = "",
