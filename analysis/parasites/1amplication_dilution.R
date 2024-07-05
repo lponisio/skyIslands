@@ -39,7 +39,7 @@ variables.to.log.1 <- c("Net_HBAbundance", "Net_BombusAbundance")
 
 ## loads specimen data
 source("src/init.R")
-spec.net <- filter(spec.net, Site != "VC" & Site != "UK" & Site != "SS")
+## spec.net <- filter(spec.net, Site != "VC" & Site != "UK" & Site != "SS")
 
 
 ## Make SEM weights and standardize data.
@@ -47,9 +47,10 @@ spec.net <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1,
                         vars_yearsr = vars_yearsr, vars_sp = vars_sp, 
                         vars_yearsrsp = vars_yearsrsp,
                         vars_site=vars_site)
-# spec.net$Site <- factor(spec.net$Site, levels = c("JC", "SM", "SC", "MM", 
-                                                  "HM", "PL", "CH", "RP"))
+##spec.net$Site <- factor(spec.net$Site, levels = c("JC", "SM", "SC", "MM", 
+##                                                  "HM", "PL", "CH", "RP"))
 
+spec.net$Site <- as.character(spec.net$Site)
 ## otherwise levels with no data are not properly dropped using subset
 spec.net$Year <- as.character(spec.net$Year)
 spec.net$GenusSpecies <- as.character(spec.net$GenusSpecies)
@@ -75,6 +76,7 @@ source("src/plant_poll_models.R")
 ## check ids
 unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
                              is.na(spec.net$MeanITD)])
+save(spec.net, file="saved/spec_weights.Rdata")
 
 ## Load phylogeny 
 load("../../data/community_phylogeny.Rdata")
@@ -193,113 +195,3 @@ fit.apis <- runCombinedParasiteModels(spec.apis, species.group="apis",
                                       SEM = TRUE,
                                       neg.binomial = TRUE,
                                       site.lat=site.or.lat)
-
-
-
-## heat maps
-
-getParComm <- function(parasite, spec){
-    parasite <- aggregate(list(Parasite=spec[, parasite]),
-                          list(GenusSpecies=spec$GenusSpecies,
-                               Site=spec$Site),
-                          function(x) sum(x) / length(x))
-
-    parasite.comm <- samp2site.spp(parasite$Site,
-                                   parasite$GenusSpecies,
-                                   parasite$Parasite)
-    return(parasite.comm)
-}
-
-
-## screened
-rownames(spec.net) <- NULL
-spec.screened <- spec.net[spec.net$WeightsPar == 1,]
-sp.n <- c(table(spec.screened$GenusSpecies))
-sp.n <- sp.n[sp.n >=4]
-spec.screened <- spec.screened[spec.screened$GenusSpecies %in% names(sp.n),]
-
-spec.screened <- spec.screened[spec.screened$WeightsSp ==1,]
-
-parasite.cols <- c( "SpCrithidiaPresence",
-                   paste0("Sp", parasites))
-
-spec.screened <- spec.screened[, c("GenusSpecies", "Genus", "Site",
-                                   "SampleRound", "Year",
-                                   "SpScreened",
-                                   parasite.cols)]
-
-sum.genus.screened <- spec.screened  %>%
-    group_by(Site, Genus) %>%
-    summarise(
-        SpCrithidiaPresence= sum(SpCrithidiaPresence),
-        SpApicystisSpp = sum(SpApicystisSpp),
-        SpNosemaBombi= sum(SpNosemaBombi),
-        SpNosemaCeranae = sum(SpNosemaCeranae),
-        SpAscosphaeraSpp= sum(SpAscosphaeraSpp),
-        SpCrithidiaExpoeki = sum(SpCrithidiaExpoeki),
-        SpCrithidiaBombi = sum(SpCrithidiaBombi),
-        SpCrithidiaSpp = sum(SpCrithidiaSpp),
-        SpScreened = sum(SpScreened)
-    )
-
-
-sum.screened <- spec.screened  %>%
-    group_by(Site, GenusSpecies) %>%
-    summarise(
-        SpCrithidiaPresence= sum(SpCrithidiaPresence),
-        SpApicystisSpp = sum(SpApicystisSpp),
-        SpNosemaBombi= sum(SpNosemaBombi),
-        SpNosemaCeranae = sum(SpNosemaCeranae),
-        SpAscosphaeraSpp= sum(SpAscosphaeraSpp),
-        SpCrithidiaExpoeki = sum(SpCrithidiaExpoeki),
-        SpCrithidiaBombi = sum(SpCrithidiaBombi),
-        SpCrithidiaSpp = sum(SpCrithidiaSpp),
-        SpScreened = sum(SpScreened)
-        )
-
-sum.screened[, parasite.cols ] <- sum.screened[, parasite.cols
-                                               ]/sum.screened$SpScreened
-sum.genus.screened[, parasite.cols ] <-
-    sum.genus.screened[, parasite.cols ]/sum.genus.screened$SpScreened
-
-sum.screened$SpScreened <- NULL
-sum.genus.screened$SpScreened <- NULL
-
-
-
-### need to update samp to site species
-source("src/misc.R")
-getParComm <- function(par.sum.dat, bee.col, par.name){
-    parasite.comm <- samp2site.spp(par.sum.dat$Site,
-                                   par.sum.dat[, bee.col],
-                                   par.sum.dat[, par.name])
-    return(parasite.comm)
-}
-
-
-getParComm(sum.screened, "GenusSpecies", "SpApicystisSpp")
-
-## heat maps of # of infected individuals
-
-plotParasiteMap <- function(){
-    colfunc <- colorRampPalette(c("white", "red"))
-    par(oma=c(8,4,3,2), mar=c(1,2,2,1),
-        mgp=c(1.5,0.5,0))
-    heatmap.2(parasite.comms[[parasite]],
-              trace="none",
-              col=colfunc,
-              breaks=seq(0, 1, 0.1))
-    mtext(parasite, 3, line=2.5)
-}
-
-parasite.comms <- lapply(parasites, getParComm)
-names(parasite.comms) <- parasites
-
-
-
-for(parasite in parasites){
-    pdf.f(plotParasiteMap,
-          file=sprintf("figures/heatmaps/%s.pdf", parasite),
-          width=8, height=7)
-}
-
