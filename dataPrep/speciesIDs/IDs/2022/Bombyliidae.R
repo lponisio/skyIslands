@@ -56,15 +56,6 @@ sp.ids <- list(
                                  38389, 36511, 36508, 35393, 35276, 35415,
                                  35397)),
 
-    bombylius_sp_a = list(Genus="Bombylius",
-                          SubGenus ="Bombylius",
-                          Species="sp.",
-                          SubSpecies="a",
-                          Sex="",
-                          Author =  "",
-                          Determiner="L. Ponisio",
-                          temp.id= c(32451, 31317, 34793)),
-
 
     bombylius_sp_b = list(Genus="Bombylius",
                           SubGenus ="Bombylius",
