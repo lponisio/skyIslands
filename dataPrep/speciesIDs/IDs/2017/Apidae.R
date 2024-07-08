@@ -1435,7 +1435,7 @@ sp.ids <- list(
                               Author = "Cockerell",
                               Determiner="J.L. Neff",
                               temp.id=
-                                c("BBSL1086829","1058667",
+                                c("BBSL1086829","BBSL1058667",
                                   "BBSL1086873","BBSL1059649",
                                   "BBSL1073326","BBSL1059647")),
 
