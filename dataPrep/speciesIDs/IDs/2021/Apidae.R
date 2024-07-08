@@ -233,7 +233,7 @@ sp.ids <- list(
                             SubSpecies = "", Sex ="f",
                             Author = "Say",
                             Determiner="L. Best",
-                            temp.id = c(31187, 32483, 32511)),
+                            temp.id = c(32483, 32511)),
 
     Bombus_appositus_f = list(Genus = "Bombus", SubGenus="Subterraneobombus",
                               Species = "sonorus",
@@ -407,8 +407,7 @@ sp.ids <- list(
                                         33702, 33703, 33704, 33705,
                                         33748, 33750, 33841, 33928,
                                         34262, 34307, 34378, 34380,
-                                        32481, 34384, 34389, 30738,
-                                        30890)),
+                                        32481, 34384, 34389)),
 
   Bombus_rufocinctus_f = list(Genus = "Bombus",
                               SubGenus="Cullumanobombus",
