@@ -303,7 +303,7 @@ sp.ids <- list(
                                            "SC_072812_127",
                                            "SC_072712_109",
                                            "SC_072812_1", 
-                                           "SC_172912_62")),
+                                           "SC_072912_62")),
 
     Anthophora_montana_m = list(Genus="Anthophora",
                                 SubGenus="Mystacanthophora",
