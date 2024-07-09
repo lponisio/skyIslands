@@ -240,7 +240,7 @@ sp.ids <- list(
                                   SubSpecies="",
                                   Sex="m", Author = "Cockerell",
                                   Determiner = "J.F. Zorn",
-                                  temp.id= c("22044,19439,20938,19587,19588,22922")),
+                                  temp.id= c("22044","19439","20938","19587","19588","22922")),
 
     Lasioglossum_M2_f = list(Genus="Lasioglossum",
                              SubGenus ="Dialictus",
