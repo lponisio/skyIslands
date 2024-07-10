@@ -224,7 +224,7 @@ write.csv(data.geo, file="relational/original/geography.csv",
 
 screenings <- c("Apidae", "AspergillusSpp", "AscosphaeraSpp",
                 "ApicystisSpp", "CrithidiaExpoeki", "CrithidiaBombi",
-                "CrithidiaSpp",
+                "CrithidiaSpp", "CrithidiaMellificae",
                 "NosemaBombi", "NosemaCeranae")
 
 ## con
@@ -260,16 +260,17 @@ screenings <- c("Apidae", "AspergillusSpp", "AscosphaeraSpp",
 source('parasite_postivies/all_parasites.R', chdir = TRUE)
 
 para.data <- data.frame(UniqueID=Apidae,
-                             TempID=NA,
-                             Apidae=1,
-                             AspergillusSpp=NA,
-                             AscosphaeraSpp=0,
-                             ApicystisSpp=0,
-                             CrithidiaExpoeki=0,
-                             CrithidiaBombi=0,
-                             CrithidiaSpp=0,
-                             NosemaCeranae=0,
-                             NosemaBombi=0)
+                        TempID=NA,
+                        Apidae=1,
+                        AspergillusSpp=NA,
+                        AscosphaeraSpp=0,
+                        ApicystisSpp=0,
+                        CrithidiaExpoeki=0,
+                        CrithidiaBombi=0,
+                        CrithidiaMellificae=0,
+                        CrithidiaSpp=0,
+                        NosemaCeranae=0,
+                        NosemaBombi=0)
 
 para.data$AscosphaeraSpp[para.data$UniqueID %in%
                               AscosphaeraSpp] <- 1
@@ -279,6 +280,8 @@ para.data$CrithidiaExpoeki[para.data$UniqueID %in%
                               CrithidiaExpoeki] <- 1
 para.data$CrithidiaBombi[para.data$UniqueID %in%
                               CrithidiaBombi] <- 1
+para.data$CrithidiaMellificae[para.data$UniqueID %in%
+                              CrithidiaMellificae] <- 1
 para.data$CrithidiaSpp[para.data$UniqueID %in%
                               CrithidiaSpp] <- 1
 para.data$NosemaCeranae[para.data$UniqueID %in%

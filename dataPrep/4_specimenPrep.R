@@ -84,10 +84,12 @@ spec$DoyPoly2 <- DoyPoly[,'2']
 ## write.csv(checked.plant.names,
 ## file="../../skyIslands_saved/data/checks/plant_names_check.csv")
 
-spec.checked.plant.names <-
-    read.csv(file="../../skyIslands_saved/data/checks/plant_names_check.csv")
+## update plant names
+checked.plant.names <-
+    read.csv(file="../../skyIslands_saved/data/checks/normalized_plants.csv")
 
-spec <- fixPlantNames(spec, "PlantGenusSpecies", spec.checked.plant.names)
+spec <- fixPlantNamesgBIF(spec, "PlantGenusSpecies",
+                     checked.plant.names)
 
 ## DECISION POINT:  variabile identification fo Erigeron between years,
 ##  combine to Erigerson spp.
@@ -103,7 +105,8 @@ dir.create("../data/networks", showWarnings = FALSE)
 dir.create("../data/splevel_network_metrics", showWarnings = FALSE)
 
 crithidias <- c("CrithidiaExpoeki",
-                "CrithidiaBombi", "CrithidiaSpp")
+                "CrithidiaBombi", "CrithidiaSpp",
+                "CrithidiaMellificae")
 parasites <- c( "AscosphaeraSpp",
                "ApicystisSpp", crithidias,
                "NosemaBombi", "NosemaCeranae")
@@ -179,11 +182,11 @@ calcSummaryStats <- function(spec.method, method){
                   SpParasitismRate = mean(ParasitePresence, na.rm=TRUE),
                   SpCrithidiaParasitismRate = mean(CrithidiaPresence, na.rm=TRUE),
                   SpApicystisParasitismRate = mean(ApicystisSpp, na.rm=TRUE),
-                  ## SpCrithidiaBombusParasitismRate = mean(CrithidiaPresence[Genus == "Bombus"], 
-                  ##                                     na.rm=TRUE),
-                  ## SpCrithidiaHBParasitismRate = mean (CrithidiaPresence
-                  ##                                  [GenusSpecies == "Apis mellifera"],
-                  ##                                  na.rm=TRUE),
+                  SpCrithidiaBombusParasitismRate = mean(CrithidiaPresence[Genus == "Bombus"], 
+                                                      na.rm=TRUE),
+                  SpCrithidiaHBParasitismRate = mean (CrithidiaPresence
+                                                   [GenusSpecies == "Apis mellifera"],
+                                                   na.rm=TRUE),
                   SpParasitism = sum(ParasitePresence, na.rm=TRUE),
                   SpCrithidiaPresence= sum(CrithidiaPresence, na.rm=TRUE),
                   SpApicystisSpp = sum(ApicystisSpp, na.rm=TRUE),
@@ -191,6 +194,7 @@ calcSummaryStats <- function(spec.method, method){
                   SpNosemaCeranae = sum(NosemaCeranae, na.rm=TRUE),
                   SpAscosphaeraSpp= sum(AscosphaeraSpp, na.rm=TRUE),
                   SpCrithidiaExpoeki = sum(CrithidiaExpoeki, na.rm=TRUE),
+                  SpCrithidiaMellificae = sum(CrithidiaMellificae, na.rm=TRUE),
                   SpCrithidiaBombi = sum(CrithidiaBombi, na.rm=TRUE),
                   SpCrithidiaSpp = sum(CrithidiaSpp, na.rm=TRUE),
                   SpScreened = sum(!is.na(Apidae))
@@ -417,12 +421,13 @@ bees.yr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
 spec.sub <- agg.spec.sub %>%
   dplyr::select(UniqueID, GenusSpecies, Site, Year, SampleRound, AscosphaeraSpp,
          ApicystisSpp, CrithidiaExpoeki, CrithidiaBombi,
+         CrithidiaMellificae,
          NosemaBombi, NosemaCeranae)
 
 prep.para <- spec.sub %>%
   pivot_longer(cols=c("AscosphaeraSpp",
                       "ApicystisSpp", "CrithidiaExpoeki",
-                      "CrithidiaBombi",
+                      "CrithidiaBombi", "CrithidiaMellificae",
                       "NosemaBombi", "NosemaCeranae"),
                names_to = "Parasite", values_to = "count")
 prep.para <- as.data.frame(prep.para)
@@ -573,7 +578,7 @@ veg.blooming <- veg[veg$NumBlooms != "" &
 veg.blooming$NumBloomsNum <- veg.blooming$NumBlooms
 veg.blooming$NumBloomsNum[veg.blooming$NumBlooms == "<10"] <- 5
 veg.blooming$NumBloomsNum[veg.blooming$NumBlooms == "10-100"] <- 50
-veg.blooming$NumBloomsNum[veg.blooming$NumBlooms == "100-1000"] <- 500
+veg.blooming$NumBloomsNum[veg.blooming$NumBlooms == "100-1000"] <- 100
 
 veg.blooming$NumBloomsNum <- as.numeric(veg.blooming$NumBloomsNum)
 
