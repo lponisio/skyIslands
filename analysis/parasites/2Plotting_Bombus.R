@@ -1,10 +1,12 @@
 rm(list=ls())
 ## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
-setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
-## setwd('~/Dropbox (University of Oregon)/skyislands')
+## setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
+setwd('~/Dropbox (University of Oregon)/skyislands')
 ## Script for plotting all of the important explanatory variables.
 
 setwd("analysis/parasites")
+source("src/misc.R")
+load(file="saved/spec_weights.Rdata")
 
 source("src/misc.R")
 source("src/writeResultsTable.R")
@@ -12,6 +14,9 @@ source("src/makeMultiLevelData.R")
 source("src/runParasiteModels.R")
 source("src/standardize_weights.R")
 source("src/ggplotThemes.R")
+
+
+
 ## all of the variables that are explanatory variables and thus need
 ## to be centered
 vars_yearsr <- c("MeanFloralAbundance",

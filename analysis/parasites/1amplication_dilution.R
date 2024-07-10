@@ -39,8 +39,8 @@ variables.to.log.1 <- c("Net_HBAbundance", "Net_BombusAbundance")
 
 ## loads specimen data
 source("src/init.R")
-## spec.net <- filter(spec.net, Site != "VC" & Site != "UK" & Site != "SS")
-
+spec.net <- filter(spec.net, Site != "VC" & Site != "UK")
+## spec.net <- filter(spec.net, Site != "UK")
 
 ## Make SEM weights and standardize data.
 spec.net <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1, 
@@ -90,9 +90,9 @@ spec.bombus$GenusSpecies[spec.bombus$GenusSpecies %in% not_in_phylo]<- "Agaposte
 ## Parasite models set up
 ## **********************************************************
 ## Multi species models
-xvars.multi.bombus <-  c("Net_BeeDiversity*Year", "Net_BombusAbundance",
+xvars.multi.bombus <-  c("Net_BeeDiversity", "Net_BombusAbundance",
                          "rare.degree",
-                         "MeanFloralAbundance",
+                         ## "MeanFloralAbundance",
                          "MeanFloralDiversity",
                          "MeanITD",
                          "(1|Site)",
@@ -103,7 +103,7 @@ xvars.multi.bombus <-  c("Net_BeeDiversity*Year", "Net_BombusAbundance",
 ## single species models
 xvars.single.species <-  c("Net_BeeDiversity",
                            "Net_BeeAbundance",
-                           "MeanFloralAbundance",
+                           ## "MeanFloralAbundance",
                            "MeanFloralDiversity",
                            "rare.degree",
                            "(1|Site)")
@@ -111,7 +111,7 @@ xvars.single.species <-  c("Net_BeeDiversity",
 ## Apis
 xvars.apis <-  c("Net_BeeDiversity",
                  "Net_HBAbundance",
-                 "MeanFloralAbundance",
+                 ## "MeanFloralAbundance",
                  "MeanFloralDiversity",
                  "rare.degree",
                  "(1|Site)")
@@ -162,36 +162,36 @@ fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         site.lat=site.or.lat)
 
 
-## melissodes
-## there are not enough positives to get this model to converge
-table(spec.melissodes$CrithidiaPresence[spec.melissodes$WeightsPar == 1])
-table(spec.melissodes$ApicystisSpp[spec.melissodes$WeightsPar ==1 ])
+## ## melissodes
+## ## there are not enough positives to get this model to converge
+## table(spec.melissodes$CrithidiaPresence[spec.melissodes$WeightsPar == 1])
+## table(spec.melissodes$ApicystisSpp[spec.melissodes$WeightsPar ==1 ])
 
-fit.melissodes <- runCombinedParasiteModels(spec.melissodes, species.group="melissodes",
-                                            parasite = c("CrithidiaPresence", "ApicystisSpp"),
-                                            xvars=xvars.single.species,
-                                            ncores,
-                                            iter = 2*10^4,
-                                            chains = 1,
-                                            thin=1,
-                                            init=0,
-                                            SEM = TRUE,
-                                            neg.binomial = TRUE,
-                                            site.lat=site.or.lat)
+## fit.melissodes <- runCombinedParasiteModels(spec.melissodes, species.group="melissodes",
+##                                             parasite = c("CrithidiaPresence", "ApicystisSpp"),
+##                                             xvars=xvars.single.species,
+##                                             ncores,
+##                                             iter = 2*10^4,
+##                                             chains = 1,
+##                                             thin=1,
+##                                             init=0,
+##                                             SEM = TRUE,
+##                                             neg.binomial = TRUE,
+##                                             site.lat=site.or.lat)
 
-## Honey bees
-## there are not enough positives to get this model to converge
-table(spec.apis$CrithidiaPresence[spec.melissodes$WeightsPar == 1])
-table(spec.apis$ApicystisSpp[spec.melissodes$WeightsPar ==1 ])
+## ## Honey bees
+## ## there are not enough positives to get this model to converge
+## table(spec.apis$CrithidiaPresence[spec.melissodes$WeightsPar == 1])
+## table(spec.apis$ApicystisSpp[spec.melissodes$WeightsPar ==1 ])
 
-fit.apis <- runCombinedParasiteModels(spec.apis, species.group="apis",
-                                      parasite = c("CrithidiaPresence", "ApicystisSpp"),
-                                      xvars=xvars.apis,
-                                      ncores,
-                                      iter = 4*10^4,
-                                      chains = 1,
-                                      thin=1,
-                                      init=0,
-                                      SEM = TRUE,
-                                      neg.binomial = TRUE,
-                                      site.lat=site.or.lat)
+## fit.apis <- runCombinedParasiteModels(spec.apis, species.group="apis",
+##                                       parasite = c("CrithidiaPresence", "ApicystisSpp"),
+##                                       xvars=xvars.apis,
+##                                       ncores,
+##                                       iter = 4*10^4,
+##                                       chains = 1,
+##                                       thin=1,
+##                                       init=0,
+##                                       SEM = TRUE,
+##                                       neg.binomial = TRUE,
+##                                       site.lat=site.or.lat)
