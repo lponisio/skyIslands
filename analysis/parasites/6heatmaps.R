@@ -15,8 +15,11 @@ load(file="saved/spec_weights.Rdata")
 ## screened
 rownames(spec.net) <- NULL
 spec.screened <- spec.net[spec.net$WeightsSp ==1,]
+
+## no positives for Nosema bombi, only 1 for ceranae
+
 parasites <- c("AscosphaeraSpp", "ApicystisSpp",
-               "CrithidiaExpoeki",
+               "CrithidiaExpoeki", "CrithidiaMellificae",
                "CrithidiaBombi", "CrithidiaSpp")
 parasite.cols <- c( "SpCrithidiaPresence",
                    paste0("Sp", parasites))
@@ -26,31 +29,30 @@ spec.screened <- spec.screened[, c("GenusSpecies", "Genus",
                                    "SpScreened",
                                    parasite.cols)]
 
+
 ## sum over sample rounds, years
 sum.genus.screened <- spec.screened  %>%
     group_by(MtRange, Genus) %>%
     summarise(
         SpCrithidiaPresence= sum(SpCrithidiaPresence),
         SpApicystisSpp = sum(SpApicystisSpp),
-        ## SpNosemaBombi= sum(SpNosemaBombi),
-        ## SpNosemaCeranae = sum(SpNosemaCeranae),
         SpAscosphaeraSpp= sum(SpAscosphaeraSpp),
         SpCrithidiaExpoeki = sum(SpCrithidiaExpoeki),
         SpCrithidiaBombi = sum(SpCrithidiaBombi),
+        SpCrithidiaMellificae = sum(SpCrithidiaMellificae),
         SpCrithidiaSpp = sum(SpCrithidiaSpp),
         SpScreened = sum(SpScreened)
     )
 
 sum.screened <- spec.screened  %>%
-    group_by(MtRange, GenusSpecies) %>%
+    group_by(MtRange, GenusSpecies, Genus) %>%
     summarise(
         SpCrithidiaPresence= sum(SpCrithidiaPresence),
         SpApicystisSpp = sum(SpApicystisSpp),
-        ## SpNosemaBombi= sum(SpNosemaBombi),
-        ## SpNosemaCeranae = sum(SpNosemaCeranae),
         SpAscosphaeraSpp= sum(SpAscosphaeraSpp),
         SpCrithidiaExpoeki = sum(SpCrithidiaExpoeki),
         SpCrithidiaBombi = sum(SpCrithidiaBombi),
+        SpCrithidiaMellificae = sum(SpCrithidiaMellificae),
         SpCrithidiaSpp = sum(SpCrithidiaSpp),
         SpScreened = sum(SpScreened)
     )
@@ -79,14 +81,6 @@ sum.screened[, parasite.cols ] <- sum.screened[, parasite.cols
                                                ]/sum.screened$SpScreened
 sum.genus.screened[, parasite.cols ] <-
     sum.genus.screened[, parasite.cols ]/sum.genus.screened$SpScreened
-
-## ## creates species/genus labels with N
-## sum.screened$GenusSpecies <- paste0(sum.screened$GenusSpecies, " (",
-##                                    sum.screened$SpScreened, ")")
-
-## sum.genus.screened$Genus <- paste0(sum.genus.screened$Genus, " (",
-##                                    sum.genus.screened$SpScreened,
-##                                    ")")
 
 ## add N to species/genus
 sum.screened$GenusSpecies <- paste0(sum.screened$GenusSpecies, " (",
@@ -181,8 +175,9 @@ for(parasite in parasite.cols){
           width=10, height=7)
 }
 
-
-## barplots
+## ***************************************************************
+## barplots - by genus
+## ***************************************************************
 ## sum over genera
 sum.genus.screened <- spec.screened  %>%
     group_by(Genus) %>%
@@ -190,6 +185,7 @@ sum.genus.screened <- spec.screened  %>%
         ## SpCrithidiaPresence= sum(SpCrithidiaPresence),
         SpCrithidiaExpoeki = sum(SpCrithidiaExpoeki),
         SpCrithidiaBombi = sum(SpCrithidiaBombi),
+        SpCrithidiaMellificae = sum(SpCrithidiaMellificae),
         SpCrithidiaSpp = sum(SpCrithidiaSpp),
         SpApicystisSpp = sum(SpApicystisSpp),
         ## SpNosemaBombi= sum(SpNosemaBombi),
@@ -226,9 +222,36 @@ pp <- ggplot(long.sum, aes(Genus, value, fill=Parasite)) +
                                  "Ascosphaera spp.",
                                  "Crithidia bombi",
                                  "Crithidia expoeki",
+                                 "Crithidia mellificae",
                                  "Crithidia spp."))
 pp <- pp + geom_bar(stat = "identity",
                     position = 'dodge')
 
 ggsave(pp, file="figures/parasite_barplots.pdf",
+       height=2.5, width=7)
+
+## ***************************************************************
+## boxplots by species
+## ***************************************************************
+
+long.sum <- sum.screened %>%
+    pivot_longer(
+        cols = starts_with("Sp"),
+        names_to = "Parasite",
+        values_drop_na = TRUE
+    )
+long.sum <- long.sum[long.sum$Genus != "Dufourea",]
+long.sum <- long.sum[!long.sum$Parasite %in%
+                     c("SpCrithidiaExpoeki", "SpCrithidiaMellificae",
+                       "SpCrithidiaBombi", "SpCrithidiaSpp"),]
+
+pp2 <- ggplot(long.sum, aes(Genus, value, fill=Parasite)) +
+    geom_boxplot() + 
+    labs(y = "Proportion tested positive") +
+    scale_fill_brewer(palette = "Dark2",
+                      name = "Parasite",
+                      labels = c("Apicystis spp.",
+                                 "Ascosphaera spp.",
+                                 "Crithidia spp.")) 
+ggsave(pp2, file="figures/parasite_boxplots.pdf",
        height=2.5, width=7)

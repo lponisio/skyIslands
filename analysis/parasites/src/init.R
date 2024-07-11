@@ -12,13 +12,14 @@ dir.create(path="saved/tables", showWarnings = FALSE)
 load('../../data/spec_net.Rdata')
 
 parasites <- c(
-  "AscosphaeraSpp",
-  "ApicystisSpp",
-  "CrithidiaExpoeki",
-  "CrithidiaBombi",
-  "CrithidiaSpp",
-  "NosemaBombi",
-  "NosemaCeranae")
+    "AscosphaeraSpp",
+    "ApicystisSpp",
+    "CrithidiaExpoeki",
+    "CrithidiaBombi",
+    "CrithidiaSpp",
+    "CrithidiaMellificae",
+    "NosemaBombi",
+    "NosemaCeranae")
 
 ## ## Merging specimen data with site characteristic data.
 ## print("Before merge with site characteristics")
@@ -56,8 +57,6 @@ parasites <- c(
 to.drop <- !grepl("Pan_", colnames(spec.net))
 
 spec.net <- spec.net[, to.drop]
-
-spec.orig <- spec.net
 
 
 

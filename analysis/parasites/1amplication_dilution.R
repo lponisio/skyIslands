@@ -32,15 +32,22 @@ vars_yearsrsp <- "rare.degree"
 vars_sp <- "MeanITD"
 vars_site <- "Lat"
           
-variables.to.log <- c("rare.degree", "MeanITD", "Lat",
+variables.to.log <- c("rare.degree", "Lat",
                       "Net_NonBombusHBAbundance", "Net_BeeAbundance")
 
 variables.to.log.1 <- c("Net_HBAbundance", "Net_BombusAbundance")
 
 ## loads specimen data
 source("src/init.R")
+## maybe remove SS? (only sampled one year). VC and UK were really
+## grassy, odd meadows
 spec.net <- filter(spec.net, Site != "VC" & Site != "UK")
-## spec.net <- filter(spec.net, Site != "UK")
+spec.net$MeanITD[spec.net$Genus != "Bombus" & is.na(spec.net$Apidae)] <- NA
+spec.net$rare.degree[spec.net$Genus != "Bombus" & is.na(spec.net$Apidae)] <- NA
+
+## raw, non standardized data for plotting
+spec.orig <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1, 
+                        standardize=FALSE)
 
 ## Make SEM weights and standardize data.
 spec.net <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1, 
@@ -76,7 +83,7 @@ source("src/plant_poll_models.R")
 ## check ids
 unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
                              is.na(spec.net$MeanITD)])
-save(spec.net, file="saved/spec_weights.Rdata")
+save(spec.net, spec.orig, file="saved/spec_weights.Rdata")
 
 ## Load phylogeny 
 load("../../data/community_phylogeny.Rdata")
@@ -92,7 +99,7 @@ spec.bombus$GenusSpecies[spec.bombus$GenusSpecies %in% not_in_phylo]<- "Agaposte
 ## Multi species models
 xvars.multi.bombus <-  c("Net_BeeDiversity", "Net_BombusAbundance",
                          "rare.degree",
-                         ## "MeanFloralAbundance",
+                         "MeanFloralAbundance",
                          "MeanFloralDiversity",
                          "MeanITD",
                          "(1|Site)",

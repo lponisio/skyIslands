@@ -198,21 +198,6 @@ data.geo <- data.frame(Site=geo$Site,
                        Elev=geo$Elev0,
                        Area=geo$Area)
 
-##Note: when comparing data.geo to H's geography csv:
-##  data.geo -> H's Datasheet
-##  Site -> NA
-##  SubSite -> NA
-##  SiteSubSite -> Location_Name
-##  MtRange -> NA
-##  Forest -> NA (included in Location_Desc)
-##  Meadow -> NA (included in Location_Desc)
-##  County -> NA
-##  State -> NA
-##  Country -> NA
-##  Lat -> DecimalLat
-##  Long -> DecimalLon
-##  Elev -> Elev0 (this is the one without m in the cell)
-
 ## write unique data to a table
 write.csv(data.geo, file="relational/original/geography.csv",
                    row.names=FALSE)
@@ -227,36 +212,7 @@ screenings <- c("Apidae", "AspergillusSpp", "AscosphaeraSpp",
                 "CrithidiaSpp", "CrithidiaMellificae",
                 "NosemaBombi", "NosemaCeranae")
 
-## con
-## par.cols <-  c("UniqueID",
-##               "TempID",
-##               "Apidae",
-##               "AspergillusSpp",
-##               "AscosphaeraSpp",
-##               "ApicystisSpp",
-##               "CrithidiaExpoeki",
-##               "CrithidiaBombi",
-##               "CrithidiaSpp",
-##               "NosemaCeranae",
-##               "NosemaBombi")
-## ## 2018 data
-## para.data <- read.csv("raw/parasites.csv",  stringsAsFactors=FALSE)
-## para.data$CrithidiaSpp <- NA
-## para.data[, par.cols)]
-
-## dir.pars <- "parasite_postivies/indiv_parasites"
-
-## for(i in par.cols[-c(1,2)]){
-##   positives <- para.data$UniqueID[para.data[,i] == 1]
- 
-##   write.table(glue_collapse(sort(positives), sep=", "),
-##               file=file.path(dir.pars, sprintf("/%s_2018.txt",
-##                                                i)), sep=",",
-##               row.names=FALSE)
-## }
-
-
-## 2021-2022 data
+## 2017-2021 data
 source('parasite_postivies/all_parasites.R', chdir = TRUE)
 
 para.data <- data.frame(UniqueID=Apidae,
@@ -295,6 +251,8 @@ para.data$CrithidiaExpoeki[para.data$UniqueID %in%
 para.data$CrithidiaBombi[para.data$UniqueID %in%
                               CrithidiaBombiNA] <- NA
 para.data$CrithidiaSpp[para.data$UniqueID %in%
+                              CrithidiaSppNA] <- NA
+para.data$CrithidiaMellificae[para.data$UniqueID %in%
                               CrithidiaSppNA] <- NA
 
 

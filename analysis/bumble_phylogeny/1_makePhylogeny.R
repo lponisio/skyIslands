@@ -10,7 +10,7 @@ setwd("analysis/bumble_phylogeny")
 ## Henriquez Piskulich, Patricia Andrea; Hugall, Andrew F.; Stuart-Fox, Devi (2023). 
 ## A supermatrix phylogeny of the world’s bees (Hymenoptera: Anthophila) [Dataset]. 
 ## Dryad. https://doi.org/10.5061/dryad.80gb5mkw1
-load('/data/spec_net.Rdata')
+load('../../data/spec_net.Rdata')
 
 phylo <- ape::read.tree("../../../skyIslands_saved/data/BEE_mat7_fulltree.nwk")
 
