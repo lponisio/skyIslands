@@ -82,19 +82,4 @@ sp.ids <- list(
                           Determiner="L. Ponisio",
                           temp.id= c(32451, 31317, 34793)),
 
-
-    Antrax_sp_a = list(Genus="Antrax",
-                       SubGenus ="",
-                       Species="sp.",
-                       SubSpecies="a",
-                       Sex="",
-                       Author =  "",
-                       Determiner="L. Ponisio",
-                       temp.id= c(34289, 34141, 33525, 34288, 35227,
-                                 33765))
-
-
-
-
-
 )
