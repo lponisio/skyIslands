@@ -33,7 +33,7 @@ sp.ids <- list(
     "PL_081112_257B", "CH_082112_203", "CH_081912_18",
     "CH_082112_198", "PL_081212_303B", "PL_081212_303C",
     "PL_081312_281", "PL_081312_289", "PL_081312_293",
-    "MM_080212_224", "MM_080112_126B")),
+    "MM_080212_224")),
 
   Battus_philenor = list(Genus = "Battus", SubGenus="", Species =
     "philenor", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
