@@ -76,14 +76,4 @@ sp.ids <- list(
     ##                   Determiner="L. Ponisio",
     ##                   temp.id= c()),
 
-
-        Chrysotoxum_sp_a = list(Genus="Chrysotoxum",
-                       SubGenus ="",
-                       Species="sp.",
-                       SubSpecies="a",
-                       Sex="",
-                       Author =  "",
-                       Determiner="M. Hauser",
-                       temp.id= c(19101, 22004, 19035, 19158))
-
     )
