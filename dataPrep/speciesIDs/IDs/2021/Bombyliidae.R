@@ -80,6 +80,6 @@ sp.ids <- list(
                           Sex="",
                           Author =  "",
                           Determiner="L. Ponisio",
-                          temp.id= c(32451, 31317, 34793)),
+                          temp.id= c(32451, 31317, 34793))
 
 )
