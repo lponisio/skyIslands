@@ -97,11 +97,12 @@ spec.bombus$GenusSpecies[spec.bombus$GenusSpecies %in% not_in_phylo]<- "Agaposte
 ## Parasite models set up
 ## **********************************************************
 ## Multi species models
-xvars.multi.bombus <-  c("Net_BeeDiversity", "Net_BombusAbundance",
-                         "rare.degree",
-                         "MeanFloralAbundance",
+xvars.multi.bombus <-  c("Net_BeeDiversity",
+                         "Net_BombusAbundance",
+                         ## "rare.degree",
+                         ## "MeanFloralAbundance",
                          "MeanFloralDiversity",
-                         "MeanITD",
+                         ## "MeanITD",
                          "(1|Site)",
                          "(1|gr(GenusSpecies, cov = phylo_matrix))")
 
@@ -111,7 +112,7 @@ xvars.multi.bombus <-  c("Net_BeeDiversity", "Net_BombusAbundance",
 xvars.single.species <-  c("Net_BeeDiversity",
                            "Net_BeeAbundance",
                            ## "MeanFloralAbundance",
-                           "MeanFloralDiversity",
+                           ## "MeanFloralDiversity",
                            "rare.degree",
                            "(1|Site)")
 
@@ -167,7 +168,6 @@ fit.bombus <- runCombinedParasiteModels(spec.bombus, species.group="bombus",
                                         init=0, data2= list(phylo_matrix=phylo_matrix),
                                         SEM = TRUE, neg.binomial =  FALSE,
                                         site.lat=site.or.lat)
-
 
 ## ## melissodes
 ## ## there are not enough positives to get this model to converge

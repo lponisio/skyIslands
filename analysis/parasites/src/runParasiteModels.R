@@ -20,12 +20,12 @@ runCombinedParasiteModels <- function(spec.data,## data
         print("binomial")
         for(parasite in parasites){
             formula.parasite  <- as.formula(paste(
-                paste(parasite, "| subset(WeightsPar)"),
+                paste(parasite, "| subset(WeightsPar) + trials(1)"),
                 paste(xvars,
                       collapse=" + "),
                 sep=" ~ "))
             bf.parasite.formulas[[parasite]] <-  bf(formula.parasite,
-                                                    family="bernoulli")
+                                                    family="beta_binomial")
 
             freq.formula <- as.formula(paste(
                 parasite,
@@ -38,6 +38,13 @@ runCombinedParasiteModels <- function(spec.data,## data
                 this_data=spec.data[spec.data$WeightsPar == 1,],
                 this_family="bernoulli",
                 site.lat=site.or.lat)
+
+            freq.mod <- glmer(freq.formula, family="binomial",
+                              data=spec.data[spec.data$WeightsPar ==
+                                             1,],
+                              glmerControl(optimizer = "bobyqa",
+                                           optCtrl = list(maxfun = 100000)))
+            print(summary(freq.mod))
 
         }
     } else{
@@ -62,6 +69,13 @@ runCombinedParasiteModels <- function(spec.data,## data
                 this_family="negbinomial",
                 site.lat=site.or.lat,
                 offset="SpScreened")
+
+            freq.mod <- glmer.nb(freq.formula,
+                                 data=spec.data[spec.data$WeightsSp ==
+                                 1,],
+                                 glmerControl(optimizer = "bobyqa",
+                                              optCtrl = list(maxfun = 100000)))
+            print(summary(freq.mod))
         }}
 
     if(SEM){
