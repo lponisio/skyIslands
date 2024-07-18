@@ -37,15 +37,6 @@ sp.ids <- list(
                                  37905, 37931, 37832, 37833, 37645,
                                  37573)),
 
-    villa_sp_c = list(Genus="Villa",
-                      SubGenus ="",
-                      Species="sp.",
-                      SubSpecies="c",
-                      Sex="",
-                      Author =  "",
-                      Determiner="L. Ponisio",
-                      temp.id= c(34205)),
-
     hemipenthes_sp = list(Genus="Hemipenthes", SubGenus ="", Species="sp.",
                           SubSpecies="", Sex="", Author = "",
                           Determiner="L. Ponisio",
