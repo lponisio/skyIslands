@@ -153,8 +153,7 @@ sp.ids <- list(
                                Determiner="Karen Wright",
                                temp.id= c("JC_071712_28",
                                           "SC_072812_34",
-                                          "JC_071412_40",
-                                          "SC_072812_157")),
+                                          "JC_071412_40")),
 
     Melissodes_pallidisignatus= list(Genus="Melissodes",
                                     SubGenus="Eumelissodes",
