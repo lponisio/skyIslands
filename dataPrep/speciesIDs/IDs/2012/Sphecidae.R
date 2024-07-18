@@ -108,15 +108,6 @@ sp.ids <- list(
                                         "JC_071512_48",
                                         "JC_071512_143")),
 
-
-                                        #ammophila 2012
- ammophila= list(Genus="Ammophila", SubGenus ="",
-                 Species="sp.", SubSpecies="a", Sex="",
-                 Author = "",
-                 Determiner="J. Schlauch",
-                 temp.id =c("SC_072712_260")),
-
-
  ammophila= list(Genus="Ammophila", SubGenus ="",
                  Species="spp.", SubSpecies="", Sex="",
                  Author = "",
