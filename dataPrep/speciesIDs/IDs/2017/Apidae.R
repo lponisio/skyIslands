@@ -1435,7 +1435,7 @@ sp.ids <- list(
                               Author = "Cockerell",
                               Determiner="J.L. Neff",
                               temp.id=
-                                c("BBSL1086829","BBSL1058667",
+                                c("BBSL1086829",
                                   "BBSL1086873","BBSL1059649",
                                   "BBSL1073326","BBSL1059647")),
 
@@ -1464,7 +1464,7 @@ sp.ids <- list(
                               temp.id= c("BBSL1086814","BBSL1086813",
                                          "BBSL1086866","BBSL1086777",
                                          "BBSL1086815","BBSL1086812",
-                                         "BBSL1086867","BBSL106819",
+                                         "BBSL1086867",
                                          "BBSL1073259","BBSL1073250",
                                          "BBSL1085452","21334",
                                          "BBSL1059564","BBSL1059623",
@@ -1538,7 +1538,7 @@ sp.ids <- list(
                                          "BBSL1059594","BBSL1073182",
                                          "BBSL1073151", "BBSL1073152",
                                          "BBSL1073153","BBSL1073155",
-                                         "BBSL1073162","BBSL10731171",
+                                         "BBSL1073162",
                                          "BBSL1059809","BBSL1060137",
                                          "BBSL1059593","BBSL1059912",
                                          "BBSL1058352","BBSL1059452",
