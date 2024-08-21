@@ -29,18 +29,18 @@ prepParasiteWeights <- function(spec.data){
     spec.data$WeightsPar[spec.data$Apidae == 0 |
                          is.na(spec.data$Apidae)] <- 0
     spec.data$WeightsMicrobe <- 1
-    spec.data$WeightsMicrobe[spec.net$Apidae == 0 |
-                                is.na(spec.net$Apidae)] <- 0
+    spec.data$WeightsMicrobe[spec.data$Apidae == 0 |
+                                is.na(spec.data$Apidae)] <- 0
     spec.data$WeightsObligateMicrobe <- 1
-    spec.data$WeightsObligateMicrobe[spec.net$WeightsMicrobe == 1 &
-                                        spec.net$PD.obligate == 0] <- 0
-    spec.data$WeightsObligateMicrobe[spec.net$WeightsMicrobe == 0 &
-                                        spec.net$PD.obligate == 0] <- 0
+    spec.data$WeightsObligateMicrobe[spec.data$WeightsMicrobe == 1 &
+                                        spec.data$PD.obligate == 0] <- 0
+    spec.data$WeightsObligateMicrobe[spec.data$WeightsMicrobe == 0 &
+                                        spec.data$PD.obligate == 0] <- 0
     spec.data$WeightsTransientMicrobe <- 1
-    spec.data$WeightsTransientMicrobe[spec.net$WeightsMicrobe == 1 &
-                                         spec.net$PD.transient == 0] <- 0
-    spec.data$WeightsTransientMicrobe[spec.net$WeightsMicrobe == 0 &
-                                         spec.net$PD.transient == 0] <- 0
+    spec.data$WeightsTransientMicrobe[spec.data$WeightsMicrobe == 1 &
+                                         spec.data$PD.transient == 0] <- 0
+    spec.data$WeightsTransientMicrobe[spec.data$WeightsMicrobe == 0 &
+                                         spec.data$PD.transient == 0] <- 0
     
     ## stan drops all NA data, so can set AnyParasite to 0 with WeightsPar
     ## to keep it in the models
