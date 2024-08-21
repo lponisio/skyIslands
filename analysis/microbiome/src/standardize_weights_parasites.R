@@ -28,8 +28,8 @@ prepParasiteWeights <- function(spec.data){
     spec.data$WeightsPar <- 1
     spec.data$WeightsPar[spec.data$Apidae == 0 |
                          is.na(spec.data$Apidae)] <- 0
-    spec.net$WeightsMicrobe <- 1
-    spec.net$WeightsMicrobe[spec.net$Apidae == 0 |
+    spec.data$WeightsMicrobe <- 1
+    spec.data$WeightsMicrobe[spec.net$Apidae == 0 |
                                 is.na(spec.net$Apidae)] <- 0
     spec.net$WeightsObligateMicrobe <- 1
     spec.net$WeightsObligateMicrobe[spec.net$WeightsMicrobe == 1 &
@@ -41,14 +41,15 @@ prepParasiteWeights <- function(spec.data){
                                          spec.net$PD.transient == 0] <- 0
     spec.net$WeightsTransientMicrobe[spec.net$WeightsMicrobe == 0 &
                                          spec.net$PD.transient == 0] <- 0
+    
     ## stan drops all NA data, so can set AnyParasite to 0 with WeightsPar
     ## to keep it in the models
-    spec.net$ParasitePresence[is.na(spec.net$ParasitePresence)] <- 0
-    spec.net$CrithidiaBombi[is.na(spec.net$CrithidiaBombi)] <- 0
-    spec.net$CrithidiaPresence[is.na(spec.net$CrithidiaPresence)] <- 0
-    spec.net$ApicystisSpp[is.na(spec.net$ApicystisSpp)] <- 0
-    spec.net$Year <- as.factor(spec.net$Year)
-    return(spec.net)
+    spec.data$ParasitePresence[is.na(spec.data$ParasitePresence)] <- 0
+    spec.data$CrithidiaBombi[is.na(spec.data$CrithidiaBombi)] <- 0
+    spec.data$CrithidiaPresence[is.na(spec.data$CrithidiaPresence)] <- 0
+    spec.data$ApicystisSpp[is.na(spec.data$ApicystisSpp)] <- 0
+    spec.data$Year <- as.factor(spec.data$Year)
+    return(spec.data)
 }
 
 
