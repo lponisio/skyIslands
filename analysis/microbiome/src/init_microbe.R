@@ -165,44 +165,44 @@ spec.net <- join(spec.net, abund_csv)
 ## for subset -- should be ones and zeroes ones for bombus that had microbe screening
 ## for weights -- log abundance weights for obligate and transient, but only for that genus 
 
-# ## make genus specific weights 0s and  bombus
-# spec.net$BombusWeights = ifelse(spec.net$Genus=='Bombus'&spec.net$WeightsMicrobe==1, 1, 0)
-# 
-# ## make genus specific weights 0s and 1s apis
-# spec.net$ApisWeights = ifelse(spec.net$Genus=='Apis'&spec.net$WeightsMicrobe==1, 1, 0)
-# 
-# ## make genus specific weights 0s and 1s melissodes
-# spec.net$MelissodesWeights = ifelse(spec.net$Genus=='Melissodes'&spec.net$WeightsMicrobe==1, 1, 0)
-# 
-# ## multiply weightspar by abundance to get abundance weights
-# spec.net$WeightsAbund <- spec.net$WeightsMicrobe * spec.net$AbundanceSYR
-# 
-# ## log transformed weights abund
-# spec.net$LogWeightsAbund <- log(spec.net$WeightsAbund + 1)
-# 
-# ## log weights by abundance for obligate microbes only
-# spec.net$LogWeightsObligateAbund <- spec.net$WeightsObligateMicrobe * spec.net$LogWeightsAbund
-# 
-# ## log weights by abundance for transient microbes only
-# spec.net$LogWeightsTransientAbund <- spec.net$WeightsTransientMicrobe * spec.net$LogWeightsAbund
-# 
-# ## log weights by abundance for obligate Bombus microbes only
-# spec.net$BombusLogWeightsObligateAbund <- ifelse(spec.net$Genus=='Bombus'&spec.net$LogWeightsObligateAbund>0, spec.net$LogWeightsObligateAbund, 0)
-# 
-# ## log weights by abundance for transient Bombus microbes only
-# spec.net$BombusLogWeightsTransientAbund <- ifelse(spec.net$Genus=='Bombus'&spec.net$LogWeightsTransientAbund>0, spec.net$LogWeightsTransientAbund, 0)
-# 
-# ## log weights by abundance for obligate Apis microbes only
-# spec.net$ApisLogWeightsObligateAbund <- ifelse(spec.net$Genus=='Apis'&spec.net$LogWeightsObligateAbund>0, spec.net$LogWeightsObligateAbund, 0)
-# 
-# ## log weights by abundance for transient Apis microbes only
-# spec.net$ApisLogWeightsTransientAbund <- ifelse(spec.net$Genus=='Apis'&spec.net$LogWeightsTransientAbund>0, spec.net$LogWeightsTransientAbund, 0)
-# 
-# ## log weights by abundance for obligate Melissodes microbes only
-# spec.net$MelissodesLogWeightsObligateAbund <- ifelse(spec.net$Genus=='Melissodes'&spec.net$LogWeightsObligateAbund>0, spec.net$LogWeightsObligateAbund, 0)
-# 
-# ## log weights by abundance for transient Melissodes microbes only
-# spec.net$MelissodesLogWeightsTransientAbund <- ifelse(spec.net$Genus=='Melissodes'&spec.net$LogWeightsTransientAbund>0, spec.net$LogWeightsTransientAbund, 0)
+## make genus specific weights 0s and  bombus
+spec.net$BombusWeights = ifelse(spec.net$Genus=='Bombus'&spec.net$WeightsMicrobe==1, 1, 0)
+
+## make genus specific weights 0s and 1s apis
+spec.net$ApisWeights = ifelse(spec.net$Genus=='Apis'&spec.net$WeightsMicrobe==1, 1, 0)
+
+## make genus specific weights 0s and 1s melissodes
+spec.net$MelissodesWeights = ifelse(spec.net$Genus=='Melissodes'&spec.net$WeightsMicrobe==1, 1, 0)
+
+## multiply weightspar by abundance to get abundance weights
+spec.net$WeightsAbund <- spec.net$WeightsMicrobe * spec.net$AbundanceSYR
+
+## log transformed weights abund
+spec.net$LogWeightsAbund <- log(spec.net$WeightsAbund + 1)
+
+## log weights by abundance for obligate microbes only
+spec.net$LogWeightsObligateAbund <- spec.net$WeightsObligateMicrobe * spec.net$LogWeightsAbund
+
+## log weights by abundance for transient microbes only
+spec.net$LogWeightsTransientAbund <- spec.net$WeightsTransientMicrobe * spec.net$LogWeightsAbund
+
+## log weights by abundance for obligate Bombus microbes only
+spec.net$BombusLogWeightsObligateAbund <- ifelse(spec.net$Genus=='Bombus'&spec.net$LogWeightsObligateAbund>0, spec.net$LogWeightsObligateAbund, 0)
+
+## log weights by abundance for transient Bombus microbes only
+spec.net$BombusLogWeightsTransientAbund <- ifelse(spec.net$Genus=='Bombus'&spec.net$LogWeightsTransientAbund>0, spec.net$LogWeightsTransientAbund, 0)
+
+## log weights by abundance for obligate Apis microbes only
+spec.net$ApisLogWeightsObligateAbund <- ifelse(spec.net$Genus=='Apis'&spec.net$LogWeightsObligateAbund>0, spec.net$LogWeightsObligateAbund, 0)
+
+## log weights by abundance for transient Apis microbes only
+spec.net$ApisLogWeightsTransientAbund <- ifelse(spec.net$Genus=='Apis'&spec.net$LogWeightsTransientAbund>0, spec.net$LogWeightsTransientAbund, 0)
+
+## log weights by abundance for obligate Melissodes microbes only
+spec.net$MelissodesLogWeightsObligateAbund <- ifelse(spec.net$Genus=='Melissodes'&spec.net$LogWeightsObligateAbund>0, spec.net$LogWeightsObligateAbund, 0)
+
+## log weights by abundance for transient Melissodes microbes only
+spec.net$MelissodesLogWeightsTransientAbund <- ifelse(spec.net$Genus=='Melissodes'&spec.net$LogWeightsTransientAbund>0, spec.net$LogWeightsTransientAbund, 0)
 
 
 ########## 
