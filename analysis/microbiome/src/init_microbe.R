@@ -111,24 +111,32 @@ phylo$tip.label <- gsub(pattern, "", phylo$tip.label)
 ## replace underscore with space
 phylo$tip.label <- gsub("_", " ", phylo$tip.label)
 
-## i think we need to drop the tips that aren't in our dataset
-## changing sp labels to match phylogeny
-species_to_keep <- na.omit(unique(spec.net$GenusSpecies))
+## TODO check if this works
+## Species that are not in the phylogeny are not used. brms is not allowing an incomplete
+## phylogeny, to avoid the error we changed the species not present to one that is in the phylogeny. 
+## We chose a species for which we did not do parasite screening and should not influence results.
+not_in_phylo <- unique(spec.net$GenusSpecies[!spec.net$GenusSpecies %in% phylo$tip.label])
+spec.net$GenusSpecies[spec.net$GenusSpecies %in% not_in_phylo]<- "Agapostemon angelicus"
 
-## megachile comate and megachile subexilis are not in phylogeny so will drop these
-species_to_keep <- species_to_keep[!species_to_keep %in% c("Megachile comata", "Megachile subexilis")]
 
-phylo_tips <- phylo$tip.label
-#only keep tips that match our species
-phylo <- ape::keep.tip(phylo, species_to_keep[species_to_keep %in% phylo_tips])
-
+# ## i think we need to drop the tips that aren't in our dataset
+# ## changing sp labels to match phylogeny
+# species_to_keep <- na.omit(unique(spec.net$GenusSpecies))
+# 
+# ## megachile comate and megachile subexilis are not in phylogeny so will drop these
+# species_to_keep <- species_to_keep[!species_to_keep %in% c("Megachile comata", "Megachile subexilis")]
+# 
+# phylo_tips <- phylo$tip.label
+# #only keep tips that match our species
+# phylo <- ape::keep.tip(phylo, species_to_keep[species_to_keep %in% phylo_tips])
+# 
 phylo_matrix <- ape::vcv.phylo(phylo)
-
-## dropping species not in the phylogeny from the dataset
-drop.species <- unique(spec.net$GenusSpecies[!(spec.net$GenusSpecies %in% rownames(phylo_matrix))])
-
-# here is where weights are all 0 TODO: fix
-spec.net <- spec.net[!spec.net$GenusSpecies %in% drop.species,]
+# 
+# ## dropping species not in the phylogeny from the dataset
+# drop.species <- unique(spec.net$GenusSpecies[!(spec.net$GenusSpecies %in% rownames(phylo_matrix))])
+# 
+# # here is where weights are all 0 TODO: fix
+# spec.net <- spec.net[!spec.net$GenusSpecies %in% drop.species,]
 
 
 ## check which individuals don't have microbe data
