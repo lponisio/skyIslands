@@ -77,6 +77,9 @@ spec.net <- spec.net[order(spec.net$Site),]
 ## to be centered
 
 
+# maybe change ones with no ID to NoID instead of Na
+spec.net$GenusSpecies <- if_else(spec.net$GenusSpecies=='', 'NoID', spec.net$GenusSpecies)
+
 ## raw, non standardized data for plotting
 spec.orig <- prepDataSEM(spec.net, variables.to.log, 
                          standardize=FALSE)
