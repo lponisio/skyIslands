@@ -64,10 +64,7 @@ net.traits <- net.traits[, c("GenusSpecies", "r.degree"),]
 
 traits <- merge(traits, net.traits, by="GenusSpecies", all.x=TRUE)
 
-
-
 spec.net <- merge(spec.net, traits, all.x=TRUE, by="GenusSpecies")
-
 
 dir.create(path="saved", showWarnings = FALSE)
 dir.create(path="saved/tables", showWarnings = FALSE)
@@ -75,33 +72,23 @@ dir.create(path="saved/tables", showWarnings = FALSE)
 spec.net <- spec.net[order(spec.net$Site),]
 
 
-
-## create a dumby varaible "Weight" to deal with the data sets being at
-## different levels to get around the issue of having to pass in one
-## data set into brms
-spec.net$YearSR <- paste(spec.net$Year, spec.net$SampleRound, sep=";")
-spec.net$YearSRGenusSpecies <- paste(spec.net$YearSR, spec.net$GenusSpecies, sep=";")
-
-## will need to modify when we have multiple years
-spec.net <- makeDataMultiLevel(spec.net, "Site", "YearSR")
+## TODO trying Nicole's function for prep SEM data
+## all of the variables that are explanatory variables and thus need
+## to be centered
 
 
+## raw, non standardized data for plotting
+spec.orig <- prepDataSEM(spec.net, variables.to.log, 
+                         standardize=FALSE)
 
-if(make.plots == FALSE){
-  spec.net[, variables.to.log] <- log(spec.net[,variables.to.log])
-}
-
-
-##  center all of the x variables, need to use unique values to avoid
-##  repetition by the number of specimens
-
-if(make.plots == FALSE){
-spec.net <- standardizeVars(spec.net, vars_yearsr, "YearSR")
+## Make SEM weights and standardize data.
+spec.net <- prepDataSEM(spec.net, variables.to.log, 
+                        vars_yearsr = vars_yearsr, vars_sp = vars_sp, 
+                        vars_yearsrsp = vars_yearsrsp,
+                        vars_site=vars_site)
 
 
 
-spec.net <- standardizeVars(spec.net, vars_sp, "YearSRGenusSpecies")
-}
 ##load tree from :
 ##Henriquez Piskulich, Patricia Andrea; Hugall, Andrew F.; Stuart-Fox, Devi (2023). A supermatrix phylogeny of the world’s bees (Hymenoptera: Anthophila) [Dataset]. Dryad. https://doi.org/10.5061/dryad.80gb5mkw1
 
@@ -136,19 +123,9 @@ phylo_matrix <- ape::vcv.phylo(phylo)
 
 ## dropping species not in the phylogeny from the dataset
 drop.species <- unique(spec.net$GenusSpecies[!(spec.net$GenusSpecies %in% rownames(phylo_matrix))])
+
+# here is where weights are all 0 TODO: fix
 spec.net <- spec.net[!spec.net$GenusSpecies %in% drop.species,]
-
-## create a dumby varaible "WeightPar" for the parasite data. The
-## original intention was to keep stan from dropping data for
-## site-level models, but weight is 0 for parasite models.
-spec.net <- prepParasiteWeights()
-
-
-
-#genus_pd_fit <- function(spec.net, this_genus, num_iter){
-
-
-
 
 
 ## check which individuals don't have microbe data
