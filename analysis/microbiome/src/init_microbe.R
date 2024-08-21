@@ -78,6 +78,7 @@ spec.net <- spec.net[order(spec.net$Site),]
 
 
 # maybe change ones with no ID to NoID instead of Na
+# TODO check if i need this
 spec.net$GenusSpecies <- if_else(spec.net$GenusSpecies=='', 'NoID', spec.net$GenusSpecies)
 
 ## raw, non standardized data for plotting
