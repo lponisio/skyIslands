@@ -41,6 +41,44 @@ prepParasiteWeights <- function(spec.data){
                                          spec.data$PD.transient == 0] <- 0
     spec.data$WeightsTransientMicrobe[spec.data$WeightsMicrobe == 0 &
                                          spec.data$PD.transient == 0] <- 0
+    ## make genus specific weights 0s and  bombus
+    spec.data$BombusWeights = ifelse(spec.data$Genus=='Bombus'&spec.data$WeightsMicrobe==1, 1, 0)
+    
+    ## make genus specific weights 0s and 1s apis
+    spec.data$ApisWeights = ifelse(spec.data$Genus=='Apis'&spec.data$WeightsMicrobe==1, 1, 0)
+    
+    ## make genus specific weights 0s and 1s melissodes
+    spec.data$MelissodesWeights = ifelse(spec.data$Genus=='Melissodes'&spec.data$WeightsMicrobe==1, 1, 0)
+    
+    ## multiply weightspar by abundance to get abundance weights
+    spec.data$WeightsAbund <- spec.data$WeightsMicrobe * spec.data$AbundanceSYR
+    
+    ## log transformed weights abund
+    spec.data$LogWeightsAbund <- log(spec.data$WeightsAbund + 1)
+    
+    ## log weights by abundance for obligate microbes only
+    spec.data$LogWeightsObligateAbund <- spec.data$WeightsObligateMicrobe * spec.data$LogWeightsAbund
+    
+    ## log weights by abundance for transient microbes only
+    spec.data$LogWeightsTransientAbund <- spec.data$WeightsTransientMicrobe * spec.data$LogWeightsAbund
+    
+    ## log weights by abundance for obligate Bombus microbes only
+    spec.data$BombusLogWeightsObligateAbund <- ifelse(spec.data$Genus=='Bombus'&spec.data$LogWeightsObligateAbund>0, spec.data$LogWeightsObligateAbund, 0)
+    
+    ## log weights by abundance for transient Bombus microbes only
+    spec.data$BombusLogWeightsTransientAbund <- ifelse(spec.data$Genus=='Bombus'&spec.data$LogWeightsTransientAbund>0, spec.data$LogWeightsTransientAbund, 0)
+    
+    ## log weights by abundance for obligate Apis microbes only
+    spec.data$ApisLogWeightsObligateAbund <- ifelse(spec.data$Genus=='Apis'&spec.data$LogWeightsObligateAbund>0, spec.data$LogWeightsObligateAbund, 0)
+    
+    ## log weights by abundance for transient Apis microbes only
+    spec.data$ApisLogWeightsTransientAbund <- ifelse(spec.data$Genus=='Apis'&spec.data$LogWeightsTransientAbund>0, spec.data$LogWeightsTransientAbund, 0)
+    
+    ## log weights by abundance for obligate Melissodes microbes only
+    spec.data$MelissodesLogWeightsObligateAbund <- ifelse(spec.data$Genus=='Melissodes'&spec.data$LogWeightsObligateAbund>0, spec.data$LogWeightsObligateAbund, 0)
+    
+    ## log weights by abundance for transient Melissodes microbes only
+    spec.data$MelissodesLogWeightsTransientAbund <- ifelse(spec.data$Genus=='Melissodes'&spec.data$LogWeightsTransientAbund>0, spec.data$LogWeightsTransientAbund, 0)
     
     ## stan drops all NA data, so can set AnyParasite to 0 with WeightsPar
     ## to keep it in the models
