@@ -330,9 +330,9 @@ bform.bombus.g <- bf.ob.microbe.bombus.g +
 
 ## combined model
 #combine forms
-bform.bombus <- bf.fdiv +
-  bf.tot.babund +
-  bf.tot.bdiv  +
+bform.bombus <- bf.tot.babund +
+  #bf.fdiv +
+  #bf.tot.bdiv  +
   bf.ob.microbe.bombus.skew +
   bf.non.ob.microbe.bombus.student +
   set_rescor(FALSE)
@@ -341,6 +341,11 @@ bform.bombus <- bf.fdiv +
 ## high rhats (2.07) and max treedepth issues 4487
 
 ## rerun with the full data
+
+## 8/21/24 running mods with spec.bombus and full mod, now trying just microbs and bee diversity
+
+## 8/21/24 mods with microb and bee div were going to take weeks to run, probs misspecified
+##  trying just microbes and b abund
 
 ## change all NAs to 0
 spec.bombus[is.na(spec.bombus)] <- 0
