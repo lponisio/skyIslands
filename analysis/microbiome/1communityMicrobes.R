@@ -39,25 +39,27 @@ variables.to.log <- c("rare.degree",
 
 vars_yearsr <- c("MeanFloralAbundance",
                  "MeanFloralDiversity",
-                 "Lat", "SRDoy",
+                 "SRDoy",
                  "BeeAbundance",
                  "BeeDiversity",
                  "VisitedFloralDiversity"
                  #"FloralDiversity"
 )
 
-vars_sp <- c("MeanITD",
-             "rare.degree")
+vars_yearsrsp <- "rare.degree"
+vars_sp <- "MeanITD"
+vars_site <- "Lat"
 
 
 
 source("src/misc_microbe.R")
 source("src/misc.R")
 source('src/makeMultiLevelData.R')
-source("src/standardize_weights.R")
+source("src/standardize_weights_parasites.R")
+# incorporating Nicoles standardize functions
+#source("src/standardize_weights.R")
 source("src/init_microbe.R")
 source("src/writeResultsTable.R")
-source("src/runParasiteModels.R")
 source("src/runPlotFreqModelDiagnostics.R")
 
 
@@ -75,7 +77,7 @@ flower.abund.vars <- c("Year",
                        "(1|Site)")
 
 flower.abund.x <- paste(flower.abund.vars, collapse="+")
-flower.abund.y <- "MeanFloralAbundance | weights(Weights)"
+flower.abund.y <- "MeanFloralAbundance | subset(Weights)"
 formula.flower.abund <- as.formula(paste(flower.abund.y, "~",flower.abund.x))
 
 
@@ -94,7 +96,7 @@ flower.div.vars <- c("Year",
                      "(1|Site)")
 
 flower.div.x <- paste(flower.div.vars, collapse="+")
-flower.div.y <- "MeanFloralDiversity | weights(Weights)"
+flower.div.y <- "MeanFloralDiversity | subset(Weights)"
 formula.flower.div <- as.formula(paste(flower.div.y, "~",flower.div.x))
 
 
@@ -113,7 +115,7 @@ tot.bee.abund.vars <- c("MeanFloralAbundance",
                         "(1|Site)")
 
 tot.bee.abund.x <- paste(tot.bee.abund.vars, collapse="+")
-tot.bee.abund.y <- "BeeAbundance | weights(Weights)"
+tot.bee.abund.y <- "BeeAbundance | subset(Weights)"
 formula.tot.bee.abund <- as.formula(paste(tot.bee.abund.y, "~",tot.bee.abund.x))
 
 
@@ -128,7 +130,7 @@ net.bee.abund.vars <- c("MeanFloralAbundance",
                         "(1|Site)")
 
 net.bee.abund.x <- paste(net.bee.abund.vars, collapse="+")
-net.bee.abund.y <- "Net_BeeAbundance | weights(Weights)"
+net.bee.abund.y <- "Net_BeeAbundance | subset(Weights)"
 formula.net.bee.abund <- as.formula(paste(net.bee.abund.y, "~",net.bee.abund.x))
 
 
@@ -148,7 +150,7 @@ bee.div.vars <- c("MeanFloralDiversity",
                   "(1|Site)")
 
 bee.div.x <- paste(bee.div.vars, collapse="+")
-bee.div.y <- "Net_BeeDiversity | weights(Weights)"
+bee.div.y <- "Net_BeeDiversity | subset(Weights)"
 formula.bee.div <- as.formula(paste(bee.div.y, "~",bee.div.x))
 
 ## bee div total
@@ -160,7 +162,7 @@ tot.bee.div.vars <- c("MeanFloralDiversity",
                       "(1|Site)")
 
 tot.bee.div.x <- paste(tot.bee.div.vars, collapse="+")
-tot.bee.div.y <- "BeeDiversity | weights(Weights)"
+tot.bee.div.y <- "BeeDiversity | subset(Weights)"
 formula.tot.bee.div <- as.formula(paste(tot.bee.div.y, "~",tot.bee.div.x))
 
 
@@ -268,7 +270,7 @@ microbe.bombus.vars <- c("BeeAbundance",
 
 
 microbe.bombus.x <- paste(microbe.bombus.vars, collapse="+")
-microbe.bombus.y <- "PD | weights(LogWeightsAbund)"
+microbe.bombus.y <- "PD | subset(LogWeightsAbund)"
 formula.microbe.bombus <- as.formula(paste(microbe.bombus.y, "~",
                                       microbe.bombus.x))
 
@@ -285,7 +287,7 @@ ob.microbe.bombus.vars <- c("BeeAbundance",
 
 
 ob.microbe.bombus.x <- paste(ob.microbe.bombus.vars, collapse="+")
-ob.microbe.bombus.y <- "PD.obligate.log | weights(LogWeightsObligateAbund)"
+ob.microbe.bombus.y <- "PD.obligate.log | subset(LogWeightsObligateAbund)"
 formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
@@ -302,7 +304,7 @@ non.ob.microbe.bombus.vars <- c("BeeAbundance",
 check_for_NA(non.ob.microbe.bombus.vars)
 
 non.ob.microbe.bombus.x <- paste(non.ob.microbe.bombus.vars, collapse="+")
-non.ob.microbe.bombus.y <- "PD.transient.log | weights(LogWeightsTransientAbund)"
+non.ob.microbe.bombus.y <- "PD.transient.log | subset(LogWeightsTransientAbund)"
 formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
                                               non.ob.microbe.bombus.x))
 
@@ -326,9 +328,46 @@ bform.bombus.g <- bf.ob.microbe.bombus.g +
   bf.non.ob.microbe.bombus.g +
   set_rescor(FALSE)
 
+## combined model
+#combine forms
+bform.bombus <- bf.fdiv +
+  bf.tot.babund +
+  bf.tot.bdiv  +
+  bf.ob.microbe.bombus.skew +
+  bf.non.ob.microbe.bombus.student +
+  set_rescor(FALSE)
+
+## currently running with jsut the subset i tested the different microbe distribution fams with
+## high rhats (2.07) and max treedepth issues 4487
+
+## rerun with the full data
+
+## change all NAs to 0
+spec.bombus[is.na(spec.bombus)] <- 0
+
+if(run.bombus){
+  fit.microbe.bombus <- brm(bform.bombus, spec.bombus,
+                          cores=ncores,
+                          iter = 10000,
+                          chains =1,
+                          thin=1,
+                          init=0,
+                          open_progress = FALSE,
+                          control = list(adapt_delta = 0.99),
+                          save_pars = save_pars(all = TRUE),
+                          data2 = list(phylo_matrix=phylo_matrix))
+  
+  write.ms.table(fit.microbe.bombus, "bombus_microbe")
+  r2loo.bombus <- loo_R2(fit.microbe.bombus)
+  r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
+  save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
+       file="saved/fullMicrobeBombusFit.Rdata")
+}
+
 ## rerunning models with just PD layers and dataset filtered to exclude any 0s in PD
 spec.bombus2 <- spec.bombus[spec.bombus$PD.obligate.log != 0,]
 spec.bombus2 <- spec.bombus[spec.bombus$PD.transient.log != 0,]
+
 
 if(run.bombus){
   ## skew mod
@@ -389,6 +428,18 @@ save(fit.microbe.bombus.g, spec.bombus2, r2.bombus.g, #r2loo.bombus,
      file="saved/fullMicrobeBombusFit_g.Rdata")
 
 }
+
+# model comparison
+# Assuming your models are named model1, model2, model3
+waic1 <- waic(fit.microbe.bombus.g, resp='PDobligatelog')
+waic2 <- waic(fit.microbe.bombus.skew, resp='PDobligatelog')
+waic3 <- waic(fit.microbe.bombus.student, resp='PDobligatelog')
+
+# Compare the models
+loo_compare(waic1, waic2, waic3)
+
+
+
 update.bombus = FALSE
 if(update.bombus == TRUE){
   fit.microbe.bombus <- update(fit.microbe.bombus,
