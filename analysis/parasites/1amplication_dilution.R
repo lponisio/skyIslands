@@ -116,7 +116,6 @@ xvars.multi.bombus.all <-  c("Net_BeeDiversity",
                              "(1|Site)",
                              "(1|gr(GenusSpecies, cov = phylo_matrix))")
 
-
 ## single species models
 ## social species abundances
 xvars.single.species.ss <-  c("Net_BeeDiversity",
@@ -187,6 +186,9 @@ fit.bombus.ss <- runCombinedParasiteModels(spec.bombus,
                                         site.lat=paste(site.or.lat,
                                                        "ss", sep="_"))
 
+waic(fit.bombus.ss$fit)
+loo(fit.bombus.ss$fit)
+
 ## all bee abundance as xvar
 fit.bombus.all <- runCombinedParasiteModels(spec.bombus,
                                         species.group="bombus",
@@ -202,6 +204,9 @@ fit.bombus.all <- runCombinedParasiteModels(spec.bombus,
                                         SEM = TRUE, neg.binomial =  FALSE,
                                         site.lat=paste(site.or.lat,
                                                        "all", sep="_"))
+
+waic(fit.bombus.all$fit)
+loo(fit.bombus.all$fit)
 
 ## **********************************************************
 ## Honey bees
@@ -222,6 +227,8 @@ fit.apis.ss <- runCombinedParasiteModels(spec.apis, species.group="apis",
                                          site.lat=paste(site.or.lat,
                                                         "ss", sep="_"))
 
+waic(fit.apis.ss$fit)
+loo(fit.apis.ss$fit)
 
 ## all bee abundance as xvar
 fit.apis.all <- runCombinedParasiteModels(spec.apis, species.group="apis",
@@ -236,7 +243,8 @@ fit.apis.all <- runCombinedParasiteModels(spec.apis, species.group="apis",
                                           neg.binomial = FALSE,
                                           site.lat=paste(site.or.lat,
                                                          "all", sep="_"))
-
+waic(fit.apis.all$fit)
+loo(fit.apis.all$fit)
 
 
 
