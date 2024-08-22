@@ -22,8 +22,7 @@ if(site.or.lat ==  "lat"){
                                     subset(Weights) ~
                                         Year +
                                         SRDoyPoly1 + SRDoyPoly2 +
-                                        (1|Site) ## + Lat
-                                    
+                                        (1|Site)
                                     )
     ## bee diversity
     formula.bee.div <- formula(Net_BeeDiversity |

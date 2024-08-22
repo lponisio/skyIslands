@@ -5,6 +5,7 @@ library(tidyr)
 library(tidybayes)
 library(ggthemes)
 library(bayestestR)
+library(car)
 
 dir.create(path="saved", showWarnings = FALSE)
 dir.create(path="saved/tables", showWarnings = FALSE)

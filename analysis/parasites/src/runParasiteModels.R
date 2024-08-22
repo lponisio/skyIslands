@@ -27,17 +27,26 @@ runCombinedParasiteModels <- function(spec.data,## data
             bf.parasite.formulas[[parasite]] <-  bf(formula.parasite,
                                                     family="beta_binomial")
 
-            freq.formula <- as.formula(paste(
-                parasite,
-                paste(xvars[-length(xvars)], ## last xvar must by the phylogeny!!!!
-                      collapse=" + "),
-                sep=" ~ "))
+            if(species.group == "bombus"){
+                freq.formula <- as.formula(paste(
+                    parasite,
+                    paste(xvars[-length(xvars)], ## last xvar must by the phylogeny!!!!
+                          collapse=" + "),
+                    sep=" ~ "))
+            } else{
+                freq.formula <- as.formula(paste(
+                    parasite,
+                    paste(xvars, 
+                          collapse=" + "),
+                    sep=" ~ "))
+            }
             
             run_plot_freq_model_diagnostics(
                 freq.formula,
                 this_data=spec.data[spec.data$WeightsPar == 1,],
                 this_family="bernoulli",
-                site.lat=site.or.lat)
+                site.lat=site.or.lat,
+                species.group=species.group)
 
             freq.mod <- glmer(freq.formula, family="binomial",
                               data=spec.data[spec.data$WeightsPar ==
@@ -45,6 +54,7 @@ runCombinedParasiteModels <- function(spec.data,## data
                               glmerControl(optimizer = "bobyqa",
                                            optCtrl = list(maxfun = 100000)))
             print(summary(freq.mod))
+            print(vif(freq.mod))
 
         }
     } else{
@@ -68,14 +78,16 @@ runCombinedParasiteModels <- function(spec.data,## data
                 this_data=spec.data[spec.data$WeightsSp == 1,],
                 this_family="negbinomial",
                 site.lat=site.or.lat,
-                offset="SpScreened")
+                offset="SpScreened",
+                species.group=species.group)
 
             freq.mod <- glmer.nb(freq.formula,
                                  data=spec.data[spec.data$WeightsSp ==
-                                 1,],
+                                                1,],
                                  glmerControl(optimizer = "bobyqa",
                                               optCtrl = list(maxfun = 100000)))
             print(summary(freq.mod))
+            print(vif(freq.mod))
         }}
 
     if(SEM){
@@ -86,7 +98,7 @@ runCombinedParasiteModels <- function(spec.data,## data
             if(species.group == "bombus"){
                 print("Bombus")
                 bform <- bf.fabund + bf.fdiv +
-                    bf.bombusabund +
+                    bf.bombusabund + bf.babund + bf.HBabund +
                     bf.bdiv  +    
                     bf.parasite.formulas[[1]]+
                     bf.parasite.formulas[[2]] +
@@ -95,7 +107,7 @@ runCombinedParasiteModels <- function(spec.data,## data
             else if (species.group == "apis"){
                 print("Apis")
                 bform <- bf.fabund + bf.fdiv +
-                    bf.HBabund +
+                    bf.bombusabund + bf.babund + bf.HBabund +
                     bf.bdiv  +    
                     bf.parasite.formulas[[1]]+
                     bf.parasite.formulas[[2]] +
@@ -104,7 +116,7 @@ runCombinedParasiteModels <- function(spec.data,## data
             else if (species.group != "bombus" & species.group != "apis"){
                 print("Other")
                 bform <- bf.fabund + bf.fdiv +
-                    bf.babund +
+                    bf.bombusabund + bf.babund + bf.HBabund +
                     bf.bdiv  +    
                     bf.parasite.formulas[[1]]+
                     bf.parasite.formulas[[2]] +
@@ -115,7 +127,7 @@ runCombinedParasiteModels <- function(spec.data,## data
             if(species.group == "bombus"){
                 print("Bombus")
                 bform <- bf.fabund + bf.fdiv +
-                    bf.bombusabund +
+                    bf.bombusabund + bf.babund + bf.HBabund +
                     bf.bdiv  +    
                     bf.parasite.formulas[[1]]+
                     set_rescor(FALSE)
@@ -123,7 +135,7 @@ runCombinedParasiteModels <- function(spec.data,## data
             else if (species.group == "apis"){
                 print("Apis")
                 bform <- bf.fabund + bf.fdiv +
-                    bf.HBabund +
+                    bf.bombusabund + bf.babund + bf.HBabund +
                     bf.bdiv  +    
                     bf.parasite.formulas[[1]]+
                     set_rescor(FALSE)
@@ -131,8 +143,8 @@ runCombinedParasiteModels <- function(spec.data,## data
             else if (species.group != "bombus" & species.group != "apis"){
                 print("Other")
                 bform <- bf.fabund + bf.fdiv +
-                    bf.babund 
-                bf.bdiv  +    
+                    bf.bombusabund + bf.babund + bf.HBabund +
+                    bf.bdiv  +
                     bf.parasite.formulas[[1]]+
                     set_rescor(FALSE)
             }

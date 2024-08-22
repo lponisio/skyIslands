@@ -11,7 +11,8 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
                                             this_family, #model family
                                             fig.path =
                                             "figures/diagnostics",
-                                            site.lat="lat", ...
+                                            site.lat="lat",
+                                            species.group="all", ...
                                             ){
 
     
@@ -150,10 +151,13 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
     if (examine.pairs == TRUE){pairs(this_model_output)}
 
     if(class(this_formula)[1] == "brmsformula"){
-        file.name <- paste0(as.character(this_formula)[4], site.lat, ".pdf")
+        file.name <- paste0(as.character(this_formula)[4], site.lat,
+                            species.group, ".pdf")
     }else{
-        file.name <- paste0(as.character(this_formula)[2], site.lat, ".pdf")
+        file.name <- paste0(as.character(this_formula)[2], site.lat,
+                            species.group, ".pdf")
     }
-    ggsave(diagnostic.plots, file= file.path(fig.path, file.name))
+    ggsave(diagnostic.plots, file= file.path(fig.path, file.name),
+        height=10, width=15)
     return(diagnostic.plots)
 }
