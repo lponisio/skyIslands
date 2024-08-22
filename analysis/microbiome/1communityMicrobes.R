@@ -260,22 +260,28 @@ bform.community <- bf.fdiv +
 # save(fit.microbe, spec.net, r2, r2loo,
 #       file="saved/fullMicrobeFit.Rdata")
 
-## run bombus model
-microbe.bombus.vars <- c("BeeAbundance",
-                                    "BeeDiversity", "Lat", #check this doesn't make VIF high
-                                    "MeanFloralDiversity", "MeanITD",  "rare.degree",
-                                    "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
-## NA check
-#check_for_NA(microbe.bombus.vars)
+
+## TODO add to init if works
+spec.net$WeightsObligateBombus = spec.net$WeightsObligateMicrobe*spec.net$BombusWeights
+
+## TODO add to init if works
+spec.net$WeightsTransientBombus = spec.net$WeightsTransientMicrobe*spec.net$BombusWeights
+
+## TODO add to init if works
+
+# use pd obligate with skew normal
+spec.net$WeightsObligateApis = spec.net$WeightsObligateMicrobe*spec.net$ApisWeights
+
+#use pd transient with skew normal?
+spec.net$WeightsTransientApis = spec.net$WeightsTransientMicrobe*spec.net$ApisWeights
+
+# use pd obligate lof with skew normal?
+spec.net$WeightsObligateMelissodes = spec.net$WeightsObligateMicrobe*spec.net$MelissodesWeights
+# use pd transient log with gaussian or student t?
+spec.net$WeightsTransientMelissodes = spec.net$WeightsTransientMicrobe*spec.net$MelissodesWeights
 
 
-microbe.bombus.x <- paste(microbe.bombus.vars, collapse="+")
-microbe.bombus.y <- "PD | subset(LogWeightsAbund)"
-formula.microbe.bombus <- as.formula(paste(microbe.bombus.y, "~",
-                                      microbe.bombus.x))
 
-
-bf.microbe.bombus <- bf(formula.microbe.bombus)
 
 ## obligate PD model
 ob.microbe.bombus.vars <- c("BeeAbundance",
@@ -287,7 +293,8 @@ ob.microbe.bombus.vars <- c("BeeAbundance",
 
 
 ob.microbe.bombus.x <- paste(ob.microbe.bombus.vars, collapse="+")
-ob.microbe.bombus.y <- "PD.obligate.log | subset(LogWeightsObligateAbund)"
+#ob.microbe.bombus.y <- "PD.obligate | subset(WeightsObligateBombus) + weights(BombusLogWeightsObligateAbund)"
+ob.microbe.bombus.y <- "PD.obligate | subset(WeightsObligateBombus)"
 formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
@@ -304,7 +311,8 @@ non.ob.microbe.bombus.vars <- c("BeeAbundance",
 check_for_NA(non.ob.microbe.bombus.vars)
 
 non.ob.microbe.bombus.x <- paste(non.ob.microbe.bombus.vars, collapse="+")
-non.ob.microbe.bombus.y <- "PD.transient.log | subset(LogWeightsTransientAbund)"
+# non.ob.microbe.bombus.y <- "PD.transient | subset(WeightsTransientBombus) + weights(BombusLogWeightsTransientAbund)"
+non.ob.microbe.bombus.y <- "PD.transient.log | subset(WeightsTransientBombus)"
 formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
                                               non.ob.microbe.bombus.x))
 
@@ -314,25 +322,37 @@ bf.non.ob.microbe.bombus.skew <- bf(formula.non.ob.microbe.bombus, family=skew_n
 bf.non.ob.microbe.bombus.student <- bf(formula.non.ob.microbe.bombus, family=student())
 bf.non.ob.microbe.bombus.g <- bf(formula.non.ob.microbe.bombus)
 
-#combine forms
-bform.bombus.skew <- bf.ob.microbe.bombus.skew +
-    bf.non.ob.microbe.bombus.skew +
-    set_rescor(FALSE)
+## 8-22 models working with just these layers and only warnings were 2 high pareto k vals,
+## trying with full community mods now
+# bform.bombus <- bf.ob.microbe.bombus.skew +
+#   bf.non.ob.microbe.bombus.student +
+#   set_rescor(FALSE)
 
 #combine forms
-bform.bombus.student <- bf.ob.microbe.bombus.student +
-  bf.non.ob.microbe.bombus.student +
-  set_rescor(FALSE)
-#combine forms
-bform.bombus.g <- bf.ob.microbe.bombus.g +
-  bf.non.ob.microbe.bombus.g +
-  set_rescor(FALSE)
+# bform.bombus.skew <- bf.ob.microbe.bombus.skew +
+#     bf.non.ob.microbe.bombus.skew +
+#     set_rescor(FALSE)
+# 
+# #combine forms
+# bform.bombus.student <- bf.ob.microbe.bombus.student +
+#   bf.non.ob.microbe.bombus.student +
+#   set_rescor(FALSE)
+# #combine forms
+# bform.bombus.g <- bf.ob.microbe.bombus.g +
+#   bf.non.ob.microbe.bombus.g +
+#   set_rescor(FALSE)
 
 ## combined model
+
+## 8-21-24 1pm trying just the microbe layers
+## taking quite awhile... 
+
+## 8-21-24 2:42pm trying just the bombus weights
+
 #combine forms
-bform.bombus <- bf.tot.babund +
-  #bf.fdiv +
-  #bf.tot.bdiv  +
+bform.bombus <- bf.fdiv +
+  bf.tot.bdiv +
+  bf.tot.babund +
   bf.ob.microbe.bombus.skew +
   bf.non.ob.microbe.bombus.student +
   set_rescor(FALSE)
@@ -345,13 +365,16 @@ bform.bombus <- bf.tot.babund +
 ## 8/21/24 running mods with spec.bombus and full mod, now trying just microbs and bee diversity
 
 ## 8/21/24 mods with microb and bee div were going to take weeks to run, probs misspecified
-##  trying just microbes and b abund
+##  trying just microbes and b abund > this would also take weeks to run but not as long as with just microbes and bdiv
+##  trying microbes with just fdiv > 
 
-## change all NAs to 0
-spec.bombus[is.na(spec.bombus)] <- 0
+## TODO check weights -- need to be bombus specific for the microbes? 
+
+## TODO check if need to change all NAs to 0
+#spec.net[is.na(spec.net)] <- 0
 
 if(run.bombus){
-  fit.microbe.bombus <- brm(bform.bombus, spec.bombus,
+  fit.microbe.bombus <- brm(bform.bombus, spec.net,
                           cores=ncores,
                           iter = 10000,
                           chains =1,
@@ -365,7 +388,7 @@ if(run.bombus){
   write.ms.table(fit.microbe.bombus, "bombus_microbe")
   r2loo.bombus <- loo_R2(fit.microbe.bombus)
   r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
-  save(fit.microbe.bombus, spec.bombus, r2.bombus, r2loo.bombus,
+  save(fit.microbe.bombus, spec.net, r2.bombus, r2loo.bombus,
        file="saved/fullMicrobeBombusFit.Rdata")
 }
 
