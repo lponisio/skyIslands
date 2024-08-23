@@ -9,8 +9,8 @@ setwd("skyIslands/analysis/microbiome/")
 run.diagnostics = FALSE
 make.plots = FALSE
 run.bombus = FALSE
-run.apis = TRUE
-run.melissodes = FALSE
+run.apis = FALSE
+run.melissodes = TRUE
 
 library(picante)
 library(plyr)
@@ -331,10 +331,10 @@ bform.bombus <- bf.fdiv +
 spec.net[is.na(spec.net)] <- 0
 
 if(run.bombus){
-  fit.microbe.bombus2 <- brm(bform.bombus, spec.net,
+  fit.microbe.bombus <- brm(bform.bombus, spec.net,
                           cores=ncores,
                           iter = 10000,
-                          chains =1,
+                          chains =4,
                           thin=1,
                           init=0,
                           open_progress = FALSE,
@@ -345,8 +345,8 @@ if(run.bombus){
   write.ms.table(fit.microbe.bombus, "bombus_microbe")
   r2loo.bombus <- loo_R2(fit.microbe.bombus)
   r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
-  save(fit.microbe.bombus2, spec.net, r2.bombus, r2loo.bombus,
-       file="saved/fullMicrobeBombusFit_NArm.Rdata")
+  save(fit.microbe.bombus, spec.net, r2.bombus, r2loo.bombus,
+       file="saved/fullMicrobeBombusFit.Rdata")
 }
 
 
@@ -385,23 +385,24 @@ formula.non.ob.microbe.apis <- as.formula(paste(non.ob.microbe.apis.y, "~",
 
 bf.non.ob.microbe.apis.skew <- bf(formula.non.ob.microbe.apis, family=skew_normal())
 bf.non.ob.microbe.apis.student <- bf(formula.non.ob.microbe.apis, family=student())
+bf.non.ob.microbe.apis.gaussian <- bf(formula.non.ob.microbe.apis)
 
 
 ## combined model
 
 #combine forms
-# bform.apis <- bf.fdiv +
-#   bf.tot.bdiv +
-#   bf.tot.babund +
-bform.apis <-bf.ob.microbe.apis.gaussian +
-  bf.non.ob.microbe.apis.skew +
+bform.apis <- bf.fdiv +
+  bf.tot.bdiv +
+  bf.tot.babund +
+  bf.ob.microbe.apis.gaussian +
+  bf.non.ob.microbe.apis.gaussian +
   set_rescor(FALSE)
 
 if(run.apis){
 fit.microbe.apis <- brm(bform.apis , spec.net,
                         cores=ncores,
                         iter = 10000,
-                        chains =1,
+                        chains =4,
                         thin=1,
                         init=0,
                         open_progress = FALSE,
@@ -463,7 +464,7 @@ if(run.melissodes){
 fit.microbe.melissodes <- brm(bform.melissodes , spec.net,
                            cores=ncores,
                            iter = 10000,
-                           chains =1,
+                           chains =4,
                            thin=1,
                            init=0,
                            open_progress = FALSE,
