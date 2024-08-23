@@ -8,8 +8,8 @@ setwd("skyIslands/analysis/microbiome/")
 
 run.diagnostics = FALSE
 make.plots = FALSE
-run.bombus = TRUE
-run.apis = FALSE
+run.bombus = FALSE
+run.apis = TRUE
 run.melissodes = FALSE
 
 library(picante)
@@ -365,6 +365,8 @@ formula.ob.microbe.apis <- as.formula(paste(ob.microbe.apis.y, "~",
                                               ob.microbe.apis.x))
 
 bf.ob.microbe.apis.skew <- bf(formula.ob.microbe.apis, family=skew_normal())
+bf.ob.microbe.apis.student <- bf(formula.ob.microbe.apis, family=student())
+bf.ob.microbe.apis.gaussian <- bf(formula.ob.microbe.apis)
 
 ## non ob PD model
 non.ob.microbe.apis.vars <- c("BeeAbundance",
@@ -382,15 +384,16 @@ formula.non.ob.microbe.apis <- as.formula(paste(non.ob.microbe.apis.y, "~",
 
 
 bf.non.ob.microbe.apis.skew <- bf(formula.non.ob.microbe.apis, family=skew_normal())
+bf.non.ob.microbe.apis.student <- bf(formula.non.ob.microbe.apis, family=student())
 
 
 ## combined model
 
 #combine forms
-bform.apis <- bf.fdiv +
-  bf.tot.bdiv +
-  bf.tot.babund +
-  bf.ob.microbe.apis.skew +
+# bform.apis <- bf.fdiv +
+#   bf.tot.bdiv +
+#   bf.tot.babund +
+bform.apis <-bf.ob.microbe.apis.gaussian +
   bf.non.ob.microbe.apis.skew +
   set_rescor(FALSE)
 
@@ -426,7 +429,7 @@ formula.ob.microbe.melissodes <- as.formula(paste(ob.microbe.melissodes.y, "~",
                                             ob.microbe.melissodes.x))
 
 bf.ob.microbe.melissodes.skew <- bf(formula.ob.microbe.melissodes, family=skew_normal())
-
+bf.ob.microbe.melissodes.student <- bf(formula.ob.microbe.melissodes, family=student())
 ## non ob PD model
 non.ob.microbe.melissodes.vars <- c("BeeAbundance",
                               "BeeDiversity", "Lat", #check this doesn't make VIF high
@@ -443,6 +446,7 @@ formula.non.ob.microbe.melissodes <- as.formula(paste(non.ob.microbe.melissodes.
 
 
 bf.non.ob.microbe.melissodes.student <- bf(formula.non.ob.microbe.melissodes, family=student())
+bf.non.ob.microbe.melissodes.skew <- bf(formula.non.ob.microbe.melissodes, family=skew_normal())
 
 
 ## combined model
@@ -451,7 +455,7 @@ bf.non.ob.microbe.melissodes.student <- bf(formula.non.ob.microbe.melissodes, fa
 bform.melissodes <- bf.fdiv +
   bf.tot.bdiv +
   bf.tot.babund +
-  bf.ob.microbe.melissodes.skew +
+  bf.ob.microbe.melissodes.student +
   bf.non.ob.microbe.melissodes.student +
   set_rescor(FALSE)
 
