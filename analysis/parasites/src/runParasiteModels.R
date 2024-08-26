@@ -10,7 +10,7 @@ runCombinedParasiteModels <- function(spec.data,## data
                                       init=0, data2 = NULL,
                                       SEM = TRUE,
                                       neg.binomial = FALSE,
-                                      site.lat="lat", ...){
+                                      site.lat, ...){
     ## Create a list with the formulas for the different parasites models
     bf.parasite.formulas <- vector(mode="list",
                                    length=length(parasites))
@@ -45,7 +45,7 @@ runCombinedParasiteModels <- function(spec.data,## data
                 freq.formula,
                 this_data=spec.data[spec.data$WeightsPar == 1,],
                 this_family="bernoulli",
-                site.lat=site.or.lat,
+                site.lat=site.lat,
                 species.group=species.group)
 
             freq.mod <- glmer(freq.formula, family="binomial",

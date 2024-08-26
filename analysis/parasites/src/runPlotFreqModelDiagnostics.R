@@ -1,5 +1,6 @@
 library(glmmTMB)
 library(lme4)
+library(lmerTest)
 library(performance)
 
 run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
@@ -10,11 +11,12 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
                                             examine.pairs=FALSE,
                                             this_family, #model family
                                             fig.path =
-                                            "figures/diagnostics",
-                                            site.lat="lat",
+                                                "figures/diagnostics",
+                                            site.lat,
                                             species.group="all", ...
                                             ){
 
+    print(site.lat)
     
     ## function to run frequentist version of brms models and plot diagnostics
 
@@ -25,20 +27,8 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
     ## bayesian models
 
     if (this_family == 'gaussian'){
-                                        #run model
-        this_model_output <- brms::brm(this_formula,
-                                       data = this_data, 
-                                       chains = num_chains, 
-                                       iter = num_iter, family=this_family,
-                                       thin=1,
-                                       init=0,
-                                       open_progress = FALSE,
-                                       control = list(adapt_delta = 0.99),
-                                       save_pars = save_pars(all = TRUE))
-
-        
-        print(summary(this_model_output))
-                                        # return a list of single plots
+        this_model_output <- lmer(this_formula, data=this_data)
+                                   
         diagnostic.plots <- plot(check_model(this_model_output, panel
                                              = TRUE))
     } else if (this_family=='negbinomial') {
@@ -76,7 +66,9 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
 
     } else if (this_family=='students') {
         
-        this_model_output <- glmmTMB(this_formula, data=this_data, family = t_family())
+        this_model_output <- glmmTMB(this_formula, data=this_data,
+                                     family = t_family(),
+                                     control = glmmTMBControl(optimizer = optim, optArgs = list(method="BFGS")))
         diagnostic.plots <- plot(check_model(this_model_output, panel = TRUE))
         
         
@@ -157,7 +149,8 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
         file.name <- paste0(as.character(this_formula)[2], site.lat,
                             species.group, ".pdf")
     }
+    print(summary(this_model_output))
     ggsave(diagnostic.plots, file= file.path(fig.path, file.name),
-        height=10, width=15)
+           height=10, width=15)
     return(diagnostic.plots)
 }

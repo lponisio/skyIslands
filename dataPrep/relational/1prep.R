@@ -196,7 +196,7 @@ data.geo <- data.frame(Site=geo$Site,
                        Lat=geo$DecimalLat,
                        Long=geo$DecimalLon,
                        Elev=geo$Elev0,
-                       Area=geo$Area)
+                       Area=geo$Area_m2)
 
 ## write unique data to a table
 write.csv(data.geo, file="relational/original/geography.csv",

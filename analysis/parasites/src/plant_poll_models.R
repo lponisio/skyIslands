@@ -15,7 +15,9 @@ if(site.or.lat ==  "lat"){
     formula.flower.div <- formula(MeanFloralDiversity |
                                   subset(Weights) ~
                                       SRDoyPoly1 + SRDoyPoly2 +
-                                      Year + (1|Site) + Lat 
+                                      Year + Lat +
+                                      Area +
+                                      (1|Site) 
                                   )
     ## flower abund
     formula.flower.abund <- formula(MeanFloralAbundance |
@@ -29,21 +31,28 @@ if(site.or.lat ==  "lat"){
                                subset(Weights)~
                                    MeanFloralDiversity +
                                    SRDoyPoly1 + SRDoyPoly2 +
-                                   Year + (1|Site) + Lat  
+                                   Year +
+                                   Lat + 
+                                   Area +
+                                   (1|Site)  
                                )
     ## bombus abund
     formula.bombus.abund <- formula(Net_BombusAbundance |
                                     subset(Weights)~
                                         MeanFloralAbundance +
                                         SRDoyPoly1 + SRDoyPoly2 +
-                                        Year + (1|Site) + Lat 
+                                        Year + Lat +
+                                        Area + 
+                                        (1|Site)
                                     )
     ## HB abund
     formula.HB.abund <- formula(Net_HBAbundance |
                                 subset(Weights)~
                                     MeanFloralAbundance +
                                     SRDoyPoly1 + SRDoyPoly2 +
-                                    Year + (1|Site) + Lat 
+                                    Year + Lat +
+                                    Area + 
+                                    (1|Site)
                                 )
     ## bee abund
     formula.bee.abund <- formula(Net_BeeAbundance |
@@ -51,7 +60,9 @@ if(site.or.lat ==  "lat"){
                                      MeanFloralAbundance +
                                      MeanFloralDiversity +
                                      SRDoyPoly1 + SRDoyPoly2 +
-                                     Year + (1|Site) + Lat 
+                                     Year + Lat +
+                                     Area + 
+                                     (1|Site)
                                  )
 } else{
     
