@@ -55,3 +55,39 @@ fix.white.space <- function(d) {
   d[first==" "] <- remove.first(d[first==" "])
   d
 }
+
+
+## makes a summary table of loo results
+makeLooTable <- function(parasite, ## parasite name (length =1)
+                         genus, ## bee genus (length=1)
+                         abundance.order, ## what abundance var in
+                         ## model? (variable length depending on the
+                         ## number of var sets)
+                         loo.results ## list of model loo results
+                         ){
+    ## loo.results must be a list with the results in the same order
+    ## as abundance.order
+
+    print(paste("abundance.order matches list length", length(abundance.order)==length(loo.results)))
+    if(length(abundance.order) == 2){
+        out <- data.frame(parasite=parasite,
+                          genus=genus,
+                          abundVar= abundance.order,
+                          Estimate=round( c(loo.results[[1]]$estimates["looic", "Estimate"],
+                                            loo.results[[2]]$estimates["looic", "Estimate"]), 2),
+                          SE=round(c(loo.results[[1]]$estimates["looic", "SE"],
+                                     loo.results[[2]]$estimates["looic", "SE"]),
+                                   2))
+    } else if(length(abundance.order) == 3){
+        out <- data.frame(parasite=parasite,
+                          genus=genus,
+                          abundVar= abundance.order,
+                          Estimate=round( c(loo.results[[1]]$estimates["looic", "Estimate"],
+                                            loo.results[[2]]$estimates["looic", "Estimate"],
+                                            loo.results[[3]]$estimates["looic", "Estimate"]), 2),
+                          SE=round(c(loo.results[[1]]$estimates["looic", "SE"],
+                                     loo.results[[2]]$estimates["looic", "SE"],
+                                     loo.results[[3]]$estimates["looic", "Estimate"]), 2))
+    }
+    return(out)
+}

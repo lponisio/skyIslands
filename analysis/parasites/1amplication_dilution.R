@@ -236,33 +236,29 @@ abundance.order <- c("social_species",
                      "bombus_abundance",
                      "all_bees")
 
-loo.bombus.crithidia <- data.frame(Estimate=c(loo.crithidia.bombus.ss$estimates["looic", "Estimate"],
-                                         loo.crithidia.bombus.ba$estimates["looic", "Estimate"],
-                                         loo.crithidia.bombus.all$estimates["looic",
-                                         "Estimate"]),
-                                  SE=c(loo.crithidia.bombus.ss$estimates["looic", "SE"],
-                                         loo.crithidia.bombus.ba$estimates["looic", "SE"],
-                                         loo.crithidia.bombus.all$estimates["looic", "SE"]),
-                                   abundVar= abundance.order,
-                                  parasite="Crithidia",
-                                  genus="Bombus")
 
+loo.bombus.crithidia <- makeLooTable(parasite="CrithidiaSpp",
+                                     genus="Bombus",
+                                     abundance.order=abundance.order,
+                                     list(loo.crithidia.bombus.ss,
+                                          loo.crithidia.bombus.ba,
+                                          loo.crithidia.bombus.all)
+                                     )
 
+loo.bombus.crithidia
 ## bombus and HB abundance has the best fit, but bombus and HB
 ## abundance are pretty colinear (VIF ~6). The next best fit is bombus
 ## abundance alone. 
 
-loo.bombus.apicystis <- data.frame(Estimate=c(loo.apicystis.bombus.ss$estimates["looic", "Estimate"],
-                                         loo.apicystis.bombus.ba$estimates["looic", "Estimate"],
-                                         loo.apicystis.bombus.all$estimates["looic",
-                                         "Estimate"]),
-                                  SE=c(loo.apicystis.bombus.ss$estimates["looic", "SE"],
-                                         loo.apicystis.bombus.ba$estimates["looic", "SE"],
-                                         loo.apicystis.bombus.all$estimates["looic", "SE"]),
-                                   abundVar= abundance.order,
-                                  parasite="Crithidia",
-                                  genus="Bombus")
 
+loo.bombus.apicystis <- makeLooTable(parasite="ApicystisSpp",
+                                     genus="Bombus",
+                                     abundance.order=abundance.order,
+                                     list(loo.apicystis.bombus.ss,
+                                          loo.apicystis.bombus.ba,
+                                          loo.apicystis.bombus.all)
+                                     )
+loo.bombus.apicystis
 ## The best fit is the abundance of bombus and apis together, which in
 ## this model are not colinear. 
 
@@ -315,34 +311,39 @@ loo.apicystis.apis.all <- loo(fit.apis.all$fit, resp="ApicystisSpp")
 abundance.order <- c("social_species",
                      "all_bees")
 
-loo.apis.crithidia <- data.frame(Estimate=c(loo.crithidia.apis.ss$estimates["looic", "Estimate"],
-                                         loo.crithidia.apis.all$estimates["looic",
-                                         "Estimate"]),
-                                  SE=c(loo.crithidia.apis.ss$estimates["looic", "SE"],
-                                         loo.crithidia.apis.all$estimates["looic", "SE"]),
-                                   abundVar= abundance.order,
-                                 parasite="Crithidia",
-                                 genus="Apis")
+loo.apis.crithidia <- makeLooTable(parasite="CrithidiaSpp",
+                                     genus="Apis",
+                                     abundance.order=abundance.order,
+                                     list(loo.crithidia.apis.ss,
+                                          loo.crithidia.apis.all)
+                                     )
+
 loo.apis.crithidia
 
-loo.apis.apicystis <- data.frame(Estimate=c(loo.apicystis.apis.ss$estimates["looic", "Estimate"],
-                                         loo.apicystis.apis.all$estimates["looic",
-                                         "Estimate"]),
-                                  SE=c(loo.apicystis.apis.ss$estimates["looic", "SE"],
-                                         loo.apicystis.apis.all$estimates["looic", "SE"]),
-                                   abundVar= abundance.order,
-                                 parasite="Apicystis",
-                                 genus="Apis")
+loo.apis.apicystis <- makeLooTable(parasite="ApicystisSpp",
+                                     genus="Apis",
+                                     abundance.order=abundance.order,
+                                     list(loo.apicystis.apis.ss,
+                                          loo.apicystis.apis.all)
+                                     )
 loo.apis.apicystis
-
-
 
 ## models not distinguishable, equally good fit of bee abundance and
 ## HB + bombus abundance for both crithidia and apicystis 
 
-write.csv(rbind(loo.apis.crithidia, loo.apis.apicystis,
-                loo.bombus.crithidia, loo.bombus.apicystis),
+write.csv(rbind(loo.bombus.crithidia,
+                loo.apis.crithidia,
+                loo.bombus.apicystis,
+                loo.apis.apicystis),
+          row.names=FALSE,
           file="saved/loo.csv")
+
+write.table(rbind(loo.bombus.crithidia,
+                  loo.apis.crithidia,
+                  loo.bombus.apicystis,
+                  loo.apis.apicystis),
+            row.names=FALSE,
+            file="saved/loo.txt", sep= " & ")
 
 ## **********************************************************
 ## ## melissodes
