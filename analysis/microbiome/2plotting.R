@@ -1,23 +1,21 @@
-## setwd('C:/Users/na_ma/Dropbox (University of Oregon)/Rotation/skyIslands')
-## setwd('~/Dropbox (University of Oregon)/skyIslands')
-setwd('~/Dropbox (University of Oregon)/skyIslands')
-#setwd("/Volumes/bombus/rhayes/Dropbox (University of Oregon)/skyIslands")
-
-setwd("analysis/microbiome/")
-
 rm(list=ls())
+setwd("~/")
+source("lab_paths.R")
+local.path
+setwd(local.path)
+setwd("skyIslands/analysis/microbiome/")
 
 
-
+library(lme4)
+#library(glmmADMB)
+library(R2admb)
+library(shinystan)
 library(picante)
 library(plyr)
 library(bayesplot)
 library(pscl)
 library(brms)
 library(performance)
-library(lme4)
-library(glmmADMB)
-library(R2admb)
 library(shinystan)
 # install.packages("glmmADMB", 
 #                  repos=c("http://glmmadmb.r-forge.r-project.org/repos",
@@ -36,42 +34,90 @@ variables.to.log <- c("rare.degree",
 
 vars_yearsr <- c("MeanFloralAbundance",
                  "MeanFloralDiversity",
-                 "Lat", "SRDoy",
+                 "SRDoy",
                  "BeeAbundance",
                  "BeeDiversity",
                  "VisitedFloralDiversity"
                  #"FloralDiversity"
 )
 
-vars_sp <- c("MeanITD",
-             "rare.degree")
+vars_yearsrsp <- "rare.degree"
+vars_sp <- "MeanITD"
+vars_site <- "Lat"
 
 
 
 source("src/misc_microbe.R")
 source("src/misc.R")
 source('src/makeMultiLevelData.R')
-source("src/standardize_weights.R")
-make.plots = TRUE
+source("src/standardize_weights_parasites.R")
+# incorporating Nicoles standardize functions
+#source("src/standardize_weights.R")
 source("src/init_microbe.R")
 source("src/writeResultsTable.R")
-source("src/runParasiteModels.R")
 source("src/runPlotFreqModelDiagnostics.R")
 
+## ***********************************************************************
+## plotting, unscaling labs
+## ***********************************************************************
+## lat
 
-## set to the number of cores you would like the models to run on
-ncores <- 1
+spec.uni <- spec.orig[spec.orig$Weights ==1,]
 
-spec.net.orig <- spec.net
 
-spec.bombus.orig <- spec.bombus
-spec.apis.orig <- spec.apis
-spec.melissodes.orig <- spec.melissodes
+## Bombus mods
+##  PDobligate ~ BeeDiversity
+##  PDobligate ~ rare.degree
+##  PDtransientlog ~ MeanITD
+
+## TODO fix labels for these
+## TODO add code from untitled 1
+## TODO add melissodes plots
+## TODO add apis plots when done fixing mods
+## TODO save out plots
+## TODO prep for tomorrow meeting
+
+## TODO ask difference between spec.uni and spec.sp
+## bee diversity
+labs.bee.abund <- (pretty(c(spec.uni$BeeAbundance), n=8))
+axis.bee.abund <-  standardize.axis(labs.bee.abund,
+                                  spec.uni$BeeAbundance)
+
+## bee diversity
+labs.bee.div <- (pretty(c(spec.uni$BeeDiversity), n=8))
+axis.bee.div <-  standardize.axis(labs.bee.div,
+                                  spec.uni$BeeDiversity)
+
+spec.sp <-  spec.orig[spec.orig$WeightsObligateMicrobe == 1 & spec.orig$Genus == "Bombus",]
+
+## rare.degree
+labs.degree <- (pretty(spec.sp$rare.degree, n=10))
+axis.degree <-  standardize.axis(labs.degree,
+                                 spec.sp$rare.degree)
+
+spec.sp <-  spec.orig[spec.orig$WeightsTransientMicrobe == 1 & spec.orig$Genus == "Bombus",]
+## meanITD
+labs.itd <- (pretty(spec.sp$MeanITD, n=10))
+axis.itd <-  standardize.axis(labs.itd,
+                              spec.sp$MeanITD)
+
 
 ## load model output data
 load(file="saved/fullMicrobeBombusFit.Rdata")
-load(file="saved/fullMicrobeApisFit.Rdata")
+#load(file="saved/fullMicrobeApisFit.Rdata")
 load(file="saved/fullMicrobeMelissodesFit.Rdata")
+
+
+# We want the standarized data for the predictions (spec.data)
+spec.bombus <- spec.net[spec.net$Genus == "Bombus",]
+spec.melissodes <- spec.net[spec.net$Genus == "Melissodes",]
+bombus.obligate <- spec.bombus[spec.bombus$WeightsObligateMicrobe == 1,]
+data.site <- spec.net[spec.net$Weights == 1,]
+bombus.transient <- spec.bombus[spec.bombus$WeightsTransientMicrobe == 1,]
+melissodes.obligate <- spec.melissodes[spec.melissodes$WeightsObligateMicrobe == 1,]
+
+
+## https://www.rensvandeschoot.com/tutorials/generalised-linear-models-with-brms/
 
 
 ##CIs are 50-80-95
@@ -80,1010 +126,124 @@ load(file="saved/fullMicrobeMelissodesFit.Rdata")
 ## Bombus model
 ## **********************************************************
 
-## obligate microbes
-
-data.par <- spec.bombus[spec.bombus$LogWeightsAbund != 0, ] %>%
-  subset(., rowSums(is.na(.)) != ncol(.))
-#
-## PD obligate logged ~ bee abundance
-labs.bee.abund <- (pretty(c(0, spec.bombus.orig$BeeAbundance), n=8))
-axis.bee.abund <-  standardize.axis(labs.bee.abund,
-                                    spec.bombus.orig$BeeAbundance)
-
-newdata.beeabund <- tidyr::crossing(BeeAbundance =
-                                      seq(min(data.par$BeeAbundance),
-                                          max(data.par$BeeAbundance),
-                                          length.out=10),
-                                    MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
-                                    Site=data.par$Site,
-                                    rare.degree=mean(data.par$rare.degree),
-                                    MeanITD=mean(data.par$MeanITD),
-                                    Year = data.par$Year,
-                                    DoyStart = data.par$DoyStart,
-                                    Lat = mean(data.par$Lat),
-                                    BeeDiversity = mean(data.par$BeeDiversity),
-                                    GenusSpecies = "Bombus centralis"
-)
-
-pred_beeabund <- fit.microbe.bombus %>%
-  epred_draws(newdata = newdata.beeabund ,
-              resp = "PDobligatelog",
-              allow_new_levels = FALSE)
-
-## to see range of predicted values
-pred_beeabund %>%
-  group_by(BeeAbundance) %>%
-  summarise(mean(.epred))
-
-
-bombus.abund.PD <- ggplot(pred_beeabund, aes(x = BeeAbundance, y =
-                                                     .epred)) +
-  stat_lineribbon(show.legend = FALSE) +
-  scale_fill_brewer(palette = "Greens") +
-  labs(x = "Bee Abundance", y = "Microbe \nPhylogenetic \nDistance",
-       fill = "Credible Interval") +
-  theme(axis.title.x = element_text(size=16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16),
-        legend.position = "none") +
-  theme_classic() +
-  geom_point(data=data.par,
-             aes(y=PD.obligate.log, x=BeeAbundance), cex=2, alpha=0.5) +
-  scale_x_continuous(breaks = axis.bee.abund, 
-                     labels =  labs.bee.abund) +
-  labs(tag='C.', y="Log Obligate Microbe PD")
-
-
-bombus.abund.PD
-panelC <- bombus.abund.PD
-
-dir.create("figures")
-
-ggsave(bombus.abund.PD, file="figures/bombusLogPDobligate_beeAbund.pdf",
-       height=4, width=5)
-
-# # #################################
-## PD obligate logged ~ bee diversity
-labs.bee.div <- (pretty(c(0, spec.bombus.orig$BeeDiversity), n=8))
-axis.bee.div <-  standardize.axis(labs.bee.div,
-                                    spec.bombus.orig$BeeDiversity)
-
-newdata.beediv <- tidyr::crossing(BeeDiversity =
-                                      seq(min(data.par$BeeDiversity),
-                                          max(data.par$BeeDiversity),
-                                          length.out=10),
-                                    MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
-                                    Site=data.par$Site,
-                                    rare.degree=mean(data.par$rare.degree),
-                                    MeanITD=mean(data.par$MeanITD),
-                                    Year = data.par$Year,
-                                    DoyStart = data.par$DoyStart,
-                                    Lat = mean(data.par$Lat),
-                                    BeeAbundance = mean(data.par$BeeAbundance),
-                                  GenusSpecies = "Bombus centralis"
-)
-
-pred_beediv <- fit.microbe.bombus %>%
-  epred_draws(newdata = newdata.beediv ,
-              resp = "PDobligatelog",
-              allow_new_levels = FALSE)
-
-
-bombus.div.PD <- ggplot(pred_beediv, aes(x = BeeDiversity, y =
-                                               .epred)) +
-  stat_lineribbon(show.legend=FALSE) +
-  scale_fill_brewer(palette = "Greens") +
-  labs(x = "Bee Diversity", y = "Log Obligate Microbe PD",
-       fill = "Credible Interval") +
-  theme(legend.position = "none")  +
-  theme(axis.title.x = element_text(size=16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16)) +
-  theme_classic() +
-  geom_point(data=data.par,
-             aes(y=PD.obligate.log, x=BeeDiversity), cex=2, alpha=0.5) +
-  scale_x_continuous(
-    breaks = axis.bee.div,
-    labels =  labs.bee.div) + labs(tag='C.')
-
-
-bombus.div.PD
-#panelC <- bombus.div.PD
-
-dir.create("figures")
-
-ggsave(bombus.div.PD, file="figures/bombusLogPDobligate_beeDiv.pdf",
-       height=4, width=5)
-
-# ## PD ~ rare.degree
-labs.rare.degree <- (pretty(c(0, spec.bombus.orig$rare.degree), n=8))
-axis.rare.degree <-  standardize.axis(labs.rare.degree,
-                                      spec.bombus.orig$rare.degree)
-
-newdata.beediv <- tidyr::crossing(rare.degree =
-                                    seq(min(data.par$rare.degree),
-                                        max(data.par$rare.degree),
-                                        length.out=10),
-                                  BeeDiversity=mean(data.par$BeeDiversity),
-                                  Site=data.par$Site,
-                                  MeanITD=mean(data.par$MeanITD),
-                                  MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
-                                  Year = data.par$Year,
-                                  DoyStart = data.par$DoyStart,
-                                  Lat = mean(data.par$Lat),
-                                  BeeAbundance = mean(data.par$BeeAbundance),
-                                  GenusSpecies = "Bombus centralis"
-)
-
-pred_beediv <- fit.microbe.bombus %>%
-  epred_draws(newdata = newdata.beediv ,
-              resp = "PDobligatelog",
-              allow_new_levels = FALSE)
-
-
-rare.degree.PD <- ggplot(pred_beediv, aes(x = rare.degree, y =
-                                            .epred)) +
-  stat_lineribbon(show.legend=FALSE) +
-  scale_fill_brewer(palette = "Greens") +
-  labs(x = "Diet Breadth", y = "Log Obligate Microbe PD",
-       fill = "Credible Interval") +
-  theme(legend.position = "none")  +
-  theme(axis.title.x = element_text(size=16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16)) +
-  theme_classic() +
-  geom_point(data=data.par,
-             aes(y=PD.obligate.log, x=rare.degree), cex=2, alpha=0.5) +
-  scale_x_continuous(
-    breaks = axis.rare.degree,
-    labels =  labs.rare.degree) + labs(tag='B.')
-
-
-rare.degree.PD
-panelB <- rare.degree.PD
-
-dir.create("figures")
-
-ggsave(rare.degree.PD, file="figures/bombusLogPDobligate_rare.degree.pdf",
-       height=4, width=5)
-
-
-## PD obligate log ~ mean floral diversity
-labs.floral.div <- (pretty(c(0, spec.bombus.orig$MeanFloralDiversity), n=8))
-axis.floral.div <-  standardize.axis(labs.floral.div,
-                                     spec.bombus.orig$MeanFloralDiversity)
-
-newdata.beediv <- tidyr::crossing(MeanFloralDiversity =
-                                    seq(min(data.par$MeanFloralDiversity),
-                                        max(data.par$MeanFloralDiversity),
-                                        length.out=10),
-                                  BeeDiversity=mean(data.par$BeeDiversity),
-                                  Site=data.par$Site,
-                                  rare.degree=mean(data.par$rare.degree),
-                                  MeanITD=mean(data.par$MeanITD),
-                                  Year = data.par$Year,
-                                  DoyStart = data.par$DoyStart,
-                                  Lat = mean(data.par$Lat),
-                                  BeeAbundance = mean(data.par$BeeAbundance),
-                                  GenusSpecies = data.par$GenusSpecies
-)
-
-pred_beediv <- fit.microbe.bombus %>%
-  epred_draws(newdata = newdata.beediv ,
-              resp = "PDobligatelog",
-              allow_new_levels = FALSE)
-
-
-floral.div.PD <- ggplot(pred_beediv, aes(x = MeanFloralDiversity, y =
-                                           .epred)) +
-  stat_lineribbon(show.legend=FALSE) +
-  scale_fill_brewer(palette = "Greens") +
-  labs(x = "Mean Floral Diversity", y = "Log Obligate Microbe PD",
-       fill = "Credible Interval") +
-  theme(legend.position = "none")  +
-  theme(axis.title.x = element_text(size=16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16)) +
-  theme_classic() +
-  geom_point(data=data.par,
-             aes(y=PD.obligate.log, x=MeanFloralDiversity), cex=2, alpha=0.5) +
-  scale_x_continuous(
-    breaks = axis.floral.div,
-    labels =  labs.floral.div) + labs(tag="A.")
-
-
-floral.div.PD
-panelA <- floral.div.PD
-
-dir.create("figures")
-
-ggsave(floral.div.PD, file="figures/bombusLogPDobligate_floralDiv.pdf",
-       height=4, width=5)
-
-# #################################
-# ## PD ~ MeanITD
-labs.meanITD <- (pretty(c(0, spec.bombus.orig$MeanITD), n=8))
-axis.meanITD <-  standardize.axis(labs.meanITD,
-                                  spec.bombus.orig$MeanITD)
-
-newdata.beediv <- tidyr::crossing(MeanITD =
-                                    seq(min(data.par$MeanITD),
-                                        max(data.par$MeanITD),
-                                        length.out=10),
-                                  BeeDiversity=mean(data.par$BeeDiversity),
-                                  Site=data.par$Site,
-                                  rare.degree=mean(data.par$rare.degree),
-                                  MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
-                                  Year = data.par$Year,
-                                  DoyStart = data.par$DoyStart,
-                                  Lat = mean(data.par$Lat),
-                                  BeeAbundance = mean(data.par$BeeAbundance),
-                                  GenusSpecies = data.par$GenusSpecies
-)
-
-pred_beediv <- fit.microbe.bombus %>%
-  epred_draws(newdata = newdata.beediv ,
-              resp = "PDobligatelog",
-              allow_new_levels = FALSE)
-
-
-meanITD.PD <- ggplot(pred_beediv, aes(x = MeanITD, y =
-                                        .epred)) +
-  stat_lineribbon(show.legend=FALSE) +
-  scale_fill_brewer(palette = "Greens") +
-  labs(x = "Body Size", y = "Log Obligate Microbe PD",
-       fill = "Credible Interval") +
-  theme(legend.position = "none")  +
-  theme(axis.title.x = element_text(size=16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16)) +
-  theme_classic() +
-  geom_point(data=data.par,
-             aes(y=PD.obligate.log, x=MeanITD), cex=2, alpha=0.5) +
-  scale_x_continuous(
-    breaks = axis.meanITD,
-    labels =  labs.meanITD) + labs(tag='D.')
-
-
-meanITD.PD
-panelD <- meanITD.PD
-
-dir.create("figures")
-
-ggsave(meanITD.PD, file="figures/bombusLogPDobligate_meanITD.pdf",
-       height=4, width=5)
-
-
-
-
-
-# #################################
-## transient microbes
-## PD ~ bee abundance
-labs.bee.abund <- (pretty(c(0, spec.bombus.orig$BeeAbundance), n=8))
-axis.bee.abund <-  standardize.axis(labs.bee.abund,
-                                    spec.bombus.orig$BeeAbundance)
-
-newdata.beeabund <- tidyr::crossing(BeeAbundance =
-                                      seq(min(data.par$BeeAbundance),
-                                          max(data.par$BeeAbundance),
-                                          length.out=10),
-                                    MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
-                                    Site=data.par$Site,
-                                    rare.degree=mean(data.par$rare.degree),
-                                    MeanITD=mean(data.par$MeanITD),
-                                    Year = data.par$Year,
-                                    DoyStart = data.par$DoyStart,
-                                    Lat = mean(data.par$Lat),
-                                    BeeDiversity = mean(data.par$BeeDiversity),
-                                    GenusSpecies = data.par$GenusSpecies
-)
-
-pred_beeabund <- fit.microbe.bombus %>%
-  epred_draws(newdata = newdata.beeabund ,
-              resp = "PDtransientlog",
-              allow_new_levels = FALSE)
-
-## to see range of predicted values
-pred_beeabund %>%
-  group_by(BeeAbundance) %>%
-  summarise(mean(.epred))
-
-
-bombus.abund.PD <- ggplot(pred_beeabund, aes(x = BeeAbundance, y =
-                                               .epred)) +
-  stat_lineribbon(show.legend = FALSE) +
-  scale_fill_brewer(palette = "Oranges") +
-  labs(x = "Bee Abundance", y = "Log Transient Microbe PD",
-       fill = "Credible Interval") +
-  theme(axis.title.x = element_text(size=16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16),
-        legend.position = "none") +
-  theme_classic() +
-  geom_point(data=data.par,
-             aes(y=PD.transient.log, x=BeeAbundance), cex=2, alpha=0.5) +
-  scale_x_continuous(breaks = axis.bee.abund, 
-                     labels =  labs.bee.abund) +
-  labs(tag='C.')
-
-
-bombus.abund.PD
-panelC <- bombus.abund.PD
-
-dir.create("figures")
-
-ggsave(bombus.abund.PD, file="figures/bombusLogPDtransient_beeAbund.pdf",
-       height=4, width=5)
-
-# # #################################
-## PD ~ bee diversity
-labs.bee.div <- (pretty(c(0, spec.bombus.orig$BeeDiversity), n=8))
-axis.bee.div <-  standardize.axis(labs.bee.div,
-                                  spec.bombus.orig$BeeDiversity)
-
-newdata.beediv <- tidyr::crossing(BeeDiversity =
-                                    seq(min(data.par$BeeDiversity),
-                                        max(data.par$BeeDiversity),
-                                        length.out=10),
-                                  MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
-                                  Site=data.par$Site,
-                                  rare.degree=mean(data.par$rare.degree),
-                                  MeanITD=mean(data.par$MeanITD),
-                                  Year = data.par$Year,
-                                  DoyStart = data.par$DoyStart,
-                                  Lat = mean(data.par$Lat),
-                                  BeeAbundance = mean(data.par$BeeAbundance),
-                                  GenusSpecies = data.par$GenusSpecies
-)
-
-pred_beediv <- fit.microbe.bombus %>%
-  epred_draws(newdata = newdata.beediv ,
-              resp = "PDtransientlog",
-              allow_new_levels = FALSE)
-
-
-bombus.div.PD <- ggplot(pred_beediv, aes(x = BeeDiversity, y =
-                                           .epred)) +
-  stat_lineribbon(show.legend=FALSE) +
-  scale_fill_brewer(palette = "Oranges") +
-  labs(x = "Bee Diversity", y = "Log Transient Microbe PD",
-       fill = "Credible Interval") +
-  theme(legend.position = "none")  +
-  theme(axis.title.x = element_text(size=16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16)) +
-  theme_classic() +
-  geom_point(data=data.par,
-             aes(y=PD.transient.log, x=BeeDiversity), cex=2, alpha=0.5) +
-  scale_x_continuous(
-    breaks = axis.bee.div,
-    labels =  labs.bee.div) + labs(tag='C.')
-
-
-bombus.div.PD
-#panelC <- bombus.div.PD
-
-dir.create("figures")
-
-ggsave(bombus.div.PD, file="figures/bombusLogPDtransient_beeDiv.pdf",
-       height=4, width=5)
-
-## PD ~ mean floral diversity
-labs.floral.div <- (pretty(c(0, spec.bombus.orig$MeanFloralDiversity), n=8))
-axis.floral.div <-  standardize.axis(labs.floral.div,
-                                  spec.bombus.orig$MeanFloralDiversity)
-
-newdata.beediv <- tidyr::crossing(MeanFloralDiversity =
-                                    seq(min(data.par$MeanFloralDiversity),
-                                        max(data.par$MeanFloralDiversity),
-                                        length.out=10),
-                                  BeeDiversity=mean(data.par$BeeDiversity),
-                                  Site=data.par$Site,
-                                  rare.degree=mean(data.par$rare.degree),
-                                  MeanITD=mean(data.par$MeanITD),
-                                  Year = data.par$Year,
-                                  DoyStart = data.par$DoyStart,
-                                  Lat = mean(data.par$Lat),
-                                  BeeAbundance = mean(data.par$BeeAbundance),
-                                  GenusSpecies = data.par$GenusSpecies
-)
-
-pred_beediv <- fit.microbe.bombus %>%
-  epred_draws(newdata = newdata.beediv ,
-              resp = "PDtransientlog",
-              allow_new_levels = FALSE)
-
-
-floral.div.PD <- ggplot(pred_beediv, aes(x = MeanFloralDiversity, y =
-                                           .epred)) +
-  stat_lineribbon(show.legend=FALSE) +
-  scale_fill_brewer(palette = "Oranges") +
-  labs(x = "Mean Floral Diversity", y = "Log Transient Microbe PD",
-       fill = "Credible Interval") +
-  theme(legend.position = "none")  +
-  theme(axis.title.x = element_text(size=16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16)) +
-  theme_classic() +
-  geom_point(data=data.par,
-             aes(y=PD.transient.log, x=MeanFloralDiversity), cex=2, alpha=0.5) +
-  scale_x_continuous(
-    breaks = axis.floral.div,
-    labels =  labs.floral.div) + labs(tag="A.")
-
-
-floral.div.PD
-panelA <- floral.div.PD
-
-dir.create("figures")
-
-ggsave(floral.div.PD, file="figures/bombusLogPDtransient_floralDiv.pdf",
-       height=4, width=5)
-
-# ## PD transient log ~ rare.degree
-labs.rare.degree <- (pretty(c(0, spec.bombus.orig$rare.degree), n=8))
-axis.rare.degree <-  standardize.axis(labs.rare.degree,
-                                      spec.bombus.orig$rare.degree)
-
-newdata.beediv <- tidyr::crossing(rare.degree =
-                                    seq(min(data.par$rare.degree),
-                                        max(data.par$rare.degree),
-                                        length.out=10),
-                                  BeeDiversity=mean(data.par$BeeDiversity),
-                                  Site=data.par$Site,
-                                  MeanITD=mean(data.par$MeanITD),
-                                  MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
-                                  Year = data.par$Year,
-                                  DoyStart = data.par$DoyStart,
-                                  Lat = mean(data.par$Lat),
-                                  BeeAbundance = mean(data.par$BeeAbundance),
-                                  GenusSpecies = "Bombus centralis"
-)
-
-pred_beediv <- fit.microbe.bombus %>%
-  epred_draws(newdata = newdata.beediv ,
-              resp = "PDtransientlog",
-              allow_new_levels = FALSE)
-
-
-rare.degree.PD <- ggplot(pred_beediv, aes(x = rare.degree, y =
-                                            .epred)) +
-  stat_lineribbon(show.legend=FALSE) +
-  scale_fill_brewer(palette = "Oranges") +
-  labs(x = "Diet Breadth", y = "Log Transient Microbe PD",
-       fill = "Credible Interval") +
-  theme(legend.position = "none")  +
-  theme(axis.title.x = element_text(size=16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16)) +
-  theme_classic() +
-  geom_point(data=data.par,
-             aes(y=PD.transient.log, x=rare.degree), cex=2, alpha=0.5) +
-  scale_x_continuous(
-    breaks = axis.rare.degree,
-    labels =  labs.rare.degree) + labs(tag='B.')
-
-
-rare.degree.PD
-panelB <- rare.degree.PD
-
-dir.create("figures")
-
-ggsave(rare.degree.PD, file="figures/bombusLogPDtransient_rare.degree.pdf",
-       height=4, width=5)
-
-# #################################
-# ## PD ~ MeanITD
-# labs.meanITD <- (pretty(c(0, spec.bombus.orig$MeanITD), n=8))
-# axis.meanITD <-  standardize.axis(labs.meanITD,
-#                                      spec.bombus.orig$MeanITD)
-# 
-# newdata.beediv <- tidyr::crossing(MeanITD =
-#                                     seq(min(data.par$MeanITD),
-#                                         max(data.par$MeanITD),
-#                                         length.out=10),
-#                                   BeeDiversity=mean(data.par$BeeDiversity),
-#                                   Site=data.par$Site,
-#                                   rare.degree=mean(data.par$rare.degree),
-#                                   MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
-#                                   Year = data.par$Year,
-#                                   DoyStart = data.par$DoyStart,
-#                                   Lat = mean(data.par$Lat),
-#                                   BeeAbundance = mean(data.par$BeeAbundance),
-#                                   GenusSpecies = data.par$GenusSpecies
-# )
-# 
-# pred_beediv <- fit.microbe.bombus %>%
-#   epred_draws(newdata = newdata.beediv ,
-#               resp = "PDtransient",
-#               allow_new_levels = FALSE)
-# 
-# 
-# meanITD.PD <- ggplot(pred_beediv, aes(x = MeanITD, y =
-#                                            .epred)) +
-#   stat_lineribbon(show.legend=FALSE) +
-#   scale_fill_brewer(palette = "Oranges") +
-#   labs(x = "Body Size (Mean ITD)", y = "Microbe Phylogenetic Diversity",
-#        fill = "Credible Interval") +
-#   theme(legend.position = "none")  +
-#   theme(axis.title.x = element_text(size=16),
-#         axis.title.y = element_text(size=16),
-#         text = element_text(size=16)) +
-#   theme_classic() +
-#   geom_point(data=data.par,
-#              aes(y=PD.transient, x=MeanITD), cex=2, alpha=0.5) +
-#   scale_x_continuous(
-#     breaks = axis.meanITD,
-#     labels =  labs.meanITD) + labs(tag='D.', y='Microbe \nPhylogenetic \nDistance')
-# 
-# 
-# meanITD.PD
-# panelD <- meanITD.PD
-# 
-# dir.create("figures")
-# 
-# ggsave(meanITD.PD, file="figures/bombusPDtransient_meanITD.pdf",
-#        height=4, width=5)
-
-# #################################
-
-
-#make paneled fig
-grid.arrange(panelA,
-             panelB,
-             panelC,
-             ncol=1)
-
-
+## PD obligate ~ Bee Diversity
+
+# Extract the data from conditional_effects
+cond_effects_data <- conditional_effects(fit.microbe.bombus, effects = "BeeDiversity", resp = "PDobligate", plot = FALSE)
+plot_data <- cond_effects_data$PDobligate.PDobligate_BeeDiversity
+
+
+# Plot using ggplot2 for credible intervals with geom_ribbon
+ob_beediv <- ggplot(plot_data, aes(x = BeeDiversity, y = estimate__)) +
+  # Add ribbons for the 95%, 80%, and 50% credible intervals
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill = "darkgreen") +
+  geom_ribbon(aes(ymin = lower__ + 0.1 * (upper__ - lower__), 
+                  ymax = upper__ - 0.1 * (upper__ - lower__)), 
+              alpha = 0.3, fill = "darkgreen") +
+  geom_ribbon(aes(ymin = lower__ + 0.25 * (upper__ - lower__), 
+                  ymax = upper__ - 0.25 * (upper__ - lower__)), 
+              alpha = 0.4, fill = "darkgreen") +
+  # Add line for the estimates
+  geom_line(color = "black") +
+  # Add points for original data
+  geom_point(data = bombus.obligate, aes(x = BeeDiversity, y = PD.obligate), 
+             color = "black", alpha = 0.6) +
+  # Labels and theme
+  labs(x = "Bee Diversity (Untransformed)", y = "PD Obligate Estimate") +
+  scale_x_continuous(breaks = axis.bee.div, labels = labs.bee.div) +
+  theme_classic()
+
+ob_beediv
+
+############################
+## PDobligate ~ rare.degree
+
+# Extract the data from conditional_effects
+cond_effects_data <- conditional_effects(fit.microbe.bombus, effects = "rare.degree", resp = "PDobligate", plot = FALSE)
+plot_data <- cond_effects_data$PDobligate.PDobligate_rare.degree
+
+
+# Plot using ggplot2 for credible intervals with geom_ribbon
+ob_degree <- ggplot(plot_data, aes(x = rare.degree, y = estimate__)) +
+  # Add ribbons for the 95%, 80%, and 50% credible intervals
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill = "darkgreen") +
+  geom_ribbon(aes(ymin = lower__ + 0.1 * (upper__ - lower__), 
+                  ymax = upper__ - 0.1 * (upper__ - lower__)), 
+              alpha = 0.3, fill = "darkgreen") +
+  geom_ribbon(aes(ymin = lower__ + 0.25 * (upper__ - lower__), 
+                  ymax = upper__ - 0.25 * (upper__ - lower__)), 
+              alpha = 0.4, fill = "darkgreen") +
+  # Add line for the estimates
+  geom_line(color = "black") +
+  # Add points for original data
+  geom_point(data = bombus.obligate, aes(x = rare.degree, y = PD.obligate), 
+             color = "black", alpha = 0.6) +
+  # Labels and theme
+  labs(x = "Diet breadth (rarefied degree; untransformed)", y = "PD Obligate Estimate") +
+  scale_x_continuous(breaks = axis.degree, labels = labs.degree) +
+  theme_classic()
+
+ob_degree
+
+############################
+## PDtransientlog ~ MeanITD
+
+# Extract the data from conditional_effects
+cond_effects_data <- conditional_effects(fit.microbe.bombus, effects = "MeanITD", resp = "PDtransientlog", plot = FALSE)
+plot_data <- cond_effects_data$PDtransientlog.PDtransientlog_MeanITD
+
+
+# Plot using ggplot2 for credible intervals with geom_ribbon
+trans_itd <- ggplot(plot_data, aes(x = MeanITD, y = estimate__)) +
+  # Add ribbons for the 95%, 80%, and 50% credible intervals
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill = "orange") +
+  geom_ribbon(aes(ymin = lower__ + 0.1 * (upper__ - lower__), 
+                  ymax = upper__ - 0.1 * (upper__ - lower__)), 
+              alpha = 0.3, fill = "orange") +
+  geom_ribbon(aes(ymin = lower__ + 0.25 * (upper__ - lower__), 
+                  ymax = upper__ - 0.25 * (upper__ - lower__)), 
+              alpha = 0.4, fill = "orange") +
+  # Add line for the estimates
+  geom_line(color = "black") +
+  # Add points for original data
+  geom_point(data = bombus.transient, aes(x = MeanITD, y = PD.transient.log), 
+             color = "black", alpha = 0.6) +
+  # Labels and theme
+  labs(x = "Body Size (untransformed)", y = "PD Obligate Estimate") +
+  scale_x_continuous(breaks = axis.itd, labels = labs.itd) +
+  theme_classic()
+
+trans_itd
 
 ## **********************************************************
-## Apis model
-## **********************************************************
-# 
-data.par <- spec.apis[spec.apis$LogWeightsAbund != 0, ] %>%
-  subset(., rowSums(is.na(.)) != ncol(.))
-
-## PD log obligate ~ bee abundance
-labs.bee.abund <- (pretty(c(0, spec.apis.orig$BeeAbundance), n=8))
-axis.bee.abund <-  standardize.axis(labs.bee.abund,
-                                    spec.apis.orig$BeeAbundance)
-
-newdata.beeabund <- tidyr::crossing(BeeAbundance =
-                                      seq(min(data.par$BeeAbundance),
-                                          max(data.par$BeeAbundance),
-                                          length.out=10),
-                                    MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
-                                    Site=data.par$Site,
-                                    rare.degree=mean(data.par$rare.degree),
-                                    #MeanITD=mean(data.par$MeanITD),
-                                    Year = data.par$Year,
-                                    DoyStart = data.par$DoyStart,
-                                    Lat = mean(data.par$Lat),
-                                    BeeDiversity = mean(data.par$BeeDiversity),
-)
-
-pred_beeabund <- fit.microbe.apis %>%
-  epred_draws(newdata = newdata.beeabund ,
-              resp = "PDobligatelog",
-              allow_new_levels = FALSE)
-
-# to see range of predicted values
-pred_beeabund %>%
- group_by(BeeAbundance) %>%
- summarise(mean(.epred))
-
-
-apis.abund.PD <- ggplot(pred_beeabund, aes(x = BeeAbundance, y =
-                                               .epred)) +
-  stat_lineribbon(show.legend=FALSE) +
-  scale_fill_brewer(palette = "Greens") +
-  labs(x = "Bee Abundance", y = "Log Obligate Microbe PD",
-       fill = "Credible Interval", tag="C.") +
-  theme(legend.position = "none")  +
-  theme(axis.title.x = element_text(size=16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16)) +
-  theme_classic() +
-  geom_point(data=data.par,
-             aes(y=PD.obligate.log, x=BeeAbundance), cex=2, alpha=0.5) +
-  scale_x_continuous(
-    breaks = axis.bee.abund,
-    labels =  labs.bee.abund)
-
-
-apis.abund.PD
-panelC <- apis.abund.PD
-
-dir.create("figures")
-
-ggsave(apis.abund.PD, file="figures/apisLogPDobligate_beeAbund.pdf",
-       height=4, width=5)
-
-#################################
-## PD ~ bee diversity
-# labs.bee.div <- (pretty(c(0, spec.apis.orig$BeeDiversity), n=8))
-# axis.bee.div <-  standardize.axis(labs.bee.div,
-#                                   spec.apis.orig$BeeDiversity)
-# 
-# newdata.beediv <- tidyr::crossing(BeeDiversity =
-#                                     seq(min(data.par$BeeDiversity),
-#                                         max(data.par$BeeDiversity),
-#                                         length.out=10),
-#                                   MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
-#                                   Site=data.par$Site,
-#                                   rare.degree=mean(data.par$rare.degree),
-#                                   #MeanITD=mean(data.par$MeanITD),
-#                                   Year = data.par$Year,
-#                                   DoyStart = data.par$DoyStart,
-#                                   Lat = mean(data.par$Lat),
-#                                   BeeAbundance = mean(data.par$BeeAbundance),
-# )
-# 
-# pred_beediv <- fit.microbe.apis %>%
-#   epred_draws(newdata = newdata.beediv ,
-#               resp = "PD",
-#               allow_new_levels = TRUE)
-# 
-# 
-# apis.div.PD <- ggplot(pred_beediv, aes(x = BeeDiversity, y =
-#                                            .epred)) +
-#   stat_lineribbon(show.legend=FALSE) +
-#   scale_fill_brewer(palette = "Blues") +
-#   labs(x = "Bee Diversity", y = "Microbe \nPhylogenetic \nDistance",
-#        fill = "Credible Interval", tag="A.") +
-#   theme(legend.position = "none")  +
-#   theme(axis.title.x = element_text(size=16),
-#         axis.title.y = element_text(size=16),
-#         text = element_text(size=16)) +
-#   theme_classic() +
-#   geom_point(data=data.par,
-#              aes(y=PD, x=BeeDiversity), cex=2, alpha=0.5) +
-#   scale_x_continuous(
-#     breaks = axis.bee.div,
-#     labels =  labs.bee.div)
-# 
-# 
-# apis.div.PD
-# panelA <- apis.div.PD
-# 
-# dir.create("figures")
-# 
-# ggsave(apis.div.PD, file="figures/apisPD_beeDiv.pdf",
-#        height=4, width=5)
-
-
-#################################
-## PD ~ mean floral diversity
-# labs.floral.div <- (pretty(c(0, spec.apis.orig$MeanFloralDiversity), n=8))
-# axis.floral.div <-  standardize.axis(labs.floral.div,
-#                                      spec.apis.orig$MeanFloralDiversity)
-# 
-# newdata.flrdiv <- tidyr::crossing(MeanFloralDiversity =
-#                                     seq(min(data.par$MeanFloralDiversity),
-#                                         max(data.par$MeanFloralDiversity),
-#                                         length.out=10),
-#                                   BeeDiversity=mean(data.par$BeeDiversity),
-#                                   Site=data.par$Site,
-#                                   rare.degree=mean(data.par$rare.degree),
-#                                   #MeanITD=mean(data.par$MeanITD),
-#                                   Year = data.par$Year,
-#                                   DoyStart = data.par$DoyStart,
-#                                   Lat = mean(data.par$Lat),
-#                                   BeeAbundance = mean(data.par$BeeAbundance),
-# )
-# 
-# pred_flrdiv <- fit.microbe.apis %>%
-#   epred_draws(newdata = newdata.flrdiv ,
-#               resp = "PD",
-#               allow_new_levels = TRUE)
-# 
-# 
-# floral.div.PD <- ggplot(pred_flrdiv, aes(x = MeanFloralDiversity, y =
-#                                            .epred)) +
-#   stat_lineribbon(show.legend=FALSE) +
-#   scale_fill_brewer(palette = "Oranges") +
-#   labs(x = "Mean Floral Diversity", y = "Microbe \nPhylogenetic \nDistance",
-#        fill = "Credible Interval", tag="D.") +
-#   theme(legend.position = "none")  +
-#   theme(axis.title.x = element_text(size=16),
-#         axis.title.y = element_text(size=16),
-#         text = element_text(size=16)) +
-#   theme_classic() +
-#   geom_point(data=data.par,
-#              aes(y=PD, x=MeanFloralDiversity), cex=2, alpha=0.5) +
-#   scale_x_continuous(
-#     breaks = axis.floral.div,
-#     labels =  labs.floral.div)
-# 
-# 
-# floral.div.PD
-# panelD <- floral.div.PD
-# 
-# dir.create("figures")
-# 
-# ggsave(floral.div.PD, file="figures/apisPD_floralDiv.pdf",
-#        height=4, width=5)
-
-
-#################################
-## PD ~ rare.degree
-labs.rare.degree <- (pretty(c(0, spec.apis.orig$rare.degree), n=8))
-axis.rare.degree <-  standardize.axis(labs.rare.degree,
-                                      spec.apis.orig$rare.degree)
-
-newdata.beediv <- tidyr::crossing(rare.degree =
-                                    seq(min(data.par$rare.degree),
-                                        max(data.par$rare.degree),
-                                        length.out=10),
-                                  BeeDiversity=mean(data.par$BeeDiversity),
-                                  Site=data.par$Site,
-                                  #MeanITD=mean(data.par$MeanITD),
-                                  MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
-                                  Year = data.par$Year,
-                                  DoyStart = data.par$DoyStart,
-                                  Lat = mean(data.par$Lat),
-                                  BeeAbundance = mean(data.par$BeeAbundance),
-)
-
-pred_beediv <- fit.microbe.apis %>%
-  epred_draws(newdata = newdata.beediv ,
-              resp = "PDobligatelog",
-              allow_new_levels = FALSE)
-
-
-rare.degree.PD <- ggplot(pred_beediv, aes(x = rare.degree, y =
-                                            .epred)) +
-  stat_lineribbon(show.legend=FALSE) +
-  scale_fill_brewer(palette = "Greens") +
-  labs(x = "Diet Breadth", y = "Log Obligate Microbe PD",
-       fill = "Credible Interval", tag="B.") +
-  theme(legend.position = "none")  +
-  theme(axis.title.x = element_text(size=16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16)) +
-  theme_classic() +
-  geom_point(data=data.par,
-             aes(y=PD.obligate.log, x=rare.degree), cex=2, alpha=0.5) +
-  scale_x_continuous(
-    breaks = axis.rare.degree,
-    labels =  labs.rare.degree)
-
-
-rare.degree.PD
-panelB <- rare.degree.PD
-
-dir.create("figures")
-
-ggsave(rare.degree.PD, file="figures/apisLogPDobligate_rare.degree.pdf",
-       height=4, width=5)
-
-#################################
-## PD ~ latitude
-# labs.lat <- (pretty(c(0, spec.apis.orig$Lat), n=8))
-# axis.lat <-  standardize.axis(labs.lat,
-#                                       spec.apis.orig$Lat)
-# 
-# newdata.beediv <- tidyr::crossing(Lat =
-#                                     seq(min(data.par$Lat),
-#                                         max(data.par$Lat),
-#                                         length.out=10),
-#                                   BeeDiversity=mean(data.par$BeeDiversity),
-#                                   Site=data.par$Site,
-#                                   rare.degree=mean(data.par$rare.degree),
-#                                   MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
-#                                   Year = data.par$Year,
-#                                   DoyStart = data.par$DoyStart,
-#                                   BeeAbundance = mean(data.par$BeeAbundance),
-# )
-# 
-# pred_beediv <- fit.microbe.apis %>%
-#   epred_draws(newdata = newdata.beediv ,
-#               resp = "PD",
-#               allow_new_levels = TRUE)
-# 
-# 
-# lat.PD <- ggplot(pred_beediv, aes(x = Lat, y =
-#                                             .epred)) +
-#   stat_lineribbon(show.legend=FALSE) +
-#   scale_fill_brewer(palette = "Blues") +
-#   labs(x = "Latitude", y = "Microbe \nPhylogenetic \nDistance",
-#        fill = "Credible Interval", tag="E.") +
-#   theme(legend.position = "none")  +
-#   theme(axis.title.x = element_text(size=16),
-#         axis.title.y = element_text(size=16),
-#         text = element_text(size=16)) +
-#   theme_classic() +
-#   geom_point(data=data.par,
-#              aes(y=PD, x=Lat), cex=2, alpha=0.5) +
-#   scale_x_continuous(
-#     breaks = axis.lat,
-#     labels =  labs.lat)
-# 
-# 
-# lat.PD
-# panelE <- lat.PD
-# 
-# dir.create("figures")
-# 
-# ggsave(rare.degree.PD, file="figures/apisPD_Lat.pdf",
-#        height=4, width=5)
-
-
-
-######
-## transient
-
-#################################
-## PD ~ rare.degree
-labs.rare.degree <- (pretty(c(0, spec.apis.orig$rare.degree), n=8))
-axis.rare.degree <-  standardize.axis(labs.rare.degree,
-                                      spec.apis.orig$rare.degree)
-
-newdata.beediv <- tidyr::crossing(rare.degree =
-                                    seq(min(data.par$rare.degree),
-                                        max(data.par$rare.degree),
-                                        length.out=10),
-                                  BeeDiversity=mean(data.par$BeeDiversity),
-                                  Site=data.par$Site,
-                                  #MeanITD=mean(data.par$MeanITD),
-                                  MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
-                                  Year = data.par$Year,
-                                  DoyStart = data.par$DoyStart,
-                                  Lat = mean(data.par$Lat),
-                                  BeeAbundance = mean(data.par$BeeAbundance),
-)
-
-pred_beediv <- fit.microbe.apis %>%
-  epred_draws(newdata = newdata.beediv ,
-              resp = "PDtransientlog",
-              allow_new_levels = FALSE)
-
-
-rare.degree.PD <- ggplot(pred_beediv, aes(x = rare.degree, y =
-                                            .epred)) +
-  stat_lineribbon(show.legend=FALSE) +
-  scale_fill_brewer(palette = "Oranges") +
-  labs(x = "Diet Breadth", y = "Log Transient Microbe PD",
-       fill = "Credible Interval", tag="B.") +
-  theme(legend.position = "none")  +
-  theme(axis.title.x = element_text(size=16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16)) +
-  theme_classic() +
-  geom_point(data=data.par,
-             aes(y=PD.transient.log, x=rare.degree), cex=2, alpha=0.5) +
-  scale_x_continuous(
-    breaks = axis.rare.degree,
-    labels =  labs.rare.degree)
-
-
-rare.degree.PD
-panelB <- rare.degree.PD
-
-dir.create("figures")
-
-ggsave(rare.degree.PD, file="figures/apisLogPDtransient_rare.degree.pdf",
-       height=4, width=5)
-
-
-## PD log transient ~ bee abundance
-labs.bee.abund <- (pretty(c(0, spec.apis.orig$BeeAbundance), n=8))
-axis.bee.abund <-  standardize.axis(labs.bee.abund,
-                                    spec.apis.orig$BeeAbundance)
-
-newdata.beeabund <- tidyr::crossing(BeeAbundance =
-                                      seq(min(data.par$BeeAbundance),
-                                          max(data.par$BeeAbundance),
-                                          length.out=10),
-                                    MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
-                                    Site=data.par$Site,
-                                    rare.degree=mean(data.par$rare.degree),
-                                    #MeanITD=mean(data.par$MeanITD),
-                                    Year = data.par$Year,
-                                    DoyStart = data.par$DoyStart,
-                                    Lat = mean(data.par$Lat),
-                                    BeeDiversity = mean(data.par$BeeDiversity),
-)
-
-pred_beeabund <- fit.microbe.apis %>%
-  epred_draws(newdata = newdata.beeabund ,
-              resp = "PDtransientlog",
-              allow_new_levels = FALSE)
-
-# to see range of predicted values
-pred_beeabund %>%
-  group_by(BeeAbundance) %>%
-  summarise(mean(.epred))
-
-
-apis.abund.PD <- ggplot(pred_beeabund, aes(x = BeeAbundance, y =
-                                             .epred)) +
-  stat_lineribbon(show.legend=FALSE) +
-  scale_fill_brewer(palette = "Oranges") +
-  labs(x = "Bee Abundance", y = "Log Transient Microbe PD",
-       fill = "Credible Interval", tag="C.") +
-  theme(legend.position = "none")  +
-  theme(axis.title.x = element_text(size=16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16)) +
-  theme_classic() +
-  geom_point(data=data.par,
-             aes(y=PD.transient.log, x=BeeAbundance), cex=2, alpha=0.5) +
-  scale_x_continuous(
-    breaks = axis.bee.abund,
-    labels =  labs.bee.abund)
-
-
-apis.abund.PD
-panelC <- apis.abund.PD
-
-dir.create("figures")
-
-ggsave(apis.abund.PD, file="figures/apisLogPDtransient_beeAbund.pdf",
-       height=4, width=5)
-
-##make paneled fig
-grid.arrange(panelA, panelB,
-             panelC, panelD, panelE, ncol=2)
-
-
 ## Melissodes model
+## **********************************************************
 
-# data.par <- spec.net[spec.net$MelissodesWeights != 0, ]
-# 
-# ## PD ~ bee abundance
-# labs.bee.abund <- (pretty(c(0, spec.melissodes.orig$BeeAbundance), n=8))
-# axis.bee.abund <-  standardize.axis(labs.bee.abund,
-#                                     spec.melissodes.orig$BeeAbundance)
-# 
-# newdata.beeabund <- tidyr::crossing(BeeAbundance =
-#                                       seq(min(data.par$BeeAbundance),
-#                                           max(data.par$BeeAbundance),
-#                                           length.out=10),
-#                                     MeanFloralDiversity=mean(data.par$MeanFloralDiversity),
-#                                     Site=data.par$Site,
-#                                     rare.degree=mean(data.par$rare.degree),
-#                                     #MeanITD=mean(data.par$MeanITD),
-#                                     Year = data.par$Year,
-#                                     DoyStart = data.par$DoyStart,
-#                                     Lat = mean(data.par$Lat),
-#                                     BeeDiversity = mean(data.par$BeeDiversity),
-# )
-# 
-# pred_beeabund <- fit.microbe.melissodes %>%
-#   epred_draws(newdata = newdata.beeabund ,
-#               resp = "PD",
-#               allow_new_levels = TRUE)
-# 
-# ## to see range of predicted values
-# #pred_beeabund %>%
-# #  group_by(BeeAbundance) %>%
-# #  summarise(mean(.epred))
-# 
-# 
-# melissodes.abund.PD <- ggplot(pred_beeabund, aes(x = BeeAbundance, y =
-#                                              .epred)) +
-#   stat_lineribbon(show.legend=FALSE) +
-#   scale_fill_brewer(palette = "Oranges") +
-#   labs(x = "Bee Abundance", y = "Microbe \nPhylogenetic \nDistance",
-#        fill = "Credible Interval") +
-#   theme(legend.position = "none")  +
-#   theme(axis.title.x = element_text(size=16),
-#         axis.title.y = element_text(size=16),
-#         text = element_text(size=16)) +
-#   theme_classic() +
-#   geom_point(data=data.par,
-#              aes(y=PD, x=BeeAbundance), cex=2, alpha=0.5) +
-#   scale_x_continuous(
-#     breaks = axis.bee.abund,
-#     labels =  labs.bee.abund)
-# 
-# 
-# melissodes.abund.PD
-# 
-# dir.create("figures")
-# 
-# ggsave(melissodes.abund.PD, file="figures/melissodesPD_beeAbund.pdf",
-#        height=4, width=5)
-# 
+## PD obligate ~ Bee Diversity
+
+# Extract the data from conditional_effects
+cond_effects_data <- conditional_effects(fit.microbe.melissodes, effects = "BeeAbundance", resp = "PDobligatelog", plot = FALSE)
+plot_data <- cond_effects_data$PDobligatelog.PDobligatelog_BeeAbundance
+
+
+# Plot using ggplot2 for credible intervals with geom_ribbon
+ob_beeabund <- ggplot(plot_data, aes(x = BeeAbundance, y = estimate__)) +
+  # Add ribbons for the 95%, 80%, and 50% credible intervals
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill = "darkgreen") +
+  geom_ribbon(aes(ymin = lower__ + 0.1 * (upper__ - lower__), 
+                  ymax = upper__ - 0.1 * (upper__ - lower__)), 
+              alpha = 0.3, fill = "darkgreen") +
+  geom_ribbon(aes(ymin = lower__ + 0.25 * (upper__ - lower__), 
+                  ymax = upper__ - 0.25 * (upper__ - lower__)), 
+              alpha = 0.4, fill = "darkgreen") +
+  # Add line for the estimates
+  geom_line(color = "black") +
+  # Add points for original data
+  geom_point(data = melissodes.obligate, aes(x = BeeAbundance, y = PD.obligate.log), 
+             color = "black", alpha = 0.6) +
+  # Labels and theme
+  labs(x = "Bee Abundance (Untransformed)", y = "PD Obligate Estimate") +
+  scale_x_continuous(breaks = axis.bee.abund, labels = labs.bee.abund) +
+  theme_classic()
+
+ob_beeabund
