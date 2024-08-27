@@ -60,7 +60,7 @@ if(site.or.lat ==  "lat"){
                                      MeanFloralAbundance +
                                      MeanFloralDiversity +
                                      SRDoyPoly1 + SRDoyPoly2 +
-                                     Year + Lat +
+                                     Year +
                                      Area + 
                                      (1|Site)
                                  )

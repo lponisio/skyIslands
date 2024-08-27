@@ -28,7 +28,7 @@ vars_yearsr <- c("MeanFloralAbundance",
                  "SRDoyPoly2"
                  )
 vars_yearsrsp <- "rare.degree"
-vars_sp <- "MeanITD"
+## vars_sp <- "MeanITD"
 vars_site <- c("Lat", "Area")
           
 variables.to.log <- c("rare.degree", "Lat", "Net_BeeAbundance", "Area")
@@ -40,7 +40,9 @@ variables.to.log.1 <- c("Net_HBAbundance", "Net_BombusAbundance")
 source("src/init.R")
 ## maybe remove SS? (only sampled one year). VC and UK were really
 ## grassy, odd meadows
-spec.net <- filter(spec.net, Site != "VC" & Site != "UK")
+
+## spec.net <- filter(spec.net, Site != "VC" & Site != "UK" & Site != "SS")
+spec.net <- filter(spec.net, Site != "VC")
 
 
 ## because only Bombus and apis models converge, setted the rest of
@@ -246,6 +248,10 @@ loo.bombus.crithidia <- makeLooTable(parasite="CrithidiaSpp",
                                      )
 
 loo.bombus.crithidia
+
+## not including ss because HB abundance and bombus abundance are colinear
+loo_compare(loo.crithidia.bombus.ba, loo.crithidia.bombus.all)
+
 ## bombus and HB abundance has the best fit, but bombus and HB
 ## abundance are pretty colinear (VIF ~6). The next best fit is bombus
 ## abundance alone. 
@@ -259,6 +265,10 @@ loo.bombus.apicystis <- makeLooTable(parasite="ApicystisSpp",
                                           loo.apicystis.bombus.all)
                                      )
 loo.bombus.apicystis
+
+loo_compare(loo.apicystis.bombus.ss, loo.apicystis.bombus.ba,
+            loo.apicystis.bombus.all)
+
 ## The best fit is the abundance of bombus and apis together, which in
 ## this model are not colinear. 
 
@@ -319,6 +329,8 @@ loo.apis.crithidia <- makeLooTable(parasite="CrithidiaSpp",
                                      )
 
 loo.apis.crithidia
+
+loo_compare(loo.crithidia.apis.ss, loo.crithidia.apis.all)
 
 loo.apis.apicystis <- makeLooTable(parasite="ApicystisSpp",
                                      genus="Apis",
