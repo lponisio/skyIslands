@@ -104,16 +104,17 @@ axis.itd <-  standardize.axis(labs.itd,
 
 ## load model output data
 load(file="saved/fullMicrobeBombusFit.Rdata")
-#load(file="saved/fullMicrobeApisFit.Rdata")
 load(file="saved/fullMicrobeMelissodesFit.Rdata")
+
+#load(file="saved/fullMicrobeApisFit.Rdata")
 
 
 # We want the standarized data for the predictions (spec.data)
 spec.bombus <- spec.net[spec.net$Genus == "Bombus",]
-spec.melissodes <- spec.net[spec.net$Genus == "Melissodes",]
 bombus.obligate <- spec.bombus[spec.bombus$WeightsObligateMicrobe == 1,]
-data.site <- spec.net[spec.net$Weights == 1,]
 bombus.transient <- spec.bombus[spec.bombus$WeightsTransientMicrobe == 1,]
+
+spec.melissodes <- spec.net[spec.net$Genus == "Melissodes",]
 melissodes.obligate <- spec.melissodes[spec.melissodes$WeightsObligateMicrobe == 1,]
 
 
@@ -149,7 +150,7 @@ ob_beediv <- ggplot(plot_data, aes(x = BeeDiversity, y = estimate__)) +
   geom_point(data = bombus.obligate, aes(x = BeeDiversity, y = PD.obligate), 
              color = "black", alpha = 0.6) +
   # Labels and theme
-  labs(x = "Bee Diversity (Untransformed)", y = "PD Obligate Estimate") +
+  labs(x = "Bee Diversity (Untransformed)", y = "Obligate Microbe PD") +
   scale_x_continuous(breaks = axis.bee.div, labels = labs.bee.div) +
   theme_classic()
 
@@ -179,7 +180,7 @@ ob_degree <- ggplot(plot_data, aes(x = rare.degree, y = estimate__)) +
   geom_point(data = bombus.obligate, aes(x = rare.degree, y = PD.obligate), 
              color = "black", alpha = 0.6) +
   # Labels and theme
-  labs(x = "Diet breadth (rarefied degree; untransformed)", y = "PD Obligate Estimate") +
+  labs(x = "Diet breadth (rarefied degree; untransformed)", y = "Obligate Microbe PD") +
   scale_x_continuous(breaks = axis.degree, labels = labs.degree) +
   theme_classic()
 
@@ -209,7 +210,7 @@ trans_itd <- ggplot(plot_data, aes(x = MeanITD, y = estimate__)) +
   geom_point(data = bombus.transient, aes(x = MeanITD, y = PD.transient.log), 
              color = "black", alpha = 0.6) +
   # Labels and theme
-  labs(x = "Body Size (untransformed)", y = "PD Obligate Estimate") +
+  labs(x = "Body Size (untransformed)", y = "Facultative Microbe PD (log transformed)") +
   scale_x_continuous(breaks = axis.itd, labels = labs.itd) +
   theme_classic()
 
@@ -242,7 +243,7 @@ ob_beeabund <- ggplot(plot_data, aes(x = BeeAbundance, y = estimate__)) +
   geom_point(data = melissodes.obligate, aes(x = BeeAbundance, y = PD.obligate.log), 
              color = "black", alpha = 0.6) +
   # Labels and theme
-  labs(x = "Bee Abundance (Untransformed)", y = "PD Obligate Estimate") +
+  labs(x = "Bee Abundance (Untransformed)", y = "Obligate Microbe PD (log transformed)") +
   scale_x_continuous(breaks = axis.bee.abund, labels = labs.bee.abund) +
   theme_classic()
 
