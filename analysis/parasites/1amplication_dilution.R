@@ -28,7 +28,7 @@ vars_yearsr <- c("MeanFloralAbundance",
                  "SRDoyPoly2"
                  )
 vars_yearsrsp <- "rare.degree"
-## vars_sp <- "MeanITD"
+vars_sp <- "MeanITD"
 vars_site <- c("Lat", "Area")
           
 variables.to.log <- c("rare.degree", "Lat", "Net_BeeAbundance", "Area")
