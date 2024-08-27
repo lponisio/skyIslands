@@ -142,13 +142,13 @@ pred_bombusabund %>%
 p2.parasite <- ggplot(pred_bombusabund, aes(x = Net_BeeAbundance, y = .epred)) +
     stat_lineribbon() +
     scale_fill_brewer(palette = "Blues") +
-    labs(x = "Bombus abundance (log)", y = "Crithidia prevalence",
+    labs(x = "Bee abundance (log)", y = "Crithidia prevalence",
          fill = "Credible interval") +
     theme_ms() +
     theme(legend.position = "bottom") +
     scale_x_continuous(
-        breaks = axis.bombus.abund,
-        labels =  labs.bombus.abund) +
+        breaks = axis.bee.abund,
+        labels =  labs.bee.abund) +
     theme(axis.title.x = element_text(size=16),
           axis.title.y = element_text(size=16),
           text = element_text(size=16)) +
@@ -200,8 +200,8 @@ p3.parasite <- ggplot(pred_floraldiv, aes(x = MeanFloralDiversity, y = .epred)) 
     theme_ms() +
     theme(legend.position = "bottom") +
     scale_x_continuous(
-        breaks = axis.bee.div,
-        labels =  labs.bee.div) +
+        breaks = axis.flower.div,
+        labels =  labs.flower.div) +
     theme(axis.title.x = element_text(size=16),
           axis.title.y = element_text(size=16),
           text = element_text(size=16)) +
@@ -258,8 +258,8 @@ p4.parasite <- ggplot(pred_degree, aes(x = rare.degree, y = .epred)) +
     theme_ms() +
     theme(legend.position = "bottom") +
     scale_x_continuous(
-        breaks = axis.bombus.abund,
-        labels =  labs.bombus.abund) +
+        breaks = axis.degree,
+        labels =  labs.degree) +
     theme(axis.title.x = element_text(size=16),
           axis.title.y = element_text(size=16),
           text = element_text(size=16)) +
@@ -354,13 +354,13 @@ pred_bombusabund %>%
 p6.parasite <- ggplot(pred_bombusabund, aes(x = Net_BeeAbundance, y = .epred)) +
   stat_lineribbon() +
   scale_fill_brewer(palette = "Blues") +
-  labs(x = "Bombus abundance (log)", y = "Apicystis prevalence",
+  labs(x = "Bee abundance (log)", y = "Apicystis prevalence",
        fill = "Credible interval") +
   theme_ms() +
   theme(legend.position = "bottom") +
   scale_x_continuous(
-    breaks = axis.bombus.abund,
-    labels =  labs.bombus.abund) +
+    breaks = axis.bee.abund,
+    labels =  labs.bee.abund) +
   theme(axis.title.x = element_text(size=16),
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) +
@@ -412,8 +412,8 @@ p7.parasite <- ggplot(pred_floraldiv, aes(x = MeanFloralDiversity, y = .epred)) 
   theme_ms() +
   theme(legend.position = "bottom") +
   scale_x_continuous(
-    breaks = axis.bee.div,
-    labels =  labs.bee.div) +
+    breaks = axis.flower.div,
+    labels =  labs.flower.div) +
   theme(axis.title.x = element_text(size=16),
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) +
@@ -470,8 +470,8 @@ p8.parasite <- ggplot(pred_degree, aes(x = rare.degree, y = .epred)) +
   theme_ms() +
   theme(legend.position = "bottom") +
   scale_x_continuous(
-    breaks = axis.bombus.abund,
-    labels =  labs.bombus.abund) +
+    breaks = axis.degree,
+    labels =  labs.degree) +
   theme(axis.title.x = element_text(size=16),
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) +
