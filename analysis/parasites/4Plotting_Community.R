@@ -1,83 +1,66 @@
-## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
-setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
-## setwd('~/Dropbox (University of Oregon)/skyislands')
-## Script for plotting all of the important explanatory variables.
-
-setwd("analysis/parasites")
 rm(list=ls())
+## setwd('/Volumes/bombus/Dropbox (University of Oregon)/skyislands')
+## setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
+setwd('~/Dropbox (University of Oregon)/skyislands')
+## Script for plotting all of the important explanatory variables.
+library(ggpubr)
+library(tidyverse)
+library(tidybayes)
+setwd("analysis/parasites")
+load(file="saved/spec_weights.Rdata")
 source("src/misc.R")
-source("src/writeResultsTable.R")
-source("src/makeMultiLevelData.R")
-source("src/runParasiteModels.R")
-source("src/standardize_weights.R")
 source("src/ggplotThemes.R")
-## all of the variables that are explanatory variables and thus need
-## to be centered
-vars_yearsr <- c("MeanFloralAbundance",
-                 "MeanFloralDiversity",
-                 "Net_BeeDiversity",
-                 "Lat", "SRDoy"  
-)
-vars_sp <- c("MeanITD",
-             "rare.degree")
-
-variables.to.log <- "rare.degree"
-
-## uses only net specimens, and drops syrphids
-source("src/init.R")
-
-spec.orig <- spec.net
-site.orig <- site.sum
 
 ## ***********************************************************************
 ## plotting, unscaling labs
 ## ***********************************************************************
 ## lat
 
-spec.orig$Lat <- log(spec.orig$Lat)
-labs.lat.x <- (pretty(c(spec.orig$Lat),
-                      n=10))
-axis.lat.x <-  standardize.axis(labs.lat.x, spec.orig$Lat)
+spec.uni <- spec.orig[spec.orig$Weights ==1,]
+labs.lat.x <- pretty(c(spec.uni$Lat),
+                     n=10)
+axis.lat.x <-  standardize.axis(labs.lat.x, spec.uni$Lat)
 ## bloom abundance
-labs.bloom.abund <- (pretty(c(0, spec.orig$MeanFloralAbundance), n=6))
+labs.bloom.abund <- (pretty(c(spec.uni$MeanFloralAbundance), n=6))
 axis.bloom.abund <-  standardize.axis(labs.bloom.abund,
-                                      spec.orig$MeanFloralAbundance)
-## area (notcurrently used due to colinearity with lat)
-spec.orig$Area <- log(spec.orig$Area)
-labs.area <- (pretty(spec.orig$Area, n=6))
-axis.area <-  standardize.axis(labs.area,
-                               spec.orig$Area)
-## bee abund
-## labs.bee.abund2 <- (pretty(c(0, spec.orig$PollAbundance),n=6))
-## axis.bee.abund2 <- labs.bee.abund2
-## not standardized so can use poisson
-## axis.bee.abund2 <-  standardize.axis(labs.bee.abund2,
-##                                       spec.orig$PollAbundance)
-
+                                      spec.uni$MeanFloralAbundance)
 ## flower div
-labs.flower.div <- (pretty(spec.orig$MeanFloralDiversity, n=5))
+labs.flower.div <- (pretty(spec.uni$MeanFloralDiversity, n=5))
 axis.flower.div <-  standardize.axis(labs.flower.div,
-                                     spec.orig$MeanFloralDiversity)
-## bee abund
-## labs.bee.abund <- (pretty(c(0, spec.orig$PollAbundance), n=5))
-## axis.bee.abund <-  axis.bee.abund
+                                     spec.uni$MeanFloralDiversity)
 ## HB abund
-labs.HB.abund <- (pretty(c(0, spec.orig$Net_HBAbundance), n=5))
-axis.HB.abund <-  standardize.axis(labs.HB.abund, spec.orig$Net_HBAbundance)
+labs.HB.abund <- (pretty(c(spec.uni$Net_HBAbundance), n=5))
+axis.HB.abund <-  standardize.axis(labs.HB.abund, spec.uni$Net_HBAbundance)
 ## bombus abund
-labs.bombus.abund <- (pretty(c(0, spec.orig$Net_BombusAbundance), n=5))
-axis.bombus.abund <-  standardize.axis(labs.bombus.abund, spec.orig$Net_BombusAbundance)
+labs.bombus.abund <- (pretty(c(spec.uni$Net_BombusAbundance), n=5))
+axis.bombus.abund <-  standardize.axis(labs.bombus.abund, spec.uni$Net_BombusAbundance)
 ## non hb non bombus abund
-labs.bee.abund <- (pretty(c(0, spec.orig$Net_NonBombusHBAbundance), n=5))
-axis.bee.abund <-  standardize.axis(labs.bee.abund, spec.orig$Net_NonBombusHBAbundance)
+labs.bee.abund <- (pretty(c(spec.uni$Net_NonBombusHBAbundance), n=5))
+axis.bee.abund <-  standardize.axis(labs.bee.abund, spec.uni$Net_NonBombusHBAbundance)
 ## bee diversity
-labs.bee.div <- (pretty(c(0, spec.orig$Net_BeeDiversity), n=5))
+labs.bee.div <- (pretty(c(spec.uni$Net_BeeDiversity), n=5))
 axis.bee.div <-  standardize.axis(labs.bee.div,
-                                  spec.orig$Net_BeeDiversity)
-## Load the model data
-load(file="saved/communityFit.Rdata")
-## We want the standarized data for the predictions (spec.   ) depending on the model
-data.par <- spec.net[spec.net$Weights == 1,]
+                                  spec.uni$Net_BeeDiversity)
+
+spec.sp <-  spec.orig[spec.orig$WeightsSp ==1 & spec.orig$Genus == "Bombus",]
+## meanITD
+labs.itd <- (pretty(spec.sp$MeanITD, n=10))
+axis.itd <-  standardize.axis(labs.itd,
+                              spec.sp$MeanITD)
+## rare.degree
+labs.degree <- (pretty(spec.sp$rare.degree, n=10))
+axis.degree <-  standardize.axis(labs.itd,
+                                 spec.sp$rare.degree)
+
+## ***********************************************************************
+## bee community diversity and abundance and parasitism
+## ***********************************************************************
+load(file="../../../skyIslands_saved/parasite-results/saved/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all.Rdata")
+
+# We want the standarized data for the predictions (spec.data)
+#spec.bombus <- spec.net[spec.net$Genus == "Bombus",]
+#bombus.par <- spec.bombus[spec.bombus$WeightsSp == 1,]
+data.site <- spec.net[spec.net$Weights == 1,]
 ## ***********************************************************************
 ## bee community diversity and latitude
 ## ***********************************************************************
@@ -85,24 +68,23 @@ data.par <- spec.net[spec.net$Weights == 1,]
 ## Community level visuals
 
 newdata.lat <- crossing(Lat =
-                          seq(min(data.par$Lat),
-                              max(data.par$Lat),
+                          seq(min(data.site$Lat),
+                              max(data.site$Lat),
                               length.out=10),
-                        Net_BeeDiversity = mean(data.par$Net_BeeDiversity),
-                        rare.degree = mean(data.par$rare.degree),
-                        MeanITD = mean(data.par$MeanITD),
-                        MeanFloralAbund= mean(data.par$MeanFloralAbundance),
-                        MeanFloralDiversity= mean(data.par$MeanFloralDiversity),
-                        Net_HBAbundance= mean(data.par$Net_HBAbundance),
-                        Net_NonBombusHBAbundance = mean(data.par$Net_NonBombusHBAbundance),
-                        Net_BombusAbundance = mean(data.par$Net_BombusAbundance),
-                        Site = "JC", 
-                        SRDoy = mean(data.par$SRDoy),
-                        Year = "2017"
+                        Net_BeeAbundance = 0,
+                        MeanFloralDiversity = 0,
+                        Net_BeeDiversity = 0,
+                        SRDoyPoly1 = 0,
+                        SRDoyPoly2 = 0,
+                        Area = 0, 
+                        Year = "2012",
+                        Site = "SC", 
+                        GenusSpecies = "Bombus centralis",
+                        Weights=1
 )
 
 ## predict values based on generated data and model parameters
-pred_lat <- fit.community %>% 
+pred_lat <- fit.parasite %>% 
   epred_draws(newdata = newdata.lat,
               resp = "NetBeeDiversity")
 
@@ -128,7 +110,7 @@ beediv_lat <- ggplot(pred_lat, aes(x = .epred, y = Net_BeeDiversity)) +
         text = element_text(size=16)) +
   theme_ms() +
   ##theme_dark_black()+
-  geom_point(data=data.par,
+  geom_point(data=data.site,
              aes(y= Net_BeeDiversity, x=Lat),
              color="grey40", cex=2)
 
