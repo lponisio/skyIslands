@@ -9,8 +9,8 @@ setwd("skyIslands/analysis/microbiome/")
 run.diagnostics = FALSE
 make.plots = FALSE
 run.bombus = FALSE
-run.apis = FALSE
-run.melissodes = TRUE
+run.apis = TRUE
+run.melissodes = FALSE
 
 library(picante)
 library(plyr)
@@ -334,7 +334,7 @@ if(run.bombus){
   fit.microbe.bombus <- brm(bform.bombus, spec.net,
                           cores=ncores,
                           iter = 10000,
-                          chains =4,
+                          chains =1,
                           thin=1,
                           init=0,
                           open_progress = FALSE,
@@ -354,30 +354,35 @@ if(run.bombus){
 ## obligate PD model
 ob.microbe.apis.vars <- c("BeeAbundance",
                             "BeeDiversity", "Lat", #check this doesn't make VIF high
-                            "MeanFloralDiversity", "rare.degree",
+                            "MeanFloralDiversity", "rare.degree", #"ParasitePresence",
                             "(1|Site)") 
 
 
 ob.microbe.apis.x <- paste(ob.microbe.apis.vars, collapse="+")
 #ob.microbe.apis.y <- "PD.obligate | subset(WeightsObligateapis) + weights(apisLogWeightsObligateAbund)"
-ob.microbe.apis.y <- "PD.obligate | subset(WeightsObligateApis)"
+ob.microbe.apis.y <- "PD.obligate.log | subset(WeightsObligateApis)"
 formula.ob.microbe.apis <- as.formula(paste(ob.microbe.apis.y, "~",
                                               ob.microbe.apis.x))
 
 bf.ob.microbe.apis.skew <- bf(formula.ob.microbe.apis, family=skew_normal())
 bf.ob.microbe.apis.student <- bf(formula.ob.microbe.apis, family=student())
 bf.ob.microbe.apis.gaussian <- bf(formula.ob.microbe.apis)
+bf.ob.microbe.apis.mix.sg <- bf(formula.ob.microbe.apis, family=mixture(student, gaussian))
+bf.ob.microbe.apis.mix.gg <- bf(formula.ob.microbe.apis, family=mixture(gaussian, gaussian))
+bf.ob.microbe.apis.mix.ss <- bf(formula.ob.microbe.apis, family=mixture(student, student))
+
+
 
 ## non ob PD model
 non.ob.microbe.apis.vars <- c("BeeAbundance",
                               "BeeDiversity", "Lat", #check this doesn't make VIF high
-                              "MeanFloralDiversity", "rare.degree",
+                              "MeanFloralDiversity", "rare.degree", #"ParasitePresence",
                               "(1|Site)") 
 
 
 non.ob.microbe.apis.x <- paste(non.ob.microbe.apis.vars, collapse="+")
 # non.ob.microbe.apis.y <- "PD.transient | subset(WeightsTransientapis) + weights(apisLogWeightsTransientAbund)"
-non.ob.microbe.apis.y <- "PD.transient | subset(WeightsTransientApis)"
+non.ob.microbe.apis.y <- "PD.transient.log | subset(WeightsTransientApis)"
 formula.non.ob.microbe.apis <- as.formula(paste(non.ob.microbe.apis.y, "~",
                                                   non.ob.microbe.apis.x))
 
@@ -388,21 +393,22 @@ bf.non.ob.microbe.apis.student <- bf(formula.non.ob.microbe.apis, family=student
 bf.non.ob.microbe.apis.gaussian <- bf(formula.non.ob.microbe.apis)
 
 
+
 ## combined model
 
 #combine forms
-bform.apis <- bf.fdiv +
-  bf.tot.bdiv +
-  bf.tot.babund +
-  bf.ob.microbe.apis.gaussian +
-  bf.non.ob.microbe.apis.gaussian +
+# bform.apis <- bf.fdiv +
+#   bf.tot.bdiv +
+#   bf.tot.babund +
+bform.apis <- bf.ob.microbe.apis.mix.gg +
+  #bf.non.ob.microbe.apis.gaussian +
   set_rescor(FALSE)
 
 if(run.apis){
 fit.microbe.apis <- brm(bform.apis , spec.net,
                         cores=ncores,
                         iter = 10000,
-                        chains =4,
+                        chains =1,
                         thin=1,
                         init=0,
                         open_progress = FALSE,
@@ -431,6 +437,9 @@ formula.ob.microbe.melissodes <- as.formula(paste(ob.microbe.melissodes.y, "~",
 
 bf.ob.microbe.melissodes.skew <- bf(formula.ob.microbe.melissodes, family=skew_normal())
 bf.ob.microbe.melissodes.student <- bf(formula.ob.microbe.melissodes, family=student())
+bf.ob.microbe.melissodes.gaussian <- bf(formula.ob.microbe.melissodes)
+
+
 ## non ob PD model
 non.ob.microbe.melissodes.vars <- c("BeeAbundance",
                               "BeeDiversity", "Lat", #check this doesn't make VIF high
@@ -448,6 +457,7 @@ formula.non.ob.microbe.melissodes <- as.formula(paste(non.ob.microbe.melissodes.
 
 bf.non.ob.microbe.melissodes.student <- bf(formula.non.ob.microbe.melissodes, family=student())
 bf.non.ob.microbe.melissodes.skew <- bf(formula.non.ob.microbe.melissodes, family=skew_normal())
+bf.non.ob.microbe.melissodes.gaussian <- bf(formula.non.ob.microbe.melissodes)
 
 
 ## combined model
@@ -456,15 +466,15 @@ bf.non.ob.microbe.melissodes.skew <- bf(formula.non.ob.microbe.melissodes, famil
 bform.melissodes <- bf.fdiv +
   bf.tot.bdiv +
   bf.tot.babund +
-  bf.ob.microbe.melissodes.student +
-  bf.non.ob.microbe.melissodes.student +
+  bf.ob.microbe.melissodes.skew +
+  bf.non.ob.microbe.melissodes.skew +
   set_rescor(FALSE)
 
 if(run.melissodes){
 fit.microbe.melissodes <- brm(bform.melissodes , spec.net,
                            cores=ncores,
                            iter = 10000,
-                           chains =4,
+                           chains =1,
                            thin=1,
                            init=0,
                            open_progress = FALSE,
