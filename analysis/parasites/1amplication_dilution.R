@@ -125,6 +125,19 @@ xvars.ba <-  c("Net_BeeDiversity",
                             "(1|Site)",
                             "(1|gr(GenusSpecies, cov = phylo_matrix))")
 
+
+## honey bee abundance only (vif sometimes indicates floral diversity and
+## bombus abundance are colinear)
+xvars.ha <-  c("Net_BeeDiversity",
+                            "Net_HBAbundance",
+                            "rare.degree",
+                            "MeanFloralDiversity",
+                            "Lat",
+                            "(1|Site)",
+                            "(1|gr(GenusSpecies, cov = phylo_matrix))")
+
+
+
 ## all bee abundance 
 xvars.all <-  c("Net_BeeDiversity",
                              "Net_BeeAbundance",
@@ -133,6 +146,16 @@ xvars.all <-  c("Net_BeeDiversity",
                              "Lat",
                              "(1|Site)",
                              "(1|gr(GenusSpecies, cov = phylo_matrix))")
+
+
+## diversity only 
+xvars.div <-  c("Net_BeeDiversity",
+                "rare.degree",
+                "MeanFloralDiversity",
+                "Lat",
+                "(1|Site)",
+                "(1|gr(GenusSpecies, cov = phylo_matrix))")
+
 
 
 ## **********************************************************
@@ -170,6 +193,45 @@ run_plot_freq_model_diagnostics(remove_subset_formula(formula.bee.div),
 ## bombus
 table(spec.bombus$CrithidiaPresence[spec.bombus$WeightsPar == 1])
 table(spec.bombus$ApicystisSpp[spec.bombus$WeightsPar ==1 ])
+
+
+
+runCombinedParasiteModesWrapper <- function(data,
+                                            nvar.name,
+                                            xvars,
+                                            species.group=species.group,
+                                            iste.lat=site.lat,
+                                            ncores=ncores,
+                                            iter=10^4,
+                                            chains=1,
+                                            SEM = TRUE,
+                                            neg.binomial =  FALSE,
+                                            data2= list(phylo_matrix=phylo_matrix),
+                                            ){
+    fit <- runCombinedParasiteModels(spec.bombus,
+                                     species.group="bombus",
+                                     parasite =
+                                         c("CrithidiaPresence",
+                                           "ApicystisSpp"),
+                                     xvars=xvars,
+                                     ncores,
+                                     iter = iter,
+                                     chains = chains,
+                                     thin=1,
+                                     init=0,
+                                     data2= data2,
+                                     SEM = SEM,
+                                     neg.binomial =  neg.binomial,
+                                     site.lat=paste(site.or.lat,
+                                                    xvar.name, sep="_"))
+    
+    loo.crithidia <- loo(fit$fit, resp="CrithidiaPresence")
+    loo.apicystis <- loo(fit$fit, resp="ApicystisSpp")
+
+    return(list(fit=fit, loo.crithidia= loo.crithidia,
+                loo.apicystis=loo.apicystis))
+
+}
 
 ## moel running function also runs frequentist models and
 ## diagnostics. Bayesian models are beta binomial, frequentist are
@@ -247,15 +309,12 @@ loo.bombus.crithidia <- makeLooTable(parasite="CrithidiaSpp",
                                           loo.crithidia.bombus.all)
                                      )
 
-loo.bombus.crithidia
-
 ## not including ss because HB abundance and bombus abundance are colinear
 loo_compare(loo.crithidia.bombus.ba, loo.crithidia.bombus.all)
 
 ## bombus and HB abundance has the best fit, but bombus and HB
 ## abundance are pretty colinear (VIF ~6). The next best fit is bombus
 ## abundance alone. 
-
 
 loo.bombus.apicystis <- makeLooTable(parasite="ApicystisSpp",
                                      genus="Bombus",
@@ -264,7 +323,6 @@ loo.bombus.apicystis <- makeLooTable(parasite="ApicystisSpp",
                                           loo.apicystis.bombus.ba,
                                           loo.apicystis.bombus.all)
                                      )
-loo.bombus.apicystis
 
 loo_compare(loo.apicystis.bombus.ss, loo.apicystis.bombus.ba,
             loo.apicystis.bombus.all)
@@ -274,6 +332,7 @@ loo_compare(loo.apicystis.bombus.ss, loo.apicystis.bombus.ba,
 
 ## **********************************************************
 ## Honey bees
+## **********************************************************
 table(spec.apis$CrithidiaPresence[spec.apis$WeightsPar == 1])
 table(spec.apis$ApicystisSpp[spec.apis$WeightsPar ==1 ])
 
@@ -297,6 +356,26 @@ fit.apis.ss <- runCombinedParasiteModels(spec.apis, species.group="apis",
 loo.crithidia.apis.ss <- loo(fit.apis.ss$fit, resp="CrithidiaPresence")
 loo.apicystis.apis.ss <- loo(fit.apis.ss$fit, resp="ApicystisSpp")
 
+## HB  abundance as x var
+fit.apis.ha <- runCombinedParasiteModels(spec.apis, species.group="apis",
+                                         parasite =
+                                             c("CrithidiaPresence",
+                                               "ApicystisSpp"),
+                                         xvars=xvars.ha[-length(xvars.ha)],
+                                         ncores,
+                                         iter = 10^4,
+                                         chains = 1,
+                                         thin=1,
+                                         init=0,
+                                         SEM = TRUE,
+                                         neg.binomial = FALSE,
+                                         site.lat=paste(site.or.lat,
+                                                        "ha",
+                                                        sep="_"))
+
+loo.crithidia.apis.ha <- loo(fit.apis.ha$fit, resp="CrithidiaPresence")
+loo.apicystis.apis.ha <- loo(fit.apis.ha$fit, resp="ApicystisSpp")
+
 ## all bee abundance as xvar
 fit.apis.all <- runCombinedParasiteModels(spec.apis, species.group="apis",
                                           parasite =
@@ -318,27 +397,58 @@ fit.apis.all <- runCombinedParasiteModels(spec.apis, species.group="apis",
 loo.crithidia.apis.all <- loo(fit.apis.all$fit, resp="CrithidiaPresence")
 loo.apicystis.apis.all <- loo(fit.apis.all$fit, resp="ApicystisSpp")
 
+
+
+## no bee abundance only bee diversity  as xvar
+fit.apis.div <- runCombinedParasiteModels(spec.apis, species.group="apis",
+                                          parasite =
+                                              c("CrithidiaPresence",
+                                                "ApicystisSpp"),
+                                          xvars=xvars.div[-length(xvars.div)],
+                                          ncores,
+                                          iter = 10^4,
+                                          chains = 1,
+                                          thin=1,
+                                          init=0,
+                                          SEM = TRUE,
+                                          neg.binomial = FALSE,
+                                          site.lat=paste(site.or.lat,
+                                                         "div",
+                                                         sep="_"))
+
+
+loo.crithidia.apis.div <- loo(fit.apis.div$fit, resp="CrithidiaPresence")
+loo.apicystis.apis.div <- loo(fit.apis.div$fit, resp="ApicystisSpp")
+
+
+## loo combined
 abundance.order <- c("social_species",
-                     "all_bees")
+                     "HB_abundance",
+                     "all_bees",
+                     "diversity_noabund")
 
 loo.apis.crithidia <- makeLooTable(parasite="CrithidiaSpp",
                                      genus="Apis",
                                      abundance.order=abundance.order,
                                      list(loo.crithidia.apis.ss,
-                                          loo.crithidia.apis.all)
+                                          loo.crithidia.apis.ha,
+                                          loo.crithidia.apis.all,
+                                          loo.crithidia.apis.div)
                                      )
 
-loo.apis.crithidia
+loo_compare(loo.crithidia.apis.ss, loo.crithidia.apis.ha,
+            loo.crithidia.apis.all, loo.crithidia.apis.div)
 
-loo_compare(loo.crithidia.apis.ss, loo.crithidia.apis.all)
-
+abundance.order <- c("social_species",
+                     "all_bees")
 loo.apis.apicystis <- makeLooTable(parasite="ApicystisSpp",
                                      genus="Apis",
                                      abundance.order=abundance.order,
                                      list(loo.apicystis.apis.ss,
                                           loo.apicystis.apis.all)
                                      )
-loo.apis.apicystis
+
+loo_compare(loo.apicystis.apis.ss, loo.apicystis.apis.all)
 
 ## models not distinguishable, equally good fit of bee abundance and
 ## HB + bombus abundance for both crithidia and apicystis 
@@ -356,6 +466,18 @@ write.table(rbind(loo.bombus.crithidia,
                   loo.apis.apicystis),
             row.names=FALSE,
             file="saved/loo.txt", sep= " & ")
+
+save(loo.apis.apicystis,
+     loo.apis.crithidia,
+     loo.bombus.apicystis,
+     loo.bombus.crithidia,
+     fit.apis.all,
+     fit.bombus.all,
+     fit.apis.ss,
+     fit.bombus.ss,
+     fit.apis.ha,
+     fit.bombus.ba,
+     file="saved/all_models_loo.R")
 
 ## **********************************************************
 ## ## melissodes

@@ -171,7 +171,7 @@ runCombinedParasiteModels <- function(spec.data,## data
                         chains = chains,
                         thin=thin,
                         init=init,
-                        control = list(adapt_delta = 0.99),
+                        control = list(adapt_delta = 0.999999999999,  max_treedepth=12),
                         save_pars = save_pars(all = TRUE),
                         data2 = data2,
                         drop_unused_levels = TRUE,
