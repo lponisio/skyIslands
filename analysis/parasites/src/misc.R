@@ -91,3 +91,10 @@ makeLooTable <- function(parasite, ## parasite name (length =1)
     }
     return(out)
 }
+
+makeGenusSubset <- function(spec.data, genus){
+    out <- spec.data
+    out$WeightsPar[out$Genus != genus] <- 0
+    out$WeightsSp[out$Genus != genus] <- 0
+    return(out)
+}

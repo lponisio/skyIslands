@@ -143,10 +143,10 @@ run_plot_freq_model_diagnostics <- function(this_formula, #brms model formula
     if (examine.pairs == TRUE){pairs(this_model_output)}
 
     if(class(this_formula)[1] == "brmsformula"){
-        file.name <- paste0(as.character(this_formula)[4], site.lat,
+        file.name <- paste0(as.character(this_formula)[4], site.lat, "_",
                             species.group, ".pdf")
     }else{
-        file.name <- paste0(as.character(this_formula)[2], site.lat,
+        file.name <- paste0(as.character(this_formula)[2], site.lat, "_",
                             species.group, ".pdf")
     }
     print(summary(this_model_output))
