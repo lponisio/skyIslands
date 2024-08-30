@@ -354,7 +354,7 @@ if(run.bombus){
 ## obligate PD model
 ob.microbe.apis.vars <- c("BeeAbundance",
                             "BeeDiversity", "Lat", #check this doesn't make VIF high
-                            "MeanFloralDiversity", "rare.degree", #"ParasitePresence",
+                            "MeanFloralDiversity", "rare.degree", "Year", #"ParasitePresence",
                             "(1|Site)") 
 
 
@@ -376,7 +376,7 @@ bf.ob.microbe.apis.mix.ss <- bf(formula.ob.microbe.apis, family=mixture(student,
 ## non ob PD model
 non.ob.microbe.apis.vars <- c("BeeAbundance",
                               "BeeDiversity", "Lat", #check this doesn't make VIF high
-                              "MeanFloralDiversity", "rare.degree", #"ParasitePresence",
+                              "MeanFloralDiversity", "rare.degree", "Year", #"ParasitePresence",
                               "(1|Site)") 
 
 
@@ -400,8 +400,8 @@ bf.non.ob.microbe.apis.gaussian <- bf(formula.non.ob.microbe.apis)
 # bform.apis <- bf.fdiv +
 #   bf.tot.bdiv +
 #   bf.tot.babund +
-bform.apis <- bf.ob.microbe.apis.mix.gg +
-  #bf.non.ob.microbe.apis.gaussian +
+bform.apis <- bf.ob.microbe.apis.skew +
+  bf.non.ob.microbe.apis.skew +
   set_rescor(FALSE)
 
 if(run.apis){
