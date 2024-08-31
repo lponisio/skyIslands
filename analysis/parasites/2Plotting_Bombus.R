@@ -55,7 +55,7 @@ axis.degree <-  standardize.axis(labs.itd,
 ## ***********************************************************************
 ## bee community diversity and abundance and parasitism
 ## ***********************************************************************
-load(file="../../../skyIslands_saved/parasite-results/saved/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all.Rdata")
+load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all.Rdata")
 
 # We want the standarized data for the predictions (spec.data)
 spec.bombus <- spec.net[spec.net$Genus == "Bombus",]
@@ -87,24 +87,29 @@ pred_beediv <- fit.parasite %>%
   epred_draws(newdata = newdata.beediv,
               resp = "CrithidiaPresence")
 
+pred_beediv<- pred_beediv %>% mutate(bee = "Bombus")
 ## to see range of predicted values
 pred_beediv %>%
   group_by(Net_BeeDiversity) %>%
   summarise(mean(.epred))
 
+pred_beediv <- rbind(pred_beediv, pred_beediv2)
+
 p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
-    stat_lineribbon() +
-    scale_fill_brewer(palette = "Blues") +
-    labs(x = "Bee community diversity", y = "Crithidia prevalence",
-         fill = "Credible interval") +
-    theme_ms() +
-    theme(legend.position = "bottom") +
-    scale_x_continuous(
-        breaks = axis.bee.div,
-        labels =  labs.bee.div) +
-    theme(axis.title.x = element_text(size=16),
-          axis.title.y = element_text(size=16),
-          text = element_text(size=16)) +
+  stat_lineribbon(aes(linetype = bee), alpha = .4) +
+  scale_fill_brewer(palette = "Oranges")+
+  #scale_color_manual(values = c("#feb24c", "grey")) +
+  labs(x = "Bee community diversity", y = "Crithidia prevalence",
+       fill = "Credible interval", color = "Bee Genera") +
+  theme_dark() +
+  theme(legend.position = "bottom") +
+  scale_x_continuous(
+    breaks = axis.bee.div,
+    labels =  labs.bee.div) +
+  theme(axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        text = element_text(size=16))
+
     ##theme_dark_black()+
     geom_jitter(data=bombus.par,
             aes(y= SpCrithidiaParasitismRate, x=Net_BeeDiversity,
@@ -112,7 +117,9 @@ p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
                 size=SpScreened), width=0.05) +
     guides(size = guide_legend(title = "Individuals screened"), 
            colour = guide_legend(title = ""),fill = "none")
-
+    
+ggsave(p1.parasite, file="figures/parasite_beediv.pdf",
+           height=5, width=10)
 ## ***************************************************************************
 ## crithidia ~ bumble bee abundance
 newdata.bombusabund <- crossing(Net_BeeAbundance =

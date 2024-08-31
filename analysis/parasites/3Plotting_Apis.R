@@ -55,7 +55,7 @@ axis.degree <-  standardize.axis(labs.itd,
 ## ***********************************************************************
 ## bee community diversity and abundance and parasitism
 ## ***********************************************************************
-load(file="../../../skyIslands_saved/parasite-results/saved/saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_ss.Rdata")
+load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_ss.Rdata")
 
 # We want the standarized data for the predictions (spec.data)
 spec.apis <- spec.net[spec.net$Genus == "Apis",]
@@ -67,7 +67,7 @@ data.site <- spec.net[spec.net$Weights == 1,]
 
 ## ***************************************************************************
 ## Crithidia ~ bee diversity
-newdata.beediv <- crossing(Net_BeeDiversity =
+newdata.beediv2 <- crossing(Net_BeeDiversity =
                              seq(min(apis.par$Net_BeeDiversity),
                                  max(apis.par$Net_BeeDiversity),
                                  length.out=10),
@@ -83,16 +83,16 @@ newdata.beediv <- crossing(Net_BeeDiversity =
 )
 
 ## predict values based on generated data and model parameters
-pred_beediv <- fit.parasite %>% 
-  epred_draws(newdata = newdata.beediv,
+pred_beediv2 <- fit.parasite %>% 
+  epred_draws(newdata = newdata.beediv2,
               resp = "CrithidiaPresence")
-
+pred_beediv2<- pred_beediv2 %>% mutate(bee = "Apis")
 ## to see range of predicted values
-pred_beediv %>%
+pred_beediv2 %>%
   group_by(Net_BeeDiversity) %>%
   summarise(mean(.epred))
 
-p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
+p1.parasite <- ggplot(pred_beediv2, aes(x = Net_BeeDiversity, y = .epred)) +
   stat_lineribbon() +
   scale_fill_brewer(palette = "Blues") +
   labs(x = "Bee community diversity", y = "Crithidia prevalence",

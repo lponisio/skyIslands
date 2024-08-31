@@ -6,37 +6,21 @@ source("lab_paths.R")
 local.path
 dir.bombus <- file.path(local.path, "skyIslands/analysis/parasites")
 setwd(dir.bombus)
-source("src/misc.R")
-source("src/writeResultsTable.R")
-source("src/makeMultiLevelData.R")
-source("src/standardize_weights.R")
-vars_yearsr <- c("MeanFloralAbundance",
-                 "MeanFloralDiversity",
-                 "Net_BeeDiversity",
-                 "Lat", "SRDoy"  
-                 )
-vars_yearsrsp <- "rare.degree"
-vars_sp <- "MeanITD"
-
-
-variables.to.log <- c("rare.degree", "MeanITD")
-
-variables.to.log.1<- c("Net_HBAbundance", "Net_BombusAbundance", 
-                       "Net_NonBombusHBAbundance")
-source("src/init.R")
+load(file="saved/spec_weights.Rdata")
+veg <- read_csv("../../../skyIslands_saved/data/relational/original/veg.csv")
 ## These sites were only visited once. 
-## spec.orig <- filter(spec.orig, Site != "VC" & Site != "UK" & Site != "SS")
+## spec.orig <- filter(spec.orig, Site != "VC")
 
-## Chiricahua has two meadows so renamed them to be able to show both meadows in
-## all the community graphs. 
+## Chiricahua and Sacramento has two meadows so renamed them to be able to show 
+## both meadows in all the community graphs. 
 for(i in 1:nrow(spec.orig)){
     if(spec.orig$Site[i] == "CH" ){
         spec.orig$MtRange[i] <- "Chiricahua A"
     } else if(spec.orig$Site[i] == "RP"){
         spec.orig$MtRange[i] <- "Chiricahua B"
-    } else  if(spec.orig$Site[i] == "SS" ){
+    } else  if(spec.orig$Site[i] == "UK" ){
         spec.orig$MtRange[i] <- "Sacramento A"
-    } else if(spec.orig$Site[i] == "UK"){
+    } else if(spec.orig$Site[i] == "SS"){
         spec.orig$MtRange[i] <- "Sacramento B"
     }
 }
@@ -45,6 +29,21 @@ spec.orig %>%
     group_by(MtRange, Meadow, Site, Lat, SampleRound) %>% 
     summarize (n = n())
 
+## Used this to get the summary of number of species/morphospecies total, 
+## genus with > 10 species, and species that were found in >7 sites.
+num_per_site <- spec.orig %>% 
+  filter(Order == "Hymenoptera" & Family != "Vespidae" & Family != "Sphecidae") %>% 
+  #group_by(GenusSpecies) %>% 
+  #summarize(n = n_distinct(Site)) %>% 
+  #filter(n > 7) %>% 
+  summarize(n = n())
+
+## Summary numbers for veg
+veg <- filter(veg, Site != "VC")
+veg %>%
+  group_by(PlantGenusSpecies) %>% 
+  summarize(n = n_distinct(Site)) %>% 
+  filter(n > 5)
 ## Plots by meadow
 ## Bee abundances by meadows
 ###############################################################################
