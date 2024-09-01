@@ -173,7 +173,9 @@ plot_genus_by_site_relabund <- function(data, genus) {
     group_by(peak_class) %>%
     mutate(rank = rank(Abundance)) %>%
     mutate(UniqueID = reorder(UniqueID, -rank)) %>%
-    ungroup()
+    ungroup() %>%
+    arrange(Year, rank) %>%
+    mutate(UniqueID = factor(UniqueID, levels = unique(UniqueID)))
   
   # Define colors for the plot
   these_colors <- color_dict %>%
@@ -183,24 +185,26 @@ plot_genus_by_site_relabund <- function(data, genus) {
   # Create the plot with reordered bars
   ggplot(data = genus_reordered, aes(x = UniqueID, y = Abundance, fill = Bacteria)) +
     geom_bar(stat = 'identity', position = 'fill', width = 1) +
-    facet_grid(~Year, scales = 'free_x', space = 'free_x') +
+    facet_grid(Year ~ Site, scales = 'free_x', space = 'free_x') + # Facet by both Year and Site
     theme_classic() +
     theme(axis.text.x = element_blank(),
           axis.text.y = element_text(color = "black"),
           legend.position = 'None',
           strip.background = element_blank(),
-          strip.text = element_blank(),
-          panel.spacing.x = unit(0.1, "line")) +
+          strip.text = element_text(face = "bold") # Make facet labels bold
+    ) +
     scale_fill_manual(values = these_colors$palette, name = "Bacteria Family") +
     labs(x = 'Individuals', y = 'Relative Abundance')
 }
+
+## TODO beautify plot
 
 # Example usage with your data
 # plot_genus_by_site_relabund(my_data, "SomeGenus")
 
 
 apis_ob_plot <- plot_genus_by_site_relabund(ob_data, 'Apis')
-apis_ob_plot
+plot(apis_ob_plot)
 
 apis_trans_plot <- plot_genus_by_site_relabund(trans_data, 'Apis')
 apis_trans_plot
