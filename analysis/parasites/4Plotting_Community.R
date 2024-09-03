@@ -68,8 +68,8 @@ data.site <- spec.net[spec.net$Weights == 1,]
 ## Community level visuals
 
 newdata.lat <- crossing(Lat =
-                          seq(min(spec.bombus$Lat),
-                              max(spec.bombus$Lat),
+                          seq(min(data.site$Lat),
+                              max(data.site$Lat),
                               length.out=10),
                         Net_BeeAbundance = 0,
                         MeanFloralDiversity = 0,
@@ -80,7 +80,8 @@ newdata.lat <- crossing(Lat =
                         Year = "2012",
                         Site = "SC", 
                         GenusSpecies = "Bombus centralis",
-                        Weights = 0
+                        Weights=1,
+                        WeightsPar=1
 )
 
 ## predict values based on generated data and model parameters
