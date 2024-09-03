@@ -97,18 +97,18 @@ pred_lat %>%
 
 p1 <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
   stat_lineribbon() +
-  scale_fill_brewer(palette = "Blues") +
+  scale_fill_brewer(palette = "Oranges") +
   labs(x = "Latitude", y = "Bee diversity",
        fill = "Credible interval") +
   theme_ms() +
-  theme(legend.position = "bottom") +
+  #theme(legend.position = "bottom") +
   scale_x_continuous(
     breaks = axis.lat.x,
     labels =  labs.lat.x) +
   scale_y_continuous(
     breaks = axis.bee.div,
     labels =  labs.bee.div) +
-  theme(axis.title.x = element_blank(),
+  theme(axis.title.x = element_blank(),#Remember to change the x axis label when using this graph only
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) +
   ##theme_dark_black()+
@@ -152,11 +152,11 @@ pred_lat %>%
 
 p2 <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
   stat_lineribbon() +
-  scale_fill_brewer(palette = "Blues") +
-  labs(x = "Latitude", y = "Floral diversity",
+  scale_fill_manual(values = c("lightgoldenrod", "goldenrod1", "darkgoldenrod3")) +
+  labs(x = "Latitude", y = "Mean floral diversity",
        fill = "Credible interval") +
   theme_ms() +
-  theme(legend.position = "bottom") +
+  #theme(legend.position = "bottom") +
   scale_x_continuous(
     breaks = axis.lat.x,
     labels =  labs.lat.x) +
@@ -208,11 +208,11 @@ pred_lat %>%
 
 p3 <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
   stat_lineribbon() +
-  scale_fill_brewer(palette = "Blues") +
+  scale_fill_brewer(palette = "Oranges") +
   labs(x = "Latitude (log)", y = "Bombus abundance (log)",
        fill = "Credible interval") +
   theme_ms() +
-  theme(legend.position = "bottom") +
+  #theme(legend.position = "bottom") +
   scale_x_continuous(
     breaks = axis.lat.x,
     labels =  labs.lat.x) +
@@ -261,11 +261,11 @@ pred_lat %>%
 
 p4 <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
   stat_lineribbon() +
-  scale_fill_brewer(palette = "Blues") +
+  scale_fill_brewer(palette = "Oranges") +
   labs(x = "Latitude (log)", y = "Apis abundance (log)",
        fill = "Credible interval") +
   theme_ms() +
-  theme(legend.position = "bottom") +
+  #theme(legend.position = "bottom") +
   scale_x_continuous(
     breaks = axis.lat.x,
     labels =  labs.lat.x) +
@@ -285,8 +285,8 @@ ggsave(p4, file="figures/Lat_HB_abudance.pdf",
 
 lat_community<- ggarrange(p1,p2,p3,p4, #plots that are going to be included in this multipanel figure
                        labels = c("A", "B", "C","D"), #labels given each panel 
-                       ncol = 2, nrow = 2, #adjust plot space 
-                       common.legend = T, legend = "bottom")
+                       ncol = 2, nrow = 2 #adjust plot space 
+                       )
 ggsave(lat_community, file="figures/lat_community.pdf",
        height=8, width=12)
 ################################################################################

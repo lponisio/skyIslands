@@ -42,7 +42,7 @@ labs.bee.div <- (pretty(c(spec.uni$Net_BeeDiversity), n=5))
 axis.bee.div <-  standardize.axis(labs.bee.div,
                                   spec.uni$Net_BeeDiversity)
 
-spec.sp <-  spec.orig[spec.orig$WeightsSp ==1 & spec.orig$Genus == "Bombus",]
+spec.sp <-  spec.orig[spec.orig$WeightsSp ==1 & spec.orig$Genus == "Apis",]
 ## meanITD
 labs.itd <- (pretty(spec.sp$MeanITD, n=10))
 axis.itd <-  standardize.axis(labs.itd,
@@ -589,3 +589,104 @@ apicystis.traits <- ggarrange(p6.parasite, p9.parasite, nrow=1,
 
 ggsave(apicystis.traits, file="figures/apicystis_traits.pdf",
        height=5, width=10)
+
+################################################################################
+## Lat and Crithidia
+################################################################################
+newdata.lat <- crossing(Lat =
+                          seq(min(apis.par$Lat),
+                              max(apis.par$Lat),
+                              length.out=10),
+                        rare.degree = 0,
+                        Net_BeeDiversity= 0, 
+                        Net_BombusAbundance = 0,
+                        Net_HBAbundance = 0,
+                        MeanFloralAbundance = 0,
+                        MeanFloralDiversity = 0,
+                        Site = "JC", 
+                        GenusSpecies = "Bombus centralis",
+                        WeightsPar=1
+)
+
+## predict values based on generated data and model parameters
+pred_lat <- fit.parasite %>% 
+  epred_draws(newdata = newdata.lat,
+              resp = "CrithidiaPresence")
+
+## to see range of predicted values
+pred_lat %>%
+  group_by(Lat) %>%
+  summarise(mean(.epred))
+
+p11.parasite <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
+  stat_lineribbon() +
+  scale_fill_brewer(palette = "Oranges") +
+  labs(x = "Latitude (log)", y = "Crithidia prevalence",
+      title = "Apis") +
+  theme_ms() +
+  #theme(legend.position = "bottom") +
+  scale_x_continuous(
+    breaks = axis.lat.x,
+    labels =  labs.lat.x) +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_text(size=16),
+        text = element_text(size=16), 
+        plot.title = element_text(color = "black")) +
+  geom_jitter(data=bombus.par,
+              aes(y= SpCrithidiaParasitismRate, x= Lat), 
+              color="grey40", cex=2) 
+
+
+
+ggsave(p11.parasite, file="figures/Lat_crithidia_apis.pdf",
+       height=4, width=5)
+
+################################################################################
+## Lat and apicystis
+################################################################################
+newdata.lat <- crossing(Lat =
+                          seq(min(apis.par$Lat),
+                              max(apis.par$Lat),
+                              length.out=10),
+                        rare.degree = 0,
+                        Net_BeeDiversity= 0,
+                        Net_BombusAbundance = 0,
+                        Net_HBAbundance = 0,
+                        MeanFloralAbundance = 0,
+                        MeanFloralDiversity = 0,
+                        Site = "JC", 
+                        GenusSpecies = "Bombus centralis",
+                        WeightsPar=1
+)
+
+## predict values based on generated data and model parameters
+pred_lat <- fit.parasite %>% 
+  epred_draws(newdata = newdata.lat,
+              resp = "ApicystisSpp")
+
+## to see range of predicted values
+pred_lat %>%
+  group_by(Lat) %>%
+  summarise(mean(.epred))
+
+p12.parasite <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
+  stat_lineribbon() +
+  scale_fill_brewer(palette = "Oranges") +
+  labs(x = "Latitude (log)", y = "Apicystis prevalence",
+       fill = "Credible interval") +
+  theme_ms() +
+  #theme(legend.position = "bottom") +
+  scale_x_continuous(
+    breaks = axis.lat.x,
+    labels =  labs.lat.x) +
+  theme(axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        text = element_text(size=16)) +
+  geom_jitter(data=bombus.par,
+              aes(y= SpApicystisParasitismRate, x= Lat), 
+              color="grey40", cex=2) 
+
+
+
+ggsave(p12.parasite, file="figures/Lat_apicystis_apis.pdf",
+       height=4, width=5)
