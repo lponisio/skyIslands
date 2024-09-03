@@ -55,7 +55,7 @@ axis.degree <-  standardize.axis(labs.itd,
 ## ***********************************************************************
 ## bee community diversity and abundance and parasitism
 ## ***********************************************************************
-load(file="../../../skyIslands_saved/parasite-results/saved/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all.Rdata")
+load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all.Rdata")
 
 # We want the standarized data for the predictions (spec.data)
 #spec.bombus <- spec.net[spec.net$Genus == "Bombus",]
@@ -80,7 +80,8 @@ newdata.lat <- crossing(Lat =
                         Year = "2012",
                         Site = "SC", 
                         GenusSpecies = "Bombus centralis",
-                        Weights=1
+                        Weights=1,
+                        WeightsPar=1
 )
 
 ## predict values based on generated data and model parameters
