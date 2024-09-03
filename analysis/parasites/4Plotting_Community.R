@@ -55,10 +55,10 @@ axis.degree <-  standardize.axis(labs.itd,
 ## ***********************************************************************
 ## bee community diversity and abundance and parasitism
 ## ***********************************************************************
-load(file="../../../skyIslands_saved/parasite-results/saved/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all.Rdata")
+load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all.Rdata")
 
 # We want the standarized data for the predictions (spec.data)
-#spec.bombus <- spec.net[spec.net$Genus == "Bombus",]
+spec.bombus <- spec.net[spec.net$Genus == "Bombus",]
 #bombus.par <- spec.bombus[spec.bombus$WeightsSp == 1,]
 data.site <- spec.net[spec.net$Weights == 1,]
 ## ***********************************************************************
@@ -68,8 +68,8 @@ data.site <- spec.net[spec.net$Weights == 1,]
 ## Community level visuals
 
 newdata.lat <- crossing(Lat =
-                          seq(min(data.site$Lat),
-                              max(data.site$Lat),
+                          seq(min(spec.bombus$Lat),
+                              max(spec.bombus$Lat),
                               length.out=10),
                         Net_BeeAbundance = 0,
                         MeanFloralDiversity = 0,
@@ -80,7 +80,7 @@ newdata.lat <- crossing(Lat =
                         Year = "2012",
                         Site = "SC", 
                         GenusSpecies = "Bombus centralis",
-                        Weights=1
+                        Weights = 0
 )
 
 ## predict values based on generated data and model parameters

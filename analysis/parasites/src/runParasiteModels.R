@@ -11,7 +11,7 @@ runCombinedParasiteModels <- function(spec.data,## data
                                       chains = 1,
                                       thin=1,
                                       init=0,
-                                      data2 = NULL, ## phylogeny?
+                                      data2 = NULL, ## Data for the Phylogeny
                                       SEM = TRUE,
                                       neg.binomial = FALSE,
                                       site.lat,

@@ -95,13 +95,13 @@ pred_beediv %>%
 
 pred_beediv <- rbind(pred_beediv, pred_beediv2)
 
-p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
+p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred, color = bee)) +
   stat_lineribbon(aes(linetype = bee), alpha = .4) +
-  scale_fill_brewer(palette = "Oranges")+
-  #scale_color_manual(values = c("#feb24c", "grey")) +
+  scale_fill_brewer(palette = "OrRd") +
+  scale_color_manual(values = c("black", "black")) +
   labs(x = "Bee community diversity", y = "Crithidia prevalence",
-       fill = "Credible interval", color = "Bee Genera") +
-  theme_dark() +
+       fill = "Credible interval") +
+  theme_ms() +
   theme(legend.position = "bottom") +
   scale_x_continuous(
     breaks = axis.bee.div,
