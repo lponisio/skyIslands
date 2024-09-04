@@ -12,70 +12,70 @@ source("src/misc.R")
 source("src/ggplotThemes.R")
 
 ## ***********************************************************************
-## plotting, unscaling labs
+## scaling/unscaling labs
 ## ***********************************************************************
-## lat
-
 spec.uni <- spec.orig[spec.orig$Weights ==1,]
+## lat (logged)
 labs.lat.x <- pretty(c(spec.uni$Lat),
                       n=10)
 axis.lat.x <-  standardize.axis(labs.lat.x, spec.uni$Lat)
-## bloom abundance
+
+## bloom abundance (not logged)
 labs.bloom.abund <- (pretty(c(spec.uni$MeanFloralAbundance), n=6))
 axis.bloom.abund <-  standardize.axis(labs.bloom.abund,
                                       spec.uni$MeanFloralAbundance)
-## flower div
+## flower div (not logged)
 labs.flower.div <- (pretty(spec.uni$MeanFloralDiversity, n=5))
 axis.flower.div <-  standardize.axis(labs.flower.div,
                                      spec.uni$MeanFloralDiversity)
-## HB abund
+## HB abund (logged + 1)
 labs.HB.abund <- (pretty(c(spec.uni$Net_HBAbundance), n=5))
 axis.HB.abund <-  standardize.axis(labs.HB.abund, spec.uni$Net_HBAbundance)
-## bombus abund
+## bombus abund (logged + 1)
 labs.bombus.abund <- (pretty(c(spec.uni$Net_BombusAbundance), n=5))
 axis.bombus.abund <-  standardize.axis(labs.bombus.abund, spec.uni$Net_BombusAbundance)
-## non hb non bombus abund
-labs.bee.abund <- (pretty(c(spec.uni$Net_NonBombusHBAbundance), n=5))
-axis.bee.abund <-  standardize.axis(labs.bee.abund, spec.uni$Net_NonBombusHBAbundance)
-## bee diversity
+## all bee abund (logged)
+labs.bee.abund <- (pretty(c(spec.uni$Net_BeeAbundance), n=5))
+axis.bee.abund <-  standardize.axis(labs.bee.abund, spec.uni$Net_BeeAbundance)
+## bee diversity (not logged)
 labs.bee.div <- (pretty(c(spec.uni$Net_BeeDiversity), n=5))
 axis.bee.div <-  standardize.axis(labs.bee.div,
                                   spec.uni$Net_BeeDiversity)
 
-spec.sp <-  spec.orig[spec.orig$WeightsSp ==1 & spec.orig$Genus == "Bombus",]
-## meanITD
-labs.itd <- (pretty(spec.sp$MeanITD, n=10))
-axis.itd <-  standardize.axis(labs.itd,
-                                  spec.sp$MeanITD)
-## rare.degree
-labs.degree <- (pretty(spec.sp$rare.degree, n=10))
+## use all the species data or just bombus? 
+bombus.par <- spec.orig[spec.orig$WeightsPar==1 & spec.orig$Genus == "Bombus", ]
+## rare.degree (logged)
+labs.degree <- (pretty(bombus.par$rare.degree, n=10))
 axis.degree <-  standardize.axis(labs.degree,
-                                  spec.sp$rare.degree)
+                                  bombus.par$rare.degree)
+
+
+## sp.par <- spec.orig[spec.orig$WeightsPar==1, ]
+## ## rare.degree (logged)
+## labs.degree <- (pretty(sp.par$rare.degree, n=10))
+## axis.degree <-  standardize.axis(labs.degree,
+##                                   sp.par$rare.degree)
+
 
 ## ***********************************************************************
 ## bee community diversity and abundance and parasitism
 ## ***********************************************************************
 load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all.Rdata")
 
-# We want the standarized data for the predictions (spec.data)
-spec.bombus <- spec.net[spec.net$Genus == "Bombus",]
-bombus.par <- spec.bombus[spec.bombus$WeightsSp == 1,]
-data.site <- spec.net[spec.net$Weights == 1,]
-
 ## https://www.rensvandeschoot.com/tutorials/generalised-linear-models-with-brms/
 
 ## ***************************************************************************
 ## Crithidia ~ bee diversity
 newdata.beediv <- crossing(Net_BeeDiversity =
-                               seq(min(bombus.par$Net_BeeDiversity),
-                                   max(bombus.par$Net_BeeDiversity),
+                               seq(min(spec.uni$Net_BeeDiversity),
+                                   max(spec.uni$Net_BeeDiversity),
                                    length.out=10),
                            rare.degree = 0,
                            Net_BeeAbundance = 0,
                            MeanFloralAbundance = 0,
                            MeanFloralDiversity = 0,
                            Lat = 0,
-                           Site = "SC", 
+                           Site = "JC", 
                            GenusSpecies = "Bombus centralis",
                            WeightsPar=1
                            )
@@ -94,22 +94,20 @@ pred_beediv %>%
 ## You will need to load the apis model
 load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_ss.Rdata")
 
-spec.apis <- spec.net[spec.net$Genus == "Apis",]
-apis.par <- spec.apis[spec.apis$WeightsSp == 1,]
 newdata.beediv2 <- crossing(Net_BeeDiversity =
-                              seq(min(apis.par$Net_BeeDiversity),
-                                  max(apis.par$Net_BeeDiversity),
-                                  length.out=10),
-                            rare.degree = 0,
-                            Net_BombusAbundance = 0,
-                            Net_HBAbundance = 0,
-                            MeanFloralAbundance = 0,
-                            MeanFloralDiversity = 0,
-                            Lat = 0,
-                            Site = "SC", 
-                            GenusSpecies = "Bombus centralis",
-                            WeightsPar=1
-)
+                               seq(min(spec.uni$Net_BeeDiversity),
+                                   max(spec.uni$Net_BeeDiversity),
+                                   length.out=10),
+                           rare.degree = 0,
+                           Net_BombusAbundance = 0,
+                           Net_HBAbundance = 0,
+                           MeanFloralAbundance = 0,
+                           MeanFloralDiversity = 0,
+                           Lat = 0,
+                           Site = "JC", 
+                           GenusSpecies = "Apis mellifera",
+                           WeightsPar=1
+                           )
 
 ## predict values based on generated data and model parameters
 pred_beediv2 <- fit.parasite %>% 
@@ -140,7 +138,7 @@ p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred, fill = 
         text = element_text(size=16))
 
     ##theme_dark_black()+
-    # geom_jitter(data=bombus.par,
+    # geom_jitter(data=spec.uni,
     #         aes(y= SpCrithidiaParasitismRate, x=Net_BeeDiversity,
     #             colour = GenusSpecies, #shape = Site,
     #             size=SpScreened), width=0.05) +
@@ -155,8 +153,8 @@ ggsave(p1.parasite, file="figures/parasite_beediv_Crithidia.pdf",
 ################################################################################
 load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all.Rdata")
 newdata.beediv <- crossing(Net_BeeDiversity =
-                             seq(min(bombus.par$Net_BeeDiversity),
-                                 max(bombus.par$Net_BeeDiversity),
+                             seq(min(spec.uni$Net_BeeDiversity),
+                                 max(spec.uni$Net_BeeDiversity),
                                  length.out=10),
                            rare.degree = 0,
                            Net_BeeAbundance = 0,
@@ -229,8 +227,8 @@ ggsave(p2.parasite, file="figures/parasite_beediv_Apicystis.pdf",
 ## Crithidia ~ floral diversity
 load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all.Rdata")
 newdata.floraldiv <- crossing(MeanFloralDiversity =
-                               seq(min(bombus.par$MeanFloralDiversity),
-                                   max(bombus.par$MeanFloralDiversity),
+                               seq(min(spec.uni$MeanFloralDiversity),
+                                   max(spec.uni$MeanFloralDiversity),
                                    length.out=10),
                            rare.degree = 0,
                            Lat = 0,
@@ -305,8 +303,8 @@ ggsave(p3.parasite, file="figures/parasite_floraldiv_Crithidia.pdf",
 ## Apicystis ~ floral diversity
 load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all.Rdata")
 newdata.floraldiv <- crossing(MeanFloralDiversity =
-                                seq(min(bombus.par$MeanFloralDiversity),
-                                    max(bombus.par$MeanFloralDiversity),
+                                seq(min(spec.uni$MeanFloralDiversity),
+                                    max(spec.uni$MeanFloralDiversity),
                                     length.out=10),
                               rare.degree = 0,
                               Lat = 0,
@@ -391,8 +389,8 @@ ggsave(parasite.dilution, file="figures/parasite_diversity.pdf", height=8, width
 load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all.Rdata")
 
 newdata.bombusabund <- crossing(Net_BeeAbundance =
-                                  seq(min(bombus.par$Net_BeeAbundance),
-                                      max(bombus.par$Net_BeeAbundance),
+                                  seq(min(spec.uni$Net_BeeAbundance),
+                                      max(spec.uni$Net_BeeAbundance),
                                       length.out=10),
                                 Lat = 0,
                                 rare.degree = 0,
@@ -427,7 +425,7 @@ p5.parasite <- ggplot(pred_bombusabund, aes(x = Net_BeeAbundance, y = .epred)) +
   theme(axis.title.x = element_text(size=16),
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) 
-  # geom_jitter(data=bombus.par,
+  # geom_jitter(data=spec.uni,
   #             aes(y= SpCrithidiaParasitismRate, x=Net_BeeAbundance,
   #                 colour = GenusSpecies, #shape = Site,
   #                 size=SpScreened), width=0.05) +
@@ -441,8 +439,8 @@ ggsave(p5.parasite, file="figures/crithidia_beeabundance_bombus.pdf",
 ## Apicysits ~ bee abundance
 ################################################################################
 newdata.bombusabund <- crossing(Net_BeeAbundance =
-                                  seq(min(bombus.par$Net_BeeAbundance),
-                                      max(bombus.par$Net_BeeAbundance),
+                                  seq(min(spec.uni$Net_BeeAbundance),
+                                      max(spec.uni$Net_BeeAbundance),
                                       length.out=10),
                                 Lat = 0,
                                 rare.degree = 0,
@@ -477,7 +475,7 @@ p6.parasite <- ggplot(pred_bombusabund, aes(x = Net_BeeAbundance, y = .epred)) +
   theme(axis.title.x = element_text(size=16),
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) 
-  # geom_jitter(data=bombus.par,
+  # geom_jitter(data=spec.uni,
   #             aes(y= SpApicystisParasitismRate, x=Net_BeeAbundance,
   #                 colour = GenusSpecies, #shape = Site,
   #                 size=SpScreened), width=0.05) +
@@ -502,8 +500,8 @@ ggsave(parasite.amplification, file="figures/parasite_amplification.pdf",
 ## ***************************************************************************
 ## crithidia ~ degree
 newdata.degree <- crossing(rare.degree =
-                             seq(min(bombus.par$rare.degree),
-                                 max(bombus.par$rare.degree),
+                             seq(min(bombus.par$rare.degree, na.rm=TRUE),
+                                 max(bombus.par$rare.degree, na.rm=TRUE),
                                  length.out=10),
                            Lat = 0,
                            Net_BeeDiversity= 0,
