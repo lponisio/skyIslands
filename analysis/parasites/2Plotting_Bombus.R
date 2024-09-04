@@ -49,7 +49,7 @@ axis.itd <-  standardize.axis(labs.itd,
                                   spec.sp$MeanITD)
 ## rare.degree
 labs.degree <- (pretty(spec.sp$rare.degree, n=10))
-axis.degree <-  standardize.axis(labs.itd,
+axis.degree <-  standardize.axis(labs.degree,
                                   spec.sp$rare.degree)
 
 ## ***********************************************************************
@@ -125,27 +125,27 @@ pred_beediv2 %>%
 pred_beediv <- rbind(pred_beediv, pred_beediv2)
 
 p1.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred, fill = bee)) +
-  stat_lineribbon(aes(linetype = bee, color = bee), alpha = .5, .width = .95) +
+  stat_lineribbon(aes(linetype = bee, color = bee), alpha = .6, .width = .95) +
   scale_fill_manual(values = c("darkgoldenrod3", "#3182bd"), labels = c("Apis 0.95", "Bombus 0.95")) +
   scale_color_manual(values = c("black", "black")) +
-  labs(x = "Bee community diversity", y = "Crithidia prevalence",
+  labs(x = "Bee diversity", y = "Crithidia prevalence",
        fill = "Credible interval") +
   theme_ms() +
   theme(legend.position = "bottom") +
   scale_x_continuous(
     breaks = axis.bee.div,
     labels =  labs.bee.div) +
-  theme(axis.title.x = element_text(size=16),
+  theme(axis.title.x = element_blank(),
         axis.title.y = element_text(size=16),
         text = element_text(size=16))
 
     ##theme_dark_black()+
-    geom_jitter(data=bombus.par,
-            aes(y= SpCrithidiaParasitismRate, x=Net_BeeDiversity,
-                colour = GenusSpecies, #shape = Site,
-                size=SpScreened), width=0.05) +
-    guides(size = guide_legend(title = "Individuals screened"), 
-           colour = guide_legend(title = ""),fill = "none")
+    # geom_jitter(data=bombus.par,
+    #         aes(y= SpCrithidiaParasitismRate, x=Net_BeeDiversity,
+    #             colour = GenusSpecies, #shape = Site,
+    #             size=SpScreened), width=0.05) +
+    # guides(size = guide_legend(title = "Individuals screened"), 
+    #        colour = guide_legend(title = ""),fill = "none")
     
 ggsave(p1.parasite, file="figures/parasite_beediv_Crithidia.pdf",
            height=5, width=10)
@@ -172,47 +172,46 @@ newdata.beediv <- crossing(Net_BeeDiversity =
 pred_beediv3 <- fit.parasite %>% 
   epred_draws(newdata = newdata.beediv,
               resp = "ApicystisSpp")
-pred_beediv3 <- pred_beediv3 %>% mutate(bee = "Bombus")
+#pred_beediv3 <- pred_beediv3 %>% mutate(bee = "Bombus")
 ## to see range of predicted values
 pred_beediv3 %>%
   group_by(Net_BeeDiversity) %>%
   summarise(mean(.epred))
 ## Load Apis and create the predicted data
-load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_ss.Rdata")
+# load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_ss.Rdata")
+# 
+# newdata.beediv <- crossing(Net_BeeDiversity =
+#                              seq(min(apis.par$Net_BeeDiversity),
+#                                  max(apis.par$Net_BeeDiversity),
+#                                  length.out=10),
+#                            rare.degree = 0,
+#                            Net_BombusAbundance = 0,
+#                            Net_HBAbundance = 0,
+#                            MeanFloralAbundance = 0,
+#                            MeanFloralDiversity = 0,
+#                            Lat = 0,
+#                            Site = "SC", 
+#                            GenusSpecies = "Bombus centralis",
+#                            WeightsPar=1
+# )
+# 
+# ## predict values based on generated data and model parameters
+# pred_beediv4 <- fit.parasite %>% 
+#   epred_draws(newdata = newdata.beediv,
+#               resp = "ApicystisSpp")
+# pred_beediv4 <- pred_beediv4 %>% mutate(bee = "Apis")
+# ## to see range of predicted values
+# pred_beediv4 %>%
+#   group_by(Net_BeeDiversity) %>%
+#   summarise(mean(.epred))
+# 
+# ## Merge the two data 
+# pred_beediv3 <- rbind(pred_beediv3, pred_beediv4)
 
-newdata.beediv <- crossing(Net_BeeDiversity =
-                             seq(min(apis.par$Net_BeeDiversity),
-                                 max(apis.par$Net_BeeDiversity),
-                                 length.out=10),
-                           rare.degree = 0,
-                           Net_BombusAbundance = 0,
-                           Net_HBAbundance = 0,
-                           MeanFloralAbundance = 0,
-                           MeanFloralDiversity = 0,
-                           Lat = 0,
-                           Site = "SC", 
-                           GenusSpecies = "Bombus centralis",
-                           WeightsPar=1
-)
-
-## predict values based on generated data and model parameters
-pred_beediv4 <- fit.parasite %>% 
-  epred_draws(newdata = newdata.beediv,
-              resp = "ApicystisSpp")
-pred_beediv4 <- pred_beediv4 %>% mutate(bee = "Apis")
-## to see range of predicted values
-pred_beediv4 %>%
-  group_by(Net_BeeDiversity) %>%
-  summarise(mean(.epred))
-
-## Merge the two data 
-pred_beediv3 <- rbind(pred_beediv3, pred_beediv4)
-
-p2.parasite <- ggplot(pred_beediv3, aes(x = Net_BeeDiversity, y = .epred, fill = bee)) +
-  stat_lineribbon(aes(linetype = bee, color = bee), alpha = .5, .width = .95) +
-  scale_fill_manual(values = c("#e6550d", "#3182bd"), labels = c("Apis 0.95", "Bombus 0.95")) +
-  scale_color_manual(values = c("black", "black"))+
-  labs(x = "Bee community diversity", y = "Apicystis prevalence",
+p2.parasite <- ggplot(pred_beediv3, aes(x = Net_BeeDiversity, y = .epred)) +
+  stat_lineribbon(.width = .95, linetype = "dashed") +
+  scale_fill_manual(values = "#3182bd", labels ="Bombus 0.95") +
+  labs(x = "Bee diversity", y = "Apicystis prevalence",
        fill = "Credible interval") +
   theme_ms() +
   theme(legend.position = "bottom") +
@@ -247,55 +246,54 @@ newdata.floraldiv <- crossing(MeanFloralDiversity =
 pred_floraldiv <- fit.parasite %>% 
   epred_draws(newdata = newdata.floraldiv,
               resp = "CrithidiaPresence")
-pred_floraldiv<- pred_floraldiv %>% mutate(bee = "Bombus")
+#pred_floraldiv<- pred_floraldiv %>% mutate(bee = "Bombus")
 ## to see range of predicted values
 pred_floraldiv %>%
   group_by(MeanFloralDiversity) %>%
   summarise(mean(.epred))
 ## Create the same fake data but using the Apis model
 ## You will need to load the apis model
-load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_ss.Rdata")
+# load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_ss.Rdata")
+# 
+# newdata.floraldiv <- crossing(MeanFloralDiversity =
+#                                 seq(min(apis.par$MeanFloralDiversity),
+#                                     max(apis.par$MeanFloralDiversity),
+#                                     length.out=10),
+#                               rare.degree = 0,
+#                               Lat = 0,
+#                               Net_BombusAbundance = 0,
+#                               Net_HBAbundance = 0,
+#                               MeanFloralAbundance = 0,
+#                               Net_BeeDiversity= 0,
+#                               Site = "SC", 
+#                               GenusSpecies = "Bombus centralis",
+#                               WeightsPar=1
+# )
+# 
+# ## predict values based on generated data and model parameters
+# pred_floraldiv2 <- fit.parasite %>% 
+#   epred_draws(newdata = newdata.floraldiv,
+#               resp = "CrithidiaPresence")
+# pred_floraldiv2 <- pred_floraldiv2 %>% mutate(bee = "Apis")
+# ## to see range of predicted values
+# pred_floraldiv2 %>%
+#   group_by(MeanFloralDiversity) %>%
+#   summarise(mean(.epred))
+# 
+# ## Merge the fake data of Bombus and Apis and use it to graph
+# pred_floraldiv <- rbind(pred_floraldiv, pred_floraldiv2)
 
-newdata.floraldiv <- crossing(MeanFloralDiversity =
-                                seq(min(apis.par$MeanFloralDiversity),
-                                    max(apis.par$MeanFloralDiversity),
-                                    length.out=10),
-                              rare.degree = 0,
-                              Lat = 0,
-                              Net_BombusAbundance = 0,
-                              Net_HBAbundance = 0,
-                              MeanFloralAbundance = 0,
-                              Net_BeeDiversity= 0,
-                              Site = "SC", 
-                              GenusSpecies = "Bombus centralis",
-                              WeightsPar=1
-)
-
-## predict values based on generated data and model parameters
-pred_floraldiv2 <- fit.parasite %>% 
-  epred_draws(newdata = newdata.floraldiv,
-              resp = "CrithidiaPresence")
-pred_floraldiv2 <- pred_floraldiv2 %>% mutate(bee = "Apis")
-## to see range of predicted values
-pred_floraldiv2 %>%
-  group_by(MeanFloralDiversity) %>%
-  summarise(mean(.epred))
-
-## Merge the fake data of Bombus and Apis and use it to graph
-pred_floraldiv <- rbind(pred_floraldiv, pred_floraldiv2)
-
-p3.parasite <- ggplot(pred_floraldiv, aes(x = MeanFloralDiversity, y = .epred, fill = bee)) +
-  stat_lineribbon(aes(linetype = bee, color = bee), alpha = .5, .width = .95) +
-  scale_fill_manual(values = c("#e6550d", "#3182bd"), labels = c("Apis 0.95", "Bombus 0.95")) +
-  scale_color_manual(values = c("black", "black")) +
-    labs(x = "Floral community diversity", y = "Crithidia prevalence",
+p3.parasite <- ggplot(pred_floraldiv, aes(x = MeanFloralDiversity, y = .epred)) +
+  stat_lineribbon(.width = .95, linetype = "dashed") +
+  scale_fill_manual(values = "#3182bd", labels ="Bombus 0.95") +
+    labs(x = "Floral diversity", y = "Crithidia prevalence",
          fill = "Credible interval") +
     theme_ms() +
     theme(legend.position = "bottom") +
     scale_x_continuous(
         breaks = axis.flower.div,
         labels =  labs.flower.div) +
-    theme(axis.title.x = element_text(size=16),
+    theme(axis.title.x = element_blank(),
           axis.title.y = element_text(size=16),
           text = element_text(size=16)) 
     ##theme_dark_black()+
@@ -324,47 +322,46 @@ newdata.floraldiv <- crossing(MeanFloralDiversity =
 pred_floraldiv3 <- fit.parasite %>% 
   epred_draws(newdata = newdata.floraldiv,
               resp = "ApicystisSpp")
-pred_floraldiv3<- pred_floraldiv3 %>% mutate(bee = "Bombus")
+#pred_floraldiv3<- pred_floraldiv3 %>% mutate(bee = "Bombus")
 ## to see range of predicted values
 pred_floraldiv3 %>%
   group_by(MeanFloralDiversity) %>%
   summarise(mean(.epred))
 
 ## Now do the same but with the apis model
-load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_ss.Rdata")
+# load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_ss.Rdata")
+# 
+# newdata.floraldiv <- crossing(MeanFloralDiversity =
+#                                 seq(min(apis.par$MeanFloralDiversity),
+#                                     max(apis.par$MeanFloralDiversity),
+#                                     length.out=10),
+#                               rare.degree = 0,
+#                               Lat = 0,
+#                               Net_BombusAbundance = 0,
+#                               Net_HBAbundance = 0,
+#                               MeanFloralAbundance = 0,
+#                               Net_BeeDiversity= 0,
+#                               Site = "SC", 
+#                               GenusSpecies = "Bombus centralis",
+#                               WeightsPar=1
+# )
+# 
+# ## predict values based on generated data and model parameters
+# pred_floraldiv4 <- fit.parasite %>% 
+#   epred_draws(newdata = newdata.floraldiv,
+#               resp = "ApicystisSpp")
+# pred_floraldiv4<- pred_floraldiv4 %>% mutate(bee = "Apis")
+# ## to see range of predicted values
+# pred_floraldiv4 %>%
+#   group_by(MeanFloralDiversity) %>%
+#   summarise(mean(.epred))
+# ## Merge the data 
+# pred_floraldiv3 <- rbind(pred_floraldiv3, pred_floraldiv4)
 
-newdata.floraldiv <- crossing(MeanFloralDiversity =
-                                seq(min(apis.par$MeanFloralDiversity),
-                                    max(apis.par$MeanFloralDiversity),
-                                    length.out=10),
-                              rare.degree = 0,
-                              Lat = 0,
-                              Net_BombusAbundance = 0,
-                              Net_HBAbundance = 0,
-                              MeanFloralAbundance = 0,
-                              Net_BeeDiversity= 0,
-                              Site = "SC", 
-                              GenusSpecies = "Bombus centralis",
-                              WeightsPar=1
-)
-
-## predict values based on generated data and model parameters
-pred_floraldiv4 <- fit.parasite %>% 
-  epred_draws(newdata = newdata.floraldiv,
-              resp = "ApicystisSpp")
-pred_floraldiv4<- pred_floraldiv4 %>% mutate(bee = "Apis")
-## to see range of predicted values
-pred_floraldiv4 %>%
-  group_by(MeanFloralDiversity) %>%
-  summarise(mean(.epred))
-## Merge the data 
-pred_floraldiv3 <- rbind(pred_floraldiv3, pred_floraldiv4)
-
-p4.parasite <- ggplot(pred_floraldiv3, aes(x = MeanFloralDiversity, y = .epred, fill = bee)) +
-  stat_lineribbon(aes(linetype = bee, color = bee), alpha = .6, .width = .95) +
-  scale_fill_manual(values = c("#e6550d", "#3182bd"), labels = c("Apis 0.95", "Bombus 0.95")) +
-  scale_color_manual(values = c("black", "black"))+
-  labs(x = "Floral community diversity", y = "Apicystis prevalence",
+p4.parasite <- ggplot(pred_floraldiv3, aes(x = MeanFloralDiversity, y = .epred)) +
+  stat_lineribbon(.width = .95, linetype = "dashed") +
+  scale_fill_manual(values = "#3182bd", labels ="Bombus 0.95")+
+  labs(x = "Floral diversity", y = "Apicystis prevalence",
        fill = "Credible interval") +
   theme_ms() +
   theme(legend.position = "bottom") +
@@ -388,7 +385,11 @@ parasite.dilution <- ggarrange(p1.parasite, p3.parasite,p2.parasite, p4.parasite
 ggsave(parasite.dilution, file="figures/parasite_diversity.pdf", height=8, width=12)
 
 ## ***************************************************************************
-## crithidia ~ bumble bee abundance
+## crithidia ~ bee abundance
+
+## Double check that you are in the bombus model. Load it again
+load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all.Rdata")
+
 newdata.bombusabund <- crossing(Net_BeeAbundance =
                                   seq(min(bombus.par$Net_BeeAbundance),
                                       max(bombus.par$Net_BeeAbundance),
@@ -413,7 +414,7 @@ pred_bombusabund %>%
   group_by(Net_BeeAbundance) %>%
   summarise(mean(.epred))
 
-p2.parasite <- ggplot(pred_bombusabund, aes(x = Net_BeeAbundance, y = .epred)) +
+p5.parasite <- ggplot(pred_bombusabund, aes(x = Net_BeeAbundance, y = .epred)) +
   stat_lineribbon() +
   scale_fill_brewer(palette = "Blues") +
   labs(x = "Bee abundance (log)", y = "Crithidia prevalence",
@@ -425,21 +426,77 @@ p2.parasite <- ggplot(pred_bombusabund, aes(x = Net_BeeAbundance, y = .epred)) +
     labels =  labs.bee.abund) +
   theme(axis.title.x = element_text(size=16),
         axis.title.y = element_text(size=16),
-        text = element_text(size=16)) +
-  geom_jitter(data=bombus.par,
-              aes(y= SpCrithidiaParasitismRate, x=Net_BeeAbundance,
-                  colour = GenusSpecies, #shape = Site,
-                  size=SpScreened), width=0.05) +
-  guides(size = guide_legend(title = "Individuals screened"), 
-         colour = guide_legend(title = ""),fill = "none")
+        text = element_text(size=16)) 
+  # geom_jitter(data=bombus.par,
+  #             aes(y= SpCrithidiaParasitismRate, x=Net_BeeAbundance,
+  #                 colour = GenusSpecies, #shape = Site,
+  #                 size=SpScreened), width=0.05) +
+  # guides(size = guide_legend(title = "Individuals screened"), 
+  #        colour = guide_legend(title = ""),fill = "none")
 
-parasite.comm <- ggarrange(p1.parasite, p2.parasite, nrow=1,
-                           common.legend = TRUE,
-                           legend="bottom")
-ggsave(parasite.comm, file="figures/parasite_beecomm.pdf",
-       height=5, width=10)
+
+ggsave(p5.parasite, file="figures/crithidia_beeabundance_bombus.pdf",
+       height=4, width=6)
+################################################################################
+## Apicysits ~ bee abundance
+################################################################################
+newdata.bombusabund <- crossing(Net_BeeAbundance =
+                                  seq(min(bombus.par$Net_BeeAbundance),
+                                      max(bombus.par$Net_BeeAbundance),
+                                      length.out=10),
+                                Lat = 0,
+                                rare.degree = 0,
+                                Net_BeeDiversity =0,
+                                MeanFloralAbundance = 0,
+                                MeanFloralDiversity = 0,
+                                Site = "JC", 
+                                GenusSpecies = "Bombus centralis",
+                                WeightsPar=1
+)
+
+## predict values based on generated data and model parameters
+pred_bombusabund <- fit.parasite %>% 
+  epred_draws(newdata = newdata.bombusabund,
+              resp = "ApicystisSpp")
+
+## to see range of predicted values
+pred_bombusabund %>%
+  group_by(Net_BeeAbundance) %>%
+  summarise(mean(.epred))
+
+p6.parasite <- ggplot(pred_bombusabund, aes(x = Net_BeeAbundance, y = .epred)) +
+  stat_lineribbon() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(x = "Bee abundance (log)", y = "Apicystis prevalence",
+       fill = "Credible interval") +
+  theme_ms() +
+  theme(legend.position = "bottom") +
+  scale_x_continuous(
+    breaks = axis.bee.abund,
+    labels =  labs.bee.abund) +
+  theme(axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        text = element_text(size=16)) 
+  # geom_jitter(data=bombus.par,
+  #             aes(y= SpApicystisParasitismRate, x=Net_BeeAbundance,
+  #                 colour = GenusSpecies, #shape = Site,
+  #                 size=SpScreened), width=0.05) +
+  # guides(size = guide_legend(title = "Individuals screened"), 
+  #        colour = guide_legend(title = ""),fill = "none")
+
+ggsave(p6.parasite, file="figures/Apicystis_beeabun_bombus.pdf",
+       height=4, width=6)
+
+parasite.amplification <- ggarrange(p5.parasite, p6.parasite, nrow=1,
+                                    labels = c("A", "B"),
+                                    common.legend = TRUE,
+                                    legend="bottom")
+
+ggsave(parasite.amplification, file="figures/parasite_amplification.pdf",
+       height=6, width=10)
+
 ## ***************************************************************************
-## crithidia ~ diet breadth 
+## parasites ~ diet breadth 
 ## ***************************************************************************
 
 ## ***************************************************************************
@@ -468,7 +525,7 @@ pred_degree %>%
   group_by(rare.degree) %>%
   summarise(mean(.epred))
 
-p4.parasite <- ggplot(pred_degree, aes(x = rare.degree, y = .epred)) +
+p7.parasite <- ggplot(pred_degree, aes(x = rare.degree, y = .epred)) +
     stat_lineribbon() +
     scale_fill_brewer(palette = "Blues") +
     labs(x = "Degree", y = "Crithidia prevalence",
@@ -480,19 +537,72 @@ p4.parasite <- ggplot(pred_degree, aes(x = rare.degree, y = .epred)) +
         labels =  labs.degree) +
     theme(axis.title.x = element_text(size=16),
           axis.title.y = element_text(size=16),
-          text = element_text(size=16)) +
-    geom_jitter(data=bombus.par,
-                aes(y= SpCrithidiaParasitismRate, x=rare.degree,
-                    colour = GenusSpecies, #shape = Site,
-                    size=SpScreened), width=0.05) +
-  guides(size = guide_legend(title = "Individuals screened"), 
-         colour = guide_legend(title = ""),fill = "none")
+          text = element_text(size=16)) 
+  #   geom_jitter(data=bombus.par,
+  #               aes(y= SpCrithidiaParasitismRate, x=rare.degree,
+  #                   colour = GenusSpecies, #shape = Site,
+  #                   size=SpScreened), width=0.05) +
+  # guides(size = guide_legend(title = "Individuals screened"), 
+  #        colour = guide_legend(title = ""),fill = "none")
 
-parasite.traits <- ggarrange(p2.parasite, p4.parasite, nrow=1,
-                          common.legend = TRUE,
-                          legend="bottom")
-ggsave(parasite.traits, file="figures/parasite_traits.pdf",
+
+ggsave(p7.parasite, file="figures/crithidia_degree.pdf",
        height=5, width=10)
+
+## Apicystis ~ degree
+newdata.degree <- crossing(rare.degree =
+                             seq(min(bombus.par$rare.degree),
+                                 max(bombus.par$rare.degree),
+                                 length.out=10),
+                           Lat = 0,
+                           Net_BeeDiversity= 0,
+                           Net_BeeAbundance = 0, 
+                           MeanFloralAbundance = 0,
+                           MeanFloralDiversity = 0,
+                           Site = "JC", 
+                           GenusSpecies = "Bombus centralis",
+                           WeightsPar=1
+)
+
+## predict values based on generated data and model parameters
+pred_degree <- fit.parasite %>% 
+  epred_draws(newdata = newdata.degree,
+              resp = "ApicystisSpp")
+
+## to see range of predicted values
+pred_degree %>%
+  group_by(rare.degree) %>%
+  summarise(mean(.epred))
+
+p8.parasite <- ggplot(pred_degree, aes(x = rare.degree, y = .epred)) +
+  stat_lineribbon() +
+  scale_fill_brewer(palette = "Blues") +
+  labs(x = "Degree", y = "Apicystis prevalence",
+       fill = "Credible interval") +
+  theme_ms() +
+  theme(legend.position = "bottom") +
+  scale_x_continuous(
+    breaks = axis.degree,
+    labels =  labs.degree) +
+  theme(axis.title.x = element_text(size = 16),
+        axis.title.y = element_text(size=16),
+        text = element_text(size=16)) 
+  # geom_jitter(data=bombus.par,
+  #             aes(y= SpApicystisParasitismRate, x=rare.degree,
+  #                 colour = GenusSpecies, #shape = Site,
+  #                 size=SpScreened), width=0.05) +
+  # guides(size = guide_legend(title = "Individuals screened"), 
+  #        colour = guide_legend(title = ""),fill = "none")
+
+ggsave(p8.parasite, file="figures/apicystis_degree.pdf",
+       height=5, width=10)
+
+parasite.traits <- ggarrange(p7.parasite, p8.parasite, nrow=1,
+                             labels = c("A", "B"),
+                             common.legend = TRUE,
+                             legend="bottom")
+ggsave(parasite.traits, file="figures/parasite_traits.pdf",
+       height= 6, width=10)
 ## ***********************************************************************
 ## lat and crithidia
 ## ***********************************************************************
@@ -521,7 +631,7 @@ pred_lat %>%
   group_by(Lat) %>%
   summarise(mean(.epred))
 
-p5.parasite <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
+p9.parasite <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
   stat_lineribbon() +
   scale_fill_brewer(palette = "Blues") +
   labs(x = "Latitude (log)", y = "Crithidia prevalence",
@@ -536,177 +646,14 @@ p5.parasite <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
         axis.title.y = element_text(size=16),
         text = element_text(size=16),
         plot.title = element_text(color = "black")) 
-  geom_point(data=bombus.par,
-              aes(y= SpCrithidiaParasitismRate, x= Lat),  
-             color="grey40", cex=2)
+  # geom_point(data=bombus.par,
+  #             aes(y= SpCrithidiaParasitismRate, x= Lat),  
+  #            color="grey40", cex=2)
 
 
 
-ggsave(p5.parasite, file="figures/Lat_crithidia.pdf",
+ggsave(p9.parasite, file="figures/Lat_crithidia.pdf",
        height=4, width=5)
-
-# ****************************************************************************
-#Apicystis spp
-## ***************************************************************************
-## Apicystis ~ bee diversity
-newdata.beediv <- crossing(Net_BeeDiversity =
-                             seq(min(bombus.par$Net_BeeDiversity),
-                                 max(bombus.par$Net_BeeDiversity),
-                                 length.out=10),
-                           rare.degree = 0,
-                           Net_BeeAbundance = 0,
-                           MeanFloralAbundance = 0,
-                           MeanFloralDiversity = 0,
-                           Lat = 0,
-                           Site = "SC", 
-                           GenusSpecies = "Bombus centralis",
-                           WeightsPar=1
-)
-
-## predict values based on generated data and model parameters
-pred_beediv <- fit.parasite %>% 
-  epred_draws(newdata = newdata.beediv,
-              resp = "ApicystisSpp")
-
-## to see range of predicted values
-pred_beediv %>%
-  group_by(Net_BeeDiversity) %>%
-  summarise(mean(.epred))
-
-p6.parasite <- ggplot(pred_beediv, aes(x = Net_BeeDiversity, y = .epred)) +
-  stat_lineribbon() +
-  scale_fill_brewer(palette = "Blues") +
-  labs(x = "Bee community diversity", y = "Apicystis prevalence",
-       fill = "Credible interval") +
-  theme_ms() +
-  theme(legend.position = "bottom") +
-  scale_x_continuous(
-    breaks = axis.bee.div,
-    labels =  labs.bee.div) +
-  theme(axis.title.x = element_text(size=16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16)) 
-  ##theme_dark_black()+
-
-
-## ***************************************************************************
-## Apicystis ~ bumble bee abundance
-newdata.bombusabund <- crossing(Net_BeeAbundance =
-                                  seq(min(bombus.par$Net_BeeAbundance),
-                                      max(bombus.par$Net_BeeAbundance),
-                                      length.out=10),
-                                Lat = 0,
-                                rare.degree = 0,
-                                Net_BeeDiversity =0,
-                                MeanFloralAbundance = 0,
-                                MeanFloralDiversity = 0,
-                                Site = "JC", 
-                                GenusSpecies = "Bombus centralis",
-                                WeightsPar=1
-)
-
-## predict values based on generated data and model parameters
-pred_bombusabund <- fit.parasite %>% 
-  epred_draws(newdata = newdata.bombusabund,
-              resp = "ApicystisSpp")
-
-## to see range of predicted values
-pred_bombusabund %>%
-  group_by(Net_BeeAbundance) %>%
-  summarise(mean(.epred))
-
-p7.parasite <- ggplot(pred_bombusabund, aes(x = Net_BeeAbundance, y = .epred)) +
-  stat_lineribbon() +
-  scale_fill_brewer(palette = "Blues") +
-  labs(x = "Bee abundance (log)", y = "Apicystis prevalence",
-       fill = "Credible interval") +
-  theme_ms() +
-  theme(legend.position = "bottom") +
-  scale_x_continuous(
-    breaks = axis.bee.abund,
-    labels =  labs.bee.abund) +
-  theme(axis.title.x = element_text(size=16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16)) +
-  geom_jitter(data=bombus.par,
-              aes(y= SpApicystisParasitismRate, x=Net_BeeAbundance,
-                  colour = GenusSpecies, #shape = Site,
-                  size=SpScreened), width=0.05) +
-  guides(size = guide_legend(title = "Individuals screened"), 
-         colour = guide_legend(title = ""),fill = "none")
-
-apicystis.comm <- ggarrange(p5.parasite, p6.parasite, nrow=1,
-                           common.legend = TRUE,
-                           legend="bottom")
-ggsave(apicystis.comm, file="figures/Apicystis_beecomm.pdf",
-       height=5, width=10)
-
-
-## ***************************************************************************
-## Apicystis ~ diet breadth 
-## ***************************************************************************
-
-## ***************************************************************************
-## Apicystis ~ degree
-newdata.degree <- crossing(rare.degree =
-                             seq(min(bombus.par$rare.degree),
-                                 max(bombus.par$rare.degree),
-                                 length.out=10),
-                           Lat = 0,
-                           Net_BeeDiversity= 0,
-                           Net_BeeAbundance = 0, 
-                           MeanFloralAbundance = 0,
-                           MeanFloralDiversity = 0,
-                           Site = "JC", 
-                           GenusSpecies = "Bombus centralis",
-                           WeightsPar=1
-)
-
-## predict values based on generated data and model parameters
-pred_degree <- fit.parasite %>% 
-  epred_draws(newdata = newdata.degree,
-              resp = "ApicystisSpp")
-
-## to see range of predicted values
-pred_degree %>%
-  group_by(rare.degree) %>%
-  summarise(mean(.epred))
-
-p9.parasite <- ggplot(pred_degree, aes(x = rare.degree, y = .epred)) +
-  stat_lineribbon() +
-  scale_fill_brewer(palette = "Blues") +
-  labs(x = "Degree", y = "Apicystis prevalence",
-       fill = "Credible interval") +
-  theme_ms() +
-  theme(legend.position = "bottom") +
-  scale_x_continuous(
-    breaks = axis.degree,
-    labels =  labs.degree) +
-  theme(axis.title.x = element_text(size = 16),
-        axis.title.y = element_text(size=16),
-        text = element_text(size=16)) +
-  geom_jitter(data=bombus.par,
-              aes(y= SpApicystisParasitismRate, x=rare.degree,
-                  colour = GenusSpecies, #shape = Site,
-                  size=SpScreened), width=0.05) +
-  guides(size = guide_legend(title = "Individuals screened"), 
-         colour = guide_legend(title = ""),fill = "none")
-
-apicystis.traits <- ggarrange(p6.parasite, p8.parasite, nrow=1,
-                             common.legend = TRUE,
-                             legend="bottom")
-
-ggsave(apicystis.traits, file="figures/apicystis_traits.pdf",
-       height=5, width=10)
-
-
-
-#ggsave(p3.parasite, file="figures/parasite_Apicystisspp_beeDiv.jpg",
-#       height=4, width=5)
-
-#ggsave(p4.parasite, file="figures/parasite_Apicystisspp_bombusAbund.jpg",
-#      height=4, width=5)
-
 
 ## ***********************************************************************
 ## lat and apicystis
@@ -749,16 +696,16 @@ p10.parasite <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
   theme(axis.title.x = element_text(size = 16),
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) 
-  geom_jitter(data=bombus.par,
-              aes(y= SpApicystisParasitismRate, x= Lat), 
-              color="grey40", cex=2) 
+  # geom_jitter(data=bombus.par,
+  #             aes(y= SpApicystisParasitismRate, x= Lat), 
+  #             color="grey40", cex=2) 
 
 
 
 ggsave(p10.parasite, file="figures/Lat_apicystis.pdf",
        height=4, width=5)
 
-lat_parasite<- ggarrange(p5.parasite, p11.parasite, p10.parasite, p12.parasite,#plots that are going to be included in this multipanel figure
+lat_parasite<- ggarrange(p9.parasite, p11.parasite, p10.parasite, p12.parasite,#plots that are going to be included in this multipanel figure
                           labels = c("A", "C", "B","D"), #labels given each panel 
                           ncol = 2, nrow = 2)
  

@@ -9,7 +9,7 @@ setwd(dir.bombus)
 load(file="saved/spec_weights.Rdata")
 veg <- read_csv("../../../skyIslands_saved/data/relational/original/veg.csv")
 ## These sites were only visited once. 
-## spec.orig <- filter(spec.orig, Site != "VC")
+ spec.orig <- filter(spec.orig, Site != "VC")
 
 ## Chiricahua and Sacramento has two meadows so renamed them to be able to show 
 ## both meadows in all the community graphs. 
@@ -51,10 +51,12 @@ veg %>%
 bombus_abundance <- spec.orig %>%  
 ggplot(aes(reorder(MtRange, Lat, decreasing = TRUE), Net_BombusAbundance))+ 
   geom_boxplot()+ geom_point(aes(color = as.factor(Year)))+
-  labs(x = "Meadows", y = "Bombus Abundance", color = "Year")+
-  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
-        axis.title.y = element_text(size=10),
-        text = element_text(size=10))
+  scale_color_manual(values = c("#08519c","#6baed6","#fd8d3c","darkgoldenrod3", "goldenrod1")) +
+  labs(x = "Meadows", y = "Bombus abundance", color = "Year")+
+  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size = 12),
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size=12),
+        text = element_text(size=12))
 bombus_abundance  
 
 
@@ -62,33 +64,38 @@ bombus_abundance
 HB_abundance <- spec.orig %>% 
   ggplot(aes(reorder(MtRange, Lat, decreasing = TRUE), Net_HBAbundance))+ 
   geom_boxplot()+ geom_point(aes(color = as.factor(Year)))+
-  labs(x = "Meadows", y = "Apis Abundance", color = "Year")+
-  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
-        axis.title.y = element_text(size=10),
-        text = element_text(size=10))
+  scale_color_manual(values = c("#08519c","#6baed6","#fd8d3c","darkgoldenrod3", "goldenrod1")) +
+  labs(x = "Meadows", y = "Apis abundance", color = "Year")+
+  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size = 12),
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size=12),
+        text = element_text(size=12))
 HB_abundance  
 
 
-## melissodes
-melissodes_abundance <- spec.orig %>% 
-  filter(Genus == "Melissodes") %>% 
-  ggplot(aes(reorder(MtRange, Lat, decreasing = TRUE), Net_NonBombusHBAbundance))+ 
+## bee abundance
+bee_abundance <- spec.orig %>% 
+  ggplot(aes(reorder(MtRange, Lat, decreasing = TRUE), Net_BeeAbundance))+ 
   geom_boxplot()+ geom_point(aes(color = as.factor(Year)))+
-  labs(x = "Meadows", y = "Melissodes Abundance", color = "Year")+
-  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
-        axis.title.y = element_text(size=10),
-        text = element_text(size=10))
-  melissodes_abundance
+  scale_color_manual(values = c("#08519c","#6baed6","#fd8d3c","darkgoldenrod3", "goldenrod1")) +
+  labs(x = "Meadows", y = "Bee abundance", color = "Year")+
+  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size = 12),
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size=12),
+        text = element_text(size=12))
+  bee_abundance
 
 ################################################################################
 ## Bee Diversity by meadows
 bee_diversity <- spec.orig %>% 
     ggplot(aes(reorder(MtRange, Lat, decreasing = TRUE), Net_BeeDiversity))+ 
     geom_boxplot()+ geom_point(aes(color = as.factor(Year)))+
-    labs(x = "Meadows", y = "Bee Diversity", color = "Year")+
-    theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
-          axis.title.y = element_text(size=10),
-          text = element_text(size=10))
+    scale_color_manual(values = c("#08519c","#6baed6","#fd8d3c","darkgoldenrod3", "goldenrod1")) +
+    labs(x = "Meadows", y = "Bee diversity", color = "Year")+
+    theme(axis.text.x = element_blank(),
+          axis.title.x = element_blank(),
+          axis.title.y = element_text(size=12),
+          text = element_text(size=12))
 bee_diversity
 
 
@@ -97,10 +104,12 @@ bee_diversity
 floral_abundance <- spec.orig %>% 
     ggplot(aes(reorder(MtRange, Lat, decreasing = TRUE), MeanFloralAbundance))+ 
     geom_boxplot()+ geom_point(aes(color = as.factor(Year)))+
-    labs(x = "Meadows", y = "Mean Floral Abundance", color = "Year")+
-    theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
-          axis.title.y = element_text(size=10),
-          text = element_text(size=10))
+  scale_color_manual(values = c("#08519c","#6baed6","#fd8d3c","darkgoldenrod3", "goldenrod1")) +
+    labs(x = "Meadows", y = "Mean floral abundance", color = "Year")+
+    theme(axis.text.x = element_blank(),
+          axis.title.x = element_blank(),
+          axis.title.y = element_text(size=12),
+          text = element_text(size=12))
 floral_abundance
 
 
@@ -109,16 +118,22 @@ floral_abundance
 floral_diversity<- spec.orig %>% 
   ggplot(aes(reorder(MtRange, Lat, decreasing = TRUE), MeanFloralDiversity))+ 
   geom_boxplot()+ geom_point(aes(color = as.factor(Year)))+
-  labs(x = "Meadows", y = "Mean Floral Diversity", color = "Year")+
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size=10), 
-        axis.title.y = element_text(size=10),
-        text = element_text(size=10))
+  scale_color_manual(values = c("#08519c","#6baed6","#fd8d3c","darkgoldenrod3", "goldenrod1")) +
+  labs(x = "Meadows", y = "Mean floral diversity", color = "Year")+
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size=12),
+        text = element_text(size=12))
 floral_diversity
 
-bombus_abundance + HB_abundance + melissodes_abundance + bee_diversity + 
-  floral_abundance + floral_diversity + plot_layout(ncol = 3)+ 
-  plot_annotation(tag_levels = "A")+ plot_layout(guides = "collect", axis_titles = "collect")
+meadows_summary <- ggarrange(floral_diversity, floral_abundance, bee_diversity, 
+                             bee_abundance, bombus_abundance, HB_abundance,
+                             nrow = 2, ncol = 3, 
+                             labels = c("A", "B", "C", "D", "E", "F"), 
+                             common.legend = T,
+                             legend = "right")
 
+ggsave(meadows_summary, file = "figures/meadows_summary.pdf", height = 8, width = 12)
 
 ###############################################################################
 ## Parasite prevalence by meadows
