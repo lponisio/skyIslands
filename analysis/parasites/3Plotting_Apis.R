@@ -232,10 +232,10 @@ newdata.floraldiv <- crossing(MeanFloralDiversity =
 )
 
 ## predict values based on generated data and model parameters
-pred_floraldiv <- fit.parasite %>% 
+pred_floraldiv2 <- fit.parasite %>% 
   epred_draws(newdata = newdata.floraldiv,
               resp = "CrithidiaPresence")
-
+pred_floraldiv2 <- pred_floraldiv2 %>% mutate(bee = "Apis")
 ## to see range of predicted values
 pred_floraldiv %>%
   group_by(MeanFloralDiversity) %>%
@@ -631,7 +631,7 @@ p11.parasite <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
   theme(axis.title.x = element_blank(),
         axis.title.y = element_text(size=16),
         text = element_text(size=16), 
-        plot.title = element_text(color = "black")) +
+        plot.title = element_text(color = "black")) 
   geom_jitter(data=bombus.par,
               aes(y= SpCrithidiaParasitismRate, x= Lat), 
               color="grey40", cex=2) 
@@ -681,7 +681,7 @@ p12.parasite <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
     labels =  labs.lat.x) +
   theme(axis.title.x = element_text(size=16),
         axis.title.y = element_text(size=16),
-        text = element_text(size=16)) +
+        text = element_text(size=16)) 
   geom_jitter(data=bombus.par,
               aes(y= SpApicystisParasitismRate, x= Lat), 
               color="grey40", cex=2) 
