@@ -47,6 +47,7 @@ spec.net$MeanITD[spec.net$Genus !=
 spec.net$rare.degree[!spec.net$Genus %in% c("Bombus", "Apis") &
                      is.na(spec.net$Apidae)] <- NA
 
+dim(spec.net)
 ## raw, non standardized data for plotting
 spec.orig <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1, 
                          standardize=FALSE)
