@@ -14,33 +14,40 @@ source("src/ggplotThemes.R")
 ## ***********************************************************************
 ## scaling/unscaling labs
 ## ***********************************************************************
-spec.uni <- spec.orig[spec.orig$Weights ==1,]
+# original data, subsetted to unique values
+spec.uni.orig <- spec.orig[spec.orig$Weights ==1,]
+## scaled data subsetted to unique values
+spec.uni <- spec.net[spec.net$Weights ==1,]
+
+## use unscaled data to have nice axis labels, convert to scaled for
+## the axes
+
 ## lat (logged)
-labs.lat.x <- pretty(c(spec.uni$Lat),
+labs.lat.x <- pretty(c(spec.uni.orig$Lat),
                       n=10)
-axis.lat.x <-  standardize.axis(labs.lat.x, spec.uni$Lat)
+axis.lat.x <-  standardize.axis(labs.lat.x, spec.uni.orig$Lat)
 
 ## bloom abundance (not logged)
-labs.bloom.abund <- (pretty(c(spec.uni$MeanFloralAbundance), n=6))
+labs.bloom.abund <- (pretty(c(spec.uni.orig$MeanFloralAbundance), n=6))
 axis.bloom.abund <-  standardize.axis(labs.bloom.abund,
-                                      spec.uni$MeanFloralAbundance)
+                                      spec.uni.orig$MeanFloralAbundance)
 ## flower div (not logged)
-labs.flower.div <- (pretty(spec.uni$MeanFloralDiversity, n=5))
+labs.flower.div <- (pretty(spec.uni.orig$MeanFloralDiversity, n=5))
 axis.flower.div <-  standardize.axis(labs.flower.div,
-                                     spec.uni$MeanFloralDiversity)
+                                     spec.uni.orig$MeanFloralDiversity)
 ## HB abund (logged + 1)
-labs.HB.abund <- (pretty(c(spec.uni$Net_HBAbundance), n=5))
-axis.HB.abund <-  standardize.axis(labs.HB.abund, spec.uni$Net_HBAbundance)
+labs.HB.abund <- (pretty(c(spec.uni.orig$Net_HBAbundance), n=5))
+axis.HB.abund <-  standardize.axis(labs.HB.abund, spec.uni.orig$Net_HBAbundance)
 ## bombus abund (logged + 1)
-labs.bombus.abund <- (pretty(c(spec.uni$Net_BombusAbundance), n=5))
-axis.bombus.abund <-  standardize.axis(labs.bombus.abund, spec.uni$Net_BombusAbundance)
+labs.bombus.abund <- (pretty(c(spec.uni.orig$Net_BombusAbundance), n=5))
+axis.bombus.abund <-  standardize.axis(labs.bombus.abund, spec.uni.orig$Net_BombusAbundance)
 ## all bee abund (logged)
-labs.bee.abund <- (pretty(c(spec.uni$Net_BeeAbundance), n=5))
-axis.bee.abund <-  standardize.axis(labs.bee.abund, spec.uni$Net_BeeAbundance)
+labs.bee.abund <- (pretty(c(spec.uni.orig$Net_BeeAbundance), n=5))
+axis.bee.abund <-  standardize.axis(labs.bee.abund, spec.uni.orig$Net_BeeAbundance)
 ## bee diversity (not logged)
-labs.bee.div <- (pretty(c(spec.uni$Net_BeeDiversity), n=5))
+labs.bee.div <- (pretty(c(spec.uni.orig$Net_BeeDiversity), n=5))
 axis.bee.div <-  standardize.axis(labs.bee.div,
-                                  spec.uni$Net_BeeDiversity)
+                                  spec.uni.orig$Net_BeeDiversity)
 
 ## use all the species data or just bombus? 
 bombus.par <- spec.orig[spec.orig$WeightsPar==1 & spec.orig$Genus == "Bombus", ]
@@ -78,7 +85,7 @@ newdata.beediv <- crossing(Net_BeeDiversity =
                            MeanFloralAbundance = 0,
                            MeanFloralDiversity = 0,
                            Lat = 0,
-                           Site = "JC", 
+                           Site = "SC", 
                            GenusSpecies = "Bombus centralis",
                            WeightsPar=1
                            )
@@ -106,7 +113,7 @@ newdata.beediv2 <- crossing(Net_BeeDiversity =
                            MeanFloralAbundance = 0,
                            MeanFloralDiversity = 0,
                            Lat = 0,
-                           Site = "JC", 
+                           Site = "SC", 
                            GenusSpecies = "Apis mellifera",
                            WeightsPar=1
                            )
