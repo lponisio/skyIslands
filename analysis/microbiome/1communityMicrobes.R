@@ -327,8 +327,12 @@ bform.bombus <- bf.fdiv +
   bf.non.ob.microbe.bombus.student +
   set_rescor(FALSE)
 
+## 9-2 removed the na to 0 code to test
+
 ## TODO check if need to change all NAs to 0
 spec.net[is.na(spec.net)] <- 0
+
+## bombus works without the above
 
 if(run.bombus){
   fit.microbe.bombus <- brm(bform.bombus, spec.net,
@@ -349,13 +353,28 @@ if(run.bombus){
        file="saved/fullMicrobeBombusFit.Rdata")
 }
 
-
+## 9-1-24 trying removing site from model and instead using Year for apis
+## 9-2 using year in model and pd obligate/trans not logged
 ## run apis model
 ## obligate PD model
 ob.microbe.apis.vars <- c("BeeAbundance",
-                            "BeeDiversity", "Lat", #check this doesn't make VIF high
-                            "MeanFloralDiversity", "rare.degree", "Year", #"ParasitePresence",
-                            "(1|Site)") 
+                          "BeeDiversity",
+                          "Lat", #check this doesn't make VIF high
+                          "MeanFloralDiversity",
+                          "rare.degree",
+                          "Year", #"ParasitePresence",
+                          "(1|Site)"
+                          ) 
+
+## non ob PD model
+non.ob.microbe.apis.vars <- c(#"BeeAbundance",
+                              #"BeeDiversity",
+                              #"Lat", #check this doesn't make VIF high
+                              #"MeanFloralDiversity",
+                              #"rare.degree",
+                              "Year", #"ParasitePresence",
+                              "(1|Site)"
+) 
 
 
 ob.microbe.apis.x <- paste(ob.microbe.apis.vars, collapse="+")
@@ -367,22 +386,21 @@ formula.ob.microbe.apis <- as.formula(paste(ob.microbe.apis.y, "~",
 bf.ob.microbe.apis.skew <- bf(formula.ob.microbe.apis, family=skew_normal())
 bf.ob.microbe.apis.student <- bf(formula.ob.microbe.apis, family=student())
 bf.ob.microbe.apis.gaussian <- bf(formula.ob.microbe.apis)
-bf.ob.microbe.apis.mix.sg <- bf(formula.ob.microbe.apis, family=mixture(student, gaussian))
+bf.ob.microbe.apis.mix.stg <- bf(formula.ob.microbe.apis, family=mixture(student, gaussian))
 bf.ob.microbe.apis.mix.gg <- bf(formula.ob.microbe.apis, family=mixture(gaussian, gaussian))
-bf.ob.microbe.apis.mix.ss <- bf(formula.ob.microbe.apis, family=mixture(student, student))
+bf.ob.microbe.apis.mix.stst <- bf(formula.ob.microbe.apis, family=mixture(student, student))
+bf.ob.microbe.apis.mix.skst <- bf(formula.ob.microbe.apis, family=mixture(skew_normal, student))
+## so far skg has best looking ppcheck
+bf.ob.microbe.apis.mix.skg <- bf(formula.ob.microbe.apis, family=mixture(skew_normal, gaussian))
+bf.ob.microbe.apis.mix.sksk <- bf(formula.ob.microbe.apis, family=mixture(skew_normal, skew_normal))
 
 
 
 ## non ob PD model
-non.ob.microbe.apis.vars <- c("BeeAbundance",
-                              "BeeDiversity", "Lat", #check this doesn't make VIF high
-                              "MeanFloralDiversity", "rare.degree", "Year", #"ParasitePresence",
-                              "(1|Site)") 
-
 
 non.ob.microbe.apis.x <- paste(non.ob.microbe.apis.vars, collapse="+")
 # non.ob.microbe.apis.y <- "PD.transient | subset(WeightsTransientapis) + weights(apisLogWeightsTransientAbund)"
-non.ob.microbe.apis.y <- "PD.transient.log | subset(WeightsTransientApis)"
+non.ob.microbe.apis.y <- "PD.transient | subset(WeightsTransientApis)"
 formula.non.ob.microbe.apis <- as.formula(paste(non.ob.microbe.apis.y, "~",
                                                   non.ob.microbe.apis.x))
 
@@ -391,6 +409,12 @@ formula.non.ob.microbe.apis <- as.formula(paste(non.ob.microbe.apis.y, "~",
 bf.non.ob.microbe.apis.skew <- bf(formula.non.ob.microbe.apis, family=skew_normal())
 bf.non.ob.microbe.apis.student <- bf(formula.non.ob.microbe.apis, family=student())
 bf.non.ob.microbe.apis.gaussian <- bf(formula.non.ob.microbe.apis)
+bf.non.ob.microbe.apis.mix.skst <- bf(formula.non.ob.microbe.apis, family=mixture(skew_normal, student))
+bf.non.ob.microbe.apis.mix.skg <- bf(formula.non.ob.microbe.apis, family=mixture(skew_normal, gaussian))
+bf.non.ob.microbe.apis.mix.stg <- bf(formula.non.ob.microbe.apis, family=mixture(student, gaussian))
+bf.non.ob.microbe.apis.mix.sksk <- bf(formula.non.ob.microbe.apis, family=mixture(skew_normal, skew_normal))
+bf.non.ob.microbe.apis.mix.stst <- bf(formula.non.ob.microbe.apis, family=mixture(student, student))
+bf.non.ob.microbe.apis.mix.gg <- bf(formula.non.ob.microbe.apis, family=mixture(gaussian, gaussian))
 
 
 
@@ -400,19 +424,20 @@ bf.non.ob.microbe.apis.gaussian <- bf(formula.non.ob.microbe.apis)
 # bform.apis <- bf.fdiv +
 #   bf.tot.bdiv +
 #   bf.tot.babund +
-bform.apis <- bf.ob.microbe.apis.skew +
-  bf.non.ob.microbe.apis.skew +
+bform.apis <- bf.ob.microbe.apis.mix.skg +
+  bf.non.ob.microbe.apis.mix.skst +
   set_rescor(FALSE)
 
 if(run.apis){
-fit.microbe.apis <- brm(bform.apis , spec.net,
+fit.microbe.apis <- brm(bf.non.ob.microbe.apis.mix.skst, spec.net,
                         cores=ncores,
                         iter = 10000,
                         chains =1,
                         thin=1,
                         init=0,
                         open_progress = FALSE,
-                        control = list(adapt_delta = 0.99),
+                        control = list(adapt_delta = 0.99,
+                                       max_treedepth = 12),
                         save_pars = save_pars(all = TRUE))
 
 write.ms.table(fit.microbe.apis, "apis_microbe")
