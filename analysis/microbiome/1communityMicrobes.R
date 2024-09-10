@@ -372,8 +372,8 @@ non.ob.microbe.apis.vars <- c(#"BeeAbundance",
                               #"Lat", #check this doesn't make VIF high
                               #"MeanFloralDiversity",
                               #"rare.degree",
-                              "Year", #"ParasitePresence",
-                              "(1|Site)"
+                              "Year"#, #"ParasitePresence",
+                              #"(1|Site)"
 ) 
 
 
@@ -436,8 +436,7 @@ fit.microbe.apis <- brm(bf.non.ob.microbe.apis.mix.skst, spec.net,
                         thin=1,
                         init=0,
                         open_progress = FALSE,
-                        control = list(adapt_delta = 0.99,
-                                       max_treedepth = 12),
+                        control = list(adapt_delta = 0.99),
                         save_pars = save_pars(all = TRUE))
 
 write.ms.table(fit.microbe.apis, "apis_microbe")
