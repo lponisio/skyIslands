@@ -13,93 +13,64 @@ source("src/misc.R")
 source("src/ggplotThemes.R")
 
 ## ***********************************************************************
-## plotting, unscaling labs
+## scaling/unscaling labs
 ## ***********************************************************************
-## lat
+# original data, subsetted to unique values
+spec.uni.orig <- spec.orig[spec.orig$Weights ==1,]
+## scaled data subsetted to unique values
+spec.uni <- spec.net[spec.net$Weights ==1,]
 
-spec.uni <- spec.orig[spec.orig$Weights ==1,]
-labs.lat.x <- pretty(c(spec.uni$Lat),
+## use unscaled data to have nice axis labels, convert to scaled for
+## the axes
+
+## lat (logged)
+labs.lat.x <- pretty(c(spec.uni.orig$Lat),
                      n=10)
-axis.lat.x <-  standardize.axis(labs.lat.x, spec.uni$Lat)
-## bloom abundance
-labs.bloom.abund <- (pretty(c(spec.uni$MeanFloralAbundance), n=6))
-axis.bloom.abund <-  standardize.axis(labs.bloom.abund,
-                                      spec.uni$MeanFloralAbundance)
-## flower div
-labs.flower.div <- (pretty(spec.uni$MeanFloralDiversity, n=5))
-axis.flower.div <-  standardize.axis(labs.flower.div,
-                                     spec.uni$MeanFloralDiversity)
-## HB abund
-labs.HB.abund <- (pretty(c(spec.uni$Net_HBAbundance), n=5))
-axis.HB.abund <-  standardize.axis(labs.HB.abund, spec.uni$Net_HBAbundance)
-## bombus abund
-labs.bombus.abund <- (pretty(c(spec.uni$Net_BombusAbundance), n=5))
-axis.bombus.abund <-  standardize.axis(labs.bombus.abund, spec.uni$Net_BombusAbundance)
-## non hb non bombus abund
-labs.bee.abund <- (pretty(c(spec.uni$Net_NonBombusHBAbundance), n=5))
-axis.bee.abund <-  standardize.axis(labs.bee.abund, spec.uni$Net_NonBombusHBAbundance)
-## bee diversity
-labs.bee.div <- (pretty(c(spec.uni$Net_BeeDiversity), n=5))
-axis.bee.div <-  standardize.axis(labs.bee.div,
-                                  spec.uni$Net_BeeDiversity)
+axis.lat.x <-  standardize.axis(labs.lat.x, spec.uni.orig$Lat)
 
-spec.sp <-  spec.orig[spec.orig$WeightsSp ==1 & spec.orig$Genus == "Bombus",]
-## meanITD
-labs.itd <- (pretty(spec.sp$MeanITD, n=10))
-axis.itd <-  standardize.axis(labs.itd,
-                              spec.sp$MeanITD)
-## rare.degree
-labs.degree <- (pretty(spec.sp$rare.degree, n=10))
-axis.degree <-  standardize.axis(labs.itd,
-                                 spec.sp$rare.degree)
+## bloom abundance (not logged)
+labs.bloom.abund <- (pretty(c(spec.uni.orig$MeanFloralAbundance), n=6))
+axis.bloom.abund <-  standardize.axis(labs.bloom.abund,
+                                      spec.uni.orig$MeanFloralAbundance)
+## flower div (not logged)
+labs.flower.div <- (pretty(spec.uni.orig$MeanFloralDiversity, n=5))
+axis.flower.div <-  standardize.axis(labs.flower.div,
+                                     spec.uni.orig$MeanFloralDiversity)
+## HB abund (logged + 1)
+labs.HB.abund <- (pretty(c(spec.uni.orig$Net_HBAbundance), n=5))
+axis.HB.abund <-  standardize.axis(labs.HB.abund, spec.uni.orig$Net_HBAbundance)
+## bombus abund (logged + 1)
+labs.bombus.abund <- (pretty(c(spec.uni.orig$Net_BombusAbundance), n=5))
+axis.bombus.abund <-  standardize.axis(labs.bombus.abund, spec.uni.orig$Net_BombusAbundance)
+## all bee abund (logged)
+labs.bee.abund <- (pretty(c(spec.uni.orig$Net_BeeAbundance), n=5))
+axis.bee.abund <-  standardize.axis(labs.bee.abund, spec.uni.orig$Net_BeeAbundance)
+## bee diversity (not logged)
+labs.bee.div <- (pretty(c(spec.uni.orig$Net_BeeDiversity), n=5))
+axis.bee.div <-  standardize.axis(labs.bee.div,
+                                  spec.uni.orig$Net_BeeDiversity)
+
 
 ## ***********************************************************************
 ## bee community diversity and abundance and parasitism
 ## ***********************************************************************
 load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all.Rdata")
+fit.bombus <- fit.parasite
 
-# We want the standarized data for the predictions (spec.data)
-#spec.bombus <- spec.net[spec.net$Genus == "Bombus",]
-#bombus.par <- spec.bombus[spec.bombus$WeightsSp == 1,]
-data.site <- spec.net[spec.net$Weights == 1,]
+cond.effects <- conditional_effects(fit.bombus)
+## Community level visuals
 ## ***********************************************************************
 ## bee community diversity and latitude
 ## ***********************************************************************
 
-## Community level visuals
+lat_beediv <-
+  cond.effects[["NetBeeDiversity.NetBeeDiversity_Lat"]]
 
-newdata.lat <- crossing(Lat =
-                          seq(min(data.site$Lat),
-                              max(data.site$Lat),
-                              length.out=10),
-                        Net_BeeAbundance = 0,
-                        MeanFloralDiversity = 0,
-                        Net_BeeDiversity = 0,
-                        SRDoyPoly1 = 0,
-                        SRDoyPoly2 = 0,
-                        Area = 0, 
-                        Year = "2012",
-                        Site = "SC", 
-                        GenusSpecies = "Bombus centralis",
-                        Weights=1,
-                        WeightsPar=1
-)
-
-## predict values based on generated data and model parameters
-pred_lat <- fit.parasite %>% 
-  epred_draws(newdata = newdata.lat,
-              resp = "NetBeeDiversity")
-
-## to see range of predicted values
-pred_lat %>%
-  group_by(Lat) %>%
-  summarise(mean(.epred))
-
-p1 <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
-  stat_lineribbon() +
-  scale_fill_brewer(palette = "Oranges") +
+p1 <- ggplot(lat_beediv, aes(x = Lat, y = estimate__)) +
+  geom_line(aes(x = Lat, y= estimate__)) +
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4, fill = "#e6550d") +
   labs(x = "Latitude", y = "Bee diversity",
-       fill = "Credible interval") +
+       fill = "Credible interval")+
   theme_ms() +
   #theme(legend.position = "bottom") +
   scale_x_continuous(
@@ -111,8 +82,7 @@ p1 <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
   theme(axis.title.x = element_blank(),#Remember to change the x axis label when using this graph only
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) +
-  ##theme_dark_black()+
-  geom_point(data=data.site,
+  geom_point(data= spec.uni,
              aes(y= Net_BeeDiversity, x=Lat),
              color="grey40", cex=2)
 
@@ -123,36 +93,12 @@ ggsave(p1, file="figures/Lat_beediv.pdf",
 ## Plant community diversity and latitude
 ################################################################################
 
-newdata.lat <- crossing(Lat =
-                          seq(min(data.site$Lat),
-                              max(data.site$Lat),
-                              length.out=10),
-                        Net_BeeAbundance = 0,
-                        MeanFloralDiversity = 0,
-                        Net_BeeDiversity = 0,
-                        SRDoyPoly1 = 0,
-                        SRDoyPoly2 = 0,
-                        Area = 0, 
-                        Year = "2012",
-                        Site = "SC", 
-                        GenusSpecies = "Bombus centralis",
-                        Weights=1,
-                        WeightsPar = 1
-)
+lat_floraldiv <-
+  cond.effects[["MeanFloralDiversity.MeanFloralDiversity_Lat"]]
 
-## predict values based on generated data and model parameters
-pred_lat <- fit.parasite %>% 
-  epred_draws(newdata = newdata.lat,
-              resp = "MeanFloralDiversity")
-
-## to see range of predicted values
-pred_lat %>%
-  group_by(Lat) %>%
-  summarise(mean(.epred))
-
-p2 <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
-  stat_lineribbon() +
-  scale_fill_manual(values = c("lightgoldenrod", "goldenrod1", "darkgoldenrod3")) +
+p2 <- ggplot(lat_floraldiv, aes(x = Lat, y = estimate__)) +
+  geom_line(aes(x = Lat, y= estimate__)) +
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4, fill = "darkgoldenrod3") +
   labs(x = "Latitude", y = "Mean floral diversity",
        fill = "Credible interval") +
   theme_ms() +
@@ -167,7 +113,7 @@ p2 <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) +
   ##theme_dark_black()+
-  geom_point(data=data.site,
+  geom_point(data=spec.uni,
              aes(y= MeanFloralDiversity, x=Lat),
              color="grey40", cex=2)
 
@@ -178,37 +124,14 @@ ggsave(p2, file="figures/Lat_floraldiv.pdf",
 ################################################################################
 ## Bee abundance and lat
 ################################################################################
-newdata.lat <- crossing(Lat =
-                          seq(min(data.site$Lat),
-                              max(data.site$Lat),
-                              length.out=10),
-                        Net_BombusAbundance = 0,
-                        MeanFloralDiversity = 0,
-                        MeanFloralAbundance = 0,
-                        Net_BeeDiversity = 0,
-                        SRDoyPoly1 = 0,
-                        SRDoyPoly2 = 0,
-                        Area = 0, 
-                        Year = "2012",
-                        Site = "SC", 
-                        GenusSpecies = "Bombus centralis",
-                        Weights=1, 
-                        WeightsPar=  1
-)
 
-## predict values based on generated data and model parameters
-pred_lat <- fit.parasite %>% 
-  epred_draws(newdata = newdata.lat,
-              resp = "NetBombusAbundance")
+lat_bombusabund <-
+  cond.effects[["NetBombusAbundance.NetBombusAbundance_Lat"]]
 
-## to see range of predicted values
-pred_lat %>%
-  group_by(Lat) %>%
-  summarise(mean(.epred))
 
-p3 <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
-  stat_lineribbon() +
-  scale_fill_brewer(palette = "Oranges") +
+p3 <- ggplot(lat_bombusabund, aes(x = Lat, y = estimate__)) +
+  geom_line(aes(x = Lat, y= estimate__)) +
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4, fill = "#e6550d") +
   labs(x = "Latitude (log)", y = "Bombus abundance (log)",
        fill = "Credible interval") +
   theme_ms() +
@@ -223,7 +146,7 @@ p3 <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) +
   ##theme_dark_black()+
-  geom_point(data=data.site,
+  geom_point(data=spec.uni,
              aes(y= Net_BombusAbundance, x=Lat),
              color="grey40", cex=2)
 
@@ -231,37 +154,12 @@ ggsave(p3, file="figures/Lat_bombus_abudance.pdf",
        height=4, width=5)
 
 ## Honeybee abundance
-newdata.lat <- crossing(Lat =
-                          seq(min(data.site$Lat),
-                              max(data.site$Lat),
-                              length.out=10),
-                        Net_HBAbundance = 0,
-                        MeanFloralDiversity = 0,
-                        MeanFloralAbundance = 0,
-                        Net_BeeDiversity = 0,
-                        SRDoyPoly1 = 0,
-                        SRDoyPoly2 = 0,
-                        Area = 0, 
-                        Year = "2012",
-                        Site = "SC", 
-                        GenusSpecies = "Bombus centralis",
-                        Weights=1, 
-                        WeightsPar = 1
-)
+lat_apisabund <-
+  cond.effects[["NetHBAbundance.NetHBAbundance_Lat"]]
 
-## predict values based on generated data and model parameters
-pred_lat <- fit.parasite %>% 
-  epred_draws(newdata = newdata.lat,
-              resp = "NetHBAbundance")
-
-## to see range of predicted values
-pred_lat %>%
-  group_by(Lat) %>%
-  summarise(mean(.epred))
-
-p4 <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
-  stat_lineribbon() +
-  scale_fill_brewer(palette = "Oranges") +
+p4 <- ggplot(lat_apisabund, aes(x = Lat, y = estimate__)) +
+  geom_line(aes(x = Lat, y= estimate__)) +
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4, fill = "#e6550d") +
   labs(x = "Latitude (log)", y = "Apis abundance (log)",
        fill = "Credible interval") +
   theme_ms() +
@@ -276,7 +174,7 @@ p4 <- ggplot(pred_lat, aes(x = Lat, y = .epred)) +
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) +
   ##theme_dark_black()+
-  geom_point(data=data.site,
+  geom_point(data=spec.uni,
              aes(y= Net_HBAbundance, x=Lat),
              color="grey40", cex=2)
 
@@ -292,36 +190,12 @@ ggsave(lat_community, file="figures/lat_community.pdf",
 ################################################################################
 ## Plant diversity and bee diversity
 ################################################################################
-newdata.div <- crossing(MeanFloralDiversity =
-                          seq(min(data.site$MeanFloralDiversity),
-                              max(data.site$MeanFloralDiversity),
-                              length.out=10),
-                        Net_BeeAbundance = 0,
-                        Net_BeeDiversity = 0,
-                        SRDoyPoly1 = 0,
-                        SRDoyPoly2 = 0,
-                        Area = 0,
-                        Lat = 0,
-                        Year = "2012",
-                        Site = "SC", 
-                        GenusSpecies = "Bombus centralis",
-                        Weights=1,
-                        WeightsPar = 1
-)
+beediv_floraldiv <-
+  cond.effects[["NetBeeDiversity.NetBeeDiversity_MeanFloralDiversity"]]
 
-## predict values based on generated data and model parameters
-pred_div <- fit.parasite %>% 
-  epred_draws(newdata = newdata.div,
-              resp = "NetBeeDiversity")
-
-## to see range of predicted values
-pred_div %>%
-  group_by(MeanFloralDiversity) %>%
-  summarise(mean(.epred))
-
-plantdiv_beediv <- ggplot(pred_div, aes(x = MeanFloralDiversity, y = .epred)) +
-  stat_lineribbon() +
-  scale_fill_brewer(palette = "Blues") +
+plantdiv_beediv <- ggplot(beediv_floraldiv, aes(x = MeanFloralDiversity, y = estimate__)) +
+  geom_line(aes(x = MeanFloralDiversity, y= estimate__)) +
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4, fill = "#3182bd") +
   labs(y = "Bee Species Diversity", x = "Floral Diversity",
        fill = "Credible interval") +
   theme(legend.position = "bottom") +
@@ -336,7 +210,7 @@ plantdiv_beediv <- ggplot(pred_div, aes(x = MeanFloralDiversity, y = .epred)) +
         text = element_text(size=16)) +
   theme_ms() +
   ##theme_dark_black()+
-  geom_point(data=data.site,
+  geom_point(data=spec.uni,
              aes(y= Net_BeeDiversity, x= MeanFloralDiversity),
              color="grey40", cex=2)
 
