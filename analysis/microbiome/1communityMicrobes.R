@@ -8,8 +8,8 @@ setwd("skyIslands/analysis/microbiome/")
 
 run.diagnostics = FALSE
 make.plots = FALSE
-run.bombus = FALSE
-run.apis = TRUE
+run.bombus = TRUE
+run.apis = FALSE
 run.melissodes = FALSE
 
 library(picante)
@@ -285,24 +285,24 @@ spec.net$WeightsTransientMelissodes = spec.net$WeightsTransientMicrobe*spec.net$
 
 ## obligate PD model
 ob.microbe.bombus.vars <- c("BeeAbundance",
-                         "BeeDiversity", "Lat", #check this doesn't make VIF high
-                         "MeanFloralDiversity", "MeanITD",  "rare.degree",
-                         "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+                            "BeeDiversity", "Lat", #check this doesn't make VIF high
+                            "MeanFloralDiversity", "MeanITD",  "rare.degree",
+                            "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
 
 
 ob.microbe.bombus.x <- paste(ob.microbe.bombus.vars, collapse="+")
 #ob.microbe.bombus.y <- "PD.obligate | subset(WeightsObligateBombus) + weights(BombusLogWeightsObligateAbund)"
 ob.microbe.bombus.y <- "PD.obligate | subset(WeightsObligateBombus)"
 formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
-                                           ob.microbe.bombus.x))
+                                              ob.microbe.bombus.x))
 
 bf.ob.microbe.bombus.skew <- bf(formula.ob.microbe.bombus, family=skew_normal())
 
 ## non ob PD model
 non.ob.microbe.bombus.vars <- c("BeeAbundance",
-                            "BeeDiversity", "Lat", #check this doesn't make VIF high
-                            "MeanFloralDiversity", "MeanITD",  "rare.degree",
-                            "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
+                                "BeeDiversity", "Lat", #check this doesn't make VIF high
+                                "MeanFloralDiversity", "MeanITD",  "rare.degree",
+                                "(1|Site)", "(1|gr(GenusSpecies, cov = phylo_matrix))") # add cov matrix for each genus
 ## NA check
 check_for_NA(non.ob.microbe.bombus.vars)
 
@@ -310,7 +310,7 @@ non.ob.microbe.bombus.x <- paste(non.ob.microbe.bombus.vars, collapse="+")
 # non.ob.microbe.bombus.y <- "PD.transient | subset(WeightsTransientBombus) + weights(BombusLogWeightsTransientAbund)"
 non.ob.microbe.bombus.y <- "PD.transient.log | subset(WeightsTransientBombus)"
 formula.non.ob.microbe.bombus <- as.formula(paste(non.ob.microbe.bombus.y, "~",
-                                              non.ob.microbe.bombus.x))
+                                                  non.ob.microbe.bombus.x))
 
 
 
@@ -320,31 +320,29 @@ bf.non.ob.microbe.bombus.student <- bf(formula.non.ob.microbe.bombus, family=stu
 ## combined model
 
 #combine forms
-bform.bombus <- bf.fdiv +
-  bf.tot.bdiv +
-  bf.tot.babund +
-  bf.ob.microbe.bombus.skew +
+bform.bombus <-   bf.ob.microbe.bombus.skew +
   bf.non.ob.microbe.bombus.student +
+  # bf.fdiv +
+  # bf.tot.bdiv +
+  # bf.tot.babund +
+  # bf.ob.microbe.bombus.skew +
+  # bf.non.ob.microbe.bombus.student +
   set_rescor(FALSE)
 
-## 9-2 removed the na to 0 code to test
-
 ## TODO check if need to change all NAs to 0
-spec.net[is.na(spec.net)] <- 0
-
-## bombus works without the above
+#spec.net[is.na(spec.net)] <- 0
 
 if(run.bombus){
   fit.microbe.bombus <- brm(bform.bombus, spec.net,
-                          cores=ncores,
-                          iter = 10000,
-                          chains =1,
-                          thin=1,
-                          init=0,
-                          open_progress = FALSE,
-                          control = list(adapt_delta = 0.99),
-                          save_pars = save_pars(all = TRUE),
-                          data2 = list(phylo_matrix=phylo_matrix))
+                            cores=ncores,
+                            iter = 10000,
+                            chains =1,
+                            thin=1,
+                            init=0,
+                            open_progress = FALSE,
+                            control = list(adapt_delta = 0.99),
+                            save_pars = save_pars(all = TRUE),
+                            data2 = list(phylo_matrix=phylo_matrix))
   
   write.ms.table(fit.microbe.bombus, "bombus_microbe")
   r2loo.bombus <- loo_R2(fit.microbe.bombus)
@@ -353,69 +351,42 @@ if(run.bombus){
        file="saved/fullMicrobeBombusFit.Rdata")
 }
 
-## 9-1-24 trying removing site from model and instead using Year for apis
-## 9-2 using year in model and pd obligate/trans not logged
+
 ## run apis model
 ## obligate PD model
 ob.microbe.apis.vars <- c("BeeAbundance",
-                          "BeeDiversity",
-                          "Lat", #check this doesn't make VIF high
-                          "MeanFloralDiversity",
-                          "rare.degree",
-                          "Year", #"ParasitePresence",
-                          "(1|Site)"
-                          ) 
-
-## non ob PD model
-non.ob.microbe.apis.vars <- c(#"BeeAbundance",
-                              #"BeeDiversity",
-                              #"Lat", #check this doesn't make VIF high
-                              #"MeanFloralDiversity",
-                              #"rare.degree",
-                              "Year"#, #"ParasitePresence",
-                              #"(1|Site)"
-) 
+                          "BeeDiversity", "Lat", #check this doesn't make VIF high
+                          "MeanFloralDiversity", "rare.degree",
+                          "(1|Site)") 
 
 
 ob.microbe.apis.x <- paste(ob.microbe.apis.vars, collapse="+")
 #ob.microbe.apis.y <- "PD.obligate | subset(WeightsObligateapis) + weights(apisLogWeightsObligateAbund)"
-ob.microbe.apis.y <- "PD.obligate.log | subset(WeightsObligateApis)"
+ob.microbe.apis.y <- "PD.obligate | subset(WeightsObligateApis)"
 formula.ob.microbe.apis <- as.formula(paste(ob.microbe.apis.y, "~",
-                                              ob.microbe.apis.x))
+                                            ob.microbe.apis.x))
 
 bf.ob.microbe.apis.skew <- bf(formula.ob.microbe.apis, family=skew_normal())
 bf.ob.microbe.apis.student <- bf(formula.ob.microbe.apis, family=student())
 bf.ob.microbe.apis.gaussian <- bf(formula.ob.microbe.apis)
-bf.ob.microbe.apis.mix.stg <- bf(formula.ob.microbe.apis, family=mixture(student, gaussian))
-bf.ob.microbe.apis.mix.gg <- bf(formula.ob.microbe.apis, family=mixture(gaussian, gaussian))
-bf.ob.microbe.apis.mix.stst <- bf(formula.ob.microbe.apis, family=mixture(student, student))
-bf.ob.microbe.apis.mix.skst <- bf(formula.ob.microbe.apis, family=mixture(skew_normal, student))
-## so far skg has best looking ppcheck
-bf.ob.microbe.apis.mix.skg <- bf(formula.ob.microbe.apis, family=mixture(skew_normal, gaussian))
-bf.ob.microbe.apis.mix.sksk <- bf(formula.ob.microbe.apis, family=mixture(skew_normal, skew_normal))
-
-
 
 ## non ob PD model
+non.ob.microbe.apis.vars <- c("BeeAbundance",
+                              "BeeDiversity", "Lat", #check this doesn't make VIF high
+                              "MeanFloralDiversity", "rare.degree",
+                              "(1|Site)") 
+
 
 non.ob.microbe.apis.x <- paste(non.ob.microbe.apis.vars, collapse="+")
 # non.ob.microbe.apis.y <- "PD.transient | subset(WeightsTransientapis) + weights(apisLogWeightsTransientAbund)"
 non.ob.microbe.apis.y <- "PD.transient | subset(WeightsTransientApis)"
 formula.non.ob.microbe.apis <- as.formula(paste(non.ob.microbe.apis.y, "~",
-                                                  non.ob.microbe.apis.x))
+                                                non.ob.microbe.apis.x))
 
 
 
 bf.non.ob.microbe.apis.skew <- bf(formula.non.ob.microbe.apis, family=skew_normal())
 bf.non.ob.microbe.apis.student <- bf(formula.non.ob.microbe.apis, family=student())
-bf.non.ob.microbe.apis.gaussian <- bf(formula.non.ob.microbe.apis)
-bf.non.ob.microbe.apis.mix.skst <- bf(formula.non.ob.microbe.apis, family=mixture(skew_normal, student))
-bf.non.ob.microbe.apis.mix.skg <- bf(formula.non.ob.microbe.apis, family=mixture(skew_normal, gaussian))
-bf.non.ob.microbe.apis.mix.stg <- bf(formula.non.ob.microbe.apis, family=mixture(student, gaussian))
-bf.non.ob.microbe.apis.mix.sksk <- bf(formula.non.ob.microbe.apis, family=mixture(skew_normal, skew_normal))
-bf.non.ob.microbe.apis.mix.stst <- bf(formula.non.ob.microbe.apis, family=mixture(student, student))
-bf.non.ob.microbe.apis.mix.gg <- bf(formula.non.ob.microbe.apis, family=mixture(gaussian, gaussian))
-
 
 
 ## combined model
@@ -424,64 +395,60 @@ bf.non.ob.microbe.apis.mix.gg <- bf(formula.non.ob.microbe.apis, family=mixture(
 # bform.apis <- bf.fdiv +
 #   bf.tot.bdiv +
 #   bf.tot.babund +
-bform.apis <- bf.ob.microbe.apis.mix.skg +
-  bf.non.ob.microbe.apis.mix.skst +
+bform.apis <-bf.ob.microbe.apis.gaussian +
+  bf.non.ob.microbe.apis.skew +
   set_rescor(FALSE)
 
 if(run.apis){
-fit.microbe.apis <- brm(bf.non.ob.microbe.apis.mix.skst, spec.net,
-                        cores=ncores,
-                        iter = 10000,
-                        chains =1,
-                        thin=1,
-                        init=0,
-                        open_progress = FALSE,
-                        control = list(adapt_delta = 0.99),
-                        save_pars = save_pars(all = TRUE))
-
-write.ms.table(fit.microbe.apis, "apis_microbe")
-r2loo.apis <- loo_R2(fit.microbe.apis)
-r2.apis <- rstantools::bayes_R2(fit.microbe.apis)
-save(fit.microbe.apis, spec.net, r2.apis, r2loo.apis,
-     file="saved/fullMicrobeApisFit.Rdata")
+  fit.microbe.apis <- brm(bform.apis , spec.net,
+                          cores=ncores,
+                          iter = 10000,
+                          chains =1,
+                          thin=1,
+                          init=0,
+                          open_progress = FALSE,
+                          control = list(adapt_delta = 0.99),
+                          save_pars = save_pars(all = TRUE))
+  
+  write.ms.table(fit.microbe.apis, "apis_microbe")
+  r2loo.apis <- loo_R2(fit.microbe.apis)
+  r2.apis <- rstantools::bayes_R2(fit.microbe.apis)
+  save(fit.microbe.apis, spec.net, r2.apis, r2loo.apis,
+       file="saved/fullMicrobeApisFit.Rdata")
 }
 # ## run melissodes model
 ## obligate PD model
 ob.microbe.melissodes.vars <- c("BeeAbundance",
-                          "BeeDiversity", "Lat", #check this doesn't make VIF high
-                          "MeanFloralDiversity", "rare.degree",
-                          "(1|Site)") 
+                                "BeeDiversity", "Lat", #check this doesn't make VIF high
+                                "MeanFloralDiversity", "rare.degree",
+                                "(1|Site)") 
 
 
 ob.microbe.melissodes.x <- paste(ob.microbe.melissodes.vars, collapse="+")
 #ob.microbe.melissodes.y <- "PD.obligate | subset(WeightsObligatemelissodes) + weights(melissodesLogWeightsObligateAbund)"
 ob.microbe.melissodes.y <- "PD.obligate.log | subset(WeightsObligateMelissodes)"
 formula.ob.microbe.melissodes <- as.formula(paste(ob.microbe.melissodes.y, "~",
-                                            ob.microbe.melissodes.x))
+                                                  ob.microbe.melissodes.x))
 
 bf.ob.microbe.melissodes.skew <- bf(formula.ob.microbe.melissodes, family=skew_normal())
 bf.ob.microbe.melissodes.student <- bf(formula.ob.microbe.melissodes, family=student())
-bf.ob.microbe.melissodes.gaussian <- bf(formula.ob.microbe.melissodes)
-
-
 ## non ob PD model
 non.ob.microbe.melissodes.vars <- c("BeeAbundance",
-                              "BeeDiversity", "Lat", #check this doesn't make VIF high
-                              "MeanFloralDiversity", "rare.degree",
-                              "(1|Site)") 
+                                    "BeeDiversity", "Lat", #check this doesn't make VIF high
+                                    "MeanFloralDiversity", "rare.degree",
+                                    "(1|Site)") 
 
 
 non.ob.microbe.melissodes.x <- paste(non.ob.microbe.melissodes.vars, collapse="+")
 # non.ob.microbe.melissodes.y <- "PD.transient | subset(WeightsTransientmelissodes) + weights(melissodesLogWeightsTransientAbund)"
 non.ob.microbe.melissodes.y <- "PD.transient.log | subset(WeightsTransientMelissodes)"
 formula.non.ob.microbe.melissodes <- as.formula(paste(non.ob.microbe.melissodes.y, "~",
-                                                non.ob.microbe.melissodes.x))
+                                                      non.ob.microbe.melissodes.x))
 
 
 
 bf.non.ob.microbe.melissodes.student <- bf(formula.non.ob.microbe.melissodes, family=student())
 bf.non.ob.microbe.melissodes.skew <- bf(formula.non.ob.microbe.melissodes, family=skew_normal())
-bf.non.ob.microbe.melissodes.gaussian <- bf(formula.non.ob.microbe.melissodes)
 
 
 ## combined model
@@ -490,26 +457,26 @@ bf.non.ob.microbe.melissodes.gaussian <- bf(formula.non.ob.microbe.melissodes)
 bform.melissodes <- bf.fdiv +
   bf.tot.bdiv +
   bf.tot.babund +
-  bf.ob.microbe.melissodes.skew +
-  bf.non.ob.microbe.melissodes.skew +
+  bf.ob.microbe.melissodes.student +
+  bf.non.ob.microbe.melissodes.student +
   set_rescor(FALSE)
 
 if(run.melissodes){
-fit.microbe.melissodes <- brm(bform.melissodes , spec.net,
-                           cores=ncores,
-                           iter = 10000,
-                           chains =1,
-                           thin=1,
-                           init=0,
-                           open_progress = FALSE,
-                           control = list(adapt_delta = 0.99),
-                           save_pars = save_pars(all = TRUE))
-
-write.ms.table(fit.microbe.melissodes, "melissodes_microbe")
-r2loo.melissodes <- loo_R2(fit.microbe.melissodes)
-r2.melissodes <- rstantools::bayes_R2(fit.microbe.melissodes)
-save(fit.microbe.melissodes, spec.net, r2.melissodes, r2loo.melissodes,
-      file="saved/fullMicrobeMelissodesFit.Rdata")
+  fit.microbe.melissodes <- brm(bform.melissodes , spec.net,
+                                cores=ncores,
+                                iter = 10000,
+                                chains =1,
+                                thin=1,
+                                init=0,
+                                open_progress = FALSE,
+                                control = list(adapt_delta = 0.99),
+                                save_pars = save_pars(all = TRUE))
+  
+  write.ms.table(fit.microbe.melissodes, "melissodes_microbe")
+  r2loo.melissodes <- loo_R2(fit.microbe.melissodes)
+  r2.melissodes <- rstantools::bayes_R2(fit.microbe.melissodes)
+  save(fit.microbe.melissodes, spec.net, r2.melissodes, r2loo.melissodes,
+       file="saved/fullMicrobeMelissodesFit.Rdata")
 }
 
 
