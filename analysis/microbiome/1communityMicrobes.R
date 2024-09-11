@@ -333,14 +333,15 @@ bform.bombus <-   bf.ob.microbe.bombus.skew +
 spec.net[is.na(spec.net)] <- 0
 
 if(run.bombus){
-  fit.microbe.bombus <- brm(bf.ob.microbe.bombus.skew, spec.net,
+  fit.microbe.bombus <- brm(bform.bombus, spec.net,
                           cores=ncores,
                           iter = 10000,
                           chains =1,
                           thin=1,
                           init=0,
                           open_progress = FALSE,
-                          control = list(adapt_delta = 0.99),
+                          control = list(adapt_delta = 0.99,
+                                         max_treedepth = 15),
                           save_pars = save_pars(all = TRUE),
                           data2 = list(phylo_matrix=phylo_matrix))
   
