@@ -8,9 +8,9 @@ setwd("skyIslands/analysis/microbiome/")
 
 run.diagnostics = FALSE
 make.plots = FALSE
-run.bombus = TRUE
+run.bombus = FALSE
 run.apis = FALSE
-run.melissodes = FALSE
+run.melissodes = TRUE
 
 library(picante)
 library(plyr)
@@ -426,6 +426,8 @@ save(fit.microbe.apis, spec.net, r2.apis, r2loo.apis,
 }
 # ## run melissodes model
 ## obligate PD model
+
+
 ob.microbe.melissodes.vars <- c("BeeAbundance",
                           "BeeDiversity", "Lat", #check this doesn't make VIF high
                           "MeanFloralDiversity", "rare.degree",
@@ -464,7 +466,7 @@ bf.non.ob.microbe.melissodes.gaussian <- bf(formula.non.ob.microbe.melissodes)
 
 
 ## combined model
-
+run.melissodes = TRUE
 #combine forms
 bform.melissodes <- bf.fdiv +
   bf.tot.bdiv +
