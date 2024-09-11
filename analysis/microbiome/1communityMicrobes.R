@@ -483,7 +483,9 @@ fit.microbe.melissodes <- brm(bform.melissodes , spec.net,
                            thin=1,
                            init=0,
                            open_progress = FALSE,
-                           control = list(adapt_delta = 0.99),
+                           control = list(adapt_delta = 0.9999,
+                                          max_treedepth = 15
+                                          ),
                            save_pars = save_pars(all = TRUE))
 
 write.ms.table(fit.microbe.melissodes, "melissodes_microbe")
