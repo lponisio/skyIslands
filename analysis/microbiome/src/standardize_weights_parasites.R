@@ -91,12 +91,13 @@ prepDataSEM <-
     }
     ##  center all of the x variables, need to use unique values to avoid
     ##  repetition by the number of specimens
-
+    #browser()
     if(standardize){
         if(!is.null(vars_yearsr)){
             print("Standardizing variables with year, sampling round, site combinations")
             spec.data <- standardizeVars(spec.data, vars_yearsr, "YearSR")
-        }
+        } 
+        #browser()
         if(!is.null(vars_yearsrsp)){
             print("Standardizing variables with year, sampling round,site, individual species")
             spec.data <-
