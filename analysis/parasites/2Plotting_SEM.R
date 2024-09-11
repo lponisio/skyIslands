@@ -71,12 +71,20 @@ axis.degree <-  standardize.axis(labs.degree,
 load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all.Rdata")
 fit.bombus <- fit.parasite
 
+(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_ba.Rdata")
+fit.bombus.ba <- fit.parasite
+
+(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_ss.Rdata")
+fit.bombus.ss <- fit.parasite
+
 load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_ss.Rdata")
 fit.apis <- fit.parasite
 ## https://www.rensvandeschoot.com/tutorials/generalised-linear-models-with-brms/
 ## Generate newdata draws
 
 bombus.cond.effects <- conditional_effects(fit.bombus)
+bombus.cond.effects2<- conditional_effects(fit.bombus.ss)
+bombus.cond.effects3<- conditional_effects(fit.bombus.ba)
 apis.cond.effects <- conditional_effects(fit.apis)
 
 
@@ -100,7 +108,7 @@ crithidia_beediv_apis <- mutate(crithidia_beediv_apis, Bee = "Apis", GenusSpecie
 crithidia_beediv<- rbind(crithidia_beediv, crithidia_beediv_apis)
 
 p1.parasite <- ggplot(crithidia_beediv, aes(x = Net_BeeDiversity, y= estimate__)) +
-  geom_line(aes(x = Net_BeeDiversity, y= estimate__ , color = Bee), size = 0.8) +
+  geom_line(aes(x = Net_BeeDiversity, y= estimate__ , color = Bee), size = 1.5) +
   geom_ribbon(aes(ymin = lower__, ymax = upper__, fill = Bee), alpha=0.4)+
   scale_fill_manual(values = c("darkgoldenrod3", "#3182bd"), 
                     labels = c("Apis 0.95", "Bombus 0.95")) +
@@ -130,7 +138,7 @@ apicystis_beediv <-bombus.cond.effects[["ApicystisSpp.ApicystisSpp_Net_BeeDivers
 apicystis_beediv <- mutate(apicystis_beediv, Bee = "Bombus")
 
 p2.parasite <- ggplot(apicystis_beediv, aes(x = Net_BeeDiversity, y = estimate__)) +
-  geom_line(aes(x = Net_BeeDiversity, y= estimate__), size = 0.8, color = "#3182bd") +
+  geom_line(aes(x = Net_BeeDiversity, y= estimate__), size = 1.5, color = "#3182bd") +
   geom_ribbon(aes(ymin = lower__, ymax = upper__, fill= Bee), alpha=0.4)+
   scale_fill_manual(values = "#3182bd", labels ="Bombus 0.95") +
   labs(x = "Bee diversity", y = "Apicystis prevalence",
@@ -157,7 +165,7 @@ crithidia_floraldiv <-bombus.cond.effects[["CrithidiaPresence.CrithidiaPresence_
 crithidia_floraldiv <- mutate(crithidia_floraldiv, Bee = "Bombus")
 
 p3.parasite <- ggplot(crithidia_floraldiv, aes(x = MeanFloralDiversity, y = estimate__)) +
-  geom_line(aes(x = MeanFloralDiversity, y= estimate__), size = 0.8, color = "#3182bd") +
+  geom_line(aes(x = MeanFloralDiversity, y= estimate__), size = 1.5, color = "#3182bd") +
   geom_ribbon(aes(ymin = lower__, ymax = upper__, fill = Bee), alpha=0.4) +
   scale_fill_manual(values = "#3182bd", labels ="Bombus 0.95") +
     labs(x = "Floral diversity", y = "Crithidia prevalence",
@@ -181,11 +189,11 @@ ggsave(p3.parasite, file="figures/parasite_floraldiv_Crithidia.pdf",
 ## Apicystis ~ floral diversity
 
 apicystis_floraldiv <- 
-  bombus.cond.effects[["ApicystisSpp.ApicystisSpp_MeanFloralDiversity"]]
+  bombus.cond.effects2[["ApicystisSpp.ApicystisSpp_MeanFloralDiversity"]]
 apicystis_floraldiv <- mutate(apicystis_floraldiv, Bee = "Bombus")
 
 p4.parasite <- ggplot(crithidia_floraldiv, aes(x = MeanFloralDiversity, y = estimate__)) +
-  geom_line(aes(x = MeanFloralDiversity, y= estimate__), size = 0.8, color = "#3182bd") +
+  geom_line(aes(x = MeanFloralDiversity, y= estimate__), size = 1.5, color = "#3182bd") +
   geom_ribbon(aes(ymin = lower__, ymax = upper__, fill = Bee), alpha=0.4)+
   scale_fill_manual(values = "#3182bd", labels ="Bombus 0.95")+
   labs(x = "Floral diversity", y = "Apicystis prevalence",
@@ -222,7 +230,7 @@ crithidia_beeabun <-
 crithidia_beeabun <- mutate(crithidia_beeabun, Bee = "Bombus")
 
 p5.parasite <- ggplot(crithidia_beeabun, aes(x = Net_BeeAbundance, y = estimate__)) +
-  geom_line(aes(x = Net_BeeAbundance, y= estimate__), size = 0.8, color = "#3182bd") +
+  geom_line(aes(x = Net_BeeAbundance, y= estimate__), size = 1.5, color = "#3182bd") +
   geom_ribbon(aes(ymin = lower__, ymax = upper__, fill = Bee), alpha=0.4) +
   scale_fill_manual(values = "#3182bd", labels ="Bombus 0.95")+
   labs(x = "Bee abundance (log)", y = "Crithidia prevalence",
@@ -242,35 +250,90 @@ p5.parasite <- ggplot(crithidia_beeabun, aes(x = Net_BeeAbundance, y = estimate_
 
 ggsave(p5.parasite, file="figures/crithidia_beeabundance_bombus.pdf",
        height=4, width=6)
+
+## crithidia ~ bombus abundance 
+## Note this is using the bombus abundance model only
+
+ crithidia_bombusabun <-
+   bombus.cond.effects3[["CrithidiaPresence.CrithidiaPresence_Net_BombusAbundance"]]
+# crithidia_bombusabun <- mutate(crithidia_beeabun, Bee = "Bombus")
+ 
+ p6.parasite <- ggplot(crithidia_bombusabun, aes(x = Net_BombusAbundance, y = estimate__)) +
+   geom_line(aes(x = Net_BombusAbundance, y= estimate__), size = 1.5, color = "#3182bd") +
+   geom_ribbon(aes(ymin = lower__, ymax = upper__),fill ="#3182bd", alpha=0.4) +
+   scale_fill_manual(labels ="Bombus 0.95")+
+   labs(x = "Bombus abundance (log)", y = "Crithidia prevalence",
+        fill = "Credible interval") +
+   theme_ms() +
+theme(legend.position = "bottom") +
+   scale_x_continuous(
+     breaks = axis.bombus.abund,
+     labels =  labs.bombus.abund) +
+   theme(axis.title.x = element_text(size=16),
+         axis.title.y = element_text(size=16),
+text = element_text(size=16)) +
+   geom_jitter(data=spec.uni,
+               aes(y= CrithidiaParasitismRate, x=Net_BombusAbundance), 
+               width=0.05) 
+ 
+ 
+ ggsave(p6.parasite, file="figures/crithidia_bombusabundance_bombus.pdf",
+        height=4, width=6)
 ################################################################################
-## Apicysits ~ bee abundance
+## Apicysits ~ bombus abundance
 ################################################################################
 apicystis_beeabun <-
-  bombus.cond.effects[["ApicystisSpp.ApicystisSpp_Net_BeeAbundance"]]
+  bombus.cond.effects2[["ApicystisSpp.ApicystisSpp_Net_BombusAbundance"]]
 apicystis_beeabun <- mutate(apicystis_beeabun, Bee = "Bombus")
 
-p6.parasite <- ggplot(apicystis_beeabun, aes(x = Net_BeeAbundance, y = estimate__)) +
-  geom_line(aes(x = Net_BeeAbundance, y= estimate__), size = 0.8, color = "#3182bd") +
+p7.parasite <- ggplot(apicystis_beeabun, aes(x = Net_BombusAbundance, y = estimate__)) +
+  geom_line(aes(x = Net_BombusAbundance, y= estimate__), size = 1, color = "#3182bd") +
   geom_ribbon(aes(ymin = lower__, ymax = upper__, fill = Bee), alpha=0.4)+
   scale_fill_manual(values = "#3182bd", labels ="Bombus 0.95") +
-  labs(x = "Bee abundance (log)", y = "Apicystis prevalence",
+  labs(x = "Bombus abundance (log)", y = "Apicystis prevalence",
        fill = "Credible interval") +
   theme_ms() +
   theme(legend.position = "bottom") +
   scale_x_continuous(
-    breaks = axis.bee.abund,
-    labels =  labs.bee.abund) +
+    breaks = axis.bombus.abund,
+    labels =  labs.bombus.abund) +
   theme(axis.title.x = element_text(size=16),
         axis.title.y = element_text(size=16),
         text = element_text(size=16)) + 
   geom_jitter(data=spec.uni,
-              aes(y= ApicystisParasitismRate, x=Net_BeeAbundance),width=0.05) 
+              aes(y= ApicystisParasitismRate, x=Net_BombusAbundance),width=0.05) 
 
-ggsave(p6.parasite, file="figures/Apicystis_beeabun_bombus.pdf",
+ggsave(p7.parasite, file="figures/Apicystis_bombusabun_bombus.pdf",
        height=4, width=6)
 
-parasite.amplification <- ggarrange(p5.parasite, p6.parasite, nrow=1,
-                                    labels = c("A", "B"),
+## Apicystis ~ HB abundance
+apicystis_HBabun <-
+  bombus.cond.effects2[["ApicystisSpp.ApicystisSpp_Net_HBAbundance"]]
+#apicystis_HBabun <- mutate(apicystis_beeabun, Bee = "Bombus")
+
+p8.parasite <- ggplot(apicystis_HBabun, aes(x = Net_HBAbundance, y = estimate__)) +
+  geom_line(aes(x = Net_HBAbundance, y= estimate__), size = 1, color = "#3182bd") +
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), fill="#3182bd", alpha=0.4)+
+  scale_fill_manual(labels ="Bombus 0.95") +
+  labs(x = "Apis abundance (log)", y = "Apicystis prevalence",
+       fill = "Credible interval") +
+  theme_ms() +
+  theme(legend.position = "bottom") +
+  scale_x_continuous(
+    breaks = axis.HB.abund,
+    labels =  labs.HB.abund) +
+  theme(axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        text = element_text(size=16)) + 
+  geom_jitter(data=spec.uni,
+              aes(y= ApicystisParasitismRate, x=Net_HBAbundance),width=0.05) 
+
+ggsave(p8.parasite, file="figures/Apicystis_HBabun_bombus.pdf",
+       height=4, width=6)
+
+parasite.amplification <- ggarrange(p5.parasite, p6.parasite, p7.parasite, p8.parasite,
+                                    nrow= 2, ncol = 2,
+                                    labels = c("A", "B", "C", "D"),
                                     common.legend = TRUE,
                                     legend="bottom")
 
@@ -287,8 +350,8 @@ crithidia_degree <-
   bombus.cond.effects[["CrithidiaPresence.CrithidiaPresence_rare.degree"]]
 crithidia_degree <- mutate(crithidia_degree, Bee = "Bombus")
 
-p7.parasite <- ggplot(crithidia_degree, aes(x = rare.degree, y = estimate__)) +
-  geom_line(aes(x = rare.degree, y= estimate__), size = 0.8, color = "#3182bd") +
+p9.parasite <- ggplot(crithidia_degree, aes(x = rare.degree, y = estimate__)) +
+  geom_line(aes(x = rare.degree, y= estimate__), size = 1.5, color = "#3182bd") +
   geom_ribbon(aes(ymin = lower__, ymax = upper__, fill = Bee), alpha=0.4) +
   scale_fill_manual(values = "#3182bd", labels ="Bombus 0.95")+
     labs(x = "Degree", y = "Crithidia prevalence",
@@ -306,18 +369,18 @@ p7.parasite <- ggplot(crithidia_degree, aes(x = rare.degree, y = estimate__)) +
   
 
 
-ggsave(p7.parasite, file="figures/crithidia_degree.pdf",
+ggsave(p9.parasite, file="figures/crithidia_degree.pdf",
        height=5, width=10)
 
 ## Apicystis ~ degree
 apicystis_degree <-
-  bombus.cond.effects[["ApicystisSpp.ApicystisSpp_rare.degree"]]
+  bombus.cond.effects2[["ApicystisSpp.ApicystisSpp_rare.degree"]]
 apicystis_degree <- mutate(apicystis_degree, Bee = "Bombus")
 
-p8.parasite <- ggplot(apicystis_degree, aes(x = rare.degree, y = estimate__)) +
-  geom_line(aes(x = rare.degree, y= estimate__), size = 0.8, color = "#3182bd") +
-  geom_ribbon(aes(ymin = lower__, ymax = upper__, fill = Bee), alpha=0.4) +
-  scale_fill_manual(values = "#3182bd", labels ="Bombus 0.95") +
+p10.parasite <- ggplot(apicystis_degree, aes(x = rare.degree, y = estimate__)) +
+  geom_line(aes(x = rare.degree, y= estimate__), size = 1.5) +
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4) +
+  scale_fill_manual(labels ="Bombus 0.95") +
   labs(x = "Degree", y = "Apicystis prevalence",
        fill = "Credible interval") +
   theme_ms() +
@@ -334,7 +397,7 @@ p8.parasite <- ggplot(apicystis_degree, aes(x = rare.degree, y = estimate__)) +
 ggsave(p8.parasite, file="figures/apicystis_degree.pdf",
        height=5, width=10)
 
-parasite.traits <- ggarrange(p7.parasite, p8.parasite, nrow=1,
+parasite.traits <- ggarrange(p9.parasite, p10.parasite, nrow=1,
                              labels = c("A", "B"),
                              common.legend = TRUE,
                              legend="bottom")
@@ -348,8 +411,8 @@ crithidia_lat <-
   bombus.cond.effects[["CrithidiaPresence.CrithidiaPresence_Lat"]]
 crithidia_lat <- mutate(crithidia_lat, Bee = "Bombus")
 
-p9.parasite <- ggplot(crithidia_lat, aes(x = Lat, y = estimate__)) +
-  geom_line(aes(x = Lat, y= estimate__), size = 0.8, color = "#3182bd") +
+p11.parasite <- ggplot(crithidia_lat, aes(x = Lat, y = estimate__)) +
+  geom_line(aes(x = Lat, y= estimate__), size = 1.5, color = "#3182bd") +
   geom_ribbon(aes(ymin = lower__, ymax = upper__, fill = Bee), alpha=0.4) +
   scale_fill_manual(values = "#3182bd", labels ="Bombus 0.95") +
   labs(x = "Latitude (log)", y = "Crithidia prevalence",
@@ -368,7 +431,7 @@ p9.parasite <- ggplot(crithidia_lat, aes(x = Lat, y = estimate__)) +
 
 
 
-ggsave(p9.parasite, file="figures/Lat_crithidia.pdf",
+ggsave(p11.parasite, file="figures/Lat_crithidia.pdf",
        height=4, width=5)
 
 ## ***********************************************************************
@@ -376,13 +439,13 @@ ggsave(p9.parasite, file="figures/Lat_crithidia.pdf",
 ## ***********************************************************************
 
 apicystis_lat <-
-  bombus.cond.effects[["ApicystisSpp.ApicystisSpp_Lat"]]
+  bombus.cond.effects2[["ApicystisSpp.ApicystisSpp_Lat"]]
 apicystis_lat <- mutate(apicystis_lat, Bee = "Bombus")
 
-p10.parasite <- ggplot(apicystis_lat, aes(x = Lat, y = estimate__)) +
-  geom_line(aes(x = Lat, y= estimate__), size = 0.8, color = "darkgoldenrod3") +
+p12.parasite <- ggplot(apicystis_lat, aes(x = Lat, y = estimate__)) +
+  geom_line(aes(x = Lat, y= estimate__), size = 1.5, color = "#3182bd") +
   geom_ribbon(aes(ymin = lower__, ymax = upper__, fill = Bee), alpha=0.4) +
-  scale_fill_manual(values = "darkgoldenrod3", labels ="Bombus 0.95") +
+  scale_fill_manual(values = "#3182bd", labels ="Bombus 0.95") +
   labs(x = "Latitude (log)", y = "Apicystis prevalence",
        fill = "Credible interval") +
   theme_ms() +
@@ -398,7 +461,7 @@ p10.parasite <- ggplot(apicystis_lat, aes(x = Lat, y = estimate__)) +
 
 
 
-ggsave(p10.parasite, file="figures/Lat_apicystis.pdf",
+ggsave(p12.parasite, file="figures/Lat_apicystis.pdf",
        height=4, width=5)
 
 ################################################################################
@@ -407,8 +470,8 @@ crithidia_lat_apis <-
   apis.cond.effects[["CrithidiaPresence.CrithidiaPresence_Lat"]]
 crithidia_lat_apis <- mutate(crithidia_lat_apis, Bee = "Apis")
 
-p11.parasite <- ggplot(crithidia_lat_apis, aes(x = Lat, y = estimate__)) +
-  geom_line(aes(x = Lat, y= estimate__), size= 0.8) +
+p13.parasite <- ggplot(crithidia_lat_apis, aes(x = Lat, y = estimate__)) +
+  geom_line(aes(x = Lat, y= estimate__), size= 1.5) +
   geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4) +
   scale_fill_manual(labels ="Apis 0.95") +
   labs(x = "Latitude (log)", y = "Crithidia prevalence",
@@ -427,7 +490,7 @@ geom_jitter(data= spec.uni,
 
 
 
-ggsave(p11.parasite, file="figures/Lat_crithidia_apis.pdf",
+ggsave(p13.parasite, file="figures/Lat_crithidia_apis.pdf",
        height=4, width=5)
 
 ################################################################################
@@ -437,8 +500,8 @@ apicystis_lat_apis <-
   apis.cond.effects[["ApicystisSpp.ApicystisSpp_Lat"]]
 apicystis_lat_apis <- mutate(apicystis_lat_apis, Bee = "Apis")
 
-p12.parasite <- ggplot(apicystis_lat_apis, aes(x = Lat, y = estimate__)) +
-  geom_line(aes(x = Lat, y= estimate__), size = 0.8) +
+p14.parasite <- ggplot(apicystis_lat_apis, aes(x = Lat, y = estimate__)) +
+  geom_line(aes(x = Lat, y= estimate__), size = 1.5) +
   geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4) +
   scale_fill_manual(labels ="Apis 0.95") +
   labs(x = "Latitude (log)", y = "Apicystis prevalence",
@@ -456,12 +519,12 @@ geom_jitter(data=spec.uni,
 
 
 
-ggsave(p12.parasite, file="figures/Lat_apicystis_apis.pdf",
+ggsave(p14.parasite, file="figures/Lat_apicystis_apis.pdf",
        height=4, width=5)
 
 
 
-lat_parasite<- ggarrange(p9.parasite, p11.parasite, p10.parasite, p12.parasite,#plots that are going to be included in this multipanel figure
+lat_parasite<- ggarrange(p11.parasite, p14.parasite, p12.parasite, p13.parasite,#plots that are going to be included in this multipanel figure
                           labels = c("A", "C", "B","D"), #labels given each panel 
                           ncol = 2, nrow = 2)
  
