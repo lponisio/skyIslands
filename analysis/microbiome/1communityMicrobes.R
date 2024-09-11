@@ -320,11 +320,13 @@ bf.non.ob.microbe.bombus.student <- bf(formula.non.ob.microbe.bombus, family=stu
 ## combined model
 
 #combine forms
-bform.bombus <- bf.fdiv +
-  bf.tot.bdiv +
-  bf.tot.babund +
-  bf.ob.microbe.bombus.skew +
+bform.bombus <-   bf.ob.microbe.bombus.skew +
   bf.non.ob.microbe.bombus.student +
+  # bf.fdiv +
+  # bf.tot.bdiv +
+  # bf.tot.babund +
+  # bf.ob.microbe.bombus.skew +
+  # bf.non.ob.microbe.bombus.student +
   set_rescor(FALSE)
 
 ## TODO check if need to change all NAs to 0
