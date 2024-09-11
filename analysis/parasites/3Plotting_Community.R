@@ -67,7 +67,7 @@ lat_beediv <-
   cond.effects[["NetBeeDiversity.NetBeeDiversity_Lat"]]
 
 p1 <- ggplot(lat_beediv, aes(x = Lat, y = estimate__)) +
-  geom_line(aes(x = Lat, y= estimate__), size = 0.8) +
+  geom_line(aes(x = Lat, y= estimate__), size = 1.5) +
   geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4) +
   labs(x = "Latitude", y = "Bee diversity",
        fill = "Credible interval")+
@@ -96,7 +96,7 @@ lat_floraldiv <-
   cond.effects[["MeanFloralDiversity.MeanFloralDiversity_Lat"]]
 
 p2 <- ggplot(lat_floraldiv, aes(x = Lat, y = estimate__)) +
-  geom_line(aes(x = Lat, y= estimate__), size = 0.8, color = "darkgoldenrod3") +
+  geom_line(aes(x = Lat, y= estimate__), size = 1.5, color = "darkgoldenrod3") +
   geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4, fill = "darkgoldenrod3") +
   labs(x = "Latitude", y = "Mean floral diversity",
        fill = "Credible interval") +
@@ -128,7 +128,7 @@ lat_bombusabund <-
 
 
 p3 <- ggplot(lat_bombusabund, aes(x = Lat, y = estimate__)) +
-  geom_line(aes(x = Lat, y= estimate__), size = 0.8) +
+  geom_line(aes(x = Lat, y= estimate__), size = 1.5) +
   geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4) +
   labs(x = "Latitude (log)", y = "Bombus abundance (log)",
        fill = "Credible interval") +
@@ -155,7 +155,7 @@ lat_apisabund <-
   cond.effects[["NetHBAbundance.NetHBAbundance_Lat"]]
 
 p4 <- ggplot(lat_apisabund, aes(x = Lat, y = estimate__)) +
-  geom_line(aes(x = Lat, y= estimate__), size = 0.8) +
+  geom_line(aes(x = Lat, y= estimate__), size = 1.5) +
   geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4) +
   labs(x = "Latitude (log)", y = "Apis abundance (log)",
        fill = "Credible interval") +
@@ -177,7 +177,7 @@ p4 <- ggplot(lat_apisabund, aes(x = Lat, y = estimate__)) +
 ggsave(p4, file="figures/Lat_HB_abudance.pdf",
        height=4, width=5)
 
-lat_community<- ggarrange(p1,p2,p3,p4, #plots that are going to be included in this multipanel figure
+lat_community<- ggarrange(p2,p1,p3,p4, #plots that are going to be included in this multipanel figure
                        labels = c("A", "B", "C","D"), #labels given each panel 
                        ncol = 2, nrow = 2 #adjust plot space 
                        )
@@ -190,7 +190,7 @@ beediv_floraldiv <-
   cond.effects[["NetBeeDiversity.NetBeeDiversity_MeanFloralDiversity"]]
 
 plantdiv_beediv <- ggplot(beediv_floraldiv, aes(x = MeanFloralDiversity, y = estimate__)) +
-  geom_line(aes(x = MeanFloralDiversity, y= estimate__), size = 0.8, color = "#3182bd") +
+  geom_line(aes(x = MeanFloralDiversity, y= estimate__), size = 1.5, color = "#3182bd") +
   geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4, fill = "#3182bd") +
   labs(y = "Bee Species Diversity", x = "Floral Diversity",
        fill = "Credible interval") +
