@@ -54,7 +54,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     #pull out all sites that include the specified genus
     my_sites <- unique(metadata$Site[metadata$Genus==this.species])
   }
-  
+  #browser()
   #remove tips from the tree that are not in the list of unique IDs in the specified genus
   trimmed_tree <- prune_samples(rownames(tree.object@sam_data) %in% sp_ids$UniqueID, tree.object)
   
@@ -62,7 +62,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
   pruned_tree <- prune_taxa(taxa_sums(trimmed_tree) > 0, trimmed_tree)
   
   ## for apis drop the incorrect bifidobacterium that is sorting with orbaceae
-  pruned_tree <- prune_taxa(!"16s:d__Bacteria; p__Actinobacteriota; c__Actinobacteria; o__Bifidobacteriales; f__Bifidobacteriaceae; g__Bifidobacterium; s__Bifidobacterium_coryneforme", pruned_tree)
+  #pruned_tree <- prune_taxa(!"16s:d__Bacteria; p__Actinobacteriota; c__Actinobacteria; o__Bifidobacteriales; f__Bifidobacteriaceae; g__Bifidobacterium; s__Bifidobacterium_coryneforme", pruned_tree)
   
   
   #read in the taxonomic info for each feature
@@ -190,6 +190,19 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     mutate(SiteCount = as.numeric(n_distinct(Site))) %>%
     mutate(Obligate = as.numeric(str_detect(bacteria, "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae")))
    #browser() 
+  
+  # Preprocess data to create a 'color' column
+  features_site_metadata <- features_site_metadata %>%
+    mutate(obligate_color = case_when(
+      grepl("Lactobacillaceae", bacteria) ~ "#882D17",   # Lactobacillaceae
+      grepl("Bifidobacteriaceae", bacteria) ~ "#B3446C", # Bifidobacteriaceae
+      grepl("Neisseriaceae", bacteria) ~ "#DCD300",      # Neisseriaceae
+      grepl("Orbaceae", bacteria) ~ "#8DB600",           # Orbaceae
+      grepl("Bartonella", bacteria) ~ "#604E97",         # Bartonella
+      grepl("Acetobacteraceae", bacteria) ~ "#F6A600",   # Acetobacteraceae
+      TRUE ~ NA_character_  # Default NA for non-matching cases
+    ))
+  
   tree_tip_labs <- gentree$tip.label
   
   #dropping branches that weren't in the presence abs table
@@ -218,7 +231,7 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     geom_fruit(
       data=features_site_metadata,
       geom=geom_tile,
-      pwidth=0.1,
+      pwidth=0.05,
       offset=0.1,
       mapping=aes(y=bacteria,
                   #x=SiteCount,
@@ -227,6 +240,17 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     labs(fill='Number of Sites')+
     scale_fill_gradient(high = "black", low ="lightgrey") +
     #ggtitle(paste(this.species, this_level)) +
+    new_scale_fill() + 
+    geom_fruit(
+      data=features_site_metadata,
+      geom=geom_tile,
+      pwidth=0.05,
+      offset=0.085,
+      mapping=aes(y=bacteria,
+                  #x=SiteCount,
+                  fill=obligate_color, width=0.1),
+      show.legend=FALSE) +
+    scale_fill_identity() + # Use exact colors from the data
     new_scale_fill() + 
     #geom_tiplab(align=TRUE, linetype='dashed', aes(label = "")) +
     # geom_tippoint(aes(
@@ -244,16 +268,6 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
     geom_tippoint(aes(
       subset=(grepl("Bartonella",label,fixed=TRUE)==TRUE)), pch=21, fill="#604E97", size=4) 
   
-  
- # "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonellaceae|Acetobacteraceae"
-
-  # "#332288" "#6699CC"
-  # [3] "#88CCEE" "#44AA99"
-  # [5] "#117733" "#999933"
-  # [7] "#DDCC77" "#661100"
-  # [9] "#CC6677" "#AA4466"
-  # [11] "#882255" "#AA4499"
-  
   ## list [[1]] is tree, [[2]] is metadata, [[3]] is tip.order
   
   return(list(p2, features_site_metadata, tip.order))
@@ -263,20 +277,6 @@ phylotree_heatmap_byGenus <- function(tree.object, metadata, genus.or.spp, this.
 
 
 
-# core.sp <- c("Rosenbergiella", "Pseudomonas", "Gilliamella",
-#              "Lactobacillus", "Caulobacter", "Snodgrassella",
-#              "Acinetobacter", "Corynebacterium", "Sphingomonas",
-#              "Commensalibacter", "Methylobacterium",
-#              "Massilia","Stenotrophomonas", "Bifidobacterium", "Frischella", "Bartonella")
-
-### what i need to do:
-# figure out what order to do the filtering steps
-# featurs_site_metadata needs to be able to keep track of the tips that get renamed and if they are kept in the tree, attache sitecount metadata to the correct spot
-# not sure how it is handling branches that are collapsed, they should be additive so that if fam1 was at 2 sites and fam2 was also at two sites, if they are the same sites the total number should be 2 but if they are different should be 4
-# i think there are a few ways to do this
-# what i will try next will be adding an index to keep track of the branch location and then after that dropping down the taxonomy and using the tip index to assign site count but surely this will be more complicated than that... :/ 
-
-#tree.type <- 'rbcl'
 meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'GenusSpecies', 'Sex', 'Site', 'Meadow')
 
 meta <- spec.net %>%
@@ -295,18 +295,18 @@ finalASV <- tibble::rownames_to_column(finalASV, "UniqueID") #make rownames (Uni
 
 
 ## Genus trees
-apis_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", genus.or.spp='Genus', finalASV, apis_sites, all_levels=TRUE, do_collapse = TRUE)
-panelB <- apis_tree[[1]] + labs(tag="B. Apis")
-apis_meta <- apis_tree[[2]]
-panelB
+# apis_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Apis", genus.or.spp='Genus', finalASV, apis_sites, all_levels=TRUE, do_collapse = TRUE)
+# panelB <- apis_tree[[1]] + labs(tag="B. Apis")
+# apis_meta <- apis_tree[[2]]
+# panelB
 
 
 
 # melissodes 
 melissodes_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes", genus.or.spp='Genus', finalASV, melissodes_sites, do_collapse = TRUE)
-panelC <- melissodes_tree[[1]] + labs(tag="C. Melissodes")
+panelB <- melissodes_tree[[1]] + labs(tag="B. Melissodes")
 melissodes_meta <- melissodes_tree[[2]]
-panelC
+panelB
 
 
 
@@ -327,12 +327,6 @@ library("ggplot2")
 library("grid") 
 library("gridExtra") 
 library("cowplot") 
-
-core.sp <- c("Rosenbergiella", "Pseudomonas", "Gilliamella",
-             "Lactobacillus", "Caulobacter", "Snodgrassella",
-             "Acinetobacter", "Corynebacterium", "Sphingomonas",
-             "Commensalibacter", "Methylobacterium",
-             "Massilia","Stenotrophomonas", "Bifidobacterium", "Frischella", "Bartonella")
 
 ## obligate symbionts
 these_obligates <- c("Acetobacteraceae",
@@ -358,17 +352,6 @@ data.leg <- data.frame(
   Ydata = rnorm(6), 
   Family = these_obligates,
   leg_color = leg_col_order)
-                
-    # "#E69F00", #gilliamella 5
-    #             "#56B4E9", #Lactobacillus 6
-    #             "#009E73", #Snodgrassella 7
-    #             "#F0E442", #Commensalibacter3
-    #             "#0072B2", #Bifidobacterium2
-    #             "#CC79A7", #Frischella 4
-    #             "#D55E00")) #Brtonella 1
-    
-    
-    
 
 # Create a Scatter Plot 
 gplot <- ggplot(data.leg, aes(Xdata, Ydata, color = Family)) +    
@@ -385,11 +368,30 @@ gplot <- ggplot(data.leg, aes(Xdata, Ydata, color = Family)) +
 panelD  <- get_legend(gplot)                     
 plot(get_legend(gplot) )
 
-#make panel figure
-grid.arrange(panelA,
-             panelB,
-             panelC,
-             panelD, 
-             layout_matrix = cbind(c(1,4), c(2,4), c(3,4)),
-             heights=c(9,1))
+
+#Set up the layout matrix so that the bottom legend spans both columns
+layout <- rbind(c(1, 2),
+                c(3, 3)) # The legend will span both columns
+
+# Create the final layout
+final_plot <- arrangeGrob(panelA, panelB, panelD,
+                          layout_matrix = layout,
+                          heights = c(9, 1)) # Adjust the heights as needed
+
+# Center the legend panelD properly within its grid
+panelD_centered <- arrangeGrob(panelD, 
+                               ncol = 1, 
+                               padding = unit(1, "lines"))  # Add padding if necessary
+
+# Open a PDF device to save the plot
+pdf("../skyIslands/analysis/microbiome/figures/final/grid_trees.pdf",
+    height=8, width=11)  # Adjust width and height as needed
+
+# Plot the final combined figure
+grid.arrange(final_plot)
+
+# Close the PDF device to complete saving
+dev.off()
+
+
 
