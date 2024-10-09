@@ -103,7 +103,7 @@ axis.itd <-  standardize.axis(labs.itd,
 
 
 ## load model output data
-load(file="saved/fullMicrobeBombusFit.Rdata")
+load(file="saved/fullMicrobeBombusFit_2.Rdata")
 
 #when model finishes change over
 #load(file="saved/fullMicrobeBombusFit_2.Rdata")
@@ -115,12 +115,18 @@ load(file="saved/fullMicrobeMelissodesFit_2.Rdata")
 # We want the standarized data for the predictions (spec.data)
 spec.bombus <- spec.net[spec.net$Genus == "Bombus",]
 bombus.obligate <- spec.bombus[spec.bombus$WeightsObligateMicrobe == 1,]
+bombus.obligate$PDobligate <- bombus.obligate$PD.obligate
 bombus.transient <- spec.bombus[spec.bombus$WeightsTransientMicrobe == 1,]
+bombus.transient$PDtransient <- bombus.transient$PD.transient
+bombus.transient$PDtransientlog <- bombus.transient$PD.transient.log
 
 spec.melissodes <- spec.net[spec.net$Genus == "Melissodes",]
 melissodes.obligate <- spec.melissodes[spec.melissodes$WeightsObligateMicrobe == 1,]
+melissodes.obligate$PDobligate <- melissodes.obligate$PD.obligate
+melissodes.obligate$PDobligatelog <- melissodes.obligate$PD.obligate.log
 melissodes.transient <- spec.melissodes[spec.melissodes$WeightsTransientMicrobe == 1,]
-
+melissodes.transient$PDtransient <- melissodes.transient$PD.transient
+melissodes.transient$PDtransientlog <- melissodes.transient$PD.transient.log
 
 ## https://www.rensvandeschoot.com/tutorials/generalised-linear-models-with-brms/
 
@@ -135,58 +141,156 @@ melissodes.transient <- spec.melissodes[spec.melissodes$WeightsTransientMicrobe 
 ## TODO: check model results for bombus with log transformed PD to simplify plots, right now just going ahead with unmatched y axis
 
 
-plot_model_condeff_compare <- function(model.a,
-                                       model.b,
-                                       this.effect,
-                                       this.resp.a,
-                                       this.resp.b,
+plot_model_condeff_compare <- function(model.a=fit.microbe.bombus,
+                                       model.b=fit.microbe.melissodes,
+                                       this.effect='BeeDiversity',
+                                       this.resp.a='PDobligate', ## TODO: potentially update to both be PD obligate log?
+                                       this.resp.b='PDobligatelog',
+                                       point.data.a=bombus.obligate,
+                                       point.data.b=melissodes.obligate,
+                                       axis.breaks=axis.bee.div,
+                                       axis.labs=labs.bee.div
                                        ){
 
 ## PD obligate ~ Bee Diversity
 
 # Extract the data from conditional_effects
-cond_effects_data_a <- conditional_effects(fit.microbe.bombus, effects = "BeeDiversity", resp = "PDobligate", plot = FALSE)
-plot_data_a <- cond_effects_data_a$PDobligate.PDobligate_BeeDiversity
+cond_effects_data_a <- conditional_effects(model.a, effects = this.effect, resp = this.resp.a, plot = FALSE)
+plot_data_a <- cond_effects_data_a[[paste(this.resp.a,".",this.resp.a, "_",this.effect, sep='')]]
+#browser()
+
+## fixing col names TODO: should fix the col names in prep
+if ('PD.obligate' %in% colnames(plot_data_a)){
+  plot_data_a$PDobligate <- plot_data_a$PD.obligate
+}
+if ('PD.obligate.log' %in% colnames(plot_data_a)){
+  plot_data_a$PDobligatelog <- plot_data_a$PD.obligate.log
+}
+if ('PD.transient' %in% colnames(plot_data_a)){
+  plot_data_a$PDtransient <- plot_data_a$PD.transient
+}
+if ('PD.transient.log' %in% colnames(plot_data_a)){
+  plot_data_a$PDtransientlog <- plot_data_a$PD.transient.log
+}
 
 # Extract the data from conditional_effects
-cond_effects_data_b <- conditional_effects(fit.microbe.melissodes, effects = "BeeDiversity", resp = "PDobligatelog", plot = FALSE)
-plot_data_b <- cond_effects_data_b$PDobligatelog.PDobligatelog_BeeDiversity
+cond_effects_data_b <- conditional_effects(model.b, effects = this.effect, resp = this.resp.b, plot = FALSE)
+plot_data_b <- cond_effects_data_b[[paste(this.resp.b, ".", this.resp.b,"_",this.effect, sep='')]]
+
+## fixing col names TODO: should fix the col names in prep
+if ('PD.obligate' %in% colnames(plot_data_b)){
+  plot_data_b$PDobligate <- plot_data_b$PD.obligate
+}
+if ('PD.obligate.log' %in% colnames(plot_data_b)){
+  plot_data_b$PDobligatelog <- plot_data_b$PD.obligate.log
+}
+if ('PD.transient' %in% colnames(plot_data_b)){
+  plot_data_b$PDtransient <- plot_data_b$PD.transient
+}
+if ('PD.transient.log' %in% colnames(plot_data_b)){
+  plot_data_b$PDtransientlog <- plot_data_b$PD.transient.log
+}
 
 # Plot using ggplot2 for credible intervals with geom_ribbon
-ob_beediv <- ggplot(plot_data_a, aes(x = BeeDiversity, y = estimate__)) +
+ob_beediv <- ggplot(plot_data_a, aes(x = .data[[this.effect]], y = .data$estimate__)) +
   # Add ribbons for the 95%, 80%, and 50% credible intervals
-  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill='navy', color = "navy", linetype='solid') +
-  geom_ribbon(aes(ymin = lower__ + 0.1 * (upper__ - lower__), 
-                  ymax = upper__ - 0.1 * (upper__ - lower__)), 
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill='navy', color = "navy", linetype='dotted') +
+  geom_ribbon(aes(ymin = lower__ + 0.1 * (upper__ - lower__),
+                  ymax = upper__ - 0.1 * (upper__ - lower__)),
               alpha = 0.3, fill='navy', color = "navy", linetype='dashed') +
-  geom_ribbon(aes(ymin = lower__ + 0.25 * (upper__ - lower__), 
-                  ymax = upper__ - 0.25 * (upper__ - lower__)), 
-              alpha = 0.4, fill='navy', color = "navy", linetype='dotted') +
+  geom_ribbon(aes(ymin = lower__ + 0.25 * (upper__ - lower__),
+                  ymax = upper__ - 0.25 * (upper__ - lower__)),
+              alpha = 0.4, fill='navy', color = "navy", linetype='solid') +
   # Add ribbons for the 95%, 80%, and 50% credible intervals
-  geom_ribbon(data=plot_data_b, aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill='orange', color = "orange", linetype='solid') +
-  geom_ribbon(data=plot_data_b, aes(ymin = lower__ + 0.1 * (upper__ - lower__), 
-                  ymax = upper__ - 0.1 * (upper__ - lower__)), 
+  geom_ribbon(data=plot_data_b, aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill='orange', color = "orange", linetype='dotted') +
+  geom_ribbon(data=plot_data_b, aes(ymin = lower__ + 0.1 * (upper__ - lower__),
+                  ymax = upper__ - 0.1 * (upper__ - lower__)),
               alpha = 0.3, fill='orange', color = "orange", linetype='dashed') +
-  geom_ribbon(data=plot_data_b, aes(ymin = lower__ + 0.25 * (upper__ - lower__), 
-                  ymax = upper__ - 0.25 * (upper__ - lower__)), 
-              alpha = 0.4, fill='orange', color = "orange", linetype='dotted') +
-  # Add line for the estimates
-  geom_line(color = "navy") +
+  geom_ribbon(data=plot_data_b, aes(ymin = lower__ + 0.25 * (upper__ - lower__),
+                  ymax = upper__ - 0.25 * (upper__ - lower__)),
+              alpha = 0.4, fill='orange', color = "orange", linetype='solid') +
+  #Add line for the estimates
+  geom_line(data = plot_data_a, color = "navy", linewidth=2, aes(x = .data[[this.effect]], y = .data$estimate__)) +
   # Add points for original data
-  geom_point(data = bombus.obligate, aes(x = BeeDiversity, y = PD.obligate), 
-             color = "navy", alpha = 0.6) +
+  geom_point(data = point.data.a, aes(x = .data[[this.effect]], y = .data[[this.resp.a]]),
+             color = "navy", alpha = 0.6,size=2) +
   # Add line for the estimates
-  geom_line(data=plot_data_b, aes(x = BeeDiversity, y = PD.obligate.log), color = "orange") +
+  geom_line(data=plot_data_b, linewidth=2, aes(x = .data[[this.effect]],  y = .data$estimate__), color = "orange") +
   # Add points for original data
-  geom_point(data = melissodes.obligate, aes(x = BeeDiversity, y = PD.obligate.log), 
-             color = "orange", alpha = 0.6) +
+  geom_point(data = point.data.b, aes(x = .data[[this.effect]], y = .data[[this.resp.b]]),
+             color = "orange", alpha = 0.6, size=2) +
   # Labels and theme
   labs(x = "Bee Diversity (Untransformed)", y = "Obligate Microbe PD") +
-  scale_x_continuous(breaks = axis.bee.div, labels = labs.bee.div) +
+  scale_x_discrete(breaks = axis.breaks, labels = axis.labs) +
   theme_classic()
 
 ob_beediv
+#browser()
 }
+
+#test plot
+plot_model_condeff_compare()
+
+####################################
+## WIP
+model.a=fit.microbe.bombus
+model.b=fit.microbe.melissodes
+this.effect='BeeDiversity'
+this.resp.a='PDobligate' ## TODO: potentially update to both be PD obligate log?
+this.resp.b='PDobligatelog'
+point.data.a=bombus.obligate
+point.data.b=melissodes.obligate
+axis.breaks=axis.bee.div
+axis.labs=labs.bee.div
+  
+  ## PD obligate ~ Bee Diversity
+  
+  # Extract the data from conditional_effects
+  cond_effects_data_a <- conditional_effects(model.a, effects = this.effect, resp = this.resp.a, plot = FALSE)
+  plot_data_a <- cond_effects_data_a[[paste(this.resp.a,".",this.resp.a, "_",this.effect, sep='')]]
+  #browser()
+  
+  ## fixing col names TODO: should fix the col names in prep
+  if ('PD.obligate' %in% colnames(plot_data_a)){
+    plot_data_a$PDobligate <- plot_data_a$PD.obligate
+  }
+  if ('PD.obligate.log' %in% colnames(plot_data_a)){
+    plot_data_a$PDobligatelog <- plot_data_a$PD.obligate.log
+  }
+  if ('PD.transient' %in% colnames(plot_data_a)){
+    plot_data_a$PDtransient <- plot_data_a$PD.transient
+  }
+  if ('PD.transient.log' %in% colnames(plot_data_a)){
+    plot_data_a$PDtransientlog <- plot_data_a$PD.transient.log
+  }
+  
+  # Extract the data from conditional_effects
+  cond_effects_data_b <- conditional_effects(model.b, effects = this.effect, resp = this.resp.b, plot = FALSE)
+  plot_data_b <- cond_effects_data_b[[paste(this.resp.b, ".", this.resp.b,"_",this.effect, sep='')]]
+  
+  ## fixing col names TODO: should fix the col names in prep
+  if ('PD.obligate' %in% colnames(plot_data_b)){
+    plot_data_b$PDobligate <- plot_data_b$PD.obligate
+  }
+  if ('PD.obligate.log' %in% colnames(plot_data_b)){
+    plot_data_b$PDobligatelog <- plot_data_b$PD.obligate.log
+  }
+  if ('PD.transient' %in% colnames(plot_data_b)){
+    plot_data_b$PDtransient <- plot_data_b$PD.transient
+  }
+  if ('PD.transient.log' %in% colnames(plot_data_b)){
+    plot_data_b$PDtransientlog <- plot_data_b$PD.transient.log
+  }
+  
+  # Plot using ggplot2 for credible intervals with geom_ribbon
+  ob_beediv <- ggplot(plot_data_a, aes(x = .data[[this.effect]], y = .data$estimate__)) +
+    # Add ribbons for the 95%, 80%, and 50% credible intervals
+    geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill='navy', color = "navy", linetype='solid')
+
+  ob_beediv
+
+
+
 ############################
 ## PDobligate ~ rare.degree
 
