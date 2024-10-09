@@ -42,7 +42,7 @@ vars_yearsr <- c("MeanFloralAbundance",
 )
 
 vars_yearsrsp <- "rare.degree"
-vars_sp <- "MeanITD"
+vars_sp <- "MeanITD.x"
 vars_site <- "Lat"
 
 
@@ -97,14 +97,17 @@ axis.degree <-  standardize.axis(labs.degree,
 
 spec.sp <-  spec.orig[spec.orig$WeightsTransientMicrobe == 1 & spec.orig$Genus == "Bombus",]
 ## meanITD
-labs.itd <- (pretty(spec.sp$MeanITD, n=10))
+labs.itd <- (pretty(spec.sp$MeanITD.x, n=4))
 axis.itd <-  standardize.axis(labs.itd,
-                              spec.sp$MeanITD)
+                              spec.sp$MeanITD.x)
 
 
 ## load model output data
 load(file="saved/fullMicrobeBombusFit.Rdata")
-load(file="saved/fullMicrobeMelissodesFit.Rdata")
+
+#when model finishes change over
+#load(file="saved/fullMicrobeBombusFit_2.Rdata")
+load(file="saved/fullMicrobeMelissodesFit_2.Rdata")
 
 #load(file="saved/fullMicrobeApisFit.Rdata")
 
@@ -116,6 +119,7 @@ bombus.transient <- spec.bombus[spec.bombus$WeightsTransientMicrobe == 1,]
 
 spec.melissodes <- spec.net[spec.net$Genus == "Melissodes",]
 melissodes.obligate <- spec.melissodes[spec.melissodes$WeightsObligateMicrobe == 1,]
+melissodes.transient <- spec.melissodes[spec.melissodes$WeightsTransientMicrobe == 1,]
 
 
 ## https://www.rensvandeschoot.com/tutorials/generalised-linear-models-with-brms/
@@ -127,35 +131,62 @@ melissodes.obligate <- spec.melissodes[spec.melissodes$WeightsObligateMicrobe ==
 ## Bombus model
 ## **********************************************************
 
+
+## TODO: check model results for bombus with log transformed PD to simplify plots, right now just going ahead with unmatched y axis
+
+
+plot_model_condeff_compare <- function(model.a,
+                                       model.b,
+                                       this.effect,
+                                       this.resp.a,
+                                       this.resp.b,
+                                       ){
+
 ## PD obligate ~ Bee Diversity
 
 # Extract the data from conditional_effects
-cond_effects_data <- conditional_effects(fit.microbe.bombus, effects = "BeeDiversity", resp = "PDobligate", plot = FALSE)
-plot_data <- cond_effects_data$PDobligate.PDobligate_BeeDiversity
+cond_effects_data_a <- conditional_effects(fit.microbe.bombus, effects = "BeeDiversity", resp = "PDobligate", plot = FALSE)
+plot_data_a <- cond_effects_data_a$PDobligate.PDobligate_BeeDiversity
 
+# Extract the data from conditional_effects
+cond_effects_data_b <- conditional_effects(fit.microbe.melissodes, effects = "BeeDiversity", resp = "PDobligatelog", plot = FALSE)
+plot_data_b <- cond_effects_data_b$PDobligatelog.PDobligatelog_BeeDiversity
 
 # Plot using ggplot2 for credible intervals with geom_ribbon
-ob_beediv <- ggplot(plot_data, aes(x = BeeDiversity, y = estimate__)) +
+ob_beediv <- ggplot(plot_data_a, aes(x = BeeDiversity, y = estimate__)) +
   # Add ribbons for the 95%, 80%, and 50% credible intervals
-  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill = "darkgreen") +
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill='navy', color = "navy", linetype='solid') +
   geom_ribbon(aes(ymin = lower__ + 0.1 * (upper__ - lower__), 
                   ymax = upper__ - 0.1 * (upper__ - lower__)), 
-              alpha = 0.3, fill = "darkgreen") +
+              alpha = 0.3, fill='navy', color = "navy", linetype='dashed') +
   geom_ribbon(aes(ymin = lower__ + 0.25 * (upper__ - lower__), 
                   ymax = upper__ - 0.25 * (upper__ - lower__)), 
-              alpha = 0.4, fill = "darkgreen") +
+              alpha = 0.4, fill='navy', color = "navy", linetype='dotted') +
+  # Add ribbons for the 95%, 80%, and 50% credible intervals
+  geom_ribbon(data=plot_data_b, aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill='orange', color = "orange", linetype='solid') +
+  geom_ribbon(data=plot_data_b, aes(ymin = lower__ + 0.1 * (upper__ - lower__), 
+                  ymax = upper__ - 0.1 * (upper__ - lower__)), 
+              alpha = 0.3, fill='orange', color = "orange", linetype='dashed') +
+  geom_ribbon(data=plot_data_b, aes(ymin = lower__ + 0.25 * (upper__ - lower__), 
+                  ymax = upper__ - 0.25 * (upper__ - lower__)), 
+              alpha = 0.4, fill='orange', color = "orange", linetype='dotted') +
   # Add line for the estimates
-  geom_line(color = "black") +
+  geom_line(color = "navy") +
   # Add points for original data
   geom_point(data = bombus.obligate, aes(x = BeeDiversity, y = PD.obligate), 
-             color = "black", alpha = 0.6) +
+             color = "navy", alpha = 0.6) +
+  # Add line for the estimates
+  geom_line(data=plot_data_b, aes(x = BeeDiversity, y = PD.obligate.log), color = "orange") +
+  # Add points for original data
+  geom_point(data = melissodes.obligate, aes(x = BeeDiversity, y = PD.obligate.log), 
+             color = "orange", alpha = 0.6) +
   # Labels and theme
   labs(x = "Bee Diversity (Untransformed)", y = "Obligate Microbe PD") +
   scale_x_continuous(breaks = axis.bee.div, labels = labs.bee.div) +
   theme_classic()
 
 ob_beediv
-
+}
 ############################
 ## PDobligate ~ rare.degree
 
