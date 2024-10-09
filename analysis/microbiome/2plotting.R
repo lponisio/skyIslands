@@ -194,13 +194,19 @@ if ('PD.transient.log' %in% colnames(plot_data_b)){
 # Plot using ggplot2 for credible intervals with geom_ribbon
 ob_beediv <- ggplot(plot_data_a, aes(x = .data[[this.effect]], y = .data$estimate__)) +
   # Add ribbons for the 95%, 80%, and 50% credible intervals
-  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill='navy', color = "navy", linetype='dotted') +
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, 
+              fill="navy",
+              color = "navy", linetype='dotted') +
   geom_ribbon(aes(ymin = lower__ + 0.1 * (upper__ - lower__),
                   ymax = upper__ - 0.1 * (upper__ - lower__)),
-              alpha = 0.3, fill='navy', color = "navy", linetype='dashed') +
+              alpha = 0.3, 
+              fill="navy", 
+              color = "navy", linetype='dashed') +
   geom_ribbon(aes(ymin = lower__ + 0.25 * (upper__ - lower__),
                   ymax = upper__ - 0.25 * (upper__ - lower__)),
-              alpha = 0.4, fill='navy', color = "navy", linetype='solid') +
+              alpha = 0.4, 
+              fill='navy',
+              color = "navy", linetype='solid') +
   # Add ribbons for the 95%, 80%, and 50% credible intervals
   geom_ribbon(data=plot_data_b, aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill='orange', color = "orange", linetype='dotted') +
   geom_ribbon(data=plot_data_b, aes(ymin = lower__ + 0.1 * (upper__ - lower__),
@@ -211,22 +217,25 @@ ob_beediv <- ggplot(plot_data_a, aes(x = .data[[this.effect]], y = .data$estimat
               alpha = 0.4, fill='orange', color = "orange", linetype='solid') +
   #Add line for the estimates
   geom_line(data = plot_data_a, color = "navy", linewidth=2, aes(x = .data[[this.effect]], y = .data$estimate__)) +
-  # Add points for original data
-  geom_point(data = point.data.a, aes(x = .data[[this.effect]], y = .data[[this.resp.a]]),
-             color = "navy", alpha = 0.6,size=2) +
   # Add line for the estimates
   geom_line(data=plot_data_b, linewidth=2, aes(x = .data[[this.effect]],  y = .data$estimate__), color = "orange") +
   # Add points for original data
   geom_point(data = point.data.b, aes(x = .data[[this.effect]], y = .data[[this.resp.b]]),
              color = "orange", alpha = 0.6, size=2) +
+  # Add points for original data
+  geom_point(data = point.data.a, aes(x = .data[[this.effect]], y = .data[[this.resp.a]]),
+             color = "navy", alpha = 0.6,size=2) +
   # Labels and theme
-  labs(x = "Bee Diversity (Untransformed)", y = "Obligate Microbe PD") +
-  scale_x_discrete(breaks = axis.breaks, labels = axis.labs) +
+  labs(x = "Bee Diversity", y = "Obligate Microbe PD") +
+  scale_x_continuous(breaks = axis.breaks, labels = axis.labs) +
   theme_classic()
 
 ob_beediv
 #browser()
 }
+
+## TODO fix plot labels
+## TODO check if the . in each 
 
 #test plot
 plot_model_condeff_compare()
@@ -293,6 +302,17 @@ axis.labs=labs.bee.div
 
 ############################
 ## PDobligate ~ rare.degree
+  
+  
+plot_model_condeff_compare <- function(model.a=fit.microbe.bombus,
+                                         model.b=fit.microbe.melissodes,
+                                         this.effect='rare.degree',
+                                         this.resp.a='PDobligate', ## TODO: potentially update to both be PD obligate log?
+                                         this.resp.b='PDobligatelog',
+                                         point.data.a=bombus.obligate,
+                                         point.data.b=melissodes.obligate,
+                                         axis.breaks=axis.degree,
+                                         axis.labs=labs.bee.div)
 
 # Extract the data from conditional_effects
 cond_effects_data <- conditional_effects(fit.microbe.bombus, effects = "rare.degree", resp = "PDobligate", plot = FALSE)
