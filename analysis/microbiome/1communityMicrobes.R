@@ -71,7 +71,7 @@ ncores <- 1
 ## **********************************************************
 
 ## flower abundance variables 
-flower.abund.vars <- c("Year",
+flower.abund.vars <- c(#"Year",
                        #"SRDoy",
                        #"I(SRDoy^2)",
                        "(1|Site)")
@@ -89,7 +89,7 @@ formula.flower.abund <- as.formula(paste(flower.abund.y, "~",flower.abund.x))
 
 
 ## flower abundance variables 
-flower.div.vars <- c("Year",
+flower.div.vars <- c(#"Year",
                      #"SRDoy",
                      #"I(SRDoy^2)",
                      "Lat",
@@ -109,7 +109,7 @@ formula.flower.div <- as.formula(paste(flower.div.y, "~",flower.div.x))
 
 ## bee abund total
 tot.bee.abund.vars <- c("MeanFloralAbundance",
-                        "Year",
+                        #"Year",
                         #"SRDoy",
                         #"I(SRDoy^2)",
                         "(1|Site)")
@@ -124,7 +124,7 @@ formula.tot.bee.abund <- as.formula(paste(tot.bee.abund.y, "~",tot.bee.abund.x))
 #net bee abund
 ## bee abund total
 net.bee.abund.vars <- c("MeanFloralAbundance",
-                        "Year",
+                        #"Year",
                         #"SRDoy",
                         #"I(SRDoy^2)",
                         "(1|Site)")
@@ -143,7 +143,7 @@ formula.net.bee.abund <- as.formula(paste(net.bee.abund.y, "~",net.bee.abund.x))
 
 
 bee.div.vars <- c("MeanFloralDiversity",
-                  "Year",
+                  #"Year",
                   #"SRDoy",
                   #"I(SRDoy^2)",
                   "Lat",
@@ -155,7 +155,7 @@ formula.bee.div <- as.formula(paste(bee.div.y, "~",bee.div.x))
 
 ## bee div total
 tot.bee.div.vars <- c("MeanFloralDiversity",
-                      "Year",
+                      #"Year",
                       #"SRDoy",
                       #"I(SRDoy^2)",
                       "Lat",
@@ -320,13 +320,11 @@ bf.non.ob.microbe.bombus.student <- bf(formula.non.ob.microbe.bombus, family=stu
 ## combined model
 
 #combine forms
-bform.bombus <-   bf.ob.microbe.bombus.skew +
-  bf.non.ob.microbe.bombus.student +
-  bf.fdiv +
+bform.bombus <- bf.fdiv +
   bf.tot.bdiv +
   bf.tot.babund +
-  # bf.ob.microbe.bombus.skew +
-  # bf.non.ob.microbe.bombus.student +
+  bf.ob.microbe.bombus.skew +
+  bf.non.ob.microbe.bombus.student +
   set_rescor(FALSE)
 
 ## TODO check if need to change all NAs to 0
@@ -345,11 +343,11 @@ if(run.bombus){
                           save_pars = save_pars(all = TRUE),
                           data2 = list(phylo_matrix=phylo_matrix))
   
-  write.ms.table(fit.microbe.bombus, "bombus_microbe")
+  write.ms.table(fit.microbe.bombus, "bombus_microbe_2")
   r2loo.bombus <- loo_R2(fit.microbe.bombus)
   r2.bombus <- rstantools::bayes_R2(fit.microbe.bombus)
   save(fit.microbe.bombus, spec.net, r2.bombus, r2loo.bombus,
-       file="saved/fullMicrobeBombusFit.Rdata")
+       file="saved/fullMicrobeBombusFit_2.Rdata")
 }
 
 
@@ -488,11 +486,11 @@ fit.microbe.melissodes <- brm(bform.melissodes , spec.net,
                                           ),
                            save_pars = save_pars(all = TRUE))
 
-write.ms.table(fit.microbe.melissodes, "melissodes_microbe")
+write.ms.table(fit.microbe.melissodes, "melissodes_microbe_2")
 r2loo.melissodes <- loo_R2(fit.microbe.melissodes)
 r2.melissodes <- rstantools::bayes_R2(fit.microbe.melissodes)
 save(fit.microbe.melissodes, spec.net, r2.melissodes, r2loo.melissodes,
-      file="saved/fullMicrobeMelissodesFit.Rdata")
+      file="saved/fullMicrobeMelissodesFit_2.Rdata")
 }
 
 
