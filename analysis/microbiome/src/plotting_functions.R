@@ -111,3 +111,67 @@ plot_model_condeff_compare <- function(model.a=fit.microbe.bombus,
   plot_obj
   #browser()
 }
+
+plot_model_condeff_single <- function(model=fit.microbe.bombus,
+                                       this.effect='BeeDiversity',
+                                       this.resp='PDobligate', ## TODO: potentially update to both be PD obligate log?
+                                       point.data=bombus.obligate,
+                                       axis.breaks=axis.bee.div,
+                                       axis.labs=labs.bee.div,
+                                       xlabel="Bee Diversity",
+                                       ylabel="Obligate Microbe PD",
+                                       mod1color='navy'
+){
+  
+  ## PD obligate ~ Bee Diversity
+  
+  # Extract the data from conditional_effects
+  cond_effects_data <- conditional_effects(model, effects = this.effect, resp = this.resp, plot = FALSE)
+  plot_data <- cond_effects_data[[paste(this.resp,".",this.resp, "_",this.effect, sep='')]]
+  
+  ## fixing col names TODO: should fix the col names in prep
+  if ('PD.obligate' %in% colnames(plot_data)){
+    plot_data$PDobligate <- plot_data$PD.obligate
+  }
+  if ('PD.obligate.log' %in% colnames(plot_data)){
+    plot_data$PDobligatelog <- plot_data$PD.obligate.log
+  }
+  if ('PD.transient' %in% colnames(plot_data)){
+    plot_data$PDtransient <- plot_data$PD.transient
+  }
+  if ('PD.transient.log' %in% colnames(plot_data)){
+    plot_data$PDtransientlog <- plot_data$PD.transient.log
+  }
+  
+  
+  # Plot using ggplot2 for credible intervals with geom_ribbon
+  plot_obj <- ggplot(plot_data, aes(x = .data[[this.effect]], y = .data$estimate__)) +
+    # Add ribbons for the 95%, 80%, and 50% credible intervals
+    geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, 
+                fill=mod1fill,
+                color = mod1color, linetype='dotted') +
+    geom_ribbon(aes(ymin = lower__ + 0.1 * (upper__ - lower__),
+                    ymax = upper__ - 0.1 * (upper__ - lower__)),
+                alpha = 0.3, 
+                fill=mod1fill, 
+                color = mod1color, linetype='dashed') +
+    geom_ribbon(aes(ymin = lower__ + 0.25 * (upper__ - lower__),
+                    ymax = upper__ - 0.25 * (upper__ - lower__)),
+                alpha = 0.4, 
+                fill=mod1fill,
+                color = mod1color, linetype='solid') +
+    #Add line for the estimates
+    geom_line(data = plot_data, color = 'black', linewidth=2.5, aes(x = .data[[this.effect]], y = .data$estimate__)) +
+    #Add line for the estimates
+    geom_line(data = plot_data_, color = mod1color, linewidth=2, aes(x = .data[[this.effect]], y = .data$estimate__)) +
+    # Add points for original data
+    geom_point(data = point.data, aes(x = .data[[this.effect]], y = .data[[this.resp]]),
+               fill = mod1color, alpha = 0.6,color="black", pch=21, cex=3) +
+    # Labels and theme
+    labs(x = xlabel, y = ylabel) +
+    scale_x_continuous(breaks = axis.breaks, labels = axis.labs) +
+    theme_classic()
+  
+  plot_obj
+  #browser()
+}
