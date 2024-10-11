@@ -242,10 +242,10 @@ plot_obj <- ggplot(plot_data_a, aes(x = .data[[this.effect]], y = .data$estimate
   geom_line(data=plot_data_b, linewidth=2, aes(x = .data[[this.effect]],  y = .data$estimate__), color = mod2color) +
   # Add points for original data
   geom_point(data = point.data.b, aes(x = .data[[this.effect]], y = .data[[this.resp.b]]),
-             color = mod2color, alpha = 0.6, size=2) +
+             fill = mod2color, alpha = 0.6, size=2, color="black", pch=21, cex=2) +
   # Add points for original data
   geom_point(data = point.data.a, aes(x = .data[[this.effect]], y = .data[[this.resp.a]]),
-             color = mod1color, alpha = 0.6,size=2) +
+             fill = mod1color, alpha = 0.6,size=2, color="black", pch=21, cex=2) +
   # Labels and theme
   labs(x = xlabel, y = ylabel) +
   scale_x_continuous(breaks = axis.breaks, labels = axis.labs) +
@@ -259,7 +259,7 @@ plot_obj
 ## TODO check if the . in each 
 
 #test plot
-plot_model_condeff_compare()
+#plot_model_condeff_compare()
 
 ####################################
 ## PDobligate ~ bee.div
@@ -330,18 +330,18 @@ plot_data <- cond_effects_data$PDtransientlog.PDtransientlog_MeanITD.x
 # Plot using ggplot2 for credible intervals with geom_ribbon
 trans_itd <- ggplot(plot_data, aes(x = MeanITD.x, y = estimate__)) +
   # Add ribbons for the 95%, 80%, and 50% credible intervals
-  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill = "orange") +
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill = "navy") +
   geom_ribbon(aes(ymin = lower__ + 0.1 * (upper__ - lower__), 
                   ymax = upper__ - 0.1 * (upper__ - lower__)), 
-              alpha = 0.3, fill = "orange") +
+              alpha = 0.3, fill = "navy") +
   geom_ribbon(aes(ymin = lower__ + 0.25 * (upper__ - lower__), 
                   ymax = upper__ - 0.25 * (upper__ - lower__)), 
-              alpha = 0.4, fill = "orange") +
+              alpha = 0.4, fill = "navy") +
   # Add line for the estimates
   geom_line(color = "black") +
   # Add points for original data
   geom_point(data = bombus.transient, aes(x = MeanITD.x, y = PD.transient.log), 
-             color = "black", alpha = 0.6) +
+             color = "navy", alpha = 0.6) +
   # Labels and theme
   labs(x = "Body Size", y = "Facultative Microbe PD") +
   scale_x_continuous(breaks = axis.itd, labels = labs.itd) +
@@ -372,30 +372,3 @@ obligate.abund.plot <- plot_model_condeff_compare(model.a=fit.microbe.bombus,
 )
 obligate.abund.plot
 
-
-# Extract the data from conditional_effects
-cond_effects_data <- conditional_effects(fit.microbe.melissodes, effects = "BeeAbundance", resp = "PDobligatelog", plot = FALSE)
-plot_data <- cond_effects_data$PDobligatelog.PDobligatelog_BeeAbundance
-
-
-# Plot using ggplot2 for credible intervals with geom_ribbon
-ob_beeabund <- ggplot(plot_data, aes(x = BeeAbundance, y = estimate__)) +
-  # Add ribbons for the 95%, 80%, and 50% credible intervals
-  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill = "darkgreen") +
-  geom_ribbon(aes(ymin = lower__ + 0.1 * (upper__ - lower__), 
-                  ymax = upper__ - 0.1 * (upper__ - lower__)), 
-              alpha = 0.3, fill = "darkgreen") +
-  geom_ribbon(aes(ymin = lower__ + 0.25 * (upper__ - lower__), 
-                  ymax = upper__ - 0.25 * (upper__ - lower__)), 
-              alpha = 0.4, fill = "darkgreen") +
-  # Add line for the estimates
-  geom_line(color = "black") +
-  # Add points for original data
-  geom_point(data = melissodes.obligate, aes(x = BeeAbundance, y = PD.obligate.log), 
-             color = "black", alpha = 0.6) +
-  # Labels and theme
-  labs(x = "Bee Abundance (Untransformed)", y = "Obligate Microbe PD (log transformed)") +
-  scale_x_continuous(breaks = axis.bee.abund, labels = labs.bee.abund) +
-  theme_classic()
-
-ob_beeabund
