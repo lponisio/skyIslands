@@ -174,8 +174,8 @@ obligate.rare.degree.plot <- plot_model_condeff_compare(model.a=fit.microbe.bomb
                                          point.data.b=melissodes.obligate,
                                          axis.breaks=axis.degree,
                                          axis.labs=labs.degree,
-                                         xlabel="Diet Breadth",
-                                         ylabel="Obligate Microbe PD",
+                                         xlabel="Diet Breadth (logged)",
+                                         ylabel="Obligate Microbe PD (logged)",
                                          mod1color='navy',
                                          mod2color='coral',
                                          fill.a=TRUE,
@@ -187,47 +187,17 @@ obligate.rare.degree.plot
 ## PDtransientlog ~ MeanITD
 ## can only make for Bombus since melissodes doesn't have mean ITD
 
-# obligate.ITD.plot <- plot_model_condeff_compare(model.a=fit.microbe.bombus,
-#                                                         model.b=fit.microbe.melissodes,
-#                                                         this.effect='MeanITD.x',
-#                                                         this.resp.a="PDtransientlog", ## TODO: potentially update to both be PD obligate log?
-#                                                         this.resp.b="PDtransientlog",
-#                                                         point.data.a=bombus.transient,
-#                                                         point.data.b=melissodes.transient,
-#                                                         axis.breaks=axis.itd,
-#                                                         axis.labs=labs.itd,
-#                                                         xlabel="Body Size",
-#                                                         ylabel="Transient Microbe PD (log)",
-#                                                         mod1color='navy',
-#                                                         mod2color='coral'
-# )
-# obligate.ITD.plot 
-# Extract the data from conditional_effects
-cond_effects_data <- conditional_effects(fit.microbe.bombus, effects = "MeanITD.x", resp = "PDtransientlog", plot = FALSE)
-plot_data <- cond_effects_data$PDtransientlog.PDtransientlog_MeanITD.x
+transient.itd.plot  <- plot_model_condeff_single(model=fit.microbe.bombus,
+                                      this.effect='MeanITD.x',
+                                      this.resp='PDtransientlog', ## TODO: potentially update to both be PD obligate log?
+                                      point.data=bombus.transient,
+                                      axis.breaks=axis.itd,
+                                      axis.labs=labs.itd,
+                                      xlabel="Body Size",
+                                      ylabel="Transient Microbe PD (logged)",
+                                      mod1color='navy')
 
-
-# Plot using ggplot2 for credible intervals with geom_ribbon
-trans_itd <- ggplot(plot_data, aes(x = MeanITD.x, y = estimate__)) +
-  # Add ribbons for the 95%, 80%, and 50% credible intervals
-  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill = "navy", linetype='dotted') +
-  geom_ribbon(aes(ymin = lower__ + 0.1 * (upper__ - lower__), 
-                  ymax = upper__ - 0.1 * (upper__ - lower__)), 
-              alpha = 0.3, fill = "navy", linetype='dashed') +
-  geom_ribbon(aes(ymin = lower__ + 0.25 * (upper__ - lower__), 
-                  ymax = upper__ - 0.25 * (upper__ - lower__)), 
-              alpha = 0.4, fill = "navy", linetype='solid') +
-  # Add line for the estimates
-  geom_line(color = "black") +
-  # Add points for original data
-  geom_point(data = bombus.transient, aes(x = MeanITD.x, y = PD.transient.log), 
-             color = "navy", alpha = 0.6, size) +
-  # Labels and theme
-  labs(x = "Body Size", y = "Facultative Microbe PD") +
-  scale_x_continuous(breaks = axis.itd, labels = labs.itd) +
-  theme_classic()
-
-trans_itd
+transient.itd.plot
 
 ## **********************************************************
 ## Melissodes model
@@ -243,13 +213,14 @@ obligate.abund.plot <- plot_model_condeff_compare(model.a=fit.microbe.bombus,
                                                 point.data.b=melissodes.obligate,
                                                 axis.breaks=axis.bee.abund,
                                                 axis.labs=labs.bee.abund,
-                                                xlabel="Bee Abundance",
+                                                xlabel="Bee Abundance (logged)",
                                                 ylabel="Obligate Microbe PD",
                                                 mod1color='navy',
                                                 mod2color='coral',
                                                 fill.a=FALSE,
                                                 fill.b=TRUE
 )
+
 obligate.abund.plot
 
 
