@@ -191,12 +191,19 @@ calculate_and_plot_betalinkr <- function(this_component, this_network, label, ne
 
 ################################################################################
 
-if(whole.microbe.network){
+#if(whole.microbe.network){
 
 dir.create("figures", showWarnings = FALSE)
 dir.create("saved", showWarnings = FALSE)
 dir.create("figures/diagnostic_plots", showWarnings = FALSE)
 dir.create("figures/microbe_poll", showWarnings = FALSE)
+
+
+## WIP
+species.turnover.obligate <- run_network_turnover_mod(this_component="DissimilaritySpeciesComposition",
+                                             this_network=microbe_poll_betalink)
+
+
 
 species.turnover <- calculate_and_plot_betalinkr("DissimilaritySpeciesComposition",
                                                  microbe_poll_betalink,
