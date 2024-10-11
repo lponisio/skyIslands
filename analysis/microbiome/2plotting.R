@@ -78,7 +78,8 @@ spec.uni <- spec.orig[spec.orig$Weights ==1,]
 ## TODO prep for tomorrow meeting
 
 ## TODO ask difference between spec.uni and spec.sp
-## bee diversity
+## bee abund
+## TODO unlog transform the data for axes
 labs.bee.abund <- (pretty(c(spec.uni$BeeAbundance), n=8))
 axis.bee.abund <-  standardize.axis(labs.bee.abund,
                                   spec.uni$BeeAbundance)
@@ -241,12 +242,12 @@ plot_obj <- ggplot(plot_data_a, aes(x = .data[[this.effect]], y = .data$estimate
   # Add line for the estimates
   geom_line(data=plot_data_b, linewidth=2, aes(x = .data[[this.effect]],  y = .data$estimate__), color = mod2color) +
   # Add points for original data
-  geom_point(data = point.data.b, aes(x = .data[[this.effect]], y = .data[[this.resp.b]]),
-             fill = mod2color, alpha = 0.6, size=2, color="black", pch=21, cex=2) +
-  # Add points for original data
   geom_point(data = point.data.a, aes(x = .data[[this.effect]], y = .data[[this.resp.a]]),
-             fill = mod1color, alpha = 0.6,size=2, color="black", pch=21, cex=2) +
-  # Labels and theme
+             fill = mod1color, alpha = 0.6,color="black", pch=21, cex=3) +
+  # Add points for original data
+  geom_point(data = point.data.b, aes(x = .data[[this.effect]], y = .data[[this.resp.b]]),
+             fill = mod2color, alpha = 0.6, color="black", pch=21, cex=3) +
+   # Labels and theme
   labs(x = xlabel, y = ylabel) +
   scale_x_continuous(breaks = axis.breaks, labels = axis.labs) +
   theme_classic()
@@ -330,13 +331,13 @@ plot_data <- cond_effects_data$PDtransientlog.PDtransientlog_MeanITD.x
 # Plot using ggplot2 for credible intervals with geom_ribbon
 trans_itd <- ggplot(plot_data, aes(x = MeanITD.x, y = estimate__)) +
   # Add ribbons for the 95%, 80%, and 50% credible intervals
-  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill = "navy") +
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, fill = "navy", linetype='dotted') +
   geom_ribbon(aes(ymin = lower__ + 0.1 * (upper__ - lower__), 
                   ymax = upper__ - 0.1 * (upper__ - lower__)), 
-              alpha = 0.3, fill = "navy") +
+              alpha = 0.3, fill = "navy",linetype='dashed') +
   geom_ribbon(aes(ymin = lower__ + 0.25 * (upper__ - lower__), 
                   ymax = upper__ - 0.25 * (upper__ - lower__)), 
-              alpha = 0.4, fill = "navy") +
+              alpha = 0.4, fill = "navy", linetype='solid') +
   # Add line for the estimates
   geom_line(color = "black") +
   # Add points for original data
@@ -371,4 +372,8 @@ obligate.abund.plot <- plot_model_condeff_compare(model.a=fit.microbe.bombus,
                                                 fill.b=TRUE
 )
 obligate.abund.plot
+
+
+## TODO: make grid plots and save out to final
+
 
