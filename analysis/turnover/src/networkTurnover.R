@@ -83,6 +83,88 @@ dir.create("figures/obligate_microbe_poll", showWarnings = FALSE)
 }
 
 
+
+
+
+prep_transient_network <- function(raw_network=spNet_micro,
+                                   specimens_data=spec.net){
+  ## now do for non obligate
+  dir.create("figures", showWarnings = FALSE)
+  dir.create("figures/transient_microbe_poll", showWarnings = FALSE)
+  
+  site_list <- names(raw_network)
+  
+  ## obligate symbionts
+  bee.obligates <- "Lactobacillus|Bifidobacterium|Snodgrassella|Gilliamella|Frischella|Bartonella|Commensalibacter"
+  
+  
+  
+  only_transient_network <- list()
+  
+  for (x in site_list){
+    
+    trans_rows <- rownames(raw_network[[x]])
+    
+    trans_rows_to_keep <- !grep(bee.obligates, trans_rows)
+    
+    trans_new_net <- raw_network[[x]][!trans_rows_to_keep,]
+    
+    new_name <- x
+    
+    only_transient_network[[new_name]] <- trans_new_net
+    
+  }
+  
+  #### species level networks
+  CH <- only_transient_network$CH
+  CH <- CH[,colnames(CH)!=""]
+  HM <- only_transient_network$HM
+  JC <- only_transient_network$JC
+  MM <- only_transient_network$MM 
+  MM <- MM[,colnames(MM)!=""]
+  PL <- only_transient_network$PL
+  PL <- PL[,colnames(PL)!=""]
+  RP <- only_transient_network$RP
+  SC <- only_transient_network$SC 
+  SM <- only_transient_network$SM
+  
+  
+  lower.order <- "Microbes"
+  higher.order <- "Pollinators"
+  
+  
+  transient_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, RP, SM, SC),
+                                             partitioning="commondenom", binary=FALSE, distofempty='zero', partition.st=TRUE, partition.rr=FALSE)
+  
+  #View(transient_poll_betalink)
+  
+  colnames(transient_poll_betalink) <- c("Site1",
+                                         "Site2",
+                                         "DissimilaritySpeciesComposition",
+                                         "OnlySharedLinks",
+                                         "WholeNetworkLinks",
+                                         "SpeciesTurnoverLinks",
+                                         paste("TurnoverAbsence",lower.order,sep=""),
+                                         paste("TurnoverAbsence",higher.order,sep=""),
+                                         "TurnoverAbsenceBoth")
+  
+  
+  geo <- unique(specimens_data[, c("Site", "Lat", "Long")])
+  geo <- geo[!duplicated(geo$Site),]
+  
+  geo.dist <- rdist.earth(cbind(geo$Long, geo$Lat),
+                          cbind(geo$Long, geo$Lat))
+  colnames(geo.dist) <- rownames(geo.dist) <- geo$Site
+  
+  ## add column for geographic distance between sites
+  transient_poll_betalink$GeoDist <- apply(transient_poll_betalink, 1, function(x){
+    geo.dist[x["Site1"],  x["Site2"]]
+  })
+  
+  transient_poll_betalink
+}
+
+
 run_network_turnover_mod <- function(this_component, this_network){
   # Assign the value of 'this_component' to a new variable 'y'.
   y <- this_component
