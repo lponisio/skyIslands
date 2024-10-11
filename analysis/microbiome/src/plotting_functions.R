@@ -148,22 +148,22 @@ plot_model_condeff_single <- function(model=fit.microbe.bombus,
   plot_obj <- ggplot(plot_data, aes(x = .data[[this.effect]], y = .data$estimate__)) +
     # Add ribbons for the 95%, 80%, and 50% credible intervals
     geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, 
-                fill=mod1fill,
+                fill=mod1color,
                 color = mod1color, linetype='dotted') +
     geom_ribbon(aes(ymin = lower__ + 0.1 * (upper__ - lower__),
                     ymax = upper__ - 0.1 * (upper__ - lower__)),
                 alpha = 0.3, 
-                fill=mod1fill, 
+                fill=mod1color, 
                 color = mod1color, linetype='dashed') +
     geom_ribbon(aes(ymin = lower__ + 0.25 * (upper__ - lower__),
                     ymax = upper__ - 0.25 * (upper__ - lower__)),
                 alpha = 0.4, 
-                fill=mod1fill,
+                fill=mod1color,
                 color = mod1color, linetype='solid') +
     #Add line for the estimates
     geom_line(data = plot_data, color = 'black', linewidth=2.5, aes(x = .data[[this.effect]], y = .data$estimate__)) +
     #Add line for the estimates
-    geom_line(data = plot_data_, color = mod1color, linewidth=2, aes(x = .data[[this.effect]], y = .data$estimate__)) +
+    geom_line(data = plot_data, color = mod1color, linewidth=2, aes(x = .data[[this.effect]], y = .data$estimate__)) +
     # Add points for original data
     geom_point(data = point.data, aes(x = .data[[this.effect]], y = .data[[this.resp]]),
                fill = mod1color, alpha = 0.6,color="black", pch=21, cex=3) +
@@ -175,3 +175,5 @@ plot_model_condeff_single <- function(model=fit.microbe.bombus,
   plot_obj
   #browser()
 }
+
+plot_model_condeff_single()
