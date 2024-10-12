@@ -31,316 +31,24 @@ load("../../data/networks/microNets.RData")
 load("../../data/spec_RBCL_16s.RData")
 
 source("src/writeResultsTable.R")
-
-
-whole.microbe.network = FALSE
-
-obligate.microbe.network = TRUE
-
-transient.microbe.network = TRUE
-#reworking script to run brms models
-
-##adapted from Lauren's 1betalink in skyIslands folder
-
-## NEED TO TROUBLESHOOT
-
-## giving an error when a column in the networks doesn't have a species name
-## need to figure out what is going on
-## CH, MM, PL, all have one bee species that isn't labeled... check network code
-
-#### species level networks
-CH <- spNet_micro$CH
-CH <- CH[,colnames(CH)!=""]
-HM <- spNet_micro$HM
-JC <- spNet_micro$JC
-MM <- spNet_micro$MM 
-MM <- MM[,colnames(MM)!=""]
-PL <- spNet_micro$PL
-PL <- PL[,colnames(PL)!=""]
-RP <- spNet_micro$RP
-SC <- spNet_micro$SC 
-SM <- spNet_micro$SM
-
-lower.order <- "Microbes"
-higher.order <- "Pollinators"
-
-microbe_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, RP, SM, SC),
-                                         partitioning="commondenom", binary=FALSE, distofempty='zero', partition.st=TRUE, partition.rr=FALSE)
-
-#View(microbe_poll_betalink)
-
-colnames(microbe_poll_betalink) <- c("Site1",
-                                     "Site2",
-                                     "DissimilaritySpeciesComposition", #beta_S, the dissimilarity in species composition
-                                     "OnlySharedLinks", #beta_OS, the dissimilarity (component) explained by “rewiring” among shared species
-                                     "WholeNetworkLinks", #beta_WN, the dissimilarity between the two networks
-                                     "SpeciesTurnoverLinks", #beta_ST, the dissimilarity (component) explained by difference in species community composition
-                                     paste("TurnoverAbsence",lower.order,sep=""), #additive dissimilarity component (beta_ST) due to absence of resource species (lower, ST.l)
-                                     paste("TurnoverAbsence",higher.order,sep=""), #dissimilarity due to absence of consumer species (higher, ST.h)
-                                     "TurnoverAbsenceBoth") #dissimilarity due to absence of both
-
-
-
-
-
-
-###will need to update LP's function networkBetaDiversity because most of the packages
-### are no longer compatible :( 
-
-geo <- unique(spec.net[, c("Site", "Lat", "Long")])
-geo <- geo[!duplicated(geo$Site),]
-
-geo.dist <- rdist.earth(cbind(geo$Long, geo$Lat),
-                        cbind(geo$Long, geo$Lat))
-colnames(geo.dist) <- rownames(geo.dist) <- geo$Site
-
-## add column for geographic distance between sites
-microbe_poll_betalink$GeoDist <- apply(microbe_poll_betalink, 1, function(x){
-  geo.dist[x["Site1"],  x["Site2"]]
-})
-
-
-
-
-
+source("src/networkTurnover.R")
 ##############################################################################
 
-# Define a function called 'calculate_and_plot_betalinkr' that takes three arguments: this_component (which dissimilarity component should you make plots for?), 
-#                                                                                     this_network(which network object will be used for input), and label (y axis label).
 
+## Trying for just one to test code
 
-calculate_and_plot_betalinkr <- function(this_component, this_network, label, network_type){
-  
-  # Assign the value of 'this_component' to a new variable 'y'.
-  y <- this_component
-  
-  #brms won't let me run the model unless there is a column called this_component, so I copied the variable of interest into a new
-  # column called this_component.... janky? maybe
-  this_network$this_component <- this_network[[this_component]]
-  
-  #browser()
-  # Define a formula for brms with this_component the response variable,
-  # 'GeoDist' as a fixed effect, and 'Site1' and 'Site2' as random effects.
-  forms <- bf(formula(this_component~GeoDist + (1|Site1) + (1|Site2)))
-  
-  # Fit model
-  mod1 <-  brm(forms, this_network,
-              cores=1,
-              iter = 20000,
-              chains = 1,
-              thin=1,
-              init=0,
-              control = list(adapt_delta = 0.99),
-              save_pars = save_pars(all = TRUE))
-  #browser()
-  
-  mod_summary <- write.summ.table(mod1)
-  model_geodist <- mod_summary[rownames(mod_summary) == "GeoDist",]
-  
-  if(network_type == "Obligate") {
-    point_color <- "darkgreen"
-  if(model_geodist$Pgt0 >= 0.95){
-    ribbon_color <- "Greens"
-  } else if (model_geodist$Pgt0 <= 0.05) {
-    ribbon_color <- "Greens"
-  } else {ribbon_color <- "Greys"}
-  }
-  
-  if(network_type == "Transient") {
-    point_color <- "darkorange"
-    if(model_geodist$Pgt0 >= 0.95){
-      ribbon_color <- "Oranges"
-    } else if (model_geodist$Pgt0 <= 0.05) {
-      ribbon_color <- "Oranges"
-      } else {ribbon_color <- "Greys"}
-  }
-  
-  #diag <- plot(check_model(mod1, panel = TRUE))
-  
-  newdata.mod <- tidyr::crossing(GeoDist = seq(min(this_network$GeoDist),
-                                            max(this_network$GeoDist),
-                                            length.out=10),
-                                      Site1="CH",
-                                      Site2="JC")
-  
-  #predictions
-  pred_mod <- mod1 %>%
-    epred_draws(newdata = newdata.mod ,
-                resp = this_component,
-                allow_new_levels = TRUE)
-  
-  
-  fig <- ggplot(pred_mod, aes(x = GeoDist, y =.epred)) +
-    stat_lineribbon(show.legend = FALSE) +
-    scale_fill_brewer(palette = ribbon_color) +
-    labs(x = "Geographic Distance (km)", y = label,
-         fill = "Credible Interval") +
-    theme_classic() +
-    geom_point(data=this_network,
-               aes(y=this_component, x=GeoDist), fill=point_color, color="black", pch=21, cex=2, alpha=0.9) + ylim(0,1) +
-    theme(axis.title.x = element_text(size=16),
-          axis.title.y = element_text(size=16),
-          text = element_text(size=16),
-          legend.position = "none")
-
-  # Return a list containing the model summary[1] and the generated 'turnover.plot'[2].
-  return(list(mod_summary, fig, mod1))
-  
-  
-}
-
-################################################################################
-
-#if(whole.microbe.network){
-
-dir.create("figures", showWarnings = FALSE)
-dir.create("saved", showWarnings = FALSE)
-dir.create("figures/diagnostic_plots", showWarnings = FALSE)
-dir.create("figures/microbe_poll", showWarnings = FALSE)
-
-
-## WIP
-species.turnover.obligate <- run_network_turnover_mod(this_component="DissimilaritySpeciesComposition",
-                                             this_network=microbe_poll_betalink)
-
-
-
-species.turnover <- calculate_and_plot_betalinkr("DissimilaritySpeciesComposition",
-                                                 microbe_poll_betalink,
-                                                 "Dissimilarity: \nSpecies Composition")
-ggsave(species.turnover[[2]], file="figures/microbe_poll/DissimilaritySpeciesTurnover.pdf", height=4, width=6)
-ggsave(species.turnover[[3]], file="figures/diagnostic_plots/DissimilaritySpeciesTurnover.pdf", height=8, width=11)
-write.csv(species.turnover[[1]], file="tables/DissimilaritySpeciesTurnover.csv")
-save(species.turnover, file="saved/DissimilaritySpeciesTurnover.Rdata")
-
-interaction.turnover <- calculate_and_plot_betalinkr("WholeNetworkLinks",
-                                                     microbe_poll_betalink,
-                                                     "Dissimilarity: \nInteraction Turnover")
-ggsave(interaction.turnover[[2]], file="figures/microbe_poll/DissimilarityInteractionTurnover.pdf", height=4, width=6)
-ggsave(interaction.turnover[[3]], file="figures/diagnostic_plots/DissimilarityInteractionTurnover.pdf", height=8, width=11)
-write.csv(interaction.turnover[[1]], file="tables/DissimilarityInteractionTurnover.csv")
-save(interaction.turnover, file="saved/DissimilarityInteractionTurnover.Rdata")
-
-
-int.turnover.rewiring <- calculate_and_plot_betalinkr("OnlySharedLinks",
-                                                      microbe_poll_betalink,
-                                                      "Interaction Turnover: \nRewiring")
-ggsave(int.turnover.rewiring[[2]], file="figures/microbe_poll/InteractionDissimilarityRewiring.pdf", height=4, width=6)
-ggsave(int.turnover.rewiring[[3]], file="figures/diagnostic_plots/InteractionDissimilarityRewiring.pdf", height=8, width=11)
-write.csv(int.turnover.rewiring[[1]], file="tables/InteractionDissimilarityRewiring.csv")
-save(int.turnover.rewiring, file="saved/InteractionDissimilarityRewiring.Rdata")
-
-
-int.turnover.species.turnover <- calculate_and_plot_betalinkr("SpeciesTurnoverLinks",
-                                                              microbe_poll_betalink,
-                                                              "Interaction Turnover: \nSpecies Turnover")
-ggsave(int.turnover.species.turnover[[2]], file="figures/microbe_poll/InteractionTurnoverSpeciesComp.pdf", height=4, width=6)
-ggsave(int.turnover.species.turnover[[3]], file="figures/diagnostic_plots/InteractionTurnoverSpeciesComp.pdf", height=8, width=11)
-write.csv(int.turnover.species.turnover[[1]], file="tables/InteractionTurnoverSpeciesComp.csv")
-save(int.turnover.species.turnover, file="saved/InteractionTurnoverSpeciesComp.Rdata")
-
-
-sp.turnover.microbes <- calculate_and_plot_betalinkr("TurnoverAbsenceMicrobes",
-                                                     microbe_poll_betalink,
-                                                     "Species Turnover: \nAbsence of Microbes")
-ggsave(sp.turnover.microbes[[2]], file="figures/microbe_poll/SpeciesTurnoverAbsenceMicrobes.pdf", height=4, width=6)
-ggsave(sp.turnover.microbes[[3]], file="figures/diagnostic_plots/SpeciesTurnoverAbsenceMicrobes.pdf", height=8, width=11)
-write.csv(sp.turnover.microbes[[1]], file="tables/SpeciesTurnoverAbsenceMicrobes.csv")
-save(sp.turnover.microbes, file="saved/SpeciesTurnoverAbsenceMicrobes.Rdata")
-
-
-sp.turnover.bees <- calculate_and_plot_betalinkr("TurnoverAbsencePollinators",
-                                                 microbe_poll_betalink,
-                                                 "Species Turnover: \nAbsence of Bees")
-ggsave(sp.turnover.bees[[2]], file="figures/microbe_poll/SpeciesTurnoverAbsenceBees.pdf", height=4, width=6)
-ggsave(sp.turnover.bees[[3]], file="figures/diagnostic_plots/SpeciesTurnoverAbsenceBees.pdf", height=8, width=11)
-write.csv(sp.turnover.bees[[1]], file="tables/SpeciesTurnoverAbsenceBees.csv")
-save(sp.turnover.bees, file="saved/SpeciesTurnoverAbsenceBees.Rdata")
-
-
-sp.turnover.both <- calculate_and_plot_betalinkr("TurnoverAbsenceBoth",
-                                                 microbe_poll_betalink,
-                                                 "Species Turnover: \nAbsence of Both")
-ggsave(sp.turnover.both[[2]], file="figures/microbe_poll/SpeciesTurnoverAbsenceBoth.pdf", height=4, width=6)
-ggsave(sp.turnover.both[[3]], file="figures/diagnostic_plots/SpeciesTurnoverAbsenceBoth.pdf", height=8, width=11)
-write.csv(sp.turnover.both[[1]], file="tables/SpeciesTurnoverAbsenceBoth.csv")
-save(sp.turnover.both, file="saved/SpeciesTurnoverAbsenceBoth.Rdata")
-
-# diss.whole.network.replace <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkReplaced, microbe_poll_betalink, "Dissimilarity: Whole Network Replacement")
-# ggsave(diss.whole.network.replace[[2]], file="figures/microbe_poll/DissimilarityWholeNetReplace.pdf", height=4, width=6)
-#
-# diss.only.shared.replace <- calculate_and_plot_betalinkr(microbe_poll_betalink$OnlySharedReplaced, microbe_poll_betalink, "Dissimilarity: Only Shared Species Replacement")
-# ggsave(diss.only.shared.replace[[2]], file="figures/microbe_poll/DissimilarityOnlySharedReplace.pdf", height=4, width=6)
-#
-# diss.whole.network.rich.dif <- calculate_and_plot_betalinkr(microbe_poll_betalink$WholeNetworkRichnessDifference, microbe_poll_betalink, "Dissimilarity: Whole Network Richness Difference")
-# ggsave(diss.whole.network.rich.dif[[2]], file="figures/microbe_poll/DissimilarityWholeNetRichDif.pdf", height=4, width=6)
-#
-# diss.only.shared.rich.dif <- calculate_and_plot_betalinkr(microbe_poll_betalink$OnlySharedRichnessDifference, microbe_poll_betalink, "Dissimilarity: Only Shared Richness Difference")
-# ggsave(diss.only.shared.rich.dif[[2]], file="figures/microbe_poll/DissimilarityOnlySharedRichDif.pdf", height=4, width=6)
-
-## make panel figure
-panelA <- species.turnover[[2]] + labs(tag="A.")
-panelB <- interaction.turnover[[2]] + labs(tag="B.")
-panelC <- sp.turnover.bees[[2]] + labs(tag="C.")
-panelD <- int.turnover.species.turnover[[2]] + labs(tag="D.")
-panelE <- sp.turnover.microbes[[2]] + labs(tag="E.")
-panelF <- int.turnover.rewiring[[2]] + labs(tag="F.")
-
-
-grid.arrange(panelA,
-             panelB,
-             panelC,
-             panelD,
-             panelE,
-             panelF,
-             ncol=2)
-
-pdf("figures/grid_all_microbes.pdf", width = 8.5, height = 11) # Open a new pdf file
-grid.arrange(panelA,
-             panelB,
-             panelC,
-             panelD,
-             panelE,
-             panelF,
-             ncol=2) # Write the grid.arrange in the file
-dev.off()
-
-}
-#################################################################
-
-if(obligate.microbe.network==TRUE){
+#if(obligate.microbe.network==TRUE){
 
 ## now do the same for the three groups of obligate, parasitic, transient
 
-site_list <- names(spNet_micro)
 
-## obligate symbionts
-these_obligates <- c("Lactobacillus",
-                     "Bifidobacterium",
-                     "Snodgrassella",
-                     "Gilliamella",
-                     "Frischella",
-                     "Bartonella",
-                     "Commensalibacter")
+## WIP
 
 
-only_obligate_network <- list()
+## prep obligate network
+## error  object 'CH' not found
+only_obligate_network <- prep_obligate_network(raw_network=spNet_micro)
 
-for (x in site_list){
-  
-  obligates_rows <- rownames(spNet_micro[[x]])
-  
-  ob_rows_to_keep <- grep(paste(these_obligates, collapse = "|"), obligates_rows)
-  
-  ob_new_net <- spNet_micro[[x]][ob_rows_to_keep,]
-  
-  new_name <- x
-  
-  only_obligate_network[[new_name]] <- ob_new_net
-  
-}
-
-#### species level networks
 CH <- only_obligate_network$CH
 CH <- CH[,colnames(CH)!=""]
 HM <- only_obligate_network$HM
@@ -388,6 +96,95 @@ obligate_poll_betalink$GeoDist <- apply(obligate_poll_betalink, 1, function(x){
 
 dir.create("figures", showWarnings = FALSE)
 dir.create("figures/obligate_microbe_poll", showWarnings = FALSE)
+
+View(obligate_poll_betalink)
+
+## prep transient now
+only_transient_network <- prep_transient_network(raw_network=spNet_micro)
+
+#### species level networks
+CH <- only_transient_network$CH
+CH <- CH[,colnames(CH)!=""]
+HM <- only_transient_network$HM
+JC <- only_transient_network$JC
+MM <- only_transient_network$MM 
+MM <- MM[,colnames(MM)!=""]
+PL <- only_transient_network$PL
+PL <- PL[,colnames(PL)!=""]
+RP <- only_transient_network$RP
+SC <- only_transient_network$SC 
+SM <- only_transient_network$SM
+
+
+lower.order <- "Microbes"
+higher.order <- "Pollinators"
+
+
+transient_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, RP, SM, SC),
+                                           partitioning="commondenom", binary=FALSE, distofempty='zero', partition.st=TRUE, partition.rr=FALSE)
+
+#View(transient_poll_betalink)
+
+colnames(transient_poll_betalink) <- c("Site1",
+                                       "Site2",
+                                       "DissimilaritySpeciesComposition",
+                                       "OnlySharedLinks",
+                                       "WholeNetworkLinks",
+                                       "SpeciesTurnoverLinks",
+                                       paste("TurnoverAbsence",lower.order,sep=""),
+                                       paste("TurnoverAbsence",higher.order,sep=""),
+                                       "TurnoverAbsenceBoth")
+
+
+geo <- unique(spec.net[, c("Site", "Lat", "Long")])
+geo <- geo[!duplicated(geo$Site),]
+
+geo.dist <- rdist.earth(cbind(geo$Long, geo$Lat),
+                        cbind(geo$Long, geo$Lat))
+colnames(geo.dist) <- rownames(geo.dist) <- geo$Site
+
+## add column for geographic distance between sites
+transient_poll_betalink$GeoDist <- apply(transient_poll_betalink, 1, function(x){
+  geo.dist[x["Site1"],  x["Site2"]]
+})
+
+dir.create("figures", showWarnings = FALSE)
+dir.create("figures/transient_microbe_poll", showWarnings = FALSE)
+
+View(transient_poll_betalink)
+## A. rewiring
+
+rewiring.obligate.mod <- run_network_turnover_mod(this_component="OnlySharedLinks",
+                                                          this_network=obligate_poll_betalink)
+
+rewiring.transient.mod <- run_network_turnover_mod(this_component="OnlySharedLinks",
+                                                          this_network=transient_poll_betalink)
+
+
+## this is working, need to make function that plots both rewiring together
+ob.rewiring.plot <- plot_network_turnover_mod_single(mod1=rewiring.obligate.mod, 
+                                                          this.network=obligate_poll_betalink,
+                                                          network_type='Obligate',
+                                                          this.effect="GeoDist",
+                                                          this.resp="OnlySharedLinks",
+                                                          label="Rewiring"
+                                                          )
+
+trans.rewiring.plot <- plot_network_turnover_mod_single(mod1=rewiring.transient.mod, 
+                                                     this.network=transient_poll_betalink,
+                                                     network_type='Transient',
+                                                     this.effect="GeoDist",
+                                                     this.resp="OnlySharedLinks",
+                                                     label="Rewiring"
+)
+
+### working up to here, now need to make function to add both plots together!
+
+### WIP
+
+
+
+
 
 species.turnover <- calculate_and_plot_betalinkr("DissimilaritySpeciesComposition",
                                                  obligate_poll_betalink,
