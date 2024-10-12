@@ -193,9 +193,11 @@ run_network_turnover_mod <- function(this_component, this_network){
 
 
 plot_network_turnover_mod_single <- function(mod1, 
+                                      this.network,
                                       network_type,
                                       this.effect,
                                       this.resp,
+                                      label
                                       ){
   
 
@@ -222,40 +224,37 @@ plot_network_turnover_mod_single <- function(mod1,
   
   # Extract the data from conditional_effects
   cond_effects_data <- conditional_effects(mod1, effects = this.effect, resp = this.resp, plot = FALSE)
-  plot_data <- cond_effects_data[[paste(this.resp,".",this.resp, "_",this.effect, sep='')]]
-  
+  plot_data <- cond_effects_data[[this.effect]]
+  #browser()
   # Plot using ggplot2 for credible intervals with geom_ribbon
   plot_obj <- ggplot(plot_data, aes(x = .data[[this.effect]], y = .data$estimate__)) +
     # Add ribbons for the 95%, 80%, and 50% credible intervals
     geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, 
                 fill = ribbon_color,
-                color = ribbon_color, linetype='dotted') +
+                color = point_color, linetype='dotted') +
     geom_ribbon(aes(ymin = lower__ + 0.1 * (upper__ - lower__),
                     ymax = upper__ - 0.1 * (upper__ - lower__)),
                 alpha = 0.3, 
                 fill=ribbon_color, 
-                color = ribbon_color, linetype='dashed') +
+                color = point_color, linetype='dashed') +
     geom_ribbon(aes(ymin = lower__ + 0.25 * (upper__ - lower__),
                     ymax = upper__ - 0.25 * (upper__ - lower__)),
                 alpha = 0.4, 
                 fill=ribbon_color,
-                color = ribbon_color, linetype='solid') +
+                color = point_color, linetype='solid') +
     #Add line for the estimates
     geom_line(data = plot_data, color = 'black', linewidth=2.5, aes(x = .data[[this.effect]], y = .data$estimate__)) +
     #Add line for the estimates
     geom_line(data = plot_data, color = point_color, linewidth=2, aes(x = .data[[this.effect]], y = .data$estimate__)) +
     # Add points for original data
-    geom_point(data = point.data, aes(x = .data[[this.effect]], y = .data[[this.resp]]),
-               fill = point_color, alpha = 0.6,color="black", pch=21, cex=3) +
+    geom_point(data = this.network, aes(x = .data[[this.effect]], y = .data[[this.resp]]),
+               fill = point_color, alpha = 0.9,color="black", pch=21, cex=3) +
     # Labels and theme
-    labs(x = xlabel, y = ylabel) +
-    scale_x_continuous(breaks = axis.breaks, labels = axis.labs) +
     theme_classic()  +
     labs(x = "Geographic Distance (km)", y = label,
          fill = "Credible Interval") +
     theme_classic() +
-    geom_point(data=this_network,
-               aes(y=this_component, x=GeoDist), fill=point_color, color="black", pch=21, cex=2, alpha=0.9) + ylim(0,1) +
+    ylim(0,1) +
     theme(axis.title.x = element_text(size=16),
           axis.title.y = element_text(size=16),
           text = element_text(size=16),
