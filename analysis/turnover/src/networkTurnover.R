@@ -80,6 +80,7 @@ obligate_poll_betalink$GeoDist <- apply(obligate_poll_betalink, 1, function(x){
 dir.create("figures", showWarnings = FALSE)
 dir.create("figures/obligate_microbe_poll", showWarnings = FALSE)
 
+obligate_poll_betalink
 }
 
 
@@ -260,5 +261,78 @@ plot_network_turnover_mod_single <- function(mod1,
           text = element_text(size=16),
           legend.position = "none")
   
-  plot_obj
+  return(list(plot_obj, model_geodist))
+}
+
+plot_network_turnover_mod_compare <- function(mod1, 
+                                              mod2, 
+                                             this.network,
+                                             network_type,
+                                             this.effect,
+                                             this.resp,
+                                             label
+){
+  
+  
+  mod_summary <- write.summ.table(mod1)
+  model_geodist <- mod_summary[rownames(mod_summary) == "GeoDist",]
+  
+  if(network_type == "Obligate") {
+    point_color <- "darkgreen"
+    if(model_geodist$Pgt0 >= 0.95){
+      ribbon_color <- "darkgreen"
+    } else if (model_geodist$Pgt0 <= 0.05) {
+      ribbon_color <- "darkgreen"
+    } else {ribbon_color <- NA}
+  }
+  
+  if(network_type == "Transient") {
+    point_color <- "darkorange"
+    if(model_geodist$Pgt0 >= 0.95){
+      ribbon_color <- "darkorange"
+    } else if (model_geodist$Pgt0 <= 0.05) {
+      ribbon_color <- "darkorange"
+    } else {ribbon_color <- NA}
+  }
+  
+  # Extract the data from conditional_effects
+  cond_effects_data <- conditional_effects(mod1, effects = this.effect, resp = this.resp, plot = FALSE)
+  plot_data <- cond_effects_data[[this.effect]]
+  #browser()
+  # Plot using ggplot2 for credible intervals with geom_ribbon
+  plot_obj <- ggplot(plot_data, aes(x = .data[[this.effect]], y = .data$estimate__)) +
+    # Add ribbons for the 95%, 80%, and 50% credible intervals
+    geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.2, 
+                fill = ribbon_color,
+                color = point_color, linetype='dotted') +
+    geom_ribbon(aes(ymin = lower__ + 0.1 * (upper__ - lower__),
+                    ymax = upper__ - 0.1 * (upper__ - lower__)),
+                alpha = 0.3, 
+                fill=ribbon_color, 
+                color = point_color, linetype='dashed') +
+    geom_ribbon(aes(ymin = lower__ + 0.25 * (upper__ - lower__),
+                    ymax = upper__ - 0.25 * (upper__ - lower__)),
+                alpha = 0.4, 
+                fill=ribbon_color,
+                color = point_color, linetype='solid') +
+    #Add line for the estimates
+    geom_line(data = plot_data, color = 'black', linewidth=2.5, aes(x = .data[[this.effect]], y = .data$estimate__)) +
+    #Add line for the estimates
+    geom_line(data = plot_data, color = point_color, linewidth=2, aes(x = .data[[this.effect]], y = .data$estimate__)) +
+    # Add points for original data
+    geom_point(data = this.network, aes(x = .data[[this.effect]], y = .data[[this.resp]]),
+               fill = point_color, alpha = 0.9,color="black", pch=21, cex=3) +
+    # Labels and theme
+    theme_classic()  +
+    labs(x = "Geographic Distance (km)", y = label,
+         fill = "Credible Interval") +
+    theme_classic() +
+    ylim(0,1) +
+    theme(axis.title.x = element_text(size=16),
+          axis.title.y = element_text(size=16),
+          text = element_text(size=16),
+          legend.position = "none")
+  
+  return(list(plot_obj, model_geodist))
+  
 }
