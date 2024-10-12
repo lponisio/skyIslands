@@ -1,86 +1,84 @@
 
-prep_obligate_network <- function(raw_network,
-                                  specimens_data){
+prep_obligate_network <- function(raw_network=spNet_micro,
+                                  specimens_data=spec.net){
   site_list <- names(raw_network)
-
-## obligate symbionts
-these_obligates <- c("Lactobacillus",
-                     "Bifidobacterium",
-                     "Snodgrassella",
-                     "Gilliamella",
-                     "Frischella",
-                     "Bartonella",
-                     "Commensalibacter")
-
-
-only_obligate_network <- list()
-
-for (x in site_list){
   
-  obligates_rows <- rownames(raw_network[[x]])
+  ## obligate symbionts
+  these_obligates <- c("Lactobacillus",
+                       "Bifidobacterium",
+                       "Snodgrassella",
+                       "Gilliamella",
+                       "Frischella",
+                       "Bartonella",
+                       "Commensalibacter")
   
-  ob_rows_to_keep <- grep(paste(these_obligates, collapse = "|"), obligates_rows)
   
-  ob_new_net <- spNet_micro[[x]][ob_rows_to_keep,]
+  only_obligate_network <- list()
   
-  new_name <- x
+  for (x in site_list){
+    #browser()
+    obligates_rows <- rownames(raw_network[[x]])
+    
+    ob_rows_to_keep <- grep(paste(these_obligates, collapse = "|"), obligates_rows)
+    
+    ob_new_net <- raw_network[[x]][ob_rows_to_keep,]
+    print(dim(ob_new_net))
+    new_name <- x
+    
+    only_obligate_network[[new_name]] <- ob_new_net
+    
+  }
   
-  only_obligate_network[[new_name]] <- ob_new_net
+  #### species level networks
+  CH <- only_obligate_network$CH
+  CH <- CH[,colnames(CH)!=""]
+  HM <- only_obligate_network$HM
+  JC <- only_obligate_network$JC
+  MM <- only_obligate_network$MM 
+  MM <- MM[,colnames(MM)!=""]
+  PL <- only_obligate_network$PL
+  PL <- PL[,colnames(PL)!=""]
+  RP <- only_obligate_network$RP
+  SC <- only_obligate_network$SC 
+  SM <- only_obligate_network$SM
   
-}
-
-#### species level networks
-CH <- only_obligate_network$CH
-CH <- CH[,colnames(CH)!=""]
-HM <- only_obligate_network$HM
-JC <- only_obligate_network$JC
-MM <- only_obligate_network$MM 
-MM <- MM[,colnames(MM)!=""]
-PL <- only_obligate_network$PL
-PL <- PL[,colnames(PL)!=""]
-RP <- only_obligate_network$RP
-SC <- only_obligate_network$SC 
-SM <- only_obligate_network$SM
-
-
-lower.order <- "Microbes"
-higher.order <- "Pollinators"
-
-
-obligate_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, RP, SM, SC),
-                                          partitioning="commondenom", binary=FALSE, distofempty='zero', partition.st=TRUE, partition.rr=FALSE)
-
-#View(obligate_poll_betalink)
-
-colnames(obligate_poll_betalink) <- c("Site1",
-                                      "Site2",
-                                      "DissimilaritySpeciesComposition",
-                                      "OnlySharedLinks",
-                                      "WholeNetworkLinks",
-                                      "SpeciesTurnoverLinks",
-                                      paste("TurnoverAbsence",lower.order,sep=""),
-                                      paste("TurnoverAbsence",higher.order,sep=""),
-                                      "TurnoverAbsenceBoth")
-
-
-geo <- unique(specimens_data[, c("Site", "Lat", "Long")])
-geo <- geo[!duplicated(geo$Site),]
-
-geo.dist <- rdist.earth(cbind(geo$Long, geo$Lat),
-                        cbind(geo$Long, geo$Lat))
-colnames(geo.dist) <- rownames(geo.dist) <- geo$Site
-
-## add column for geographic distance between sites
-obligate_poll_betalink$GeoDist <- apply(obligate_poll_betalink, 1, function(x){
-  geo.dist[x["Site1"],  x["Site2"]]
-})
-
-
-
-dir.create("figures", showWarnings = FALSE)
-dir.create("figures/obligate_microbe_poll", showWarnings = FALSE)
-
-obligate_poll_betalink
+  
+  lower.order <- "Microbes"
+  higher.order <- "Pollinators"
+  
+  
+  obligate_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, RP, SM, SC),
+                                            partitioning="commondenom", binary=FALSE, distofempty='zero', partition.st=TRUE, partition.rr=FALSE)
+  
+  #View(obligate_poll_betalink)
+  
+  colnames(obligate_poll_betalink) <- c("Site1",
+                                        "Site2",
+                                        "DissimilaritySpeciesComposition",
+                                        "OnlySharedLinks",
+                                        "WholeNetworkLinks",
+                                        "SpeciesTurnoverLinks",
+                                        paste("TurnoverAbsence",lower.order,sep=""),
+                                        paste("TurnoverAbsence",higher.order,sep=""),
+                                        "TurnoverAbsenceBoth")
+  
+  
+  geo <- unique(specimens_data[, c("Site", "Lat", "Long")])
+  geo <- geo[!duplicated(geo$Site),]
+  
+  geo.dist <- rdist.earth(cbind(geo$Long, geo$Lat),
+                          cbind(geo$Long, geo$Lat))
+  colnames(geo.dist) <- rownames(geo.dist) <- geo$Site
+  
+  ## add column for geographic distance between sites
+  obligate_poll_betalink$GeoDist <- apply(obligate_poll_betalink, 1, function(x){
+    geo.dist[x["Site1"],  x["Site2"]]
+  })
+  
+  dir.create("figures", showWarnings = FALSE)
+  dir.create("figures/obligate_microbe_poll", showWarnings = FALSE)
+  
+  obligate_poll_betalink
 }
 
 
@@ -89,31 +87,26 @@ obligate_poll_betalink
 
 prep_transient_network <- function(raw_network=spNet_micro,
                                    specimens_data=spec.net){
-  ## now do for non obligate
-  dir.create("figures", showWarnings = FALSE)
-  dir.create("figures/transient_microbe_poll", showWarnings = FALSE)
-  
   site_list <- names(raw_network)
   
   ## obligate symbionts
   bee.obligates <- "Lactobacillus|Bifidobacterium|Snodgrassella|Gilliamella|Frischella|Bartonella|Commensalibacter"
   
   
-  
   only_transient_network <- list()
-  
+  #browser()
   for (x in site_list){
     
     trans_rows <- rownames(raw_network[[x]])
     
-    trans_rows_to_keep <- !grep(bee.obligates, trans_rows)
+    trans_rows_to_drop <- !grepl(bee.obligates, trans_rows)
     
-    trans_new_net <- raw_network[[x]][!trans_rows_to_keep,]
-    
+    trans_new_net <- raw_network[[x]][trans_rows_to_drop,]
+    print(dim(trans_new_net))
     new_name <- x
     
     only_transient_network[[new_name]] <- trans_new_net
-    
+    #browser()
   }
   
   #### species level networks
@@ -161,6 +154,9 @@ prep_transient_network <- function(raw_network=spNet_micro,
   transient_poll_betalink$GeoDist <- apply(transient_poll_betalink, 1, function(x){
     geo.dist[x["Site1"],  x["Site2"]]
   })
+  
+  dir.create("figures", showWarnings = FALSE)
+  dir.create("figures/transient_microbe_poll", showWarnings = FALSE)
   
   transient_poll_betalink
 }
