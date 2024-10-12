@@ -244,14 +244,7 @@ plot_network_turnover_mod_compare <- function(mod1,
                 alpha = 0.4, 
                 fill=ribbon_color1,
                 color = point_color1, linetype='solid') +
-    #Add line for the estimates
-    geom_line(data = plot_data1, color = 'black', linewidth=2.5, aes(x = .data[[this.effect]], y = .data$estimate__)) +
-    #Add line for the estimates
-    geom_line(data = plot_data1, color = point_color1, linewidth=2, aes(x = .data[[this.effect]], y = .data$estimate__)) +
-    # Add points for original data
-    geom_point(data = this.network1, aes(x = .data[[this.effect]], y = .data[[this.resp]]),
-               fill = point_color1, alpha = 0.9,color="black", pch=21, cex=3) +
-    # Add ribbons for the 95%, 80%, and 50% credible intervals
+      # Add ribbons for the 95%, 80%, and 50% credible intervals
     geom_ribbon(data=plot_data2, aes(ymin = lower__, ymax = upper__), alpha = 0.2, 
                 fill = ribbon_color2,
                 color = point_color2, linetype='dotted') +
@@ -265,6 +258,13 @@ plot_network_turnover_mod_compare <- function(mod1,
                 alpha = 0.4, 
                 fill=ribbon_color2,
                 color = point_color2, linetype='solid') +
+    #Add line for the estimates
+    geom_line(data = plot_data1, color = 'black', linewidth=2.5, aes(x = .data[[this.effect]], y = .data$estimate__)) +
+    #Add line for the estimates
+    geom_line(data = plot_data1, color = point_color1, linewidth=2, aes(x = .data[[this.effect]], y = .data$estimate__)) +
+    # Add points for original data
+    geom_point(data = this.network1, aes(x = .data[[this.effect]], y = .data[[this.resp]]),
+               fill = point_color1, alpha = 0.9,color="black", pch=21, cex=3) +
     #Add line for the estimates
     geom_line(data = plot_data2, color = 'black', linewidth=2.5, aes(x = .data[[this.effect]], y = .data$estimate__)) +
     #Add line for the estimates
