@@ -106,7 +106,11 @@ plot_model_condeff_compare <- function(model.a=fit.microbe.bombus,
     # Labels and theme
     labs(x = xlabel, y = ylabel) +
     scale_x_continuous(breaks = axis.breaks, labels = axis.labs) +
-    theme_classic()
+    theme_classic() +
+    theme(axis.title.x = element_text(size=16),
+          axis.title.y = element_text(size=16),
+          text = element_text(size=16),
+          legend.position = "none")
   
   plot_obj
   #browser()
@@ -170,7 +174,11 @@ plot_model_condeff_single <- function(model=fit.microbe.bombus,
     # Labels and theme
     labs(x = xlabel, y = ylabel) +
     scale_x_continuous(breaks = axis.breaks, labels = axis.labs) +
-    theme_classic()
+    theme_classic() +
+    theme(axis.title.x = element_text(size=16),
+          axis.title.y = element_text(size=16),
+          text = element_text(size=16),
+          legend.position = "none")
   
   plot_obj
 }
