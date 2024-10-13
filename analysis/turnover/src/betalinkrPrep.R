@@ -50,13 +50,13 @@ dir.create("figures/final", showWarnings = FALSE)
 
 #### species level networks
 CH1 <- only_transient_network$CH
-CH1 <- CH[,colnames(CH1)!=""]
+CH1 <- CH1[,colnames(CH1)!=""]
 HM1 <- only_transient_network$HM
 JC1 <- only_transient_network$JC
 MM1 <- only_transient_network$MM 
-MM1 <- MM[,colnames(MM1)!=""]
+MM1 <- MM1[,colnames(MM1)!=""]
 PL1 <- only_transient_network$PL
-PL1 <- PL[,colnames(PL1)!=""]
+PL1 <- PL1[,colnames(PL1)!=""]
 RP1 <- only_transient_network$RP
 SC1 <- only_transient_network$SC 
 SM1 <- only_transient_network$SM
