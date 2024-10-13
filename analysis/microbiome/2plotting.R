@@ -1,3 +1,8 @@
+
+## **********************************************************
+## Load libraries
+## **********************************************************
+
 rm(list=ls())
 setwd("~/")
 source("lab_paths.R")
@@ -7,7 +12,6 @@ setwd("skyIslands/analysis/microbiome/")
 
 
 library(lme4)
-#library(glmmADMB)
 library(R2admb)
 library(shinystan)
 library(picante)
@@ -22,13 +26,17 @@ library(shinystan)
 #                          getOption("repos")),
 #                  type="source")
 
+
+## **********************************************************
+## Prep model variables and load src files
+## **********************************************************
+
 ## all of the variables that are explanatory variables and thus need
 ## to be centered
 
-##QUESTION: log or center first?? 
-# 
+
 variables.to.log <- c("rare.degree",
-                      "MeanFloralAbundance", #keep logged
+                      "MeanFloralAbundance", 
                       "BeeAbundance"
 )
 
@@ -38,7 +46,6 @@ vars_yearsr <- c("MeanFloralAbundance",
                  "BeeAbundance",
                  "BeeDiversity",
                  "VisitedFloralDiversity"
-                 #"FloralDiversity"
 )
 
 vars_yearsrsp <- "rare.degree"
@@ -50,36 +57,20 @@ vars_site <- "Lat"
 source("src/misc_microbe.R")
 source("src/misc.R")
 source('src/makeMultiLevelData.R')
-source("src/standardize_weights_parasites.R")
-# incorporating Nicoles standardize functions
-#source("src/standardize_weights.R")
+source("src/standardize_weights_parasites.R") # TODO rename script
 source("src/init_microbe.R")
 source("src/writeResultsTable.R")
 source("src/runPlotFreqModelDiagnostics.R")
 
-## ***********************************************************************
-## plotting, unscaling labs
-## ***********************************************************************
-## lat
+## **********************************************************
+## Set up model weights
+## **********************************************************
 
+# site level weights
 spec.uni <- spec.orig[spec.orig$Weights ==1,]
 
-
-## Bombus mods
-##  PDobligate ~ BeeDiversity
-##  PDobligate ~ rare.degree
-##  PDtransientlog ~ MeanITD
-
-## TODO fix labels for these
-## TODO add code from untitled 1
-## TODO add melissodes plots
-## TODO add apis plots when done fixing mods
-## TODO save out plots
-## TODO prep for tomorrow meeting
-
-## TODO ask difference between spec.uni and spec.sp
 ## bee abund
-## TODO unlog transform the data for axes
+## TODO unlog transform the data for axes?
 labs.bee.abund <- (pretty(c(spec.uni$BeeAbundance), n=8))
 axis.bee.abund <-  standardize.axis(labs.bee.abund,
                                   spec.uni$BeeAbundance)
@@ -89,6 +80,7 @@ labs.bee.div <- (pretty(c(spec.uni$BeeDiversity), n=8))
 axis.bee.div <-  standardize.axis(labs.bee.div,
                                   spec.uni$BeeDiversity)
 
+## species level weights
 spec.sp <-  spec.orig[spec.orig$WeightsObligateMicrobe == 1 & spec.orig$Genus == "Bombus",]
 
 ## rare.degree
@@ -103,17 +95,20 @@ axis.itd <-  standardize.axis(labs.itd,
                               spec.sp$MeanITD.x)
 
 
+## **********************************************************
+## Load models
+## **********************************************************
+
 ## load model output data
 load(file="saved/fullMicrobeBombusFit_2_log.Rdata")
-
-#when model finishes change over
-#load(file="saved/fullMicrobeBombusFit_2.Rdata")
 load(file="saved/fullMicrobeMelissodesFit_2.Rdata")
 
-#load(file="saved/fullMicrobeApisFit.Rdata")
 
+## **********************************************************
+## Filter data to genus level and correct colnames for
+##  plotting functions
+## **********************************************************
 
-# We want the standarized data for the predictions (spec.data)
 spec.bombus <- spec.net[spec.net$Genus == "Bombus",]
 bombus.obligate <- spec.bombus[spec.bombus$WeightsObligateMicrobe == 1,]
 bombus.obligate$PDobligate <- bombus.obligate$PD.obligate
@@ -130,25 +125,17 @@ melissodes.transient <- spec.melissodes[spec.melissodes$WeightsTransientMicrobe 
 melissodes.transient$PDtransient <- melissodes.transient$PD.transient
 melissodes.transient$PDtransientlog <- melissodes.transient$PD.transient.log
 
-## https://www.rensvandeschoot.com/tutorials/generalised-linear-models-with-brms/
-
-
-##CIs are 50-80-95
-
 ## **********************************************************
-## Bombus model
+## Plot conditional effects model results
 ## **********************************************************
 
-
-## TODO: check model results for bombus with log transformed PD to simplify plots, right now just going ahead with unmatched y axis
 source("src/plotting_functions.R")
 
-
-
+## obligate microbe PD ~ Bee Diversity
 obligate.bee.div.plot <- plot_model_condeff_compare(model.a=fit.microbe.bombus,
                                        model.b=fit.microbe.melissodes,
                                        this.effect='BeeDiversity',
-                                       this.resp.a='PDobligatelog', ## TODO: potentially update to both be PD obligate log?
+                                       this.resp.a='PDobligatelog', 
                                        this.resp.b='PDobligatelog',
                                        point.data.a=bombus.obligate,
                                        point.data.b=melissodes.obligate,
@@ -164,9 +151,8 @@ obligate.bee.div.plot <- plot_model_condeff_compare(model.a=fit.microbe.bombus,
 obligate.bee.div.plot 
 
 panelA <- obligate.bee.div.plot + labs(tag="A.")
-############################
-## PDobligate ~ rare.degree
-  
+
+## Obligate microbe PD ~ Rarefied degree
   
 obligate.rare.degree.plot <- plot_model_condeff_compare(model.a=fit.microbe.bombus,
                                          model.b=fit.microbe.melissodes,
@@ -186,8 +172,8 @@ obligate.rare.degree.plot <- plot_model_condeff_compare(model.a=fit.microbe.bomb
                                          )
 obligate.rare.degree.plot 
 panelB <- obligate.rare.degree.plot + labs(tag="B.")
-############################
-## PDtransientlog ~ MeanITD
+
+## transient microbe pd ~ mean itd
 ## can only make for Bombus since melissodes doesn't have mean ITD
 
 transient.itd.plot  <- plot_model_condeff_single(model=fit.microbe.bombus,
@@ -203,11 +189,8 @@ transient.itd.plot  <- plot_model_condeff_single(model=fit.microbe.bombus,
 transient.itd.plot
 panelC <- transient.itd.plot + labs(tag="C.")
 
-## **********************************************************
-## Melissodes model
-## **********************************************************
 
-## PD obligate log ~ Bee abundance
+## obligate microbe PD ~ Bee abundance
 obligate.abund.plot <- plot_model_condeff_compare(model.a=fit.microbe.bombus,
                                                 model.b=fit.microbe.melissodes,
                                                 this.effect='BeeAbundance',
@@ -227,7 +210,9 @@ obligate.abund.plot <- plot_model_condeff_compare(model.a=fit.microbe.bombus,
 obligate.abund.plot
 panelD <- obligate.abund.plot + labs(tag="D.")
 
-
+## **********************************************************
+## Save out panel figure
+## **********************************************************
 
 ## Make panel figs and save out
 pdf("figures/final/SEM_combined.pdf", width = 8.5, height = 8.5) # Open a new pdf file
