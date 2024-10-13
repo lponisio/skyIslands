@@ -1,12 +1,15 @@
-## setwd("~/Dropbox/skyIslands/")
+
+## **********************************************************
+## Load libraries and source files
+## **********************************************************
+
 rm(list=ls())
 setwd("~/")
 source("lab_paths.R")
 local.path
 setwd(local.path)
-
 setwd("skyIslands/analysis/turnover")
-#source("src/initialize.R")
+
 source("src/chao.R")
 source("src/betaNet.R")
 source("src/writeResultsTable.R")
@@ -25,27 +28,35 @@ library(gridExtra)
 library(bayesplot)
 library(glmmTMB)
 library(performance)
-
 load("../../data/networks/microNets.RData")
-
 load("../../data/spec_RBCL_16s.RData")
-
 source("src/writeResultsTable.R")
 source("src/networkTurnover.R")
-##############################################################################
 
-## prep obligate and transient network
+## **********************************************************
+## Prep obligate and transient networks
+## **********************************************************
+
 only_obligate_network <- prep_obligate_network(raw_network=spNet_micro)
 
 only_transient_network <- prep_transient_network(raw_network=spNet_micro)
 
-## run network betalinkr prep script
+## **********************************************************
+## Run network betalinkr function and prep output table
+## **********************************************************
+
 source("src/betalinkrPrep.R")
 
+## **********************************************************
+## Run or load turnover by geo distance models
+## **********************************************************
 
-## Run mods
+## only need to run models ones, otherwise will load models
+
 run.mods=FALSE
+
 if (run.mods==TRUE){
+  
 ## Rewiring
 rewiring.obligate.mod <- run_network_turnover_mod(this_component="OnlySharedLinks",
                                                   this_network=obligate_poll_betalink)
@@ -84,10 +95,14 @@ save(rewiring.obligate.mod,
        complete.obligate.mod,
        complete.transient.mod,
        file="../microbiome/saved/turnover_mods.Rdata")
-} else {
+} else { 
   load("../microbiome/saved/turnover_mods.Rdata")
 }
 
+## **********************************************************
+## Make combined plots for model results for obligate vs
+##  transient networks
+## **********************************************************
 
 ## A. rewiring
 
