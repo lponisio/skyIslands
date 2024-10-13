@@ -81,16 +81,12 @@ colnames(transient_poll_betalink) <- c("Site1",
                                        paste("TurnoverAbsence",higher.order,sep=""),
                                        "TurnoverAbsenceBoth")
 
-
-geo2 <- unique(spec.net[, c("Site", "Lat", "Long")])
-geo2 <- geo2[!duplicated(geo2$Site),]
-
-geo.dist2 <- rdist.earth(cbind(geo2$Long, geo2$Lat),
-                        cbind(geo2$Long, geo2$Lat))
-colnames(geo.dist2) <- rownames(geo.dist2) <- geo2$Site
+## change Site1 and Site2 names to match obligate turnover betalinkr
+transient_poll_betalink$Site1 <- gsub("1", "", transient_poll_betalink$Site1)
+transient_poll_betalink$Site2 <- gsub("1", "", transient_poll_betalink$Site2)
 
 ## add column for geographic distance between sites
 transient_poll_betalink$GeoDist <- apply(transient_poll_betalink, 1, function(x){
-  geo.dist2[x["Site1"],  x["Site2"]]
+  geo.dist[x["Site1"],  x["Site2"]]
 })
 
