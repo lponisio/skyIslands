@@ -91,6 +91,113 @@ run_network_turnover_mod <- function(this_component, this_network){
   mod1
 }
 
+obligate_betalinkr <- function(only_obligate_network=only_obligate_network){
+  
+  CH <- only_obligate_network$CH
+  CH <- CH[,colnames(CH)!=""]
+  HM <- only_obligate_network$HM
+  JC <- only_obligate_network$JC
+  MM <- only_obligate_network$MM 
+  MM <- MM[,colnames(MM)!=""]
+  PL <- only_obligate_network$PL
+  PL <- PL[,colnames(PL)!=""]
+  RP <- only_obligate_network$RP
+  SC <- only_obligate_network$SC 
+  SM <- only_obligate_network$SM
+  
+  
+  lower.order <- "Microbes"
+  higher.order <- "Pollinators"
+  
+  
+  obligate_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, RP, SM, SC),
+                                            partitioning="commondenom", binary=FALSE, distofempty='zero', partition.st=TRUE, partition.rr=FALSE)
+  
+  #View(obligate_poll_betalink)
+  
+  colnames(obligate_poll_betalink) <- c("Site1",
+                                        "Site2",
+                                        "DissimilaritySpeciesComposition",
+                                        "OnlySharedLinks",
+                                        "WholeNetworkLinks",
+                                        "SpeciesTurnoverLinks",
+                                        paste("TurnoverAbsence",lower.order,sep=""),
+                                        paste("TurnoverAbsence",higher.order,sep=""),
+                                        "TurnoverAbsenceBoth")
+  
+  
+  geo <- unique(spec.net[, c("Site", "Lat", "Long")])
+  geo <- geo[!duplicated(geo$Site),]
+  
+  geo.dist <- rdist.earth(cbind(geo$Long, geo$Lat),
+                          cbind(geo$Long, geo$Lat))
+  colnames(geo.dist) <- rownames(geo.dist) <- geo$Site
+  
+  ## add column for geographic distance between sites
+  obligate_poll_betalink$GeoDist <- apply(obligate_poll_betalink, 1, function(x){
+    geo.dist[x["Site1"],  x["Site2"]]
+  })
+  
+  dir.create("figures", showWarnings = FALSE)
+  dir.create("figures/obligate_microbe_poll", showWarnings = FALSE)
+  
+  return(obligate_poll_betalink)
+}
+
+transient_betalinkr <- function(only_transient_network=only_transient_network){
+  #### species level networks
+  CH <- only_transient_network$CH
+  CH <- CH[,colnames(CH)!=""]
+  HM <- only_transient_network$HM
+  JC <- only_transient_network$JC
+  MM <- only_transient_network$MM 
+  MM <- MM[,colnames(MM)!=""]
+  PL <- only_transient_network$PL
+  PL <- PL[,colnames(PL)!=""]
+  RP <- only_transient_network$RP
+  SC <- only_transient_network$SC 
+  SM <- only_transient_network$SM
+  
+  
+  lower.order <- "Microbes"
+  higher.order <- "Pollinators"
+  
+  
+  transient_poll_betalink <- betalinkr_multi(webarray = webs2array(CH, HM, JC, MM, PL, RP, SM, SC),
+                                             partitioning="commondenom", binary=FALSE, distofempty='zero', partition.st=TRUE, partition.rr=FALSE)
+  
+  #View(transient_poll_betalink)
+  
+  colnames(transient_poll_betalink) <- c("Site1",
+                                         "Site2",
+                                         "DissimilaritySpeciesComposition",
+                                         "OnlySharedLinks",
+                                         "WholeNetworkLinks",
+                                         "SpeciesTurnoverLinks",
+                                         paste("TurnoverAbsence",lower.order,sep=""),
+                                         paste("TurnoverAbsence",higher.order,sep=""),
+                                         "TurnoverAbsenceBoth")
+  
+  
+  geo <- unique(spec.net[, c("Site", "Lat", "Long")])
+  geo <- geo[!duplicated(geo$Site),]
+  
+  geo.dist <- rdist.earth(cbind(geo$Long, geo$Lat),
+                          cbind(geo$Long, geo$Lat))
+  colnames(geo.dist) <- rownames(geo.dist) <- geo$Site
+  
+  ## add column for geographic distance between sites
+  transient_poll_betalink$GeoDist <- apply(transient_poll_betalink, 1, function(x){
+    geo.dist[x["Site1"],  x["Site2"]]
+  })
+  
+  dir.create("figures", showWarnings = FALSE)
+  dir.create("figures/transient_microbe_poll", showWarnings = FALSE)
+  
+  return(transient_poll_betalink)
+}
+
+
 
 plot_network_turnover_mod_single <- function(mod1, 
                                       this.network,
@@ -276,11 +383,15 @@ plot_network_turnover_mod_compare <- function(mod1,
     labs(x = "Geographic Distance (km)", y = label,
          fill = "Credible Interval") +
     theme_classic() +
-    ylim(0,1) +
+    ylim(-0.15,1) +
     theme(axis.title.x = element_text(size=16),
           axis.title.y = element_text(size=16),
           text = element_text(size=16),
           legend.position = "none")
+  
+  combined_mods <- bind_rows(model_geodist1, model_geodist2)
+  
+  rownames(combined_mods) <- c(paste(network_type1,label), paste(network_type2,label))
   #TODO add together model geodist objs for output
-  return(list(plot_obj, model_geodist1, model_geodist2))
+  return(list(plot_obj, combined_mods))
 }
