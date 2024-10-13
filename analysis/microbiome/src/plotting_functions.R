@@ -99,10 +99,10 @@ plot_model_condeff_compare <- function(model.a=fit.microbe.bombus,
     geom_line(data=plot_data_b, linewidth=2, aes(x = .data[[this.effect]],  y = .data$estimate__), color = mod2color) +
     # Add points for original data
     geom_point(data = point.data.a, aes(x = .data[[this.effect]], y = .data[[this.resp.a]]),
-               fill = mod1color, alpha = 0.6,color="black", pch=21, cex=3) +
+               fill = mod1color, alpha = 0.9,color="black", pch=21, cex=3) +
     # Add points for original data
     geom_point(data = point.data.b, aes(x = .data[[this.effect]], y = .data[[this.resp.b]]),
-               fill = mod2color, alpha = 0.6, color="black", pch=21, cex=3) +
+               fill = mod2color, alpha = 0.9, color="black", pch=21, cex=3) +
     # Labels and theme
     labs(x = xlabel, y = ylabel) +
     scale_x_continuous(breaks = axis.breaks, labels = axis.labs) +
@@ -166,14 +166,12 @@ plot_model_condeff_single <- function(model=fit.microbe.bombus,
     geom_line(data = plot_data, color = mod1color, linewidth=2, aes(x = .data[[this.effect]], y = .data$estimate__)) +
     # Add points for original data
     geom_point(data = point.data, aes(x = .data[[this.effect]], y = .data[[this.resp]]),
-               fill = mod1color, alpha = 0.6,color="black", pch=21, cex=3) +
+               fill = mod1color, alpha = 0.9,color="black", pch=21, cex=3) +
     # Labels and theme
     labs(x = xlabel, y = ylabel) +
     scale_x_continuous(breaks = axis.breaks, labels = axis.labs) +
     theme_classic()
   
   plot_obj
-  #browser()
 }
 
-plot_model_condeff_single()
