@@ -104,7 +104,7 @@ axis.itd <-  standardize.axis(labs.itd,
 
 
 ## load model output data
-load(file="saved/fullMicrobeBombusFit_2.Rdata")
+load(file="saved/fullMicrobeBombusFit_2_log.Rdata")
 
 #when model finishes change over
 #load(file="saved/fullMicrobeBombusFit_2.Rdata")
@@ -117,6 +117,7 @@ load(file="saved/fullMicrobeMelissodesFit_2.Rdata")
 spec.bombus <- spec.net[spec.net$Genus == "Bombus",]
 bombus.obligate <- spec.bombus[spec.bombus$WeightsObligateMicrobe == 1,]
 bombus.obligate$PDobligate <- bombus.obligate$PD.obligate
+bombus.obligate$PDobligatelog <- bombus.obligate$PD.obligate.log
 bombus.transient <- spec.bombus[spec.bombus$WeightsTransientMicrobe == 1,]
 bombus.transient$PDtransient <- bombus.transient$PD.transient
 bombus.transient$PDtransientlog <- bombus.transient$PD.transient.log
@@ -147,20 +148,22 @@ source("src/plotting_functions.R")
 obligate.bee.div.plot <- plot_model_condeff_compare(model.a=fit.microbe.bombus,
                                        model.b=fit.microbe.melissodes,
                                        this.effect='BeeDiversity',
-                                       this.resp.a='PDobligate', ## TODO: potentially update to both be PD obligate log?
+                                       this.resp.a='PDobligatelog', ## TODO: potentially update to both be PD obligate log?
                                        this.resp.b='PDobligatelog',
                                        point.data.a=bombus.obligate,
                                        point.data.b=melissodes.obligate,
                                        axis.breaks=axis.bee.div,
                                        axis.labs=labs.bee.div,
                                        xlabel="Bee Diversity",
-                                       ylabel="Obligate Microbe PD",
+                                       ylabel="Obligate Microbe PD (logged)",
                                        mod1color='navy',
                                        mod2color='coral',
                                        fill.a=TRUE,
                                        fill.b=FALSE
                                        )
 obligate.bee.div.plot 
+
+panelA <- obligate.bee.div.plot + labs(tag="A.")
 ############################
 ## PDobligate ~ rare.degree
   
@@ -168,7 +171,7 @@ obligate.bee.div.plot
 obligate.rare.degree.plot <- plot_model_condeff_compare(model.a=fit.microbe.bombus,
                                          model.b=fit.microbe.melissodes,
                                          this.effect='rare.degree',
-                                         this.resp.a='PDobligate', ## TODO: potentially update to both be PD obligate log?
+                                         this.resp.a='PDobligatelog', ## TODO: potentially update to both be PD obligate log?
                                          this.resp.b='PDobligatelog',
                                          point.data.a=bombus.obligate,
                                          point.data.b=melissodes.obligate,
@@ -182,7 +185,7 @@ obligate.rare.degree.plot <- plot_model_condeff_compare(model.a=fit.microbe.bomb
                                          fill.b=FALSE
                                          )
 obligate.rare.degree.plot 
-
+panelB <- obligate.rare.degree.plot + labs(tag="B.")
 ############################
 ## PDtransientlog ~ MeanITD
 ## can only make for Bombus since melissodes doesn't have mean ITD
@@ -198,6 +201,7 @@ transient.itd.plot  <- plot_model_condeff_single(model=fit.microbe.bombus,
                                       mod1color='navy')
 
 transient.itd.plot
+panelC <- transient.itd.plot + labs(tag="C.")
 
 ## **********************************************************
 ## Melissodes model
@@ -207,23 +211,30 @@ transient.itd.plot
 obligate.abund.plot <- plot_model_condeff_compare(model.a=fit.microbe.bombus,
                                                 model.b=fit.microbe.melissodes,
                                                 this.effect='BeeAbundance',
-                                                this.resp.a="PDobligate", ## TODO: potentially update to both be PD obligate log?
+                                                this.resp.a="PDobligatelog", ## TODO: potentially update to both be PD obligate log?
                                                 this.resp.b="PDobligatelog",
                                                 point.data.a=bombus.obligate,
                                                 point.data.b=melissodes.obligate,
                                                 axis.breaks=axis.bee.abund,
                                                 axis.labs=labs.bee.abund,
                                                 xlabel="Bee Abundance (logged)",
-                                                ylabel="Obligate Microbe PD",
+                                                ylabel="Obligate Microbe PD (logged)",
                                                 mod1color='navy',
                                                 mod2color='coral',
                                                 fill.a=FALSE,
                                                 fill.b=TRUE
 )
-
 obligate.abund.plot
+panelD <- obligate.abund.plot + labs(tag="D.")
 
 
-## TODO: make grid plots and save out to final
 
+## Make panel figs and save out
+pdf("figures/final/SEM_combined.pdf", width = 8.5, height = 8.5) # Open a new pdf file
+grid.arrange(panelA,
+             panelB,
+             panelC,
+             panelD,
+             ncol=2) 
+dev.off()
 
