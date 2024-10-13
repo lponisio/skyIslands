@@ -182,7 +182,7 @@ transient.itd.plot  <- plot_model_condeff_single(model=fit.microbe.bombus,
                                       point.data=bombus.transient,
                                       axis.breaks=axis.itd,
                                       axis.labs=labs.itd,
-                                      xlabel="Body Size",
+                                      xlabel="Body Size (mm)",
                                       ylabel="Transient Microbe PD (logged)",
                                       mod1color='navy')
 
