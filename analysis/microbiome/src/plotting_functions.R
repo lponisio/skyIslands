@@ -103,6 +103,7 @@ plot_model_condeff_compare <- function(model.a=fit.microbe.bombus,
     # Add points for original data
     geom_point(data = point.data.b, aes(x = .data[[this.effect]], y = .data[[this.resp.b]]),
                fill = mod2color, alpha = 0.9, color="black", pch=21, cex=3) +
+    coord_cartesian(xlim = range(point.data[[this.effect]])) +
     # Labels and theme
     labs(x = xlabel, y = ylabel) +
     scale_x_continuous(breaks = axis.breaks, labels = axis.labs) +
@@ -146,7 +147,7 @@ plot_model_condeff_single <- function(model=fit.microbe.bombus,
   if ('PD.transient.log' %in% colnames(plot_data)){
     plot_data$PDtransientlog <- plot_data$PD.transient.log
   }
-  
+  #browser()
   
   # Plot using ggplot2 for credible intervals with geom_ribbon
   plot_obj <- ggplot(plot_data, aes(x = .data[[this.effect]], y = .data$estimate__)) +
@@ -171,6 +172,7 @@ plot_model_condeff_single <- function(model=fit.microbe.bombus,
     # Add points for original data
     geom_point(data = point.data, aes(x = .data[[this.effect]], y = .data[[this.resp]]),
                fill = mod1color, alpha = 0.9,color="black", pch=21, cex=3) +
+    coord_cartesian(xlim = range(point.data[[this.effect]])) +
     # Labels and theme
     labs(x = xlabel, y = ylabel) +
     scale_x_continuous(breaks = axis.breaks, labels = axis.labs) +
