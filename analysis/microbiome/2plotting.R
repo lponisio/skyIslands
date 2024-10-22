@@ -90,7 +90,7 @@ axis.degree <-  standardize.axis(labs.degree,
 
 spec.sp <-  spec.orig[spec.orig$WeightsTransientMicrobe == 1 & spec.orig$Genus == "Bombus",]
 ## meanITD
-labs.itd <- (pretty(spec.sp$MeanITD.x, n=4))
+labs.itd <- (pretty(spec.sp$MeanITD.x, n=8))
 axis.itd <-  standardize.axis(labs.itd,
                               spec.sp$MeanITD.x)
 

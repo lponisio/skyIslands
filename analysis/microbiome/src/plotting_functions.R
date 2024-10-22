@@ -103,7 +103,7 @@ plot_model_condeff_compare <- function(model.a=fit.microbe.bombus,
     # Add points for original data
     geom_point(data = point.data.b, aes(x = .data[[this.effect]], y = .data[[this.resp.b]]),
                fill = mod2color, alpha = 0.9, color="black", pch=21, cex=3) +
-    coord_cartesian(xlim = range(point.data[[this.effect]])) +
+    coord_cartesian(xlim = if_else(range(point.data.a[[this.effect]]) > range(point.data.b[[this.effect]]), range(point.data.a[[this.effect]]), range(point.data.b[[this.effect]]))) +
     # Labels and theme
     labs(x = xlabel, y = ylabel) +
     scale_x_continuous(breaks = axis.breaks, labels = axis.labs) +
