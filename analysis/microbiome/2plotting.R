@@ -144,7 +144,7 @@ obligate.bee.div.plot <- plot_model_condeff_compare(model.a=fit.microbe.bombus,
                                        xlabel="Bee Diversity",
                                        ylabel="Obligate Microbe PD (logged)",
                                        mod1color='navy',
-                                       mod2color='coral',
+                                       mod2color='gold',
                                        fill.a=TRUE,
                                        fill.b=FALSE
                                        )
@@ -166,7 +166,7 @@ obligate.rare.degree.plot <- plot_model_condeff_compare(model.a=fit.microbe.bomb
                                          xlabel="Diet Breadth (logged)",
                                          ylabel="Obligate Microbe PD (logged)",
                                          mod1color='navy',
-                                         mod2color='coral',
+                                         mod2color='gold',
                                          fill.a=TRUE,
                                          fill.b=FALSE
                                          )
@@ -183,7 +183,7 @@ transient.itd.plot  <- plot_model_condeff_single(model=fit.microbe.bombus,
                                       axis.breaks=axis.itd,
                                       axis.labs=labs.itd,
                                       xlabel="Body Size (mm)",
-                                      ylabel="Facilitative Microbe PD (logged)",
+                                      ylabel="Facultative Microbe PD (logged)",
                                       mod1color='navy')
 
 transient.itd.plot
@@ -203,7 +203,7 @@ obligate.abund.plot <- plot_model_condeff_compare(model.a=fit.microbe.bombus,
                                                 xlabel="Bee Abundance (logged)",
                                                 ylabel="Obligate Microbe PD (logged)",
                                                 mod1color='navy',
-                                                mod2color='coral',
+                                                mod2color='gold',
                                                 fill.a=FALSE,
                                                 fill.b=TRUE
 )
