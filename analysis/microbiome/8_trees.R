@@ -304,7 +304,7 @@ finalASV <- tibble::rownames_to_column(finalASV, "UniqueID") #make rownames (Uni
 
 # melissodes 
 melissodes_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Melissodes", genus.or.spp='Genus', finalASV, melissodes_sites, do_collapse = TRUE)
-panelB <- melissodes_tree[[1]] + labs(tag="B. Melissodes")
+panelB <- melissodes_tree[[1]] + labs(tag="B. Melissodes (n=51)")
 melissodes_meta <- melissodes_tree[[2]]
 panelB
 
@@ -312,7 +312,7 @@ panelB
 
 #bombus tree
 bombus_tree <- phylotree_heatmap_byGenus(physeq16sR0, meta, "Bombus", genus.or.spp='Genus', finalASV, bombus_sites, do_collapse = TRUE)
-panelA <- bombus_tree[[1]] + labs(tag="A. Bombus")
+panelA <- bombus_tree[[1]] + labs(tag="A. Bombus (n=444)")
 bombus_meta <- bombus_tree[[2]]
 panelA
 
