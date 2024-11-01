@@ -8,7 +8,7 @@ setwd("skyIslands/analysis/microbiome/")
 
 run.diagnostics = FALSE
 make.plots = FALSE
-run.bombus = FALSE
+run.bombus = TRUE
 run.apis = FALSE
 run.melissodes = TRUE
 
@@ -108,7 +108,7 @@ formula.flower.div <- as.formula(paste(flower.div.y, "~",flower.div.x))
 
 
 ## bee abund total
-tot.bee.abund.vars <- c("MeanFloralAbundance",
+tot.bee.abund.vars <- c(#"MeanFloralAbundance",
                         #"Year",
                         #"SRDoy",
                         #"I(SRDoy^2)",
@@ -123,7 +123,7 @@ formula.tot.bee.abund <- as.formula(paste(tot.bee.abund.y, "~",tot.bee.abund.x))
 
 #net bee abund
 ## bee abund total
-net.bee.abund.vars <- c("MeanFloralAbundance",
+net.bee.abund.vars <- c(#"MeanFloralAbundance",
                         #"Year",
                         #"SRDoy",
                         #"I(SRDoy^2)",
@@ -292,7 +292,7 @@ ob.microbe.bombus.vars <- c("BeeAbundance",
 
 ob.microbe.bombus.x <- paste(ob.microbe.bombus.vars, collapse="+")
 #ob.microbe.bombus.y <- "PD.obligate | subset(WeightsObligateBombus) + weights(BombusLogWeightsObligateAbund)"
-ob.microbe.bombus.y <- "PD.obligate | subset(WeightsObligateBombus)"
+ob.microbe.bombus.y <- "PD.obligate.log | subset(WeightsObligateBombus)"
 formula.ob.microbe.bombus <- as.formula(paste(ob.microbe.bombus.y, "~",
                                            ob.microbe.bombus.x))
 
