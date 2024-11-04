@@ -123,6 +123,32 @@ save(int.obligate.mod,
 ##  transient networks
 ## **********************************************************
 
+## Pairwise bray curtis dissimilarity between microbe communities in Bombus (blue) and Melissodes 
+## (yellow)
+
+
+source("src/distDecay.R")
+
+bombus_model <- genusspecies.decay.model(spec16s, 'Bombus', type='Genus', model.type = 'exp')
+melissodes_model <- genusspecies.decay.model(spec16s, 'Melissodes', type='Genus', model.type='exp')
+
+
+custom.plot.decay(bombus_model, 
+                  col='navy', 
+                  bg=alpha('navy', 0.01), pch=21, lwd=10,
+                  cex=2, remove.dots = FALSE,
+                  xlab='Geographic Distance (km)',
+                  ylab="Pairwise Bray-Curtis Dissimilarity") 
+
+
+panelA <- plot.decay(melissodes_model, 
+                     col='gold', 
+                     bg=alpha('gold', 0.1), pch=21,
+                     lwd=10,
+                     cex=2,
+                     xlab='Geographic Distance (km)',
+                     ylab="Pairwise Bray-Curtis Dissimilarity", add=TRUE, remove.dots = FALSE) + labs(tag="A.")
+
 ## A. Interaction turnover
 int.plot <- plot_network_turnover_mod_compare(mod1=int.obligate.mod,
                                                    mod2=int.transient.mod,
@@ -135,23 +161,24 @@ int.plot <- plot_network_turnover_mod_compare(mod1=int.obligate.mod,
                                                    label="Dissimilarity: Interaction Turnover")
 int.plot[[1]]
 
-panelA <- int.plot[[1]] + labs(tag="A.")
+panelB <- int.plot[[1]] + labs(tag="B.")
 int.table <- int.plot[[2]]
 
 ## B. Dissimilarity in species composition
-speccomp.plot <- plot_network_turnover_mod_compare(mod1=speccomp.obligate.mod,
-                                              mod2=speccomp.transient.mod,
-                                              this.network1=obligate_poll_betalink,
-                                              this.network2=transient_poll_betalink,
-                                              network_type1='Obligate',
-                                              network_type2='Transient',
-                                              this.effect="GeoDist",
-                                              this.resp="DissimilaritySpeciesComposition",
-                                              label="Dissimilarity: Species Composition")
-speccomp.plot[[1]]
-
-panelB <- speccomp.plot[[1]] + labs(tag="B.")
-speccomp.table <- speccomp.plot[[2]]
+## Replacing this one with distance decay fig
+# speccomp.plot <- plot_network_turnover_mod_compare(mod1=speccomp.obligate.mod,
+#                                               mod2=speccomp.transient.mod,
+#                                               this.network1=obligate_poll_betalink,
+#                                               this.network2=transient_poll_betalink,
+#                                               network_type1='Obligate',
+#                                               network_type2='Transient',
+#                                               this.effect="GeoDist",
+#                                               this.resp="DissimilaritySpeciesComposition",
+#                                               label="Dissimilarity: Species Composition")
+# speccomp.plot[[1]]
+# 
+# panelB <- speccomp.plot[[1]] + labs(tag="B.")
+# speccomp.table <- speccomp.plot[[2]]
 
 ## C. rewiring
 
