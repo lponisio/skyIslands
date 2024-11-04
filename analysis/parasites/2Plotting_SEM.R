@@ -110,7 +110,7 @@ p1.parasite <- ggplot(crithidia_beediv, aes(x = Net_BeeDiversity, y= estimate__)
   labs(x = "Bee diversity", y = "Crithidia prevalence",
        fill = "Credible interval") +
   theme_ms() +
-  theme(legend.position = "bottom") +
+  #theme(legend.position = "bottom") +
   guides(color = F, fill = F)+
   scale_x_continuous(
     breaks = axis.bee.div,
@@ -140,7 +140,7 @@ p2.parasite <- ggplot(apicystis_beediv, aes(x = Net_BeeDiversity, y = estimate__
   labs(x = "Bee diversity", y = "Apicystis prevalence",
        fill = "Credible interval") +
   theme_ms() +
-  theme(legend.position = "bottom") +
+  #theme(legend.position = "bottom") +
   scale_x_continuous(
     breaks = axis.bee.div,
     labels =  labs.bee.div) +
@@ -181,7 +181,7 @@ p3.parasite <- ggplot(crithidia_floraldiv, aes(x = MeanFloralDiversity, y= estim
     labs(x = "Floral diversity", y = "Crithidia prevalence",
          fill = "Credible interval") +
     theme_ms() +
-    theme(legend.position = "bottom") +
+    #theme(legend.position = "bottom") +
   guides(color = FALSE, fill = FALSE)+
     scale_x_continuous(
         breaks = axis.flower.div,
@@ -210,7 +210,7 @@ p4.parasite <- ggplot(apicystis_floraldiv, aes(x = MeanFloralDiversity, y = esti
   labs(x = "Floral diversity", y = "Apicystis prevalence",
        fill = "Credible interval") +
   theme_ms() +
-  theme(legend.position = "bottom") +
+  #theme(legend.position = "bottom") +
   scale_x_continuous(
     breaks = axis.flower.div,
     labels =  labs.flower.div) +
@@ -228,8 +228,7 @@ ggsave(p4.parasite, file="figures/parasite_floraldiv_Apicystis.pdf",
     
 parasite.dilution <- ggarrange(p1.parasite, p3.parasite, p2.parasite, p4.parasite, 
                             labels = c("A", "B", "C","D"), 
-                            ncol = 2, nrow = 2,common.legend = T,
-                          legend = "bottom")
+                            ncol = 2, nrow = 2)
 
 ggsave(parasite.dilution, file="figures/parasite_diversity.pdf", height=8, width=12)
 
@@ -247,7 +246,7 @@ p5.parasite <- ggplot(crithidia_beeabun, aes(x = Net_BeeAbundance, y = estimate_
   labs(x = "Bee abundance (log)", y = "Crithidia prevalence",
        fill = "Credible interval") +
   theme_ms() +
-  theme(legend.position = "bottom") +
+  #theme(legend.position = "bottom") +
   scale_x_continuous(
     breaks = axis.bee.abund,
     labels =  labs.bee.abund) +
@@ -277,7 +276,7 @@ p6.parasite <- ggplot(apicystis_beeabun, aes(x = Net_BeeAbundance, y = estimate_
   labs(x = "Bee abundance (log)", y = "Apicystis prevalence",
        fill = "Credible interval") +
   theme_ms() +
-  theme(legend.position = "bottom") +
+  #theme(legend.position = "bottom") +
   scale_x_continuous(
     breaks = axis.bombus.abund,
     labels =  labs.bombus.abund) +
@@ -293,9 +292,7 @@ ggsave(p6.parasite, file="figures/Apicystis_beeabun_bombus.pdf",
 
 parasite.amplification <- ggarrange(p5.parasite, p6.parasite, 
                                     nrow= 1,
-                                    labels = c("A", "B"),
-                                    common.legend = TRUE,
-                                    legend="bottom")
+                                    labels = c("A", "B"))
 
 ggsave(parasite.amplification, file="figures/parasite_amplification.pdf",
        height=6, width=10)
@@ -317,7 +314,7 @@ p7.parasite <- ggplot(crithidia_degree, aes(x = rare.degree, y = estimate__)) +
     labs(x = "Degree", y = "Crithidia prevalence",
          fill = "Credible interval") +
     theme_ms() +
-    theme(legend.position = "bottom") +
+    #theme(legend.position = "bottom") +
     scale_x_continuous(
         breaks = axis.degree,
         labels =  labs.degree) +
@@ -344,7 +341,7 @@ p8.parasite <- ggplot(apicystis_degree, aes(x = rare.degree, y = estimate__)) +
   labs(x = "Degree", y = "Apicystis prevalence",
        fill = "Credible interval") +
   theme_ms() +
-  theme(legend.position = "bottom") +
+  #theme(legend.position = "bottom") +
   scale_x_continuous(
     breaks = axis.degree,
     labels =  labs.degree) +
@@ -358,9 +355,7 @@ ggsave(p8.parasite, file="figures/apicystis_degree.pdf",
        height=5, width=10)
 
 parasite.traits <- ggarrange(p7.parasite, p8.parasite, nrow=1,
-                             labels = c("A", "B"),
-                             common.legend = TRUE,
-                             legend="bottom")
+                             labels = c("A", "B"))
 ggsave(parasite.traits, file="figures/parasite_traits.pdf",
        height= 6, width=10)
 ## ***********************************************************************
