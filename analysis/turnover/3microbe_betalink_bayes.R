@@ -147,7 +147,9 @@ panelA <- plot.decay(melissodes_model,
                      lwd=10,
                      cex=2,
                      xlab='Geographic Distance (km)',
-                     ylab="Pairwise Bray-Curtis Dissimilarity", add=TRUE, remove.dots = FALSE) + labs(tag="A.")
+                     ylab="Pairwise Bray-Curtis Dissimilarity", add=TRUE, remove.dots = FALSE)
+
+panelA + labs(tag="B.")
 
 ## A. Interaction turnover
 int.plot <- plot_network_turnover_mod_compare(mod1=int.obligate.mod,
