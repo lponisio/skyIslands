@@ -36,103 +36,103 @@ spec16s <- spec.net %>%
 
 
 genusspecies.decay.model <- function(data, type, which){
-#bray curtis dissimilarity matrix of 16s
-
+  #bray curtis dissimilarity matrix of 16s
   
-if(type == 'Genus'){
-abund <- data %>%
-  filter(Genus == which) %>%
-  select(UniqueID, starts_with('16s')) %>%
-  select(-UniqueID)
-
-#distance matrix of sites
-geo <- data %>%
-  filter(Genus == which) %>%
-  select(UniqueID, Long, Lat) %>%
-  select(-UniqueID) %>%
-  mutate()
-} else if (type == 'GenusSpecies'){
+  
+  if(type == 'Genus'){
+    abund <- data %>%
+      filter(Genus == which) %>%
+      select(UniqueID, starts_with('16s')) %>%
+      select(-UniqueID)
     
-abund <- data %>%
-    filter(GenusSpecies == which) %>%
-    select(UniqueID, starts_with('16s')) %>%
-    select(-UniqueID)
-#distance matrix of sites
-geo <- data %>%
-  filter(GenusSpecies == which) %>%
-  select(UniqueID, Long, Lat) %>%
-  select(-UniqueID) %>%
-  mutate()
-}
+    #distance matrix of sites
+    geo <- data %>%
+      filter(Genus == which) %>%
+      select(UniqueID, Long, Lat) %>%
+      select(-UniqueID) %>%
+      mutate()
+  } else if (type == 'GenusSpecies'){
+    
+    abund <- data %>%
+      filter(GenusSpecies == which) %>%
+      select(UniqueID, starts_with('16s')) %>%
+      select(-UniqueID)
+    #distance matrix of sites
+    geo <- data %>%
+      filter(GenusSpecies == which) %>%
+      select(UniqueID, Long, Lat) %>%
+      select(-UniqueID) %>%
+      mutate()
+  }
   
   
-
-
-#abundance data frame - bray curtis dissimilarity
-dist.abund <- vegdist(abund, method = "bray")
-
-#geographic data frame - haversine distance in m (takes a df with lat and long and calculates dist)
-d.geo <- distm(geo, fun = distHaversine)
-dist.geo <- as.dist(d.geo)/1000
-
-#abundance vs geographic mantel test
-abund_geo  = mantel(dist.abund, dist.geo, method = "spearman", permutations = 9999, na.rm = TRUE)
-print(abund_geo)
-
-dist_decay_model <- betapart::decay.model(dist.abund,
-                                          dist.geo,
-                                          y.type='dissim',
-                                          model.type = 'exp',
-                                          perm=100)
-# dist_decay_plot <- plot.decay(dist_decay_model,
-#                               main=genus)
-# dist_decay_plot
-dist_decay_model
-
+  
+  
+  #abundance data frame - bray curtis dissimilarity
+  dist.abund <- vegdist(abund, method = "bray")
+  
+  #geographic data frame - haversine distance in m (takes a df with lat and long and calculates dist)
+  d.geo <- distm(geo, fun = distHaversine)
+  dist.geo <- as.dist(d.geo)/1000
+  
+  #abundance vs geographic mantel test
+  abund_geo  = mantel(dist.abund, dist.geo, method = "spearman", permutations = 9999, na.rm = TRUE)
+  print(abund_geo)
+  
+  dist_decay_model <- betapart::decay.model(dist.abund,
+                                            dist.geo,
+                                            y.type='dissim',
+                                            model.type = 'exp',
+                                            perm=100)
+  # dist_decay_plot <- plot.decay(dist_decay_model,
+  #                               main=genus)
+  # dist_decay_plot
+  dist_decay_model
+  
 }
 ## by genus plots
 
-apis_model <- genusspecies.decay.model(spec16s, 'Apis', type='Genus')
+#apis_model <- genusspecies.decay.model(spec16s, 'Apis', type='Genus')
 bombus_model <- genusspecies.decay.model(spec16s, 'Bombus', type='Genus')
-anthophora_model <- genusspecies.decay.model(spec16s, 'Anthophora', type='Genus')
-megachile_model <- genusspecies.decay.model(spec16s, 'Megachile', type='Genus')
+#anthophora_model <- genusspecies.decay.model(spec16s, 'Anthophora', type='Genus')
+#megachile_model <- genusspecies.decay.model(spec16s, 'Megachile', type='Genus')
 melissodes_model <- genusspecies.decay.model(spec16s, 'Melissodes', type='Genus')
 
 
 plot.decay(bombus_model, 
-           col='#ED7953', 
-           bg=alpha('#ED7953', 0.1), 
+           col='navy', 
+           bg=alpha('navy', 0.1), 
            pch = 22, lwd=10,
            cex=2, remove.dots = TRUE) 
 
-plot.decay(apis_model, 
-           col='#9C179E', 
-           bg=alpha('#9C179E', 0.1), 
-           pch = 21, lwd=10,
-           cex=2,
-           xlab='Distance (km)',
-           ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
+# plot.decay(apis_model, 
+#            col='#9C179E', 
+#            bg=alpha('#9C179E', 0.1), 
+#            pch = 21, lwd=10,
+#            cex=2,
+#            xlab='Distance (km)',
+#            ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
 
 
-plot.decay(megachile_model, 
-           col='#F0F921', 
-           bg=alpha('#F0F921', 0.1), 
-           pch = 23, lwd=10,
-           cex=2,
-           xlab='Distance (km)',
-           ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
-
-plot.decay(anthophora_model, 
-           col='#0D0887', 
-           bg=alpha('#0D0887', 0.1), 
-           pch = 24, lwd=10,
-           cex=2,
-           xlab='Distance (km)',
-           ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
+# plot.decay(megachile_model, 
+#            col='#F0F921', 
+#            bg=alpha('#F0F921', 0.1), 
+#            pch = 23, lwd=10,
+#            cex=2,
+#            xlab='Distance (km)',
+#            ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
+# 
+# plot.decay(anthophora_model, 
+#            col='#0D0887', 
+#            bg=alpha('#0D0887', 0.1), 
+#            pch = 24, lwd=10,
+#            cex=2,
+#            xlab='Distance (km)',
+#            ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
 
 plot.decay(melissodes_model, 
-           col='green', 
-           bg=alpha('green', 0.1), 
+           col='gold', 
+           bg=alpha('gold', 0.1), 
            pch = 24, lwd=10,
            cex=2,
            xlab='Distance (km)',
