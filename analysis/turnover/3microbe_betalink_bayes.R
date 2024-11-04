@@ -58,10 +58,10 @@ run.mods=TRUE
 if (run.mods==TRUE){
   
 ## Interaction turnover
-int.obligate.mod <- run_network_turnover_mod(this_component="WholeNetworkLinks",,
+int.obligate.mod <- run_network_turnover_mod(this_component="WholeNetworkLinks",
                                                     this_network=obligate_poll_betalink)
   
-int.transient.mod <- run_network_turnover_mod(this_component="WholeNetworkLinks",,
+int.transient.mod <- run_network_turnover_mod(this_component="WholeNetworkLinks",
                                                      this_network=transient_poll_betalink)
 
 ## Turnover species composition
@@ -104,7 +104,7 @@ complete.transient.mod <- run_network_turnover_mod(this_component="TurnoverAbsen
 save(int.obligate.mod,
      int.transient.mod,
      speccomp.obligate.mod,
-     speccomp.transient.mod
+     speccomp.transient.mod,
      rewiring.obligate.mod,
        rewiring.transient.mod,
        host.driven.obligate.mod,
@@ -123,7 +123,37 @@ save(int.obligate.mod,
 ##  transient networks
 ## **********************************************************
 
-## A. rewiring
+## A. Interaction turnover
+int.plot <- plot_network_turnover_mod_compare(mod1=int.obligate.mod,
+                                                   mod2=int.transient.mod,
+                                                   this.network1=obligate_poll_betalink,
+                                                   this.network2=transient_poll_betalink,
+                                                   network_type1='Obligate',
+                                                   network_type2='Transient',
+                                                   this.effect="GeoDist",
+                                                   this.resp="WholeNetworkLinks",
+                                                   label="Dissimilarity: Interaction Turnover")
+int.plot[[1]]
+
+panelA <- int.plot[[1]] + labs(tag="A.")
+int.table <- int.plot[[2]]
+
+## B. Dissimilarity in species composition
+speccomp.plot <- plot_network_turnover_mod_compare(mod1=speccomp.obligate.mod,
+                                              mod2=speccomp.transient.mod,
+                                              this.network1=obligate_poll_betalink,
+                                              this.network2=transient_poll_betalink,
+                                              network_type1='Obligate',
+                                              network_type2='Transient',
+                                              this.effect="GeoDist",
+                                              this.resp="DissimilaritySpeciesComposition",
+                                              label="Dissimilarity: Species Composition")
+speccomp.plot[[1]]
+
+panelB <- speccomp.plot[[1]] + labs(tag="B.")
+speccomp.table <- speccomp.plot[[2]]
+
+## C. rewiring
 
 rewiring.plot <- plot_network_turnover_mod_compare(mod1=rewiring.obligate.mod,
                                               mod2=rewiring.transient.mod,
@@ -136,10 +166,10 @@ rewiring.plot <- plot_network_turnover_mod_compare(mod1=rewiring.obligate.mod,
                                               label="Rewiring")
 rewiring.plot[[1]]
 
-panelA <- rewiring.plot[[1]] + labs(tag="A.")
+panelC <- rewiring.plot[[1]] + labs(tag="C.")
 rewiring.table <- rewiring.plot[[2]]
 
-## B. Host-driven turnover
+## D. Host-driven turnover
 
 host.driven.plot <- plot_network_turnover_mod_compare(mod1=host.driven.obligate.mod,
                                                    mod2=host.driven.transient.mod,
@@ -151,10 +181,10 @@ host.driven.plot <- plot_network_turnover_mod_compare(mod1=host.driven.obligate.
                                                    this.resp="TurnoverAbsencePollinators",
                                                    label="Host-Driven Turnover")
 host.driven.plot[[1]]
-panelB <- host.driven.plot[[1]] + labs(tag="B.")
+panelD <- host.driven.plot[[1]] + labs(tag="D.")
 host.table <- host.driven.plot[[2]]
 
-## C. Microbe-driven turnover
+## E. Microbe-driven turnover
 
 microbe.driven.plot <- plot_network_turnover_mod_compare(mod1=microbe.driven.obligate.mod,
                                                       mod2=microbe.driven.transient.mod,
@@ -166,10 +196,10 @@ microbe.driven.plot <- plot_network_turnover_mod_compare(mod1=microbe.driven.obl
                                                       this.resp="TurnoverAbsenceMicrobes",
                                                       label="Microbe-Driven Turnover")
 microbe.driven.plot[[1]]
-panelC <- microbe.driven.plot[[1]] + labs(tag="C.")
+panelE <- microbe.driven.plot[[1]] + labs(tag="E.")
 microbe.table <- microbe.driven.plot[[2]]
 
-## D. Complete turnover
+## F. Complete turnover
 
 complete.plot <- plot_network_turnover_mod_compare(mod1=complete.obligate.mod,
                                                          mod2=complete.transient.mod,
@@ -182,15 +212,17 @@ complete.plot <- plot_network_turnover_mod_compare(mod1=complete.obligate.mod,
                                                          label="Complete Turnover")
 
 complete.plot[[1]]
-panelD <- complete.plot[[1]] + labs(tag="D.")
+panelF <- complete.plot[[1]] + labs(tag="F.")
 complete.table <- complete.plot[[2]]
 
 ## Make panel figs and save out
-pdf("../microbiome/figures/final/turnover_combined.pdf", width = 8.5, height = 8.5) # Open a new pdf file
+pdf("../microbiome/figures/final/turnover_combined.pdf", width = 8.5, height = 11) # Open a new pdf file
 grid.arrange(panelA,
              panelB,
              panelC,
              panelD,
+             panelE,
+             panelF,
              ncol=2) 
 dev.off()
 
