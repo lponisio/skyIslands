@@ -101,9 +101,8 @@ melissodes_model <- genusspecies.decay.model(spec16s, 'Melissodes', type='Genus'
 
 plot.decay(bombus_model, 
            col='navy', 
-           bg=alpha('navy', 0.1), 
-           pch = 22, lwd=10,
-           cex=2, remove.dots = TRUE) 
+           bg=alpha('navy', 0.01), lwd=10,
+           cex=2, remove.dots = FALSE) 
 
 # plot.decay(apis_model, 
 #            col='#9C179E', 
@@ -133,10 +132,10 @@ plot.decay(bombus_model,
 plot.decay(melissodes_model, 
            col='gold', 
            bg=alpha('gold', 0.1), 
-           pch = 24, lwd=10,
+           lwd=10,
            cex=2,
            xlab='Distance (km)',
-           ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE)
+           ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = FALSE)
 
 
 ## by species plots
