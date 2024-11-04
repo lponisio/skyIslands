@@ -227,7 +227,9 @@ grid.arrange(panelA,
 dev.off()
 
 ## Combine results tables and save out
-combined.table <- bind_rows(rewiring.table,
+combined.table <- bind_rows(int.table,
+                            speccomp.table,
+                            rewiring.table,
                             host.table,
                             microbe.table,
                             complete.table)
