@@ -53,7 +53,7 @@ source("src/betalinkrPrep.R")
 
 ## only need to run models once, otherwise will load models
 
-run.mods=TRUE
+run.mods=FALSE
 
 if (run.mods==TRUE){
   
