@@ -21,12 +21,45 @@ spec16s <- spec.net %>%
 #Geographic distance matrix: the physical distance between sites (i.e. Haversine distance)
 
 
+custom.plot.decay <- function(x, xlim = c(0, max(x$data.x)), ylim = c(0, 1), add = FALSE, 
+                              remove.dots = FALSE, col = "black", pch = 1, lty = 1, lwd = 5, 
+                              cex = 1, ...) 
+{
+  if (!inherits(x, "decay")) {
+    stop("The input is not a distance-decay model fitted with decay.model().", 
+         call. = TRUE)
+  }
+  data <- data.frame(as.vector(x$data.x), as.vector(x$data.y))
+  if (!remove.dots) {
+    pch = pch
+  }
+  else {
+    pch = ""
+  }
+  if (!add) {
+    plot(x$data.x, x$data.y, xlim = xlim, ylim = ylim, col = col, pch = pch, cex = cex, 
+         ...)
+  }
+  if (add) {
+    points(x$data.x, x$data.y, xlim = xlim, ylim = ylim, col = col, pch = pch, 
+           cex = cex, ...)
+  }
+  switch(x$y.type, similarities = {
+    lines(fitted(x$model)[order(x$data.x)] ~ sort(x$data.x), 
+          col = col, lty = lty, lwd = lwd, ...)
+  }, dissimilarities = {
+    lines(1 - fitted(x$model)[order(x$data.x)] ~ sort(x$data.x), 
+          col = col, lty = lty, lwd = lwd, ...)
+  })
+}
+
+
+
 
 ## This function takes as input a data frame and a bee genus and filters the data frame to
 ## just bees of the input genus, computes bray curtis dissimilarity of their 16s communities,
 ## computes haversine distance matrix of sample sites, performs a mantel test to determine
 ## correlation between community dissimilarity and distance, then plots the distance decay curves
-
 
 genusspecies.decay.model <- function(data, type, which){
   #bray curtis dissimilarity matrix of 16s
