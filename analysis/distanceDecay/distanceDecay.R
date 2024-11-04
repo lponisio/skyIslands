@@ -92,42 +92,19 @@ genusspecies.decay.model <- function(data, type, which){
 }
 ## by genus plots
 
-#apis_model <- genusspecies.decay.model(spec16s, 'Apis', type='Genus')
 bombus_model <- genusspecies.decay.model(spec16s, 'Bombus', type='Genus')
-#anthophora_model <- genusspecies.decay.model(spec16s, 'Anthophora', type='Genus')
-#megachile_model <- genusspecies.decay.model(spec16s, 'Megachile', type='Genus')
 melissodes_model <- genusspecies.decay.model(spec16s, 'Melissodes', type='Genus')
 
+## TODO clean up script
+## TODO custom fxn to enable changing axis labs
 
 plot.decay(bombus_model, 
            col='navy', 
            bg=alpha('navy', 0.01), lwd=10,
-           cex=2, remove.dots = FALSE) 
+           cex=2, remove.dots = FALSE,
+           xlab='Distance (km)',
+           ylab="Bray-Curtis Dissimilarity") 
 
-# plot.decay(apis_model, 
-#            col='#9C179E', 
-#            bg=alpha('#9C179E', 0.1), 
-#            pch = 21, lwd=10,
-#            cex=2,
-#            xlab='Distance (km)',
-#            ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
-
-
-# plot.decay(megachile_model, 
-#            col='#F0F921', 
-#            bg=alpha('#F0F921', 0.1), 
-#            pch = 23, lwd=10,
-#            cex=2,
-#            xlab='Distance (km)',
-#            ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
-# 
-# plot.decay(anthophora_model, 
-#            col='#0D0887', 
-#            bg=alpha('#0D0887', 0.1), 
-#            pch = 24, lwd=10,
-#            cex=2,
-#            xlab='Distance (km)',
-#            ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
 
 plot.decay(melissodes_model, 
            col='gold', 
@@ -138,42 +115,4 @@ plot.decay(melissodes_model,
            ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = FALSE)
 
 
-## by species plots
-
-apis.mellifera_model <- genusspecies.decay.model(spec16s, 'Apis mellifera', type='GenusSpecies')
-bombus.centralis_model <- genusspecies.decay.model(spec16s, 'Bombus centralis', type='GenusSpecies')
-bombus.huntii_model <- genusspecies.decay.model(spec16s, 'Bombus huntii', type='GenusSpecies')
-melissodes.confusus_model <- genusspecies.decay.model(spec16s, 'Melissodes confusus', type='GenusSpecies')
-
-
-plot.decay(apis.mellifera_model, 
-           col='#ED7953', 
-           bg=alpha('#ED7953', 0.1), 
-           pch = 22, lwd=10,
-           cex=2, remove.dots = TRUE) 
-
-plot.decay(bombus.centralis_model, 
-           col='#9C179E', 
-           bg=alpha('#9C179E', 0.1), 
-           pch = 21, lwd=10,
-           cex=2,
-           xlab='Distance (km)',
-           ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
-
-
-plot.decay(bombus.huntii_model, 
-           col='#F0F921', 
-           bg=alpha('#F0F921', 0.1), 
-           pch = 23, lwd=10,
-           cex=2,
-           xlab='Distance (km)',
-           ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
-
-plot.decay(melissodes.confusus_model, 
-           col='#0D0887', 
-           bg=alpha('#0D0887', 0.1), 
-           pch = 24, lwd=10,
-           cex=2,
-           xlab='Distance (km)',
-           ylab="Bray-Curtis Dissimilarity", add=TRUE, remove.dots = TRUE) 
 
