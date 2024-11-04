@@ -118,9 +118,9 @@ p1.parasite <- ggplot(crithidia_beediv, aes(x = Net_BeeDiversity, y= estimate__)
   theme(axis.title.x = element_blank(),
         axis.title.y = element_text(size=16),
         text = element_text(size=16))+
-     geom_jitter(data=spec.uni,
-             aes(y= CrithidiaParasitismRate, x=Net_BeeDiversity,
-                 ), width=0.05) 
+  geom_jitter(data=spec.uni,
+              aes(y= CrithidiaParasitismRate, x=Net_BeeDiversity),
+              width=0.05) 
     
 ggsave(p1.parasite, file="figures/parasite_beediv_Crithidia.pdf",
            height=5, width=10)
