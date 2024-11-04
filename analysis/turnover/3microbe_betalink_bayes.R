@@ -51,11 +51,26 @@ source("src/betalinkrPrep.R")
 ## Run or load turnover by geo distance models
 ## **********************************************************
 
-## only need to run models ones, otherwise will load models
+## only need to run models once, otherwise will load models
 
-run.mods=FALSE
+run.mods=TRUE
 
 if (run.mods==TRUE){
+  
+## Interaction turnover
+int.obligate.mod <- run_network_turnover_mod(this_component="WholeNetworkLinks",,
+                                                    this_network=obligate_poll_betalink)
+  
+int.transient.mod <- run_network_turnover_mod(this_component="WholeNetworkLinks",,
+                                                     this_network=transient_poll_betalink)
+
+## Turnover species composition
+speccomp.obligate.mod <- run_network_turnover_mod(this_component="DissimilaritySpeciesComposition",
+                                                  this_network=obligate_poll_betalink)
+
+speccomp.transient.mod <- run_network_turnover_mod(this_component="DissimilaritySpeciesComposition",
+                                                   this_network=transient_poll_betalink)
+  
   
 ## Rewiring
 rewiring.obligate.mod <- run_network_turnover_mod(this_component="OnlySharedLinks",
@@ -86,7 +101,11 @@ complete.transient.mod <- run_network_turnover_mod(this_component="TurnoverAbsen
                                                    this_network=transient_poll_betalink)
 
 ## save out models
-save(rewiring.obligate.mod,
+save(int.obligate.mod,
+     int.transient.mod,
+     speccomp.obligate.mod,
+     speccomp.transient.mod
+     rewiring.obligate.mod,
        rewiring.transient.mod,
        host.driven.obligate.mod,
        host.driven.transient.mod,
