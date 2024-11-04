@@ -61,7 +61,7 @@ custom.plot.decay <- function(x, xlim = c(0, max(x$data.x)), ylim = c(0, 1), add
 ## computes haversine distance matrix of sample sites, performs a mantel test to determine
 ## correlation between community dissimilarity and distance, then plots the distance decay curves
 
-genusspecies.decay.model <- function(data, type, which){
+genusspecies.decay.model <- function(data, type, which, model.type){
   #bray curtis dissimilarity matrix of 16s
   
   
@@ -108,7 +108,7 @@ genusspecies.decay.model <- function(data, type, which){
   dist_decay_model <- betapart::decay.model(dist.abund,
                                             dist.geo,
                                             y.type='dissim',
-                                            model.type = 'exp',
+                                            model.type = model.type,
                                             perm=100)
   # dist_decay_plot <- plot.decay(dist_decay_model,
   #                               main=genus)
@@ -187,7 +187,3 @@ f <- function(){
           lwd=2, col="darkred", add=TRUE)
 
 }
-path <- '~/Dropbox/SkyIslands/analysis/figures/distanceDecay'
-pdf.f(f, file= file.path(path, sprintf("%s.pdf",
-                                       paste(method.dist, "dd", types[1], sub, sep="_"))),
-      width=5, height=5)
