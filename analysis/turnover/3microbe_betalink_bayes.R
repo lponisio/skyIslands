@@ -133,12 +133,12 @@ if (run.decay.genus.mods == TRUE){
   ## save out models
   save(bombus_model,
        melissodes_model,
-       file="../microbiome/saved/decay_mods.Rdata")
+       file="../microbiome/saved/decay_genus_mods.Rdata")
 } else {
-    load("../microbiome/saved/decay_mods.Rdata")
+    load("../microbiome/saved/decay_genus_mods.Rdata")
 }
 
-run.decay.mictype.mods=TRUE
+run.decay.mictype.mods=FALSE
 
 if (run.decay.mictype.mods == TRUE){
   ob_model <- microbe.type.decay.model(spec16s, 'Obligate', model.type = 'exp')
@@ -172,7 +172,7 @@ panelA <- plot_decay_ggplot_combined(bombus_model,
 panelA <- panelA + labs(tag="A.")
 
 
-# GENUS comparison
+# microbe type comparison
 altpanelA <- plot_decay_ggplot_combined(ob_model,
                                      trans_model,
                                      mod1color='darkorange',
