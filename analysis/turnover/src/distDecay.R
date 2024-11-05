@@ -81,6 +81,119 @@ genusspecies.decay.model <- function(data, type, which, model.type){
   
 }
 
+genusspecies.decay.model <- function(data, type, which, model.type){
+  #bray curtis dissimilarity matrix of 16s
+  
+  
+  if(type == 'Genus'){
+    abund <- data %>%
+      filter(Genus == which) %>%
+      select(UniqueID, starts_with('16s')) %>%
+      select(-UniqueID)
+    
+    #distance matrix of sites
+    geo <- data %>%
+      filter(Genus == which) %>%
+      select(UniqueID, Long, Lat) %>%
+      select(-UniqueID) %>%
+      mutate()
+  } else if (type == 'GenusSpecies'){
+    
+    abund <- data %>%
+      filter(GenusSpecies == which) %>%
+      select(UniqueID, starts_with('16s')) %>%
+      select(-UniqueID)
+    #distance matrix of sites
+    geo <- data %>%
+      filter(GenusSpecies == which) %>%
+      select(UniqueID, Long, Lat) %>%
+      select(-UniqueID) %>%
+      mutate()
+  }
+  
+  
+  
+  
+  #abundance data frame - bray curtis dissimilarity
+  dist.abund <- vegdist(abund, method = "bray")
+  
+  #geographic data frame - haversine distance in m (takes a df with lat and long and calculates dist)
+  d.geo <- distm(geo, fun = distHaversine)
+  dist.geo <- as.dist(d.geo)/1000
+  
+  #abundance vs geographic mantel test
+  abund_geo  = mantel(dist.abund, dist.geo, method = "spearman", permutations = 9999, na.rm = TRUE)
+  print(abund_geo)
+  
+  dist_decay_model <- betapart::decay.model(dist.abund,
+                                            dist.geo,
+                                            y.type='dissim',
+                                            model.type = model.type,
+                                            perm=100)
+  # dist_decay_plot <- plot.decay(dist_decay_model,
+  #                               main=genus)
+  # dist_decay_plot
+  dist_decay_model
+  
+}
+
+
+microbe.type.decay.model <- function(data, type, model.type){
+  #bray curtis dissimilarity matrix of 16s
+  
+  
+  if(type == 'Obligate'){
+    abund <- data %>%
+      filter(WeightsObligateMicrobe == 1) %>%
+      select(UniqueID, starts_with('16s')) %>%
+      select(-UniqueID)
+    
+    #distance matrix of sites
+    geo <- data %>%
+      filter(WeightsObligateMicrobe == 1) %>%
+      select(UniqueID, Long, Lat) %>%
+      select(-UniqueID) %>%
+      mutate()
+  } else if (type == 'Facultative'){
+    abund <- data %>%
+      filter(WeightsTransientMicrobe == 1) %>%
+      select(UniqueID, starts_with('16s')) %>%
+      select(-UniqueID)
+    
+    #distance matrix of sites
+    geo <- data %>%
+      filter(WeightsTransientMicrobe == 1) %>%
+      select(UniqueID, Long, Lat) %>%
+      select(-UniqueID) %>%
+      mutate()
+  }
+  
+  
+  
+  
+  #abundance data frame - bray curtis dissimilarity
+  dist.abund <- vegdist(abund, method = "bray")
+  
+  #geographic data frame - haversine distance in m (takes a df with lat and long and calculates dist)
+  d.geo <- distm(geo, fun = distHaversine)
+  dist.geo <- as.dist(d.geo)/1000
+  
+  #abundance vs geographic mantel test
+  abund_geo  = mantel(dist.abund, dist.geo, method = "spearman", permutations = 9999, na.rm = TRUE)
+  print(abund_geo)
+  
+  dist_decay_model <- betapart::decay.model(dist.abund,
+                                            dist.geo,
+                                            y.type='dissim',
+                                            model.type = model.type,
+                                            perm=100)
+  # dist_decay_plot <- plot.decay(dist_decay_model,
+  #                               main=genus)
+  # dist_decay_plot
+  dist_decay_model
+  
+}
+
 
 plot_decay_ggplot_single <- function(x,
                                      xlab,
