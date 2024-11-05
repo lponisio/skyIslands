@@ -138,7 +138,7 @@ if (run.decay.genus.mods == TRUE){
     load("../microbiome/saved/decay_mods.Rdata")
 }
 
-run.decay.mictype.mods=FALSE
+run.decay.mictype.mods=TRUE
 
 if (run.decay.mictype.mods == TRUE){
   ob_model <- microbe.type.decay.model(spec16s, 'Obligate', model.type = 'exp')
@@ -159,18 +159,30 @@ if (run.decay.mictype.mods == TRUE){
 
 
 
-# Plot with ggplot2
+# GENUS comparison
 panelA <- plot_decay_ggplot_combined(bombus_model,
                            melissodes_model,
                            mod1color='navy',
                            mod2color='gold',
                            lty1='solid',
-                           lty2='dashed',
+                           lty2='solid',
                            xlab="Geographic Distance (km)",
                            ylab='Pairwise Bray-Curtis Dissimilarity')
 
 panelA <- panelA + labs(tag="A.")
 
+
+# GENUS comparison
+altpanelA <- plot_decay_ggplot_combined(ob_model,
+                                     trans_model,
+                                     mod1color='darkorange',
+                                     mod2color='darkgreen',
+                                     lty1='solid',
+                                     lty2='solid',
+                                     xlab="Geographic Distance (km)",
+                                     ylab='Pairwise Bray-Curtis Dissimilarity')
+
+altpanelA
 
 ## A. Interaction turnover
 int.plot <- plot_network_turnover_mod_compare(mod1=int.obligate.mod,
