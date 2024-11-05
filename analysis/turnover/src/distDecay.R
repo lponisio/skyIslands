@@ -95,14 +95,14 @@ genusspecies.decay.model <- function(data, type, which, model.type){
   dist.geo <- as.dist(d.geo)/1000
   
   #abundance vs geographic mantel test
-  abund_geo  = mantel(dist.abund, dist.geo, method = "spearman", permutations = 9999, na.rm = TRUE)
+  abund_geo  = mantel(dist.abund, dist.geo, method = "spearman", permutations = 999, na.rm = TRUE)
   print(abund_geo)
   
   dist_decay_model <- betapart::decay.model(dist.abund,
                                             dist.geo,
                                             y.type='dissim',
                                             model.type = model.type,
-                                            perm=100)
+                                            perm=999)
   # dist_decay_plot <- plot.decay(dist_decay_model,
   #                               main=genus)
   # dist_decay_plot
@@ -151,15 +151,17 @@ microbe.type.decay.model <- function(data, type, model.type){
   d.geo <- distm(geo, fun = distHaversine)
   dist.geo <- as.dist(d.geo)/1000
   
+  #browser()
+  
   #abundance vs geographic mantel test
-  abund_geo  = mantel(dist.abund, dist.geo, method = "spearman", permutations = 9999, na.rm = TRUE)
+  abund_geo  = mantel(dist.abund, dist.geo, method = "spearman", permutations = 999, na.rm = TRUE)
   print(abund_geo)
   
   dist_decay_model <- betapart::decay.model(dist.abund,
                                             dist.geo,
                                             y.type='dissim',
                                             model.type = model.type,
-                                            perm=100)
+                                            perm=999)
   # dist_decay_plot <- plot.decay(dist_decay_model,
   #                               main=genus)
   # dist_decay_plot
