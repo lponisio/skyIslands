@@ -123,12 +123,11 @@ save(int.obligate.mod,
 
 
 ## Pairwise bray curtis distance decay models
-
 source("src/distDecay.R")
 
-run.decay.mods <- FALSE
+run.decay.genus.mods=FALSE
 
-if (run.decay.mods == TRUE){
+if (run.decay.genus.mods == TRUE){
   bombus_model <- genusspecies.decay.model(spec16s, 'Bombus', type='Genus', model.type = 'exp')
   melissodes_model <- genusspecies.decay.model(spec16s, 'Melissodes', type='Genus', model.type='exp')
   ## save out models
@@ -137,9 +136,20 @@ if (run.decay.mods == TRUE){
        file="../microbiome/saved/decay_mods.Rdata")
 } else {
     load("../microbiome/saved/decay_mods.Rdata")
-  }
-  
+}
 
+run.decay.mictype.mods=FALSE
+
+if (run.decay.mictype.mods == TRUE){
+  ob_model <- microbe.type.decay.model(spec16s, 'Obligate', model.type = 'exp')
+  trans_model <- microbe.type.decay.model(spec16s, 'Facultative', model.type='exp')
+  ## save out models
+  save(ob_model,
+       trans_model,
+       file="../microbiome/saved/decay_mictype_mods.Rdata")
+} else {
+  load("../microbiome/saved/decay_mictype_mods.Rdata")
+}
 
 
 ## **********************************************************

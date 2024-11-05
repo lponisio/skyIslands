@@ -9,6 +9,34 @@ library(geosphere)
 library(betapart)
 library(tidyverse)
 
+## **********************************************************
+## Standardize, center, and transform data
+## **********************************************************
+
+## all of the variables that are explanatory variables and thus need
+## to be centered
+
+variables.to.log <- c("rare.degree",
+                      "BeeAbundance"
+)
+
+vars_yearsr <- c("MeanFloralAbundance",
+                 "MeanFloralDiversity",
+                 "SRDoy",
+                 "BeeAbundance",
+                 "BeeDiversity",
+                 "VisitedFloralDiversity"
+)
+
+vars_yearsrsp <- "rare.degree"
+vars_sp <- "MeanITD.x"
+vars_site <- "Lat"
+
+source("../microbiome/src/misc_microbe.R")
+source("../microbiome/src/standardize_weights_parasites.R")
+source("../microbiome/src/makeMultiLevelData.R")
+source("../microbiome/src/init_microbe.R")
+
 
 meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'GenusSpecies', 'Site', 'Lat', 'Long', 'WeightsObligateMicrobe', 'WeightsTransientMicrobe')
 
@@ -25,61 +53,6 @@ spec16s <- spec.net %>%
 ## computes haversine distance matrix of sample sites, performs a mantel test to determine
 ## correlation between community dissimilarity and distance, then plots the distance decay curves
 
-genusspecies.decay.model <- function(data, type, which, model.type){
-  #bray curtis dissimilarity matrix of 16s
-  
-  
-  if(type == 'Genus'){
-    abund <- data %>%
-      filter(Genus == which) %>%
-      select(UniqueID, starts_with('16s')) %>%
-      select(-UniqueID)
-    
-    #distance matrix of sites
-    geo <- data %>%
-      filter(Genus == which) %>%
-      select(UniqueID, Long, Lat) %>%
-      select(-UniqueID) %>%
-      mutate()
-  } else if (type == 'GenusSpecies'){
-    
-    abund <- data %>%
-      filter(GenusSpecies == which) %>%
-      select(UniqueID, starts_with('16s')) %>%
-      select(-UniqueID)
-    #distance matrix of sites
-    geo <- data %>%
-      filter(GenusSpecies == which) %>%
-      select(UniqueID, Long, Lat) %>%
-      select(-UniqueID) %>%
-      mutate()
-  }
-  
-  
-  
-  
-  #abundance data frame - bray curtis dissimilarity
-  dist.abund <- vegdist(abund, method = "bray")
-  
-  #geographic data frame - haversine distance in m (takes a df with lat and long and calculates dist)
-  d.geo <- distm(geo, fun = distHaversine)
-  dist.geo <- as.dist(d.geo)/1000
-  
-  #abundance vs geographic mantel test
-  abund_geo  = mantel(dist.abund, dist.geo, method = "spearman", permutations = 9999, na.rm = TRUE)
-  print(abund_geo)
-  
-  dist_decay_model <- betapart::decay.model(dist.abund,
-                                            dist.geo,
-                                            y.type='dissim',
-                                            model.type = model.type,
-                                            perm=100)
-  # dist_decay_plot <- plot.decay(dist_decay_model,
-  #                               main=genus)
-  # dist_decay_plot
-  dist_decay_model
-  
-}
 
 genusspecies.decay.model <- function(data, type, which, model.type){
   #bray curtis dissimilarity matrix of 16s
