@@ -28,6 +28,9 @@ library(gridExtra)
 library(bayesplot)
 library(glmmTMB)
 library(performance)
+library(betapart)
+library(grid)
+library(gridExtra)
 load("../../data/networks/microNets.RData")
 load("../../data/spec_RBCL_16s.RData")
 source("src/writeResultsTable.R")
@@ -118,38 +121,46 @@ save(int.obligate.mod,
   load("../microbiome/saved/turnover_mods.Rdata")
 }
 
+
+## Pairwise bray curtis distance decay models
+
+source("src/distDecay.R")
+
+run.decay.mods <- FALSE
+
+if (run.decay.mods == TRUE){
+  bombus_model <- genusspecies.decay.model(spec16s, 'Bombus', type='Genus', model.type = 'exp')
+  melissodes_model <- genusspecies.decay.model(spec16s, 'Melissodes', type='Genus', model.type='exp')
+  ## save out models
+  save(bombus_model,
+       melissodes_model,
+       file="../microbiome/saved/decay_mods.Rdata")
+} else {
+    load("../microbiome/saved/decay_mods.Rdata")
+  }
+  
+
+
+
 ## **********************************************************
 ## Make combined plots for model results for obligate vs
 ##  transient networks
 ## **********************************************************
 
-## Pairwise bray curtis dissimilarity between microbe communities in Bombus (blue) and Melissodes 
-## (yellow)
 
 
-source("src/distDecay.R")
+# Plot with ggplot2
+panelA <- plot_decay_ggplot_combined(bombus_model,
+                           melissodes_model,
+                           mod1color='navy',
+                           mod2color='gold',
+                           lty1='solid',
+                           lty2='dashed',
+                           xlab="Geographic Distance (km)",
+                           ylab='Pairwise Bray-Curtis Dissimilarity')
 
-bombus_model <- genusspecies.decay.model(spec16s, 'Bombus', type='Genus', model.type = 'exp')
-melissodes_model <- genusspecies.decay.model(spec16s, 'Melissodes', type='Genus', model.type='exp')
+panelA <- panelA + labs(tag="A.")
 
-
-custom.plot.decay(bombus_model, 
-                  col='navy', 
-                  bg=alpha('navy', 0.01), pch=21, lwd=10,
-                  cex=2, remove.dots = FALSE,
-                  xlab='Geographic Distance (km)',
-                  ylab="Pairwise Bray-Curtis Dissimilarity") 
-
-
-panelA <- plot.decay(melissodes_model, 
-                     col='gold', 
-                     bg=alpha('gold', 0.1), pch=21,
-                     lwd=10,
-                     cex=2,
-                     xlab='Geographic Distance (km)',
-                     ylab="Pairwise Bray-Curtis Dissimilarity", add=TRUE, remove.dots = FALSE)
-
-panelA + labs(tag="B.")
 
 ## A. Interaction turnover
 int.plot <- plot_network_turnover_mod_compare(mod1=int.obligate.mod,
@@ -244,15 +255,18 @@ complete.plot[[1]]
 panelF <- complete.plot[[1]] + labs(tag="F.")
 complete.table <- complete.plot[[2]]
 
-## Make panel figs and save out
-pdf("../microbiome/figures/final/turnover_combined.pdf", width = 8.5, height = 11) # Open a new pdf file
-grid.arrange(panelA,
-             panelB,
-             panelC,
-             panelD,
-             panelE,
-             panelF,
-             ncol=2) 
+
+# Now arrange all panels in the PDF output
+pdf("../microbiome/figures/final/turnover_combined.pdf", width = 8.5, height = 11)  # Open a new PDF file
+grid.arrange(
+    panelA,
+    panelB,
+    panelC,
+    panelD,
+    panelE,
+    panelF,
+    ncol = 2
+)
 dev.off()
 
 ## Combine results tables and save out
