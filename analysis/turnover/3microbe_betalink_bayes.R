@@ -164,10 +164,12 @@ panelA <- plot_decay_ggplot_combined(bombus_model,
                            melissodes_model,
                            mod1color='navy',
                            mod2color='gold',
+                           alpha1=0.1,
+                           alpha2=0.3,
                            lty1='solid',
                            lty2='solid',
                            xlab="Geographic Distance (km)",
-                           ylab='Pairwise Bray-Curtis Dissimilarity')
+                           ylab='Bray-Curtis Dissimilarity')
 
 panelA <- panelA + labs(tag="A.")
 
@@ -175,14 +177,16 @@ panelA <- panelA + labs(tag="A.")
 # microbe type comparison
 altpanelA <- plot_decay_ggplot_combined(ob_model,
                                      trans_model,
-                                     mod1color='darkorange',
-                                     mod2color='darkgreen',
+                                     mod1color='darkgreen',
+                                     mod2color='darkorange',
+                                     alpha1=0.5,
+                                     alpha2=0.1,
                                      lty1='solid',
                                      lty2='solid',
                                      xlab="Geographic Distance (km)",
-                                     ylab='Pairwise Bray-Curtis Dissimilarity')
+                                     ylab='Bray-Curtis Dissimilarity')
 
-altpanelA
+altpanelA <- altpanelA + labs(tag="A.")
 
 ## A. Interaction turnover
 int.plot <- plot_network_turnover_mod_compare(mod1=int.obligate.mod,
@@ -193,7 +197,7 @@ int.plot <- plot_network_turnover_mod_compare(mod1=int.obligate.mod,
                                                    network_type2='Transient',
                                                    this.effect="GeoDist",
                                                    this.resp="WholeNetworkLinks",
-                                                   label="Dissimilarity: Interaction Turnover")
+                                                   label="Total Interaction Turnover")
 int.plot[[1]]
 
 panelB <- int.plot[[1]] + labs(tag="B.")
@@ -281,7 +285,7 @@ complete.table <- complete.plot[[2]]
 # Now arrange all panels in the PDF output
 pdf("../microbiome/figures/final/turnover_combined.pdf", width = 8.5, height = 11)  # Open a new PDF file
 grid.arrange(
-    panelA,
+    altpanelA,
     panelB,
     panelC,
     panelD,
