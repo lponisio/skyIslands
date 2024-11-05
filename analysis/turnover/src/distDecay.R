@@ -231,8 +231,8 @@ plot_decay_ggplot_combined <- function(x,
   
   # Create the ggplot object
   p <- ggplot(data1, aes(x = x.data.x, y = x.data.y)) +
-    geom_jitter(data=data1, aes(x = x.data.x, y = x.data.y), fill = mod1color, alpha = alpha1 , color="black", pch=21, cex=3) +
-    geom_jitter(data=data2, aes(x = z.data.x, y = z.data.y), fill = mod2color, alpha = alpha2 , color="black", pch=21, cex=3) +
+    geom_point(data=data1, aes(x = x.data.x, y = x.data.y), fill = mod1color, alpha = alpha1 , color="black", pch=21, cex=3, position = position_jitter(w = 0.5, h = 0)) +
+    geom_point(data=data2, aes(x = z.data.x, y = z.data.y), fill = mod2color, alpha = alpha2 , color="black", pch=21, cex=3, position = position_jitter(w = 0.5, h = 0)) +
     geom_line(aes(x = sorted_data1$x.data.x, y = (1 - fitted_values1$fitted.model1..order.data1.x.data.x..)),
               color = 'black', linewidth=2.5,) +
     geom_line(aes(x = sorted_data1$x.data.x, y = (1 - fitted_values1$fitted.model1..order.data1.x.data.x..)), color = mod1color, linewidth=2, linetype=lty1) +
