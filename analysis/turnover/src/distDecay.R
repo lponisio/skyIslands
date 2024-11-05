@@ -10,7 +10,7 @@ library(betapart)
 library(tidyverse)
 
 
-meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'GenusSpecies', 'Site', 'Lat', 'Long')
+meta_cols <- c('UniqueID', 'Family', 'Genus', 'Species', 'GenusSpecies', 'Site', 'Lat', 'Long', 'WeightsObligateMicrobe', 'WeightsTransientMicrobe')
 
 spec16s <- spec.net %>%
   filter(Apidae == 1) %>%
