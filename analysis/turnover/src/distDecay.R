@@ -113,10 +113,6 @@ plot_decay_ggplot_single <- function(x,
 }
 
 
-
-# Plot with ggplot2
-plot_decay_ggplot_single(bombus_model, xlab="Geographic Distance (km)", ylab='Pairwise Bray-Curtis Dissimilarity')
-
 plot_decay_ggplot_combined <- function(x,
                                        z,
                                        xlab,
