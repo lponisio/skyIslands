@@ -149,13 +149,13 @@ drop.PD.NA <- unique(spec.net$UniqueID[spec.net$WeightsMicrobe == 1 &
 spec.net <- spec.net[!(spec.net$UniqueID %in% drop.PD.NA),] %>%
   mutate(PD = ifelse(!is.na(PD), PD, 0))
 
-
+## TODO figure out why this csv is returning one value
 
 ##adding abundance weights column
 abund_csv <- data.frame(read.csv("../../data/sp_year_site_round.csv"))
 
 #join abundance csv
-spec.net <- join(spec.net, abund_csv)
+spec.net <- merge(spec.net, abund_csv)
 
 #genus.microbes <- spec.microbes[spec.microbes$Genus == this_genus, ]
 
