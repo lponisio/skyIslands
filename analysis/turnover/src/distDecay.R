@@ -213,7 +213,8 @@ plot_decay_ggplot_combined <- function(x,
                                        lty1,
                                        lty2,
                                        lwd = 1.5,
-                                       cex = 1) {
+                                       cex = 1,
+                                       add.points=TRUE) {
   
   # Extract data and fitted values
   data1 <- data.frame(x$data.x, x$data.y)
@@ -228,11 +229,11 @@ plot_decay_ggplot_combined <- function(x,
   sorted_data2 <- data2[order(data2$z.data.x), ]
   
   #browser()
-  
+  if(add.points==TRUE){
   # Create the ggplot object
   p <- ggplot(data1, aes(x = x.data.x, y = x.data.y)) +
-    geom_point(data=data1, aes(x = x.data.x, y = x.data.y), fill = mod1color, alpha = alpha1 , color="black", pch=21, cex=3, position = position_jitter(w = 0.5, h = 0)) +
-    geom_point(data=data2, aes(x = z.data.x, y = z.data.y), fill = mod2color, alpha = alpha2 , color="black", pch=21, cex=3, position = position_jitter(w = 0.5, h = 0)) +
+    geom_point(data=data1, aes(x = x.data.x, y = x.data.y), fill = mod1color, alpha = alpha1 , color="black", pch=21, cex=3, position = position_jitter(w = 10, h = 0)) +
+    geom_point(data=data2, aes(x = z.data.x, y = z.data.y), fill = mod2color, alpha = alpha2 , color="black", pch=21, cex=3, position = position_jitter(w = 10, h = 0)) +
     geom_line(aes(x = sorted_data1$x.data.x, y = (1 - fitted_values1$fitted.model1..order.data1.x.data.x..)),
               color = 'black', linewidth=2.5,) +
     geom_line(aes(x = sorted_data1$x.data.x, y = (1 - fitted_values1$fitted.model1..order.data1.x.data.x..)), color = mod1color, linewidth=2, linetype=lty1) +
@@ -244,6 +245,24 @@ plot_decay_ggplot_combined <- function(x,
     theme(axis.title.x = element_text(size=16),
           axis.title.y = element_text(size=16),
           text = element_text(size=16))
+  }
+  
+  if(add.points==FALSE){
+    # Create the ggplot object
+    p <- ggplot(data1, aes(x = x.data.x, y = x.data.y)) + 
+      geom_line(aes(x = sorted_data1$x.data.x, y = (1 - fitted_values1$fitted.model1..order.data1.x.data.x..)),
+                color = 'black', linewidth=2.5,) +
+      geom_line(aes(x = sorted_data1$x.data.x, y = (1 - fitted_values1$fitted.model1..order.data1.x.data.x..)), color = mod1color, linewidth=2, linetype=lty1) +
+      geom_line(data=data2, aes(x = sorted_data2$z.data.x, y = (1 - fitted_values2$fitted.model2..order.data2.z.data.x..)),
+                color = 'black', linewidth=2.5,) +
+      geom_line(data=data2, aes(x = sorted_data2$z.data.x, y = (1 - fitted_values2$fitted.model2..order.data2.z.data.x..)), color = mod2color, linewidth=2, linetype=lty2) +
+      labs(x=xlab, y=ylab) +
+      theme_classic() +
+      theme(axis.title.x = element_text(size=16),
+            axis.title.y = element_text(size=16),
+            text = element_text(size=16))
+  }
   
   return(p)
+  
 }
