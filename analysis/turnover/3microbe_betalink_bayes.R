@@ -179,12 +179,12 @@ altpanelA <- plot_decay_ggplot_combined(ob_model,
                                      trans_model,
                                      mod1color='darkgreen',
                                      mod2color='darkorange',
-                                     alpha1=0.5,
+                                     alpha1=0.1,
                                      alpha2=0.1,
                                      lty1='solid',
                                      lty2='solid',
                                      xlab="Geographic Distance (km)",
-                                     ylab='Bray-Curtis Dissimilarity')
+                                     ylab='Bray-Curtis Dissimilarity', add.points=FALSE)
 
 altpanelA <- altpanelA + labs(tag="A.")
 
@@ -297,7 +297,7 @@ dev.off()
 
 ## Combine results tables and save out
 combined.table <- bind_rows(int.table,
-                            speccomp.table,
+                            #speccomp.table,
                             rewiring.table,
                             host.table,
                             microbe.table,
