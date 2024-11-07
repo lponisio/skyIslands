@@ -33,7 +33,6 @@ library(grid)
 library(gridExtra)
 load("../../data/networks/microNets.RData")
 load("../../data/spec_RBCL_16s.RData")
-source("src/writeResultsTable.R")
 source("src/networkTurnover.R")
 
 ## **********************************************************
