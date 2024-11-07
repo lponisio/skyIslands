@@ -260,7 +260,7 @@ plot_decay_ggplot_combined <- function(x,
       theme_classic() +
       theme(axis.title.x = element_text(size=16),
             axis.title.y = element_text(size=16),
-            text = element_text(size=16))
+            text = element_text(size=16)) + ylim(0,1)
   }
   
   return(p)
