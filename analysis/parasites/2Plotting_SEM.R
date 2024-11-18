@@ -335,9 +335,9 @@ apicystis_degree <-
 apicystis_degree <- mutate(apicystis_degree, Bee = "Bombus")
 
 p8.parasite <- ggplot(apicystis_degree, aes(x = rare.degree, y = estimate__)) +
-  geom_line(aes(x = rare.degree, y= estimate__), size = 1.5) +
-  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4) +
-  scale_fill_manual(labels ="Bombus 0.95") +
+  geom_line(aes(x = rare.degree, y= estimate__), size = 1.5, color = "#3182bd") +
+  geom_ribbon(aes(ymin = lower__, ymax = upper__, fill = Bee), alpha=0.4) +
+  scale_fill_manual(values = "#3182bd", labels ="Bombus 0.95") +
   labs(x = "Degree", y = "Apicystis prevalence",
        fill = "Credible interval") +
   theme_ms() +
