@@ -226,7 +226,7 @@ ggsave(p4.parasite, file="figures/parasite_floraldiv_Apicystis.pdf",
     
     
     
-parasite.dilution <- ggarrange(p1.parasite, p3.parasite, p2.parasite, p4.parasite, 
+parasite.dilution <- ggarrange(p3.parasite, p1.parasite, p4.parasite, p2.parasite,
                             labels = c("A", "B", "C","D"), 
                             ncol = 2, nrow = 2)
 
