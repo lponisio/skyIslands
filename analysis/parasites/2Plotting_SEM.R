@@ -71,7 +71,7 @@ axis.degree <-  standardize.axis(labs.degree,
 load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all_bees.Rdata")
 fit.bombus <- fit.parasite
 
-load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_diversity.Rdata")
+load(file="../../../skyIslands_saved/parasite-results/saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_apis_abundance.Rdata")
 fit.apis <- fit.parasite
 ## https://www.rensvandeschoot.com/tutorials/generalised-linear-models-with-brms/
 ## Generate newdata draws
