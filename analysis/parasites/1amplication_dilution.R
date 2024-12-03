@@ -38,8 +38,11 @@ variables.to.log.1 <- c("Net_HBAbundance", "Net_BombusAbundance")
 ## loads specimen data
 source("src/init.R")
 ## drop VC (Valles caldera) because it wasn't a meadow)
+print("Before dropping VC")
+dim(spec.net)
 spec.net <- filter(spec.net, Site != "VC")
-
+print("After dropping VC")
+dim(spec.net)
 ## because only Bombus and apis models converge, setted the rest of
 ## the trait data to NA so that the variables scale properly
 spec.net$MeanITD[spec.net$Genus !=
