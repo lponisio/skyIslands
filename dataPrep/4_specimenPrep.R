@@ -449,6 +449,7 @@ par.bees.yr <- makeNets(prep.para, net.type="Yr",
                         poll.group="Bees")
 
 ## merge site summary metrics
+
 spec.net <- merge(spec.net, bees.yr, all.x=TRUE)
 spec.net$SpSiteYear <- NULL
 
