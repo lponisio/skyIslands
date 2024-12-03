@@ -1,7 +1,8 @@
 standardizeVars <- function(spec.data, vars, key, by.site = TRUE){
     ##  center all of the x variables, need to use unique values to avoid
     ##  repetition by the number of specimens
-    if(by.site){
+  browser()  
+   if(by.site){
         unique.site.vals <-  unique(spec.data[,c("Site", key, vars)])
     } else {
         unique.site.vals <-  unique(spec.data[,c(key, vars)])
