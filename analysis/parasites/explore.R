@@ -151,6 +151,8 @@ sick.totals <- spec.net %>%
             InfectedCrithidiaBombi=round(mean(CrithidiaBombi, na.rm=TRUE),2),
             InfectedCrithidiaExpoeki=round(mean(CrithidiaExpoeki,
                                                 na.rm=TRUE), 2),
+            InfectedCrithdiaMellificae = round(mean(CrithidiaMellificae,
+                                                    na.rm=TRUE), 2),
             InfectedCrithidia=round(mean(CrithidiaPresence,
                                          na.rm=TRUE), 2),
             InfectedNosemaBombi=round(mean(NosemaBombi,
@@ -240,7 +242,7 @@ ggsave(Bombus_ParasiteRate, file="figures/Bombus_ParasiteRate.pdf",
 ## Parasite prevalence in different groups of bees. 
 
 
-parasites_bees <- pivot_longer(spec.net,
+parasites_bees <- pivot_longer(spec.orig,
                               cols = c(ApicystisSpp, AscosphaeraSpp,
                                        CrithidiaPresence), names_to =
                               "Parasites")
@@ -357,7 +359,7 @@ ggsave(p, file="figures/proportion_pos.jpg",
 
 # Boxplot of sites and  rate of crithidia in bombus species
 
-parasite_prevalence_sites <- spec.net %>%  
+parasite_prevalence_sites <- spec.orig %>%  
   filter(Site != "VC" & Site != "UK" & Site != "SS") %>% 
   filter(Genus == "Bombus") %>% 
   ggplot(aes(x= reorder(Site, Lat, decreasing = TRUE), y= SpCrithidiaBombusParasitismRate, 
@@ -371,3 +373,37 @@ parasite_prevalence_sites <- spec.net %>%
 
 ggsave(parasite_prevalence_sites, file="figures/prevalence_by_sites.jpg",
        height=4, width=5)
+
+## Parasite prevalence by genus
+
+parasite_prevalence <- parasites_bees %>%   
+  filter(!is.na(value)) %>% 
+  filter(Order == "Hymenoptera" & Family != "Vespidae" & Family != "Sphecidae") %>% 
+  filter(Apidae == 1) %>% 
+  group_by(Genus, Parasites) %>% 
+  summarise(total_screened = length(UniqueID[!is.na(ParasitePresence)]),              # Total number of individuals screened
+            positives = sum(value),         # Total positives
+            percent_positive = (positives / total_screened) * 100  # Percentage of positives
+            ) %>% 
+  filter(percent_positive != 0)
+
+
+spec.orig <- spec.orig[!spec.orig$Genus%in%
+           c("Dufourea", "Pseudopanurgus",
+             "Colletes", ""),]
+
+par_prev <- spec.orig %>%
+  filter(WeightsPar == 1) %>% 
+  ## Subset to Weights == 1
+  group_by(Genus) %>%
+  summarise(TestedTotals = length(UniqueID[Apidae == 1]),
+            InfectedApicystisSpp= round(sum(ApicystisSpp, na.rm=TRUE)/TestedTotals * 100, 2),
+            InfectedAscosphaeraSpp=round(sum(AscosphaeraSpp, na.rm=TRUE)/TestedTotals *100, 2),
+            InfectedCrithidiaBombi=round(sum(CrithidiaBombi, na.rm=TRUE)/TestedTotals *100, 2),
+            InfectedCrithidiaExpoeki=round(sum(CrithidiaExpoeki, na.rm=TRUE)/TestedTotals *100, 2),
+            InfectedCrithdiaMellificae = round(sum(CrithidiaMellificae, na.rm=TRUE)/TestedTotals *100, 2),
+)
+spec.orig %>% 
+  filter(WeightsPar == 1) %>% 
+  summarise(n = n())
+
