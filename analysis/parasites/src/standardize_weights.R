@@ -11,7 +11,7 @@ standardizeVars <- function(spec.data, vars, key, by.site = TRUE){
     print("Dimensions of the data before merging the standardize data")
     print(dim(spec.data))
     spec.data[, vars] <- NULL
-    spec.data <- inner_join(spec.data, unique.site.vals, unmatched = "error")
+    spec.data <- left_join(spec.data, unique.site.vals)
     print("Dimensions of the data after merging the standardize data")
     print(dim(spec.data))
                                         # layout(matrix(1:(2*round(length(vars)/2)), nrow=2))

@@ -697,7 +697,7 @@ spec.net$SiteSRYearSpp <- NULL
 print("After merge with ind level data")
 print(dim(spec.net))
 
-## bee taits
+## bee traits
 bee.traits <-
     read.csv("../../skyIslands_saved/data/raw/bee_traits.csv")
 bee.traits$GenusSpecies <- fix.white.space(bee.traits$GenusSpecies)
