@@ -59,9 +59,9 @@ getSpec <- function(species.lev, names.net, seps="_"){
 
     SR <- try(strsplit(names.net, seps)[[1]][3], silent=TRUE)
     if(!is.na(SR)){
-        all.pp$SR <- SR
+        all.pp$SampleRound <- SR
         all.pp$SpSiteYear <- paste0(all.pp$GenusSpecies, all.pp$Site,
-                                    all.pp$Year, all.pp$SR)
+                                    all.pp$Year, all.pp$SampleRound)
     }
     return(all.pp)
 }

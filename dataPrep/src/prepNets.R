@@ -12,19 +12,20 @@ dropNet <- function(z){
 ###  adj matrices by site, yr, SR
 makeNets <- function(spec.dat, net.type,
                      species=c("Plant", "Pollinator"),
-                     poll.groups="all",
+                     poll.groups="all", mean.by.year=FALSE,
                      ...){
     ## 1. spec.data: the specimen data, can be all groups, only bees
     ## etc.
-    ## 2. net.type: a character string, "YrSR"= create networks by year
-    ## and sampling round or "Yr" by year.
+    ## 2. net.type: a character string, "YearSR"= create networks by year
+    ## and sampling round or "Year" by year.
     ## 3. species: a vector with two entries, c("Plant", "Pollinator"),
     ## or c("Pollinator", "Parasite")
     ## 4. poll.groups: a character string for naming the
     ## networks. Should correspond to what specimen data subset was
     ## passed in, i.e., "all", "bees"
     spec.dat$YearSR <- paste(spec.dat$Year, spec.dat$SampleRound, sep=".")
-    nets <- breakNet(spec.dat, 'Site', 'YearSR', ...)
+    nets <- breakNet(spec.dat, site='Site', year=net.type,
+                     mean.by.year=mean.by.year, ...)
     nets <- lapply(nets, bipartite::empty)
 
     ## graphs
@@ -50,7 +51,13 @@ makeNets <- function(spec.dat, net.type,
     years <- sapply(strsplit(names(nets), "[.]"), function(x) x[[2]])
     sites <- sapply(strsplit(names(nets), "[.]"), function(x) x[[1]])
 
-    save(nets.graph,nets.graph.uw, nets, years, sites,
+    if(net.type == "YearSR" & mean.by.year == FALSE){
+        SRs <- sapply(strsplit(names(nets), "[.]"), function(x) x[[3]])
+    } else{
+        SRs <- NA
+    }
+
+    save(nets.graph,nets.graph.uw, nets, years, sites, SRs,
          file=sprintf("../data/networks/%s_%s_%s.Rdata", net.type,
                       paste(species, collapse=""), poll.groups
                       ))
@@ -70,7 +77,7 @@ makeNets <- function(spec.dat, net.type,
 breakNet <- function(spec.dat, site, year,
                      higher.level="GenusSpecies",
                      lower.level="PlantGenusSpecies",
-                     mean.by.year=FALSE ){
+                     mean.by.year){
     ## Breaks network by site and year, and if mean.by.year=TRUE
     ## (should be used for year-level networks), takes the mean across
     ## sampling rounds puts data together in a list and removes empty

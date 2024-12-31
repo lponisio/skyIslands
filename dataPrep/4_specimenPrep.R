@@ -13,7 +13,7 @@ source("lab_paths.R")
 local.path
 
 dir.bombus <- file.path(local.path, "skyIslands")
- 
+
 ## *****************************************************************
 ## create relational database, add species IDs
 ## *****************************************************************
@@ -182,7 +182,7 @@ calcSummaryStats <- function(spec.method, method){
                   SpParasitismRate = mean(ParasitePresence, na.rm=TRUE),
                   SpCrithidiaParasitismRate = mean(CrithidiaPresence, na.rm=TRUE),
                   SpApicystisParasitismRate = mean(ApicystisSpp, na.rm=TRUE),
-                  SpCrithidiaBombusParasitismRate = mean(CrithidiaPresence[Genus == "Bombus"], 
+                  SpCrithidiaBombusParasitismRate = mean(CrithidiaPresence[Genus == "Bombus"],
                                                       na.rm=TRUE),
                   SpCrithidiaHBParasitismRate = mean (CrithidiaPresence
                                                    [GenusSpecies == "Apis mellifera"],
@@ -251,7 +251,7 @@ calcSummaryStats <- function(spec.method, method){
                   SRDoy=mean(Doy),
                   CrithidiaParasitismRate=mean(CrithidiaPresence, na.rm=TRUE),
                   ApicystisParasitismRate=mean(ApicystisSpp, na.rm=TRUE),
-                  CrithidiaBombusParasitismRate= mean(CrithidiaPresence[Genus == "Bombus"], 
+                  CrithidiaBombusParasitismRate= mean(CrithidiaPresence[Genus == "Bombus"],
                                                       na.rm=TRUE),
                   CrithidiaHBParasitismRate= mean (CrithidiaPresence
                                                    [GenusSpecies == "Apis mellifera"],
@@ -260,7 +260,7 @@ calcSummaryStats <- function(spec.method, method){
     site.sp.yr <- spec %>%
         group_by(Site, Year, GenusSpecies, Genus) %>%
         summarise(Abundance = length(GenusSpecies))
-    
+
     site.sp.yr.round <- spec %>%
       group_by(Site, Year, SampleRound, GenusSpecies, Genus) %>%
       summarise(AbundanceSYR = mean(length(GenusSpecies)))
@@ -408,15 +408,17 @@ write.csv(traits, file='../data/parasitetraits.csv', row.names=FALSE)
 ## *******************************************************************
 
 ## plant-pollinator networks
-bees.syr.yr.sr <- makeNets(spec.net.nets, net.type="YrSR", poll.group="BeesSyrphids")
-bees.syr.yr <- makeNets(spec.net.nets, net.type="Yr", mean.by.year=TRUE,
+bees.syr.yr.sr <- makeNets(spec.net.nets, net.type="YearSR",
+                           poll.group="BeesSyrphids")
+bees.syr.yr <- makeNets(spec.net.nets, net.type="YearSR", mean.by.year=TRUE,
          poll.group="BeesSyrphids")
 
 bees.yr.sr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
-         net.type="YrSR",
+         net.type="YearSR",
          poll.group="Bees")
+
 bees.yr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
-         net.type="Yr", mean.by.year=TRUE, poll.group="Bees")
+         net.type="YearSR", mean.by.year=TRUE, poll.group="Bees")
 
 spec.sub <- agg.spec.sub %>%
   dplyr::select(UniqueID, GenusSpecies, Site, Year, SampleRound, AscosphaeraSpp,
@@ -432,7 +434,7 @@ prep.para <- spec.sub %>%
                names_to = "Parasite", values_to = "count")
 prep.para <- as.data.frame(prep.para)
 
-par.bees.yr.sr <- makeNets(prep.para, net.type="YrSR",
+par.bees.yr.sr <- makeNets(prep.para, net.type="YearSR",
                            species=c("Pollinator",
                                      "Parasite"),
                            lower.level="GenusSpecies",
@@ -440,7 +442,7 @@ par.bees.yr.sr <- makeNets(prep.para, net.type="YrSR",
                            poll.group="Bees")
 
 
-par.bees.yr <- makeNets(prep.para, net.type="Yr",
+par.bees.yr <- makeNets(prep.para, net.type="YearSR",
                         species=c("Pollinator",
                                   "Parasite"),
                         lower.level="GenusSpecies",
@@ -449,9 +451,17 @@ par.bees.yr <- makeNets(prep.para, net.type="Yr",
                         poll.group="Bees")
 
 ## merge site summary metrics
+print("specimen dim before network metric year-sr merge")
+dim(spec.net)
 
-spec.net <- merge(spec.net, bees.yr, all.x=TRUE)
-spec.net$SpSiteYear <- NULL
+bees.yr.sr <- bees.yr.sr[bees.yr.sr$speciesType == "higher.level",]
+bees.yr.sr$SpSiteYear <- NULL
+
+spec.net <- merge(spec.net, bees.yr.sr, all.x=TRUE)
+dim(spec.net)
+print("specimen dim after network metric year-sr merge")
+
+spec.net$speciesType <- NULL
 
 ## *******************************************************************
 ##  Data checks
@@ -682,14 +692,14 @@ print(dim(spec.net))
 ## key that matches the spec.net dataset and then merge the species
 ## level information to the full dataset.
 spec.indiv <- read_csv("../data/spstats_net.csv")
-spec.indiv$SiteSRYearSpp <- paste(spec.indiv$Site, spec.indiv$Year, spec.indiv$SampleRound, 
+spec.indiv$SiteSRYearSpp <- paste(spec.indiv$Site, spec.indiv$Year, spec.indiv$SampleRound,
                                 spec.indiv$GenusSpecies, sep = "_")
 spec.indiv <- subset(spec.indiv, select = -c(Site, Year, SampleRound, GenusSpecies))
 
-spec.net$SiteSRYearSpp <- paste(spec.net$Site, spec.net$Year, spec.net$SampleRound, 
+spec.net$SiteSRYearSpp <- paste(spec.net$Site, spec.net$Year, spec.net$SampleRound,
                                 spec.net$GenusSpecies, sep = "_")
 
-## Merging species data with individual level data. 
+## Merging species data with individual level data.
 print("Before merge with ind level data")
 print(dim(spec.net))
 spec.net <- merge(spec.net, spec.indiv, all.x=TRUE)
@@ -703,7 +713,7 @@ bee.traits <-
 bee.traits$GenusSpecies <- fix.white.space(bee.traits$GenusSpecies)
 bee.traits <- bee.traits[, c("GenusSpecies", "Sociality", "Lecty", "MeanITD"),]
 
-## network traits 
+## network traits
 net.traits <- read.csv("../data/networks_traits.csv")
 net.traits <- net.traits[, c("GenusSpecies", "r.degree"),]
 
