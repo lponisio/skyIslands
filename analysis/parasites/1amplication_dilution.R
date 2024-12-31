@@ -37,7 +37,8 @@ variables.to.log.1 <- c("Net_HBAbundance", "Net_BombusAbundance")
 
 ## loads specimen data
 source("src/init.R")
-## drop VC (Valles caldera) because it wasn't a meadow)
+
+## drop VC (Valles caldera) because it was more of a grassland, we only surveyed it one year)
 print("Before dropping VC")
 dim(spec.net)
 spec.net <- filter(spec.net, Site != "VC")
@@ -45,19 +46,23 @@ print("After dropping VC")
 dim(spec.net)
 ## because only Bombus and apis models converge, setted the rest of
 ## the trait data to NA so that the variables scale properly
-spec.net$MeanITD[spec.net$Genus !=
-                 "Bombus" & is.na(spec.net$Apidae)] <- NA
-spec.net$rare.degree[!spec.net$Genus %in% c("Bombus", "Apis") &
-                     is.na(spec.net$Apidae)] <- NA
+screened.bombus <- unique(spec.net$GenusSpecies[spec.net$Apidae == 1 &
+                                                spec.net$Genus == "Bombus"])
+screened.bombus <- screened.bombus[!is.na(screened.bombus)]
+
+spec.net$MeanITD[!spec.net$GenusSpecies %in% screened.bombus] <- NA
+
+spec.net$rare.degree[!spec.net$GenusSpecies %in%
+                     c("Apis mellifera", screened.bombus)] <- NA
 
 dim(spec.net)
 ## raw, non standardized data for plotting
-spec.orig <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1, 
+spec.orig <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1,
                          standardize=FALSE)
 
 ## Make SEM weights and standardize data.
-spec.net <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1, 
-                        vars_yearsr = vars_yearsr, vars_sp = vars_sp, 
+spec.net <- prepDataSEM(spec.net, variables.to.log, variables.to.log.1,
+                        vars_yearsr = vars_yearsr, vars_sp = vars_sp,
                         vars_yearsrsp = vars_yearsrsp,
                         vars_site=vars_site)
 
@@ -78,7 +83,7 @@ source("src/plant_poll_models.R")
 
 save(spec.net, spec.orig, file="saved/spec_weights.Rdata")
 
-## Load phylogeny 
+## Load phylogeny
 load("../../data/community_phylogeny.Rdata")
 ## Species that are not in the phylogeny are not used. brms is not
 ## allowing an incomplete phylogeny, to avoid the error we changed the
@@ -96,7 +101,7 @@ spec.bombus$GenusSpecies[spec.bombus$GenusSpecies %in%
 ## **********************************************************
 ## Parasite models set up
 ## **********************************************************
-## phylogeny must be last in all xvar sets 
+## phylogeny must be last in all xvar sets
 ## social species abundances
 xvars.ss <-  c("Net_BeeDiversity",
                "Net_BombusAbundance",
@@ -115,12 +120,12 @@ xvars.ba <- xvars.ss[xvars.ss != "Net_HBAbundance"]
 ## bombus abundance are colinear)
 xvars.ha <- xvars.ss[xvars.ss != "Net_BombusAbundance"]
 
-## all bee abundance 
+## all bee abundance
 xvars.all <- c("Net_BeeAbundance",
                xvars.ss[!xvars.ss %in%
                         c("Net_HBAbundance", "Net_BombusAbundance")])
 
-## diversity only 
+## diversity only
 xvars.div <- xvars.all[xvars.all != "Net_BeeAbundance"]
 
 ## **********************************************************
@@ -178,7 +183,7 @@ bombus.ss <- runCombinedParasiteModels(spec.data= spec.bombus,
                                        xvar.name=xvar.order[1])
 ## HB and bombus abundance are colinear in crithidia model, so not a valid model
 
-## bombus abundance only 
+## bombus abundance only
 bombus.ba <- runCombinedParasiteModels(spec.data= spec.bombus,
                                        species.group="bombus",
                                        xvars=xvars.ba,
@@ -187,7 +192,7 @@ bombus.ba <- runCombinedParasiteModels(spec.data= spec.bombus,
                                        site.lat=site.or.lat,
                                        xvar.name=xvar.order[2])
 
-## all bee abundance 
+## all bee abundance
 bombus.all <- runCombinedParasiteModels(spec.data= spec.bombus,
                                         species.group="bombus",
                                         xvars=xvars.all,
@@ -211,7 +216,7 @@ sum.loo.bombus.crithidia <- makeLooTable(parasite="CrithidiaSpp",
                                          bombus.loo.crithidia
                                          )
 loo_compare(bombus.loo.crithidia)
-## bombus abundance an all abundance model fits are not distinguishable 
+## bombus abundance an all abundance model fits are not distinguishable
 
 ## **********************************************************
 ## apicystis
@@ -228,7 +233,7 @@ sum.loo.bombus.apicystis <- makeLooTable(parasite="ApicystisSpp",
                                          )
 loo_compare(bombus.loo.apicystis)
 ## The best fit is the abundance of bombus and apis together, which in
-## this model are not colinear. 
+## this model are not colinear.
 
 ## **********************************************************
 ## Honey bees
@@ -251,7 +256,7 @@ apis.ss <- runCombinedParasiteModels(spec.data= spec.apis,
                                      xvar.name=xvar.order[1])
 ## HB and apis abundance are colinear in crithidia model, so not a valid model
 
-## apis abundance only 
+## apis abundance only
 apis.ha <- runCombinedParasiteModels(spec.data= spec.apis,
                                      species.group="apis",
                                      xvars=xvars.ha[-length(xvars.ha)],
@@ -259,7 +264,7 @@ apis.ha <- runCombinedParasiteModels(spec.data= spec.apis,
                                      site.lat=site.or.lat,
                                      xvar.name=xvar.order[2])
 
-## all bee abundance 
+## all bee abundance
 apis.all <- runCombinedParasiteModels(spec.data= spec.apis,
                                       species.group="apis",
                                       xvars=xvars.all[-length(xvars.all)],

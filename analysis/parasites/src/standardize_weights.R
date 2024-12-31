@@ -1,24 +1,22 @@
 standardizeVars <- function(spec.data, vars, key, by.site = TRUE){
     ##  center all of the x variables, need to use unique values to avoid
     ##  repetition by the number of specimens
-  browser()  
    if(by.site){
         unique.site.vals <-  unique(spec.data[,c("Site", key, vars)])
     } else {
         unique.site.vals <-  unique(spec.data[,c(key, vars)])
     }
-    unique.site.vals[, vars] <- apply(as.matrix(unique.site.vals[, vars]), 2, standardize)
+    unique.site.vals[, vars] <- apply(as.matrix(unique.site.vals[, vars]),
+                                      2, standardize)
     print("Dimensions of the data before merging the standardize data")
     print(dim(spec.data))
+
     spec.data[, vars] <- NULL
     spec.data <- left_join(spec.data, unique.site.vals)
+
     print("Dimensions of the data after merging the standardize data")
     print(dim(spec.data))
-                                        # layout(matrix(1:(2*round(length(vars)/2)), nrow=2))
-                                        #for(var in vars){
-                                        #  hist(unique.site.vals[, var], main=var)
-                                        #}
-    
+
     return(spec.data)
 }
 
@@ -44,7 +42,7 @@ prepDataSEM <-
     function(spec.data,#individual level specimen data
              variables.to.log = NULL, #variables to be logged
              variables.to.log.1 = NULL, #variables to be logged + 1
-             vars_yearsr = NULL,#variables to standardize at year site sampling round level 
+             vars_yearsr = NULL,#variables to standardize at year site sampling round level
              vars_sp = NULL,#variables to standardize at the species level
              vars_yearsrsp = NULL, #variables to standardize at year
                                         #site sampling round at the species
@@ -53,7 +51,7 @@ prepDataSEM <-
              standardize=TRUE){
     ## Function for making the SEM weights and standarizing variables.
     spec.data <- spec.data[order(spec.data$Site), ]
-    
+
     ## create a dummy variable "Weight" to deal with the data sets being at
     ## different levels to get around the issue of having to pass in one
     ## data set into brms
@@ -61,13 +59,13 @@ prepDataSEM <-
         paste(spec.data$Year, spec.data$SampleRound, sep = ";")
     spec.data$YearSRGenusSpecies <-
         paste(spec.data$YearSR, spec.data$GenusSpecies, sep = ";")
-    
+
     print("Number of unique site, year, sampling round combinations")
     print(length(unique(paste(spec.data$Site, spec.data$YearSR))))
     spec.data <- makeDataMultiLevel(spec.data, "Site", "YearSR")
     print("Number of individuals with Weights == 1, should be the same as above")
     print(sum(spec.data$Weights))
-    
+
     if(!is.null(variables.to.log)){
         spec.data[, variables.to.log] <-
             log(spec.data[, variables.to.log])
@@ -100,7 +98,7 @@ prepDataSEM <-
                 standardizeVars(spec.data, vars_site, "Site", by.site = FALSE)
         }
     }
-    
+
     ## create a dumby varaible "WeightPar" for the parasite data. The
     ## original intention was to keep stan from dropping data for
     ## site-level models, but weight is 0 for parasite models.
@@ -111,7 +109,7 @@ prepDataSEM <-
     print(sum(spec.data$WeightsPar))
     print("Final dim of data after adding WeightsPar")
     print(dim(spec.data))
-    
+
     print("Number of unique GenusSpecies, site, year, sampling round combinations")
     print(length(unique(paste(spec.data$Site, spec.data$YearSRGenusSpecies))))
     spec.data <- makeDataMultiLevel(spec.data, "Site", "YearSRGenusSpecies",
