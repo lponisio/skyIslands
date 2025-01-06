@@ -73,7 +73,8 @@ nm.az.r <- raster(file.path(sp.dir,
 
 ## We only one one point per mountain so filter to subsite 0. 
 ## That way Mt with two meadows only appear as one point. 
-geo <- geo %>% filter(!is.na(MtRange) & SubSite == 0 & MtRange != "Jemez")
+geo <- geo %>% 
+  filter(!is.na(MtRange) & SubSite == 1 & MtRange != "Jemez" & Site != "UK") 
 ## Create shapefile
 sites_sf<- st_as_sf(geo,
          coords = c("Long", "Lat"),
@@ -107,7 +108,7 @@ map <- ggplot() +
   coord_sf(xlim = st_coordinates(bbox_new)[c(1,2),1], # min & max of x values
            ylim = st_coordinates(bbox_new)[c(2,3),2], expand = FALSE) +
   geom_sf_text(data = site_points, aes(label = MtRange), size = 2.5,
-    color = "black", nudge_y = 17500) +
+    color = "black", nudge_y = 19500) +
   scale_fill_identity()+ 
   xlab("Longitude") + ylab("Latitude") +
   annotation_north_arrow(location = "tl", style = north_arrow_fancy_orienteering)+
