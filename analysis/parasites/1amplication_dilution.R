@@ -207,6 +207,11 @@ bombus.all <- runCombinedParasiteModels(spec.data= spec.bombus,
 ## crithidia
 ## **********************************************************
 ## not including ss because HB abundance and bombus abundance are colinear
+load("saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all_bees.Rdata")
+bombus.all <- fit.parasite
+load("saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_bombus_abundance.Rdata")
+bombus.ba <- fit.parasite
+
 bombus.loo.crithidia <- list(ba=bombus.ba$loo.crithidia,
                              all=bombus.all$loo.crithidia)
 
