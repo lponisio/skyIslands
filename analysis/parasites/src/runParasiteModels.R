@@ -176,8 +176,11 @@ runCombinedParasiteModels <- function(spec.data,## data
     ## Calculate r2 values 
     r2 <- bayes_R2(fit.parasite)
     print(round(r2, 2))
+    ## Get loo values
+    loo.crithidia <- loo(fit.parasite, resp="CrithidiaPresence")
+    loo.apicystis <- loo(fit.parasite, resp="ApicystisSpp")
     ## Save the model results as a rdata file
-    save(fit.parasite, spec.data, r2,
+    save(fit.parasite, spec.data, r2, loo.crithidia, loo.apicystis,
          file=sprintf("saved/parasiteFit_%s_%s_%s_%s.Rdata",
                       species.group, paste(parasites, collapse=""),
                       site.lat,
@@ -188,8 +191,7 @@ runCombinedParasiteModels <- function(spec.data,## data
                                                          collapse=""),
                                     site.lat, xvar.name))
 
-    loo.crithidia <- loo(fit.parasite, resp="CrithidiaPresence")
-    loo.apicystis <- loo(fit.parasite, resp="ApicystisSpp")
+
 
     return(list(fit=fit.parasite, loo.crithidia= loo.crithidia,
                 loo.apicystis=loo.apicystis,
