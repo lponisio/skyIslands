@@ -174,7 +174,7 @@ Vanessa_atalanta = list(Genus = "Vanessa", SubGenus="", Species =
 
 Gyrochelius_patrobas = list(Genus = "Gyrochelius", SubGenus="", Species =
     "patrobas", SubSpecies = "", Sex = "", Author = "Hewitson", Family =
-    "Nymphalidae", Determiner="J. F. Zorn temp.id =c(38497,36340,36343)),
+    "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(38497,36340,36343)),
 
 Erebia_epipsodea = list(Genus = "Erebia", SubGenus="", Species =
     "epipsoidea", SubSpecies = "", Sex = "", Author = "Butler", Family =
