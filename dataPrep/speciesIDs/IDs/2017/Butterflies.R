@@ -90,13 +90,13 @@ Hemiargus_isola = list(Genus = "Hemiargus", SubGenus="", Species = "isola",
 
   Strymon_melinus = list(Genus = "Strymon", SubGenus="", Species =
     "melinus", SubSpecies = "", Sex = "", Author = "Hubner", Family =
-    "Lycaenidae", Determiner="L.Ponisio", temp.id =c(24155,24223,24226,24219,24232,24144,24823,24910,24103,38623,36383))
+    "Lycaenidae", Determiner="L.Ponisio", temp.id =c(24155,24223,24226,24219,24232,24144,24823,24910,24103,38623,36383)),
 
   Plebejus_acmon = list(Genus = "Plebejus", SubGenus="", Species =
     "acmon", SubSpecies = "", Sex = "", Author = "Westwood", Family =
     "Lycaenidae", Determiner="L.Ponisio", temp.id =c(24215,24211,24230,24221,24222,24231,24229,24825,24243,24248,24140,21630,21631,21500,
                                                      21573,23865,23868,24767,23734,23735,23858,30063,23648,23741,23712,23689,23691,30066,
-                                                     30072,30073,30571,30112)),
+                                                     30072,30073,30571,30112,24822)),
 Plebejus_melissa = list(Genus = "Plebejus", SubGenus="", Species =
     "melissa", SubSpecies = "", Sex = "", Author = "Edwards", Family =
     "Lycaenidae", Determiner="A. Santillana", temp.id =c(36359,38502,38516)),
@@ -162,7 +162,7 @@ Polygonia_gracilis = list(Genus = "Polygonia", SubGenus="", Species =
 Euptoiteta_claudia = list(Genus = "Euptoiteta", SubGenus="", Species =
     "claudia", SubSpecies = "", Sex = "", Author = "Cramer", Family =
     "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(24917,30044,21629,36344,36362,36399,36408,36433,38405
-                                                         38418,38421,38422,38432,38434,38482,38522,38522)),
+                                                         38418,38421,38422,38432,38434,38482,38522,38522,30042)),
 
 Vanessa_virginiensis = list(Genus = "Vanessa", SubGenus="", Species =
     "virginiensis", SubSpecies = "", Sex = "", Author = "Drury", Family =
@@ -229,7 +229,7 @@ Colias_eurytheme = list(Genus = "Colias", SubGenus="", Species =
 
 Gnophaela_discreta = list(Genus = "Gnophaela", SubGenus="", Species =
     "discreta", SubSpecies = "", Sex = "", Author = "Stretch", Family =
-    "Erebidae", Determiner="ACS", temp.id =c(24872,24853,24831,24895,36369,36370,36374,39047,38650,36389)),
+    "Erebidae", Determiner="ACS", temp.id =c(24872,24874,24185,24853,24831,24895,36369,36370,36374,39047,38650,36389)),
 
 
 Ctenucha_cressonana = list(Genus = "Ctenucha", SubGenus="", Species =
@@ -419,7 +419,7 @@ Pseudanthoecia_tumida = list(Genus = "Pseudanthoecia", SubGenus="", Species =
 
 Lacinipolia_martini = list(Genus = "Lancinipolia", SubGenus="", Species =
     "martini", SubSpecies = "", Sex = "", Author = "Selman & Leuschner", Family =
-    "Noctuidae", Determiner="ACS", temp.id =c(24173)),
+    "Noctuidae", Determiner="ACS", temp.id =c(24173,38532,)),
 
 Protorthodes_mulina = list(Genus = "Protorthodes", SubGenus="", Species =
     "mulina", SubSpecies = "", Sex = "", Author = "Schaus", Family =
