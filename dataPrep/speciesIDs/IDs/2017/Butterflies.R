@@ -4,7 +4,7 @@ Hesperia_comma = list(Genus = "Hesperia", SubGenus="",Species =
     
     Hesperia_pahaska = list(Genus = "Hesperia", SubGenus="",Species =
     "pahaska", SubSpecies = "", Sex = "", Author = "Leussler", Family
-    = "Hesperiidae", Determiner="L.Ponisio", temp.id = c(34262,23658,24165,30054,24807,24164,24177,24264,24261,24805,24808)),
+    = "Hesperiidae", Determiner="L.Ponisio", temp.id = c(34262,23658,24165,30054,24807,24164,24177,24264,24261,24262,24805,24808)),
 
 Burnsius_communis = list(Genus = "Burnsius", SubGenus="", Species =
     "communis", SubSpecies = "", Sex = "", Author = "Grote", Family =
