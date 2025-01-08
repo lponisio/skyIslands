@@ -212,15 +212,18 @@ bombus.all <- fit.parasite
 load("saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_bombus_abundance.Rdata")
 bombus.ba <- fit.parasite
 
-bombus.loo.crithidia <- list(ba=bombus.ba$loo.crithidia,
-                             all=bombus.all$loo.crithidia)
+loo.crithidia.all <- loo(bombus.all, resp="CrithidiaPresence")
+loo.crithidia.ba <- loo(bombus.ba, resp="CrithidiaPresence")
 
-sum.loo.bombus.crithidia <- makeLooTable(parasite="CrithidiaSpp",
-                                         genus="Bombus",
-                                         abundance.order=xvar.order[-1],
-                                         bombus.loo.crithidia
-                                         )
-loo_compare(bombus.loo.crithidia)
+# bombus.loo.crithidia <- list(ba=bombus.ba$loo.crithidia,
+#                              all=bombus.all$loo.crithidia)
+# 
+# sum.loo.bombus.crithidia <- makeLooTable(parasite="CrithidiaSpp",
+#                                          genus="Bombus",
+#                                          abundance.order=xvar.order[-1],
+#                                          bombus.loo.crithidia
+#                                          )
+loo_compare(loo.crithidia.all, loo.crithidia.ba)
 ## bombus abundance an all abundance model fits are not distinguishable
 
 ## **********************************************************
@@ -228,15 +231,21 @@ loo_compare(bombus.loo.crithidia)
 ## **********************************************************
 ## not including ba (bombus abundance) since HB and abundance
 ## abundance are not colinear in these models
-bombus.loo.apicystis <- list(ss=bombus.ss$loo.apicystis,
-                             all=bombus.all$loo.apicystis)
+load("saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_social_species.Rdata")
+bombus.ss <- fit.parasite
 
-sum.loo.bombus.apicystis <- makeLooTable(parasite="ApicystisSpp",
-                                         genus="Bombus",
-                                         abundance.order=xvar.order[-2],
-                                         bombus.loo.apicystis
-                                         )
-loo_compare(bombus.loo.apicystis)
+loo.apicystis.all <- loo(bombus.all, resp="ApicystisSpp")
+loo.apicystis.ss <- loo(bombus.ss, resp="ApicystisSpp")
+
+# bombus.loo.apicystis <- list(ss=bombus.ss$loo.apicystis,
+#                              all=bombus.all$loo.apicystis)
+# 
+# sum.loo.bombus.apicystis <- makeLooTable(parasite="ApicystisSpp",
+#                                          genus="Bombus",
+#                                          abundance.order=xvar.order[-2],
+#                                          bombus.loo.apicystis
+#                                          )
+loo_compare(loo.apicystis.all, loo.apicystis.ss)
 ## The best fit is the abundance of bombus and apis together, which in
 ## this model are not colinear.
 
@@ -293,30 +302,46 @@ apis.div <- runCombinedParasiteModels(spec.data= spec.apis,
 ## crithidia
 ## **********************************************************
 ## not including ss because of colinearity
-apis.loo.crithidia <- list(ha=apis.ha$loo.crithidia,
-                           all=apis.all$loo.crithidia,
-                           div=apis.div$loo.crithidia)
+load("saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_all_bees.Rdata")
+apis.all <- fit.parasite
+load("saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_apis_abundance.Rdata")
+apis.ha <- fit.parasite
+load("saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_diversity.Rdata")
+apis.div <- fit.parasite
 
-sum.loo.apis.crithidia <- makeLooTable(parasite="CrithidiaSpp",
-                                       genus="Apis",
-                                       abundance.order=xvar.order[-1],
-                                       apis.loo.crithidia
-                                       )
-loo_compare(apis.loo.crithidia)
+# apis.loo.crithidia <- list(ha=apis.ha$loo.crithidia,
+#                            all=apis.all$loo.crithidia,
+#                            div=apis.div$loo.crithidia)
+# 
+# sum.loo.apis.crithidia <- makeLooTable(parasite="CrithidiaSpp",
+#                                        genus="Apis",
+#                                        abundance.order=xvar.order[-1],
+#                                        apis.loo.crithidia
+#                                        )
+loo.crithidia.all <- loo(apis.all, resp="CrithidiaPresence")
+loo.crithidia.ha <- loo(apis.ha, resp="CrithidiaPresence")
+loo.crithidia.div <- loo(apis.div, resp="CrithidiaPresence")
+
+loo_compare(loo.crithidia.all, loo.crithidia.ha, loo.crithidia.div)
 
 ## **********************************************************
 ## apicystis
 ## **********************************************************
-apis.loo.apicystis <- list(ha=apis.ha$loo.apicystis,
-                           all=apis.all$loo.apicystis,
-                           div=apis.div$loo.apicystis)
+# apis.loo.apicystis <- list(ha=apis.ha$loo.apicystis,
+#                            all=apis.all$loo.apicystis,
+#                            div=apis.div$loo.apicystis)
+# 
+# sum.loo.apis.apicystis <- makeLooTable(parasite="ApicystisSpp",
+#                                        genus="Apis",
+#                                        abundance.order=xvar.order[-1],
+#                                        apis.loo.apicystis
+#                                        )
 
-sum.loo.apis.apicystis <- makeLooTable(parasite="ApicystisSpp",
-                                       genus="Apis",
-                                       abundance.order=xvar.order[-1],
-                                       apis.loo.apicystis
-                                       )
-loo_compare(apis.loo.apicystis)
+loo.apicystis.all <- loo(apis.all, resp="ApicystisSpp")
+loo.apicystis.ha <- loo(apis.ha, resp="ApicystisSpp")
+loo.apicystis.div <- loo(apis.div, resp="ApicystisSpp")
+
+loo_compare(loo.apicystis.all, loo.apicystis.ha, loo.apicystis.div)
 
 ## **********************************************************
 ## save models and loo results
