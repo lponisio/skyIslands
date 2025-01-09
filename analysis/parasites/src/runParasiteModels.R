@@ -1,4 +1,4 @@
-## This function creates and runs the models for the parasites. 
+## This function creates and runs the models for the parasites.
 runCombinedParasiteModels <- function(spec.data,## data
                                       species.group,## genus of bee group
                                       parasites =
@@ -8,7 +8,7 @@ runCombinedParasiteModels <- function(spec.data,## data
                                       xvars,## explanatory variables for the parasite model
                                       ncores=ncores, ## number of cores
                                       iter = 10^4,
-                                      chains = 1,
+                                      chains = 3,
                                       thin=1,
                                       init=0,
                                       data2 = NULL, ## Data for the Phylogeny
@@ -42,11 +42,11 @@ runCombinedParasiteModels <- function(spec.data,## data
             } else{
                 freq.formula <- as.formula(paste(
                     parasite,
-                    paste(xvars, 
+                    paste(xvars,
                           collapse=" + "),
                     sep=" ~ "))
             }
-            
+
             run_plot_freq_model_diagnostics(
                 freq.formula,
                 this_data=spec.data[spec.data$WeightsPar == 1,],
@@ -78,7 +78,7 @@ runCombinedParasiteModels <- function(spec.data,## data
                 paste(xvars[-length(xvars)], ## last xvar must by the phylogeny!!!!
                       collapse=" + "),
                 sep=" ~ "))
-            
+
             run_plot_freq_model_diagnostics(
                 freq.formula,
                 this_data=spec.data[spec.data$WeightsSp == 1,],
@@ -97,15 +97,16 @@ runCombinedParasiteModels <- function(spec.data,## data
         }}
 
     if(SEM){
-        ## When there are two parasites or 1 parasite create a parasite model for each. 
+        ## When there are two parasites or 1 parasite create a parasite model for each.
         ## Select the bee abundance based on the species.group.
         if(length(parasites) == 2){
             ## Bombus or apis
             if(species.group == "bombus" | species.group == "apis"){
                 print("Bombus")
-                bform <- bf.fabund + bf.fdiv +
+                bform <- bf.fdiv +
+                    ## bf.fabund +
                     bf.bombusabund + bf.babund + bf.HBabund +
-                    bf.bdiv  +    
+                    bf.bdiv  +
                     bf.parasite.formulas[[1]]+
                     bf.parasite.formulas[[2]] +
                     set_rescor(FALSE)
@@ -113,9 +114,10 @@ runCombinedParasiteModels <- function(spec.data,## data
             else if (species.group != "bombus" & species.group != "apis"){
                 print("Other")
                 ## only all bee abundance
-                bform <- bf.fabund + bf.fdiv +
+                bform <-  bf.fdiv +
+                    ## bf.fabund +
                     bf.babund  +
-                    bf.bdiv  +    
+                    bf.bdiv  +
                     bf.parasite.formulas[[1]]+
                     bf.parasite.formulas[[2]] +
                     set_rescor(FALSE)
@@ -124,37 +126,39 @@ runCombinedParasiteModels <- function(spec.data,## data
             ## Bombus or apis
             if(species.group == "bombus" | species.group == "apis"){
                 print("Bombus")
-                bform <- bf.fabund + bf.fdiv +
+                bform <-  bf.fdiv +
+                    ## bf.fabund +
                     bf.bombusabund + bf.babund + bf.HBabund +
-                    bf.bdiv  +    
+                    bf.bdiv  +
                     bf.parasite.formulas[[1]]+
                     set_rescor(FALSE)
             } ## Other bees
             else if (species.group != "bombus" & species.group != "apis"){
                 print("Other")
                 ## only all bee abundance
-                bform <- bf.fabund + bf.fdiv +
-                    bf.babund 
-                    bf.bdiv  +
+                bform <-  bf.fdiv +
+                    ## bf.fabund +
+                    bf.babund
+                bf.bdiv  +
                     bf.parasite.formulas[[1]]+
                     set_rescor(FALSE)
             }
         }
     } else {
-        ## When there are two parasites or 1 parasite create a parasite model for each. 
+        ## When there are two parasites or 1 parasite create a parasite model for each.
         ## Select the bee abundance based on the species.group.
         if(length(parasites) == 2){
-            bform <- 
+            bform <-
                 bf.parasite.formulas[[1]]+
                 bf.parasite.formulas[[2]] +
-                set_rescor(FALSE)      
+                set_rescor(FALSE)
         }else  if(length(parasites) == 1){
-            bform <- 
+            bform <-
                 bf.parasite.formulas[[1]] +
                 set_rescor(FALSE)
         }
     }
-    
+
     ## Fit brms model to the complete model
     fit.parasite <- brm(bform, spec.data,
                         cores= ncores,
@@ -167,13 +171,13 @@ runCombinedParasiteModels <- function(spec.data,## data
                         data2 = data2,
                         drop_unused_levels = TRUE,
                         ...)
-    ## Create a table with the results. 
+    ## Create a table with the results.
     write.ms.table(fit.parasite,
                    sprintf("parasitism_%s_%s_%s_%s",
                            species.group, paste(parasites,
                                                 collapse=""), site.lat,
                            xvar.name))
-    ## Calculate r2 values 
+    ## Calculate r2 values
     r2 <- bayes_R2(fit.parasite)
     print(round(r2, 2))
     ## Get loo values
