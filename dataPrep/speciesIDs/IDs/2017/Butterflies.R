@@ -38,7 +38,7 @@ Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
 
   Phyciodes_tharos= list(Genus = "Phyciodes", SubGenus="",Species =
     "tharos", SubSpecies = "", Sex = "", Author = "Drury", Family =
-    "Nymphalidae", Determiner="L.Ponisio", temp.id =c(21572,21578,21535,24609,23720,21494,23895,30519,24027,24000)),
+    "Nymphalidae", Determiner="L.Ponisio", temp.id =c(21572,21578,21535,24609,23720,21494,23895,30519,24027,24000,38572,38571)),
 
    Danaus_plexippus = list(Genus = "Danaus", SubGenus="", Species =
     "plexippus", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
@@ -437,7 +437,10 @@ Gnophaela_clappiana = list(Genus = "Gnophaela", SubGenus="", Species =
     "clappiana", SubSpecies = "", Sex = "", Author = "", Family =
     "Erebidae", Determiner="ACS", temp.id =c(24920)),
 
-
+Limenitis_archippus = list(Genus = "Limenitis", SubGenus="", Species =
+    "archippus", SubSpecies = "", Sex = "", Author = "Cramer", Family =
+    "Nymphalidae", Determiner="ASF", temp.id =c(21360)),
+                                                
 )
 
 
