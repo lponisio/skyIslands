@@ -244,9 +244,9 @@ Spodoptera_frugiperda = list(Genus = "Spodoptera", SubGenus="", Species =
     "frugiperda", SubSpecies = "", Sex = "", Author = "Grote", Family =
     "Noctuidae", Determiner="ACS", temp.id =c(24931,24971,24930)),
 
-Trichoplusia_ni = list(Genus = "Trichoplasia", SubGenus="", Species =
+Trichoplusia_ni = list(Genus = "Trichoplusia", SubGenus="", Species =
     "ni", SubSpecies = "", Sex = "", Author = "Hübner", Family =
-    "Noctuidae", Determiner="ACS", temp.id =c(23727,36354,38505,38547,23713)),
+    "Noctuidae", Determiner="ACS", temp.id =c(23727,36354,38505,38547,23713,30119)),
 
 Lon_taxiles = list(Genus = "Lon", SubGenus="", Species =
     "taxiles", SubSpecies = "", Sex = "", Author = "Edwards", Family =
