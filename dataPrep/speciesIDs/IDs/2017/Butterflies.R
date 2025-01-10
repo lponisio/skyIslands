@@ -84,9 +84,9 @@ Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
     "lineata", SubSpecies = "", Sex = "", Author = "Fabricius", Family =
     "Sphingidae", Determiner="L.C. Ponisio", temp.id = c(24114,24880,24113,36428,36427,38478,36429,39011,24113,28664,18725,24880,))
 
-Hemiargus_isola = list(Genus = "Hemiargus", SubGenus="", Species = "isola",
-    SubSpecies = "", Sex = "", Author = "Reakirt", Family = "Lycaenidae",
-    Determiner="L.Ponisio", temp.id = c(24147,24202,24216,24208,24199,24196,24195,24213,24200)),
+#Hemiargus_isola = list(Genus = "Hemiargus", SubGenus="", Species = "isola",
+#    SubSpecies = "", Sex = "", Author = "Reakirt", Family = "Lycaenidae",
+#    Determiner="L.Ponisio", temp.id = c(24147,24202,24216,24208,24199,24196,24195,24213,24200)),
 
   Strymon_melinus = list(Genus = "Strymon", SubGenus="", Species =
     "melinus", SubSpecies = "", Sex = "", Author = "Hubner", Family =
@@ -121,7 +121,7 @@ Echinargus_isola = list(Genus = "Echinargus", SubGenus="", Species =
     "isola", SubSpecies = "", Sex = "", Author = "Reakirt", Family
     = "Lycanidae", Determiner="A. Santillana", temp.id = c(39014,38454,39042,39025,38459,39038,39027,38474,39041,39028
                                                           38474,39041,39028,38483,39088,39028,38483,39088,39029,39066,39087,39030,39073,39090,39031,
-                                                          39083,39076,38452,39037,39080,38515,39039,39077)),
+                                                          39083,39076,38452,39037,39080,38515,39039,39077,24147,24202,24216,24208,24199,24196,24195,24213,24200)),
 Agriades_landon = list(Genus = "Agriades", SubGenus="", Species =
     "landon", SubSpecies = "", Sex = "", Author = "de Pruner", Family
     = "Lycanidae", Determiner="A. Santillana", temp.id = c(38552)),
