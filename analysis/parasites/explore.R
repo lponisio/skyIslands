@@ -364,15 +364,15 @@ parasite_prevalence_sites <- spec.orig %>%
   filter(Genus == "Bombus") %>% 
   ggplot(aes(x= reorder(Site, Lat, decreasing = TRUE), y= SpCrithidiaBombusParasitismRate, 
               color = GenusSpecies )) +
-  geom_box_plot() +
+  geom_boxplot() +
  # geom_bar(stat="identity", position = "dodge") + theme_minimal() +
   labs(x = "Sites", y = "Crithidia Parasitism Rate")+
-  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size=10), 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size=10), 
         axis.title.y = element_text(size=10),
         text = element_text(size=10))
 
-ggsave(parasite_prevalence_sites, file="figures/prevalence_by_sites.jpg",
-       height=4, width=5)
+ggsave(parasite_prevalence, file="figures/parasite_boxplots.pdf",
+       height=5, width=8)
 
 ## Parasite prevalence by genus
 
@@ -380,12 +380,22 @@ parasite_prevalence <- parasites_bees %>%
   filter(!is.na(value)) %>% 
   filter(Order == "Hymenoptera" & Family != "Vespidae" & Family != "Sphecidae") %>% 
   filter(Apidae == 1) %>% 
-  group_by(Genus, Parasites) %>% 
+  group_by(Site, Genus, Parasites) %>% 
   summarise(total_screened = length(UniqueID[!is.na(ParasitePresence)]),              # Total number of individuals screened
             positives = sum(value),         # Total positives
-            percent_positive = (positives / total_screened) * 100  # Percentage of positives
+            prop_positive = (positives / total_screened)  # Percentage of positives
             ) %>% 
-  filter(percent_positive != 0)
+  ggplot(aes(Genus, prop_positive)) +
+  geom_boxplot(aes(fill = Parasites)) +
+  labs(x = "Genus", y = "Proportion tested positive")+
+  theme(axis.text.x = element_text(size=10), 
+        axis.title.x = element_text(size=15),
+        axis.title.y = element_text(size=15),
+        text = element_text(size=15))+
+  scale_fill_manual(values = c("darkgoldenrod3", "grey", "#3182bd"))
+  
+ggsave(parasite_prevalence, file="figures/parasite_boxplots.pdf",
+       height=4, width=7)
 
 
 spec.orig <- spec.orig[!spec.orig$Genus%in%

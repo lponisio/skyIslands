@@ -103,7 +103,8 @@ runCombinedParasiteModels <- function(spec.data,## data
             ## Bombus or apis
             if(species.group == "bombus" | species.group == "apis"){
                 print("Bombus")
-                bform <- bf.fabund + bf.fdiv +
+                bform <- #bf.fabund + 
+                  bf.fdiv +
                     bf.bombusabund + bf.babund + bf.HBabund +
                     bf.bdiv  +    
                     bf.parasite.formulas[[1]]+
@@ -113,7 +114,8 @@ runCombinedParasiteModels <- function(spec.data,## data
             else if (species.group != "bombus" & species.group != "apis"){
                 print("Other")
                 ## only all bee abundance
-                bform <- bf.fabund + bf.fdiv +
+                bform <- #bf.fabund + 
+                  bf.fdiv +
                     bf.babund  +
                     bf.bdiv  +    
                     bf.parasite.formulas[[1]]+
@@ -124,7 +126,8 @@ runCombinedParasiteModels <- function(spec.data,## data
             ## Bombus or apis
             if(species.group == "bombus" | species.group == "apis"){
                 print("Bombus")
-                bform <- bf.fabund + bf.fdiv +
+                bform <- #bf.fabund + 
+                  bf.fdiv +
                     bf.bombusabund + bf.babund + bf.HBabund +
                     bf.bdiv  +    
                     bf.parasite.formulas[[1]]+
@@ -133,7 +136,8 @@ runCombinedParasiteModels <- function(spec.data,## data
             else if (species.group != "bombus" & species.group != "apis"){
                 print("Other")
                 ## only all bee abundance
-                bform <- bf.fabund + bf.fdiv +
+                bform <- #bf.fabund + 
+                  bf.fdiv +
                     bf.babund 
                     bf.bdiv  +
                     bf.parasite.formulas[[1]]+

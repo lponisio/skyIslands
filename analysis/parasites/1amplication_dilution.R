@@ -211,9 +211,12 @@ load("saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all_bees.Rdata"
 bombus.all <- fit.parasite
 load("saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_bombus_abundance.Rdata")
 bombus.ba <- fit.parasite
+load("saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_apis_abundance.Rdata")
+bombus.ha <- fit.parasite
 
 loo.crithidia.all <- loo(bombus.all, resp="CrithidiaPresence")
 loo.crithidia.ba <- loo(bombus.ba, resp="CrithidiaPresence")
+loo.crithidia.ha <- loo(bombus.ha, resp="CrithidiaPresence")
 
 # bombus.loo.crithidia <- list(ba=bombus.ba$loo.crithidia,
 #                              all=bombus.all$loo.crithidia)
@@ -223,7 +226,7 @@ loo.crithidia.ba <- loo(bombus.ba, resp="CrithidiaPresence")
 #                                          abundance.order=xvar.order[-1],
 #                                          bombus.loo.crithidia
 #                                          )
-loo_compare(loo.crithidia.all, loo.crithidia.ba)
+loo_compare(loo.crithidia.all, loo.crithidia.ba, loo.crithidia.ha)
 ## bombus abundance an all abundance model fits are not distinguishable
 
 ## **********************************************************
@@ -304,6 +307,8 @@ apis.div <- runCombinedParasiteModels(spec.data= spec.apis,
 ## not including ss because of colinearity
 load("saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_all_bees.Rdata")
 apis.all <- fit.parasite
+load("saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_social_species.Rdata")
+apis.ss <- fit.parasite
 load("saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_apis_abundance.Rdata")
 apis.ha <- fit.parasite
 load("saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_diversity.Rdata")
@@ -319,10 +324,12 @@ apis.div <- fit.parasite
 #                                        apis.loo.crithidia
 #                                        )
 loo.crithidia.all <- loo(apis.all, resp="CrithidiaPresence")
+loo.crithidia.ss <- loo(apis.ss, resp="CrithidiaPresence")
 loo.crithidia.ha <- loo(apis.ha, resp="CrithidiaPresence")
 loo.crithidia.div <- loo(apis.div, resp="CrithidiaPresence")
 
-loo_compare(loo.crithidia.all, loo.crithidia.ha, loo.crithidia.div)
+loo_compare(loo.crithidia.all, loo.crithidia.ha, loo.crithidia.div, 
+            loo.crithidia.ss)
 
 ## **********************************************************
 ## apicystis
@@ -338,10 +345,12 @@ loo_compare(loo.crithidia.all, loo.crithidia.ha, loo.crithidia.div)
 #                                        )
 
 loo.apicystis.all <- loo(apis.all, resp="ApicystisSpp")
+loo.apicystis.ss <- loo(apis.ss, resp="ApicystisSpp")
 loo.apicystis.ha <- loo(apis.ha, resp="ApicystisSpp")
 loo.apicystis.div <- loo(apis.div, resp="ApicystisSpp")
 
-loo_compare(loo.apicystis.all, loo.apicystis.ha, loo.apicystis.div)
+loo_compare(loo.apicystis.all, loo.apicystis.ha, loo.apicystis.div, 
+            loo.apicystis.ss)
 
 ## **********************************************************
 ## save models and loo results

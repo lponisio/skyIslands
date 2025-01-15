@@ -20,12 +20,12 @@ if(site.or.lat ==  "lat"){
                                       (1|Site) 
                                   )
     ## flower abund
-    formula.flower.abund <- formula(MeanFloralAbundance |
-                                    subset(Weights) ~
-                                        Year +
-                                        SRDoyPoly1 + SRDoyPoly2 +
-                                        (1|Site)
-                                    )
+    # formula.flower.abund <- formula(MeanFloralAbundance |
+    #                                 subset(Weights) ~
+    #                                     Year +
+    #                                     SRDoyPoly1 + SRDoyPoly2 +
+    #                                     (1|Site)
+    #                                 )
     ## bee diversity
     formula.bee.div <- formula(Net_BeeDiversity |
                                subset(Weights)~
@@ -112,7 +112,7 @@ if(site.or.lat ==  "lat"){
 ## **********************************************************
 ## convert formulas to brms forma
 ## **********************************************************
-bf.fabund <- bf(formula.flower.abund, family="student")
+#bf.fabund <- bf(formula.flower.abund, family="student")
 bf.fdiv <- bf(formula.flower.div, family="student")
 bf.babund <- bf(formula.bee.abund, family="student")
 bf.bombusabund <- bf(formula.bombus.abund, family="student")
