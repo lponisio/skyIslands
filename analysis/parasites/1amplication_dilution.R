@@ -1,7 +1,7 @@
 rm(list=ls())
 ## setwd("C:/Users/na_ma/Dropbox (University of Oregon)/skyIslands")
 setwd('~/Dropbox (University of Oregon)/skyislands')
-ncores <- 1
+ncores <- 3
 
 setwd("analysis/parasites")
 source("src/misc.R")
@@ -17,7 +17,7 @@ site.or.lat <- "lat"
 
 ## all of the variables that are explanatory variables and thus need
 ## to be centered
-vars_yearsr <- c("MeanFloralAbundance",
+vars_yearsr <- c(#"MeanFloralAbundance",
                  "MeanFloralDiversity",
                  "Net_BeeDiversity",
                  "Net_BeeAbundance",
@@ -38,7 +38,8 @@ variables.to.log.1 <- c("Net_HBAbundance", "Net_BombusAbundance")
 ## loads specimen data
 source("src/init.R")
 
-## drop VC (Valles caldera) because it was more of a grassland, we only surveyed it one year)
+## drop VC (Valles caldera) because it was more of a grassland, we
+## only surveyed it one year)
 print("Before dropping VC")
 dim(spec.net)
 spec.net <- filter(spec.net, Site != "VC")
@@ -136,9 +137,9 @@ run_plot_freq_model_diagnostics(remove_subset_formula(formula.flower.div),
                                 this_data=spec.net[spec.net$Weights == 1,],
                                 this_family="students", site.lat=site.or.lat)
 
-run_plot_freq_model_diagnostics(remove_subset_formula(formula.flower.abund),
-                                this_data=spec.net[spec.net$Weights == 1,],
-                                this_family="students",site.lat=site.or.lat)
+## run_plot_freq_model_diagnostics(remove_subset_formula(formula.flower.abund),
+##                                 this_data=spec.net[spec.net$Weights == 1,],
+##                                 this_family="students",site.lat=site.or.lat)
 
 run_plot_freq_model_diagnostics(remove_subset_formula(formula.bee.abund),
                                 this_data=spec.net[spec.net$Weights == 1,],

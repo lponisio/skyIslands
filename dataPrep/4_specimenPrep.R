@@ -107,9 +107,9 @@ dir.create("../data/splevel_network_metrics", showWarnings = FALSE)
 crithidias <- c("CrithidiaExpoeki",
                 "CrithidiaBombi", "CrithidiaSpp",
                 "CrithidiaMellificae")
+nosemas <- c("NosemaBombi", "NosemaCeranae")
 parasites <- c( "AscosphaeraSpp",
-               "ApicystisSpp", crithidias,
-               "NosemaBombi", "NosemaCeranae")
+               "ApicystisSpp", crithidias, nosemas)
 
 spec[, parasites][is.na(spec[, parasites])] <- 0
 spec[, parasites][spec[, parasites] == ""] <- 0
@@ -120,17 +120,23 @@ spec[spec$Apidae != 1 | is.na(spec$Apidae), parasites] <- NA
 spec$ParasiteRichness <- rowSums(spec[, parasites],
                                  na.rm=TRUE)
 spec$CrithidiaRichness <- rowSums(spec[, crithidias],
+                                  na.rm=TRUE)
+spec$NosemaRichness <- rowSums(spec[, nosemas],
                                  na.rm=TRUE)
 spec$PossibleParasite <- apply(spec[, parasites], 1,
                                function(x) sum(!is.na(x)))
 spec$ParasitePresence <- (spec$ParasiteRichness >= 1)*1
 spec$CrithidiaPresence <- (spec$CrithidiaRichness >= 1)*1
+spec$NosemaPresence <- (spec$NosemaRichness >= 1)*1
 
 spec[spec$Apidae != 1  | is.na(spec$Apidae), "ParasiteRichness"] <- NA
 spec[spec$Apidae != 1  | is.na(spec$Apidae), "ParasitePresence"] <- NA
 spec[spec$Apidae != 1  | is.na(spec$Apidae), "CrithidiaRichness"] <-
+    NA
+spec[spec$Apidae != 1  | is.na(spec$Apidae), "NosemaRichness"] <-
   NA
 spec[spec$Apidae != 1  | is.na(spec$Apidae), "CrithidiaPresence"] <- NA
+spec[spec$Apidae != 1  | is.na(spec$Apidae), "NosemaPresence"] <- NA
 
 check.spec <- spec[!is.na(spec$Apidae),]
 check.spec <- check.spec[check.spec$GenusSpecies == "",]
@@ -332,6 +338,78 @@ site.sum$Year <- as.factor(site.sum$Year)
 
 ## write the site, year, sampling round summary data after merging
 ## with plant data
+
+
+## ***********************************************************************
+## For multi-study parasite summaries, a bit redundant but nice to
+## have in a standardized format
+## ***********************************************************************
+
+site.sp <- spec.net %>%
+    group_by(Site, Year, SampleRound, GenusSpecies, Genus) %>%
+    summarise(SpAbundance = length(GenusSpecies),
+              SpParasitism = sum(ParasitePresence, na.rm=TRUE),
+              SpCrithidiaPresence= sum(CrithidiaPresence, na.rm=TRUE),
+              SpApicystisSpp = sum(ApicystisSpp, na.rm=TRUE),
+              SpNosemaBombi= sum(NosemaBombi, na.rm=TRUE),
+              SpNosemaCeranae = sum(NosemaCeranae, na.rm=TRUE),
+              SpAscosphaeraSpp= sum(AscosphaeraSpp, na.rm=TRUE),
+              SpCrithidiaExpoeki = sum(CrithidiaExpoeki, na.rm=TRUE),
+              SpCrithidiaBombi = sum(CrithidiaBombi, na.rm=TRUE),
+              SpCrithidiaSpp = sum(CrithidiaSpp, na.rm=TRUE),
+              SpScreened = sum(!is.na(Apidae))
+              )
+
+site.gen <- spec.net %>%
+    group_by(Site, Year, SampleRound, Genus) %>%
+    summarise(GenusAbundance = length(GenusSpecies),
+              GenusParasitism = sum(ParasitePresence, na.rm=TRUE),
+              GenusCrithidiaPresence= sum(CrithidiaPresence, na.rm=TRUE),
+              GenusApicystisSpp = sum(ApicystisSpp, na.rm=TRUE),
+              GenusNosemaBombi= sum(NosemaBombi, na.rm=TRUE),
+              GenusNosemaCeranae = sum(NosemaCeranae, na.rm=TRUE),
+              GenusAscosphaeraSpp= sum(AscosphaeraSpp, na.rm=TRUE),
+              GenusCrithidiaExpoeki = sum(CrithidiaExpoeki, na.rm=TRUE),
+              GenusCrithidiaBombi = sum(CrithidiaBombi, na.rm=TRUE),
+              GenusCrithidiaSpp = sum(CrithidiaSpp, na.rm=TRUE),
+              GenusScreened = sum(!is.na(Apidae))
+              )
+
+site.sum <- spec.net %>%
+    group_by(Site, Year, SampleRound) %>%
+    summarise(SiteBeeAbundance = length(GenusSpecies[Family %in%
+                                                     bee.families]),
+
+              SiteBeeRichness= length(unique(GenusSpecies[Family %in%
+                                                          bee.families])),
+
+              SiteBeeDiversity=vegan:::diversity(table(
+                                           GenusSpecies[Family %in% bee.families]),
+                                           index="shannon"),
+
+              SiteParasitism = sum(ParasitePresence, na.rm=TRUE),
+              SiteCrithidiaPresence= sum(CrithidiaPresence, na.rm=TRUE),
+              SiteApicystisSpp = sum(ApicystisSpp, na.rm=TRUE),
+              SiteNosemaBombi= sum(NosemaBombi, na.rm=TRUE),
+              SiteNosemaCeranae = sum(NosemaCeranae, na.rm=TRUE),
+              SiteAscosphaeraSpp= sum(AscosphaeraSpp, na.rm=TRUE),
+              SiteCrithidiaExpoeki = sum(CrithidiaExpoeki, na.rm=TRUE),
+              SiteCrithidiaBombi = sum(CrithidiaBombi, na.rm=TRUE),
+              SiteCrithidiaSpp = sum(CrithidiaSpp, na.rm=TRUE),
+              SiteScreened = sum(!is.na(Apidae))
+              )
+
+
+all.sums <- left_join(site.sp, site.gen)
+
+all.sums <- left_join(all.sums, site.sum)
+all.sums$Project <- "Sky islands"
+
+dir.create(file.path("../data/", "all_parasite_study"),
+           showWarnings = FALSE)
+
+save(all.sums, file="../data/skyislands_parasite_sums.Rdata")
+
 
 ## *******************************************************************
 ## create a giant plant-pollinator network to calculate specialization
