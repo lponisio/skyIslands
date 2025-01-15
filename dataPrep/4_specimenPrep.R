@@ -107,9 +107,9 @@ dir.create("../data/splevel_network_metrics", showWarnings = FALSE)
 crithidias <- c("CrithidiaExpoeki",
                 "CrithidiaBombi", "CrithidiaSpp",
                 "CrithidiaMellificae")
+nosemas <- c("NosemaBombi", "NosemaCeranae")
 parasites <- c( "AscosphaeraSpp",
-               "ApicystisSpp", crithidias,
-               "NosemaBombi", "NosemaCeranae")
+               "ApicystisSpp", crithidias, nosemas)
 
 spec[, parasites][is.na(spec[, parasites])] <- 0
 spec[, parasites][spec[, parasites] == ""] <- 0
@@ -120,17 +120,23 @@ spec[spec$Apidae != 1 | is.na(spec$Apidae), parasites] <- NA
 spec$ParasiteRichness <- rowSums(spec[, parasites],
                                  na.rm=TRUE)
 spec$CrithidiaRichness <- rowSums(spec[, crithidias],
+                                  na.rm=TRUE)
+spec$NosemaRichness <- rowSums(spec[, nosemas],
                                  na.rm=TRUE)
 spec$PossibleParasite <- apply(spec[, parasites], 1,
                                function(x) sum(!is.na(x)))
 spec$ParasitePresence <- (spec$ParasiteRichness >= 1)*1
 spec$CrithidiaPresence <- (spec$CrithidiaRichness >= 1)*1
+spec$NosemaPresence <- (spec$NosemaRichness >= 1)*1
 
 spec[spec$Apidae != 1  | is.na(spec$Apidae), "ParasiteRichness"] <- NA
 spec[spec$Apidae != 1  | is.na(spec$Apidae), "ParasitePresence"] <- NA
 spec[spec$Apidae != 1  | is.na(spec$Apidae), "CrithidiaRichness"] <-
+    NA
+spec[spec$Apidae != 1  | is.na(spec$Apidae), "NosemaRichness"] <-
   NA
 spec[spec$Apidae != 1  | is.na(spec$Apidae), "CrithidiaPresence"] <- NA
+spec[spec$Apidae != 1  | is.na(spec$Apidae), "NosemaPresence"] <- NA
 
 check.spec <- spec[!is.na(spec$Apidae),]
 check.spec <- check.spec[check.spec$GenusSpecies == "",]
