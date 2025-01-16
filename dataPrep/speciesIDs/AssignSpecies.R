@@ -64,7 +64,7 @@ add.to.data(sp.ids=sp.ids,
             case='fly', "Bombyliidae","2023",
             data.file=spec.data.file)
 
-print("*********2022 Buttterflies/moths")
+print("*********2022 Butterflies/moths")
 source(file.path(save.dir, 'IDs/2022/Butterflies.R'))
 add.to.data(sp.ids=sp.ids,
             case='lep',"","2022",
@@ -114,6 +114,11 @@ add.to.data(sp.ids=sp.ids,
             case='fly', "Bombyliidae","2023",
             data.file=spec.data.file)
 
+print("*********2021 Butterflies")
+source(file.path(save.dir, 'IDs/2021/Butterflies.R'))
+add.to.data(sp.ids=sp.ids,
+            case='lep',"","2021",
+            data.file=spec.data.file)
 
 ## 2018 field season
 print("*********2018 Syrphidae")
@@ -159,6 +164,12 @@ print("*********2018 Bombyliidae")
 source(file.path(save.dir, 'IDs/2018/Bombyliidae.R'))
 add.to.data(sp.ids=sp.ids,
             case='fly', "Bombyliidae","2020",
+            data.file=spec.data.file)
+
+print("*********2018 Butterflies")
+source(file.path(save.dir, 'IDs/2018/Butterflies.R'))
+add.to.data(sp.ids=sp.ids,
+            case='lep',"","2018",
             data.file=spec.data.file)
 
 
@@ -210,6 +221,11 @@ add.to.data(sp.ids=sp.ids,
             case='fly', "Bombyliidae","2020",
             data.file=spec.data.file)
 
+print("*********2017 Butterflies")
+source(file.path(save.dir, 'IDs/2017/Butterflies.R'))
+add.to.data(sp.ids=sp.ids,
+            case='lep',"","2017",
+            data.file=spec.data.file)
 
 
 ## 2012 field season
