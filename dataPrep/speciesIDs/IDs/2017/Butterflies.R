@@ -448,7 +448,3 @@ Limenitis_archippus = list(Genus = "Limenitis", SubGenus="", Species =
     "Nymphalidae", Determiner="ASF", temp.id =c(21360))
                                                 
 )
-
-
-    
-    
