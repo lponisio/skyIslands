@@ -152,8 +152,8 @@ Speyeria_mormona = list(Genus = "Speyeria", SubGenus="", Species =
 
 Phyciodes_tharos = list(Genus = "Phyciodes", SubGenus="", Species =
     "tharos", SubSpecies = "", Sex = "", Author = "Drury", Family =
-    "Nymphalidae", Determiner="A. Santillana", temp.id =c(21572,21578,21535,24069,23270,21494,23895,30519
-                                                         24000,24027,36415,38644,38620,38621,38622,39048)),
+    "Nymphalidae", Determiner="A. Santillana", temp.id =c(21572,21578,21535,24069,23270,21494,23895,30519,
+                                                         24027,36415,38644,38620,38621,38622,39048)),
     
 Texola_elada = list(Genus = "Texola", SubGenus="", Species =
     "elada", SubSpecies = "", Sex = "", Author = "Hewitson", Family =
