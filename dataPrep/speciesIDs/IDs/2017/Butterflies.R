@@ -391,8 +391,7 @@ Apodemia_phyciodoides = list(Genus = "Apodemia", SubGenus="", Species =
     "phyciodoides", SubSpecies = "", Sex = "", Author = "Barnes & Benjamin", Family =
     "Riodinidae", Determiner="ACS", temp.id =c(38534)),
 
-Apodemia_sp = list(Genus = "Apodemia", SubGenus="", Species =,
-    "", SubSpecies = "", Sex = "", Author = "", Family =
+Apodemia_sp = list(Genus = "Apodemia", SubGenus="", Species ="", SubSpecies = "", Sex = "", Author = "", Family =
     "Riodinidae", Determiner="ACS", temp.id =c(36413)),
 
 Erynnis_persius = list(Genus = "Erynnis", SubGenus="", Species =
