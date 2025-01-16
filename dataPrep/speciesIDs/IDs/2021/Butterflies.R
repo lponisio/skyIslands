@@ -81,7 +81,7 @@ sp.ids <- list(
     Eurema_nicippe = list(Genus = "Eurema", SubGenus="",Species =
     "nicippe", SubSpecies = "", Sex = "", Author = "Cramer", Family =
     "Pieridae", Determiner="J.F. Zorn", temp.id = c(36377,36379,36380,36385,36386,36403,38481,38498,38507,38508,38526,38530,38533,38535,38577,38578,38604,38605,
-                                                   38606,38607,38608,38609,38610,38611,38612,38613,38614,38615,38615,38616,38617,38618,38619,38649,38655)),
+                                                   38606,38607,38608,38609,38610,38611,38612,38613,38614,38615,38616,38617,38618,38619,38649,38655)),
     
   Nathalis_iole = list(Genus = "Nathalis", SubGenus="",Species =
     "iole", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
