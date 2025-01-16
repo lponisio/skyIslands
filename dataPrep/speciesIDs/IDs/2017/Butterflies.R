@@ -121,7 +121,7 @@ Leptotes_marina = list(Genus = "Leptotes", SubGenus="", Species =
 
 Echinargus_isola = list(Genus = "Echinargus", SubGenus="", Species =
     "isola", SubSpecies = "", Sex = "", Author = "Reakirt", Family
-    = "Lycanidae", Determiner="A. Santillana", temp.id = c(39014,38454,39042,39025,38459,39038,39027,38474,39041,39028
+    = "Lycanidae", Determiner="A. Santillana", temp.id = c(39014,38454,39042,39025,38459,39038,39027,38474,39041,39028,
                                                           38474,39041,39028,38483,39088,39028,38483,39088,39029,39066,39087,39030,39073,39090,39031,
                                                           39083,39076,38452,39037,39080,38515,39039,39077,24147,24202,24216,24208,24199,24196,24195,24213,24200)),
     
