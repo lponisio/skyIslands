@@ -1,6 +1,6 @@
 sp.ids <- list(
 
-Hesperia_comma = list(Genus = "Hesperia", SubGenus="",Species =
+    Hesperia_comma = list(Genus = "Hesperia", SubGenus="",Species =
     "comma", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
     "Hesperiidae", Determiner="L.Ponisio", temp.id = c(24886,24811)),
     
@@ -446,5 +446,4 @@ Gnophaela_clappiana = list(Genus = "Gnophaela", SubGenus="", Species =
 Limenitis_archippus = list(Genus = "Limenitis", SubGenus="", Species =
     "archippus", SubSpecies = "", Sex = "", Author = "Cramer", Family =
     "Nymphalidae", Determiner="ASF", temp.id =c(21360))
-                                                
-)
+                            )
