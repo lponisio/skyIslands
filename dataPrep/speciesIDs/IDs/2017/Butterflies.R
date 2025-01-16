@@ -168,7 +168,7 @@ Polygonia_gracilis = list(Genus = "Polygonia", SubGenus="", Species =
 
 Euptoiteta_claudia = list(Genus = "Euptoiteta", SubGenus="", Species =
     "claudia", SubSpecies = "", Sex = "", Author = "Cramer", Family =
-    "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(24917,30044,21629,36344,36362,36399,36408,36433,38405
+    "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(24917,30044,21629,36344,36362,36399,36408,36433,38405,
                                                          38418,38421,38422,38432,38434,38482,38522,38522,30042)),
 
 Vanessa_virginiensis = list(Genus = "Vanessa", SubGenus="", Species =
