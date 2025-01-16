@@ -1,3 +1,5 @@
+sp.ids <- list(
+
 Hesperia_comma = list(Genus = "Hesperia", SubGenus="",Species =
     "comma", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
     "Hesperiidae", Determiner="L.Ponisio", temp.id = c(24886,24811)),
@@ -82,7 +84,7 @@ Nathalis_iole = list(Genus = "Nathalis", SubGenus="",Species =
 
 Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
     "lineata", SubSpecies = "", Sex = "", Author = "Fabricius", Family =
-    "Sphingidae", Determiner="L.C. Ponisio", temp.id = c(24114,24880,24113,36428,36427,38478,36429,39011,24113,28664,18725,24880,))
+    "Sphingidae", Determiner="L.C. Ponisio", temp.id = c(24114,24880,24113,36428,36427,38478,36429,39011,24113,28664,18725,24880)),
 
 #Hemiargus_isola = list(Genus = "Hemiargus", SubGenus="", Species = "isola",
 #    SubSpecies = "", Sex = "", Author = "Reakirt", Family = "Lycaenidae",
@@ -122,12 +124,15 @@ Echinargus_isola = list(Genus = "Echinargus", SubGenus="", Species =
     = "Lycanidae", Determiner="A. Santillana", temp.id = c(39014,38454,39042,39025,38459,39038,39027,38474,39041,39028
                                                           38474,39041,39028,38483,39088,39028,38483,39088,39029,39066,39087,39030,39073,39090,39031,
                                                           39083,39076,38452,39037,39080,38515,39039,39077,24147,24202,24216,24208,24199,24196,24195,24213,24200)),
+    
 Agriades_landon = list(Genus = "Agriades", SubGenus="", Species =
     "landon", SubSpecies = "", Sex = "", Author = "de Pruner", Family
     = "Lycanidae", Determiner="A. Santillana", temp.id = c(38552)),
+    
 Plebejus_lupini = list(Genus = "Plebejus", SubGenus="", Species =
     "lupini", SubSpecies = "", Sex = "f", Author = "Boisduval", Family =
     "Lycaenidae", Determiner="A. Santillana", temp.id =c(36360,38520,38518)),
+    
 Brephidium_exile = list(Genus = "Brephidium", SubGenus="", Species =
     "exile", SubSpecies = "", Sex = "m", Author = "Boisduval", Family =
     "Lycaenidae", Determiner="A. Santillana", temp.id =c(36426)),
@@ -140,6 +145,7 @@ Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
     "atlantis", SubSpecies = "", Sex = "", Author = "Edwards", Family =
     "Nymphalidae", Determiner="A. Santillana", temp.id =c(36371,36372,36387,36381,36391,38423,38431,38435,38436,
                                                           38437,38438,38654,38523,39057)),
+    
 Speyeria_mormona = list(Genus = "Speyeria", SubGenus="", Species =
     "mormona", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
     "Nymphalidae", Determiner="A. Santillana", temp.id =c(30079,24854,24126)),
@@ -147,7 +153,8 @@ Speyeria_mormona = list(Genus = "Speyeria", SubGenus="", Species =
 Phyciodes_tharos = list(Genus = "Phyciodes", SubGenus="", Species =
     "tharos", SubSpecies = "", Sex = "", Author = "Drury", Family =
     "Nymphalidae", Determiner="A. Santillana", temp.id =c(21572,21578,21535,24069,23270,21494,23895,30519
-                                                         24000,24027,36415,38644,38620,38621,38622,39048,)),
+                                                         24000,24027,36415,38644,38620,38621,38622,39048)),
+    
 Texola_elada = list(Genus = "Texola", SubGenus="", Species =
     "elada", SubSpecies = "", Sex = "", Author = "Hewitson", Family =
     "Nymphalidae", Determiner="A. Santillana", temp.id =c(38543)),
@@ -224,8 +231,7 @@ Colias_eurytheme = list(Genus = "Colias", SubGenus="", Species =
     "Pieridae", Determiner="J. F. Zorn", temp.id =c(36401,36402,36404,36363,38464,38472,36364,36365,38642,38645,38662,39013,39016,39052,38778,38878,36398,36345,36341,38575,36381,36378,38601,38600,
 38406,38599,38698,38576,38545,38603,38602,38531,24865,23833,22276,22275,
 23687,23703,24133,30021,30082,38500,38524,38529,38529,38546,38495,38499,38537,38579,24187,24188,24190,24160,24157,24159,24123,24128,24131,24130,24850,24860,24833,24869,24912,24916,24896,24904,24918,24911,
-24888,24885,28494,24105,24523,24104,24851,24863,24832,24835,24849,30084,30151,30148,21506
-)),
+24888,24885,28494,24105,24523,24104,24851,24863,24832,24835,24849,30084,30151,30148,21506)),
 
 Gnophaela_discreta = list(Genus = "Gnophaela", SubGenus="", Species =
     "discreta", SubSpecies = "", Sex = "", Author = "Stretch", Family =
@@ -371,7 +377,7 @@ Amblyscirtes_exoteria = list(Genus = "Amblyscirtes", SubGenus="", Species =
 
 Amblyscirtes_oslari = list(Genus = "Amblyscirtes", SubGenus="", Species =
     "oslari", SubSpecies = "", Sex = "", Author = "Skinner", Family =
-    "Hesperiidae", Determiner="ACS", temp.id =c(30038)),,
+    "Hesperiidae", Determiner="ACS", temp.id =c(30038)),
 
 Amblyscirtes_elissa = list(Genus = "Amblyscirtes", SubGenus="", Species =
     "elissa", SubSpecies = "", Sex = "", Author = "Godman", Family =
@@ -403,7 +409,7 @@ Udea_itysalis = list(Genus = "Udea", SubGenus="", Species =
 
 Destutia_flumenata = list(Genus = "Destutia", SubGenus="", Species =
     "flumenata", SubSpecies = "", Sex = "", Author = "Pearsall", Family =
-    "Geometridae", Determiner="ACS", temp.id =c(38461,36431
+    "Geometridae", Determiner="ACS", temp.id =c(38461,36431)),
 
 Apyrrothrix_araxes = list(Genus = "Apyrrothrix", SubGenus="", Species =
     "araxes", SubSpecies = "", Sex = "", Author = "Hewitson", Family =
@@ -419,7 +425,7 @@ Pseudanthoecia_tumida = list(Genus = "Pseudanthoecia", SubGenus="", Species =
 
 Lacinipolia_martini = list(Genus = "Lancinipolia", SubGenus="", Species =
     "martini", SubSpecies = "", Sex = "", Author = "Selman & Leuschner", Family =
-    "Noctuidae", Determiner="ACS", temp.id =c(24173,38532,)),
+    "Noctuidae", Determiner="ACS", temp.id =c(24173,38532)),
 
 Protorthodes_mulina = list(Genus = "Protorthodes", SubGenus="", Species =
     "mulina", SubSpecies = "", Sex = "", Author = "Schaus", Family =
