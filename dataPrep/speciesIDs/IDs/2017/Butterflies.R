@@ -445,7 +445,7 @@ Gnophaela_clappiana = list(Genus = "Gnophaela", SubGenus="", Species =
 
 Limenitis_archippus = list(Genus = "Limenitis", SubGenus="", Species =
     "archippus", SubSpecies = "", Sex = "", Author = "Cramer", Family =
-    "Nymphalidae", Determiner="ASF", temp.id =c(21360)),
+    "Nymphalidae", Determiner="ASF", temp.id =c(21360))
                                                 
 )
 
