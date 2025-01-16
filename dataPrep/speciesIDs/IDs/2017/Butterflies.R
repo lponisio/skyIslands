@@ -281,7 +281,7 @@ Oarisma_edwardsii = list(Genus = "Oarisma", SubGenus="", Species =
 
 Amblyscirtes_tolteca = list(Genus = "Amblyscirtes", SubGenus="", Species =
     "tolteca", SubSpecies = "", Sex = "", Author = "Scudder", Family =
-    "Hesperiidae", Determiner="ACS", temp.id =c(23878,24768),
+    "Hesperiidae", Determiner="ACS", temp.id =c(23878,24768)),
 
 Amblyscirtes_nysa = list(Genus = "Amblyscirtes", SubGenus="", Species =
     "nysa", SubSpecies = "", Sex = "", Author = "Edwards", Family =
