@@ -345,7 +345,7 @@ site.sum$Year <- as.factor(site.sum$Year)
 ## have in a standardized format
 ## ***********************************************************************
 
-site.sp <- spec.net %>%
+par.site.sp <- spec.net %>%
     group_by(Site, Year, SampleRound, GenusSpecies, Genus) %>%
     summarise(SpAbundance = length(GenusSpecies),
               SpParasitism = sum(ParasitePresence, na.rm=TRUE),
@@ -360,7 +360,7 @@ site.sp <- spec.net %>%
               SpScreened = sum(!is.na(Apidae))
               )
 
-site.gen <- spec.net %>%
+par.site.gen <- spec.net %>%
     group_by(Site, Year, SampleRound, Genus) %>%
     summarise(GenusAbundance = length(GenusSpecies),
               GenusParasitism = sum(ParasitePresence, na.rm=TRUE),
@@ -375,7 +375,7 @@ site.gen <- spec.net %>%
               GenusScreened = sum(!is.na(Apidae))
               )
 
-site.sum <- spec.net %>%
+par.site.sum <- spec.net %>%
     group_by(Site, Year, SampleRound) %>%
     summarise(SiteBeeAbundance = length(GenusSpecies[Family %in%
                                                      bee.families]),
@@ -400,9 +400,9 @@ site.sum <- spec.net %>%
               )
 
 
-all.sums <- left_join(site.sp, site.gen)
+all.sums <- left_join(par.site.sp, par.site.gen)
 
-all.sums <- left_join(all.sums, site.sum)
+all.sums <- left_join(all.sums, par.site.sum)
 all.sums$Project <- "Sky islands"
 
 dir.create(file.path("../data/", "all_parasite_study"),
