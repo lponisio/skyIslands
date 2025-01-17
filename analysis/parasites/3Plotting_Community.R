@@ -78,7 +78,7 @@ lat_beediv <-
 p1 <- ggplot(lat_beediv, aes(x = Lat, y = estimate__)) +
   geom_line(aes(x = Lat, y= estimate__), size = 1.5) +
   geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4) +
-  labs(x = "Latitude", y = "Bee diversity",
+  labs(x = "Latitude (log)", y = "Bee diversity",
        fill = "Credible interval")+
   theme_ms() +
   #theme(legend.position = "bottom") +
@@ -108,7 +108,7 @@ lat_floraldiv <-
 p2 <- ggplot(lat_floraldiv, aes(x = Lat, y = estimate__)) +
   geom_line(aes(x = Lat, y= estimate__), size = 1.5, color = "darkgoldenrod3") +
   geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4, fill = "darkgoldenrod3") +
-  labs(x = "Latitude", y = "Mean floral diversity",
+  labs(x = "Latitude (log)", y = "Mean floral diversity",
        fill = "Credible interval") +
   theme_ms() +
   #theme(legend.position = "bottom") +
@@ -139,8 +139,8 @@ lat_bombusabund <-
 
 
 p3 <- ggplot(lat_bombusabund, aes(x = Lat, y = estimate__)) +
-  geom_line(aes(x = Lat, y= estimate__), size = 1.5) +
-  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4) +
+  geom_line(aes(x = Lat, y= estimate__), size = 1.5, color = "darkgoldenrod3") +
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4, fill = "darkgoldenrod3") +
   labs(x = "Latitude (log)", y = "Bombus abundance (log)",
        fill = "Credible interval") +
   theme_ms() +
@@ -190,7 +190,7 @@ p4 <- ggplot(lat_apisabund, aes(x = Lat, y = estimate__)) +
 ggsave(p4, file="figures/Lat_HB_abudance.pdf",
        height=4, width=5)
 
-lat_community<- ggarrange(p2,p1,p3,p4, #plots that are going to be included in this multipanel figure
+lat_community <- ggarrange(p2,p1,p3,p4, #plots that are going to be included in this multipanel figure
                        labels = c("A", "B", "C","D"), #labels given each panel 
                        ncol = 2, nrow = 2 #adjust plot space 
                        )

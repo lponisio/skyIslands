@@ -75,7 +75,7 @@ fit.bombus <- fit.parasite
 load(file="saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_social_species.Rdata")
 fit.bombus.apicystis <- fit.parasite
 
-load(file="saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_diversity.Rdata")
+load(file="saved/parasiteFit_apis_CrithidiaPresenceApicystisSpp_lat_apis_abundance.Rdata")
 fit.apis <- fit.parasite
 ## https://www.rensvandeschoot.com/tutorials/generalised-linear-models-with-brms/
 ## Generate newdata draws
@@ -96,23 +96,22 @@ crithidia_beediv <-
 ## Add a column to identify from which model these outputs come from.
 crithidia_beediv <- mutate(crithidia_beediv, Bee = "Bombus")
 
-crithidia_beediv_apis <-
-  apis.cond.effects[["CrithidiaPresence.CrithidiaPresence_Net_BeeDiversity"]]
-
-## The apis model doesn't have the GenusSpecies random effect thus you need to 
-## add a column for it to match with bombus.
-crithidia_beediv_apis <- mutate(crithidia_beediv_apis, Bee = "Apis", GenusSpecies = NA)
-
-## Join both bombus and apis model outputs in the same dataframe.
-crithidia_beediv<- rbind(crithidia_beediv, crithidia_beediv_apis)
+# crithidia_beediv_apis <-
+#   apis.cond.effects[["CrithidiaPresence.CrithidiaPresence_Net_BeeDiversity"]]
+# 
+# ## The apis model doesn't have the GenusSpecies random effect thus you need to 
+# ## add a column for it to match with bombus.
+# crithidia_beediv_apis <- mutate(crithidia_beediv_apis, Bee = "Apis", GenusSpecies = NA)
+# 
+# ## Join both bombus and apis model outputs in the same dataframe.
+# crithidia_beediv<- rbind(crithidia_beediv, crithidia_beediv_apis)
 
 p1.parasite <- ggplot(crithidia_beediv, aes(x = Net_BeeDiversity, y= estimate__)) +
-  geom_line(aes(x = Net_BeeDiversity, y= estimate__ , color = Bee, linetype = Bee), size = 1.5) +
+  geom_line(aes(x = Net_BeeDiversity, y= estimate__ , color = Bee), size = 1.5) +
   geom_ribbon(aes(ymin = lower__, ymax = upper__, fill = Bee), alpha=0.4)+
-  scale_fill_manual(values = c("darkgoldenrod3", "#3182bd"), 
-                    labels = c("Apis 0.95", "Bombus 0.95")) +
-  scale_color_manual(values = c("darkgoldenrod3", "#3182bd")) +
-  scale_linetype_manual(values = c("dotdash", "solid"))+
+  scale_fill_manual(values =  "#3182bd", 
+                    labels =  "Bombus 0.95") +
+  scale_color_manual(values =  "#3182bd") +
   labs(x = "Bee diversity", y = "Crithidia prevalence",
        fill = "Credible interval") +
   theme_ms() +
@@ -166,24 +165,23 @@ ggsave(p2.parasite, file="figures/parasite_beediv_Apicystis.pdf",
 crithidia_floraldiv <-bombus.cond.effects[["CrithidiaPresence.CrithidiaPresence_MeanFloralDiversity"]]
 crithidia_floraldiv <- mutate(crithidia_floraldiv, Bee = "Bombus")
 
-crithidia_floraldiv_apis <-
-  apis.cond.effects[["CrithidiaPresence.CrithidiaPresence_MeanFloralDiversity"]]
-
-## The apis model doesn't have the GenusSpecies random effect thus you need to 
-## add a column for it to match with bombus.
-crithidia_floraldiv_apis <- mutate(crithidia_floraldiv_apis, Bee = "Apis", GenusSpecies = NA)
-
-## Join both bombus and apis model outputs in the same dataframe.
-crithidia_floraldiv<- rbind(crithidia_floraldiv, crithidia_floraldiv_apis)
+# crithidia_floraldiv_apis <-
+#   apis.cond.effects[["CrithidiaPresence.CrithidiaPresence_MeanFloralDiversity"]]
+# 
+# ## The apis model doesn't have the GenusSpecies random effect thus you need to 
+# ## add a column for it to match with bombus.
+# crithidia_floraldiv_apis <- mutate(crithidia_floraldiv_apis, Bee = "Apis", GenusSpecies = NA)
+# 
+# ## Join both bombus and apis model outputs in the same dataframe.
+# crithidia_floraldiv<- rbind(crithidia_floraldiv, crithidia_floraldiv_apis)
 
 p3.parasite <- ggplot(crithidia_floraldiv, aes(x = MeanFloralDiversity, y= estimate__)) +
   geom_line(aes(x = MeanFloralDiversity, y= estimate__ ,
-                linetype = Bee, color = Bee), size = 1.5) +
+                color = Bee), size = 1.5) +
   geom_ribbon(aes(ymin = lower__, ymax = upper__, fill = Bee), alpha=0.4) +
-  scale_fill_manual(values = c("#08519c", "#3182bd"), 
-                    labels = c("Apis 0.95", "Bombus 0.95")) +
-  scale_color_manual(values = c("#08519c", "#3182bd")) +
-  scale_linetype_manual(values = c("dotdash", "solid")) +
+  scale_fill_manual(values =  "#3182bd", 
+                    labels = "Bombus 0.95") +
+  scale_color_manual(values = "#3182bd") +
     labs(x = "Floral diversity", y = "Crithidia prevalence",
          fill = "Credible interval") +
     theme_ms() +
@@ -243,12 +241,12 @@ ggsave(parasite.dilution, file="figures/parasite_diversity.pdf", height=8, width
 
 crithidia_beeabun <-
   bombus.cond.effects[["CrithidiaPresence.CrithidiaPresence_Net_BeeAbundance"]]
-#crithidia_beeabun <- mutate(crithidia_beeabun, Bee = "Bombus")
+crithidia_beeabun <- mutate(crithidia_beeabun, Bee = "Bombus")
 
 p5.parasite <- ggplot(crithidia_beeabun, aes(x = Net_BeeAbundance, y = estimate__)) +
-  geom_line(aes(x = Net_BeeAbundance, y= estimate__), size = 1.5, color = "#3182bd") +
-  geom_ribbon(aes(ymin = lower__, ymax = upper__, fill = Bee), alpha=0.4) +
-  scale_fill_manual(values = "#3182bd", labels ="Bombus 0.95")+
+  geom_line(aes(x = Net_BeeAbundance, y= estimate__), size = 1.5, ) +
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4) +
+  #scale_fill_manual(values = "grey", labels ="Bombus 0.95")+
   labs(x = "Bee abundance (log)", y = "Crithidia prevalence",
        fill = "Credible interval") +
   theme_ms() +
@@ -278,9 +276,9 @@ apicystis_bombusabun <- mutate(apicystis_bombusabun, Bee = "Bombus")
 p6.parasite <- ggplot(apicystis_bombusabun, aes(x = Net_BombusAbundance, 
                                                 y = estimate__)) +
   geom_line(aes(x = Net_BombusAbundance, y= estimate__), size = 1.5, 
-            color = "#3182bd") +
+            color = "darkgoldenrod3") +
   geom_ribbon(aes(ymin = lower__, ymax = upper__, fill = Bee), alpha=0.4)+
-  scale_fill_manual(values = "#3182bd", labels ="Bombus 0.95") +
+  scale_fill_manual(values = "darkgoldenrod3", labels ="Bombus 0.95") +
   labs(x = "Bombus abundance (log)", y = "Apicystis prevalence",
        fill = "Credible interval") +
   theme_ms() +
