@@ -51,24 +51,29 @@ makeNets <- function(spec.dat, net.type,
     years <- sapply(strsplit(names(nets), "[.]"), function(x) x[[2]])
     sites <- sapply(strsplit(names(nets), "[.]"), function(x) x[[1]])
 
-    if(net.type == "YearSR" & mean.by.year == FALSE){
-        SRs <- sapply(strsplit(names(nets), "[.]"), function(x) x[[3]])
-    } else{
-        SRs <- NA
-    }
+  if(net.type == "YearSR" & mean.by.year == FALSE){
+    SRs <- sapply(strsplit(names(nets), "[.]"), function(x) x[[3]])
+  } else{
+    SRs <- NA
+  }
+  if(mean.by.year){
+    net.ty <- "Year"
+  } else {
+    net.ty <- net.type
+  }
 
-    save(nets.graph,nets.graph.uw, nets, years, sites, SRs,
-         file=sprintf("../data/networks/%s_%s_%s.Rdata", net.type,
-                      paste(species, collapse=""), poll.groups
-                      ))
+  save(nets.graph,nets.graph.uw, nets, years, sites, SRs,
+       file=sprintf("../data/networks/%s_%s_%s.Rdata", net.ty,
+                    paste(species, collapse=""), poll.groups
+                    ))
 
-    ## species stats
-    sp.lev <- calcSpec(nets)
-    save(sp.lev,
-         file=sprintf('../data/splevel_network_metrics/%s_%s_%s.Rdata',
-                      net.type,
-                      paste(species, collapse=""), poll.groups
-                      ))
+  ## species stats
+  sp.lev <- calcSpec(nets)
+  save(sp.lev,
+       file=sprintf('../data/splevel_network_metrics/%s_%s_%s.Rdata',
+                    net.ty,
+                    paste(species, collapse=""), poll.groups
+                    ))
   return(sp.lev)
 }
 
@@ -165,22 +170,5 @@ calcStats <- function(x){
 ## number of species that interact
 getCon <- function(x, INDEX){
   apply(x, INDEX, function(y) sum(y > 0))
-}
-
-
-## extreact specialization scores from specieslevel function and
-## return data frame
-getSpec <- function(species.lev, names.net, seps="_"){
-  n.pp <- sapply(species.lev, nrow)
-  pp <- c(unlist(sapply(species.lev, rownames)))
-  names(pp) <- NULL
-  all.pp <- do.call(rbind, species.lev)
-  rownames(all.pp) <- NULL
-  try(all.pp$GenusSpecies <- pp)
-  all.pp$speciesType <- c(rep("pollinator", n.pp[1]),
-                          rep("plant", n.pp[2]))
-  all.pp$Site <- strsplit(names.net, seps)[[1]][1]
-  all.pp$assem <- strsplit(names.net, seps)[[1]][2]
-  return(all.pp)
 }
 
