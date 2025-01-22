@@ -12,6 +12,15 @@ local.path
 setwd(local.path)
 setwd('skyIslands_saved')
 
+
+
+if (!require("BiocManager", quietly = TRUE)){install.packages("BiocManager")}
+##BiocManager::install("TreeSummarizedExperiment")
+library(TreeSummarizedExperiment)
+if (!requireNamespace("devtools", quietly = TRUE)){install.packages("devtools")}
+devtools::install_github("jbisanz/qiime2R")
+library(qiime2R)
+
 library(tidyr)
 library(dplyr)
 library(bipartite)
@@ -20,15 +29,6 @@ library(TreeTools)
 library(devtools)
 library(ape)
 library(picante)
-
-
-
-if (!require("BiocManager", quietly = TRUE)){install.packages("BiocManager")}
-#BiocManager::install("TreeSummarizedExperiment")
-library(TreeSummarizedExperiment)
-if (!requireNamespace("devtools", quietly = TRUE)){install.packages("devtools")}
-devtools::install_github("jbisanz/qiime2R")
-library(qiime2R)
 
 source("../skyIslands/dataPrep/src/misc.R")
 
@@ -347,82 +347,13 @@ weightedUFrbclqzaR0 <- read_qza(file.path(qza.rbcl.path,
 unweightedUFrbclqzaR0 <- read_qza(file.path(qza.rbcl.path,
                                             'core_metricsRBCLR0/unweighted_unifrac_distance_matrix.qza'))
 
-## R1
-weightedUFrbclqzaR1 <- read_qza(file.path(qza.rbcl.path,
-                                          'core_metricsRBCLR1/weighted_unifrac_distance_matrix.qza'))
-
-unweightedUFrbclqzaR1 <- read_qza(file.path(qza.rbcl.path,
-                                            'core_metricsRBCLR1/unweighted_unifrac_distance_matrix.qza'))
-
-## R2
-weightedUFrbclqzaR2 <- read_qza(file.path(qza.rbcl.path,
-                                          'core_metricsRBCLR2/weighted_unifrac_distance_matrix.qza'))
-
-unweightedUFrbclqzaR2 <- read_qza(file.path(qza.rbcl.path,
-                                            'core_metricsRBCLR2/unweighted_unifrac_distance_matrix.qza'))
-
-## R3
-weightedUFrbclqzaR3 <- read_qza(file.path(qza.rbcl.path,
-                                          'core_metricsRBCLR3/weighted_unifrac_distance_matrix.qza'))
-
-unweightedUFrbclqzaR3 <- read_qza(file.path(qza.rbcl.path,
-                                            'core_metricsRBCLR3/unweighted_unifrac_distance_matrix.qza'))
-
-## R4
-weightedUFrbclqzaR4 <- read_qza(file.path(qza.rbcl.path,
-                                          'core_metricsRBCLR4/weighted_unifrac_distance_matrix.qza'))
-
-unweightedUFrbclqzaR4 <- read_qza(file.path(qza.rbcl.path,
-                                            'core_metricsRBCLR4/unweighted_unifrac_distance_matrix.qza'))
-
-## R5
-weightedUFrbclqzaR5 <- read_qza(file.path(qza.rbcl.path,
-                                          'core_metricsRBCLR5/weighted_unifrac_distance_matrix.qza'))
-
-unweightedUFrbclqzaR5 <- read_qza(file.path(qza.rbcl.path,
-                                            'core_metricsRBCLR5/unweighted_unifrac_distance_matrix.qza'))
-
-## R6
-weightedUFrbclqzaR6 <- read_qza(file.path(qza.rbcl.path,
-                                          'core_metricsRBCLR6/weighted_unifrac_distance_matrix.qza'))
-
-unweightedUFrbclqzaR6 <- read_qza(file.path(qza.rbcl.path,
-                                            'core_metricsRBCLR6/unweighted_unifrac_distance_matrix.qza'))
-
-# R7
-weightedUFrbclqzaR7 <- read_qza(file.path(qza.rbcl.path,
-                                          'core_metricsRBCLR7/weighted_unifrac_distance_matrix.qza'))
-
-unweightedUFrbclqzaR7 <- read_qza(file.path(qza.rbcl.path,
-                                            'core_metricsRBCLR7/unweighted_unifrac_distance_matrix.qza'))
-
 ## access data inside artifacts
 
 # RBCL
 # R0
 wphylo.dist.rbclR0 <- weightedUFrbclqzaR0$data
 phylo.dist.rbclR0 <- unweightedUFrbclqzaR0$data
-# R1
-wphylo.dist.rbclR1 <- weightedUFrbclqzaR1$data
-phylo.dist.rbclR1 <- unweightedUFrbclqzaR1$data
-# R2
-wphylo.dist.rbclR2 <- weightedUFrbclqzaR2$data
-phylo.dist.rbclR2 <- unweightedUFrbclqzaR2$data
-# R3
-wphylo.dist.rbclR3 <- weightedUFrbclqzaR3$data
-phylo.dist.rbclR3 <- unweightedUFrbclqzaR3$data
-# R4
-wphylo.dist.rbclR4 <- weightedUFrbclqzaR4$data
-phylo.dist.rbclR4 <- unweightedUFrbclqzaR4$data
-# R5
-wphylo.dist.rbclR5 <- weightedUFrbclqzaR5$data
-phylo.dist.rbclR5 <- unweightedUFrbclqzaR5$data
-# R6
-wphylo.dist.rbclR6 <- weightedUFrbclqzaR6$data
-phylo.dist.rbclR6 <- unweightedUFrbclqzaR6$data
-# R7
-wphylo.dist.rbclR7 <- weightedUFrbclqzaR7$data
-phylo.dist.rbclR7 <- unweightedUFrbclqzaR7$data
+
 
 #Note, when taxonomy is imported, a single string is returned along
 #with a confidence score.  For many analysis we will want to break up
@@ -431,43 +362,9 @@ phylo.dist.rbclR7 <- unweightedUFrbclqzaR7$data
 
 # R0
 taxonomyRBCLR0 <-
-  read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR0/rarefied_table.qza")
+  read_qza("SI_pipeline/merged/RBCL/final/core_metricsRBCLR0/rarefied_table.qza")
 taxonomyRBCLR0 <- taxonomyRBCLR0$data
 
-# R1
-taxonomyRBCLR1 <-
-  read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR1/rarefied_table.qza")
-taxonomyRBCLR1 <- taxonomyRBCLR1$data
-
-# R2
-taxonomyRBCLR2 <-
-  read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR2/rarefied_table.qza")
-taxonomyRBCLR2 <- taxonomyRBCLR2$data
-
-# R3
-taxonomyRBCLR3 <-
-  read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR3/rarefied_table.qza")
-taxonomyRBCLR3 <- taxonomyRBCLR3$data
-
-# R4
-taxonomyRBCLR4 <-
-  read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR4/rarefied_table.qza")
-taxonomyRBCLR4 <- taxonomyRBCLR4$data
-
-# R5
-taxonomyRBCLR5 <-
-  read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR5/rarefied_table.qza")
-taxonomyRBCLR5 <- taxonomyRBCLR5$data
-
-# R6
-taxonomyRBCLR6 <-
-  read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR6/rarefied_table.qza")
-taxonomyRBCLR6 <- taxonomyRBCLR6$data
-
-# R7
-taxonomyRBCLR7 <-
-  read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR7/rarefied_table.qza")
-taxonomyRBCLR7 <- taxonomyRBCLR7$data
 
 ## in the future do the same for other runs
 ## taxonomyRBCLR1 <- read_qza("SI_pipeline/merged/RBCL/final/core_metricsRBCLR1/rarefied_table.qza")
@@ -478,12 +375,15 @@ taxonomyRBCLR7 <- taxonomyRBCLR7$data
 
 # ****CHECK PATHS BELOW ONCE FINISH RBCL PIPELINE****
 
-#RBCL R0 phylogeny
+## NEED TO CHECK whether this actually has all of the samples and tips
+## TODO: I think I need to rerun the pipeline steps to make sure the correct qzas are used
+
+#RBCL 2023 phylogeny
 physeqRBCLR0 <- qza_to_phyloseq(
-  features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR0/rarefied_table.qza",
-  tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
-  "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
-  metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
+  features="SI_pipeline/R2023/merged/RBCL/final/core_metricsRBCLR0/rarefied_table.qza",
+  tree="SI_pipeline/R2023/merged/RBCL/rooted-treeRBCL.qza",
+  "SI_pipeline/R2023/merged/RBCL/taxonomyRBCL.qza",
+  metadata = "SI_pipeline/R2023/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
 )
 physeqRBCLR0
 plot(physeqRBCLR0@phy_tree, show.tip.label = FALSE)
