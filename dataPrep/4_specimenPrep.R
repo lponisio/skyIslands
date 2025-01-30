@@ -403,12 +403,9 @@ par.site.sum <- spec.net %>%
 all.sums <- left_join(par.site.sp, par.site.gen)
 
 all.sums <- left_join(all.sums, par.site.sum)
-all.sums$Project <- "Sky islands"
+all.sums$Project <- "SI"
 
-dir.create(file.path("../data/", "all_parasite_study"),
-           showWarnings = FALSE)
-
-save(all.sums, file="../data/skyislands_parasite_sums.Rdata")
+save(all.sums, file="../data/SI_parasite_sums.Rdata")
 
 
 ## *******************************************************************
