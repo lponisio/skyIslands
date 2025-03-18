@@ -1,24 +1,25 @@
-## setwd('~/Dropbox/skyIslands/')
+
+setwd("~/University of Oregon Dropbox/Lauren Ponisio/")
 rm(list=ls())
-setwd('analysis/network')
+setwd('skyIslands/analysis/network')
 source('src/initialize.R')
 source('src/vaznull2.R')
 
 args <- commandArgs(trailingOnly=TRUE)
 if(length(args) != 0){
-    N <- as.numeric(args[3])
+    N <- as.numeric(args[4])
 } else{
-    N <- 9
+    N <- 2
 }
 
 ## ************************************************************
 ## calculate metrics and zscores ## beware this takes a while!
 ## ************************************************************
 
-## nets <- nets[apply(sapply(nets, dim) > 2, 2, all)]
+nets <- nets[apply(sapply(nets, dim) > 2, 2, all)]
 
-## mets <- lapply(nets, calcNetworkMetrics,
-##                N=N)
+mets <- lapply(nets, calcNetworkMetrics,
+               N=N)
 
 ## cor.dats <- prepDat(mets,  spec, net.type=net.type)
 

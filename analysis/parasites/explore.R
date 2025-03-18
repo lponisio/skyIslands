@@ -392,7 +392,8 @@ parasite_prevalence <- parasites_bees %>%
         axis.title.x = element_text(size=15),
         axis.title.y = element_text(size=15),
         text = element_text(size=15))+
-  scale_fill_manual(values = c("darkgoldenrod3", "grey", "#3182bd"))
+  scale_fill_manual(values = c("darkgoldenrod3", "grey", "#3182bd"),
+                    labels = c("Apicystis spp.", "Ascosphaera spp.", "Crithidia spp."))
   
 ggsave(parasite_prevalence, file="figures/parasite_boxplots.pdf",
        height=4, width=7)

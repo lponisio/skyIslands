@@ -212,12 +212,12 @@ load("saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_all_bees.Rdata"
 bombus.all <- fit.parasite
 load("saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_bombus_abundance.Rdata")
 bombus.ba <- fit.parasite
-load("saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_apis_abundance.Rdata")
-bombus.ha <- fit.parasite
+  load("saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_social_species.Rdata")
+bombus.ss <- fit.parasite
 
 loo.crithidia.all <- loo(bombus.all, resp="CrithidiaPresence")
 loo.crithidia.ba <- loo(bombus.ba, resp="CrithidiaPresence")
-loo.crithidia.ha <- loo(bombus.ha, resp="CrithidiaPresence")
+#loo.crithidia.ss <- loo(bombus.ss, resp="CrithidiaPresence")
 
 # bombus.loo.crithidia <- list(ba=bombus.ba$loo.crithidia,
 #                              all=bombus.all$loo.crithidia)
@@ -227,7 +227,7 @@ loo.crithidia.ha <- loo(bombus.ha, resp="CrithidiaPresence")
 #                                          abundance.order=xvar.order[-1],
 #                                          bombus.loo.crithidia
 #                                          )
-loo_compare(loo.crithidia.all, loo.crithidia.ba, loo.crithidia.ha)
+loo_compare(loo.crithidia.all, loo.crithidia.ba)
 ## bombus abundance an all abundance model fits are not distinguishable
 
 ## **********************************************************
@@ -239,6 +239,7 @@ load("saved/parasiteFit_bombus_CrithidiaPresenceApicystisSpp_lat_social_species.
 bombus.ss <- fit.parasite
 
 loo.apicystis.all <- loo(bombus.all, resp="ApicystisSpp")
+loo.apicystis.ba <- loo(bombus.ba, resp="ApicystisSpp")
 loo.apicystis.ss <- loo(bombus.ss, resp="ApicystisSpp")
 
 # bombus.loo.apicystis <- list(ss=bombus.ss$loo.apicystis,
@@ -249,7 +250,7 @@ loo.apicystis.ss <- loo(bombus.ss, resp="ApicystisSpp")
 #                                          abundance.order=xvar.order[-2],
 #                                          bombus.loo.apicystis
 #                                          )
-loo_compare(loo.apicystis.all, loo.apicystis.ss)
+loo_compare(loo.apicystis.all, loo.apicystis.ss,loo.apicystis.ba)
 ## The best fit is the abundance of bombus and apis together, which in
 ## this model are not colinear.
 

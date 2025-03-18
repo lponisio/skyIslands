@@ -139,8 +139,8 @@ lat_bombusabund <-
 
 
 p3 <- ggplot(lat_bombusabund, aes(x = Lat, y = estimate__)) +
-  geom_line(aes(x = Lat, y= estimate__), size = 1.5, color = "darkgoldenrod3") +
-  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4, fill = "darkgoldenrod3") +
+  geom_line(aes(x = Lat, y= estimate__), size = 1.5) +
+  geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha=0.4) +
   labs(x = "Latitude (log)", y = "Bombus abundance (log)",
        fill = "Credible interval") +
   theme_ms() +

@@ -6,6 +6,7 @@ calcMetric <- function(dat.web, ...) {
     mets <-  my.networklevel(dat.web, ...)
     mets.group <- grouplevel(dat.web, index=c("mean number of links",
                                          "weighted cluster coefficient"))
+    
     mets <- c(mets, mets.group)
     ## the functional redundancy function takes a matrix of sites and
     ## species, and a trait matrix whwere the rownames of the traits

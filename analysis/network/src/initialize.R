@@ -1,5 +1,3 @@
-library(igraph)
-library(bipartite)
 library(lme4)
 library(lmerTest)
 library(RColorBrewer)
@@ -9,21 +7,23 @@ source('src/misc.R')
 
 save.path <- 'saved'
 
-load('../../data/spec.Rdata')
+load('../../data/spec_net.Rdata')
 
 args <- commandArgs(trailingOnly=TRUE)
 if(length(args) != 0){
     net.type <- args[1]
     species <- args[2]
+    species.goup <- args[3]
 } else{
-    net.type <- "YrSR"
-    species <- "Parasite"
+    net.type <- "YearSR" ## Year or YearSR
+    species <- "Plant" ## Plant or Parasite
+    species.group <- "Bees" ## Bees or BeesSyrphids
 }
 
 
-plants <- unique(spec$PlantGenusSpecies)
-pols <- unique(spec$GenusSpecies)
-parasites <- c("AspergillusSpp", "AscosphaeraSpp", "ApicystisSpp",
+plants <- unique(spec.net$PlantGenusSpecies)
+pols <- unique(spec.net$GenusSpecies)
+parasites <- c("AscosphaeraSpp", "ApicystisSpp",
                "CrithidiaExpoeki", "CrithidiaBombi", "NosemaBombi",
                "NosemaCeranae")
 
@@ -36,15 +36,15 @@ if(species == "Plant"){
     lower.level  <- pols
     higher.level <- parasites
 }
-if(net.type == "YrSR"){
+if(net.type == "YearSR"){
     nets.by.SR  <- TRUE
 } else {
     nets.by.SR  <- FALSE
 }
 
 
-load(file=sprintf("../../data/nets%s%s.Rdata", net.type,
-                  paste(species, collapse="")
+load(file=sprintf("../../data/networks/%s_%s_%s.Rdata", net.type,
+                  paste(species, collapse=""), species.group
                   ))
 
 
