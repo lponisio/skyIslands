@@ -341,313 +341,313 @@ tree.16s <- drop.tip(tree.16s, which(duplicated(tree.16s$tip.label)))
 ## RBCL
 ## ***********************************************************************
 ## R0
-weightedUFrbclqzaR0 <- read_qza(file.path(qza.rbcl.path,
-                                          'core_metricsRBCLR0/weighted_unifrac_distance_matrix.qza'))
-
-unweightedUFrbclqzaR0 <- read_qza(file.path(qza.rbcl.path,
-                                            'core_metricsRBCLR0/unweighted_unifrac_distance_matrix.qza'))
-
-## access data inside artifacts
-
-# RBCL
-# R0
-wphylo.dist.rbclR0 <- weightedUFrbclqzaR0$data
-phylo.dist.rbclR0 <- unweightedUFrbclqzaR0$data
-
-
-#Note, when taxonomy is imported, a single string is returned along
-#with a confidence score.  For many analysis we will want to break up
-#this string and for that purpose the parse_taxonomy() function is
-#provided:
-
-# R0
-taxonomyRBCLR0 <-
-  read_qza("SI_pipeline/merged/RBCL/final/core_metricsRBCLR0/rarefied_table.qza")
-taxonomyRBCLR0 <- taxonomyRBCLR0$data
-
-
-## in the future do the same for other runs
-## taxonomyRBCLR1 <- read_qza("SI_pipeline/merged/RBCL/final/core_metricsRBCLR1/rarefied_table.qza")
-## taxonomyRBCLR1 <- taxonomyRBCLR1$data
-
-
-#Phyloseq tutorials here: https://joey711.github.io/phyloseq/
-
-# ****CHECK PATHS BELOW ONCE FINISH RBCL PIPELINE****
-
-## NEED TO CHECK whether this actually has all of the samples and tips
-## TODO: I think I need to rerun the pipeline steps to make sure the correct qzas are used
-
-#RBCL 2023 phylogeny
-physeqRBCLR0 <- qza_to_phyloseq(
-  features="SI_pipeline/R2023/merged/RBCL/final/core_metricsRBCLR0/rarefied_table.qza",
-  tree="SI_pipeline/R2023/merged/RBCL/rooted-treeRBCL.qza",
-  "SI_pipeline/R2023/merged/RBCL/taxonomyRBCL.qza",
-  metadata = "SI_pipeline/R2023/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
-)
-physeqRBCLR0
-plot(physeqRBCLR0@phy_tree, show.tip.label = FALSE)
-
-#RBCL R1 phylogeny
-physeqRBCLR1 <- qza_to_phyloseq(
-  features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR1/rarefied_table.qza",
-  tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
-  "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
-  metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
-)
-physeqRBCLR1
-plot(physeqRBCLR1@phy_tree, show.tip.label = FALSE)
-
-#RBCL R2 phylogeny
-physeqRBCLR2 <- qza_to_phyloseq(
-  features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR2/rarefied_table.qza",
-  tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
-  "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
-  metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
-)
-physeqRBCLR2
-plot(physeqRBCLR2@phy_tree, show.tip.label = FALSE)
-
-#RBCL R3 phylogeny
-physeqRBCLR3 <- qza_to_phyloseq(
-  features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR3/rarefied_table.qza",
-  tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
-  "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
-  metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
-)
-physeqRBCLR3
-plot(physeqRBCLR3@phy_tree, show.tip.label = FALSE)
-
-#RBCL R4 phylogeny
-physeqRBCLR4 <- qza_to_phyloseq(
-  features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR4/rarefied_table.qza",
-  tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
-  "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
-  metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
-)
-physeqRBCLR4
-plot(physeqRBCLR4@phy_tree, show.tip.label = FALSE)
-
-#RBCL R5 phylogeny
-physeqRBCLR5 <- qza_to_phyloseq(
-  features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR5/rarefied_table.qza",
-  tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
-  "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
-  metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
-)
-physeqRBCLR5
-plot(physeqRBCLR5@phy_tree, show.tip.label = FALSE)
-
-#RBCL R6 phylogeny
-physeqRBCLR6 <- qza_to_phyloseq(
-  features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR6/rarefied_table.qza",
-  tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
-  "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
-  metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
-)
-physeqRBCLR6
-plot(physeqRBCLR6@phy_tree, show.tip.label = FALSE)
-
-#RBCL R7 phylogeny
-physeqRBCLR7 <- qza_to_phyloseq(
-  features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR7/rarefied_table.qza",
-  tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
-  "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
-  metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
-)
-physeqRBCLR7
-plot(physeqRBCLR7@phy_tree, show.tip.label = FALSE)
-## in the future do the same for other runs
-## #RBCL R1 phylogeny
-## physeqRBCLR1 <- qza_to_phyloseq(
-##   features="SI_pipeline/merged/RBCL/final/core_metricsRBCLR1/rarefied_table.qza",
-##   tree="SI_pipeline/merged/RBCL/rooted-treeRBCL.qza",
-##   "SI_pipeline/merged/RBCL/taxonomyRBCL.qza",
-##   metadata = "SI_pipeline/merged/RBCL/maps/SI2019_R1mapRBCL.txt"
-## )
-## physeqRBCLR1
-
-## plot(physeqRBCLR1@phy_tree, show.tip.label = FALSE)
-## ***********************************************************************
-
-feature.2.tax.rbcl <-
-    read.table("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.txt", sep="\t",
-               header=TRUE)
-
-## ## R knows to ignore the row in the txt with a # (see defaults read.table)
-
-## add 16s/rbcl to make the columns easy to find when they are added
-## to the specimen data
-
-feature.2.tax.rbcl$Taxon  <- gsub(" ", "_", feature.2.tax.rbcl$Taxon)
-feature.2.tax.rbcl$Taxon <- paste("RBCL", feature.2.tax.rbcl$Taxon,
-                                  sep=':')
-## R0
-tree.rbclR0 <- phy_tree(physeqRBCLR0, errorIfNULL=TRUE)
-## R1
-tree.rbclR1 <- phy_tree(physeqRBCLR1, errorIfNULL=TRUE)
-## R2
-tree.rbclR2 <- phy_tree(physeqRBCLR2, errorIfNULL=TRUE)
-## R3
-tree.rbclR3 <- phy_tree(physeqRBCLR3, errorIfNULL=TRUE)
-## R4
-tree.rbclR4 <- phy_tree(physeqRBCLR4, errorIfNULL=TRUE)
-## R5
-tree.rbclR5 <- phy_tree(physeqRBCLR5, errorIfNULL=TRUE)
-## R6
-tree.rbclR6 <- phy_tree(physeqRBCLR6, errorIfNULL=TRUE)
-## R7
-tree.rbclR7 <- phy_tree(physeqRBCLR7, errorIfNULL=TRUE)
-
-## in the future do the same for other runs
-## tree.rbclR1 <- phy_tree(physeqRBCLR1, errorIfNULL=TRUE)
-
-## match the tip labs to the table with feature ID and Taxon
-## R0
-tree.rbclR0$tip.label  <-  feature.2.tax.rbcl$Taxon[
-                           match(tree.rbclR0$tip.label,
-                           feature.2.tax.rbcl$Feature.ID)]
-## R1
-tree.rbclR1$tip.label  <-  feature.2.tax.rbcl$Taxon[
-  match(tree.rbclR1$tip.label,
-        feature.2.tax.rbcl$Feature.ID)]
-## R2
-tree.rbclR2$tip.label  <-  feature.2.tax.rbcl$Taxon[
-  match(tree.rbclR2$tip.label,
-        feature.2.tax.rbcl$Feature.ID)]
-## R3
-tree.rbclR3$tip.label  <-  feature.2.tax.rbcl$Taxon[
-  match(tree.rbclR3$tip.label,
-        feature.2.tax.rbcl$Feature.ID)]
-## R4
-tree.rbclR4$tip.label  <-  feature.2.tax.rbcl$Taxon[
-  match(tree.rbclR4$tip.label,
-        feature.2.tax.rbcl$Feature.ID)]
-## R5
-tree.rbclR5$tip.label  <-  feature.2.tax.rbcl$Taxon[
-  match(tree.rbclR5$tip.label,
-        feature.2.tax.rbcl$Feature.ID)]
-## R6
-tree.rbclR6$tip.label  <-  feature.2.tax.rbcl$Taxon[
-  match(tree.rbclR6$tip.label,
-        feature.2.tax.rbcl$Feature.ID)]
-## R7
-tree.rbclR7$tip.label  <-  feature.2.tax.rbcl$Taxon[
-  match(tree.rbclR7$tip.label,
-        feature.2.tax.rbcl$Feature.ID)]
-
-## in the future do the same for other runs
-
-## tree.rbclR1$tip.label  <-  feature.2.tax.rbcl$Taxon[
-##                            match(tree.rbclR1$tip.label,
-##                            feature.2.tax.rbcl$Feature.ID)]
-
-## ***********************************************************************
-## rbcl networks
-## ***********************************************************************
-
-#R0
-indiv.comm.rbclR0 <-
-    bipartite::empty(catchDups(makeComm(taxonomyRBCLR0,
-                                        feature.2.tax.rbcl,
-                                        feature.col="Feature.ID")))
-                                        # changed to "Feature.ID" to match 'makeComm' function
-
-indiv.comm.rbclR0 <- indiv.comm.rbclR0/rowSums(indiv.comm.rbclR0)
-## R1
-indiv.comm.rbclR1 <-
-  bipartite::empty(catchDups(makeComm(taxonomyRBCLR1,
-                                      feature.2.tax.rbcl,
-                                      feature.col="Feature.ID")))
-
-indiv.comm.rbclR1 <- indiv.comm.rbclR1/rowSums(indiv.comm.rbclR1)
-## R2
-indiv.comm.rbclR2 <-
-  bipartite::empty(catchDups(makeComm(taxonomyRBCLR2,
-                                      feature.2.tax.rbcl,
-                                      feature.col="Feature.ID")))
-
-indiv.comm.rbclR2 <- indiv.comm.rbclR2/rowSums(indiv.comm.rbclR2)
-## R3
-indiv.comm.rbclR3 <-
-  bipartite::empty(catchDups(makeComm(taxonomyRBCLR3,
-                                      feature.2.tax.rbcl,
-                                      feature.col="Feature.ID")))
-
-indiv.comm.rbclR3 <- indiv.comm.rbclR3/rowSums(indiv.comm.rbclR3)
-## R4
-indiv.comm.rbclR4 <-
-  bipartite::empty(catchDups(makeComm(taxonomyRBCLR4,
-                                      feature.2.tax.rbcl,
-                                      feature.col="Feature.ID")))
-
-indiv.comm.rbclR4 <- indiv.comm.rbclR4/rowSums(indiv.comm.rbclR4)
-## R5
-indiv.comm.rbclR5 <-
-  bipartite::empty(catchDups(makeComm(taxonomyRBCLR5,
-                                      feature.2.tax.rbcl,
-                                      feature.col="Feature.ID")))
-
-indiv.comm.rbclR5 <- indiv.comm.rbclR5/rowSums(indiv.comm.rbclR5)
-## R6
-indiv.comm.rbclR6 <-
-  bipartite::empty(catchDups(makeComm(taxonomyRBCLR6,
-                                      feature.2.tax.rbcl,
-                                      feature.col="Feature.ID")))
-
-indiv.comm.rbclR6 <- indiv.comm.rbclR6/rowSums(indiv.comm.rbclR6)
-## R7
-indiv.comm.rbclR7 <-
-  bipartite::empty(catchDups(makeComm(taxonomyRBCLR7,
-                                      feature.2.tax.rbcl,
-                                      feature.col="Feature.ID")))
-
-indiv.comm.rbclR7 <- indiv.comm.rbclR7/rowSums(indiv.comm.rbclR7)
-
-## indiv.comm.rbclR1 <-
-##     bipartite::empty(catchDups(makeComm(taxonomyRBCLR1,
-##                                         feature.2.tax.rbcl)))
-## indiv.comm.rbclR1 <- indiv.comm.rbclR1/rowSums(indiv.comm.rbclR1)
-
-
-
-# bees.rbcl <- c(rownames(indiv.comm.rbclR0))
-
-# comms <- list(indiv.comm.rbclR0)
-
- bees.rbcl <- c(rownames(indiv.comm.rbclR0),
-               rownames(indiv.comm.rbclR1),
-               rownames(indiv.comm.rbclR2),
-               rownames(indiv.comm.rbclR3),
-               rownames(indiv.comm.rbclR4),
-               rownames(indiv.comm.rbclR5),
-               rownames(indiv.comm.rbclR6),
-               rownames(indiv.comm.rbclR7))
-
- comms <- list(indiv.comm.rbclR0, indiv.comm.rbclR1,
-               indiv.comm.rbclR2, indiv.comm.rbclR3,
-               indiv.comm.rbclR4, indiv.comm.rbclR5,
-               indiv.comm.rbclR6, indiv.comm.rbclR7)
-
-species.rbcl <- unique(unlist(sapply(comms, colnames)))
-
-merged.comm.rbcl <- plyr::rbind.fill(lapply(comms, as.data.frame))
-
-## check with number of columns against number of unique species
-dim(merged.comm.rbcl)
-length(species.rbcl)
-
-rownames(merged.comm.rbcl) <- bees.rbcl
-
-megaRBCLdata <- read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza")
-tree.rbcl <- megaRBCLdata$data
-
-## tree.rbcl <- tip_glom(tree.rbcl, h=0.1)
-
-## tree.rbcl <- drop_dupes(tree.rbcl, thres=1e-5)
-
-tree.rbcl$tip.label  <-  feature.2.tax.rbcl$Taxon[match(tree.rbcl$tip.label,
-                                           feature.2.tax.rbcl$Feature.ID)]
+# weightedUFrbclqzaR0 <- read_qza(file.path(qza.rbcl.path,
+#                                           'core_metricsRBCLR0/weighted_unifrac_distance_matrix.qza'))
+# 
+# unweightedUFrbclqzaR0 <- read_qza(file.path(qza.rbcl.path,
+#                                             'core_metricsRBCLR0/unweighted_unifrac_distance_matrix.qza'))
+# 
+# ## access data inside artifacts
+# 
+# # RBCL
+# # R0
+# wphylo.dist.rbclR0 <- weightedUFrbclqzaR0$data
+# phylo.dist.rbclR0 <- unweightedUFrbclqzaR0$data
+# 
+# 
+# #Note, when taxonomy is imported, a single string is returned along
+# #with a confidence score.  For many analysis we will want to break up
+# #this string and for that purpose the parse_taxonomy() function is
+# #provided:
+# 
+# # R0
+# taxonomyRBCLR0 <-
+#   read_qza("SI_pipeline/merged/RBCL/final/core_metricsRBCLR0/rarefied_table.qza")
+# taxonomyRBCLR0 <- taxonomyRBCLR0$data
+# 
+# 
+# ## in the future do the same for other runs
+# ## taxonomyRBCLR1 <- read_qza("SI_pipeline/merged/RBCL/final/core_metricsRBCLR1/rarefied_table.qza")
+# ## taxonomyRBCLR1 <- taxonomyRBCLR1$data
+# 
+# 
+# #Phyloseq tutorials here: https://joey711.github.io/phyloseq/
+# 
+# # ****CHECK PATHS BELOW ONCE FINISH RBCL PIPELINE****
+# 
+# ## NEED TO CHECK whether this actually has all of the samples and tips
+# ## TODO: I think I need to rerun the pipeline steps to make sure the correct qzas are used
+# 
+# #RBCL 2023 phylogeny
+# physeqRBCLR0 <- qza_to_phyloseq(
+#   features="SI_pipeline/R2023/merged/RBCL/final/core_metricsRBCLR0/rarefied_table.qza",
+#   tree="SI_pipeline/R2023/merged/RBCL/rooted-treeRBCL.qza",
+#   "SI_pipeline/R2023/merged/RBCL/taxonomyRBCL.qza",
+#   metadata = "SI_pipeline/R2023/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
+# )
+# physeqRBCLR0
+# plot(physeqRBCLR0@phy_tree, show.tip.label = FALSE)
+# 
+# #RBCL R1 phylogeny
+# physeqRBCLR1 <- qza_to_phyloseq(
+#   features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR1/rarefied_table.qza",
+#   tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
+#   "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
+#   metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
+# )
+# physeqRBCLR1
+# plot(physeqRBCLR1@phy_tree, show.tip.label = FALSE)
+# 
+# #RBCL R2 phylogeny
+# physeqRBCLR2 <- qza_to_phyloseq(
+#   features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR2/rarefied_table.qza",
+#   tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
+#   "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
+#   metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
+# )
+# physeqRBCLR2
+# plot(physeqRBCLR2@phy_tree, show.tip.label = FALSE)
+# 
+# #RBCL R3 phylogeny
+# physeqRBCLR3 <- qza_to_phyloseq(
+#   features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR3/rarefied_table.qza",
+#   tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
+#   "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
+#   metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
+# )
+# physeqRBCLR3
+# plot(physeqRBCLR3@phy_tree, show.tip.label = FALSE)
+# 
+# #RBCL R4 phylogeny
+# physeqRBCLR4 <- qza_to_phyloseq(
+#   features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR4/rarefied_table.qza",
+#   tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
+#   "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
+#   metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
+# )
+# physeqRBCLR4
+# plot(physeqRBCLR4@phy_tree, show.tip.label = FALSE)
+# 
+# #RBCL R5 phylogeny
+# physeqRBCLR5 <- qza_to_phyloseq(
+#   features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR5/rarefied_table.qza",
+#   tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
+#   "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
+#   metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
+# )
+# physeqRBCLR5
+# plot(physeqRBCLR5@phy_tree, show.tip.label = FALSE)
+# 
+# #RBCL R6 phylogeny
+# physeqRBCLR6 <- qza_to_phyloseq(
+#   features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR6/rarefied_table.qza",
+#   tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
+#   "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
+#   metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
+# )
+# physeqRBCLR6
+# plot(physeqRBCLR6@phy_tree, show.tip.label = FALSE)
+# 
+# #RBCL R7 phylogeny
+# physeqRBCLR7 <- qza_to_phyloseq(
+#   features="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/final/core_metricsRBCLR7/rarefied_table.qza",
+#   tree="SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza",
+#   "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.qza",
+#   metadata = "SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/maps/sky2020mapRBCL_combined_repsremoved.txt"
+# )
+# physeqRBCLR7
+# plot(physeqRBCLR7@phy_tree, show.tip.label = FALSE)
+# ## in the future do the same for other runs
+# ## #RBCL R1 phylogeny
+# ## physeqRBCLR1 <- qza_to_phyloseq(
+# ##   features="SI_pipeline/merged/RBCL/final/core_metricsRBCLR1/rarefied_table.qza",
+# ##   tree="SI_pipeline/merged/RBCL/rooted-treeRBCL.qza",
+# ##   "SI_pipeline/merged/RBCL/taxonomyRBCL.qza",
+# ##   metadata = "SI_pipeline/merged/RBCL/maps/SI2019_R1mapRBCL.txt"
+# ## )
+# ## physeqRBCLR1
+# 
+# ## plot(physeqRBCLR1@phy_tree, show.tip.label = FALSE)
+# ## ***********************************************************************
+# 
+# feature.2.tax.rbcl <-
+#     read.table("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/taxonomyRBCL.txt", sep="\t",
+#                header=TRUE)
+# 
+# ## ## R knows to ignore the row in the txt with a # (see defaults read.table)
+# 
+# ## add 16s/rbcl to make the columns easy to find when they are added
+# ## to the specimen data
+# 
+# feature.2.tax.rbcl$Taxon  <- gsub(" ", "_", feature.2.tax.rbcl$Taxon)
+# feature.2.tax.rbcl$Taxon <- paste("RBCL", feature.2.tax.rbcl$Taxon,
+#                                   sep=':')
+# ## R0
+# tree.rbclR0 <- phy_tree(physeqRBCLR0, errorIfNULL=TRUE)
+# ## R1
+# tree.rbclR1 <- phy_tree(physeqRBCLR1, errorIfNULL=TRUE)
+# ## R2
+# tree.rbclR2 <- phy_tree(physeqRBCLR2, errorIfNULL=TRUE)
+# ## R3
+# tree.rbclR3 <- phy_tree(physeqRBCLR3, errorIfNULL=TRUE)
+# ## R4
+# tree.rbclR4 <- phy_tree(physeqRBCLR4, errorIfNULL=TRUE)
+# ## R5
+# tree.rbclR5 <- phy_tree(physeqRBCLR5, errorIfNULL=TRUE)
+# ## R6
+# tree.rbclR6 <- phy_tree(physeqRBCLR6, errorIfNULL=TRUE)
+# ## R7
+# tree.rbclR7 <- phy_tree(physeqRBCLR7, errorIfNULL=TRUE)
+# 
+# ## in the future do the same for other runs
+# ## tree.rbclR1 <- phy_tree(physeqRBCLR1, errorIfNULL=TRUE)
+# 
+# ## match the tip labs to the table with feature ID and Taxon
+# ## R0
+# tree.rbclR0$tip.label  <-  feature.2.tax.rbcl$Taxon[
+#                            match(tree.rbclR0$tip.label,
+#                            feature.2.tax.rbcl$Feature.ID)]
+# ## R1
+# tree.rbclR1$tip.label  <-  feature.2.tax.rbcl$Taxon[
+#   match(tree.rbclR1$tip.label,
+#         feature.2.tax.rbcl$Feature.ID)]
+# ## R2
+# tree.rbclR2$tip.label  <-  feature.2.tax.rbcl$Taxon[
+#   match(tree.rbclR2$tip.label,
+#         feature.2.tax.rbcl$Feature.ID)]
+# ## R3
+# tree.rbclR3$tip.label  <-  feature.2.tax.rbcl$Taxon[
+#   match(tree.rbclR3$tip.label,
+#         feature.2.tax.rbcl$Feature.ID)]
+# ## R4
+# tree.rbclR4$tip.label  <-  feature.2.tax.rbcl$Taxon[
+#   match(tree.rbclR4$tip.label,
+#         feature.2.tax.rbcl$Feature.ID)]
+# ## R5
+# tree.rbclR5$tip.label  <-  feature.2.tax.rbcl$Taxon[
+#   match(tree.rbclR5$tip.label,
+#         feature.2.tax.rbcl$Feature.ID)]
+# ## R6
+# tree.rbclR6$tip.label  <-  feature.2.tax.rbcl$Taxon[
+#   match(tree.rbclR6$tip.label,
+#         feature.2.tax.rbcl$Feature.ID)]
+# ## R7
+# tree.rbclR7$tip.label  <-  feature.2.tax.rbcl$Taxon[
+#   match(tree.rbclR7$tip.label,
+#         feature.2.tax.rbcl$Feature.ID)]
+# 
+# ## in the future do the same for other runs
+# 
+# ## tree.rbclR1$tip.label  <-  feature.2.tax.rbcl$Taxon[
+# ##                            match(tree.rbclR1$tip.label,
+# ##                            feature.2.tax.rbcl$Feature.ID)]
+# 
+# ## ***********************************************************************
+# ## rbcl networks
+# ## ***********************************************************************
+# 
+# #R0
+# indiv.comm.rbclR0 <-
+#     bipartite::empty(catchDups(makeComm(taxonomyRBCLR0,
+#                                         feature.2.tax.rbcl,
+#                                         feature.col="Feature.ID")))
+#                                         # changed to "Feature.ID" to match 'makeComm' function
+# 
+# indiv.comm.rbclR0 <- indiv.comm.rbclR0/rowSums(indiv.comm.rbclR0)
+# ## R1
+# indiv.comm.rbclR1 <-
+#   bipartite::empty(catchDups(makeComm(taxonomyRBCLR1,
+#                                       feature.2.tax.rbcl,
+#                                       feature.col="Feature.ID")))
+# 
+# indiv.comm.rbclR1 <- indiv.comm.rbclR1/rowSums(indiv.comm.rbclR1)
+# ## R2
+# indiv.comm.rbclR2 <-
+#   bipartite::empty(catchDups(makeComm(taxonomyRBCLR2,
+#                                       feature.2.tax.rbcl,
+#                                       feature.col="Feature.ID")))
+# 
+# indiv.comm.rbclR2 <- indiv.comm.rbclR2/rowSums(indiv.comm.rbclR2)
+# ## R3
+# indiv.comm.rbclR3 <-
+#   bipartite::empty(catchDups(makeComm(taxonomyRBCLR3,
+#                                       feature.2.tax.rbcl,
+#                                       feature.col="Feature.ID")))
+# 
+# indiv.comm.rbclR3 <- indiv.comm.rbclR3/rowSums(indiv.comm.rbclR3)
+# ## R4
+# indiv.comm.rbclR4 <-
+#   bipartite::empty(catchDups(makeComm(taxonomyRBCLR4,
+#                                       feature.2.tax.rbcl,
+#                                       feature.col="Feature.ID")))
+# 
+# indiv.comm.rbclR4 <- indiv.comm.rbclR4/rowSums(indiv.comm.rbclR4)
+# ## R5
+# indiv.comm.rbclR5 <-
+#   bipartite::empty(catchDups(makeComm(taxonomyRBCLR5,
+#                                       feature.2.tax.rbcl,
+#                                       feature.col="Feature.ID")))
+# 
+# indiv.comm.rbclR5 <- indiv.comm.rbclR5/rowSums(indiv.comm.rbclR5)
+# ## R6
+# indiv.comm.rbclR6 <-
+#   bipartite::empty(catchDups(makeComm(taxonomyRBCLR6,
+#                                       feature.2.tax.rbcl,
+#                                       feature.col="Feature.ID")))
+# 
+# indiv.comm.rbclR6 <- indiv.comm.rbclR6/rowSums(indiv.comm.rbclR6)
+# ## R7
+# indiv.comm.rbclR7 <-
+#   bipartite::empty(catchDups(makeComm(taxonomyRBCLR7,
+#                                       feature.2.tax.rbcl,
+#                                       feature.col="Feature.ID")))
+# 
+# indiv.comm.rbclR7 <- indiv.comm.rbclR7/rowSums(indiv.comm.rbclR7)
+# 
+# ## indiv.comm.rbclR1 <-
+# ##     bipartite::empty(catchDups(makeComm(taxonomyRBCLR1,
+# ##                                         feature.2.tax.rbcl)))
+# ## indiv.comm.rbclR1 <- indiv.comm.rbclR1/rowSums(indiv.comm.rbclR1)
+# 
+# 
+# 
+# # bees.rbcl <- c(rownames(indiv.comm.rbclR0))
+# 
+# # comms <- list(indiv.comm.rbclR0)
+# 
+#  bees.rbcl <- c(rownames(indiv.comm.rbclR0),
+#                rownames(indiv.comm.rbclR1),
+#                rownames(indiv.comm.rbclR2),
+#                rownames(indiv.comm.rbclR3),
+#                rownames(indiv.comm.rbclR4),
+#                rownames(indiv.comm.rbclR5),
+#                rownames(indiv.comm.rbclR6),
+#                rownames(indiv.comm.rbclR7))
+# 
+#  comms <- list(indiv.comm.rbclR0, indiv.comm.rbclR1,
+#                indiv.comm.rbclR2, indiv.comm.rbclR3,
+#                indiv.comm.rbclR4, indiv.comm.rbclR5,
+#                indiv.comm.rbclR6, indiv.comm.rbclR7)
+# 
+# species.rbcl <- unique(unlist(sapply(comms, colnames)))
+# 
+# merged.comm.rbcl <- plyr::rbind.fill(lapply(comms, as.data.frame))
+# 
+# ## check with number of columns against number of unique species
+# dim(merged.comm.rbcl)
+# length(species.rbcl)
+# 
+# rownames(merged.comm.rbcl) <- bees.rbcl
+# 
+# megaRBCLdata <- read_qza("SI_pipeline/R2018/2023_sequence_results_raw/merged/RBCL/rooted-treeRBCL.qza")
+# tree.rbcl <- megaRBCLdata$data
+# 
+# ## tree.rbcl <- tip_glom(tree.rbcl, h=0.1)
+# 
+# ## tree.rbcl <- drop_dupes(tree.rbcl, thres=1e-5)
+# 
+# tree.rbcl$tip.label  <-  feature.2.tax.rbcl$Taxon[match(tree.rbcl$tip.label,
+#                                            feature.2.tax.rbcl$Feature.ID)]
 
 
 ## ***********************************************************************
@@ -657,9 +657,9 @@ tree.rbcl$tip.label  <-  feature.2.tax.rbcl$Taxon[match(tree.rbcl$tip.label,
 ## spec already includes parasite data
 load('../skyIslands/data/spec_net_fdiv.Rdata')
 
-indiv.comm.rbcl <- as.data.frame(merged.comm.rbcl)
-pollen <- colnames(indiv.comm.rbcl)
-indiv.comm.rbcl$UniqueID <- rownames(indiv.comm.rbcl)
+#indiv.comm.rbcl <- as.data.frame(merged.comm.rbcl)
+#pollen <- colnames(indiv.comm.rbcl)
+#indiv.comm.rbcl$UniqueID <- rownames(indiv.comm.rbcl)
 
 #16s
 indiv.comm.16s <- as.data.frame(merged.comm.16s)
@@ -670,8 +670,8 @@ indiv.comm.16s$UniqueID <- rownames(indiv.comm.16s)
 spec.net <-cbind(spec.net, indiv.comm.16s[, bact][match(spec.net$UniqueID,
                            indiv.comm.16s$UniqueID),])
 
-spec.net <-cbind(spec.net, indiv.comm.rbcl[, pollen][match(spec.net$UniqueID,
-                           indiv.comm.rbcl$UniqueID),])
+#spec.net <-cbind(spec.net, indiv.comm.rbcl[, pollen][match(spec.net$UniqueID,
+#                           indiv.comm.rbcl$UniqueID),])
 
 ## adding in PD code to merge to spec.net
 ## FULL MICROBE DATASET
@@ -694,13 +694,29 @@ spec.microbes <- spec.microbes[rowSums(spec.microbes[,microbes])!=0,]
 ## phylogenetic distance function, modified from picante
 PD <- apply(spec.microbes[,microbes], 1, function(x){
   this.bee <- x[x > 0]
-  this.tree <- prune.sample(t(this.bee), tree.16s)
+  this.tree <- picante::prune.sample(t(this.bee), tree.16s)
   picante::pd(t(this.bee), this.tree, include.root = TRUE)
   #browser()
 })
 
+## phylogenetic species evenness for each bee
+PSE <- apply(spec.microbes[,microbes], 1, function(x){
+  this.bee <- x[x > 0]
+  this.tree <- picante::prune.sample(t(this.bee), tree.16s)
+  picante::pse(t(this.bee), this.tree)
+  #browser()
+})
+
+## psd() phylogenetic species diversity metrics/phylogenetic species richness (PSR)
+## ses.pd standardized effect size of phylo diversity in communities 
+
 PD <- do.call(rbind, PD)
 spec.microbes <- cbind(spec.microbes, PD)
+
+PSE <- do.call(rbind, PSE) %>%
+  select(PSEs)
+
+spec.microbes <- cbind(spec.microbes, PSE)
 
 ## Merge back onto specimen data
 spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
@@ -708,7 +724,8 @@ spec.net$ScreenedMicrobes <- ifelse(spec.net$Site %in% unique(spec.microbes$Site
 
 ## change microbe NAs to 0
 spec.net <- spec.net %>%
-  mutate(PD = replace_na(PD, 0))
+  mutate(PD = replace_na(PD, 0),
+         PSEs = replace_na(PSEs, 0))
 
 spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 
