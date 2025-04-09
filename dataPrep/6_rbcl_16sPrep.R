@@ -745,7 +745,7 @@ bee.obligate.microbes <- bee.obligate.microbes[bee.obligate.microbes %in% tree.1
 PD.obligate <- apply(spec.microbes[,bee.obligate.microbes], 1, function(x){
   tryCatch({
     this.bee <- x[x > 0]
-    this.tree <- prune.sample(t(this.bee), tree.16s)
+    this.tree <- picante::prune.sample(t(this.bee), tree.16s)
     pd_value <- picante::pd(t(this.bee), this.tree, include.root = TRUE)
     if (is.null(pd_value) || length(pd_value) == 0) pd_value <- 0  # Assign zero if PD is NULL or empty list
     else pd_value[[1]]  # Extract the first element if PD is a list
@@ -795,7 +795,7 @@ bee.transient.microbes <- bee.transient.microbes[bee.transient.microbes %in% tre
 PD.transient <- apply(spec.microbes[,bee.transient.microbes], 1, function(x){
   tryCatch({
     this.bee <- x[x > 0]
-    this.tree <- prune.sample(t(this.bee), tree.16s)
+    this.tree <- picante::prune.sample(t(this.bee), tree.16s)
     pd_value <- picante::pd(t(this.bee), this.tree, include.root = TRUE)
     if (is.null(pd_value) || length(pd_value) == 0) pd_value <- 0  # Assign zero if PD is NULL or empty list
     else pd_value[[1]]  # Extract the first element if PD is a list
