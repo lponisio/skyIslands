@@ -666,9 +666,12 @@ indiv.comm.16s <- as.data.frame(merged.comm.16s)
 bact <- colnames(indiv.comm.16s)
 indiv.comm.16s$UniqueID <- rownames(indiv.comm.16s)
 
+## 4-9-2025 no duplicae UniqueIDs here
 
 spec.net <-cbind(spec.net, indiv.comm.16s[, bact][match(spec.net$UniqueID,
                            indiv.comm.16s$UniqueID),])
+
+## 4-9-2025 no duplicae UniqueIDs here
 
 #spec.net <-cbind(spec.net, indiv.comm.rbcl[, pollen][match(spec.net$UniqueID,
 #                           indiv.comm.rbcl$UniqueID),])
@@ -684,9 +687,11 @@ microbes <- microbes[microbes %in% tree.16s$tip.label]
 screened.microbes <- apply(spec.net, 1, function(x) all(is.na(x[microbes])))
 spec.microbes <- spec.net[!screened.microbes, ]
 
+## 4-9-2025 no duplicae UniqueIDs here
+
 #3 rows have 0 for all microbes, need to drop
 spec.microbes <- spec.microbes[rowSums(spec.microbes[,microbes])!=0,]
-
+## 4-9-2025 no duplicae UniqueIDs here
 
 ## QUESTION: should include root = TRUE? if false gives warning 3x
 ## warning: Rooted tree and include.root=TRUE argument required to calculate PD of single-species communities. Single species community assigned PD value of NA.
@@ -713,22 +718,26 @@ PSE <- apply(spec.microbes[,microbes], 1, function(x){
 PD <- do.call(rbind, PD)
 spec.microbes <- cbind(spec.microbes, PD)
 
+## 4-9-2025 no duplicae UniqueIDs here
+
 PSE <- do.call(rbind, PSE) %>%
   select(PSEs)
 
 spec.microbes <- cbind(spec.microbes, PSE)
+## 4-9-2025 no duplicae UniqueIDs here
 
 ## Merge back onto specimen data
 spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
+## 4-9-2025 no duplicae UniqueIDs here
 spec.net$ScreenedMicrobes <- ifelse(spec.net$Site %in% unique(spec.microbes$Site), 1, 0)
-
+## 4-9-2025 no duplicae UniqueIDs here
 ## change microbe NAs to 0
 spec.net <- spec.net %>%
   mutate(PD = replace_na(PD, 0),
          PSEs = replace_na(PSEs, 0))
-
+## 4-9-2025 no duplicae UniqueIDs here
 spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
-
+## 4-9-2025 no duplicae UniqueIDs here
 
 ## ONLY OBLIGATE MICROBES DATASET
 
@@ -773,14 +782,14 @@ spec.microbes <- cbind(spec.microbes, result_df)
 
 
 ## Merge back onto specimen data
-spec.net <- merge(spec.net, spec.microbes, all.x=TRUE, all.y=TRUE)
-
+spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
+## 4-9-2025 no duplicae UniqueIDs here
 ## change microbe NAs to 0
 spec.net <- spec.net %>%
   mutate(PD.obligate = replace_na(PD.obligate, 0))
 
 spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
-
+## 4-9-2025 no duplicae UniqueIDs here
 ## ONLY TRANSIENT MICROBES DATASET
 
 ## splitting out obligate bee microbes based on Zheng and Moran paper
@@ -820,10 +829,10 @@ names(trans_df)[names(trans_df) == "SR"] <- "SR.transient"
 
 
 spec.microbes <- cbind(spec.microbes, trans_df)
-
+## 4-9-2025 no duplicae UniqueIDs here
 ## Merge back onto specimen data
-spec.net <- merge(spec.net, spec.microbes, all.x=TRUE, all.y=TRUE)
-
+spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
+## 4-9-2025 no duplicae UniqueIDs here
 ## change microbe NAs to 0
 spec.net <- spec.net %>%
   mutate(PD.transient = replace_na(PD.transient, 0))
