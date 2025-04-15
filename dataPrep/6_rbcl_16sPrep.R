@@ -739,11 +739,20 @@ spec.net <- spec.net %>%
 spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 ## 4-9-2025 no duplicae UniqueIDs here
 
-## ONLY OBLIGATE MICROBES DATASET
+## ONLY ALL BEE OBLIGATE MICROBES DATASET
 
 
-## splitting out obligate bee microbes based on Zheng and Moran paper
-bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae"
+## splitting out obligate bee microbes based on Zheng and Moran paper and Voulgari Kokota et al review of solitary microbiome
+## ALL bee obligates
+bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae|Bacillaceae|Burkholderiaceae|Clostridiaceae|Comamonadaceae|Enterobacteriaceae|Lachnospiraceae|Methylobacteriaceae|Moraxellaceae|Sphingomonadaceae|Oxalobacteraceae"
+
+## social core
+## Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae
+
+## solitary core
+# Acetobacteraceae, Bacillaceae, Burkholderiaceae,
+# Clostridiaceae, Comamonadaceae, Enterobacteriaceae, Lachnospiraceae, Lactobacillaceae,
+# Methylobacteriaceae, Moraxellaceae, Sphingomonadaceae, and Oxalobacteraceae
 
 ## this is a list of the microbe strains that contain the known obligate bee microbe genera
 bee.obligate.microbes <- microbes[grepl(bee.obligates, microbes, fixed=FALSE)]
@@ -792,8 +801,8 @@ spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 ## 4-9-2025 no duplicae UniqueIDs here
 ## ONLY TRANSIENT MICROBES DATASET
 
-## splitting out obligate bee microbes based on Zheng and Moran paper
-bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae"
+## splitting out obligate bee microbes based on Zheng and Moran paper and Voulgari kokota et al solitary microbe paper
+bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae|Bacillaceae|Burkholderiaceae|Clostridiaceae|Comamonadaceae|Enterobacteriaceae|Lachnospiraceae|Methylobacteriaceae|Moraxellaceae|Sphingomonadaceae|Oxalobacteraceae"
 
 ## this is a list of the microbe strains that contain the known transient bee microbe genera
 bee.transient.microbes <- microbes[!grepl(bee.obligates, microbes, fixed=FALSE)]
@@ -839,7 +848,216 @@ spec.net <- spec.net %>%
 
 spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 
+## Now do the same for only social bee obligates
 
+
+## splitting out obligate bee microbes based on Zheng and Moran paper 
+## ALL bee obligates
+bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae"
+
+## social core
+## Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae
+
+## solitary core
+# Acetobacteraceae, Bacillaceae, Burkholderiaceae,
+# Clostridiaceae, Comamonadaceae, Enterobacteriaceae, Lachnospiraceae, Lactobacillaceae,
+# Methylobacteriaceae, Moraxellaceae, Sphingomonadaceae, and Oxalobacteraceae
+
+## this is a list of the microbe strains that contain the known obligate bee microbe genera
+bee.obligate.microbes <- microbes[grepl(bee.obligates, microbes, fixed=FALSE)]
+bee.obligate.microbes <- bee.obligate.microbes[bee.obligate.microbes %in% tree.16s$tip.label]
+## now need to subset spec.microbes to be just the microbe columns with bee obligates and calculate PD
+
+## phylogenetic distance function, modified from picante
+PD.obligate <- apply(spec.microbes[,bee.obligate.microbes], 1, function(x){
+  tryCatch({
+    this.bee <- x[x > 0]
+    this.tree <- picante::prune.sample(t(this.bee), tree.16s)
+    pd_value <- picante::pd(t(this.bee), this.tree, include.root = TRUE)
+    if (is.null(pd_value) || length(pd_value) == 0) pd_value <- 0  # Assign zero if PD is NULL or empty list
+    else pd_value[[1]]  # Extract the first element if PD is a list
+    data.frame(PD = pd_value[[1]], SR = pd_value[[2]])
+  }, error = function(e) {
+    if (grepl("Tree has no branch lengths", e$message)) {
+      # If error is due to tree having no branch lengths, return zero for PD and SR
+      return(data.frame(PD = 0, SR = 0))
+    } else {
+      # If it's a different error, re-raise it
+      stop(e)
+    }
+  })
+})
+
+# Convert the result into a dataframe
+result_df <- do.call(rbind, PD.obligate) 
+
+# Rename column names to indicate these are the obligate only pd and sr
+names(result_df)[names(result_df) == "PD"] <- "PD.obligate.social"
+names(result_df)[names(result_df) == "SR"] <- "SR.obligate.social"
+
+
+spec.microbes <- cbind(spec.microbes, result_df) 
+
+
+## Merge back onto specimen data
+spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
+## 4-9-2025 no duplicae UniqueIDs here
+## change microbe NAs to 0
+spec.net <- spec.net %>%
+  mutate(PD.obligate = replace_na(PD.obligate, 0))
+
+spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
+## 4-9-2025 no duplicae UniqueIDs here
+## ONLY TRANSIENT SOCIAL MICROBES DATASET
+
+## splitting out obligate bee microbes based on Zheng and Moran paper and Voulgari kokota et al solitary microbe paper
+bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae"
+
+## this is a list of the microbe strains that contain the known transient bee microbe genera
+bee.transient.microbes <- microbes[!grepl(bee.obligates, microbes, fixed=FALSE)]
+bee.transient.microbes <- bee.transient.microbes[bee.transient.microbes %in% tree.16s$tip.label]
+## now need to subset spec.microbes to be just the microbe columns with bee transients and calculate PD
+
+## phylogenetic distance function, modified from picante
+PD.transient <- apply(spec.microbes[,bee.transient.microbes], 1, function(x){
+  tryCatch({
+    this.bee <- x[x > 0]
+    this.tree <- picante::prune.sample(t(this.bee), tree.16s)
+    pd_value <- picante::pd(t(this.bee), this.tree, include.root = TRUE)
+    if (is.null(pd_value) || length(pd_value) == 0) pd_value <- 0  # Assign zero if PD is NULL or empty list
+    else pd_value[[1]]  # Extract the first element if PD is a list
+    data.frame(PD = pd_value[[1]], SR = pd_value[[2]])
+  }, error = function(e) {
+    if (grepl("Tree has no branch lengths", e$message)) {
+      # If error is due to tree having no branch lengths, return zero for PD and SR
+      return(data.frame(PD = 0, SR = 0))
+    } else {
+      # If it's a different error, re-raise it
+      stop(e)
+    }
+  })
+})
+
+# Convert the result into a dataframe
+trans_df <- do.call(rbind, PD.transient) 
+
+# Rename column names to indicate these are the transient only pd and sr
+names(trans_df)[names(trans_df) == "PD"] <- "PD.transient.social"
+names(trans_df)[names(trans_df) == "SR"] <- "SR.transient.social"
+
+
+spec.microbes <- cbind(spec.microbes, trans_df)
+## 4-9-2025 no duplicae UniqueIDs here
+## Merge back onto specimen data
+spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
+## 4-9-2025 no duplicae UniqueIDs here
+## change microbe NAs to 0
+spec.net <- spec.net %>%
+  mutate(PD.transient = replace_na(PD.transient, 0))
+
+spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
+
+
+## Now do the same for only solitary bee obligates
+
+
+## splitting out obligate bee microbes based on Vougari Kokota et al paper
+## solitary bee obligates
+bee.obligates <- "Acetobacteraceae|Bacillaceae|Burkholderiaceae|Clostridiaceae|Comamonadaceae|Enterobacteriaceae|Lachnospiraceae|Lactobacillaceae|Methylobacteriaceae|Moraxellaceae|Sphingomonadaceae|Oxalobacteraceae"
+
+## this is a list of the microbe strains that contain the known obligate bee microbe genera
+bee.obligate.microbes <- microbes[grepl(bee.obligates, microbes, fixed=FALSE)]
+bee.obligate.microbes <- bee.obligate.microbes[bee.obligate.microbes %in% tree.16s$tip.label]
+## now need to subset spec.microbes to be just the microbe columns with bee obligates and calculate PD
+
+## phylogenetic distance function, modified from picante
+PD.obligate <- apply(spec.microbes[,bee.obligate.microbes], 1, function(x){
+  tryCatch({
+    this.bee <- x[x > 0]
+    this.tree <- picante::prune.sample(t(this.bee), tree.16s)
+    pd_value <- picante::pd(t(this.bee), this.tree, include.root = TRUE)
+    if (is.null(pd_value) || length(pd_value) == 0) pd_value <- 0  # Assign zero if PD is NULL or empty list
+    else pd_value[[1]]  # Extract the first element if PD is a list
+    data.frame(PD = pd_value[[1]], SR = pd_value[[2]])
+  }, error = function(e) {
+    if (grepl("Tree has no branch lengths", e$message)) {
+      # If error is due to tree having no branch lengths, return zero for PD and SR
+      return(data.frame(PD = 0, SR = 0))
+    } else {
+      # If it's a different error, re-raise it
+      stop(e)
+    }
+  })
+})
+
+# Convert the result into a dataframe
+result_df <- do.call(rbind, PD.obligate) 
+
+# Rename column names to indicate these are the obligate only pd and sr
+names(result_df)[names(result_df) == "PD"] <- "PD.obligate.solitary"
+names(result_df)[names(result_df) == "SR"] <- "SR.obligate.solitary"
+
+
+spec.microbes <- cbind(spec.microbes, result_df) 
+
+
+## Merge back onto specimen data
+spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
+## 4-9-2025 no duplicae UniqueIDs here
+## change microbe NAs to 0
+spec.net <- spec.net %>%
+  mutate(PD.obligate = replace_na(PD.obligate, 0))
+
+spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
+## 4-9-2025 no duplicae UniqueIDs here
+## ONLY TRANSIENT SOCIAL MICROBES DATASET
+
+## splitting out obligate bee microbes based on Zheng and Moran paper and Voulgari kokota et al solitary microbe paper
+bee.obligates <- "Acetobacteraceae|Bacillaceae|Burkholderiaceae|Clostridiaceae|Comamonadaceae|Enterobacteriaceae|Lachnospiraceae|Lactobacillaceae|Methylobacteriaceae|Moraxellaceae|Sphingomonadaceae|Oxalobacteraceae"
+
+## this is a list of the microbe strains that contain the known transient bee microbe genera
+bee.transient.microbes <- microbes[!grepl(bee.obligates, microbes, fixed=FALSE)]
+bee.transient.microbes <- bee.transient.microbes[bee.transient.microbes %in% tree.16s$tip.label]
+## now need to subset spec.microbes to be just the microbe columns with bee transients and calculate PD
+
+## phylogenetic distance function, modified from picante
+PD.transient <- apply(spec.microbes[,bee.transient.microbes], 1, function(x){
+  tryCatch({
+    this.bee <- x[x > 0]
+    this.tree <- picante::prune.sample(t(this.bee), tree.16s)
+    pd_value <- picante::pd(t(this.bee), this.tree, include.root = TRUE)
+    if (is.null(pd_value) || length(pd_value) == 0) pd_value <- 0  # Assign zero if PD is NULL or empty list
+    else pd_value[[1]]  # Extract the first element if PD is a list
+    data.frame(PD = pd_value[[1]], SR = pd_value[[2]])
+  }, error = function(e) {
+    if (grepl("Tree has no branch lengths", e$message)) {
+      # If error is due to tree having no branch lengths, return zero for PD and SR
+      return(data.frame(PD = 0, SR = 0))
+    } else {
+      # If it's a different error, re-raise it
+      stop(e)
+    }
+  })
+})
+
+# Convert the result into a dataframe
+trans_df <- do.call(rbind, PD.transient) 
+
+# Rename column names to indicate these are the transient only pd and sr
+names(trans_df)[names(trans_df) == "PD"] <- "PD.transient.solitary"
+names(trans_df)[names(trans_df) == "SR"] <- "SR.transient.solitary"
+
+
+spec.microbes <- cbind(spec.microbes, trans_df)
+## 4-9-2025 no duplicae UniqueIDs here
+## Merge back onto specimen data
+spec.net <- merge(spec.net, spec.microbes, all.x=TRUE)
+## 4-9-2025 no duplicae UniqueIDs here
+## change microbe NAs to 0
+spec.net <- spec.net %>%
+  mutate(PD.transient = replace_na(PD.transient, 0))
+
+spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 ## drop duplicate sampleID. LP: This should not happen?
 ## spec.net <- spec.net[!duplicated(spec.net$UniqueID),]
 any(duplicated(spec.net$UniqueID))
