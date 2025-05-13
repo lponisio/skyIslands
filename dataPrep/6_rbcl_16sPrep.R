@@ -744,7 +744,7 @@ spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 
 ## splitting out obligate bee microbes based on Zheng and Moran paper and Voulgari Kokota et al review of solitary microbiome
 ## ALL bee obligates
-bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae|Bacillaceae|Burkholderiaceae|Clostridiaceae|Comamonadaceae|Enterobacteriaceae|Lachnospiraceae|Methylobacteriaceae|Moraxellaceae|Sphingomonadaceae|Oxalobacteraceae"
+bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae|Bacillaceae|Burkholderiaceae|Clostridiaceae|Comamonadaceae|Enterobacteriaceae|Lachnospiraceae|Methylobacteriaceae|Moraxellaceae|Sphingomonadaceae|Oxalobacteraceae|Erwiniaceae|Anaplasmataceae|Hafniaceae"
 
 ## social core
 ## Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae
@@ -802,7 +802,7 @@ spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 ## ONLY TRANSIENT MICROBES DATASET
 
 ## splitting out obligate bee microbes based on Zheng and Moran paper and Voulgari kokota et al solitary microbe paper
-bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae|Bacillaceae|Burkholderiaceae|Clostridiaceae|Comamonadaceae|Enterobacteriaceae|Lachnospiraceae|Methylobacteriaceae|Moraxellaceae|Sphingomonadaceae|Oxalobacteraceae"
+bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae|Bacillaceae|Burkholderiaceae|Clostridiaceae|Comamonadaceae|Enterobacteriaceae|Lachnospiraceae|Methylobacteriaceae|Moraxellaceae|Sphingomonadaceae|Oxalobacteraceae|Erwiniaceae|Anaplasmataceae|Hafniaceae"
 
 ## this is a list of the microbe strains that contain the known transient bee microbe genera
 bee.transient.microbes <- microbes[!grepl(bee.obligates, microbes, fixed=FALSE)]
@@ -853,7 +853,7 @@ spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 
 ## splitting out obligate bee microbes based on Zheng and Moran paper 
 ## ALL bee obligates
-bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae"
+bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae|Erwiniaceae|Anaplasmataceae|Hafniaceae"
 
 ## social core
 ## Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae
@@ -911,7 +911,7 @@ spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 ## ONLY TRANSIENT SOCIAL MICROBES DATASET
 
 ## splitting out obligate bee microbes based on Zheng and Moran paper and Voulgari kokota et al solitary microbe paper
-bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae"
+bee.obligates <- "Lactobacillaceae|Bifidobacteriaceae|Neisseriaceae|Orbaceae|Bartonella|Acetobacteraceae|Erwiniaceae|Anaplasmataceae|Hafniaceae"
 
 ## this is a list of the microbe strains that contain the known transient bee microbe genera
 bee.transient.microbes <- microbes[!grepl(bee.obligates, microbes, fixed=FALSE)]
@@ -963,7 +963,7 @@ spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 
 ## splitting out obligate bee microbes based on Vougari Kokota et al paper
 ## solitary bee obligates
-bee.obligates <- "Acetobacteraceae|Bacillaceae|Burkholderiaceae|Clostridiaceae|Comamonadaceae|Enterobacteriaceae|Lachnospiraceae|Lactobacillaceae|Methylobacteriaceae|Moraxellaceae|Sphingomonadaceae|Oxalobacteraceae"
+bee.obligates <- "Acetobacteraceae|Bacillaceae|Burkholderiaceae|Clostridiaceae|Comamonadaceae|Enterobacteriaceae|Lachnospiraceae|Lactobacillaceae|Methylobacteriaceae|Moraxellaceae|Sphingomonadaceae|Oxalobacteraceae|Erwiniaceae|Anaplasmataceae|Hafniaceae"
 
 ## this is a list of the microbe strains that contain the known obligate bee microbe genera
 bee.obligate.microbes <- microbes[grepl(bee.obligates, microbes, fixed=FALSE)]
@@ -1013,7 +1013,7 @@ spec.net[,microbes][is.na(spec.net[,microbes])] <- 0
 ## ONLY TRANSIENT SOCIAL MICROBES DATASET
 
 ## splitting out obligate bee microbes based on Zheng and Moran paper and Voulgari kokota et al solitary microbe paper
-bee.obligates <- "Acetobacteraceae|Bacillaceae|Burkholderiaceae|Clostridiaceae|Comamonadaceae|Enterobacteriaceae|Lachnospiraceae|Lactobacillaceae|Methylobacteriaceae|Moraxellaceae|Sphingomonadaceae|Oxalobacteraceae"
+bee.obligates <- "Acetobacteraceae|Bacillaceae|Burkholderiaceae|Clostridiaceae|Comamonadaceae|Enterobacteriaceae|Lachnospiraceae|Lactobacillaceae|Methylobacteriaceae|Moraxellaceae|Sphingomonadaceae|Oxalobacteraceae|Erwiniaceae|Anaplasmataceae|Hafniaceae"
 
 ## this is a list of the microbe strains that contain the known transient bee microbe genera
 bee.transient.microbes <- microbes[!grepl(bee.obligates, microbes, fixed=FALSE)]
