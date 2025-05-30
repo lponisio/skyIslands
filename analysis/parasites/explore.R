@@ -33,17 +33,17 @@ spec.orig %>%
 ## genus with > 10 species, and species that were found in >7 sites.
 num_per_site <- spec.orig %>% 
   filter(Order == "Hymenoptera" & Family != "Vespidae" & Family != "Sphecidae") %>% 
-  #group_by(GenusSpecies) %>% 
-  #summarize(n = n_distinct(Site)) %>% 
-  #filter(n > 7) %>% 
-  summarize(n = n())
+  #filter(Apidae == 1) %>% 
+  group_by(GenusSpecies) %>% 
+  summarize(n = n_distinct(Site)) %>% 
+  filter(n == 1) 
 
 ## Summary numbers for veg
 veg <- filter(veg, Site != "VC")
 veg %>%
   group_by(PlantGenusSpecies) %>% 
   summarize(n = n_distinct(Site)) %>% 
-  filter(n > 5)
+  filter(n == 2)
 ## Plots by meadow
 ## Bee abundances by meadows
 ###############################################################################
@@ -165,8 +165,8 @@ ggplot(sick.totals, aes(x=Site, y=ParasitismRate)) +
 
 ################################################################################
 ## Relationship between bee abundance 
-ggplot(spec.all, aes(x=Net_BombusAbundance,
-                     y=Net_HBAbundance, color=Site))+
+ggplot(spec.orig, aes(y=Net_BombusAbundance,
+                     x=Net_HBAbundance))+
   geom_point()
 
 ## Relationship between bombus abundance and other bees
@@ -187,16 +187,19 @@ ggplot(spec.net, aes(x= Year,
                      y=Net_HBAbundance))+
   geom_boxplot()
 
-## Relationship between other bees abundance and latitude
-ggplot(spec.all, aes(x= Lat,
-                     y=Net_NonBombusHBAbundance, color=Site))+
+## Relationship between bombus abundance and diet breadth
+bombus_abund_degree <- ggplot(spec.net, aes(x= rare.degree,
+                     y=Net_BombusAbundance))+
   geom_point()
+ggsave(bombus_abund_degree, file="figures/bombus_abund_degree.pdf",
+       height=4, width=5)
 
-## Relationship between pollinator abundance and year
-ggplot(spec.all, aes(x= Year,
-                     y=Net_PollAbundance, color=Site))+
+## Relationship between hb abundance and diet breadth
+hb_abund_degree <- ggplot(spec.net, aes(x= rare.degree,
+                     y=Net_HBAbundance))+
   geom_point()
-
+ggsave(hb_abund_degree, file="figures/hb_abund_degree.pdf",
+       height=4, width=5)
 
 ################################################################################
 ## Relationships with bee diversity
@@ -244,12 +247,20 @@ ggsave(Bombus_ParasiteRate, file="figures/Bombus_ParasiteRate.pdf",
 
 parasites_bees <- pivot_longer(spec.orig,
                               cols = c(ApicystisSpp, AscosphaeraSpp,
-                                       CrithidiaPresence), names_to =
-                              "Parasites")
+                                       CrithidiaPresence, 
+                                       CrithidiaExpoeki,
+                                       CrithidiaMellificae, CrithidiaBombi), 
+                              names_to = "Parasites")
 
 parasites_bees <- parasites_bees[!parasites_bees$Genus %in%
                                  c("Dufourea", "Pseudopanurgus",
                                  "Colletes", ""),]
+parasites_bees %>% select(Parasites, value) %>% 
+  filter(!is.na(value)) %>% 
+  group_by(Parasites) %>% 
+  summarise(Parasitism = sum(value, na.rm = TRUE)) %>% 
+  ggplot()+
+  geom_bar(aes(Parasites))
 
 parasite_prevalence <- parasites_bees %>%   
     ## filter(Genus == c("Melissodes", "Anthophora", "Apis", "Bombus")) %>% 
@@ -406,15 +417,17 @@ spec.orig <- spec.orig[!spec.orig$Genus%in%
 par_prev <- spec.orig %>%
   filter(WeightsPar == 1) %>% 
   ## Subset to Weights == 1
-  group_by(Genus) %>%
+  #group_by(Genus) %>%
   summarise(TestedTotals = length(UniqueID[Apidae == 1]),
             InfectedApicystisSpp= round(sum(ApicystisSpp, na.rm=TRUE)/TestedTotals * 100, 2),
             InfectedAscosphaeraSpp=round(sum(AscosphaeraSpp, na.rm=TRUE)/TestedTotals *100, 2),
+            InfectedPresence=round(sum(CrithidiaPresence, na.rm=TRUE)/TestedTotals *100, 2),
             InfectedCrithidiaBombi=round(sum(CrithidiaBombi, na.rm=TRUE)/TestedTotals *100, 2),
             InfectedCrithidiaExpoeki=round(sum(CrithidiaExpoeki, na.rm=TRUE)/TestedTotals *100, 2),
             InfectedCrithdiaMellificae = round(sum(CrithidiaMellificae, na.rm=TRUE)/TestedTotals *100, 2),
 )
-spec.orig %>% 
-  filter(WeightsPar == 1) %>% 
+sp<-spec.orig %>% 
+  filter(WeightsPar == 1) %>%
+  group_by(GenusSpecies) %>% 
   summarise(n = n())
 
