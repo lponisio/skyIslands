@@ -7,6 +7,17 @@ source("lab_paths.R")
 local.path
 dir.bombus <- file.path(local.path, "skyIslands")
 
+# Precipitation and temperature data used in this analysis were downloaded
+# from the PRISM Climate Group’s Explorer portal:
+# https://prism.oregonstate.edu/explorer/
+#
+# - Date of download: August 17, 2025
+# - Variables: Precipitation and Temperature
+# - Temporal resolution: Monthly
+# - Spatial resolution: 800 meters
+# - File format: BIL (.bil)
+# - Dataset used: PRISM Climate Group, Oregon State University
+
 
 # ---- Load Site Shapefile ----
 setwd(file.path(local.path, "skyIslands_saved"))
