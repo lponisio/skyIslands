@@ -11,6 +11,7 @@ dir.bombus <- file.path(local.path, "skyIslands")
 # from the PRISM Climate Group’s Explorer portal:
 # https://prism.oregonstate.edu/explorer/
 #
+# - Used file "skyIslands_saved/spatial/prism_site_locations.csv"
 # - Date of download: August 17, 2025
 # - Variables: Precipitation and Temperature
 # - Temporal resolution: Monthly
