@@ -180,7 +180,7 @@ highergeog <- data.frame(Site = c("JC", "VC", "JM", "SC", "MM", "SM",
                                "Magdalena", "San Mateo", "Sacramento",
                                "Sacramento", "Sacramento",
                                "Chiricahua", "Chiricahua",
-                               "Pinaleno", "Gila"))
+                               "Pinaleno", "White"))
 
 geo <- merge(geo, highergeog, key="Site", all.x=TRUE)
 
