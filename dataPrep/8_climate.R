@@ -125,17 +125,17 @@ setwd(file.path(local.path, "skyIslands_saved"))
 # # ---- Save processed precipitation data for downstream analyses -------------
 # save(monsoon_precip_data, winter_precip_data, file = file.path('data/PRISM_data/precipitation_site_data.Rdata'))
 
-# ---- Join precipitation data to spec_net --------
-
-## ---- Load specimen table ----
-setwd(dir.bombus)
-load("data/spec_net.Rdata")
-
-## ---- Load the processed climate data ----
-setwd(file.path(local.path, "skyIslands_saved"))
-load("data/PRISM_data/precipitation_site_data.Rdata")
-
-## ---- Join climate datasets to spec.net ---------
-spec.net <- spec.net %>%
-  left_join(monsoon_precip_data, by = c("Site", "Year")) %>%
-  left_join(winter_precip_data,  by = c("Site", "Year"))
+# # ---- Join precipitation data to spec_net --------
+# 
+# ## ---- Load specimen table ----
+# setwd(dir.bombus)
+# load("data/spec_net.Rdata")
+# 
+# ## ---- Load the processed climate data ----
+# setwd(file.path(local.path, "skyIslands_saved"))
+# load("data/PRISM_data/precipitation_site_data.Rdata")
+# 
+# ## ---- Join climate datasets to spec.net ---------
+# spec.net <- spec.net %>%
+#   left_join(monsoon_precip_data, by = c("Site", "Year")) %>%
+#   left_join(winter_precip_data,  by = c("Site", "Year"))
