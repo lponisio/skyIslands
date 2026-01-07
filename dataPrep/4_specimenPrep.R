@@ -465,6 +465,8 @@ agg.spec.para[, parasites] <- agg.spec.para[, parasites]/
 nets.para <- agg.spec.para
 rownames(nets.para) <- nets.para$GenusSpecies
 nets.para$GenusSpecies <- NULL
+nets.para <- as.matrix(nets.para)
+
 
 all.traits.para <- specieslevel(nets.para)
 ## calculate rarified plant.pol degree
