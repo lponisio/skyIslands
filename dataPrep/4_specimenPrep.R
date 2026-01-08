@@ -759,20 +759,22 @@ write.csv(veg.year.sum, file="../data/veg_species_richness.csv",
 ## *******************************************************************
 setwd(file.path(local.path, "skyIslands_saved"))
 
-load("data/PRISM_data/precipitation_site_data.Rdata")
+load("data/PRISM_data/precipitation_summary.Rdata")
+# This loads: spring_precip, round_precip, precip_combined
 
 setwd("../skyIslands/dataPrep")
 
-# Convert Year to numeric in site.sum (it was a factor)
+# Convert Year to numeric in site.sum
 site.sum <- site.sum %>%
   mutate(Year = as.numeric(as.character(Year)))
 
-# merge by sampling round
+# Merge the precipitation info by Site, Year, and SampleRound
 site.sum <- site.sum %>%
-  left_join(monsoon_precip_data,
-            by = c("Site", "Year")) %>%
-  left_join(winter_precip_data,
-            by = c("Site", "Year"))
+  left_join(
+    precip_combined %>% 
+      select(Site, Year, SampleRound, Spring_Precip, Round_Precip, Cumulative_Precip),
+    by = c("Site", "Year", "SampleRound")
+  )
 
 ## *******************************************************************
 ## merging site and spec data
