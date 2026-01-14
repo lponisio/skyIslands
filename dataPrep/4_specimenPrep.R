@@ -74,12 +74,6 @@ DoyPoly <- poly(spec$Doy, degree=2)
 spec$DoyPoly1 <- DoyPoly[,'1']
 spec$DoyPoly2 <- DoyPoly[,'2']
 
-## also for Latitude
-##spec$LatPoly <- poly(spec$Lat, degree=2)
-##spec$LatPoly1 <- spec$LatPoly[,'1']
-##spec$LatPoly2 <- spec$LatPoly[,'2']
-##spec$LatPoly <- NULL
-
 ## check plant names
 ## library(Taxonstand)
 ## checked.plant.names <- TPL(id(spec$PlantGenusSpecies))
@@ -156,21 +150,6 @@ spec.pan <- spec[spec$Method == "Pan",]
 spec <- spec[spec$Method != "Vane",]
 
 write.csv(spec, file="../data/spec_net_pan.csv", row.names=FALSE)
-
-## net.only.columns <- c("PlantGenus", "PlantGenusSpecies",
-##                       "PlantSpecies", "PlantSubSpecies", "PlantVar",
-##                       "NetNumber", parasites, "Apidae",
-##                       "AspergillusSpp", "PlantFamily",
-##                       "ParasiteRichness", "PossibleParasite",
-##                       "ParasitePresence")
-
-## pan.only.columns <- c("PanColor", "PanLocation")
-
-## spec.pan <- spec.pan[, !colnames(spec.pan) %in% net.only.columns]
-## spec.net <- spec.net[, !colnames(spec.net) %in% pan.only.columns]
-
-## write.csv(spec.net, file="../data/spec_net.csv", row.names=FALSE)
-## write.csv(spec.pan, file="../data/spec_pan.csv", row.names=FALSE)
 
 ## ***********************************************************************
 ## site/species level insect data
@@ -558,41 +537,6 @@ print(paste("Pollinator genera", length(unique(spec$Genus))))
 print(paste("Interactions", length(unique(spec$Int))))
 print(paste("Specimens", nrow(spec)))
 
-## table(spec$GenusSpecies)
-## tab <- table(spec$GenusSpecies, spec$Site)
-## tab2 <- table(spec$PlantGenusSpecies, spec$Site)
-## table(spec$PlantGenusSpecies)
-## table(spec$PlantGenusSpecies, spec$Site)
-## table(spec$PlantGenusSpecies, spec$Year)
-## table(spec$PlantGenusSpecies, spec$Family)
-
-## spec <- spec[spec$Sex == "f",]
-## tab <- table(spec$GenusSpecies, spec$Site, spec$Year)
-
-## all.occ <- apply(tab, 1, sum)
-## sp.too.few <- names(all.occ)[all.occ < 5]
-
-## sp.possible <- names(all.occ)[all.occ > 5]
-## cleptos <-  c("Sphecodes sp. a", "Sphecodes sp. b", "Triepeolus sp. a")
-
-## sp.possible <- sp.possible[!sp.possible %in% cleptos]
-## sp.sub <- spec[spec$GenusSpecies %in% sp.possible,]
-
-## tab.sub <- sp.sub  %>%
-##     group_by(GenusSpecies, Site, Year, SampleRound) %>%
-##     summarise(n = n())
-
-##  tab.sub$n30p <- ceiling(tab.sub$n*0.3)
-##  tab.sub$n20p <- ceiling(tab.sub$n*0.2)
-
-## sum(tab.sub$n30p)
-## sum(tab.sub$n20p)
-
-## tab.sub.cutoff <- tab.sub
-
-## tab.sub.cutoff$n[tab.sub.cutoff$n > 5] <- 5
-## sum(tab.sub.cutoff$n)
-
 ## *******************************************************************
 ##  Veg and bloom cleaning
 ## *******************************************************************
@@ -758,29 +702,6 @@ write.csv(veg.year.sum, file="../data/veg_species_richness.csv",
           row.names=FALSE)
 
 ## *******************************************************************
-## merging climate into site.sum
-## *******************************************************************
-setwd(file.path(local.path, "skyIslands_saved"))
-
-# Load previously computed climate summaries
-load("data/PRISM_data/climate_summary.Rdata")
-
-setwd("../skyIslands/dataPrep")
-
-site.sum <- site.sum %>%
-  mutate(Year = as.numeric(as.character(Year))) %>%
-  left_join(
-    climate_combined %>%
-      select(
-        Site, Year, SampleRound,
-        Spring_Precip, Round_Precip, Cumulative_Precip,
-        Spring_Tmean, Round_Tmean, Cumulative_Tmean,
-        Spring_Tmean_anom, Round_Tmean_anom, Cumulative_Tmean_anom
-      ),
-    by = c("Site", "Year", "SampleRound")
-  )
-
-## *******************************************************************
 ## merging site and spec data
 ## *******************************************************************
 
@@ -836,67 +757,3 @@ print(dim(spec.net))
 
 spec.net$GenusSpecies[is.na(spec.net$GenusSpecies)] <- ""
 save(spec.net, file="../data/spec_net.Rdata")
-
-
-## not using site-level bloom data currently, has not been checked
-## over as of Nov 2022
-
-## *******************************************************************
-## checking veg data between years
-## *******************************************************************
-
-## to.sample <- c("CH", "HM", "JC", "MM", "PL", "RP", "SC", "SM")
-
-## veg.prep <- veg[veg$Site %in% to.sample,]
-## veg.split <- split(veg.prep, veg.prep$Site)
-
-## spec.veg <- spec[spec$Site %in% to.sample,]
-## spec.split <- split(spec.veg, spec.veg$Site)
-
-## checkveg <- function(x){
-##     print(unique(x$Site))
-##     years <- tapply(x$PlantGenusSpecies, x$Year, unique)
-##     if(length(years) == 2){
-##         badmatch12 <- years[[1]][!years[[1]] %in% years[[2]]]
-##         badmatch21 <- years[[2]][!years[[2]] %in% years[[1]]]
-##         return(list(badmatch12=badmatch12,
-##                     badmatch21=badmatch21))
-##     } else if(length(years) == 3){
-##         badmatch12 <- years[[1]][!years[[1]] %in% years[[2]]]
-##         badmatch21 <- years[[2]][!years[[2]] %in% years[[1]]]
-
-##         badmatch13 <- years[[1]][!years[[1]] %in% years[[3]]]
-##         badmatch31 <- years[[3]][!years[[3]] %in% years[[1]]]
-
-##         badmatch23 <- years[[2]][!years[[2]] %in% years[[3]]]
-##         badmatch32 <- years[[3]][!years[[3]] %in% years[[2]]]
-
-##         return(list(badmatch12=badmatch12,
-##                     badmatch21=badmatch21,
-##                     badmatch13= badmatch13,
-##                     badmatch31=badmatch31,
-##                     badmatch23=badmatch23,
-##                     badmatch32=badmatch32))
-##     } else{
-##         return(NULL)
-##     }
-## }
-
-## badmatches.veg <- lapply(veg.split, checkveg)
-
-## badmatches.spec <- lapply(spec.split, checkveg)
-
-
-## all.plant.sp <- rbind(data.frame(Site=veg.prep$Site,
-##                                  PlantGenusSpecies=
-##                                      veg.prep$PlantGenusSpecies),
-##                       data.frame(Site=spec.veg$Site,
-##                                  PlantGenusSpecies=
-##                                      spec.veg$PlantGenusSpecies))
-
-## all.plant.sp <- unique(all.plant.sp)
-## all.plant.sp <- sort(all.plant.sp)
-
-## write.csv(all.plant.sp, row.names=FALSE,
-##           file="../data/vegbySite.csv")
-

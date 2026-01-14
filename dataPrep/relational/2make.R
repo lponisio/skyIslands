@@ -4,7 +4,7 @@
 source('dataPrep/src/misc.R')
 setwd("../skyIslands_saved/data/relational/relational")
 
-
+climate <- read.csv("../original/climate.csv", as.is=TRUE)
 conditions <- read.csv("../original/weather.csv", as.is=TRUE)
 specimens <- read.csv("../original/specimens.csv", as.is=TRUE)
 geo <- read.csv("../original/geography.csv", as.is=TRUE)
@@ -67,6 +67,14 @@ print(paste("bloom data without site matches",
             unique(bloom$Site[is.na(bloom$GeographyFK)])))
 
 
+
+## Propagate geography key to the climate table.
+climate$GeographyFK <- geography$GeographyPK[match(climate$Site,
+                                               geography$Site)]
+
+print(paste("climate data without site matches",
+            unique(climate$Site[is.na(climate$GeographyFK)])))
+
 ## write a .csv version of this table (just for ease of viewing)
 write.csv(dbReadTable(con, "tblGeography"),
           file="tables/geography.csv", row.names=FALSE)
@@ -86,58 +94,6 @@ print(no.geo.spec$SampleID)
 write.csv(no.geo.spec, file="../../cleaning/specimens_no_geo_key.csv")
 unique(no.geo.spec$Stand)
 
-
-## keep <- c("SiteSubSite", "Site", "Country", "State", "County",
-##           "Meadow", "Forest",
-##           "MtRange", "Lat", "Long", "Elev", "Area", "SubSite")
-
-## geography <- unique(geo[keep])
-## ## next sort into alphabetical order
-## geography <- geography[match(sort(geography$SiteSubSite),
-##                              geography$SiteSubSite),]
-
-## ## generate primary geography key
-## geography <- cbind(GeographyPK=seq_len(nrow(geography)), geography)
-## rownames(geography) <- NULL
-## dbWriteTable(con, "tblGeography", geography, row.names=FALSE)
-
-## ## Propagate geography key to the conditions table.
-## conditions$GeographyFK <-
-##     geography$GeographyPK[match(conditions$SiteSubSite,
-##                                 geography$SiteSubSite)]
-
-## print(paste("conditions without site matches",
-##             unique(conditions$SiteSubSite[is.na(conditions$GeographyFK)])))
-
-## ## Propagate geography key to the specimens table.
-## specimens$GeographyFK <- geography$GeographyPK[match(specimens$SiteSubSite,
-##                                                      geography$SiteSubSite)]
-
-## print(paste("specimens without site matches",
-##             unique(specimens$UniqueID[is.na(specimens$GeographyFK)])))
-
-## ## Propagate geography key to the veg table.
-## veg$GeographyFK <- geography$GeographyPK[match(veg$SiteSubSite,
-##                                                geography$SiteSubSite)]
-
-## print(paste("veg quads without site matches",
-##             unique(veg$Site[is.na(veg$GeographyFK)])))
-
-
-## ## Propagate geography key to the bloom table.
-## bloom$GeographyFK <- geography$GeographyPK[match(bloom$SiteSubSite,
-##                                                geography$SiteSubSite)]
-
-## print(paste("bloom data without site matches",
-##             unique(bloom$SiteSubSite[is.na(bloom$GeographyFK)])))
-
-
-## ## write a .csv version of this table (just for ease of viewing)
-## write.csv(dbReadTable(con, "tblGeography"),
-##           file="tables/geography.csv", row.names=FALSE)
-
-## dbListTables(con)
-
 ## *******************************************************
 ## 2. Conditions
 ## *******************************************************
@@ -155,6 +111,16 @@ specimens$Date  <- as.character(specimens$Date)
 veg$Date  <- as.character(veg$Date)
 bloom$Date  <- as.character(bloom$Date)
 
+## Remove columns that will become confusing down the line
+climate$StartDate <- NULL
+climate$EndDate <- NULL
+
+## Merge climate to conditions. This is not an ideal implementation
+## because the climate data will be repeated for SampleRounds that
+## endend multiple days. But there isn't a clean way to merge the
+## different dimensions of data without creating another redundant
+## key. 
+conditions <- merge(conditions, climate, all.x=TRUE)
 
 ## Temporarily identify unique combinations:
 keep.spec <- c("GeographyFK", "Date", "Method", "NetNumber")
@@ -162,10 +128,13 @@ conditions$cond.code <- apply(conditions[keep.spec], 1, paste, collapse=";")
 specimens$cond.code <- apply(specimens[keep.spec], 1, paste, collapse=";")
 
 ## make table
-keep <- c("Date", "SampleRound", "NetNumber", "Method",
-          "StartTime", "EndTime",
-          "TempStart", "TempEnd", "WindStart", "WindEnd", "SkyStart",
-          "SkyEnd","GeographyFK", "cond.code")
+keep <- c("Date", "SampleRound", "NetNumber", "Method", "StartTime",
+          "EndTime", "TempStart", "TempEnd", "WindStart", "WindEnd",
+          "SkyStart", "SkyEnd", "SpringPrecip", "CumulativePrecip",
+          "RoundPrecip", "SpringTmean", "RoundTmean",
+          "CumulativeTmean", "SpringTmeanAnom", "RoundTmeanAnom",
+          "CumulativeTmeanAnom",
+          "GeographyFK", "cond.code")
 
 cond <- unique(conditions[keep])
 rownames(cond) <- NULL

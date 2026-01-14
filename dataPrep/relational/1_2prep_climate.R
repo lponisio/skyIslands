@@ -26,8 +26,8 @@ weather <- read_csv(weather_csv) %>%
   mutate(
     StartDate = mdy(StartDate),
     Year = as.numeric(Year)
-  ) %>%
-  filter(SampleRound > 0)   # drop SampleRound 0 if needed
+  )##  %>%
+  ## filter(SampleRound > 0)   # drop SampleRound 0 if needed
 
 # Summarize sample rounds
 sample_windows <- weather %>%
