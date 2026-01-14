@@ -129,7 +129,7 @@ weather.data$TempEnd <- as.numeric(weather.data$TempEnd)
 weather.data$TempEnd[weather.data$TempEnd > 50 & is.finite(weather.data$TempEnd)] <- 
   convertFtoC(weather.data$TempEnd[weather.data$TempEnd > 50 & is.finite(weather.data$TempEnd)])
 
-weather$Dos <- NULL
+weather.data$Dos <- NULL
 
 check.weather.data <- aggregate(weather.data$StartTime,
                                 list(site = weather.data$Site,
