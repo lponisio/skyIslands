@@ -759,8 +759,9 @@ write.csv(veg.year.sum, file="../data/veg_species_richness.csv",
 ## *******************************************************************
 setwd(file.path(local.path, "skyIslands_saved"))
 
-load("data/PRISM_data/precipitation_summary.Rdata")
-# This loads: spring_precip, round_precip, precip_combined
+# Load previously computed climate summaries
+load("data/PRISM_data/precipitation_summary.Rdata")  # spring_precip, round_precip, precip_combined
+load("data/PRISM_data/tmean_summary.Rdata")    # spring_tmean, round_tmean, tmean_combined
 
 setwd("../skyIslands/dataPrep")
 
@@ -773,6 +774,16 @@ site.sum <- site.sum %>%
   left_join(
     precip_combined %>% 
       select(Site, Year, SampleRound, Spring_Precip, Round_Precip, Cumulative_Precip),
+    by = c("Site", "Year", "SampleRound")
+  )
+
+# Merge the temperature info by Site, Year, and SampleRound
+site.sum <- site.sum %>%
+  left_join(
+    tmean_combined %>%
+      select(Site, Year, SampleRound,
+             Spring_Tmean, Round_Tmean, Cumulative_Tmean,
+             Spring_Tmean_anom, Round_Tmean_anom, Cumulative_Tmean_anom),
     by = c("Site", "Year", "SampleRound")
   )
 

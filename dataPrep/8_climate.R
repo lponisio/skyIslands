@@ -1,8 +1,7 @@
-# ===============================================
 # Compute spring, round, and cumulative precipitation
+# Compute daily Tmean and antecedent Tmean per round
 # using daily PRISM data and sample rounds
 # Fully vectorized
-# ===============================================
 
 rm(list = ls())
 library(tidyverse)
@@ -15,8 +14,14 @@ setwd("~/")
 source("lab_paths.R")
 dir.bombus <- file.path(local.path, "skyIslands")
 sites_shp_path <- file.path(local.path, "skyIslands_saved", "spatial", "sites.shp")
-daily_precip_dir <- "data/PRISM_data/PRISM_daily_precip"
 weather_csv <- "data/relational/original/weather.csv"
+
+# Precipitation paths
+daily_precip_dir <- "data/PRISM_data/PRISM_daily_precip"
+
+# Temperature paths
+daily_temp_dir <- "data/PRISM_data/PRISM_daily_temp"
+monthly_normals_file <- "data/PRISM_data/temperature/PRISM_tmin_tmax_stable_800m_200801_202212.csv"
 
 # ---- Load weather / sample round dates ----
 setwd(file.path(local.path, "skyIslands_saved"))
@@ -46,7 +51,8 @@ sample_windows <- weather %>%
   ) %>%
   ungroup()
 
-# ---- Load all daily CSVs ----
+# ---- Precipitation ----
+## ---- Load Precipitation daily CSVs ----
 daily_files <- list.files(daily_precip_dir, pattern = "\\.csv$", full.names = TRUE)
 
 daily_precip_data <- daily_files %>%
@@ -57,7 +63,7 @@ daily_precip_data <- daily_files %>%
             mutate(Date = ymd(Date),
                    Year = year(Date)))
 
-# ---- Compute Spring Precipitation (May 1 → day before first round) ----
+## ---- Compute Spring Precipitation (May 1 → day before first round) ----
 spring_precip <- sample_windows %>%
   group_by(Site, Year) %>%
   slice_min(SampleRound) %>%         # first round per Site/Year
@@ -69,14 +75,14 @@ spring_precip <- sample_windows %>%
   group_by(Site, Year) %>%
   summarize(Spring_Precip = sum(Precip, na.rm = TRUE), .groups = "drop")
 
-# ---- Compute Round Precipitation (during each round) ----
+## ---- Compute Round Precipitation (during each round) ----
 round_precip <- sample_windows %>%
   left_join(daily_precip_data, by = c("Site", "Year")) %>%
   filter(Date >= start_date & Date <= end_date) %>%
   group_by(Site, Year, SampleRound, start_date, end_date) %>%
   summarize(Round_Precip = sum(Precip, na.rm = TRUE), .groups = "drop")
 
-# ---- Compute Cumulative Precipitation (spring + all previous rounds) ----
+## ---- Compute Cumulative Precipitation (spring + all previous rounds) ----
 # Step 1: Combine spring + round precipitation
 precip_combined <- round_precip %>%
   left_join(spring_precip, by = c("Site", "Year")) %>%
@@ -94,13 +100,96 @@ precip_combined <- precip_combined %>%
   select(Site, Year, SampleRound, start_date, end_date,
          Spring_Precip, Cumulative_Precip, Round_Precip)
 
-# ---- Save outputs ----
+## ---- Save outputs ----
 save(spring_precip, round_precip, precip_combined,
      file = "data/PRISM_data/precipitation_summary.Rdata")
 
+# ---- Temperature ----
+## ---- Load daily temperature CSVs ----
+daily_files <- list.files(daily_temp_dir, pattern = "\\.csv$", full.names = TRUE)
 
 
-# 
+daily_temp_data <- daily_files %>%
+  set_names() %>%
+  map_dfr(~ read_csv(.x, skip = 10) %>%   # adjust skip if needed
+            rename(
+              Site = Name,
+              tmin = `tmin (degrees C)`,
+              tmax = `tmax (degrees C)`,
+              tmean = `tmean (degrees C)`,
+              Date = Date
+            ) %>%
+            mutate(
+              Date = ymd(Date),
+              Year = year(Date),
+              Month = month(Date)
+            ))
+
+## ---- Load long-term monthly normals ----
+monthly_normals <- read_csv(monthly_normals_file, skip = 10) %>%
+  rename(
+    Site = Name,
+    Tmin = `tmin (degrees C)`,
+    Tmax = `tmax (degrees C)`
+  ) %>%
+  mutate(
+    Date = as.Date(paste0(Date, "-01")),
+    Month = month(Date),
+    Tmean = (Tmin + Tmax)/2
+  ) %>%
+  group_by(Site, Month) %>%
+  summarize(Tmean_normal = mean(Tmean, na.rm = TRUE), .groups = "drop")
+
+## ---- Merge normals to daily data for anomalies ----
+daily_temp_data <- daily_temp_data %>%
+  left_join(monthly_normals, by = c("Site", "Month")) %>%
+  mutate(Tmean_anomaly = tmean - Tmean_normal)
+
+## ---- Compute Spring Tmean (May 1 → day before first round) ----
+spring_tmean <- sample_windows %>%
+  group_by(Site, Year) %>%
+  slice_min(SampleRound) %>%
+  ungroup() %>%
+  select(Site, Year, baseline_start, start_date) %>%
+  rename(window_start = baseline_start, round_start = start_date) %>%
+  left_join(daily_temp_data, by = c("Site", "Year")) %>%
+  filter(Date >= window_start & Date < round_start) %>%
+  group_by(Site, Year) %>%
+  summarize(
+    Spring_Tmean = mean(tmean, na.rm = TRUE),
+    Spring_Tmean_anom = mean(Tmean_anomaly, na.rm = TRUE),
+    .groups = "drop"
+  )
+ 
+## ---- Compute Round Tmean ----
+round_tmean <- sample_windows %>%
+  left_join(daily_temp_data, by = c("Site", "Year")) %>%
+  filter(Date >= start_date & Date <= end_date) %>%
+  group_by(Site, Year, SampleRound, start_date, end_date) %>%
+  summarize(
+    Round_Tmean = mean(tmean, na.rm = TRUE),
+    Round_Tmean_anom = mean(Tmean_anomaly, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+## ---- Compute Cumulative Tmean (spring + previous rounds) ----
+tmean_combined <- round_tmean %>%
+  left_join(spring_tmean, by = c("Site", "Year")) %>%
+  arrange(Site, Year, SampleRound) %>%
+  group_by(Site, Year) %>%
+  mutate(
+    Cumulative_Tmean = Spring_Tmean + cumsum(lag(Round_Tmean, default = 0)),
+    Cumulative_Tmean_anom = Spring_Tmean_anom + cumsum(lag(Round_Tmean_anom, default = 0))
+  ) %>%
+  ungroup() %>%
+  select(Site, Year, SampleRound, start_date, end_date,
+         Spring_Tmean, Round_Tmean, Cumulative_Tmean,
+         Spring_Tmean_anom, Round_Tmean_anom, Cumulative_Tmean_anom)
+
+# ---- Save outputs ----
+save(spring_tmean, round_tmean, tmean_combined,
+     file = "data/PRISM_data/tmean_summary.Rdata")
+
 # # ===============================================
 # # Compute cumulative and round precipitation
 # # using daily PRISM data and sample rounds
