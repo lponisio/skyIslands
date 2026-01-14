@@ -22,6 +22,9 @@ setwd(dir.bombus)
 source('dataPrep/relational/1prep.R')
 
 setwd(dir.bombus)
+source('dataPrep/relational/1_2prep_climate.R')
+
+setwd(dir.bombus)
 source('dataPrep/relational/2make.R')
 
 setwd(dir.bombus)
