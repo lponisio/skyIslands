@@ -186,9 +186,18 @@ tmean_combined <- round_tmean %>%
          Spring_Tmean, Round_Tmean, Cumulative_Tmean,
          Spring_Tmean_anom, Round_Tmean_anom, Cumulative_Tmean_anom)
 
-# ---- Save outputs ----
+## ---- Save outputs ----
 save(spring_tmean, round_tmean, tmean_combined,
      file = "data/PRISM_data/tmean_summary.Rdata")
+
+# ---- Combine precipitation and temperature summaries ----
+climate_combined <- precip_combined %>%
+  left_join(
+    tmean_combined,
+    by = c("Site", "Year", "SampleRound", "start_date", "end_date")
+  )
+
+save(climate_combined, file = "data/PRISM_data/climate_summary.Rdata")
 
 # # ===============================================
 # # Compute cumulative and round precipitation

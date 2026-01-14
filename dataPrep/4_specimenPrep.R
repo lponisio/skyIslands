@@ -760,30 +760,20 @@ write.csv(veg.year.sum, file="../data/veg_species_richness.csv",
 setwd(file.path(local.path, "skyIslands_saved"))
 
 # Load previously computed climate summaries
-load("data/PRISM_data/precipitation_summary.Rdata")  # spring_precip, round_precip, precip_combined
-load("data/PRISM_data/tmean_summary.Rdata")    # spring_tmean, round_tmean, tmean_combined
+load("data/PRISM_data/climate_summary.Rdata")
 
 setwd("../skyIslands/dataPrep")
 
-# Convert Year to numeric in site.sum
 site.sum <- site.sum %>%
-  mutate(Year = as.numeric(as.character(Year)))
-
-# Merge the precipitation info by Site, Year, and SampleRound
-site.sum <- site.sum %>%
+  mutate(Year = as.numeric(as.character(Year))) %>%
   left_join(
-    precip_combined %>% 
-      select(Site, Year, SampleRound, Spring_Precip, Round_Precip, Cumulative_Precip),
-    by = c("Site", "Year", "SampleRound")
-  )
-
-# Merge the temperature info by Site, Year, and SampleRound
-site.sum <- site.sum %>%
-  left_join(
-    tmean_combined %>%
-      select(Site, Year, SampleRound,
-             Spring_Tmean, Round_Tmean, Cumulative_Tmean,
-             Spring_Tmean_anom, Round_Tmean_anom, Cumulative_Tmean_anom),
+    climate_combined %>%
+      select(
+        Site, Year, SampleRound,
+        Spring_Precip, Round_Precip, Cumulative_Precip,
+        Spring_Tmean, Round_Tmean, Cumulative_Tmean,
+        Spring_Tmean_anom, Round_Tmean_anom, Cumulative_Tmean_anom
+      ),
     by = c("Site", "Year", "SampleRound")
   )
 
