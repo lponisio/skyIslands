@@ -44,7 +44,7 @@ write.csv(m.traits,
 
 ## FIX THIS EVENTUALLY
 ## an assumption to try to get things to run
-traits$Sociality[traits$Genus == "Lasioglossum"] <- "solitary"
+## traits$Sociality[traits$Genus == "Lasioglossum"] <- "solitary"
 
 rownames(traits) <- traits$GenusSpecies
 traits$GenusSpecies <- NULL
@@ -67,34 +67,38 @@ traits <- traits[, bee.traits]
 ## calculates data for two new columns we are adding to database,
 ## "originality" and "uniq"
 
-## bee.func <- calcFuncUniqOrig(traits,
-##                              traits.2.keep=bee.traits,
-##                              weights=bee.weights,
-##                              type="all spec")
+screened.sp <- unique(spec.net$GenusSpecies[spec.net$Apidae == 1])
+screened.sp <- screened.sp[!is.na(screened.sp)]
+screened.sp <- screened.sp[screened.sp != ""]
 
-## bee.func$GenusSpecies <- rownames(bee.func)
-## traits$GenusSpecies <- rownames(traits)
-## rownames(traits) <- NULL
-## rownames(bee.func) <- NULL
+bee.func <- calcFuncUniqOrig(traits,
+                             traits.2.keep=bee.traits,
+                             weights=bee.weights,
+                             type="all spec")
 
-## traits <- merge(traits, bee.func, by="GenusSpecies")
+bee.func$GenusSpecies <- rownames(bee.func)
+traits$GenusSpecies <- rownames(traits)
+rownames(traits) <- NULL
+rownames(bee.func) <- NULL
 
-## all.traits <- colnames(traits)[!colnames(traits) %in%
-##                                c("GenusSpecies")]
-## ## save prepped data
-## spec.net <- cbind(spec.net, traits[, all.traits][match(spec.net$GenusSpecies,
-##                            traits$GenusSpecies),])
+traits <- merge(traits, bee.func, by="GenusSpecies")
 
-## ## spec.net$r.degree <- as.numeric(spec.net$r.degree)
+all.traits <- colnames(traits)[!colnames(traits) %in%
+                               c("GenusSpecies")]
+## save prepped data
+spec.net <- cbind(spec.net, traits[, all.traits][match(spec.net$GenusSpecies,
+                           traits$GenusSpecies),])
 
-## print(paste("missing trait data",
-##             sort(unique(spec.net$GenusSpecies[is.na(spec.net$Lecty)]))))
+## spec.net$r.degree <- as.numeric(spec.net$r.degree)
 
-## write.csv(traits, file="../data/traits.csv",
-##           row.names=FALSE)
+print(paste("missing trait data",
+            sort(unique(spec.net$GenusSpecies[is.na(spec.net$Lecty)]))))
 
-## save(spec.net, file="../data/spec_traits.Rdata")
-## write.csv(spec.net, file="../data/spec_traits.csv", row.names=FALSE)
+write.csv(traits, file="../data/traits.csv",
+          row.names=FALSE)
+
+save(spec.net, file="../data/spec_traits.Rdata")
+write.csv(spec.net, file="../data/spec_traits.csv", row.names=FALSE)
 
 ## *****************************************************************
 ## site-level function diversity metrics
