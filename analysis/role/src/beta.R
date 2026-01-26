@@ -2,7 +2,7 @@
 calcBeta <- function(comm,
                      dis.method,
                      nulls,
-                     sub= "pol",
+                     sub= "plants",
                      occ= FALSE,
                      zscore=FALSE){ ## calculate zscores?
     ## computes dispersion of community matrices, returns output of

@@ -4,8 +4,8 @@ if(length(args) != 0){
     net.type <- args[2]
     occ <- args[3]
 } else{
-    sp.type <- "pol"
-    net.type <- "Year"
+    sp.type <- "plants"
+    net.type <- "Site"
     occ <- "abund"
 }
 

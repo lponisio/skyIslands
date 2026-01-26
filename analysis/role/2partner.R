@@ -1,6 +1,6 @@
 ## setwd('~/Dropbox/skyislands')
 rm(list=ls())
-setwd('analysis/variability')
+setwd('analysis/role')
 
 source('src/initialize_beta.R')
 

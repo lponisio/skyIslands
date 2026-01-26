@@ -1,6 +1,6 @@
 ## setwd('~/Dropbox/skyislands')
 rm(list=ls())
-setwd('analysis/variability')
+setwd('role')
 source('src/initialize_nulls.R')
 
 ## ************************************************************

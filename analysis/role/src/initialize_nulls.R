@@ -4,8 +4,8 @@ if(length(args) != 0){
     net.type <- args[2]
     nnull <- args[3]
 } else{
-    sp.type <- "pol"
-    net.type <- "SiteYear"
+    sp.type <- "plants"
+    net.type <- "Site"
     nnull <- 999
 }
 
@@ -15,7 +15,8 @@ source('src/misc.R')
 source('src/probNull.R')
 source('src/commPrep.R')
 
-load('../../data/spec.Rdata')
+load('../../data/spec_net.Rdata')
+spec <- spec.net
 
 save.dir.comm <- "saved/communities"
 save.dir.nulls <- "saved/nulls"
@@ -48,3 +49,4 @@ if(net.type == "Site"){
 if(net.type == "SiteYear"){
     to.lapply <- site.year
 }
+
