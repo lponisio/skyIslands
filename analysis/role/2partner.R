@@ -24,3 +24,56 @@ beta.dist <- makeBetaDataPretty()
 
 save(beta.dist, file=sprintf("saved/results/partnerVar_%s.Rdata",
                              net.type))
+
+## *********************************************************
+## Create summary figures
+## *********************************************************
+
+library(ggplot2)
+library(tidyverse)
+
+#Beta dis calculated between years within a site
+#source('saved/results/partnerVar_Year.Rdata')
+
+beta.dist %>% 
+  ggplot(
+    aes(x = Year, y = dist)) +
+      geom_boxplot() +
+  facet_wrap( ~ Site)
+
+beta.dist %>% 
+  ggplot(
+  aes(x = GenusSpecies, y = dist)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~ Year)
+
+
+print(paste("Plant species", length(unique(beta.dist$GenusSpecies)))) #22 species
+unique(beta.dist$GenusSpecies)
+
+#Beta dis calculated between sites within a year
+#source('saved/results/partnerVar_Site.Rdata')
+
+beta.dist %>% 
+  ggplot(
+    aes(x = Site, y = dist)) +
+  geom_boxplot() +
+  facet_wrap( ~ Year)
+
+beta.dist %>% 
+  ggplot(
+    aes(x = Site, y = dist)) +
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~ Year)
+
+print(paste("Plant species", length(unique(beta.dist$GenusSpecies)))) #48 species
+unique(beta.dist$GenusSpecies)
+
+for (i in seq_along(nets)) {
+  cat("Checking network:", i, "\n")
+  calcSpec(list(nets[[i]]), spec.net, dist.metric = "chao")
+}
+
+traceback()
