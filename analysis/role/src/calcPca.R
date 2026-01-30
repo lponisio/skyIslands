@@ -5,6 +5,8 @@ calcNetworkPca <- function(y, species.roles, agg.col,
     ## species. It returns the mean and variable for each species, as
     ## well as the pca loadings
     this.site <- species.roles[species.roles[,agg.col] == y,]
+    ## keep only lower.level species
+    this.site <- this.site[this.site$speciesType == "lower.level", ]
     this.site <- this.site[!apply(this.site[,metrics], 1,
                                   function(x) any(is.na(x))),]
     mets.only <- this.site[, metrics]

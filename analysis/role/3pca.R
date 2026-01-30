@@ -10,41 +10,13 @@ local.path
 
 dir.bombus <- file.path(local.path, "skyIslands")
 setwd(dir.bombus)
-getwd()
 
 this.script <- "role"
 source('analysis/role/src/initialize.R')
 type <- "all"
 
-## drop empty cells and NA
-spec.net <-  spec.net[spec.net$GenusSpecies != '',]
-spec.net <-  spec.net[spec.net$PlantSpecies != '',]
-spec.net <-  spec.net[spec.net$PlantGenus != '',]
-spec.net <- spec.net[!is.na(spec.net$GenusSpecies),]
-spec.net <- spec.net[!is.na(spec.net$PlantSpecies),]
-spec.net <- spec.net[!is.na(spec.net$PlantGenus),]
+load('data/splevel_network_metrics/YearSR_PlantPollinator_Bees.Rdata')
 
-any(spec.net$GenusSpecies == "")
-any(is.na(spec.net$GenusSpecies))
-any(spec.net$PlantGenus == "")
-any(is.na(spec.net$PlantSpecies))
-
-
-nets <- nets[ names(nets) != "PL.2017" ]
-
-spec.net$Year <- as.numeric(spec.net$Year)
-sum(is.na(spec.net$Year))  # should be 0
-
-
-names(nets)
-
-
-## calculate species roles
-species.roles <- calcSpec(nets, spec.net, dist.metric="chao")
-species.roles.tidy <- species.roles[species.roles$speciesType == "plant",]
-
-
-str(spec.net)
 
 ## vector of pca loadings of interest
 loadings <- c(1)
@@ -59,17 +31,33 @@ metrics <- c("rare.degree",
 var.method <- cv
 ave.method <- mean
 
+colnames(sp.lev)
+
+args(calcPcaMeanVar)
+
 ## PCA 
-plant.pca.scores <- calcPcaMeanVar(species.roles=plant, 
+plant.pca.scores <- calcPcaMeanVar(species.roles=sp.lev, 
                                  var.method=var.method,
                                  ave.method=ave.method,
                                  metrics= metrics,
                                  loadings=loadings,
                                  agg.col = "Year")
 
+plant.pca.scores[1]
 
-autoplot(plant.pca.scores$'2019'$pca.loadings, loadings=TRUE,
+
+autoplot(plant.pca.scores$'2018'$pca.loadings, loadings=TRUE,
          loadings.colour = 'blue')
 
 
-save(plant.pca.scores,  file="saved/results/pcaVar.Rdata")
+save(plant.pca.scores,  file="analysis/role/saved/results/pcaVar.Rdata")
+
+#combine PCA results from all years into a single dataframe
+all.pcas <- do.call(
+  rbind, #row bind list of dataframes returned by lapply()
+  lapply(names(plant.pca.scores), # Loop over each list element name (year "2012")
+         function(yr) { 
+    df <- plant.pca.scores[[yr]]$pcas #extract the PCA scores dataframe for this year
+    df$Year <- yr #add a column recording which list element (year)
+    return(df)})) #returns dataframe
+

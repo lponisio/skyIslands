@@ -2,9 +2,9 @@ library(fossil)
 
 getSpec <- function(species.lev, names.net, seps="[.]"){
     ## extract specialization scores from specieslevel function and
-    ## return data frame
+    ## return data frameS
     n.pp <- sapply(species.lev, nrow)
-    pp <- c(unlist(sapply(species.lev, rownames)))
+    pp <- c(unlist(sapply(species.lev, roSwnames)))
     names(pp) <- NULL
     all.pp <- do.call(rbind, species.lev)
     rownames(all.pp) <- NULL
@@ -52,7 +52,6 @@ calcSpec <- function(nets, spec, dist.metric){
         return(sl)
     })
     ## extract the values and make a dataframe
-    browser()
     specs  <-  mapply(function(a, b)
         getSpec(species.lev = a,
                 names.net = b,
