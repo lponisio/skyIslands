@@ -220,13 +220,6 @@ sp.ids <- list(
                                 Determiner="J.F. Zorn",
                                 temp.id= c(36214,35710)),
 
-    ## Nomada_spc= list(Genus="Nomada", SubGenus="",
-    ##                  Species="sp.",
-    ##                  SubSpecies="d", Sex="f",
-    ##                  Author = "",
-    ##                  Determiner=,
-    ##                  temp.id= c()),
-
 
     Bombus_sonorus_f = list(Genus = "Bombus", SubGenus="Thoracobombus",
                             Species = "sonorus",
@@ -532,7 +525,7 @@ sp.ids <- list(
   Triepeolus_sp_a_m= list(Genus="Triepeolus",
                           SubGenus="",
                           Species="sp.",
-                          SubSpecies="a",
+                          SubSpecies="SI-a",
                           Sex="m",
                           Author = "",
                           Determiner="J.L. Neff",
@@ -546,21 +539,11 @@ sp.ids <- list(
   Triepeolus_sp_a_f= list(Genus="Triepeolus",
                           SubGenus="",
                           Species="sp.",
-                          SubSpecies="a",
+                          SubSpecies="SI-a",
                           Sex="f",
                           Author = "",
                           Determiner="J.L. Neff",
                           temp.id= c(34000, 34175, 34229)),
-
-  ## Triepeolus_sp_b_f= list(Genus="Triepeolus",
-  ##                         SubGenus="",
-  ##                         Species="sp.",
-  ##                         SubSpecies="b",
-  ##                         Sex="f",
-  ##                         Author = "",
-  ##                         Determiner="",
-  ##                         temp.id= c()),
-
 
 
   Xylocopa_californica_f= list(Genus="Xylocopa",
@@ -612,14 +595,14 @@ sp.ids <- list(
   
   Nomada_sp= list(Genus="Nomada", SubGenus="",
                   Species="sp.",
-                  SubSpecies="d", Sex="f",
+                  SubSpecies="SI-d", Sex="f",
                   Author = "",
                   Determiner="L.C. Ponisio",
                   temp.id= c(34220,34219,34221)),
   
   Nomada_sp= list(Genus="Nomada", SubGenus="",
                   Species="sp.",
-                  SubSpecies="e", Sex="f",
+                  SubSpecies="SI-e", Sex="f",
                   Author = "",
                   Determiner="L.C. Ponisio",
                   temp.id= c(34557))

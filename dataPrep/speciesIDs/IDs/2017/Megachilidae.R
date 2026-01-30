@@ -4,7 +4,7 @@ sp.ids <- list(
     Dianthidium_morphoa = list(Genus="Dianthidium",
                                SubGenus ="Dianthidium",
                                Species="sp.",
-                               SubSpecies="a", Sex="f",
+                               SubSpecies="SI-a", Sex="f",
                                Author = "",
                                Determiner = "",
                                temp.id= c("BBSL1084681")),

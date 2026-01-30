@@ -91,14 +91,14 @@ sp.ids <- list(
 
     Sphecodes_morphoa_f= list(Genus="Sphecodes", SubGenus ="",
                               Species="sp.",
-                              SubSpecies="a", Sex="f",
+                              SubSpecies="SI-a", Sex="f",
                               Author = "",
                               Determiner ="",
                               temp.id= c("18664", "18335", "22164", "19467")),
 
     Sphecodes_morphob_f= list(Genus="Sphecodes", SubGenus ="",
                               Species="sp.",
-                              SubSpecies="b", Sex="f",
+                              SubSpecies="SI-b", Sex="f",
                               Author = "",
                               Determiner ="",
                               temp.id= c("18121", "18131", "18160",
@@ -112,7 +112,7 @@ sp.ids <- list(
 
         Sphecodes_morphob_m= list(Genus="Sphecodes", SubGenus ="",
                               Species="sp.",
-                              SubSpecies="b", Sex="m",
+                              SubSpecies="SI-b", Sex="m",
                               Author = "",
                               Determiner ="",
                               temp.id= c("19933", "25129", "25110",
@@ -451,7 +451,7 @@ sp.ids <- list(
 
          Lasioglossum_sp_m= list(Genus="Lasioglossum", SubGenus
                                   ="Sphecodogastra", Species="sp.",
-                                  SubSpecies="s", Sex="m",
+                                  SubSpecies="SI-s", Sex="m",
                                   Author = "",
                                   Determiner = "J. Gardener",
                                   temp.id=  c("18707"))

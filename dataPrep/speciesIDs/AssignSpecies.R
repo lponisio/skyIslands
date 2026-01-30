@@ -209,6 +209,12 @@ add.to.data(sp.ids=sp.ids,
             case='bee', "Megachilidae","2018",
             data.file=spec.data.file)
 
+print("*********2017 Melittidae")
+source(file.path(save.dir, 'IDs/2017/Melittidae.R'))
+add.to.data(sp.ids=sp.ids,
+            case='bee',"Melittidae","2017",
+            data.file=spec.data.file)
+
 print("*********2017 Sphecidae")
 source(file.path(save.dir, 'IDs/2017/Sphecidae.R'))
 add.to.data(sp.ids=sp.ids,
@@ -226,6 +232,7 @@ source(file.path(save.dir, 'IDs/2017/Butterflies.R'))
 add.to.data(sp.ids=sp.ids,
             case='lep',"","2017",
             data.file=spec.data.file)
+
 
 
 ## 2012 field season

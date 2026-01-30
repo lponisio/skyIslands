@@ -33,9 +33,10 @@ sp.ids <- list(
  
  
  Colletes_sp4= list(Genus="Colletes", SubGenus ="",
-                          Species="sp.", SubSpecies="4", Sex="f", Author = "",
-                          Determiner="T. Griswold", 
-                          temp.id= c("18298")), 
+                    Species="sp.", SubSpecies="SI-4",
+                    Sex="f", Author = "",
+                    Determiner="T. Griswold", 
+                    temp.id= c("18298")), 
  
  Hylaeus_wootoni = list(Genus="Hylaeus", SubGenus ="Hylaeus",
                         Species="wootoni", SubSpecies="",
@@ -125,13 +126,8 @@ sp.ids <- list(
                                           "19465","19080","19865","22072",
                                           "19742","19866","19468")),
 
-
-
-
-
-
     Hylaeus_morphoc_f = list(Genus="Hylaeus", SubGenus ="Hylaeus",
-                             Species="sp.", SubSpecies="c",
+                             Species="sp.", SubSpecies="SI-c",
                              Sex="f",
                              Author = "",
                              Determiner = "D. Yanega",
