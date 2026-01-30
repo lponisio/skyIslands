@@ -53,7 +53,7 @@ autoplot(plant.pca.scores$'2018'$pca.loadings, loadings=TRUE,
 save(plant.pca.scores,  file="analysis/role/saved/results/pcaVar.Rdata")
 
 #combine PCA results from all years into a single dataframe
-all.pcas <- do.call(
+all.pcas <- do.call( #combines results and applies function
   rbind, #row bind list of dataframes returned by lapply()
   lapply(names(plant.pca.scores), # Loop over each list element name (year "2012")
          function(yr) { 
@@ -61,3 +61,48 @@ all.pcas <- do.call(
     df$Year <- yr #add a column recording which list element (year)
     return(df)})) #returns dataframe
 
+## *********************************************************
+## Create summary figures
+## *********************************************************
+
+library(ggplot2)
+library(tidyverse)
+
+
+#Identify extreme outliers and remove
+all.pcas %>%
+  filter(!is.na(var.pca1)) %>% 
+  ggplot(aes(x = var.pca1)) +
+    geom_histogram()
+
+#all extreme outliers in 2017 and 2021
+outliers <- all.pcas %>% 
+  filter(var.pca1 > 200 | var.pca1 < -20)
+
+clean.pcas <- all.pcas %>% 
+  filter(!(var.pca1 > 200 | var.pca1 < -20))
+
+#Mean
+all.pcas %>% 
+  ggplot(aes(x = mean.pca1)) +
+  geom_histogram() +
+  facet_wrap(~Site) 
+
+all.pcas %>% 
+  ggplot(aes(x = mean.pca1)) +
+  geom_histogram() +
+  facet_wrap(~Year)
+
+#Variance
+clean.pcas %>% 
+  ggplot(aes(x = var.pca1)) +
+  geom_histogram() +
+  facet_wrap(~Site)
+
+clean.pcas %>% 
+  ggplot(aes(x = var.pca1)) +
+  geom_histogram() +
+  facet_wrap(~Year)
+
+print(paste("Plant species", length(unique(all.pcas$GenusSpecies)))) #100 plant species
+unique(all.pcas$GenusSpecies)

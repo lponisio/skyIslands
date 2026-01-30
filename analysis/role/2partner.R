@@ -36,10 +36,12 @@ library(tidyverse)
 #source('saved/results/partnerVar_Year.Rdata')
 
 beta.dist %>% 
+  filter(Site == '') +
   ggplot(
-    aes(x = Year, y = dist)) +
-      geom_boxplot() +
-  facet_wrap( ~ Site)
+    aes(x = dist)) +
+      geom_histogram() +
+  facet_wrap(~ Year)
+
 
 beta.dist %>% 
   ggplot(
@@ -55,11 +57,13 @@ unique(beta.dist$GenusSpecies)
 #Beta dis calculated between sites within a year
 #source('saved/results/partnerVar_Site.Rdata')
 
+#much more variable in 2012 than later years?
 beta.dist %>% 
+  filter(Year == 2022) %>% 
   ggplot(
-    aes(x = Site, y = dist)) +
-  geom_boxplot() +
-  facet_wrap( ~ Year)
+    aes(x = dist)) +
+  geom_histogram() +
+  facet_wrap( ~ Site)
 
 beta.dist %>% 
   ggplot(
@@ -71,9 +75,3 @@ beta.dist %>%
 print(paste("Plant species", length(unique(beta.dist$GenusSpecies)))) #48 species
 unique(beta.dist$GenusSpecies)
 
-for (i in seq_along(nets)) {
-  cat("Checking network:", i, "\n")
-  calcSpec(list(nets[[i]]), spec.net, dist.metric = "chao")
-}
-
-traceback()
