@@ -1,5 +1,11 @@
 ## setwd('~/Dropbox/skyislands')
 rm(list=ls())
+setwd("C:/")
+source("lab_paths.R")
+local.path
+
+dir.bombus <- file.path(local.path, "skyIslands")
+setwd(dir.bombus)
 setwd('analysis/role')
 
 source('src/initialize_beta.R')
@@ -32,45 +38,54 @@ save(beta.dist, file=sprintf("saved/results/partnerVar_%s.Rdata",
 library(ggplot2)
 library(tidyverse)
 
-#Beta dis calculated between years within a site
+#Beta calculated between years within a site (temporal)
 #source('saved/results/partnerVar_Year.Rdata')
 
+unique(beta.dist$Site)
+
 beta.dist %>% 
-  filter(Site == '') +
+  ggplot(aes(x = dist)) +
+  geom_histogram() +
+  facet_wrap(Site~Year)
+
+beta.dist %>% 
+  filter(Site == 'CH') %>% 
   ggplot(
     aes(x = dist)) +
-      geom_histogram() +
+  geom_histogram() +
   facet_wrap(~ Year)
 
 
 beta.dist %>% 
   ggplot(
-  aes(x = GenusSpecies, y = dist)) +
+  aes(y = fct_reorder(GenusSpecies, dist), x = dist)) +
   geom_point() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  facet_wrap(~ Year)
-
+  labs(x = "Partner variability", y = "Species") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 print(paste("Plant species", length(unique(beta.dist$GenusSpecies)))) #22 species
 unique(beta.dist$GenusSpecies)
 
-#Beta dis calculated between sites within a year
+#Beta calculated between sites within a year (spatial)
 #source('saved/results/partnerVar_Site.Rdata')
 
-#much more variable in 2012 than later years?
+unique(beta.dist$Year)
+
 beta.dist %>% 
-  filter(Year == 2022) %>% 
+  ggplot(
+    aes(x = dist)) +
+  geom_histogram() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(Year ~ Site)
+
+beta.dist %>% 
+  filter(Year == 2018) %>% 
   ggplot(
     aes(x = dist)) +
   geom_histogram() +
   facet_wrap( ~ Site)
 
-beta.dist %>% 
-  ggplot(
-    aes(x = Site, y = dist)) +
-  geom_boxplot() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  facet_wrap(~ Year)
+
 
 print(paste("Plant species", length(unique(beta.dist$GenusSpecies)))) #48 species
 unique(beta.dist$GenusSpecies)

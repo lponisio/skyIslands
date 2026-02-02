@@ -31,9 +31,6 @@ metrics <- c("rare.degree",
 var.method <- cv
 ave.method <- mean
 
-colnames(sp.lev)
-
-args(calcPcaMeanVar)
 
 ## PCA 
 plant.pca.scores <- calcPcaMeanVar(species.roles=sp.lev, 
@@ -68,7 +65,6 @@ all.pcas <- do.call( #combines results and applies function
 library(ggplot2)
 library(tidyverse)
 
-
 #Identify extreme outliers and remove
 all.pcas %>%
   filter(!is.na(var.pca1)) %>% 
@@ -79,27 +75,27 @@ all.pcas %>%
 outliers <- all.pcas %>% 
   filter(var.pca1 > 200 | var.pca1 < -20)
 
-clean.pcas <- all.pcas %>% 
+var.pcas <- all.pcas %>% 
   filter(!(var.pca1 > 200 | var.pca1 < -20))
 
-#Mean
-all.pcas %>% 
-  ggplot(aes(x = mean.pca1)) +
-  geom_histogram() +
-  facet_wrap(~Site) 
-
-all.pcas %>% 
-  ggplot(aes(x = mean.pca1)) +
-  geom_histogram() +
-  facet_wrap(~Year)
-
+# #Mean
+# all.pcas %>% 
+#   ggplot(aes(x = mean.pca1)) +
+#   geom_histogram() +
+#   facet_wrap(~Site) 
+# 
+# all.pcas %>% 
+#   ggplot(aes(x = mean.pca1)) +
+#   geom_histogram() +
+#   facet_wrap(~Year)
+RGBIF
 #Variance
-clean.pcas %>% 
+var.pcas %>% 
   ggplot(aes(x = var.pca1)) +
   geom_histogram() +
   facet_wrap(~Site)
 
-clean.pcas %>% 
+var.pcas %>% 
   ggplot(aes(x = var.pca1)) +
   geom_histogram() +
   facet_wrap(~Year)
