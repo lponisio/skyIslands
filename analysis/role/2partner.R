@@ -1,5 +1,13 @@
 ## setwd('~/Dropbox/skyislands')
 rm(list=ls())
+library(ggplot2, quietly = TRUE)
+library(tidyverse, quietly = TRUE)
+setwd("C:/")
+source("lab_paths.R")
+local.path
+
+dir.bombus <- file.path(local.path, "skyIslands")
+setwd(dir.bombus)
 setwd('analysis/role')
 
 source('src/initialize_beta.R')
@@ -22,56 +30,77 @@ dis <- mapply(function(a, b, c, d)
 
 beta.dist <- makeBetaDataPretty()
 
-save(beta.dist, file=sprintf("saved/results/partnerVar_%s.Rdata",
+save(beta.dist, file=sprintf("saved/results/pol_partnerVar_%s.Rdata",
                              net.type))
 
 ## *********************************************************
 ## Create summary figures
 ## *********************************************************
 
-library(ggplot2)
-library(tidyverse)
-
-#Beta dis calculated between years within a site
-#source('saved/results/partnerVar_Year.Rdata')
-
-beta.dist %>% 
-  filter(Site == '') +
-  ggplot(
-    aes(x = dist)) +
-      geom_histogram() +
-  facet_wrap(~ Year)
-
+## Plants
+## Beta calculated between years within a site (temporal)
+load('saved/results/plant_partnerVar_Year.Rdata')
 
 beta.dist %>% 
   ggplot(
-  aes(x = GenusSpecies, y = dist)) +
+  aes(y = reorder(GenusSpecies, dist), x = dist, color = Site)) +
   geom_point() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  facet_wrap(~ Year)
-
+  labs(x = "Partner variability", y = "Species") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 print(paste("Plant species", length(unique(beta.dist$GenusSpecies)))) #22 species
 unique(beta.dist$GenusSpecies)
 
-#Beta dis calculated between sites within a year
-#source('saved/results/partnerVar_Site.Rdata')
+unique.species <- beta.dist %>%
+  separate(GenusSpecies, into = c("Genus", "Species"), sep = " ") %>% 
+  distinct(Genus, Species)
 
-#much more variable in 2012 than later years?
-beta.dist %>% 
-  filter(Year == 2022) %>% 
-  ggplot(
-    aes(x = dist)) +
-  geom_histogram() +
-  facet_wrap( ~ Site)
+write.csv(unique.species, file = "saved/traits/plantSpecies_partner.csv", row.names = FALSE)
+
+#Beta calculated between sites within a year (spatial)
+load('saved/results/plant_partnerVar_Site.Rdata')
 
 beta.dist %>% 
   ggplot(
-    aes(x = Site, y = dist)) +
-  geom_boxplot() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  facet_wrap(~ Year)
+    aes(y = reorder(GenusSpecies, dist), x = dist)) +
+  geom_point() +
+  labs(x = "Partner variability", y = "Species") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 print(paste("Plant species", length(unique(beta.dist$GenusSpecies)))) #48 species
+unique(beta.dist$GenusSpecies)
+
+
+## Pollinators
+## Beta calculated between years within a site (temporal)
+load('saved/results/pol_partnerVar_Year.Rdata')
+
+beta.dist %>% 
+  ggplot(
+    aes(y = reorder(GenusSpecies, dist), x = dist)) +
+  geom_point() +
+  labs(x = "Partner variability", y = "Species") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+print(paste("Plant species", length(unique(beta.dist$GenusSpecies)))) #58 species
+unique(beta.dist$GenusSpecies)
+
+unique.species <- beta.dist %>%
+  separate(GenusSpecies, into = c("Genus", "Species"), sep = " ") %>% 
+  distinct(Genus, Species)
+
+write.csv(unique.species, file = "saved/traits/polSpecies_partner.csv", row.names = FALSE)
+
+#Beta calculated between sites within a year (spatial)
+load('saved/results/pol_partnerVar_Site.Rdata')
+
+beta.dist %>% 
+  ggplot(
+    aes(y = reorder(GenusSpecies, dist), x = dist)) +
+  geom_point() +
+  labs(x = "Partner variability", y = "Species") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+print(paste("Plant species", length(unique(beta.dist$GenusSpecies)))) #47 species
 unique(beta.dist$GenusSpecies)
 

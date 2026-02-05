@@ -31,33 +31,30 @@ metrics <- c("rare.degree",
 var.method <- cv
 ave.method <- mean
 
-colnames(sp.lev)
-
-args(calcPcaMeanVar)
 
 ## PCA 
-plant.pca.scores <- calcPcaMeanVar(species.roles=sp.lev, 
+pol.pca.scores <- calcPcaMeanVar(species.roles=sp.lev, 
                                  var.method=var.method,
                                  ave.method=ave.method,
                                  metrics= metrics,
                                  loadings=loadings,
                                  agg.col = "Year")
 
-plant.pca.scores[1]
+pol.pca.scores[1]
 
 
 autoplot(plant.pca.scores$'2018'$pca.loadings, loadings=TRUE,
          loadings.colour = 'blue')
 
 
-save(plant.pca.scores,  file="analysis/role/saved/results/pcaVar.Rdata")
+save(plant.pca.scores,  file="analysis/role/saved/results/pol_pcaVar.Rdata")
 
 #combine PCA results from all years into a single dataframe
 all.pcas <- do.call( #combines results and applies function
   rbind, #row bind list of dataframes returned by lapply()
-  lapply(names(plant.pca.scores), # Loop over each list element name (year "2012")
+  lapply(names(pol.pca.scores), # Loop over each list element name (year "2012")
          function(yr) { 
-    df <- plant.pca.scores[[yr]]$pcas #extract the PCA scores dataframe for this year
+    df <- pol.pca.scores[[yr]]$pcas #extract the PCA scores dataframe for this year
     df$Year <- yr #add a column recording which list element (year)
     return(df)})) #returns dataframe
 
@@ -68,41 +65,56 @@ all.pcas <- do.call( #combines results and applies function
 library(ggplot2)
 library(tidyverse)
 
+## Plants
 
-#Identify extreme outliers and remove
 all.pcas %>%
   filter(!is.na(var.pca1)) %>% 
   ggplot(aes(x = var.pca1)) +
     geom_histogram()
 
-#all extreme outliers in 2017 and 2021
+
 outliers <- all.pcas %>% 
   filter(var.pca1 > 200 | var.pca1 < -20)
 
-clean.pcas <- all.pcas %>% 
+var.pcas <- all.pcas %>% 
   filter(!(var.pca1 > 200 | var.pca1 < -20))
 
-#Mean
-all.pcas %>% 
-  ggplot(aes(x = mean.pca1)) +
-  geom_histogram() +
-  facet_wrap(~Site) 
-
-all.pcas %>% 
-  ggplot(aes(x = mean.pca1)) +
-  geom_histogram() +
-  facet_wrap(~Year)
-
 #Variance
-clean.pcas %>% 
+var.pcas %>% 
   ggplot(aes(x = var.pca1)) +
   geom_histogram() +
   facet_wrap(~Site)
 
-clean.pcas %>% 
+var.pcas %>% 
   ggplot(aes(x = var.pca1)) +
   geom_histogram() +
   facet_wrap(~Year)
 
+var.pcas %>% 
+  arrange(var.pca1) %>% 
+  ggplot(
+    aes(y = GenusSpecies, x = var.pca1)) +
+  geom_point() +
+  labs(x = "Partner variability", y = "Species") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
 print(paste("Plant species", length(unique(all.pcas$GenusSpecies)))) #100 plant species
 unique(all.pcas$GenusSpecies)
+
+## Pollinators
+
+var.pcas %>%
+  filter(!is.na(var.pca1)) %>% 
+  ggplot(aes(x = var.pca1)) +
+  geom_histogram()
+
+var.pcas <- all.pcas %>% 
+  filter(!(var.pca1 < -100))
+
+var.pcas %>% 
+  ggplot(
+    aes(y = reorder(GenusSpecies, var.pca1), x = var.pca1)) +
+  geom_point() +
+  labs(x = "Partner variability", y = "Species") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
