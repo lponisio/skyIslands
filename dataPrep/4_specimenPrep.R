@@ -731,29 +731,29 @@ spec.net$SiteSRYearSpp <- NULL
 print("After merge with ind level data")
 print(dim(spec.net))
 
-## bee traits
-bee.traits <-
-    read.csv("../../skyIslands_saved/data/raw/bee_traits.csv")
-bee.traits$GenusSpecies <- fix.white.space(bee.traits$GenusSpecies)
-bee.traits <- bee.traits[, c("GenusSpecies", "Sociality", "Lecty", "MeanITD"),]
+## ## bee traits
+## bee.traits <-
+##     read.csv("../../skyIslands_saved/data/raw/bee_traits.csv")
+## bee.traits$GenusSpecies <- fix.white.space(bee.traits$GenusSpecies)
+## bee.traits <- bee.traits[, c("GenusSpecies", "Sociality", "Lecty", "MeanITD"),]
 
-## network traits
-net.traits <- read.csv("../data/networks_traits.csv")
-net.traits <- net.traits[, c("GenusSpecies", "r.degree"),]
+## ## network traits
+## net.traits <- read.csv("../data/networks_traits.csv")
+## net.traits <- net.traits[, c("GenusSpecies", "r.degree"),]
 
-## merge network traits to specimen data
-print("Before merge with network traits to species bee.traits")
-print(dim(bee.traits))
-all.traits <- merge(bee.traits, net.traits,
-                    by="GenusSpecies", all.x=TRUE)
-print("After merge with network bee.traits to species bee.traits")
-print(dim(all.traits))
+## ## merge network traits to specimen data
+## print("Before merge with network traits to species bee.traits")
+## print(dim(bee.traits))
+## all.traits <- merge(bee.traits, net.traits,
+##                     by="GenusSpecies", all.x=TRUE)
+## print("After merge with network bee.traits to species bee.traits")
+## print(dim(all.traits))
 
-print("Before merge with traits")
-print(dim(spec.net))
-spec.net <- merge(spec.net, all.traits, all.x=TRUE)
-print("After merge with traits")
-print(dim(spec.net))
+## print("Before merge with traits")
+## print(dim(spec.net))
+## spec.net <- merge(spec.net, all.traits, all.x=TRUE)
+## print("After merge with traits")
+## print(dim(spec.net))
 
 spec.net$GenusSpecies[is.na(spec.net$GenusSpecies)] <- ""
 save(spec.net, file="../data/spec_net.Rdata")

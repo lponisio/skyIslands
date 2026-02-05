@@ -75,7 +75,7 @@ sp.ids <- list(
     
     Protandrena_sp_b= list(Genus="Protandrena", SubGenus ="",
                            Species="sp.",
-                           SubSpecies="b",
+                           SubSpecies="SI-b",
                            Sex="f", Author = "",
                            Determiner="D. Yanega",
                            temp.id= c("BBSL1086888")),
@@ -541,7 +541,7 @@ sp.ids <- list(
     Perdita_sp2= list(Genus="Perdita",
                       SubGenus="Perdita",
                       Species="sp.",
-                      SubSpecies="2", Sex="f",
+                      SubSpecies="SI-2", Sex="f",
                       Author = "",
                       Determiner="T.  Griswold",
                       temp.id= c("BBSL1072169")),
@@ -672,21 +672,21 @@ sp.ids <- list(
 
     ## Stylopized
     Andrena_sp1= list(Genus="Andrena", SubGenus ="Cnemidandrena",
-                      Species="sp.", SubSpecies="1",
+                      Species="sp.", SubSpecies="SI-1",
                       Sex="f",
                       Author ="",
                       Determiner="T. Griswold",
                       temp.id= c("BBSL1070337")),
 
     Andrena_sp1= list(Genus="Andrena", SubGenus ="Cnemidandrena",
-                      Species="sp.", SubSpecies="1",
+                      Species="sp.", SubSpecies="SI-1",
                       Sex="m",
                       Author ="",
                       Determiner="T. Griswold",
                       temp.id= c("BBSL1071777")),
 
     Andrena_sp2= list(Genus="Andrena", SubGenus ="Andrena ",
-                      Species="sp.", SubSpecies="2",
+                      Species="sp.", SubSpecies="SI-2",
                       Sex="m",
                       Author ="",
                       Determiner="T. Griswold",

@@ -10,15 +10,6 @@ sp.ids <- list(
                                      temp.id= c(34317, 34174)),
 
 
-    ## Anthidium_maculosum_m = list(Genus="Anthidium",
-    ##                              SubGenus ="Anthidium",
-    ##                              Species="maculosum",
-    ##                              SubSpecies="", Sex="m",
-    ##                              Author = "Cresson",
-    ##                              Determiner = "",
-    ##                              temp.id= c()),
-
-
     Anthidium_manicatum_m = list(Genus="Anthidium",
                                      SubGenus ="",
                                      Species="manicatum",

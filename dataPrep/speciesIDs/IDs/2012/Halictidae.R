@@ -403,7 +403,7 @@ Lasioglossum_sisymbrii = list(Genus="Lasioglossum", SubGenus
                            temp.id= c("JC_071712_111", "JC_071412_146")),
 
     Sphecodes_morphoa = list(Genus="Sphecodes", SubGenus ="",
-                             Species="sp.", SubSpecies="a",
+                             Species="sp.", SubSpecies="SI-a",
                              Sex="f",
                              Author = "", Determiner =  "L. Ponisio",
                              temp.id= c("SC_072012_29",
@@ -413,7 +413,7 @@ Lasioglossum_sisymbrii = list(Genus="Lasioglossum", SubGenus
                                         "SC_072812_154")),
 
       Sphecodes_morphoa = list(Genus="Sphecodes", SubGenus ="",
-                             Species="sp.", SubSpecies="a",
+                             Species="sp.", SubSpecies="SI-a",
                              Sex="m",
                              Author = "", Determiner =  "L. Ponisio",
                              temp.id= c(
@@ -421,7 +421,7 @@ Lasioglossum_sisymbrii = list(Genus="Lasioglossum", SubGenus
                                         "SC_072912_39")),
 
     Sphecodes_morphob = list(Genus="Sphecodes", SubGenus ="",
-                             Species="sp.", SubSpecies="b", Sex="f",
+                             Species="sp.", SubSpecies="SI-b", Sex="f",
                              Author = "",
                              Determiner =  "L. Ponisio", temp.id=
                                                              c("JC_071612_47",
@@ -879,14 +879,14 @@ Lasioglossum_sisymbrii = list(Genus="Lasioglossum", SubGenus
 
            Lasioglossum_sp_m= list(Genus="Lasioglossum", SubGenus
                                   ="Sphecodogastra", Species="sp.",
-                                  SubSpecies="s", Sex="m",
+                                  SubSpecies="SI-s", Sex="m",
                                   Author = "",
                                   Determiner = "J. Gardener",
                                   temp.id=  c("SC_072812_131")),
 
     Lasioglossum_Hemihalictus_f= list(Genus="Lasioglossum", SubGenus
                                       ="Hemihalictus", Species="sp.",
-                                      SubSpecies="2", Sex="f",
+                                      SubSpecies="SI-2", Sex="f",
                                       Author = "",
                                       Determiner = "J. Gardener",
                                       temp.id=  c("SC_072712_59"))
