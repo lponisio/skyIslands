@@ -47,11 +47,6 @@ add.to.data(sp.ids=sp.ids,
             case='bee', "Colletidae","2022",
             data.file=spec.data.file)
 
-## source(file.path(save.dir, 'IDs/2022/Sphecidae.R'))
-## add.to.data(sp.ids=sp.ids,
-##             case='wasp', "Sphecidae","2022",
-##             data.file=spec.data.file)
-
 print("*********2022 Syrphidae")
 source(file.path(save.dir, 'IDs/2022/Syrphidae.R'))
 add.to.data(sp.ids=sp.ids,
@@ -212,7 +207,7 @@ add.to.data(sp.ids=sp.ids,
 print("*********2017 Melittidae")
 source(file.path(save.dir, 'IDs/2017/Melittidae.R'))
 add.to.data(sp.ids=sp.ids,
-            case='bee',"Melittidae","2017",
+            case='bee',"Melittidae","2018",
             data.file=spec.data.file)
 
 print("*********2017 Sphecidae")
