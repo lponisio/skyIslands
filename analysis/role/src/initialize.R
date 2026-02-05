@@ -12,9 +12,9 @@ save.path <- 'saved'
 save.dir.comm <- "saved/communities"
 save.dir.nulls <- "saved/nulls"
 
-type <- "plant"
+type <- "pol"
 nnull <- 9
-species.type="PlantGenusSpecies" #changed from specimen (GenusSpecies)
-species.type.int="GenusSpecies" #changed from plant (PlantGenusSpecies)
+species.type="GenusSpecies" #changed from specimen (GenusSpecies)
+species.type.int="PlantGenusSpecies" #changed from plant (PlantGenusSpecies)
 
 

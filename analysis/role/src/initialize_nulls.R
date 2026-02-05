@@ -4,8 +4,8 @@ if(length(args) != 0){
     net.type <- args[2]
     nnull <- args[3]
 } else{
-    sp.type <- "plants"
-    net.type <- "Site"
+    sp.type <- "pol"
+    net.type <- "Year"
     nnull <- 999
 }
 

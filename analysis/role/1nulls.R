@@ -1,6 +1,12 @@
 ## setwd('~/Dropbox/skyislands')
 rm(list=ls())
-setwd('role')
+setwd("C:/")
+source("lab_paths.R")
+local.path
+
+dir.bombus <- file.path(local.path, "skyIslands")
+setwd(dir.bombus)
+setwd('analysis/role')
 source('src/initialize_nulls.R')
 
 ## ************************************************************
@@ -17,6 +23,9 @@ source('src/initialize_nulls.R')
 ## when lapplying on sites, generates networks for each species
 ## (pollinator if species.type=="GenusSpecies) to examine turnover
 ## between years within a site
+
+spec <- spec %>% 
+  filter(Sex == "f")
 
 comms <- lapply(to.lapply, calcSiteBeta,
                 species.type=species.type,
