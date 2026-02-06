@@ -61,31 +61,6 @@ sp.ids <- list(
                                  Determiner="J.L. Neff",
                                  temp.id= c(38316)),
 
-    ## Diadasia_diminuta_f = list(Genus="Diadasia",
-    ##                            SubGenus="Coquillettapis",
-    ##                            Species="diminuta",
-    ##                            SubSpecies="", Sex="f",
-    ##                            Author = "Cresson",
-    ##                            Determiner="",
-    ##                            temp.id= c()),
-
-
-    ## Anthophora_montana_f = list(Genus="Anthophora",
-    ##                             SubGenus="Mystacanthophora",
-    ##                             Species="montana",
-    ##                             SubSpecies="",
-    ##                             Sex="f",
-    ##                             Author = "Cresson",
-    ##                             Determiner="",
-    ##                             temp.id= c(36875,36793,38024,38256,36828)),
-
-    ## Anthophora_montana_m = list(Genus="Anthophora",
-    ##                             SubGenus="Mystacanthophora",
-    ##                             Species="montana", SubSpecies="",
-    ##                             Sex="m", Author = "Cresson",
-    ##                             Determiner="",
-    ##                             temp.id= c()),
-
 
      Anthophora_terminalis_f = list(Genus="Anthophora",
                                     SubGenus="Clisodon",
@@ -118,33 +93,6 @@ sp.ids <- list(
                                        38206,38207, 38766, 38940)),
 
 
-    ## Anthophora_urbana_f = list(Genus="Anthophora",
-    ##                            SubGenus="Mystacanthophora",
-    ##                            Species="urbana",
-    ##                            SubSpecies="",
-    ##                            Sex="f",
-    ##                            Author = "Cresson",
-    ##                            Determiner="L. Ponisio",
-    ##                            temp.id= c()),
-
-    ## Anthophora_urbana_m = list(Genus="Anthophora",
-    ##                            SubGenus="Mystacanthophora",
-    ##                            Species="urbana",
-    ##                            SubSpecies="",
-    ##                            Sex="m",
-    ##                            Author = "Cresson",
-    ##                            Determiner="L. Ponisio",
-    ##                            temp.id= c()),
-
-    ## Nomada_spc= list(Genus="Nomada", SubGenus="",
-    ##                  Species="sp.",
-    ##                  SubSpecies="d", Sex="f",
-    ##                  Author = "",
-    ##                  Determiner=,
-    ##                  temp.id= c()),
-
-
-
     Bombus_fervidus_f = list(Genus = "Bombus", SubGenus="Thoracobombus",
                              Species =
                                  "fervidus", SubSpecies = "", Sex ="f",
@@ -170,21 +118,6 @@ sp.ids <- list(
                                            36958, 36959, 36960, 36962, 36952,
                                            36954, 36955, 36956, 36436, 36437,
                                            36438, 36555, 36915)),
-
-    ## Bombus_nevadensis_m = list(Genus = "Bombus", SubGenus="Bombias",
-    ##                            Species = "nevadensis",
-    ##                            SubSpecies = "", Sex ="m",
-    ##                            Author = "Cresson",
-    ##                            Determiner="",
-    ##                            temp.id = c( )),
-
-    ## Bombus_morrisoni_f = list(Genus = "Bombus",
-    ##                           SubGenus="Cullumanobombus",
-    ##                           Species = "morrisoni",
-    ##                           SubSpecies = "", Sex ="f", Author = "Cresson",
-    ##                           Determiner="",
-    ##                           temp.id = c()),
-
 
 
     Bombus_morrisoni_m = list(Genus = "Bombus",
@@ -500,55 +433,14 @@ sp.ids <- list(
                                   38375, 38295, 38304, 38306, 38323,
                                   38330, 38331)),
 
-
-
-
-    ## Bombus_flavifrons_f = list(Genus = "Bombus",
-    ##                            SubGenus="Pyrobombus",
-    ##                            Species = "flavifrons",
-    ##                            SubSpecies = "", Sex ="f",
-    ##                            Author = "Cresson",
-    ##                            Determiner="",
-    ##                            temp.id = c()),
-
-    ## Bombus_flavifrons_m = list(Genus = "Bombus",
-    ##                            SubGenus="Pyrobombus",
-    ##                            Species = "flavifrons",
-    ##                            SubSpecies = "", Sex ="m",
-    ##                            Author = "Cresson",
-    ##                            Determiner="",
-    ##                            temp.id = c()),
-
-
      Triepeolus_sp_a_m= list(Genus="Triepeolus",
                              SubGenus="",
                              Species="sp.",
-                             SubSpecies="a",
+                             SubSpecies="SI-a",
                              Sex="m",
                              Author = "",
                              Determiner="J.L. Neff",
                              temp.id= c(38392))
-
-
-
-    ## Triepeolus_sp_a_f= list(Genus="Triepeolus",
-    ##                         SubGenus="",
-    ##                         Species="sp.",
-    ##                         SubSpecies="a",
-    ##                         Sex="f",
-    ##                         Author = "",
-    ##                         Determiner="",
-    ##                         temp.id= c( )),
-
-    ## Triepeolus_sp_b_f= list(Genus="Triepeolus",
-    ##                         SubGenus="",
-    ##                         Species="sp.",
-    ##                         SubSpecies="b",
-    ##                         Sex="f",
-    ##                         Author = "",
-    ##                         Determiner="",
-    ##                         temp.id= c()),
-
 
 
 )

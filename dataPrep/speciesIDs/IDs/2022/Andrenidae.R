@@ -1,38 +1,8 @@
-## Protandrena/psuedopanurgus are currently in the process of being redescribed. Protandrena is the only panurgine with 3 submarginal cells. Pseudopanurgus has 2 submarginal cells. Pterosarus and heterosarus are subgenera of protandrena.
+## Protandrena/psuedopanurgus are currently in the process of being
+## redescribed. Protandrena is the only panurgine with 3 submarginal
+## cells. Pseudopanurgus has 2 submarginal cells. Pterosarus and
+## heterosarus are subgenera of protandrena.
 sp.ids <- list(
-
-    ##   Perdita_albipennis_m= list(Genus="Perdita",
-    ##                                   SubGenus ="Cockerellia",
-    ##                                   Species="",
-    ##                                   SubSpecies="",
-    ##                                   Sex="m", Author = "Cresson",
-    ##                                   Determiner="J.L. Neff",
-    ##                                   temp.id= c(36831, 31030)),
-
-    ##   Perdita_ignota_f= list(Genus="Perdita",
-    ##                                   SubGenus ="Hexaperdita",
-    ##                                   Species="ignota",
-    ##                                   SubSpecies="",
-    ##                                   Sex="f", Author = "Cockerell",
-    ##                                   Determiner="J.L Neff",
-    ##                                   temp.id= c(30926)),
-
-    ##   Perdita_foveata_f= list(Genus="Perdita",
-    ##                                   SubGenus ="hexaperdita",
-    ##                                   Species="foveata",
-    ##                                   SubSpecies="",
-    ##                                   Sex="f", Author = "Timberlake",
-    ##                                   Determiner="J.L. Neff",
-    ##                                   temp.id= c(36689)),
-
-
-    ##   Pseudopanurgus_piercei_f= list(Genus="Pseudopanurgus",
-    ##                                   SubGenus ="",
-    ##                                   Species="piercei",
-    ##                                   SubSpecies="",
-    ##                                   Sex="f", Author = "Crawford",
-    ##                                   Determiner="",
-    ##                                   temp.id= c()),
 
 
        Pseudopanurgus_atricornis_f= list(Genus="Pseudopanurgus",
@@ -88,102 +58,12 @@ sp.ids <- list(
                                                  38147)),
     #added HBL 2/13/24
     Protandrena_stathamae_a= list(Genus="Protandrena", SubGenus ="",
-                                  Species="Stathamae",
-                                  SubSpecies="a",
+                                  Species="",
+                                  SubSpecies="stathamae",
                                   Sex="f", Author = "Cresson",
                                   Determiner="J.L. Neff",
                                   temp.id= c(38340, 38296)),
   
-    ##   Panurginus_cressoniellus_f= list(Genus="Panurginus", SubGenus ="",
-    ##                                  Species="cressoniellus",
-    ##                                  SubSpecies="",
-    ##                                  Sex="f", Author = "Cockerell",
-    ##                                  Determiner=,
-    ##                                  temp.id= c()),
-
-
-    ## Protandrena_sp_a= list(Genus="Protandrena", SubGenus ="",
-    ##                        Species="sp.",
-    ##                        SubSpecies="a",
-    ##                        Sex="f", Author = "",
-    ##                        Determiner=,
-    ##                        temp.id= c()),
-
-
-    ## Protandrena_sp_c= list(Genus="Protandrena", SubGenus ="",
-    ##                        Species="sp.",
-    ##                        SubSpecies="c",
-    ##                        Sex="m", Author = "",
-    ##                        Determiner="",
-    ##                        temp.id= c()),
-
-    ##     Protandrena_sp_d= list(Genus="Protandrena", SubGenus ="",
-    ##                        Species="sp.",
-    ##                        SubSpecies="d",
-    ##                        Sex="f", Author = "",
-    ##                        Determiner="",
-    ##                        temp.id= c()),
-
-    ##   Protandrena_sp_d= list(Genus="Protandrena", SubGenus ="",
-    ##                        Species="sp.",
-    ##                        SubSpecies="d",
-    ##                        Sex="m", Author = "",
-    ##                        Determiner="D. Yanega",
-    ##                        temp.id= c()),
-
-    ##   Protandrena_sp_d= list(Genus="Protandrena", SubGenus ="",
-    ##                        Species="sp.",
-    ##                        SubSpecies="e",
-    ##                        Sex="m", Author = "",
-    ##                        Determiner="",
-    ##                        temp.id= c()),
-
-    ##   Protandrena_atricornis_f= list(Genus="Protandrena", SubGenus ="Pterosarus",
-    ##                        Species="atricornis",
-    ##                        SubSpecies="",
-    ##                        Sex="f", Author = "Cresson",
-    ##                        Determiner="J.L. Neff",
-    ##                        temp.id= c(33342)),
-
-
-    ## Pseudopanurgus_porterae_f= list(Genus="Pseudopanurgus",
-    ##                             SubGenus ="",
-    ##                             Species="porterae",
-    ##                             SubSpecies="",
-    ##                             Sex="f",
-    ##                             Author = "Cockerell",
-    ##                             Determiner="",
-    ##                             temp.id= c()),
-
-
-
-    ## Pseudopanurgus_porterae_m= list(Genus="Pseudopanurgus",
-    ##                             SubGenus ="",
-    ##                             Species="porterae",
-    ##                             SubSpecies="",
-    ##                             Sex="m",
-    ##                             Author = "Cockerell",
-    ##                             Determiner="",
-    ##                             temp.id= c()),
-
-
-    ## Andrena_argemonis_f = list(Genus="Andrena",
-    ##                            SubGenus="Plastandrena",
-    ##                            Species="argemonis",
-    ##                            SubSpecies="",
-    ##                            Sex="f", Author = "Cockerell",
-    ##                            Determiner="",
-    ##                            temp.id= c()),
-
-    ## Andrena_argemonis_m = list(Genus="Andrena",
-    ##                            SubGenus="Plastandrena",
-    ##                            Species="argemonis",
-    ##                            SubSpecies="",
-    ##                            Sex="m", Author = "Cockerell",
-    ##                            Determiner="",
-    ##                            temp.id= c()),
-
-
 
     Psuedopanurgus_bakeri_f= list(Genus="Pseudopanurgus",
                                SubGenus ="",
@@ -203,31 +83,6 @@ sp.ids <- list(
                                Author = "Cockerell",
                                Determiner="J.L. Neff",
                                temp.id= c(36977, 37366)),
-
-
-    ## Heterosarus_neomex_f= list(Genus="Heterosarus",
-    ##                            SubGenus ="",
-    ##                            Species="neomexicanus",
-    ##                            SubSpecies="",
-    ##                            Sex="f",
-    ##                            Author = "Cockerell",
-    ##                            Determiner="",
-    ##                            temp.id= c()),
-
-    ## Panurginus_sp_a_f= list(Genus="Panurginus", SubGenus ="",
-    ##                         Species="sp.",
-    ##                         SubSpecies="a",
-    ##                         Sex="f", Author = "",
-    ##                         Determiner="",
-    ##                         temp.id= c()),
-
-    ## Panurginus_cressoniellus_f= list(Genus="Panurginus",
-    ##                                  SubGenus ="",
-    ##                                  Species="cressoniellus",
-    ##                                  SubSpecies="",
-    ##                                  Sex="f", Author = "Cockerell",
-    ##                                  Determiner="",
-    ##                                  temp.id= c()),
 
 
 
@@ -256,16 +111,6 @@ sp.ids <- list(
                                temp.id= c(36660, 37094, 37239, 37412,
                                           37287, 36999, 37515, 37418,
                                           37166)),
-
-    ## Andrena_costillensis= list(Genus="Andrena",
-    ##                            SubGenus ="Cnemidandrena",
-    ##                            Species="costillensis",
-    ##                            SubSpecies="",
-    ##                            Sex="f",
-    ##                            Author =
-    ##                                "Viereck \\& Cockerell",
-    ##                            Determiner="",
-    ##                            temp.id= c())
 
     Andrena_livida_f= list(Genus="Andrena",
                            SubGenus ="Thysandrena",

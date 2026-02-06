@@ -462,7 +462,7 @@ sp.ids <- list(
     Ptilothrix_morpho= list(Genus=" Ptilothrix",
                             SubGenus="",
                             Species="sp.",
-                            SubSpecies="a",
+                            SubSpecies="SI-a",
                             Sex="", Author = "",
                             Determiner="J.S. Ascher",
                             temp.id= c("PL_081312_214")),
