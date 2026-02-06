@@ -1,6 +1,11 @@
 library(FD)
 
 
+## standardize a vector
+standardize <- function(x)
+  (x-mean(x, na.rm=TRUE))/sd(x, na.rm=TRUE)
+
+
 calcFuncUniqOrigComm <- function(traits, traits.2.keep,
                                  weights,
                                  type = "network",

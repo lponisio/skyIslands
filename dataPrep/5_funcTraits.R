@@ -87,3 +87,40 @@ spec.net <- add_func_uniq_orig(spec.net, traits,
 
 save(spec.net, file="../data/spec_traits.Rdata")
 write.csv(spec.net, file="../data/spec_traits.csv", row.names=FALSE)
+
+## Add in network traits
+load('../data/sp_network_mets_sr_pretty.RData')
+
+sp.network.metrics <- sp.network.metrics %>%
+  select(GenusSpecies, Site, Year, SampleRound, zdegree,
+         zweighted.betweenness, zweighted.closeness, zd,
+         normalised.degree)
+
+traits$GenusSpecies <- rownames(traits)
+rownames(traits) <- NULL
+
+dim(spec.net)
+spec.net <- merge(spec.net, sp.network.metrics, all.x=TRUE)
+dim(spec.net)
+spec.net <- merge(spec.net, traits, all.x=TRUE)
+dim(spec.net)
+
+save(spec.net, file="../data/spec_traits.Rdata")
+write.csv(spec.net, file="../data/spec_traits.csv", row.names=FALSE)
+
+spec.bee.microbes <- spec.net %>%
+  filter(Family != "Syrphidae") %>%
+  select(UniqueID, TempID, GenusSpecies, Site, Year, SampleRound,
+         PlantGenusSpecies, NestLocation, NestPartitions,
+         NestConstruction, PrimaryNestMaterial, MeanITD, PollenCarry,
+         ReproStrat, Sociality,
+         originalitySiteYearSR, uniqSiteYearSR,
+         originalitySiteYear, uniqSiteYear,
+         originalitySite, uniqSite,
+         zdegree,
+         zweighted.betweenness, zweighted.closeness, zd,
+         normalised.degree)
+
+
+write.csv(spec.bee.microbes,
+          file="../data/si_bee_microbes_traits.csv", row.names=FALSE)

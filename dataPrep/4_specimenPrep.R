@@ -47,6 +47,9 @@ setwd("../skyIslands/dataPrep")
 source("src/misc.R")
 source("src/prepNets.R")
 source("src/specialization.R")
+source("src/SpCalcMetrics.R")
+source("src/vaznull2.R")
+
 
 spec$GenusSpecies <- fix.white.space(paste(spec$Genus,
                           spec$Species,
@@ -479,6 +482,28 @@ bees.yr.sr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
 bees.yr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
          net.type="YearSR", mean.by.year=TRUE, poll.group="Bees")
 
+## Takes a while, only re-run if bee data is changed 
+## N <- 99
+## load('../data/networks/YearSR_PlantPollinator_Bees.Rdata')
+
+## sp.mets <- lapply(nets, SpCalcNetworkMetrics,
+##                N=N, index=c("closeness", "betweenness",
+##                             "degree", "d", "normalised degree"))
+## save(sp.mets,
+##      file="../data/sp_network_mets_sr.RData")
+
+load(file="../data/sp_network_mets_sr.RData")
+
+
+sp.mets <- sp.mets[!sapply(sp.mets, function(x) is.null(dim(x)))]
+sp.network.metrics <- SpPrepDat(sp.mets,  spec.net.nets,
+                    cols.to.keep=c("GenusSpecies", "Site","Year", "SampleRound"),
+                    net.type="YearSR")
+
+save(sp.network.metrics,
+     file="../data/sp_network_mets_sr_pretty.RData")
+
+## Parasites
 spec.sub <- agg.spec.sub %>%
   dplyr::select(UniqueID, GenusSpecies, Site, Year, SampleRound, AscosphaeraSpp,
          ApicystisSpp, CrithidiaExpoeki, CrithidiaBombi,
