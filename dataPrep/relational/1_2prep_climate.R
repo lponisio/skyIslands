@@ -76,27 +76,27 @@ spring_precip <- sample_windows %>%
   summarize(SpringPrecip = sum(Precip, na.rm = TRUE), .groups = "drop")
 
 ## ---- Compute Round Precipitation (during each round) ----
-round_precip <- sample_windows %>%
-  left_join(daily_precip_data, by = c("Site", "Year"), relationship = "many-to-many") %>%
-  filter(Date >= StartDate & Date <= EndDate) %>%
-  group_by(Site, Year, SampleRound, StartDate, EndDate) %>%
-  summarize(RoundPrecip = sum(Precip, na.rm = TRUE), .groups = "drop")
+# round_precip <- sample_windows %>%
+#   left_join(daily_precip_data, by = c("Site", "Year"), relationship = "many-to-many") %>%
+#   filter(Date >= StartDate & Date <= EndDate) %>%
+#   group_by(Site, Year, SampleRound, StartDate, EndDate) %>%
+#   summarize(RoundPrecip = sum(Precip, na.rm = TRUE), .groups = "drop")
 
-# round_precip_new <- sample_windows %>%
-#   rowwise() %>%
-#   mutate(
-#     RoundPrecip = sum(
-#       daily_precip_data$Precip[
-#         daily_precip_data$Site == Site &
-#           daily_precip_data$Year == Year &
-#           daily_precip_data$Date >= StartDate &
-#           daily_precip_data$Date <= EndDate
-#       ],
-#       na.rm = TRUE
-#     )
-#   ) %>%
-#   ungroup() %>%
-#   select(Site, Year, SampleRound, StartDate, EndDate, RoundPrecip)
+round_precip <- sample_windows %>%
+  rowwise() %>%
+  mutate(
+    RoundPrecip = sum(
+      daily_precip_data$Precip[
+        daily_precip_data$Site == Site &
+          daily_precip_data$Year == Year &
+          daily_precip_data$Date >= StartDate &
+          daily_precip_data$Date <= EndDate
+      ],
+      na.rm = TRUE
+    )
+  ) %>%
+  ungroup() %>%
+  select(Site, Year, SampleRound, StartDate, EndDate, RoundPrecip)
 
 ## ---- Compute Cumulative Precipitation (spring + all previous rounds) ----
 # Step 1: Combine spring + round precipitation
@@ -176,14 +176,42 @@ spring_tmean <- sample_windows %>%
   )
  
 ## ---- Compute Round Tmean ----
+# round_tmean <- sample_windows %>%
+#   left_join(daily_temp_data, by = c("Site", "Year"), relationship = "many-to-many") %>%
+#   filter(Date >= StartDate & Date <= EndDate) %>%
+#   group_by(Site, Year, SampleRound, StartDate, EndDate) %>%
+#   summarize(
+#     RoundTmean = mean(tmean, na.rm = TRUE),
+#     RoundTmeanAnom = mean(Tmean_anomaly, na.rm = TRUE),
+#     .groups = "drop"
+#   )
+
 round_tmean <- sample_windows %>%
-  left_join(daily_temp_data, by = c("Site", "Year"), relationship = "many-to-many") %>%
-  filter(Date >= StartDate & Date <= EndDate) %>%
-  group_by(Site, Year, SampleRound, StartDate, EndDate) %>%
-  summarize(
-    RoundTmean = mean(tmean, na.rm = TRUE),
-    RoundTmeanAnom = mean(Tmean_anomaly, na.rm = TRUE),
-    .groups = "drop"
+  rowwise() %>%
+  mutate(
+    RoundTmean = mean(
+      daily_temp_data$tmean[
+        daily_temp_data$Site == Site &
+          daily_temp_data$Year == Year &
+          daily_temp_data$Date >= StartDate &
+          daily_temp_data$Date <= EndDate
+      ],
+      na.rm = TRUE
+    ),
+    RoundTmeanAnom = mean(
+      daily_temp_data$Tmean_anomaly[
+        daily_temp_data$Site == Site &
+          daily_temp_data$Year == Year &
+          daily_temp_data$Date >= StartDate &
+          daily_temp_data$Date <= EndDate
+      ],
+      na.rm = TRUE
+    )
+  ) %>%
+  ungroup() %>%
+  select(
+    Site, Year, SampleRound, StartDate, EndDate,
+    RoundTmean, RoundTmeanAnom
   )
 
 ## ---- Compute Cumulative Tmean (spring + previous rounds) ----
