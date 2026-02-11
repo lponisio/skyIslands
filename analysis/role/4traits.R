@@ -1,6 +1,7 @@
-##########################################
-## Role/partner variability ~ plant pol traits
-##########################################
+#####################################################
+## -- This script merges trait data with        -- ##
+## -- role/partner variability and climate data -- ##
+#####################################################
 rm(list=ls())
 setwd("C:/")
 source("lab_paths.R")
@@ -22,7 +23,8 @@ dim(spec.net)
 colnames(pol.traits)
 
 
-## --- calculate emergence and flight period, then average across columns species within a site and year --- ##
+## --- calculate emergence and flight period -- ##
+## -- average across columns species within a site and year --- ##
 spec <- spec.net %>% 
   group_by(GenusSpecies, Year) %>% 
   mutate(beeEmergence_start = min(Doy),
@@ -37,26 +39,21 @@ spec <- spec.net %>%
 pol.beta <- beta.dist %>%
   mutate(GenusSpeciesSiteYear = paste0(GenusSpecies, Site, Year))
 
-colnames(pol.beta)
-colnames(spec)
-
-## --- merge species level network metrics and trait data (keeps all rows from pol.beta.traits) ---##
-  pol.beta.traits <- spec %>%
-  right_join(pol.beta, by = "GenusSpeciesSiteYear")
-
-colnames(pol.beta.traits)
+## --- merge species level network metrics, role variability, trait, and climate data --- ##
+pol.beta.traits <- spec %>%
+  right_join(pol.beta, by = "GenusSpeciesSiteYear") # keeps all rows from pol.beta
 
 write.csv(pol.beta.traits, file = 'saved/traits/pol_beta_traits.csv')
 
-## --- Annual climate variability (standard deviation) --- ##
-## --- Precipitation & Tempature --- ##
-setwd('../../../skyIslands_saved')
-climate <- read.csv("data/relational/original/climate.csv")
-colnames(climate)
+## --- merge climate data --- ##
+load('saved/traits/climateVariability.csv')
 
-av.climate <- climate %>% 
-  group_by(Site, Year) %>% 
-  mutate(Av)
+colnames(pol.traits)
+
+pol.trait.climate <- pol.traits %>%
+  left_join(climateVar, by = c("Site", "Year"))
+
+write.csv(pol.trait.climate, file = 'saved/traits/pol_trait_climate.csv')
 
 
 ## -- Assess sampling start date for each site by year -- ##
@@ -66,71 +63,41 @@ spec.net %>%
   facet_wrap(Site~Year)
 
 
+########################################################################
+## -- Merge plant traits, network metric, and role variability data-- ##
+########################################################################
+load('saved/results/plant_partnerVar_Year.Rdata')
+
+## Calculate bloom and flight period
+phen <- spec %>%
+  filter(Sex == 'f') %>%
+   mutate(PlantGenusSpecies = paste(PlantGenus, PlantSpecies)) %>%
+   group_by(PlantGenusSpecies, Year) %>%
+   mutate(
+     bloom_start = min(Doy),
+     bloom_end = max(Doy),
+     bloom_period = bloom_end - bloom_start)
+
+plant.traits <- read.csv('saved/traits/plantSpecies_partner.csv')
+
+plant.traits <- plant.traits %>%
+   rename(GenusSpecies = genusSpecies)
+
+plant.beta.traits <- beta.dist %>%
+   left_join(plant.traits, by = "GenusSpecies")
+
+plant.beta.traits[plant.beta.traits == ""] <- NA
+
+write.csv(plant.beta.traits, file = "saved/traits/plant_beta_traits.csv")
+
+## -- Merge climate variability data -- ##
 
 
 
 
 
-
-
-colnames(pol.traits)
-colnames(plant.traits)
-
-#what are the difference in Precip and temp?
-hist(pol.traits$SpringPrecip)
-hist(pol.traits$CumulativePrecip)
-hist(pol.traits$RoundPrecip)
-
-pol.traits %>% 
-  ggplot(aes(x = dist, y = nestedrank)) +
-  geom_point() +
-  geom_smooth(method = "lm")
-
-pol.traits %>% 
-  ggplot(aes(x = bloom_period, y = dist)) +
-  geom_point() +
-  geom_smooth(method = "lm")
-
-pol.traits %>% 
-  ggplot(aes(x=flight_period, y=dist)) +
-  geom_point() +
-  geom_smooth(method = "lm")
-
-pol.traits %>% 
-  ggplot(aes(x = Elev, y = dist)) +
-  geom_point() +
-  geom_smooth(method = "lm")
-
-plant.traits %>% 
-  ggplot(aes(x = Elev, y = plantBetaDist)) +
-  geom_point() +
-  geom_smooth(method = "lm")
-
-# ## Calculate bloom and flight period
-# phen <- spec %>%
-#   filter(Sex == 'f') %>% 
-#   mutate(PlantGenusSpecies = paste(PlantGenus, PlantSpecies)) %>% 
-#   group_by(PlantGenusSpecies, Year) %>%
-#   mutate(
-#     bloom_start = min(Doy),
-#     bloom_end = max(Doy),
-#     bloom_period = bloom_end - bloom_start)
-# 
-# phen <- phen %>% 
-#   group_by(GenusSpecies, Year) %>% 
-#   mutate(
-    beeEmergence_start = min(Doy),
-    beeEmergence_end = max(Doy),
-    flight_period = beeEmergence_end - beeEmergence_start)
-# 
-# #average across all columns
-# phen.av <- phen %>% 
- 
-#   mutate(GenusSpeciesSiteYear = paste0(GenusSpecies, Site, Year))
-# 
-# 
 # #######################################
-# ## pollinators
+# ## -- pollinators trait data -- ##
 # #######################################
 # load('saved/results/pol_partnerVar_Year.Rdata')
 # 
@@ -160,21 +127,6 @@ plant.traits %>%
 # 
 # write.csv(pol.beta.traits.phen, file = "saved/traits/pol_beta_traits.csv")
 # 
-# ######################################
-# ## plants
-# ######################################
-# load('saved/results/plant_partnerVar_Year.Rdata')
-# 
-# plant.traits <- read.csv('saved/traits/plantSpecies_partner.csv')
-# 
-# plant.traits <- plant.traits %>% 
-#   rename(GenusSpecies = genusSpecies)
-# 
-# plant.beta.traits <- beta.dist %>% 
-#   left_join(plant.traits, by = "GenusSpecies")
-# 
-# plant.beta.traits[plant.beta.traits == ""] <- NA
-# 
-# write.csv(plant.beta.traits, file = "saved/traits/plant_beta_traits.csv")
+
 
 
