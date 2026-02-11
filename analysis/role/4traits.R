@@ -46,9 +46,7 @@ pol.beta.traits <- spec %>%
 write.csv(pol.beta.traits, file = 'saved/traits/pol_beta_traits.csv')
 
 ## --- merge climate data --- ##
-load('saved/traits/climateVariability.csv')
-
-colnames(pol.traits)
+climate <- read.csv('saved/traits/climateVariability.csv')
 
 pol.trait.climate <- pol.traits %>%
   left_join(climateVar, by = c("Site", "Year"))
@@ -66,19 +64,24 @@ spec.net %>%
 ########################################################################
 ## -- Merge plant traits, network metric, and role variability data-- ##
 ########################################################################
-load('saved/results/plant_partnerVar_Year.Rdata')
+load('saved/results/plant_partnerVar_Site.Rdata')
+# plant.traits <- read.csv('saved/traits/plantSpecies_partner.csv'); old plants for Year
 
-## Calculate bloom and flight period
-phen <- spec %>%
+## -- Calculate bloom and flight period -- ##
+## -- average across all columns to get average for each species at each site and year -- ##
+phen <- spec.net %>%
   filter(Sex == 'f') %>%
    mutate(PlantGenusSpecies = paste(PlantGenus, PlantSpecies)) %>%
-   group_by(PlantGenusSpecies, Year) %>%
+   group_by(PlantGenusSpecies, Year, Site) %>%
    mutate(
      bloom_start = min(Doy),
      bloom_end = max(Doy),
-     bloom_period = bloom_end - bloom_start)
-
-plant.traits <- read.csv('saved/traits/plantSpecies_partner.csv')
+     bloom_period = bloom_end - bloom_start) %>% 
+  ungroup() %>% 
+  group_by(PlantGenusSpecies, Site, Year) %>%
+  summarise(across(where(is.numeric), \(x) mean(x, na.rm = TRUE)), 
+            .groups = "drop") %>% 
+  mutate(PlantGenusSpeciesSiteYear = paste0(PlantGenusSpecies, Site, Year))
 
 plant.traits <- plant.traits %>%
    rename(GenusSpecies = genusSpecies)
@@ -90,10 +93,15 @@ plant.beta.traits[plant.beta.traits == ""] <- NA
 
 write.csv(plant.beta.traits, file = "saved/traits/plant_beta_traits.csv")
 
+str(plant.beta.traits)
+
 ## -- Merge climate variability data -- ##
+climate <- read.csv('saved/traits/climateVariability.csv')
 
+plant.trait.climate <- plant.beta.traits %>%
+  left_join(climate, by = c("Site", "Year"))
 
-
+write.csv(plant.trait.climate, file = 'saved/traits/plant_trait_climate.csv')
 
 
 # #######################################
