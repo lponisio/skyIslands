@@ -26,8 +26,8 @@ weather <- read_csv(weather_csv) %>%
   mutate(
     StartDate = mdy(StartDate),
     Year = as.numeric(Year)
-  )##  %>%
-  ## filter(SampleRound > 0)   # drop SampleRound 0 if needed
+  )  %>%
+  filter(SampleRound > 0)   # drop SampleRound 0 if needed
 
 # Summarize sample rounds
 sample_windows <- weather %>%
@@ -77,10 +77,26 @@ spring_precip <- sample_windows %>%
 
 ## ---- Compute Round Precipitation (during each round) ----
 round_precip <- sample_windows %>%
-  left_join(daily_precip_data, by = c("Site", "Year")) %>%
+  left_join(daily_precip_data, by = c("Site", "Year"), relationship = "many-to-many") %>%
   filter(Date >= StartDate & Date <= EndDate) %>%
   group_by(Site, Year, SampleRound, StartDate, EndDate) %>%
   summarize(RoundPrecip = sum(Precip, na.rm = TRUE), .groups = "drop")
+
+# round_precip_new <- sample_windows %>%
+#   rowwise() %>%
+#   mutate(
+#     RoundPrecip = sum(
+#       daily_precip_data$Precip[
+#         daily_precip_data$Site == Site &
+#           daily_precip_data$Year == Year &
+#           daily_precip_data$Date >= StartDate &
+#           daily_precip_data$Date <= EndDate
+#       ],
+#       na.rm = TRUE
+#     )
+#   ) %>%
+#   ungroup() %>%
+#   select(Site, Year, SampleRound, StartDate, EndDate, RoundPrecip)
 
 ## ---- Compute Cumulative Precipitation (spring + all previous rounds) ----
 # Step 1: Combine spring + round precipitation
@@ -161,7 +177,7 @@ spring_tmean <- sample_windows %>%
  
 ## ---- Compute Round Tmean ----
 round_tmean <- sample_windows %>%
-  left_join(daily_temp_data, by = c("Site", "Year")) %>%
+  left_join(daily_temp_data, by = c("Site", "Year"), relationship = "many-to-many") %>%
   filter(Date >= StartDate & Date <= EndDate) %>%
   group_by(Site, Year, SampleRound, StartDate, EndDate) %>%
   summarize(
