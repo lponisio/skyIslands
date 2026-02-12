@@ -49,72 +49,55 @@ autoplot(plant.pca.scores$'2018'$pca.loadings, loadings=TRUE,
 
 save(plant.pca.scores,  file="analysis/role/saved/results/pol_pcaVar.Rdata")
 
+##################################################################
+## --- Merge role variability, network metrics, and climate --- ##
+##################################################################
+load('analysis/role/saved/results/beeSyrphid_pcaVar.Rdata')
+load('data/spec_traits.Rdata')
+getwd()
+
 #combine PCA results from all years into a single dataframe
-all.pcas <- do.call( #combines results and applies function
+pol.pcas <- do.call( #combines results and applies function
   rbind, #row bind list of dataframes returned by lapply()
   lapply(names(pol.pca.scores), # Loop over each list element name (year "2012")
          function(yr) { 
-    df <- pol.pca.scores[[yr]]$pcas #extract the PCA scores dataframe for this year
-    df$Year <- yr #add a column recording which list element (year)
-    return(df)})) #returns dataframe
+           df <- pol.pca.scores[[yr]]$pcas #extract the PCA scores dataframe for this year
+           df$Year <- yr #add a column recording which list element (year)
+           return(df)}))
 
-## *********************************************************
-## Create summary figures
-## *********************************************************
+pol.pcas <- pol.pcas %>%
+  mutate(GenusSpeciesSiteYear = paste0(GenusSpecies, Site, Year))
 
-library(ggplot2)
-library(tidyverse)
+spec <- spec.net %>% 
+  group_by(GenusSpecies, Year) %>% 
+  mutate(beeEmergence_start = min(Doy),
+         beeEmergence_end = max(Doy),
+         flight_period = beeEmergence_end - beeEmergence_start,
+         .groups = "drop") %>% 
+  group_by(GenusSpecies, Site, Year) %>%
+  summarise(across(where(is.numeric), \(x) mean(x, na.rm = TRUE)), 
+            .groups = "drop") %>% 
+  mutate(GenusSpeciesSiteYear = paste0(GenusSpecies, Site, Year))
 
-## Plants
+## --- merge species level network metrics, partner variability, trait, and climate data --- ##
+pol.pcas.network <- spec %>%
+  right_join(pol.pcas, by = "GenusSpeciesSiteYear") # keeps all rows from pol.beta
+colnames(pol.pcas.network)
 
-all.pcas %>%
-  filter(!is.na(var.pca1)) %>% 
-  ggplot(aes(x = var.pca1)) +
-    geom_histogram()
+write.csv(pol.pcas.network, file = 'analysis/role/saved/traits/pol_pcas.csv')
 
+## --- merge climate data --- ##
+climate <- read.csv('analysis/role/saved/traits/climateVariability.csv')
 
-outliers <- all.pcas %>% 
-  filter(var.pca1 > 200 | var.pca1 < -20)
+pol.pcas.climate <- pol.pcas.network %>%
+  left_join(climate, by = c("Site", "Year"))
 
-var.pcas <- all.pcas %>% 
-  filter(!(var.pca1 > 200 | var.pca1 < -20))
-
-#Variance
-var.pcas %>% 
-  ggplot(aes(x = var.pca1)) +
-  geom_histogram() +
-  facet_wrap(~Site)
-
-var.pcas %>% 
-  ggplot(aes(x = var.pca1)) +
-  geom_histogram() +
-  facet_wrap(~Year)
-
-var.pcas %>% 
-  arrange(var.pca1) %>% 
-  ggplot(
-    aes(y = GenusSpecies, x = var.pca1)) +
-  geom_point() +
-  labs(x = "Partner variability", y = "Species") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+write.csv(pol.pcas.climate, file = 'saved/traits/pol_pcas_climate.csv')
 
 
-print(paste("Plant species", length(unique(all.pcas$GenusSpecies)))) #100 plant species
-unique(all.pcas$GenusSpecies)
 
-## Pollinators
 
-var.pcas %>%
-  filter(!is.na(var.pca1)) %>% 
-  ggplot(aes(x = var.pca1)) +
-  geom_histogram()
 
-var.pcas <- all.pcas %>% 
-  filter(!(var.pca1 < -100))
 
-var.pcas %>% 
-  ggplot(
-    aes(y = reorder(GenusSpecies, var.pca1), x = var.pca1)) +
-  geom_point() +
-  labs(x = "Partner variability", y = "Species") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
