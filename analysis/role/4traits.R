@@ -15,8 +15,10 @@ library(tidyverse, quietly = TRUE)
 library(ggplot2, quietly = TRUE)
 
 
-pol.traits <- read.csv(file = 'saved/traits/pol_beta_traits.csv')
-plant.traits <- read.csv(file = 'saved/traits/plant_beta_traits.csv')
+# pol.traits <- read.csv(file = 'saved/traits/pol_beta_traits.csv')
+# plant.traits <- read.csv(file = 'saved/traits/plant_beta_traits.csv')
+
+load('../../data/spec_net.Rdata')
 load('saved/results/pol_partnerVar_Site.Rdata')
 
 dim(spec.net)
@@ -65,11 +67,13 @@ spec.net %>%
 ## -- Merge plant traits, network metric, and role variability data-- ##
 ########################################################################
 load('saved/results/plant_partnerVar_Site.Rdata')
-# plant.traits <- read.csv('saved/traits/plantSpecies_partner.csv'); old plants for Year
+
+plant.traits <- read.csv('saved/traits/plants.csv')
 
 ## -- Calculate bloom and flight period -- ##
 ## -- average across all columns to get average for each species at each site and year -- ##
-phen <- spec.net %>%
+
+spec <- spec.net %>%
   filter(Sex == 'f') %>%
    mutate(PlantGenusSpecies = paste(PlantGenus, PlantSpecies)) %>%
    group_by(PlantGenusSpecies, Year, Site) %>%
@@ -81,22 +85,41 @@ phen <- spec.net %>%
   group_by(PlantGenusSpecies, Site, Year) %>%
   summarise(across(where(is.numeric), \(x) mean(x, na.rm = TRUE)), 
             .groups = "drop") %>% 
+  mutate(PlantGenusSpecies = case_when(
+    PlantGenusSpecies == "Verbena bipinnatifida" ~ "Glandularia bipinnatifida",
+    PlantGenusSpecies == "Monarda citriodora" ~ "Monarda citriodora austromontana",
+    PlantGenusSpecies == "Dasiphora fruticosa" ~ "Potentilla fruticosa",
+    TRUE ~ PlantGenusSpecies)) %>% 
   mutate(PlantGenusSpeciesSiteYear = paste0(PlantGenusSpecies, Site, Year))
 
-plant.traits <- plant.traits %>%
-   rename(GenusSpecies = genusSpecies)
+beta.dist <- beta.dist %>% 
+  rename(PlantGenusSpecies = GenusSpecies)
 
+dim(beta.dist)
+
+colnames(plant.beta.traits)
+colnames(spec)
+
+## --- merge role and trait datasets -- ##
 plant.beta.traits <- beta.dist %>%
-   left_join(plant.traits, by = "GenusSpecies")
+   left_join(plant.traits, by = "PlantGenusSpecies") %>% 
+  mutate(PlantGenusSpeciesSiteYear  = paste0(PlantGenusSpecies, Site, Year))
+
+## --- merge species level network metrics, phenology, and role/trait data --- ##
+plant.beta.traits <- plant.beta.traits %>% 
+  left_join(spec %>% 
+              select(-PlantGenusSpecies, -Site, -Year, -SampleRound), 
+              by = "PlantGenusSpeciesSiteYear") %>% 
+  arrange(PlantGenusSpecies, Year, Site)
 
 plant.beta.traits[plant.beta.traits == ""] <- NA
 
 write.csv(plant.beta.traits, file = "saved/traits/plant_beta_traits.csv")
 
-str(plant.beta.traits)
-
 ## -- Merge climate variability data -- ##
 climate <- read.csv('saved/traits/climateVariability.csv')
+
+climate$Year <- as.character(climate$Year)
 
 plant.trait.climate <- plant.beta.traits %>%
   left_join(climate, by = c("Site", "Year"))
