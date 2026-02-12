@@ -19,14 +19,11 @@ library(ggplot2, quietly = TRUE)
 # plant.traits <- read.csv(file = 'saved/traits/plant_beta_traits.csv')
 
 load('../../data/spec_net.Rdata')
-load('saved/results/pol_partnerVar_Site.Rdata')
-
-dim(spec.net)
-colnames(pol.traits)
-
 
 ## --- calculate emergence and flight period -- ##
 ## -- average across columns species within a site and year --- ##
+load('saved/results/pol_partnerVar_Site.Rdata')
+
 spec <- spec.net %>% 
   group_by(GenusSpecies, Year) %>% 
   mutate(beeEmergence_start = min(Doy),
@@ -125,6 +122,19 @@ plant.trait.climate <- plant.beta.traits %>%
   left_join(climate, by = c("Site", "Year"))
 
 write.csv(plant.trait.climate, file = 'saved/traits/plant_trait_climate.csv')
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # #######################################
