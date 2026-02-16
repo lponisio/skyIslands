@@ -9,6 +9,7 @@ library(RSQLite)
 library(tidyr)
 library(readr)
 setwd("~/")
+#setwd('C:/')
 source("lab_paths.R")
 local.path
 
@@ -36,6 +37,7 @@ source('dataPrep/relational/3join.R')
 
 rm(list=ls())
 setwd("~/")
+#setwd("C:/")
 source("lab_paths.R")
 setwd(file.path(local.path, "skyIslands_saved"))
 
@@ -482,6 +484,7 @@ bees.yr.sr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
 bees.yr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
          net.type="YearSR", mean.by.year=TRUE, poll.group="Bees")
 
+## -- Calculates species level network metrics by site and round -- ##
 ## Takes a while, only re-run if bee data is changed 
 ## N <- 99
 ## load('../data/networks/YearSR_PlantPollinator_Bees.Rdata')
@@ -491,8 +494,20 @@ bees.yr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
 ##                             "degree", "d", "normalised degree"))
 ## save(sp.mets,
 ##      file="../data/sp_network_mets_sr.RData")
+# load(file="../data/sp_network_mets_Year.RData")
 
-load(file="../data/sp_network_mets_sr.RData")
+## -- Calculates species level network metrics by year -- ##
+## Takes a while, only re-run if bee data is changed
+# N <- 99
+# load('../data/networks/Year_PlantPollinator_Bees.Rdata')
+# 
+# sp.mets <- lapply(nets, SpCalcNetworkMetrics,
+#                 N=N, index=c("closeness", "betweenness",
+#                             "degree", "d", "normalised degree"))
+# save(sp.mets,
+#       file="../data/sp_network_mets_Year.RData")
+# 
+# load(file="../data/sp_network_mets_Year.RData")
 
 
 sp.mets <- sp.mets[!sapply(sp.mets, function(x) is.null(dim(x)))]
