@@ -4,6 +4,7 @@ library(vegan)
 library(readxl)
 
 setwd("~/")
+#setwd('C:/')
 source("lab_paths.R")
 local.path
 
@@ -88,7 +89,7 @@ spec.net <- add_func_uniq_orig(spec.net, traits,
 save(spec.net, file="../data/spec_traits.Rdata")
 write.csv(spec.net, file="../data/spec_traits.csv", row.names=FALSE)
 
-## Add in network traits
+# Merges network traits by site and round to spec.net
 load('../data/sp_network_mets_sr_pretty.RData')
 
 sp.network.metrics <- sp.network.metrics %>%
@@ -107,6 +108,26 @@ dim(spec.net)
 
 save(spec.net, file="../data/spec_traits.Rdata")
 write.csv(spec.net, file="../data/spec_traits.csv", row.names=FALSE)
+
+# ## Merges network traits by year to spec.net
+# load('../data/sp_network_mets_Year_pretty.RData')
+# 
+# sp.network.metrics <- sp.network.metrics %>%
+#   select(GenusSpecies, Site, Year, SampleRound, zdegree,
+#          zweighted.betweenness, zweighted.closeness, zd,
+#          normalised.degree)
+# 
+# traits$GenusSpecies <- rownames(traits)
+# rownames(traits) <- NULL
+# 
+# dim(spec.net)
+# spec.net <- merge(spec.net, sp.network.metrics, all.x=TRUE)
+# dim(spec.net)
+# spec.net <- merge(spec.net, traits, all.x=TRUE)
+# dim(spec.net)
+# 
+# save(spec.net, file="../data/spec_traits.Rdata")
+# write.csv(spec.net, file="../data/spec_traits.csv", row.names=FALSE)
 
 spec.bee.microbes <- spec.net %>%
   filter(Family != "Syrphidae") %>%
