@@ -9,7 +9,7 @@ library(RSQLite)
 library(tidyr)
 library(readr)
 setwd("~/")
-#setwd('C:/')
+setwd('C:/')
 source("lab_paths.R")
 local.path
 
@@ -37,7 +37,7 @@ source('dataPrep/relational/3join.R')
 
 rm(list=ls())
 setwd("~/")
-#setwd("C:/")
+setwd("C:/")
 source("lab_paths.R")
 setwd(file.path(local.path, "skyIslands_saved"))
 
@@ -494,7 +494,15 @@ bees.yr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
 ##                             "degree", "d", "normalised degree"))
 ## save(sp.mets,
 ##      file="../data/sp_network_mets_sr.RData")
-# load(file="../data/sp_network_mets_Year.RData")
+
+#sp.mets <- sp.mets[!sapply(sp.mets, function(x) is.null(dim(x)))]
+#sp.network.metrics <- SpPrepDat(sp.mets,  spec.net.nets,
+#                   cols.to.keep=c("GenusSpecies", "Site","Year", "SampleRound"),
+#                   net.type="YearSR")
+
+#save(sp.network.metrics,
+#     file="../data/sp_network_mets_sr_pretty.RData")
+
 
 ## -- Calculates species level network metrics by year -- ##
 ## Takes a while, only re-run if bee data is changed
@@ -507,16 +515,15 @@ bees.yr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
 # save(sp.mets,
 #       file="../data/sp_network_mets_Year.RData")
 # 
-# load(file="../data/sp_network_mets_Year.RData")
+#load(file="../data/sp_network_mets_Year.RData")
 
+#sp.mets <- sp.mets[!sapply(sp.mets, function(x) is.null(dim(x)))]
+#sp.network.metrics <- SpPrepDat(sp.mets,  spec.net.nets,
+#                   cols.to.keep=c("GenusSpecies", "Site","Year", "SampleRound"),
+#                   net.type="YearSR")
 
-sp.mets <- sp.mets[!sapply(sp.mets, function(x) is.null(dim(x)))]
-sp.network.metrics <- SpPrepDat(sp.mets,  spec.net.nets,
-                    cols.to.keep=c("GenusSpecies", "Site","Year", "SampleRound"),
-                    net.type="YearSR")
-
-save(sp.network.metrics,
-     file="../data/sp_network_mets_sr_pretty.RData")
+#save(sp.network.metrics,
+#     file="../data/sp_network_mets_Year_pretty.RData")
 
 ## Parasites
 spec.sub <- agg.spec.sub %>%
