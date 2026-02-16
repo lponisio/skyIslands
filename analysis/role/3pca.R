@@ -15,8 +15,6 @@ this.script <- "role"
 source('analysis/role/src/initialize.R')
 type <- "all"
 
-load('data/splevel_network_metrics/YearSR_PlantPollinator_Bees.Rdata')
-
 
 ## vector of pca loadings of interest
 loadings <- c(1)
@@ -47,7 +45,7 @@ autoplot(plant.pca.scores$'2018'$pca.loadings, loadings=TRUE,
          loadings.colour = 'blue')
 
 
-save(plant.pca.scores,  file="analysis/role/saved/results/pol_pcaVar.Rdata")
+save(plant.pca.scores,  file="analysis/role/saved/results/beeSyrphid_pcaVar.Rdata")
 
 ##################################################################
 ## --- Merge role variability, network metrics, and climate --- ##
@@ -92,7 +90,7 @@ climate <- read.csv('analysis/role/saved/traits/climateVariability.csv')
 pol.pcas.climate <- pol.pcas.network %>%
   left_join(climate, by = c("Site", "Year"))
 
-write.csv(pol.pcas.climate, file = 'saved/traits/pol_pcas_climate.csv')
+write.csv(pol.pcas.climate, file = 'analysis/role/saved/traits/pol_pcas_climate.csv')
 
 
 
