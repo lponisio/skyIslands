@@ -55,6 +55,25 @@ write.csv(pol.trait.climate, file = 'saved/traits/pol_trait_climate.csv')
 
 ## -- Assess sampling start date for each site by year -- ##
 spec.net %>% 
+  filter(Site == "CH") %>% 
+  ggplot(aes(x = Doy, y = SampleRound)) +
+  geom_point() +
+  facet_wrap(Site~Year)
+
+spec.net %>% 
+  filter(Site == "HM") %>% 
+  ggplot(aes(x = Doy, y = SampleRound)) +
+  geom_point() +
+  facet_wrap(Site~Year)
+
+spec.net %>% 
+  filter(Site == "JC") %>% 
+  ggplot(aes(x = Doy, y = SampleRound)) +
+  geom_point() +
+  facet_wrap(Site~Year)
+
+spec.net %>% 
+  filter(Site == "MM") %>% 
   ggplot(aes(x = Doy, y = SampleRound)) +
   geom_point() +
   facet_wrap(Site~Year)
