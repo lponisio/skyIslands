@@ -9,7 +9,7 @@ library(RSQLite)
 library(tidyr)
 library(readr)
 setwd("~/")
-setwd('C:/')
+# setwd('C:/')
 source("lab_paths.R")
 local.path
 
@@ -37,7 +37,7 @@ source('dataPrep/relational/3join.R')
 
 rm(list=ls())
 setwd("~/")
-setwd("C:/")
+# setwd("C:/")
 source("lab_paths.R")
 setwd(file.path(local.path, "skyIslands_saved"))
 
