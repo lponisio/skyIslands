@@ -38,23 +38,20 @@ pol.pca.scores <- calcPcaMeanVar(species.roles=sp.lev,
                                  loadings=loadings,
                                  agg.col = "Year")
 
-pol.pca.scores[1]
-
 
 autoplot(plant.pca.scores$'2018'$pca.loadings, loadings=TRUE,
          loadings.colour = 'blue')
 
 
-save(plant.pca.scores,  file="analysis/role/saved/results/beeSyrphid_pcaVar.Rdata")
+save(pol.pca.scores,  file="analysis/role/saved/results/beeSyrphid_pcaVar.Rdata")
 
 ##################################################################
 ## --- Merge role variability, network metrics, and climate --- ##
 ##################################################################
 load('analysis/role/saved/results/beeSyrphid_pcaVar.Rdata')
 load('data/spec_traits.Rdata')
-getwd()
 
-#combine PCA results from all years into a single dataframe
+## combine PCA results from all years into a single dataframe ##
 pol.pcas <- do.call( #combines results and applies function
   rbind, #row bind list of dataframes returned by lapply()
   lapply(names(pol.pca.scores), # Loop over each list element name (year "2012")
@@ -68,29 +65,52 @@ pol.pcas <- pol.pcas %>%
 
 spec <- spec.net %>% 
   group_by(GenusSpecies, Year) %>% 
-  mutate(beeEmergence_start = min(Doy),
-         beeEmergence_end = max(Doy),
-         flight_period = beeEmergence_end - beeEmergence_start,
+  mutate(PolEmergenceStart = min(Doy),
+         PolEmergenceEnd = max(Doy),
+         FlightPeriod = PolEmergenceEnd - PolEmergenceStart,
          .groups = "drop") %>% 
-  group_by(GenusSpecies, Site, Year) %>%
-  summarise(across(where(is.numeric), \(x) mean(x, na.rm = TRUE)), 
-            .groups = "drop") %>% 
+  # group_by(GenusSpecies, Site, Year) %>%
+  # summarise(across(where(is.numeric), \(x) mean(x, na.rm = TRUE)), 
+  #           .groups = "drop") %>% 
   mutate(GenusSpeciesSiteYear = paste0(GenusSpecies, Site, Year))
 
-## --- merge species level network metrics, partner variability, trait, and climate data --- ##
+## create vector with columns names and filter unwanted columns ##
+names <- c('SiteYearSR', 'SampleRound', 'SiteYear', 'Site', 'Year', 'Date', 'Lat', 'Long', 'Elev', 'Area', 'GenusSpecies',
+           'Sex', 'Order', 'Family', 'Genus', 'SubGenus', 'Species', 'SubSpecies',
+           'PlantGenus', 'PlantSpecies', 'PlantVar', 'PlantSubSpecies', 'State', 'County', 'Meadow', 'Forest',
+           'MtRange', 'PlantGenusSpecies', 'Int', 'Doy', 'PlantFamily', 'degree',
+           'normalised.degree', 'species.strength', 'interaction.push.pull', 'nestedrank',
+           'PDI', 'resource.range', 'species.specificity.index', 'PSI', 'node.specialisation.index.NSI',
+           'betweenness', 'weighted.betweenness', 'closeness', 'weighted.closeness', 'Fisher.alpha',
+           'partner.diversity', 'effective.partners', 'proportional.generality', 'proportional.similarity', 
+           'd', 'tot.int', 'niche.overlap', 'rare.degree', 'PollAbundance', 'BeeAbundance', 'SyrphidAbundance', 
+           'HBAbundance', 'BombusAbundance', 'NonBombusHBAbundance', 'PollRichness', 'BeeRichness',
+           'SyrphidRichness', 'BombusRichness', 'PollDiversity', 'BeeDiversity', 'SyrphidDiversity',
+           'BombusDiversity', 'VisitedFloralRichness', 'VisitedFloralDiversity', 'MeanFloralRichness',
+           'MeanFloralDiversity', 'MeanFloweringPlantDiversity', 'MeanFloweringPlantAbundance', 'Abundance', 'uniqSite',
+           'originalitySite', 'originalitySiteYearSR', 'BeeFDisSiteYearSR', 'BeeFEveSiteYearSR', 'uniqSiteYear',
+           'originalitySiteYear', 'BeeFDisSiteYear', 'BeeFEveSiteYear', 'PolEmergenceStart', 'PolEmergenceEnd',
+           'FlightPeriod', 'GenusSpeciesSiteYear')
+
+spec <- spec[, names]
+
+## merge species level network metrics, partner variability, trait, and climate data ##
 pol.pcas.network <- spec %>%
-  right_join(pol.pcas, by = "GenusSpeciesSiteYear") # keeps all rows from pol.beta
+  right_join(pol.pcas %>%  select(-Site, -Year, -GenusSpecies),
+             by = "GenusSpeciesSiteYear") 
+
 colnames(pol.pcas.network)
 
-write.csv(pol.pcas.network, file = 'analysis/role/saved/traits/pol_pcas.csv')
+write.csv(pol.pcas.network, file = 'analysis/role/saved/traits/BeeSyrphid_pcas.csv')
 
-## --- merge climate data --- ##
-climate <- read.csv('analysis/role/saved/traits/climateVariability.csv')
+## Make dataset for only bee familes ##
+bee.families <- c("Andrenidae", "Apidae", "Colletidae", "Halictidae",
+                  "Megachilidae")
 
-pol.pcas.climate <- pol.pcas.network %>%
-  left_join(climate, by = c("Site", "Year"))
+bee.pcas.network <- pol.pcas.network %>% 
+  filter(Family %in% bee.families)
 
-write.csv(pol.pcas.climate, file = 'analysis/role/saved/traits/pol_pcas_climate.csv')
+write.csv(bee.pcas.network, file = 'analysis/role/saved/traits/Bee_pcas.csv')
 
 
 
