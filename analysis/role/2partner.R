@@ -55,3 +55,9 @@ pol.beta.traits <- spec %>%
   right_join(pol.partner, by = "GenusSpeciesSiteYear") # keeps all rows from pol.beta
 
 write.csv(pol.beta.traits, file = 'saved/traits/pol_partner_traits.csv')
+
+
+## create vector with columns and filter unwanted columns ##
+colnames(pol.beta.traits)
+
+names <- c('')
