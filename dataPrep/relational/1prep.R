@@ -114,6 +114,7 @@ w.date.format <- "%m/%d/%y"
 print(w.date.format)
 print(weather.data$Date[1])
 weather.data$Date <- as.Date(weather.data$Date, w.date.format)
+weather.data$StartDate <- as.Date(weather.data$StartDate, w.date.format)
 
 convertFtoC <- function(x){
   y <- round((x-32)*(5/9),2)

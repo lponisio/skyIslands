@@ -4,7 +4,7 @@
 
 library(tidyverse)
 library(lubridate)
-
+source("dataPrep/relational/src/getAPi.R")
 setwd("../skyIslands_saved/")
 
 sites_shp_path <- file.path("spatial", "sites.shp")
@@ -24,7 +24,6 @@ monthly_normals_file <- "data/PRISM_data/temperature/PRISM_tmin_tmax_stable_800m
 
 weather <- read_csv(weather_csv) %>%
   mutate(
-    StartDate = mdy(StartDate),
     Year = as.numeric(Year)
   )  %>%
   filter(SampleRound > 0)   # drop SampleRound 0 if needed
@@ -111,10 +110,23 @@ precip_combined <- round_precip %>%
   ungroup() %>%
   select(Site, Year, SampleRound, StartDate, EndDate,
          SpringPrecip, RoundPrecip, CumulativePrecip)
+## *******************************************************************
+## Calculate antecedent precipitation
+## *******************************************************************
+## This is a measure of cumulative precipitation to determine soil moisture
+precip <- daily_precip_data %>%
+  # Filter to start from May 1st of each year
+  mutate(baseline_start = as.Date(paste0(Year, "-05-01")),
+         # marking mid oct to account for the 2021 going into oct
+         season_end = as.Date(paste0(Year, "-10-15"))) %>% 
+  filter(Date >= baseline_start & Date <= season_end) %>% 
+  #Calculate APi for every Site Year combo
+  group_by(Site, Year) %>% 
+  mutate(APi = getApi(Precip, finite = FALSE)) %>% 
+  ungroup() %>% 
+  rename(EndDate = Date) #change name for joining at the end
 
-precip_combined <- precip_combined %>%
-  select(Site, Year, SampleRound, StartDate, EndDate,
-         SpringPrecip, CumulativePrecip, RoundPrecip)
+
 
 ## *******************************************************************
 ## Calculate temperature anomalies 
@@ -228,12 +240,48 @@ tmean_combined <- round_tmean %>%
          SpringTmean, RoundTmean, CumulativeTmean,
          SpringTmeanAnom, RoundTmeanAnom, CumulativeTmeanAnom)
 
+
+## *******************************************************************
+## Calculate growing degree days 
+## *******************************************************************
+gdd <- daily_temp_data %>%
+  
+  # Filter to start from May 1st of each year
+  mutate(baseline_start = as.Date(paste0(Year, "-05-01")),
+         # marking mid oct to account for the 2021 going into oct
+         season_end = as.Date(paste0(Year, "-10-15"))) %>%
+  filter(Date >= baseline_start &  Date <= season_end) %>%
+  
+  # Calculate daily GDD (using base temperature of 5°C for higher elevation)
+  mutate(
+    base_temp = 5,  
+    # Basic GDD calculation
+    daily_gdd = pmax(0, tmean - base_temp)) %>%
+  # Calculate cumulative GDD for each site and year
+  group_by(Site, Year) %>%
+  arrange(Date) %>%
+  mutate(GDD = cumsum(daily_gdd)) %>%
+  ungroup() %>% 
+  rename(EndDate = Date)
+
+## Combine the dataframes of gdd and api. Keep only the important columns 
+combined_gdd_api <-precip %>% 
+  select(Site, Year, EndDate, APi) %>% 
+  left_join(gdd,
+            by = c("Site", "Year", "EndDate")) %>% 
+  select(Site, Year, EndDate, APi, GDD)
+  
+
 # ---- Combine precipitation and temperature summaries ----
 climate_combined <- precip_combined %>%
   left_join(
     tmean_combined,
     by = c("Site", "Year", "SampleRound", "StartDate", "EndDate")
-  )
+  ) 
+
+climate_combined <- climate_combined %>% 
+  left_join(combined_gdd_api,
+            by = c("Site", "Year", "EndDate"))
 
 write.csv(climate_combined, file =
                               "data/relational/original/climate.csv", row.names=FALSE)

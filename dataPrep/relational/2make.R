@@ -133,7 +133,7 @@ keep <- c("Date", "SampleRound", "NetNumber", "Method", "StartTime",
           "SkyStart", "SkyEnd", "SpringPrecip", "CumulativePrecip",
           "RoundPrecip", "SpringTmean", "RoundTmean",
           "CumulativeTmean", "SpringTmeanAnom", "RoundTmeanAnom",
-          "CumulativeTmeanAnom",
+          "CumulativeTmeanAnom", "APi", "GDD",
           "GeographyFK", "cond.code")
 
 cond <- unique(conditions[keep])
