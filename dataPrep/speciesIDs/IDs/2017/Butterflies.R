@@ -177,8 +177,7 @@ Aglais_milberti = list(Genus = "Aglais", SubGenus="", Species =
 
 Vanessa_cardui = list(Genus = "Vanessa", SubGenus="", Species =
     "cardui", SubSpecies = "", Sex = "", Author = "Linneaus", Family =
-    "Nymphalidae", Determiner="A. Santillana", temp.id =c(36346,
-24834,36395,
+    "Nymphalidae", Determiner="A. Santillana", temp.id =c(36346,36395,
 38440,36407,36406,38597,39010)),
 
 Papilio_multicaudata = list(Genus = "Papilio", SubGenus="", Species =
