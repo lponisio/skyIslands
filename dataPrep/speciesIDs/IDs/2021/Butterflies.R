@@ -135,7 +135,7 @@ sp.ids <- list(
   
      Echinargus_isola = list(Genus = "Echinargus", SubGenus="", Species =
     "isola", SubSpecies = "", Sex = "", Author = "Reakirt", Family =
-    "Lycaenidae", Determiner="A. Santillana", temp.id =c(38452,38516,38454,38459,38474,38483,39066,39073,
+    "Lycaenidae", Determiner="A. Santillana", temp.id =c(38452,38454,38459,38474,38483,39066,39073,
                                                         39036,39037,39039,39042,39038,39041,39088,39087,39090,39083,39080,39077,39076)),
   
     Epargyreus_clarus = list(Genus = "Epargyreus", SubGenus="",Species =
