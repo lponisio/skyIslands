@@ -63,6 +63,7 @@ pol.pcas <- do.call( #combines results and applies function
 pol.pcas <- pol.pcas %>%
   mutate(GenusSpeciesSiteYear = paste0(GenusSpecies, Site, Year))
 
+## calculate flight period ##
 spec <- spec.net %>% 
   group_by(GenusSpecies, Year) %>% 
   mutate(PolEmergenceStart = min(Doy),
@@ -99,23 +100,51 @@ pol.pcas.network <- spec %>%
   right_join(pol.pcas %>%  select(-Site, -Year, -GenusSpecies),
              by = "GenusSpeciesSiteYear") 
 
-colnames(pol.pcas.network)
+write.csv(pol.pcas.network, file = 'analysis/role/saved/traits/Bee_pcas.csv')
+
+## Make dataset for bee and syrphidae ##
+load('data/spec_net.Rdata')
+
+spec.net <- spec.net %>% 
+  group_by(GenusSpecies, Year) %>% 
+  mutate(PolEmergenceStart = min(Doy),
+         PolEmergenceEnd = max(Doy),
+         FlightPeriod = PolEmergenceEnd - PolEmergenceStart,
+         .groups = "drop") %>% 
+  # group_by(GenusSpecies, Site, Year) %>%
+  # summarise(across(where(is.numeric), \(x) mean(x, na.rm = TRUE)), 
+  #           .groups = "drop") %>% 
+  mutate(GenusSpeciesSiteYear = paste0(GenusSpecies, Site, Year))
+
+## create vector with columns names and filter unwanted columns ##
+names <- c('SampleRound', 'Site', 'Year', 'Date', 'Lat', 'Long', 'Elev', 'Area', 'GenusSpecies',
+           'Sex', 'Order', 'Family', 'Genus', 'SubGenus', 'Species', 'SubSpecies',
+           'PlantGenus', 'PlantSpecies', 'PlantVar', 'PlantSubSpecies', 'State', 'County', 'Meadow', 'Forest',
+           'MtRange', 'PlantGenusSpecies', 'Int', 'Doy', 'PlantFamily', 'degree',
+           'normalised.degree', 'species.strength', 'interaction.push.pull', 'nestedrank',
+           'PDI', 'resource.range', 'species.specificity.index', 'PSI', 'node.specialisation.index.NSI',
+           'betweenness', 'weighted.betweenness', 'closeness', 'weighted.closeness', 'Fisher.alpha',
+           'partner.diversity', 'effective.partners', 'proportional.generality', 'proportional.similarity', 
+           'd', 'tot.int', 'niche.overlap', 'rare.degree', 'PollAbundance', 'BeeAbundance', 'SyrphidAbundance', 
+           'HBAbundance', 'BombusAbundance', 'NonBombusHBAbundance', 'PollRichness', 'BeeRichness',
+           'SyrphidRichness', 'BombusRichness', 'PollDiversity', 'BeeDiversity', 'SyrphidDiversity',
+           'BombusDiversity', 'VisitedFloralRichness', 'VisitedFloralDiversity', 'MeanFloralRichness',
+           'MeanFloralDiversity', 'MeanFloweringPlantDiversity', 'MeanFloweringPlantAbundance', 'Abundance', 'PolEmergenceStart', 'PolEmergenceEnd',
+           'FlightPeriod', 'GenusSpeciesSiteYear')
+
+spec.net <- spec.net[, names]
+
+## merge species level network metrics, partner variability, trait, and climate data ##
+pol.pcas.network <- spec.net %>%
+  right_join(pol.pcas %>%  select(-Site, -Year, -GenusSpecies),
+             by = "GenusSpeciesSiteYear") 
+
+bee.syrphid.familes <- c("Halictidae", "Syrphidae", "Apidae", "Bombyliidae", "Andrenidae", "Megachilidae", "Colletidae")
+
+pol.pcas.network <- pol.pcas.network %>% 
+  filter(Family %in% bee.syrphid.familes)
+
+## check bee + syrphid families ##
+unique(pol.pcas.network$Family)
 
 write.csv(pol.pcas.network, file = 'analysis/role/saved/traits/BeeSyrphid_pcas.csv')
-
-## Make dataset for only bee familes ##
-bee.families <- c("Andrenidae", "Apidae", "Colletidae", "Halictidae",
-                  "Megachilidae")
-
-bee.pcas.network <- pol.pcas.network %>% 
-  filter(Family %in% bee.families)
-
-write.csv(bee.pcas.network, file = 'analysis/role/saved/traits/Bee_pcas.csv')
-
-
-
-
-
-
-
-
