@@ -97,7 +97,7 @@ Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
                                                      30072,30073,30571,30112,24822)),
 Plebejus_melissa = list(Genus = "Plebejus", SubGenus="", Species =
     "melissa", SubSpecies = "", Sex = "", Author = "Edwards", Family =
-    "Lycaenidae", Determiner="A. Santillana", temp.id =c(36359,38502,38516)),
+    "Lycaenidae", Determiner="A. Santillana", temp.id =c(36359,38502)),
 
 Plebejus_lupini = list(Genus = "Plebejus", SubGenus="", Species =
     "lupini", SubSpecies = "", Sex = "f", Author = "Boisduval", Family =
