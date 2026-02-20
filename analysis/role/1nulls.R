@@ -24,9 +24,6 @@ source('src/initialize_nulls.R')
 ## (pollinator if species.type=="GenusSpecies) to examine turnover
 ## between years within a site
 
-spec <- spec %>% 
-  filter(Sex == "f")
-
 comms <- lapply(to.lapply, calcSiteBeta,
                 species.type=species.type,
                 spec=spec,
