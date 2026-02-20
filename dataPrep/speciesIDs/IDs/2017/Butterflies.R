@@ -136,39 +136,13 @@ Gyrochelius_patrobas = list(Genus = "Gyrochelius", SubGenus="", Species =
     "patrobas", SubSpecies = "", Sex = "", Author = "Hewitson", Family =
     "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(38497,36340,36343)),
 
-Erebia_epipsodea = list(Genus = "Erebia", SubGenus="", Species =
-    "epipsoidea", SubSpecies = "", Sex = "", Author = "Butler", Family =
-    "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(38580)),
-
 Aglais_milberti = list(Genus = "Aglais", SubGenus="", Species =
     "milberti", SubSpecies = "", Sex = "", Author = "Godart", Family =
-    "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(39012,24908)),
-
-Vanessa_cardui = list(Genus = "Vanessa", SubGenus="", Species =
-    "cardui", SubSpecies = "", Sex = "", Author = "Linneaus", Family =
-    "Nymphalidae", Determiner="A. Santillana", temp.id =c(36346,36395,
-38440,36407,36406,38597,39010)),
-
-Papilio_multicaudata = list(Genus = "Papilio", SubGenus="", Species =
-    "multicaudata", SubSpecies = "", Sex = "", Author = "Kirby", Family =
-    "Papilionidae", Determiner="A. Santillana", temp.id =c(38473,38424,38425,38426,38462,38463,23972)),
-
-Papilio_polyxenes = list(Genus = "Papilio", SubGenus="", Species =
-    "polyxenes", SubSpecies = "", Sex = "", Author = "Fabricius", Family =
-    "Papilionidae", Determiner="A. Santillana", temp.id =c(36396,24857)),
-
-Battus_philenor = list(Genus = "Battus", SubGenus="", Species =
-    "philenor", SubSpecies = "", Sex = "", Author = "Linneaus", Family =
-    "Papilionidae", Determiner="A. Santillana", temp.id =c(36392)),
+    "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(24908)),
 
 Nathalis_iole = list(Genus = "Nathalis", SubGenus="", Species =
     "iole", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
-    "Pieridae", Determiner="A. Santillana", temp.id =c(38506,36352,36423,36422,36421,36420,38510,38511,38512,38513,38517,
-38519,38536,38538,38539,38540,38541,38542,36356,36358,36424,36425,36416,36417,36418,36419)),
-
-Pontia_protodice = list(Genus = "Pontia", SubGenus="", Species =
-    "protodice", SubSpecies = "", Sex = "", Author = "Boisduval & Leconte", Family =
-    "Pieridae", Determiner="A. Santillana", temp.id =c(38574,38479,38527,36435,38480,38407,24867)),
+    "Pieridae", Determiner="A. Santillana", temp.id =c(38513)),
 
 Colias_eurytheme = list(Genus = "Colias", SubGenus="", Species =
     "eurytheme", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
