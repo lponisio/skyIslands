@@ -54,7 +54,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                              SubSpecies="AZBC-10",
                                              Sex="f", Author = "",
                                              Determiner = "J.L. Neff",
-                                             temp.id= c("35564", "21688", "21680", "19751", "21142", "21353", "35929", "21158", "22654", "22466","23625","35970",
+                                             temp.id= c("35564", "21688", "21680", "19751", "21142", "21353", "35929", "21158", "22654", "22466",23625,"35970",
                                                        "21788","21396","21357","22582","23580","22131","20948","35587","21941","35758","21034","22599")),
 
                Lasioglossum_perdifficile_f = list(Genus="Lasioglossum",
@@ -2028,7 +2028,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                               SubSpecies="D", Sex="f",
                               Author = "",
                               Determiner ="J.L. Neff",
-                              temp.id= c("35569","35370","35376","36251","BBSL1073321")),
+                              temp.id= c(35569,"35370","35376","36251","BBSL1073321")),
 
   Sphecodes_morphof_f= list(Genus="Sphecodes", SubGenus ="",
                               Species="sp.",
@@ -2213,7 +2213,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                    SubSpecies="", Sex="f",
                                    Author = "Sandhouse",
                                    Determiner="J.L. Neff",
-                                   temp.id= c("36384"))
+                                   temp.id= c(36384))
 
 
     )
