@@ -12,11 +12,6 @@ Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
     SubSpecies = "", Sex = "", Author = "Boisduval & Leconte", Family
     = "Pieridae", Determiner="L.Ponisio", temp.id = c(24867)),
 
-
-  Colias_eurytheme = list(Genus = "Colias", SubGenus="", Species = "eurytheme",
-    SubSpecies = "", Sex = "", Author = "Boisduval", Family =
-    "Pieridae", Determiner="L.Ponisio", temp.id = c(24916,24912,24833,24860,24850,24865,22276,22275)),
-
 Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
     "lineata", SubSpecies = "", Sex = "", Author = "Fabricius", Family =
     "Sphingidae", Determiner="L.C. Ponisio", temp.id = c(18725,24864)),
