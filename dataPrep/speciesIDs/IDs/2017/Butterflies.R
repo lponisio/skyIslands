@@ -170,12 +170,6 @@ Pontia_protodice = list(Genus = "Pontia", SubGenus="", Species =
     "protodice", SubSpecies = "", Sex = "", Author = "Boisduval & Leconte", Family =
     "Pieridae", Determiner="A. Santillana", temp.id =c(38574,38479,38527,36435,38480,38407,24867)),
 
-Eurema_nicippe = list(Genus = "Eurema", SubGenus="", Species =
-    "nicippe", SubSpecies = "", Sex = "", Author = "Cramer", Family =
-    "Pieridae", Determiner="J. F. Zorn", temp.id =c(38606,38655,38498,38613,38614,38615,38617,38616,38618,
-38619,36377,36779,36380,36385,36386,36403,38649,38612,
-38611,38610,38609,38608,38607,38605,38577,38604,38535,38578,38533,38530,38526,38508,38507,38481)),
-
 Colias_eurytheme = list(Genus = "Colias", SubGenus="", Species =
     "eurytheme", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
     "Pieridae", Determiner="J. F. Zorn", temp.id =c(36401,36402,36404,36363,38464,38472,36364,36365,38642,38645,38662,39013,39016,39052,38778,38878,36398,36345,36341,38575,36381,36378,38601,38600,
