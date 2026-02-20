@@ -80,7 +80,7 @@ Nathalis_iole = list(Genus = "Nathalis", SubGenus="",Species =
 
 Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
     "lineata", SubSpecies = "", Sex = "", Author = "Fabricius", Family =
-    "Sphingidae", Determiner="L.C. Ponisio", temp.id = c(24114,24880,24113,36428,36427,38478,36429,39011,28664,18725)),
+    "Sphingidae", Determiner="L.C. Ponisio", temp.id = c(24114,24880,24113,28664)),
 
 #Hemiargus_isola = list(Genus = "Hemiargus", SubGenus="", Species = "isola",
 #    SubSpecies = "", Sex = "", Author = "Reakirt", Family = "Lycaenidae",
@@ -88,56 +88,25 @@ Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
 
   Strymon_melinus = list(Genus = "Strymon", SubGenus="", Species =
     "melinus", SubSpecies = "", Sex = "", Author = "Hubner", Family =
-    "Lycaenidae", Determiner="L.Ponisio", temp.id =c(24155,24223,24226,24219,24232,24144,24823,24910,24103,38623,36383)),
+    "Lycaenidae", Determiner="L.Ponisio", temp.id =c(24155,24223,24226,24219,24232,24144,24823,24910,24103)),
 
   Plebejus_acmon = list(Genus = "Plebejus", SubGenus="", Species =
     "acmon", SubSpecies = "", Sex = "", Author = "Westwood", Family =
     "Lycaenidae", Determiner="L.Ponisio", temp.id =c(24215,24211,24230,24221,24222,24231,24229,24825,24243,24248,24140,21630,21631,21500,
                                                      21573,23865,23868,24767,23734,23735,23858,30063,23648,23741,23712,23689,23691,30066,
                                                      30072,30073,30571,30112,24822)),
-Plebejus_melissa = list(Genus = "Plebejus", SubGenus="", Species =
-    "melissa", SubSpecies = "", Sex = "", Author = "Edwards", Family =
-    "Lycaenidae", Determiner="A. Santillana", temp.id =c(36359,38502)),
-
-Plebejus_lupini = list(Genus = "Plebejus", SubGenus="", Species =
-    "lupini", SubSpecies = "", Sex = "f", Author = "Boisduval", Family =
-    "Lycaenidae", Determiner="A. Santillana", temp.id =c(36360,38520,38518)),
-
+    
   Celastrina_argiolus_ladon = list(Genus = "Celastrina", SubGenus="",
     Species = "argiolus", SubSpecies = "ladon", Sex = "", Author =
     "Cramer", Family = "Lycaenidae", Determiner="L.Ponisio", temp.id = c(24218,30610)),
 
-Leptotes_marina = list(Genus = "Leptotes", SubGenus="", Species =
-    "marina", SubSpecies = "", Sex = "f", Author = "Reakirt", Family
-    = "Lycanidae", Determiner="A. Santillana", temp.id = c(36382,38451,38457,38458)),
-
 Echinargus_isola = list(Genus = "Echinargus", SubGenus="", Species =
     "isola", SubSpecies = "", Sex = "", Author = "Reakirt", Family
-    = "Lycanidae", Determiner="A. Santillana", temp.id = c(39014,38454,39042,39025,38459,39038,39027,38474,39028,
-                                                          39041,38483,39088,39029,39066,39087,39030,39073,39090,39031,
-                                                          39083,39076,38452,39037,39080,38515,39039,39077,24147,24202,24216,24208,24199,24196,24195,24213,24200)),
-    
-Agriades_landon = list(Genus = "Agriades", SubGenus="", Species =
-    "landon", SubSpecies = "", Sex = "", Author = "de Pruner", Family
-    = "Lycanidae", Determiner="A. Santillana", temp.id = c(38552)),
-    
-Brephidium_exile = list(Genus = "Brephidium", SubGenus="", Species =
-    "exile", SubSpecies = "", Sex = "m", Author = "Boisduval", Family =
-    "Lycaenidae", Determiner="A. Santillana", temp.id =c(36426)),
-
-Erora_guaderna = list(Genus = "Erora", SubGenus="", Species =
-    "guaderna", SubSpecies = "", Sex = "f", Author = "Hewitson", Family =
-    "Lycaenidae", Determiner="A. Santillana", temp.id =c(38460)),
-
-Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
-    "atlantis", SubSpecies = "", Sex = "", Author = "Edwards", Family =
-    "Nymphalidae", Determiner="A. Santillana", temp.id =c(36371,36372,36387,36381,36391,38423,38431,38435,38436,
-                                                          38437,38438,38654,38523,39057)),
+    = "Lycanidae", Determiner="A. Santillana", temp.id = c(38515,24147,24202,24216,24208,24199,24196,24195,24213,24200)),
 
 Phyciodes_tharos = list(Genus = "Phyciodes", SubGenus="", Species =
     "tharos", SubSpecies = "", Sex = "", Author = "Drury", Family =
-    "Nymphalidae", Determiner="A. Santillana", temp.id =c(24069,23270,
-                                                         36415,38644,38620,38621,38622,39048)),
+    "Nymphalidae", Determiner="A. Santillana", temp.id =c(24069,23270,38620)),
     
 Texola_elada = list(Genus = "Texola", SubGenus="", Species =
     "elada", SubSpecies = "", Sex = "", Author = "Hewitson", Family =
