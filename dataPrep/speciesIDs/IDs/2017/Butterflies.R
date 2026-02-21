@@ -121,20 +121,7 @@ Polygonia_gracilis = list(Genus = "Polygonia", SubGenus="", Species =
 
 Euptoiteta_claudia = list(Genus = "Euptoiteta", SubGenus="", Species =
     "claudia", SubSpecies = "", Sex = "", Author = "Cramer", Family =
-    "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(24917,30044,21629,36344,36362,36399,36408,36433,38405,
-                                                         38418,38421,38422,38432,38434,38482,38522,30042)),
-
-Vanessa_virginiensis = list(Genus = "Vanessa", SubGenus="", Species =
-    "virginiensis", SubSpecies = "", Sex = "", Author = "Drury", Family =
-    "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(36409,36410,38420,36350,38419)),
-
-Vanessa_atalanta = list(Genus = "Vanessa", SubGenus="", Species =
-    "atalanta", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
-    "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(38433,38439,38496,38428,36373,38427)),
-
-Gyrochelius_patrobas = list(Genus = "Gyrochelius", SubGenus="", Species =
-    "patrobas", SubSpecies = "", Sex = "", Author = "Hewitson", Family =
-    "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(38497,36340,36343)),
+    "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(24917,30044,21629,30042)),
 
 Aglais_milberti = list(Genus = "Aglais", SubGenus="", Species =
     "milberti", SubSpecies = "", Sex = "", Author = "Godart", Family =
