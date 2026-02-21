@@ -106,18 +106,11 @@ Echinargus_isola = list(Genus = "Echinargus", SubGenus="", Species =
 
 Phyciodes_tharos = list(Genus = "Phyciodes", SubGenus="", Species =
     "tharos", SubSpecies = "", Sex = "", Author = "Drury", Family =
-    "Nymphalidae", Determiner="A. Santillana", temp.id =c(24069,23270,38620)),
+    "Nymphalidae", Determiner="A. Santillana", temp.id =c(24069,38620)),
     
-Texola_elada = list(Genus = "Texola", SubGenus="", Species =
-    "elada", SubSpecies = "", Sex = "", Author = "Hewitson", Family =
-    "Nymphalidae", Determiner="A. Santillana", temp.id =c(38543)),
 Danaus_plexipus = list(Genus = "Limentis", SubGenus="", Species =
     "bredowii", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
-    "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(24180,36394,36397,36348,36405,24852)),
-
-Polygonia_gracilis = list(Genus = "Polygonia", SubGenus="", Species =
-    "gracilis", SubSpecies = "", Sex = "", Author = "Grote & Robinson", Family =
-    "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(38595,39072,39044,39056)),
+    "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(24180)),
 
 Euptoiteta_claudia = list(Genus = "Euptoiteta", SubGenus="", Species =
     "claudia", SubSpecies = "", Sex = "", Author = "Cramer", Family =
