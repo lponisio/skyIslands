@@ -283,6 +283,40 @@ climate_combined <- climate_combined %>%
   left_join(combined_gdd_api,
             by = c("Site", "Year", "EndDate"))
 
+###########################################
+## Calculate precipitation and temperature variability ##
+###########################################
+
+## annual standard deviation by site and year ##
+annual_precip_var <- daily_precip_data %>% 
+        # marking Apr 1st for first snow melt
+  mutate(baseline_start = as.Date(paste0(Year, "-04-01")),
+         # marking mid oct to account for the 2021 going into oct
+         season_end = as.Date(paste0(Year, "-10-15"))) %>%
+  filter(Date >= baseline_start &  Date <= season_end) %>%
+  group_by(Site, Year) %>% 
+  summarise(PrecipSD = sd(Precip, na.rm = TRUE))
+
+## Calculate annual temp and temp anomoly variability ##
+annual_temp_var <- daily_temp_data %>% 
+          # marking Apr 1st for first snow melt
+  mutate(baseline_start = as.Date(paste0(Year, "-04-01")),
+         # marking mid oct to account for the 2021 going into oct
+         season_end = as.Date(paste0(Year, "-10-15"))) %>%
+  filter(Date >= baseline_start &  Date <= season_end) %>%
+  group_by(Site, Year) %>% 
+  summarise(TempSD = sd(Tmean_normal, na.rm = TRUE),
+            TempAnomSD = sd(Tmean_anomaly, na.rm = TRUE), .groups = "drop")
+
+## Merge temp and precipitation variability ##
+climate_variability <- annual_precip_var %>%
+  left_join(annual_temp_var, by = c("Site", "Year")) %>%
+  select(Site, Year, PrecipSD, TempSD, TempAnomSD)
+
+climate_combined <- climate_combined %>% 
+  left_join(climate_variability,
+            by = c("Site", "Year"))
+
 write.csv(climate_combined, file =
                               "data/relational/original/climate.csv", row.names=FALSE)
 
