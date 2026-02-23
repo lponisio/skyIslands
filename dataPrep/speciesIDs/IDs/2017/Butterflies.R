@@ -197,10 +197,6 @@ Callophyris_affinis = list(Genus = "Callophyris", SubGenus="", Species =
     "affinis", SubSpecies = "", Sex = "", Author = "Edwards", Family =
     "Lycanidae", Determiner="ACS", temp.id =c(23722)),
 
-Icaricia_icarioides = list(Genus = "Icaricia", SubGenus="", Species =
-    "icarioides", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
-    "Lycanidae", Determiner="ACS", temp.id =c(30567,39040)),
-
 Papilio_machaon = list(Genus = "Papilio", SubGenus="", Species =
     "machaon", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
     "Papilionidae", Determiner="ACS", temp.id =c(24871)),
