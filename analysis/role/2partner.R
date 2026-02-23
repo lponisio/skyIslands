@@ -37,7 +37,7 @@ save(beta.dist, file=sprintf("saved/results/pol_partnerVar_%s.Rdata",
 
 ## calculate emergence and flight period ##
 load('saved/results/pol_partnerVar_Site.Rdata')
-load('../../data/spec_traits.Rdata')
+load('../../data/spec_traits_year.Rdata')
 
 spec <- spec.net %>% 
   group_by(GenusSpecies, Year) %>% 
