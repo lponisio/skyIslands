@@ -40,7 +40,7 @@ load('saved/results/pol_partnerVar_Site.Rdata')
 load('../../data/spec_traits_year.Rdata')
 
 spec <- spec.net %>% 
-  group_by(GenusSpecies, Year) %>% 
+  group_by(GenusSpecies, Year, Site) %>% 
   mutate(PolEmergenceStart = min(Doy),
          PolEmergenceEnd = max(Doy),
          FlightPeriod = PolEmergenceEnd - PolEmergenceStart) %>%
@@ -48,9 +48,10 @@ spec <- spec.net %>%
   mutate(GenusSpeciesSiteYear = paste0(GenusSpecies, Site, Year))
 
 pol.partner <- beta.dist %>%
-  mutate(GenusSpeciesSiteYear = paste0(GenusSpecies, Site, Year))
+  mutate(GenusSpeciesSiteYear = paste0(GenusSpecies, Site, Year)) %>% 
+  filter(GenusSpecies != "" & !is.na(GenusSpecies))
 
-## merge species level network metrics, role variability, trait data ##
+## merge species level network metrics, role variability, and traits ##
 pol.beta.traits <- spec %>%
   right_join(pol.partner %>% select(-SampleRound, -Site, -Year, -GenusSpecies), 
              by = "GenusSpeciesSiteYear")
@@ -85,7 +86,7 @@ load('../../data/spec_net.Rdata')
 
 ## calculate flight period ##
 spec <- spec.net %>% 
-  group_by(GenusSpecies, Year) %>% 
+  group_by(GenusSpecies, Site, Year) %>% 
   mutate(PolEmergenceStart = min(Doy),
          PolEmergenceEnd = max(Doy),
          FlightPeriod = PolEmergenceEnd - PolEmergenceStart) %>%
@@ -93,7 +94,8 @@ spec <- spec.net %>%
   mutate(GenusSpeciesSiteYear = paste0(GenusSpecies, Site, Year))
 
 pol.partner <- beta.dist %>%
-  mutate(GenusSpeciesSiteYear = paste0(GenusSpecies, Site, Year))
+  mutate(GenusSpeciesSiteYear = paste0(GenusSpecies, Site, Year)) %>% 
+  filter(GenusSpecies != "" & !is.na(GenusSpecies))
 
 ## merge species level network metrics, role variability, trait data ##
 pol.beta.traits <- spec %>%
