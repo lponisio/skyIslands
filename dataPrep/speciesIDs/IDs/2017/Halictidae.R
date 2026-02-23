@@ -2028,7 +2028,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                               SubSpecies="D", Sex="f",
                               Author = "",
                               Determiner ="J.L. Neff",
-                              temp.id= c(35569,"35370","35376","36251","BBSL1073321")),
+                              temp.id= c(35369,"35370","35376","36251","BBSL1073321")),
 
   Sphecodes_morphof_f= list(Genus="Sphecodes", SubGenus ="",
                               Species="sp.",
