@@ -65,7 +65,7 @@ pol.pcas <- pol.pcas %>%
 
 ## calculate flight period ##
 spec <- spec.net %>% 
-  group_by(GenusSpecies, Year) %>% 
+  group_by(GenusSpecies, Year, Site) %>% 
   mutate(PolEmergenceStart = min(Doy),
          PolEmergenceEnd = max(Doy),
          FlightPeriod = PolEmergenceEnd - PolEmergenceStart,
@@ -106,7 +106,7 @@ write.csv(pol.pcas.network, file = 'analysis/role/saved/traits/Bee_pcas.csv')
 load('data/spec_net.Rdata')
 
 spec.net <- spec.net %>% 
-  group_by(GenusSpecies, Year) %>% 
+  group_by(GenusSpecies, Year, Site) %>% 
   mutate(PolEmergenceStart = min(Doy),
          PolEmergenceEnd = max(Doy),
          FlightPeriod = PolEmergenceEnd - PolEmergenceStart,
