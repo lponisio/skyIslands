@@ -98,6 +98,11 @@ sp.ids <- list(
                            Species="slevini", SubSpecies="", Sex="m", Author = "Cockerell",
                            Determiner="T. Griswold",
                            temp.id= c("BBSL1058839", "BBSL1073216")),
+
+  Colletes_slevini_f= list(Genus="Colletes", SubGenus ="",
+                           Species="slevini", SubSpecies="", Sex="f", Author = "Cockerell",
+                           Determiner="J.L. Neff",
+                           temp.id= c(22603)),
   
   
   Colletes_skinneri_m= list(Genus="Colletes", SubGenus ="",
@@ -203,6 +208,12 @@ sp.ids <- list(
                             Author = "Cockerell",
                             Determiner = "T. Griswold",
                             temp.id= c("BBSL1070927", "BBSL1060049")),
+  
+  Colletes_wootoni_f = list(Genus="Colletes", SubGenus ="",
+                            Species="wootoni", SubSpecies="", Sex="f",
+                            Author = "Cockerell",
+                            Determiner = "J.L. Neff",
+                            temp.id= c(21805)),
   
   Hylaeus_annulatus_f = list(Genus="Hylaeus", SubGenus ="Hylaeus",
                              Species="annulatus", SubSpecies="",
