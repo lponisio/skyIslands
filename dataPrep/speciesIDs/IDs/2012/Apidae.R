@@ -1,6 +1,14 @@
 
 sp.ids <- list(
 
+    Melissodes_menuachus_m = list(Genus="Melissodes",
+                                  SubGenus="Eumelissodes", 
+                                  Species="menuachus", 
+                                  SubSpecies="", Sex="m", 
+                                  Author = "Cresson", 
+                                  Determiner="J.L. Neff", 
+                                  temp.id= c("SC_072012_167","JC_071112_14","JC_071612_120","JC_071612_30","JC_071412_150")),
+
     Melissodes_confusus= list(Genus="Melissodes",
                              SubGenus="Eumelissodes",
                              Species="confusus",
