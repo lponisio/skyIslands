@@ -12,6 +12,7 @@ setwd('analysis/role')
 
 source('src/initialize_beta.R')
 
+dir.create('saved/results', showWarnings = FALSE)
 
 ## ************************************************************
 ## beta diversity as variation between sites,
