@@ -1151,6 +1151,15 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                                "BBSL1070210",
                                                "BBSL1070198",
                                                 "BBSL1085588")),
+   
+     Lasioglossum_laevissimum= list(Genus="Lasioglossum",
+                                   SubGenus ="Dialictus",
+                                   Species="laevissimum",
+                                   SubSpecies="", Sex="f",
+                                   Author = "Smith",
+                                   Determiner =
+                                       "J.L. Neff", 
+                                   temp.id= c(20945)),
 
     Lasioglossum_microlepoides= list(Genus="Lasioglossum", SubGenus
                                      ="Dialictus",
