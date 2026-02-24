@@ -28,6 +28,8 @@ weather <- read_csv(weather_csv) %>%
   )  %>%
   filter(SampleRound > 0)   # drop SampleRound 0 if needed
 
+
+
 # Summarize sample rounds
 sample_windows <- weather %>%
   group_by(Site, Year, SampleRound) %>%
@@ -289,8 +291,8 @@ climate_combined <- climate_combined %>%
 
 ## annual standard deviation by site and year ##
 annual_precip_var <- daily_precip_data %>% 
-        # marking Apr 1st for first snow melt
-  mutate(baseline_start = as.Date(paste0(Year, "-04-01")),
+        # marking May 1st as time of year where temperatures are above freezing
+  mutate(baseline_start = as.Date(paste0(Year, "-05-01")),
          # marking mid oct to account for the 2021 going into oct
          season_end = as.Date(paste0(Year, "-10-15"))) %>%
   filter(Date >= baseline_start &  Date <= season_end) %>%
@@ -299,19 +301,20 @@ annual_precip_var <- daily_precip_data %>%
 
 ## Calculate annual temp and temp anomoly variability ##
 annual_temp_var <- daily_temp_data %>% 
-          # marking Apr 1st for first snow melt
-  mutate(baseline_start = as.Date(paste0(Year, "-04-01")),
+          # marking May 1st as time of year where temperatures are above freezing
+  mutate(baseline_start = as.Date(paste0(Year, "-05-01")),
          # marking mid oct to account for the 2021 going into oct
          season_end = as.Date(paste0(Year, "-10-15"))) %>%
   filter(Date >= baseline_start &  Date <= season_end) %>%
   group_by(Site, Year) %>% 
-  summarise(TempSD = sd(Tmean_normal, na.rm = TRUE),
+  summarise(TempDifSD = sd(tmax - tmin, na.rm = TRUE), 
+            TempMeanSD = sd(Tmean_normal, na.rm = TRUE),
             TempAnomSD = sd(Tmean_anomaly, na.rm = TRUE), .groups = "drop")
 
 ## Merge temp and precipitation variability ##
 climate_variability <- annual_precip_var %>%
   left_join(annual_temp_var, by = c("Site", "Year")) %>%
-  select(Site, Year, PrecipSD, TempSD, TempAnomSD)
+  select(Site, Year, PrecipSD, TempDifSD, TempMeanSD, TempAnomSD)
 
 climate_combined <- climate_combined %>% 
   left_join(climate_variability,
