@@ -49,7 +49,7 @@ save(pol.pca.scores,  file="analysis/role/saved/results/beeSyrphid_pcaVar.Rdata"
 ## --- Merge role variability, network metrics, and climate --- ##
 ##################################################################
 load('analysis/role/saved/results/beeSyrphid_pcaVar.Rdata')
-load('data/spec_traits_year.Rdata')
+load('data/spec_traits_YR.Rdata')
 
 ## combine PCA results from all years into a single dataframe ##
 pol.pcas <- do.call( #combines results and applies function
