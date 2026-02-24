@@ -439,6 +439,15 @@ sp.ids <- list(
                                           "BBSL1071316",
                                           "BBSL1073290")),
 
+    Heterosarus_bakeri_f= list(Genus="Heterosarus",
+                               SubGenus ="",
+                               Species="bakeri",
+                               SubSpecies="",
+                               Sex="f",
+                               Author = "Cockerell",
+                               Determiner="J.L. Neff",
+                               temp.id= c(23347,23355)),
+
 
     Heterosarus_bakeri_m= list(Genus="Heterosarus",
                                SubGenus ="",
