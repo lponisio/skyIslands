@@ -267,9 +267,63 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                Determiner = "J. Gardener",
                                temp.id=  c("BBSL1058887")),
 
+    Lasioglossum_sp_101_f= list(Genus="Lasioglossum", SubGenus
+                               ="", Species="sp.",
+                               SubSpecies="101", Sex="f",
+                               Author = "",
+                               Determiner = "J.L. Neff",
+                               temp.id=  c(37586,25026,19894)),
 
+    Lasioglossum_sp_102_f= list(Genus="Lasioglossum", SubGenus
+                               ="", Species="sp.",
+                               SubSpecies="102", Sex="f",
+                               Author = "",
+                               Determiner = "J.L. Neff",
+                               temp.id=  c(23399)),
 
-    Lasioglossum_heterorhinum_f= list(Genus="Lasioglossum", SubGenus
+    Lasioglossum_sp_104_f= list(Genus="Lasioglossum", SubGenus
+                               ="", Species="sp.",
+                               SubSpecies="104", Sex="f",
+                               Author = "",
+                               Determiner = "J.L. Neff",
+                               temp.id=  c(36208,22933,22894,23534)),
+
+    Lasioglossum_sp_105_f= list(Genus="Lasioglossum", SubGenus
+                               ="", Species="sp.",
+                               SubSpecies="105", Sex="f",
+                               Author = "",
+                               Determiner = "J.L. Neff",
+                               temp.id=  c(21159)),
+
+    Lasioglossum_sp_106_f= list(Genus="Lasioglossum", SubGenus
+                               ="", Species="sp.",
+                               SubSpecies="106", Sex="f",
+                               Author = "",
+                               Determiner = "J.L. Neff",
+                               temp.id=  c(36233,36235)),
+
+    Lasioglossum_sp_107_f= list(Genus="Lasioglossum", SubGenus
+                               ="", Species="sp.",
+                               SubSpecies="107", Sex="f",
+                               Author = "",
+                               Determiner = "J.L. Neff",
+                               temp.id=  c(22545,23471,32231)),
+
+     Lasioglossum_sp_109_f= list(Genus="Lasioglossum", SubGenus
+                               ="", Species="sp.",
+                               SubSpecies="109", Sex="f",
+                               Author = "",
+                               Determiner = "J.L. Neff",
+                               temp.id=  c(34419,35683,35892)),
+
+       Lasioglossum_sp_110_f= list(Genus="Lasioglossum", SubGenus
+                               ="", Species="sp.",
+                               SubSpecies="110", Sex="f",
+                               Author = "",
+                               Determiner = "J.L. Neff",
+                               temp.id=  c(35526)),
+               
+     Lasioglossum_heterorhinum_f= list(Genus="Lasioglossum", SubGenus
                                       ="Lasioglossum", Species="heterorhinum",
                                       SubSpecies="", Sex="f",
                                       Author = "Cockerell, 1930",
