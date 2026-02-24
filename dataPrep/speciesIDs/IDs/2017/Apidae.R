@@ -1409,7 +1409,7 @@ sp.ids <- list(
                                  "BBSL1070502","BBSL1070503",
                                  "BBSL1072777","BBSL1084472",
                                  "BBSL1086976","BBSL1087052",
-                                 "BBSL1086973","BBSL1086831")),
+                                 "BBSL1086973","BBSL1086831","BBSL1059264")),
   
   Melissodes_gilensis_f= list(Genus="Melissodes",
                               SubGenus="Melissodes",
@@ -1437,7 +1437,7 @@ sp.ids <- list(
                               temp.id=
                                 c("BBSL1086829",
                                   "BBSL1086873","BBSL1059649",
-                                  "BBSL1073326","BBSL1059647")),
+                                  "BBSL1073326","BBSL1059647","BBSL1059595")),
 
 
 
