@@ -348,7 +348,15 @@ sp.ids <- list(
                                                    35546,35767,35636,35797,
                                                    35782,35610,35545,35544,
                                                    35541,35547,35571,36071,
-                                                   35794,35455,34731)),
+                                                   35794,35455,34731,36150)),
+
+     Lasioglossum_hudsoniellum_f = list(Genus="Lasioglossum",
+                                        SubGenus ="Dialictus",
+                                        Species="hudsoniellum",
+                                        SubSpecies="", Sex="f",
+                                        Author ="Cockerell",
+                                        Determiner = "J.L. Neff",
+                                        temp.id= c(36006)),
 
     Halictus_rubicundus_f= list(Genus="Halictus",
                                 SubGenus ="Protohalictus",
@@ -446,7 +454,7 @@ sp.ids <- list(
                                              35792, 35778, 35773, 35772, 
                                              35765, 35497, 35664, 35481,
                                              35431, 35496, 35433, 35435,
-                                             35441, 35461, 35451, 34735))
+                                             35441, 35461, 35451, 34735, 36230))
 
 
 
