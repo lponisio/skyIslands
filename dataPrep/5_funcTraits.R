@@ -106,29 +106,29 @@ write.csv(spec.net, file="../data/spec_traits.csv", row.names=FALSE)
 # spec.net <- merge(spec.net, traits, all.x=TRUE)
 # dim(spec.net)
 # 
-# save(spec.net, file="../data/spec_traits_YR.Rdata")
-# write.csv(spec.net, file="../data/spec_traits_YR.csv", row.names=FALSE)
+# save(spec.net, file="../data/spec_traits.Rdata")
+# write.csv(spec.net, file="../data/spec_traits.csv", row.names=FALSE)
 
 # ## Merges network traits by year to spec.net
-load('../data/sp_network_mets_Year_pretty.RData')
- 
-sp.network.metrics <- sp.network.metrics %>%
-  select(GenusSpecies, Site, Year, SampleRound, zdegree,
-      zweighted.betweenness, zweighted.closeness, zd,
-          normalised.degree)
-
-traits$GenusSpecies <- rownames(traits)
-rownames(traits) <- NULL
-
-dim(spec.net)
-spec.net <- merge(spec.net, sp.network.metrics, all.x=TRUE)
-dim(spec.net)
-spec.net <- merge(spec.net, traits, all.x=TRUE)
-dim(spec.net)
-
-  
-save(spec.net, file="../data/spec_traits_year.Rdata")
-write.csv(spec.net, file="../data/spec_traits_year.csv", row.names=FALSE)
+# load('../data/sp_network_mets_Year_pretty.RData')
+#  
+# sp.network.metrics <- sp.network.metrics %>%
+#   select(GenusSpecies, Site, Year, SampleRound, zdegree,
+#       zweighted.betweenness, zweighted.closeness, zd,
+#           normalised.degree)
+# 
+# traits$GenusSpecies <- rownames(traits)
+# rownames(traits) <- NULL
+# 
+# dim(spec.net)
+# spec.net <- merge(spec.net, sp.network.metrics, all.x=TRUE)
+# dim(spec.net)
+# spec.net <- merge(spec.net, traits, all.x=TRUE)
+# dim(spec.net)
+# 
+#   
+# save(spec.net, file="../data/spec_traits_YR.Rdata")
+# write.csv(spec.net, file="../data/spec_traits_YR.csv", row.names=FALSE)
 
 spec.bee.microbes <- spec.net %>%
   filter(Family != "Syrphidae") %>%
