@@ -9,6 +9,9 @@ setwd(dir.bombus)
 setwd('analysis/role')
 source('src/initialize_nulls.R')
 
+dir.create('saved/nulls', showWarnings = FALSE)
+dir.create('saved/communities', showWarnings = FALSE)
+
 ## ************************************************************
 ## create community matrices for species species by year or site
 ## ************************************************************
