@@ -520,7 +520,7 @@ bees.yr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
 #sp.mets <- sp.mets[!sapply(sp.mets, function(x) is.null(dim(x)))]
 #sp.network.metrics <- SpPrepDat(sp.mets,  spec.net.nets,
 #                   cols.to.keep=c("GenusSpecies", "Site","Year", "SampleRound"),
-#                   net.type="YearSR")
+#                   net.type="Year")
 
 #save(sp.network.metrics,
 #     file="../data/sp_network_mets_Year_pretty.RData")
