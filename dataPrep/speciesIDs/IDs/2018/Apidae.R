@@ -1,6 +1,14 @@
 
 sp.ids <- list(
 
+    Xenoglossa_imitatrix_m = list(Genus="Xenoglossa",
+                               SubGenus="",
+                               Species="imitatrix",
+                               SubSpecies="", Sex="m",
+                               Author = "",
+                               Determiner="J.L. Neff",
+                               temp.id= c(19791)),
+
 
     Diadasia_diminuta_f = list(Genus="Diadasia",
                                SubGenus="Coquillettapis",
