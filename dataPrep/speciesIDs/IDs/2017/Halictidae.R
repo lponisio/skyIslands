@@ -46,7 +46,16 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                              SubSpecies="",
                                              Sex="f", Author = "Crawford",
                                              Determiner = "J.L. Neff",
-                                             temp.id= c("22702","30611","22415","21420","23010","30612","23589","23031")),
+                                             temp.id= c("22702","30611","22415","21420","23010","30612","23589","23031","BBSL1059537","BBSL1059690","BBSL1087008","BBSL1084582","BBSL1087002","BBSL1073036",
+                                                       "BBSL1059536","BBSL1084583",22126)),
+
+               Lasioglossum_cooleyi_m = list(Genus="Lasioglossum",
+                                             SubGenus ="",
+                                             Species="cooleyi",
+                                             SubSpecies="",
+                                             Sex="m", Author = "Crawford",
+                                             Determiner = "J.L. Neff",
+                                             temp.id= c("BBSL1074383","SC_072812_131")),
 
                Lasioglossum_morphoAZBC10_f = list(Genus="Lasioglossum",
                                              SubGenus ="Dialictus",
@@ -251,6 +260,47 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                             "BBSL1073036",
                                             "BBSL1084583")),
 
+    Lasioglossum_sp_K_m_SPH= list(Genus="Lasioglossum", SubGenus
+                                ="Sphecodogastra", Species="sp.",
+                                SubSpecies="K", Sex="m",
+                                Author = "",
+                                Determiner = "J.L. Neff",
+                                temp.id=  c(36663,32306,31908,32305)),
+
+    Lasioglossum_sp_A_f_SPH= list(Genus="Lasioglossum", SubGenus
+                                ="Sphecodogastra", Species="sp.",
+                                SubSpecies="A", Sex="f",
+                                Author = "",
+                                Determiner = "J.L. Neff",
+                                temp.id=  c("BBSL1073034",20330,36229)),
+
+    Lasioglossum_sp_F_m_HEM= list(Genus="Lasioglossum", SubGenus
+                                ="Hemihalictus", Species="sp.",
+                                SubSpecies="F", Sex="m",
+                                Author = "",
+                                Determiner = "J.L. Neff",
+                                temp.id=  c(31923)),
+
+    Lasioglossum_sp_A_f_HEM= list(Genus="Lasioglossum", SubGenus
+                                ="Hemihalictus", Species="sp.",
+                                SubSpecies="A", Sex="f",
+                                Author = "",
+                                Determiner = "J.L. Neff",
+                                temp.id=  c(31892,31906)),
+
+    Lasioglossum_sp_B_f_HEM= list(Genus="Lasioglossum", SubGenus
+                                ="Hemihalictus", Species="sp.",
+                                SubSpecies="B", Sex="f",
+                                Author = "",
+                                Determiner = "J.L. Neff",
+                                temp.id=  c(30653, 31392)),
+
+    Lasioglossum_sp_D_f_EV= list(Genus="Lasioglossum", SubGenus
+                                ="Evylaeus", Species="sp.",
+                                SubSpecies="D", Sex="f",
+                                Author = "",
+                                Determiner = "J.L. Neff",
+                                temp.id=  c(22013,32390,35495,36286,35457,31410,36332)),
 
     Lasioglossum_sp_m_SPH= list(Genus="Lasioglossum", SubGenus
                                 ="Sphecodogastra", Species="sp.",
@@ -357,7 +407,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                                   "21392","21268","22943","22939",
                                                   "30281","22929","23138","23574",
                                                   "23190","22696","22674","22667",
-                                                  "22670","22590")),
+                                                  "22670","22590",38981,38947,20149,18962)),
 
     Lasioglossum_Hemihalictus_f= list(Genus="Lasioglossum", SubGenus
                                       ="Hemihalictus", Species="sp.",
