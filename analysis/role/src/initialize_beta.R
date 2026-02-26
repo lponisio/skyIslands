@@ -56,3 +56,6 @@ if(sp.type=="ints"){
 if(sp.type=="plants"){
     ylabel <- "Plant species turnover"
 }
+
+dir.create('saved/results', showWarnings = FALSE)
+dir.create('saved/traits', showWarnings = FALSE)
