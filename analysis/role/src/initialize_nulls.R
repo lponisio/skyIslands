@@ -4,7 +4,7 @@ if(length(args) != 0){
     net.type <- args[2]
     nnull <- args[3]
 } else{
-    sp.type <- "plants"
+    sp.type <- "pol"
     net.type <- "Site"
     nnull <- 999
 }
@@ -20,6 +20,10 @@ spec <- spec.net
 
 save.dir.comm <- "saved/communities"
 save.dir.nulls <- "saved/nulls"
+
+dir.create('saved', showWarnings = FALSE)
+dir.create('saved/nulls', showWarnings = FALSE)
+dir.create('saved/communities', showWarnings = FALSE)
 
 spec$SiteYear <- paste(spec$Site, spec$Year, sep=":")
 sites <- unique(spec$Site)
