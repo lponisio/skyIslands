@@ -507,7 +507,7 @@ bees.yr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
 ## -- Calculates species level network metrics by year -- ##
 ## Takes a while, only re-run if bee data is changed
 # N <- 99
-# load('../data/networks/Year_PlantPollinator_Bees.Rdata')
+# load('../data/networks/Year_PlantPollinator_BeesSyrphids.Rdata')
 # 
 # sp.mets <- lapply(nets, SpCalcNetworkMetrics,
 #                 N=N, index=c("closeness", "betweenness",
@@ -523,7 +523,7 @@ bees.yr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
 #                   net.type="Year")
 
 #save(sp.network.metrics,
-#     file="../data/sp_network_mets_Year_pretty.RData")
+#    file="../data/sp_network_mets_Year_pretty.RData")
 
 ## Parasites
 spec.sub <- agg.spec.sub %>%
