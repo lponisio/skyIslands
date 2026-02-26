@@ -4,6 +4,7 @@ rm(list=ls())
 library(ggfortify)
 library(bipartite)
 library(fossil)
+library(tidyverse)
 setwd("C:/")
 source("lab_paths.R")
 local.path
@@ -15,7 +16,6 @@ this.script <- "role"
 source('analysis/role/src/initialize.R')
 type <- "all"
 
-
 ## vector of pca loadings of interest
 loadings <- c(1)
 metrics <- c("rare.degree",
@@ -24,6 +24,8 @@ metrics <- c("rare.degree",
              "niche.overlap",
              "species.strength",
              "d")
+
+colnames(sp.network.metrics)
 
 ## Metrics used in the PCA
 var.method <- cv
@@ -39,7 +41,7 @@ pol.pca.scores <- calcPcaMeanVar(species.roles=sp.lev,
                                  agg.col = "Year")
 
 
-autoplot(plant.pca.scores$'2018'$pca.loadings, loadings=TRUE,
+autoplot(pol.pca.scores$'2018'$pca.loadings, loadings=TRUE,
          loadings.colour = 'blue')
 
 
