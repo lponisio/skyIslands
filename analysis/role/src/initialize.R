@@ -6,7 +6,7 @@ source('analysis/role/src/calcPca.R')
 source('analysis/role/src/calcSpec.R')
 
 load('data/spec_net.Rdata')
-load('data/networks/Year_PlantPollinator_Bees.Rdata')
+load('data/sp_network_mets_Year_pretty.RData')
 save.path <- 'saved'
 
 save.dir.comm <- "saved/communities"
