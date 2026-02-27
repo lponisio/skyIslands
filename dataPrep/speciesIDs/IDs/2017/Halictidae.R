@@ -175,7 +175,7 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                   ="Lasioglossum", Species="desertum",
                                   SubSpecies="", Sex="f",
                                   Author = "Smith",
-                                  Determiner = "J. Gardener, J.L. Neff", 
+                                  Determiner = "J. Gardener", 
                                   temp.id=  c("BBSL1086912",
                                               "BBSL1084937",
                                               "BBSL1084641",
@@ -189,7 +189,15 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                               "BBSL1084376",
                                               "BBSL1084414",
                                               "BBSL1058139",
-                                              "BBSL1084415","20932","23464","22938","30319")),
+                                              "BBSL1084415")),
+
+
+        Lasioglossum_desertum_f= list(Genus="Lasioglossum", SubGenus
+                                  ="Lasioglossum", Species="desertum",
+                                  SubSpecies="", Sex="f",
+                                  Author = "Smith",
+                                  Determiner = "J.L. Neff", 
+                                  temp.id=  c("20932","23464","22938","30319",24681,22809)),
 
 
         Lasioglossum_desertum_m= list(Genus="Lasioglossum", SubGenus
@@ -242,6 +250,13 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                               "BBSL1073121",
                                               "BBSL1072817",
                                               "BBSL1072916")),
+
+      Lasioglossum_lusorium_m= list(Genus="Lasioglossum", SubGenus
+                                  ="Sphecodogastra", Species="lusorium",
+                                  SubSpecies="", Sex="m",
+                                  Author = "Cresson",
+                                  Determiner = "J.L. Neff",
+                                  temp.id=  c(22613)),
 
 
     Lasioglossum_sp_f_SPH= list(Genus="Lasioglossum", SubGenus
@@ -315,6 +330,34 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                 Author = "",
                                 Determiner = "J.L. Neff",
                                 temp.id=  c(34598,19922)),
+
+    Lasioglossum_sp_G_m_HEM= list(Genus="Lasioglossum", SubGenus
+                                ="Hemihalictus", Species="sp.",
+                                SubSpecies="G", Sex="m",
+                                Author = "",
+                                Determiner = "J.L. Neff",
+                                temp.id=  c(21150,21153,23070,21155)),
+
+    Lasioglossum_sp_H_m_HEM= list(Genus="Lasioglossum", SubGenus
+                                ="Hemihalictus", Species="sp.",
+                                SubSpecies="H", Sex="m",
+                                Author = "",
+                                Determiner = "J.L. Neff",
+                                temp.id=  c(34441)),
+
+    Lasioglossum_sp_I_m_SPH= list(Genus="Lasioglossum", SubGenus
+                                ="Sphecodogastra", Species="sp.",
+                                SubSpecies="I", Sex="m",
+                                Author = "",
+                                Determiner = "J.L. Neff",
+                                temp.id=  c(18707,32541,32709)),
+
+    Lasioglossum_sp_J_m_SPH= list(Genus="Lasioglossum", SubGenus
+                                ="Sphecodogastra", Species="sp.",
+                                SubSpecies="J", Sex="m",
+                                Author = "",
+                                Determiner = "J.L. Neff",
+                                temp.id=  c(22960,22436)),
 
     Lasioglossum_sp_m_SPH= list(Genus="Lasioglossum", SubGenus
                                 ="Sphecodogastra", Species="sp.",
@@ -1852,6 +1895,16 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
 
                                           )),
 
+    Lasioglossum_sisymbrii_m = list(Genus="Lasioglossum", SubGenus
+                                    ="Lasioglossum",
+                                    Species="sisymbrii",
+                                    SubSpecies="",
+                                    Sex="m",
+                                    Author = "Cockerell",
+                                    Determiner = "J.L. Neff",
+                                    temp.id=
+                                        c(22631)),
+
     Lasioglossum_sisymbrii_f = list(Genus="Lasioglossum", SubGenus
                                     ="Lasioglossum",
                                     Species="sisymbrii",
@@ -2341,6 +2394,14 @@ sp.ids <- list(Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
                                 Author = "Christ",
                                 Determiner = "D. Yanega",
                                 temp.id= c("BBSL1073518", "25065")),
+
+      Halictus_confusus_m= list(Genus="Halictus",
+                                SubGenus ="Seladonia",
+                                Species="confusus",
+                                SubSpecies="", Sex="m",
+                                Author = "Smith",
+                                Determiner = "J.L. Neff",
+                                temp.id= c(19731)),
 
        Lasioglossum_obnubilum_f = list(Genus="Lasioglossum",
                                    SubGenus="",
