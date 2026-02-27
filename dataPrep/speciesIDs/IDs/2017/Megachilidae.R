@@ -155,6 +155,14 @@ sp.ids <- list(
                                          "BBSL1074321", "BBSL1070323",
                                          "BBSL1085690")),
 
+    Megachile_comata_m = list(Genus="Megachile", SubGenus ="Xanthosarus",
+                              Species="comata", SubSpecies="",
+                              Sex="m",
+                              Author = "Cresson", Determiner = "J.L. Neff",
+                              temp.id= c(36134)),
+
+    
+
     Megachile_fidelis_f = list(Genus="Megachile", SubGenus ="Sayapis",
                                Species="fidelis", SubSpecies="",
                                Sex="f",
@@ -197,13 +205,19 @@ sp.ids <- list(
 Megachile_frigida_f = list(Genus="Megachile", SubGenus ="Xanthosarus",
                                Species="frigida", SubSpecies="",
                                Sex="f", Author = "Smith", Determiner = "J.L. Neff",
-                               temp.id=  c(34534,23604,36268)),
+                               temp.id=  c(34534,23604,36268,34478)),
     
     Megachile_frigida_m = list(Genus="Megachile", SubGenus ="Xanthosarus",
                                Species="frigida", SubSpecies="",
                                Sex="m", Author = "Smith",
                                Determiner = "T. Griswold",
                                temp.id=  c("BBSL1071351", "BBSL1058683")),
+
+    Megachile_snowi_f = list(Genus="Megachile", SubGenus ="",
+                               Species="snowi", SubSpecies="",
+                               Sex="f", Author = "Smith",
+                               Determiner = "J.L. Neff",
+                               temp.id=  c(19032)),
 
     Megachile_gemula_f = list(Genus="Megachile", SubGenus ="Xanthosarus",
                               Species="gemula", SubSpecies="",
@@ -308,6 +322,14 @@ Megachile_frigida_f = list(Genus="Megachile", SubGenus ="Xanthosarus",
                                               "BBSL1084974",
 
                                               "BBSL1084996")),
+
+    Megachile_melanophaea_f = list(Genus="Megachile",
+                                   SubGenus ="Xanthosarus",
+                                   Species="melanophaea",
+                                   SubSpecies="", Sex="f",
+                                   Author = "Smith",
+                                   Determiner = "J.L. Neff",
+                                   temp.id= c(34535)),
 
     Megachile_melanophaea_m = list(Genus="Megachile",
                                    SubGenus ="Xanthosarus", Species="melanophaea",
@@ -511,6 +533,12 @@ Megachile_frigida_f = list(Genus="Megachile", SubGenus ="Xanthosarus",
                                 temp.id= c("BBSL1085402",
                                            "BBSL1087177")),
 
+     Megachile_relativa_m = list(Genus="Megachile",
+                                SubGenus ="Megachile", Species="relativa",
+                                SubSpecies="", Sex="m",
+                                Author = "Cresson", Determiner = "J.L. Neff",
+                                temp.id= c(19473,25145)),
+
     Megachile_subexilis_f = list(Genus="Megachile",
                                  SubGenus ="Chelostomoides", Species="subexilis",
                                  SubSpecies="", Sex="f",
@@ -620,6 +648,54 @@ Megachile_frigida_f = list(Genus="Megachile", SubGenus ="Xanthosarus",
                       SubSpecies="", Sex="f",
                       Author = "Cockerell", Determiner = "T. Griswold",
                       temp.id= c("BBSL1084688")),
+
+    Osmia_subaustralis = list(Genus="Osmia",
+                      SubGenus ="Cephalosmia", Species="subaustralis",
+                      SubSpecies="", Sex="f",
+                      Author = "Cockerell", Determiner = "J.L. Neff",
+                      temp.id= c(21274)),
+
+    Osmia_pentstemonis = list(Genus="Osmia",
+                      SubGenus ="Melanosmia", Species="pentstemonis",
+                      SubSpecies="", Sex="f",
+                      Author = "Cockerell", Determiner = "J.L. Neff",
+                      temp.id= c(34454,34622)),
+
+    Osmia_sp_1 = list(Genus="Osmia",
+                      SubGenus ="Melanosmia", Species="sp.",
+                      SubSpecies="1", Sex="f",
+                      Author = "", Determiner = "J.L. Neff",
+                      temp.id= c(36267,20846)),
+
+    Osmia_sp_2 = list(Genus="Osmia",
+                      SubGenus ="Melanosmia", Species="sp.",
+                      SubSpecies="2", Sex="f",
+                      Author = "", Determiner = "J.L. Neff",
+                      temp.id= c(38861)),
+
+    Osmia_sp_3 = list(Genus="Osmia",
+                      SubGenus ="Melanosmia", Species="sp.",
+                      SubSpecies="3", Sex="f",
+                      Author = "", Determiner = "J.L. Neff",
+                      temp.id= c(20954)),
+
+    Osmia_sp_4 = list(Genus="Osmia",
+                      SubGenus ="Melanosmia", Species="sp.",
+                      SubSpecies="4", Sex="f",
+                      Author = "", Determiner = "J.L. Neff",
+                      temp.id= c(23620)),
+
+    Osmia_sp_5 = list(Genus="Osmia",
+                      SubGenus ="Melanosmia", Species="sp.",
+                      SubSpecies="5", Sex="f",
+                      Author = "", Determiner = "J.L. Neff",
+                      temp.id= c(20934)),
+
+    Osmia_sp_6 = list(Genus="Osmia",
+                      SubGenus ="Melanosmia", Species="sp.",
+                      SubSpecies="6", Sex="f",
+                      Author = "", Determiner = "J.L. Neff",
+                      temp.id= c(24676)),
 
     Megachile_subexilis_f = list(Genus="Megachile",
                                  SubGenus ="Chelostomoides",
