@@ -197,6 +197,13 @@ sp.ids <- list(
                             Author = "Cockerell",
                             Determiner = "T. Griswold",
                             temp.id= c("BBSL1070592")),
+
+  Colletes_gilensis_f= list(Genus="Colletes", SubGenus ="Productus",
+                            Species="gilensis", SubSpecies="",
+                            Sex="f",
+                            Author = "Cockerell",
+                            Determiner = "J.L. Neff",
+                            temp.id= c(18460)),
   
   Colletes_eulophi_f = list(Genus="Colletes", SubGenus ="",
                             Species="eulophi", SubSpecies="", Sex="f",
