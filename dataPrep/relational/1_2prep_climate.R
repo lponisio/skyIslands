@@ -42,10 +42,10 @@ sample_windows <- weather %>%
   group_by(Site, Year) %>%
   mutate(
     baseline_start = as.Date(paste0(Year, "-05-01")),
-    # Define cumulative window start (May 1 for first round, previous
-    # end for later rounds)
-    window_start = lag(EndDate, default = first(baseline_start)),
-    window_end   = StartDate - days(1)
+    # # Define cumulative window start (May 1 for first round, previous
+    # # end for later rounds)
+    # window_start = lag(EndDate, default = first(baseline_start)),
+    # window_end   = StartDate - days(1)
   ) %>%
   ungroup()
 
@@ -53,10 +53,10 @@ sample_windows <- weather %>%
 # Calculate cumulative precipitation 
 ## *******************************************************************
 
-daily_files <- list.files(daily_precip_dir, pattern = "\\.csv$",
+daily_precip_files  <- list.files(daily_precip_dir, pattern = "\\.csv$",
                           full.names = TRUE)
 
-daily_precip_data <- daily_files %>%
+daily_precip_data <- daily_precip_files  %>%
   set_names() %>%
   map_dfr(~ read_csv(.x, skip = 10) %>%
             select(Name, `ppt (mm)`, Date) %>%
@@ -64,54 +64,6 @@ daily_precip_data <- daily_files %>%
             mutate(Date = ymd(Date),
                    Year = year(Date)))
 
-## ---- Compute Spring Precipitation (May 1 → day before first round) ----
-spring_precip <- sample_windows %>%
-  group_by(Site, Year) %>%
-  slice_min(SampleRound) %>%         # first round per Site/Year
-  ungroup() %>%
-  select(Site, Year, baseline_start, StartDate) %>%
-  rename(window_start = baseline_start, round_start = StartDate) %>%
-  left_join(daily_precip_data, by = c("Site", "Year")) %>%
-  filter(Date >= window_start & Date < round_start) %>%
-  group_by(Site, Year) %>%
-  summarize(SpringPrecip = sum(Precip, na.rm = TRUE), .groups = "drop")
-
-## ---- Compute Round Precipitation (during each round) ----
-# round_precip <- sample_windows %>%
-#   left_join(daily_precip_data, by = c("Site", "Year"), relationship = "many-to-many") %>%
-#   filter(Date >= StartDate & Date <= EndDate) %>%
-#   group_by(Site, Year, SampleRound, StartDate, EndDate) %>%
-#   summarize(RoundPrecip = sum(Precip, na.rm = TRUE), .groups = "drop")
-
-round_precip <- sample_windows %>%
-  rowwise() %>%
-  mutate(
-    RoundPrecip = sum(
-      daily_precip_data$Precip[
-        daily_precip_data$Site == Site &
-          daily_precip_data$Year == Year &
-          daily_precip_data$Date >= StartDate &
-          daily_precip_data$Date <= EndDate
-      ],
-      na.rm = TRUE
-    )
-  ) %>%
-  ungroup() %>%
-  select(Site, Year, SampleRound, StartDate, EndDate, RoundPrecip)
-
-## ---- Compute Cumulative Precipitation (spring + all previous rounds) ----
-# Step 1: Combine spring + round precipitation
-precip_combined <- round_precip %>%
-  left_join(spring_precip, by = c("Site", "Year")) %>%
-  arrange(Site, Year, SampleRound) %>%
-  group_by(Site, Year) %>%
-  mutate(
-    # Cumulative sum: spring precipitation + sum of previous rounds
-    CumulativePrecip = SpringPrecip + cumsum(lag(RoundPrecip, default = 0))
-  ) %>%
-  ungroup() %>%
-  select(Site, Year, SampleRound, StartDate, EndDate,
-         SpringPrecip, RoundPrecip, CumulativePrecip)
 ## *******************************************************************
 ## Calculate antecedent precipitation
 ## *******************************************************************
@@ -128,16 +80,13 @@ precip <- daily_precip_data %>%
   ungroup() %>% 
   rename(EndDate = Date) #change name for joining at the end
 
-
-
 ## *******************************************************************
 ## Calculate temperature anomalies 
 ## *******************************************************************
+daily_temp_files  <- list.files(daily_temp_dir, pattern = "\\.csv$", full.names = TRUE)
 
-daily_files <- list.files(daily_temp_dir, pattern = "\\.csv$", full.names = TRUE)
 
-
-daily_temp_data <- daily_files %>%
+daily_temp_data <- daily_temp_files %>%
   set_names() %>%
   map_dfr(~ read_csv(.x, skip = 10) %>%   # adjust skip if needed
             rename(
@@ -173,75 +122,66 @@ daily_temp_data <- daily_temp_data %>%
   left_join(monthly_normals, by = c("Site", "Month")) %>%
   mutate(Tmean_anomaly = tmean - Tmean_normal)
 
-## ---- Compute Spring Tmean (May 1 → day before first round) ----
-spring_tmean <- sample_windows %>%
-  group_by(Site, Year) %>%
-  slice_min(SampleRound) %>%
-  ungroup() %>%
-  select(Site, Year, baseline_start, StartDate) %>%
-  rename(window_start = baseline_start, round_start = StartDate) %>%
-  left_join(daily_temp_data, by = c("Site", "Year")) %>%
-  filter(Date >= window_start & Date < round_start) %>%
-  group_by(Site, Year) %>%
-  summarize(
-    SpringTmean = mean(tmean, na.rm = TRUE),
-    SpringTmeanAnom = mean(Tmean_anomaly, na.rm = TRUE),
-    .groups = "drop"
-  )
- 
-## ---- Compute Round Tmean ----
-# round_tmean <- sample_windows %>%
-#   left_join(daily_temp_data, by = c("Site", "Year"), relationship = "many-to-many") %>%
-#   filter(Date >= StartDate & Date <= EndDate) %>%
-#   group_by(Site, Year, SampleRound, StartDate, EndDate) %>%
-#   summarize(
-#     RoundTmean = mean(tmean, na.rm = TRUE),
-#     RoundTmeanAnom = mean(Tmean_anomaly, na.rm = TRUE),
-#     .groups = "drop"
-#   )
+## *******************************************************************
+## Compute window TMeanAnomaly
+## Mirrors the APi structure: start from May 1, run continuously
+## through the end of each sample round. No spring/round split.
+## *******************************************************************
 
-round_tmean <- sample_windows %>%
+tmean_combined <- sample_windows %>%
   rowwise() %>%
   mutate(
+    # Pull all daily anomaly values from May 1 through end of this round
+    daily_slice = list(
+      daily_temp_data %>%
+        filter(
+          Site == .data$Site,
+          Year == .data$Year,
+          Date >= baseline_start,   # May 1
+          Date <= EndDate            # end of this sample round
+        ) %>%
+        pull(Tmean_anomaly)
+    ),
+    
+    # Mean anomaly over the full window (May 1 → round end)
+    # This is the cumulative signal, consistent with how APi works
+    WindowTmeanAnom = mean(unlist(daily_slice), na.rm = TRUE),
+    
+    # Round-window-only anomaly (StartDate → EndDate), kept for diagnostics
+    daily_slice_round = list(
+      daily_temp_data %>%
+        filter(
+          Site == .data$Site,
+          Year == .data$Year,
+          Date >= StartDate,
+          Date <= EndDate
+        ) %>%
+        pull(Tmean_anomaly)
+    ),
+    RoundTmeanAnom = mean(unlist(daily_slice_round), na.rm = TRUE),
+    
+    # Plain tmean versions (same windows, no anomaly)
+    WindowTmean    = mean(
+      daily_temp_data$tmean[
+        daily_temp_data$Site == Site &
+          daily_temp_data$Year == Year &
+          daily_temp_data$Date >= baseline_start &
+          daily_temp_data$Date <= EndDate
+      ], na.rm = TRUE),
+    
     RoundTmean = mean(
       daily_temp_data$tmean[
         daily_temp_data$Site == Site &
           daily_temp_data$Year == Year &
           daily_temp_data$Date >= StartDate &
           daily_temp_data$Date <= EndDate
-      ],
-      na.rm = TRUE
-    ),
-    RoundTmeanAnom = mean(
-      daily_temp_data$Tmean_anomaly[
-        daily_temp_data$Site == Site &
-          daily_temp_data$Year == Year &
-          daily_temp_data$Date >= StartDate &
-          daily_temp_data$Date <= EndDate
-      ],
-      na.rm = TRUE
-    )
-  ) %>%
-  ungroup() %>%
-  select(
-    Site, Year, SampleRound, StartDate, EndDate,
-    RoundTmean, RoundTmeanAnom
-  )
-
-## ---- Compute Cumulative Tmean (spring + previous rounds) ----
-tmean_combined <- round_tmean %>%
-  left_join(spring_tmean, by = c("Site", "Year")) %>%
-  arrange(Site, Year, SampleRound) %>%
-  group_by(Site, Year) %>%
-  mutate(
-    CumulativeTmean = SpringTmean + cumsum(lag(RoundTmean, default = 0)),
-    CumulativeTmeanAnom = SpringTmeanAnom + cumsum(lag(RoundTmeanAnom, default = 0))
+      ], na.rm = TRUE)
+    
   ) %>%
   ungroup() %>%
   select(Site, Year, SampleRound, StartDate, EndDate,
-         SpringTmean, RoundTmean, CumulativeTmean,
-         SpringTmeanAnom, RoundTmeanAnom, CumulativeTmeanAnom)
-
+         RoundTmean, RoundTmeanAnom,
+         WindowTmean, WindowTmeanAnom)
 
 ## *******************************************************************
 ## Calculate growing degree days 
@@ -266,24 +206,32 @@ gdd <- daily_temp_data %>%
   ungroup() %>% 
   rename(EndDate = Date)
 
-## Combine the dataframes of gdd and api. Keep only the important columns 
-combined_gdd_api <-precip %>% 
-  select(Site, Year, EndDate, APi) %>% 
-  left_join(gdd,
-            by = c("Site", "Year", "EndDate")) %>% 
-  select(Site, Year, EndDate, APi, GDD)
+# ## Combine the dataframes of gdd and api. Keep only the important columns 
+# combined_gdd_api <-precip %>% 
+#   select(Site, Year, EndDate, APi) %>% 
+#   left_join(gdd,
+#             by = c("Site", "Year", "EndDate")) %>% 
+#   select(Site, Year, EndDate, APi, GDD)
   
 
 # ---- Combine precipitation and temperature summaries ----
-climate_combined <- precip_combined %>%
+climate_combined <- tmean_combined %>%
   left_join(
-    tmean_combined,
-    by = c("Site", "Year", "SampleRound", "StartDate", "EndDate")
-  ) 
+    precip %>% select(Site, Year, EndDate, APi),
+    by = c("Site", "Year", "EndDate")
+  ) %>%
+  left_join(
+    gdd %>% select(Site, Year, EndDate, GDD),
+    by = c("Site", "Year", "EndDate")
+  )
 
-climate_combined <- climate_combined %>% 
-  left_join(combined_gdd_api,
-            by = c("Site", "Year", "EndDate"))
+# climate_combined <- tmean_combined %>%
+#   left_join(precip %>% select(Site, Year, EndDate),
+#     by = c("Site", "Year", "EndDate"))
+# 
+# climate_combined <- climate_combined %>% 
+#   left_join(combined_gdd_api,
+#             by = c("Site", "Year", "EndDate"))
 
 ###########################################
 ## Calculate precipitation and temperature variability ##
@@ -299,7 +247,7 @@ annual_precip_var <- daily_precip_data %>%
   group_by(Site, Year) %>% 
   summarise(PrecipSD = sd(Precip, na.rm = TRUE))
 
-## Calculate annual temp and temp anomoly variability ##
+## Calculate annual temp and temp anomaly variability ##
 annual_temp_var <- daily_temp_data %>% 
           # marking May 1st as time of year where temperatures are above freezing
   mutate(baseline_start = as.Date(paste0(Year, "-05-01")),
@@ -320,8 +268,138 @@ climate_combined <- climate_combined %>%
   left_join(climate_variability,
             by = c("Site", "Year"))
 
+climate_combined <- climate_combined %>%
+  select(
+    Site, Year, SampleRound, StartDate, EndDate,
+    APi, WindowTmean,
+    WindowTmeanAnom,
+    RoundTmeanAnom,
+    GDD,
+    PrecipSD, TempDifSD, TempMeanSD, TempAnomSD
+  )
+
 write.csv(climate_combined, file =
                               "data/relational/original/climate.csv", row.names=FALSE)
+
+
+
+# ## ---- Compute Spring Precipitation (May 1 → day before first round) ----
+# spring_precip <- sample_windows %>%
+#   group_by(Site, Year) %>%
+#   slice_min(SampleRound) %>%         # first round per Site/Year
+#   ungroup() %>%
+#   select(Site, Year, baseline_start, StartDate) %>%
+#   rename(window_start = baseline_start, round_start = StartDate) %>%
+#   left_join(daily_precip_data, by = c("Site", "Year")) %>%
+#   filter(Date >= window_start & Date < round_start) %>%
+#   group_by(Site, Year) %>%
+#   summarize(SpringPrecip = sum(Precip, na.rm = TRUE), .groups = "drop")
+
+## ---- Compute Round Precipitation (during each round) ----
+## round_precip <- sample_windows %>%
+##   left_join(daily_precip_data, by = c("Site", "Year"), relationship = "many-to-many") %>%
+##   filter(Date >= StartDate & Date <= EndDate) %>%
+##   group_by(Site, Year, SampleRound, StartDate, EndDate) %>%
+##   summarize(RoundPrecip = sum(Precip, na.rm = TRUE), .groups = "drop")
+
+# round_precip <- sample_windows %>%
+#   rowwise() %>%
+#   mutate(
+#     RoundPrecip = sum(
+#       daily_precip_data$Precip[
+#         daily_precip_data$Site == Site &
+#           daily_precip_data$Year == Year &
+#           daily_precip_data$Date >= StartDate &
+#           daily_precip_data$Date <= EndDate
+#       ],
+#       na.rm = TRUE
+#     )
+#   ) %>%
+#   ungroup() %>%
+#   select(Site, Year, SampleRound, StartDate, EndDate, RoundPrecip)
+
+## ---- Compute Cumulative Precipitation (spring + all previous rounds) ----
+# Step 1: Combine spring + round precipitation
+# precip_combined <- round_precip %>%
+#   left_join(spring_precip, by = c("Site", "Year")) %>%
+#   arrange(Site, Year, SampleRound) %>%
+#   group_by(Site, Year) %>%
+#   mutate(
+#     # Cumulative sum: spring precipitation + sum of previous rounds
+#     CumulativePrecip = SpringPrecip + cumsum(lag(RoundPrecip, default = 0))
+#   ) %>%
+#   ungroup() %>%
+#   select(Site, Year, SampleRound, StartDate, EndDate,
+#          SpringPrecip, RoundPrecip, CumulativePrecip)
+
+# ## ---- Compute Spring Tmean (May 1 → day before first round) ----
+# spring_tmean <- sample_windows %>%
+#   group_by(Site, Year) %>%
+#   slice_min(SampleRound) %>%
+#   ungroup() %>%
+#   select(Site, Year, baseline_start, StartDate) %>%
+#   rename(window_start = baseline_start, round_start = StartDate) %>%
+#   left_join(daily_temp_data, by = c("Site", "Year")) %>%
+#   filter(Date >= window_start & Date < round_start) %>%
+#   group_by(Site, Year) %>%
+#   summarize(
+#     SpringTmean = mean(tmean, na.rm = TRUE),
+#     SpringTmeanAnom = mean(Tmean_anomaly, na.rm = TRUE),
+#     .groups = "drop"
+#   )
+#  
+## ---- Compute Round Tmean ----
+# round_tmean <- sample_windows %>%
+#   left_join(daily_temp_data, by = c("Site", "Year"), relationship = "many-to-many") %>%
+#   filter(Date >= StartDate & Date <= EndDate) %>%
+#   group_by(Site, Year, SampleRound, StartDate, EndDate) %>%
+#   summarize(
+#     RoundTmean = mean(tmean, na.rm = TRUE),
+#     RoundTmeanAnom = mean(Tmean_anomaly, na.rm = TRUE),
+#     .groups = "drop"
+#   )
+
+# round_tmean <- sample_windows %>%
+#   rowwise() %>%
+#   mutate(
+#     RoundTmean = mean(
+#       daily_temp_data$tmean[
+#         daily_temp_data$Site == Site &
+#           daily_temp_data$Year == Year &
+#           daily_temp_data$Date >= StartDate &
+#           daily_temp_data$Date <= EndDate
+#       ],
+#       na.rm = TRUE
+#     ),
+#     RoundTmeanAnom = mean(
+#       daily_temp_data$Tmean_anomaly[
+#         daily_temp_data$Site == Site &
+#           daily_temp_data$Year == Year &
+#           daily_temp_data$Date >= StartDate &
+#           daily_temp_data$Date <= EndDate
+#       ],
+#       na.rm = TRUE
+#     )
+#   ) %>%
+#   ungroup() %>%
+#   select(
+#     Site, Year, SampleRound, StartDate, EndDate,
+#     RoundTmean, RoundTmeanAnom
+#   )
+# 
+# ## ---- Compute Cumulative Tmean (spring + previous rounds) ----
+# tmean_combined <- round_tmean %>%
+#   left_join(spring_tmean, by = c("Site", "Year")) %>%
+#   arrange(Site, Year, SampleRound) %>%
+#   group_by(Site, Year) %>%
+#   mutate(
+#     CumulativeTmean = SpringTmean + cumsum(lag(RoundTmean, default = 0)),
+#     CumulativeTmeanAnom = SpringTmeanAnom + cumsum(lag(RoundTmeanAnom, default = 0))
+#   ) %>%
+#   ungroup() %>%
+#   select(Site, Year, SampleRound, StartDate, EndDate,
+#          SpringTmean, RoundTmean, CumulativeTmean,
+#          SpringTmeanAnom, RoundTmeanAnom, CumulativeTmeanAnom)
 
 # # ===============================================
 # # Compute cumulative and round precipitation
