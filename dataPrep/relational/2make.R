@@ -130,10 +130,8 @@ specimens$cond.code <- apply(specimens[keep.spec], 1, paste, collapse=";")
 ## make table
 keep <- c("Date", "SampleRound", "NetNumber", "Method", "StartTime",
           "EndTime", "TempStart", "TempEnd", "WindStart", "WindEnd",
-          "SkyStart", "SkyEnd", "SpringPrecip", "CumulativePrecip",
-          "RoundPrecip", "SpringTmean", "RoundTmean",
-          "CumulativeTmean", "SpringTmeanAnom", "RoundTmeanAnom",
-          "CumulativeTmeanAnom", "APi", "GDD",
+          "SkyStart", "SkyEnd", "WindowTmean", "WindowTmeanAnom", "RoundTmeanAnom",
+          "APi", "GDD",
           "GeographyFK", "cond.code")
 
 cond <- unique(conditions[keep])
