@@ -93,7 +93,7 @@ sp.ids <- list(
                                 SubGenus ="Alcidamea",
                                 Species="albifrons",
                                 SubSpecies="", Sex="m",
-                                Author = "Kirby",
+                                Author = "Kirby, 1837",
                                 Determiner = "T. Griswold",
                                 temp.id= c("BBSL1059785", "20951")),
 
@@ -101,7 +101,7 @@ sp.ids <- list(
                                 SubGenus ="Alcidamea",
                                 Species="albifrons",
                                 SubSpecies="", Sex="f",
-                                Author = "Kirby",
+                                Author = "Kirby, 1837",
                                 Determiner = "T. Griswold",
                                 temp.id= c("BBSL1072040",
                                            "BBSL1059786", "BBSL1087003",

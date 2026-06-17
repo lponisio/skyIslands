@@ -53,7 +53,7 @@ sp.ids <- list(
      Lasioglossum_obnubilum_f= list(Genus="Lasioglossum", SubGenus
                                       ="", Species="obnubilum",
                                       SubSpecies="", Sex="f",
-                                      Author = "Sandhouse",
+                                      Author = "Sandhouse, 1924",
                                       Determiner = "J.L. Neff",
                                       temp.id=  c(36310, 35588, 35583, 35582, 35561, 
                                                   35549, 35534, 35807, 35808, 36066, 
@@ -83,7 +83,7 @@ sp.ids <- list(
 
     Dufourea_maura_f= list(Genus="Dufourea", SubGenus ="",
                            Species="maura", SubSpecies="",
-                           Sex="f", Author = "Cresson",
+                           Sex="f", Author = "Cresson, 1878",
                            Determiner = "L. Best",
                            temp.id= c(33448, 33449, 
                                       #added HBL 3/20/24
@@ -91,7 +91,7 @@ sp.ids <- list(
 
     Dufourea_maura_f= list(Genus="Dufourea", SubGenus ="",
                            Species="maura", SubSpecies="",
-                           Sex="f", Author = "Cresson",
+                           Sex="f", Author = "Cresson, 1878",
                            Determiner = "J. F. Zorn",
                            temp.id= c(33571, 33572, 33573, 33574,
                                       33575, 33576, 33588, 33708,
@@ -99,8 +99,8 @@ sp.ids <- list(
                                       36218, 35615)),
 
     Dufourea_fimbriata_f= list(Genus="Dufourea", SubGenus ="",
-                               Species="maura", SubSpecies="",
-                               Sex="f", Author = "Cresson",
+                               Species="fimbriata", SubSpecies="",
+                               Sex="f", Author = "Cresson, 1878",
                                Determiner = "J.L. Neff",
                                temp.id= c(32530, 32710, 31212, 31210, 31230,
                                           32412, 32413, 32406, 32403, 32410,
@@ -117,8 +117,8 @@ sp.ids <- list(
                                           31415, 32396, 31473, 31471, 31208)),
 
     Dufourea_fimbriata_m= list(Genus="Dufourea", SubGenus ="",
-                               Species="maura", SubSpecies="",
-                               Sex="m", Author = "Cresson",
+                               Species="fimbriata", SubSpecies="",
+                               Sex="m", Author = "Cresson, 1878",
                                Determiner = "J.L. Neff",
                                temp.id= c(31235, 31207, 31416, 32665, 32552,
                                           32415, 31377, 31243)),

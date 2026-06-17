@@ -121,13 +121,13 @@ sp.ids <- list(
 
     Dufourea_maura_f= list(Genus="Dufourea", SubGenus ="",
                            Species="maura", SubSpecies="",
-                           Sex="f", Author = "Cresson",
+                           Sex="f", Author = "Cresson, 1878",
                            Determiner = "J.L. Neff",
                            temp.id= c("19524", "22162", "22154", "19563")),
 
     Dufourea_maura_f= list(Genus="Dufourea", SubGenus ="",
                            Species="maura", SubSpecies="",
-                           Sex="f", Author = "Cresson",
+                           Sex="f", Author = "Cresson, 1878",
                            Determiner = "L.C. Ponisio",
                            temp.id= c("17665", "18432", "18427",
                                       "17936", "17935", "17940",
@@ -135,13 +135,13 @@ sp.ids <- list(
 
     Dufourea_maura_m= list(Genus="Dufourea", SubGenus ="",
                            Species="maura", SubSpecies="",
-                           Sex="m", Author = "Cresson",
+                           Sex="m", Author = "Cresson, 1878",
                            Determiner = "L.C. Ponisio",
                            temp.id= c("18124", "18242")),
 
     Dufourea_maura_m= list(Genus="Dufourea", SubGenus ="",
                            Species="maura", SubSpecies="",
-                           Sex="m", Author = "Cresson",
+                           Sex="m", Author = "Cresson, 1878",
                            Determiner = "J.L. Neff",
                            temp.id= c("19090")),
 
@@ -392,7 +392,7 @@ sp.ids <- list(
                                    Species="obnubilum",
                                    SubSpecies="",
                                    Sex="f",
-                                   Author = "Sandhouse",
+                                   Author = "Sandhouse, 1924",
                                    Determiner = "J. Gardener",
                                    temp.id= c("18698", "18572", "17662")),
 
@@ -401,7 +401,7 @@ sp.ids <- list(
                                    Species="obnubilum",
                                    SubSpecies="",
                                    Sex="f",
-                                   Author = "Sandhouse",
+                                   Author = "Sandhouse, 1924",
                                    Determiner = "J.L. Neff",
                                    temp.id= c("17750","20344","19884","19895",
                                               "19526","19534","19531","20195",
@@ -414,7 +414,7 @@ sp.ids <- list(
                                    Species="obnubilum",
                                    SubSpecies="",
                                    Sex="m",
-                                   Author = "Sandhouse",
+                                   Author = "Sandhouse, 1924",
                                    Determiner = "J. Gardener",
                                    temp.id= c("18547")),
 
@@ -438,7 +438,7 @@ sp.ids <- list(
     Lasioglossum_obnubilum_f= list(Genus="Lasioglossum", SubGenus
                                       ="", Species="obnubilum",
                                       SubSpecies="", Sex="f",
-                                      Author = "Sandhouse",
+                                      Author = "Sandhouse, 1924",
                                       Determiner = "J.L. Neff",
                                       temp.id=  c("20272")),
 

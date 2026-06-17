@@ -659,7 +659,7 @@ sp.ids <- list(
     Bombus_sonorus_f = list(Genus = "Bombus", SubGenus="Thoracobombus",
                             Species = "sonorus",  Determiner="R.W. Thorp",
                             SubSpecies = "", Sex ="f",
-                            Author = "Say",
+                            Author = "Say, 1837",
                             temp.id =
                                 c(
                                     "CH_082012_136","CH_082112_177",

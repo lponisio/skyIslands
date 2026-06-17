@@ -238,7 +238,7 @@ sp.ids <- list(
                                 SubGenus ="Alcidamea",
                                 Species="albifrons",
                                 SubSpecies="", Sex="m",
-                                Author = "Kirby",
+                                Author = "Kirby, 1837",
                                 Determiner = "L. Best",
                                 temp.id= c(30941, 30918)),
 
@@ -246,7 +246,7 @@ sp.ids <- list(
                                 SubGenus ="Alcidamea",
                                 Species="albifrons",
                                 SubSpecies="", Sex="f",
-                                Author = "Kirby",
+                                Author = "Kirby, 1837",
                                 Determiner = "L. Best",
                                 temp.id= c(30919)),
 

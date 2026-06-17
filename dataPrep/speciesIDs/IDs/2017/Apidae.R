@@ -460,14 +460,14 @@ sp.ids <- list(
     Bombus_appositus_f = list(Genus = "Bombus",
                               SubGenus="Subterraneobombus",
                               Species = "appositus", SubSpecies = "",
-                              Sex ="f", Author = "Cresson",
+                              Sex ="f", Author = "Cresson, 1879",
                               Determiner="D. Yanega",
                               temp.id = c("BBSL1070618", "BBSL1058678")),
 
     Bombus_appositus_m = list(Genus = "Bombus",
                               SubGenus="Subterraneobombus",
                               Species = "appositus", SubSpecies = "",
-                              Sex ="m", Author = "Cresson",
+                              Sex ="m", Author = "Cresson, 1879",
                               Determiner="D. Yanega",
                               temp.id = c("BBSL1070676")),
 

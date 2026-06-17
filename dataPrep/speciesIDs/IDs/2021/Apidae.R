@@ -224,14 +224,14 @@ sp.ids <- list(
     Bombus_sonorus_f = list(Genus = "Bombus", SubGenus="Thoracobombus",
                             Species = "sonorus",
                             SubSpecies = "", Sex ="f",
-                            Author = "Say",
+                            Author = "Say, 1837",
                             Determiner="L. Best",
                             temp.id = c(32483, 32511)),
 
     Bombus_appositus_f = list(Genus = "Bombus", SubGenus="Subterraneobombus",
-                              Species = "sonorus",
+                              Species = "appositus",
                               SubSpecies = "", Sex ="f",
-                              Author = "Cresson",
+                              Author = "Cresson, 1879",
                               Determiner="",
                               temp.id = c(31187)),
 

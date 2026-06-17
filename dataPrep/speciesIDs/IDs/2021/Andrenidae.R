@@ -330,7 +330,7 @@ sp.ids <- list(
                                Species="bakeri",
                                SubSpecies="",
                                Sex="f",
-                               Author = "Cockerell",
+                               Author = "Cockerell, 1896",
                                Determiner="",
                                temp.id= c(31888, 32408, 32400, 32299,
                                           32577, 33869, 33363,
@@ -374,12 +374,12 @@ sp.ids <- list(
                                          #added HBL 2/13/24
                                           34198, 33252, 33965)),
 
-     Psuedopanurgus_bakeri_m= list(Genus="Pseudopanurgus",
+     Pseudopanurgus_bakeri_m= list(Genus="Pseudopanurgus",
                                 SubGenus ="",
                                 Species="bakeri",
                                 SubSpecies="",
                                 Sex="m",
-                                Author = "Cockerell",
+                                Author = "Cockerell, 1896",
                                 Determiner="J.L. Neff",
                                 temp.id= c(35956, 36323, 36337, 36320, 
                                            36308, 35955, 35974, 35977, 

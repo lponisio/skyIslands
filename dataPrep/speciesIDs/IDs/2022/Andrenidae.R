@@ -65,12 +65,12 @@ sp.ids <- list(
                                   temp.id= c(38340, 38296)),
   
 
-    Psuedopanurgus_bakeri_f= list(Genus="Pseudopanurgus",
+    Pseudopanurgus_bakeri_f= list(Genus="Pseudopanurgus",
                                SubGenus ="",
                                Species="bakeri",
                                SubSpecies="",
                                Sex="f",
-                               Author = "Cockerell",
+                               Author = "Cockerell, 1896",
                                Determiner="J.L. Neff",
                                temp.id= c(37365, 38339, 37652, 38332, 38333,
                                           38383, 38384, 38354)),
@@ -80,7 +80,7 @@ sp.ids <- list(
                                Species="bakeri",
                                SubSpecies="",
                                Sex="m",
-                               Author = "Cockerell",
+                               Author = "Cockerell, 1896",
                                Determiner="J.L. Neff",
                                temp.id= c(36977, 37366)),
 

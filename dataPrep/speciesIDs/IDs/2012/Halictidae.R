@@ -358,7 +358,7 @@ Lasioglossum_sisymbrii = list(Genus="Lasioglossum", SubGenus
 
 
     Dufourea_fimbriata_f= list(Genus="Dufourea", SubGenus ="",
-                               Species="fimbriata", SubSpecies="", Sex="f", Author = "Cresson",
+                               Species="fimbriata", SubSpecies="", Sex="f", Author = "Cresson, 1878",
                                Determiner = "T. Griswold",
                                temp.id= c("JC_071512_145",
                                           "JC_071512_195",
@@ -382,7 +382,7 @@ Lasioglossum_sisymbrii = list(Genus="Lasioglossum", SubGenus
     Dufourea_fimbriata_m= list(Genus="Dufourea", SubGenus ="",
                                Species="fimbriata", SubSpecies="",
                                Sex="m",
-                               Author = "Cresson",
+                               Author = "Cresson, 1878",
                                Determiner = "T. Griswold",
                                temp.id= c("JC_071412_22",
                                           "JC_071412_34",
@@ -390,7 +390,7 @@ Lasioglossum_sisymbrii = list(Genus="Lasioglossum", SubGenus
                                           "JC_071712_94")),
 
     Dufourea_maura_f= list(Genus="Dufourea", SubGenus ="",
-                           Species="maura", SubSpecies="", Sex="f", Author = "Cresson",
+                           Species="maura", SubSpecies="", Sex="f", Author = "Cresson, 1878",
                            Determiner = "T. Griswold",
                            temp.id= c("SC_072812_125",
                                       "SC_072812_126", "SC_072912_61",
@@ -398,7 +398,7 @@ Lasioglossum_sisymbrii = list(Genus="Lasioglossum", SubGenus
                                       "SC_072012_197")),
 
     Dufourea_maura_m= list(Genus="Dufourea", SubGenus ="",
-                           Species="maura", SubSpecies="", Sex="m", Author = "Cresson",
+                           Species="maura", SubSpecies="", Sex="m", Author = "Cresson, 1878",
                            Determiner = "T. Griswold",
                            temp.id= c("JC_071712_111", "JC_071412_146")),
 
@@ -757,7 +757,7 @@ Lasioglossum_sisymbrii = list(Genus="Lasioglossum", SubGenus
 
     Lasioglossum_obnubilum= list(Genus="Lasioglossum", SubGenus ="Dialictus",
                                  Species="obnubilum", SubSpecies="",
-                                 Sex="f", Author = "Sandhouse",
+                                 Sex="f", Author = "Sandhouse, 1924",
                                  Determiner = "J. Gibbs",
                                  temp.id= c("JC_071712_161",
                                             "JC_071412_53",

@@ -32,7 +32,7 @@ sp.ids <- list(
 
     Dufourea_maura_f= list(Genus="Dufourea", SubGenus ="",
                            Species="maura", SubSpecies="",
-                           Sex="f", Author = "Cresson",
+                           Sex="f", Author = "Cresson, 1878",
                            Determiner = "",
                            temp.id= c(37762,37763,37457,37363,38404,
                                       37962,37961,38674, 38786, 38800, 38804)),
@@ -110,7 +110,7 @@ sp.ids <- list(
                                   Species="obnubilum",
                                   SubSpecies="",
                                   Sex="f",
-                                  Author = "Sandhouse",
+                                  Author = "Sandhouse, 1924",
                                   Determiner = "",
                                   temp.id= c(31247, 34342, 31231, 33578, 34278, 31115)),
 

@@ -5,7 +5,7 @@ sp.ids <- list(
     "Hesperiidae", Determiner="L.Ponisio", temp.id = c(24886,24811)),
     
     Hesperia_pahaska = list(Genus = "Hesperia", SubGenus="",Species =
-    "pahaska", SubSpecies = "", Sex = "", Author = "Leussler", Family
+    "pahaska", SubSpecies = "", Sex = "", Author = "Leussler, 1938", Family
     = "Hesperiidae", Determiner="L.Ponisio", temp.id = c(23658,24165,30054,24807,24164,24177,24264,24261,24262,24805,24808)),
 
 Burnsius_communis = list(Genus = "Burnsius", SubGenus="", Species =
@@ -210,7 +210,7 @@ Asterocampa_clyton = list(Genus = "Asterocampa", SubGenus="", Species =
     "Nymphalidae", Determiner="ACS", temp.id =c(30111,30027,23737,30011,30004,24129,24181,24127,24887,24106,24855,24856,24132,24250,24186,24183,24125,24182,24124,24184,23873,24179)),
 
 Icaricia_icarioides = list(Genus = "Icaricia", SubGenus="", Species =
-    "icariodes", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
+    "icarioides", SubSpecies = "", Sex = "", Author = "Boisduval, 1852", Family =
     "Lycaenidae", Determiner="ACS", temp.id =c(23688,24209,30538,30537,24212,21524,24824,24870,24244,30083,30512,30535,30511,23804,24840,24839,23702,23666,30586,24245,30141,24239,30545,24238,24237,24198,23757)),
 
 Icaricia_lupini = list(Genus = "Icaricia", SubGenus="", Species =
@@ -304,16 +304,16 @@ Apyrrothrix_araxes = list(Genus = "Apyrrothrix", SubGenus="", Species =
     "araxes", SubSpecies = "", Sex = "", Author = "Hewitson", Family =
     "Hesperiidae", Determiner="ACS", temp.id =c(36351)),
 
-Thorybes_drusius = list(Genus = "Throybes", SubGenus="", Species =
-    "drusius", SubSpecies = "", Sex = "", Author = "Edwards", Family =
+Thorybes_drusius = list(Genus = "Thorybes", SubGenus="", Species =
+    "drusius", SubSpecies = "", Sex = "", Author = "W.H. Edwards, 1884", Family =
     "Hesperiidae", Determiner="ACS", temp.id =c(30062,30117,30039,21469,23708,24828,30149,24836,38596,38443,38447,24812)),
 
 Pseudanthoecia_tumida = list(Genus = "Pseudanthoecia", SubGenus="", Species =
     "tumida", SubSpecies = "", Sex = "", Author = "Grote", Family =
     "Noctuoidae", Determiner="ACS", temp.id =c(24817,20353,20288,20408,20409,19552,20359,30625,25103)),
 
-Lacinipolia_martini = list(Genus = "Lancinipolia", SubGenus="", Species =
-    "martini", SubSpecies = "", Sex = "", Author = "Selman & Leuschner", Family =
+Lacinipolia_martini = list(Genus = "Lacinipolia", SubGenus="", Species =
+    "martini", SubSpecies = "", Sex = "", Author = "Selman & Leuschner, 2000", Family =
     "Noctuidae", Determiner="ACS", temp.id =c(24173,38532)),
 
 Protorthodes_mulina = list(Genus = "Protorthodes", SubGenus="", Species =

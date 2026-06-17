@@ -114,7 +114,7 @@ sp.ids <- list(
     "CH_082112_202")),
 
   Hesperia_pahaska = list(Genus = "Hesperia", SubGenus="",Species =
-    "pahaska", SubSpecies = "", Sex = "", Author = "Leussler", Family
+    "pahaska", SubSpecies = "", Sex = "", Author = "Leussler, 1938", Family
     = "Hesperiidae", Determiner="L.Ponisio", temp.id = c("PL_081012_314", "PL_081012_311",
     "PL_080912_363", "PL_080912_426", "PL_081012_312",
     "PL_081012_309", "PL_081112_111", "PL_081012_302",

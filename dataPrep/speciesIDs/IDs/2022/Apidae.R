@@ -426,7 +426,7 @@ sp.ids <- list(
                             SubGenus="Thoracobombus",
                             Species = "sonorus",
                             SubSpecies = "", Sex ="f",
-                            Author = "Say",
+                            Author = "Say, 1837",
                             Determiner="L. Best",
                             temp.id =
                                 c(38395, 38335, 38352, 38353, 38363,
