@@ -19,11 +19,11 @@ sp.ids <- list(
   ##         Species="lineativentris", SubSpecies="", Sex="", Author =
   ##         "Cameron", Determiner="J. Carpenter", temp.id=c()),
 
-  adiabatus = list(Genus="Ancistrocerus", SubGenus ="",
+  Ancistrocerus_adiabatus_f = list(Genus="Ancistrocerus", SubGenus ="",
           Species="adiabatus", SubSpecies="", Sex="f", Author =
           "Saussure", Determiner="J. Carpenter", temp.id =c("BBSL1059834","BBSL1084979","BBSL1086114")),
 
-  tuberculocephalus = list(Genus="Ancistrocerus", SubGenus ="",
+  Ancistrocerus_tuberculocephalus_f = list(Genus="Ancistrocerus", SubGenus ="",
                            Species="tuberculocephalus", SubSpecies="", Sex="f",
                            Author =  "Saussure",
                            Determiner="K. Watrous",
@@ -47,7 +47,7 @@ sp.ids <- list(
   ##         SubSpecies="", Sex="", Author = "Saussure", Determiner="J. Carpenter", temp.id
   ##         =c()),
 
-   annulatus = list(Genus="Euodynerus", SubGenus ="",
+   Euodynerus_annulatus = list(Genus="Euodynerus", SubGenus ="",
           Species="annulatus", SubSpecies="", Sex="", Author = "Say",
           Determiner="J. Carpenter", temp.id =c("BBSL1058704")),
 
@@ -55,7 +55,7 @@ sp.ids <- list(
    ##        Species="herrichii", SubSpecies="aldrichi", Sex="", Author =
    ##        "Fox", Determiner="J. Carpenter", temp.id =c()),
 
-   toas = list(Genus="Stenodynerus", SubGenus ="", Species="toas",
+   Stenodynerus_toas = list(Genus="Stenodynerus", SubGenus ="", Species="toas",
           SubSpecies="", Sex="", Author = "Cresson", Determiner="J. Carpenter", temp.id
           =c("BBSL1084744", "BBSL1072821", "BBSL1072842", "BBSL1071943", "BBSL1058702"))
 )

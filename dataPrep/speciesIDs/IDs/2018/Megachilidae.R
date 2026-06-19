@@ -53,19 +53,10 @@ sp.ids <- list(
                                SubSpecies="",
                                Sex="f",
                                Author = "Cresson",
-                               Determiner = "K. Watrous",
-                               temp.id= c("17937", 
-                               "18227",
-                                          "20431", "20433")),
-
-        Megachile_fidelis_f = list(Genus="Megachile",
-                               SubGenus ="Sayapis",
-                               Species="fidelis",
-                               SubSpecies="",
-                               Sex="f",
-                               Author = "Cresson",
-                               Determiner = "J.L. Neff",
-                               temp.id= c("25012","19748")),
+                               Determiner = "K. Watrous, J.L. Neff",
+                               temp.id= c(
+                                             "17937", "18227", "20431", "20433",
+                                             "25012", "19748")),
     
     Megachile_fidelis_m = list(Genus="Megachile",
                                SubGenus ="Sayapis",
@@ -143,8 +134,9 @@ sp.ids <- list(
                                    Species="mellitarsis",
                                    SubSpecies="", Sex="f",
                                    Author = "Cresson",
-                                   Determiner = "K. Watrous",
-                                   temp.id= c("18224")),
+                                   Determiner = "K. Watrous, T. Griswold",
+                                   temp.id= c(
+                                             "18224", "20430")),
 
     Heriades_cressoni_f = list(Genus="Heriades",
                                SubGenus ="Neotrypetes",
@@ -184,13 +176,6 @@ sp.ids <- list(
                                Sex="m", Author = "Cresson",
                                Determiner = "T. Griswold",
                                temp.id=  c("17913")),
-    
-    
-    Megachile_mellitarsis_f = list(Genus="Megachile",
-                                   SubGenus ="Sayapis", Species="mellitarsis",
-                                   SubSpecies="", Sex="f",
-                                   Author = "Cresson", Determiner = "T. Griswold",
-                                   temp.id= c("20430")),
     
     Megachile_mellitarsis_m = list(Genus="Megachile",
                                    SubGenus ="Sayapis", Species="mellitarsis",

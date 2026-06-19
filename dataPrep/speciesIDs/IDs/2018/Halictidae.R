@@ -122,28 +122,18 @@ sp.ids <- list(
     Dufourea_maura_f= list(Genus="Dufourea", SubGenus ="",
                            Species="maura", SubSpecies="",
                            Sex="f", Author = "Cresson, 1878",
-                           Determiner = "J.L. Neff",
-                           temp.id= c("19524", "22162", "22154", "19563")),
-
-    Dufourea_maura_f= list(Genus="Dufourea", SubGenus ="",
-                           Species="maura", SubSpecies="",
-                           Sex="f", Author = "Cresson, 1878",
-                           Determiner = "L.C. Ponisio",
-                           temp.id= c("17665", "18432", "18427",
-                                      "17936", "17935", "17940",
-                                      "18306")),
+                           Determiner = "J.L. Neff, L.C. Ponisio",
+                           temp.id= c(
+                                             "19524", "22162", "22154", "19563",
+                                             "17665", "18432", "18427", "17936",
+                                             "17935", "17940", "18306")),
 
     Dufourea_maura_m= list(Genus="Dufourea", SubGenus ="",
                            Species="maura", SubSpecies="",
                            Sex="m", Author = "Cresson, 1878",
-                           Determiner = "L.C. Ponisio",
-                           temp.id= c("18124", "18242")),
-
-    Dufourea_maura_m= list(Genus="Dufourea", SubGenus ="",
-                           Species="maura", SubSpecies="",
-                           Sex="m", Author = "Cresson, 1878",
-                           Determiner = "J.L. Neff",
-                           temp.id= c("19090")),
+                           Determiner = "L.C. Ponisio, J.L. Neff",
+                           temp.id= c(
+                                             "18124", "18242", "19090")),
 
     Halictus_ligatus_f= list(Genus="Halictus", SubGenus ="Odontalictus",
                              Species="ligatus", SubSpecies="",
@@ -226,7 +216,7 @@ sp.ids <- list(
                                       "22188", "19043")),
 
 
-    Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
+    Lasioglossum_aquilae_m_JGardener = list(Genus="Lasioglossum",
                                   SubGenus ="Dialictus",
                                   Species="aquilae",
                                   SubSpecies="",
@@ -234,7 +224,7 @@ sp.ids <- list(
                                   Determiner = "J. Gardener",
                                   temp.id= c("18064", "18704")),
     
-     Lasioglossum_aquilae_f = list(Genus="Lasioglossum",
+     Lasioglossum_aquilae_m_JFZorn = list(Genus="Lasioglossum",
                                   SubGenus ="Dialictus",
                                   Species="aquilae",
                                   SubSpecies="",
@@ -244,8 +234,8 @@ sp.ids <- list(
 
     Lasioglossum_M2_f = list(Genus="Lasioglossum",
                              SubGenus ="Dialictus",
-                             Species="M2",
-                             SubSpecies="",
+                             Species="sp.",
+                             SubSpecies="SI-M2",
                              Sex="f", Author = "",
                              Determiner = "J. Gardener",
                              temp.id= c("17726", "18459", "17739")),
@@ -257,19 +247,11 @@ sp.ids <- list(
                                         Species="semicaeruleum",
                                         SubSpecies="", Sex="f",
                                         Author ="Cockerell",
-                                        Determiner = "J. Gardener",
-                                        temp.id= c("17945", "17957",
-                                                   "17958", "18201",
-                                                   "18230", "18150")),
-
-     Lasioglossum_semicaeruleum_f = list(Genus="Lasioglossum",
-                                        SubGenus ="Dialictus",
-                                        Species="semicaeruleum",
-                                        SubSpecies="", Sex="f",
-                                        Author ="Cockerell",
-                                        Determiner = "J.L. Neff",
-                                        temp.id= c("21980", "22161", "22146", "22195", 
-                                                   "22257", "20235")),
+                                        Determiner = "J. Gardener, J.L. Neff",
+                                        temp.id= c(
+                                             "17945", "17957", "17958", "18201",
+                                             "18230", "18150", "21980", "22161",
+                                             "22146", "22195", "22257", "20235")),
 
 
     Lasioglossum_semicaeruleum_m = list(Genus="Lasioglossum",
@@ -298,29 +280,17 @@ sp.ids <- list(
                                     SubSpecies="cf.",
                                     Sex="f",
                                     Author = "Cockerell",
-                                    Determiner = "J. Gardener",
-                                    temp.id=c("17649", "18273",
-                                              "18699", "18534",
-                                              "17806", "17667",
-                                              "18272", "18118",
-                                              "17973", "18696",
-                                              "18282", "18074",
-                                              "18409", "18052",
-                                              "18072", "17788",
-                                              "18274", "17729",
-                                              "18560", "18502",
-                                              "18395", "18498")),
+                                    Determiner = "J. Gardener, J.L. Neff",
+                                    temp.id=c(
+                                             "17649", "18273", "18699", "18534",
+                                             "17806", "17667", "18272", "18118",
+                                             "17973", "18696", "18282", "18074",
+                                             "18409", "18052", "18072", "17788",
+                                             "18274", "17729", "18560", "18502",
+                                             "18395", "18498", "19862", "22042",
+                                             "17749", "19642", "22156")),
 
-    Lasioglossum_ruidosense_f= list(Genus="Lasioglossum",
-                                    SubGenus ="Dialictus",
-                                    Species="ruidosense",
-                                    SubSpecies="cf.",
-                                    Sex="f",
-                                    Author = "Cockerell",
-                                    Determiner = "J.L. Neff",
-                                    temp.id=c("19862","22042","17749","19642","22156")),
-
-    Lasioglossum_ruidosense_m= list(Genus="Lasioglossum", SubGenus
+    Lasioglossum_ruidosense_cf_m= list(Genus="Lasioglossum", SubGenus
                                     ="Dialictus", Species="ruidosense",
                                     SubSpecies="cf.", Sex="m",
                                     Author = "Cockerell",
@@ -393,21 +363,14 @@ sp.ids <- list(
                                    SubSpecies="",
                                    Sex="f",
                                    Author = "Sandhouse, 1924",
-                                   Determiner = "J. Gardener",
-                                   temp.id= c("18698", "18572", "17662")),
-
-    Lasioglossum_obnubilum_f= list(Genus="Lasioglossum",
-                                   SubGenus ="Dialictus",
-                                   Species="obnubilum",
-                                   SubSpecies="",
-                                   Sex="f",
-                                   Author = "Sandhouse, 1924",
-                                   Determiner = "J.L. Neff",
-                                   temp.id= c("17750","20344","19884","19895",
-                                              "19526","19534","19531","20195",
-                                              "19879","20347","20241","20331",
-                                              "19891","20238","19540","25183",
-                                              "20286")),
+                                   Determiner = "J. Gardener, J.L. Neff",
+                                   temp.id= c(
+                                             "18698", "18572", "17662", "17750",
+                                             "20344", "19884", "19895", "19526",
+                                             "19534", "19531", "20195", "19879",
+                                             "20347", "20241", "20331", "19891",
+                                             "20238", "19540", "25183", "20286",
+                                             "20272")),
     
     Lasioglossum_obnubilum_m= list(Genus="Lasioglossum",
                                    SubGenus ="Dialictus",
@@ -431,21 +394,14 @@ sp.ids <- list(
     Lasioglossum_manitouellum_m= list(Genus="Lasioglossum", SubGenus
                                       ="Lasioglossum", Species="manitouellum",
                                       SubSpecies="", Sex="m",
-                                      Author = "Cockerell",
+                                      Author = "Cockerell, 1908",
                                       Determiner = "J. Gardener",
                                       temp.id=  c("18748")),
-
-    Lasioglossum_obnubilum_f= list(Genus="Lasioglossum", SubGenus
-                                      ="", Species="obnubilum",
-                                      SubSpecies="", Sex="f",
-                                      Author = "Sandhouse, 1924",
-                                      Determiner = "J.L. Neff",
-                                      temp.id=  c("20272")),
 
        Lasioglossum_lusorium_f= list(Genus="Lasioglossum", SubGenus
                                   ="Sphecodogastra", Species="lusorium",
                                   SubSpecies="", Sex="f",
-                                  Author = "Cresson",
+                                  Author = "Cresson, 1872",
                                   Determiner = "J. Gardener",
                                   temp.id=  c("17942")),
 
@@ -460,5 +416,4 @@ sp.ids <- list(
 
 
 )
-
 

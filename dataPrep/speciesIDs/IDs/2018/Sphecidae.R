@@ -25,7 +25,7 @@ sp.ids <- list(
 
     Crabro = list(Genus="Crabro", SubGenus ="",
        Species="sp.",
-       SubSpecies="b", Sex="f",
+       SubSpecies="SI-b", Sex="f",
                  Author = "",
                 Determiner="L.C. Ponisio",
        temp.id =c("18394"

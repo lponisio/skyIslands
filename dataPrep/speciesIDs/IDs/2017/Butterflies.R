@@ -40,7 +40,11 @@ Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
 
   Phyciodes_tharos= list(Genus = "Phyciodes", SubGenus="",Species =
     "tharos", SubSpecies = "", Sex = "", Author = "Drury", Family =
-    "Nymphalidae", Determiner="L.Ponisio", temp.id =c(21572,21578,21535,24609,23720,21494,23895,30519,24027,24000,38572,38571)),
+    "Nymphalidae", Determiner="L.Ponisio, A. Santillana", temp.id =c(
+                                             "21572", "21578", "21535", "24609",
+                                             "23720", "21494", "23895", "30519",
+                                             "24027", "24000", "38572", "38571",
+                                             "24069", "38620")),
 
  Polygonia_gracilis = list(Genus = "Polygonia", SubGenus="",Species =
     "gracilis", SubSpecies = "", Sex = "", Author =
@@ -71,12 +75,33 @@ Speyeria_atlantis = list(Genus = "Speyeria", SubGenus="", Species =
 
 Nathalis_iole = list(Genus = "Nathalis", SubGenus="",Species =
     "iole", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
-    "Pieridae", Determiner="L.Ponisio", temp.id = c(24909)),
+    "Pieridae", Determiner="L.Ponisio, A. Santillana", temp.id = c(
+                                             "24909", "38513")),
 
   Colias_eurytheme = list(Genus = "Colias", SubGenus="", Species = "eurytheme",
     SubSpecies = "", Sex = "", Author = "Boisduval", Family =
-    "Pieridae", Determiner="L.Ponisio", temp.id = c(21506,30148,30151,24869,24130,24131,24128,24123,24159,24157,24160,24190,24188,24187,23833,23687,23703,
-                                                    24133,30021,30082)),
+    "Pieridae", Determiner="L.Ponisio, J. F. Zorn", temp.id = c(
+                                             "21506", "30148", "30151", "24869",
+                                             "24130", "24131", "24128", "24123",
+                                             "24159", "24157", "24160", "24190",
+                                             "24188", "24187", "23833", "23687",
+                                             "23703", "24133", "30021", "30082",
+                                             "36401", "36402", "36404", "36363",
+                                             "38464", "38472", "36364", "36365",
+                                             "38642", "38645", "38662", "39013",
+                                             "39016", "39052", "38778", "38878",
+                                             "36398", "36345", "36341", "38575",
+                                             "36381", "36378", "38601", "38600",
+                                             "38406", "38599", "38698", "38576",
+                                             "38545", "38603", "38602", "38531",
+                                             "24865", "22276", "22275", "38500",
+                                             "38524", "38529", "38546", "38495",
+                                             "38499", "38537", "38579", "24850",
+                                             "24860", "24833", "24912", "24916",
+                                             "24896", "24904", "24918", "24911",
+                                             "24888", "24885", "28494", "24105",
+                                             "24523", "24104", "24851", "24863",
+                                             "24832", "24835", "24849", "30084")),
 
 Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
     "lineata", SubSpecies = "", Sex = "", Author = "Fabricius", Family =
@@ -102,13 +127,12 @@ Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
 
 Echinargus_isola = list(Genus = "Echinargus", SubGenus="", Species =
     "isola", SubSpecies = "", Sex = "", Author = "Reakirt", Family
-    = "Lycanidae", Determiner="A. Santillana", temp.id = c(38515,24147,24202,24216,24208,24199,24196,24195,24213,24200)),
-
-Phyciodes_tharos = list(Genus = "Phyciodes", SubGenus="", Species =
-    "tharos", SubSpecies = "", Sex = "", Author = "Drury", Family =
-    "Nymphalidae", Determiner="A. Santillana", temp.id =c(24069,38620)),
+    = "Lycanidae", Determiner="A. Santillana, ACS", temp.id = c(
+                                             "38515", "24147", "24202", "24216",
+                                             "24208", "24199", "24196", "24195",
+                                             "24213", "24200", "24847")),
     
-Danaus_plexipus = list(Genus = "Limentis", SubGenus="", Species =
+Limentis_bredowii = list(Genus = "Limentis", SubGenus="", Species =
     "bredowii", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
     "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(24180)),
 
@@ -119,17 +143,6 @@ Euptoiteta_claudia = list(Genus = "Euptoiteta", SubGenus="", Species =
 Aglais_milberti = list(Genus = "Aglais", SubGenus="", Species =
     "milberti", SubSpecies = "", Sex = "", Author = "Godart", Family =
     "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(24908)),
-
-Nathalis_iole = list(Genus = "Nathalis", SubGenus="", Species =
-    "iole", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
-    "Pieridae", Determiner="A. Santillana", temp.id =c(38513)),
-
-Colias_eurytheme = list(Genus = "Colias", SubGenus="", Species =
-    "eurytheme", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
-    "Pieridae", Determiner="J. F. Zorn", temp.id =c(36401,36402,36404,36363,38464,38472,36364,36365,38642,38645,38662,39013,39016,39052,38778,38878,36398,36345,36341,38575,36381,36378,38601,38600,
-38406,38599,38698,38576,38545,38603,38602,38531,24865,22276,22275,
-38500,38524,38529,38546,38495,38499,38537,38579,24850,24860,24833,24912,24916,24896,24904,24918,24911,
-24888,24885,28494,24105,24523,24104,24851,24863,24832,24835,24849,30084)),
 
 Gnophaela_discreta = list(Genus = "Gnophaela", SubGenus="", Species =
     "discreta", SubSpecies = "", Sex = "", Author = "Stretch", Family =
@@ -158,7 +171,7 @@ Lon_taxiles = list(Genus = "Lon", SubGenus="", Species =
 21549,21547,21566,21545,21568,21567,23693,23718,23685,23684,23681,23677,30065,24890,24873,24859,23762,24803,24804,24802,24801,24800,24260,21565,21502,21533,21531,21546,21571,23707,23706,23715,23716,23717,23724,23728,23729,23732,23733,23776,23849,23814,23816,24784,24810,24619,24799,21512,23692,24806,24174,30530,30095,30094,30091,23772,30523,30560,30562,30563,30570,24932,24176,30588,24924,24923,24925,24172,24102,
 24166,30557,30515,30558,30554,30627,30099,30101,30008,30006,30050,30051,30070,30124,30126,30137,30025,23655,23719,30060,38658,38441,24813,38660,38442,39049,39024,39019,39020,39026,38917,38916)),
 
-Hesperia_pahaska = list(Genus = "Hesperia", SubGenus="", Species =
+Hesperia_taxiles = list(Genus = "Hesperia", SubGenus="", Species =
     "taxiles", SubSpecies = "", Sex = "", Author = "Leussler", Family =
     "Hesperiidae", Determiner="ACS", temp.id =c(24266,23679,24764,23678,39053,23675,23714,23721,23682,24162,24169,21467,30559,24933,24809,23664,30529,24175,38465,38503,39054,39043,39059,36376,39051,38573)),
 
@@ -236,10 +249,6 @@ Erora_quaderna = list(Genus = "Erora", SubGenus="", Species =
 Hemiargus_ceraunus = list(Genus = "Hemiargus", SubGenus="", Species =
     "ceraunus", SubSpecies = "", Sex = "", Author = "Fabricius", Family =
     "Lycaenidae", Determiner="ACS", temp.id =c(39034)),
-
-Echinargus_isola = list(Genus = "Echinargus", SubGenus="", Species =
-    "isola", SubSpecies = "", Sex = "", Author = "Reakirt", Family =
-    "Lycaenidae", Determiner="ACS", temp.id =c(24847)),
 
 Lycaena_nivalis = list(Genus = "Lycaena", SubGenus="", Species =
     "nivalis", SubSpecies = "", Sex = "", Author = "Boisduval", Family =

@@ -1,7 +1,7 @@
 
 sp.ids <- list(
 
-  bustamente = list(Genus="Ancistrocerus", SubGenus ="",
+  Ancistrocerus_bustamente = list(Genus="Ancistrocerus", SubGenus ="",
     Species="bustamente", SubSpecies="", Sex="", Author = "Saussure",
     Determiner="J. Carpenter",
     temp.id=c("SC_072112_61","MM_080212_161","MM_080212_195",
@@ -66,7 +66,7 @@ sp.ids <- list(
               "SC_072612_12", "SC_072812_199", "SC_072812_71",
               "SC_072712_134", "CH_082112_169")),
 
-  catskill = list(Genus="Ancistrocerus", SubGenus ="",
+  Ancistrocerus_catskill = list(Genus="Ancistrocerus", SubGenus ="",
                   Species="catskill", SubSpecies="", Sex="",
                   Author = "Saussure",
                   Determiner="J. Carpenter", temp.id =c("JC_071612_122",
@@ -92,26 +92,26 @@ sp.ids <- list(
                                                         "SC_072612_129A",
                                                         "SC_072912_75")),
 
-  spilogaster = list(Genus="Ancistrocerus", SubGenus ="",
+  Ancistrocerus_spilogaster = list(Genus="Ancistrocerus", SubGenus ="",
                      Species="spilogaster", SubSpecies="", Sex="",
                      Author = "Cameron", Determiner="J. Carpenter",
                      temp.id =c("SC_072712_130",
                                 "SC_072712_43")),
 
-  lineativentris = list(Genus="Ancistrocerus", SubGenus ="",
+  Ancistrocerus_lineativentris = list(Genus="Ancistrocerus", SubGenus ="",
                         Species="lineativentris", SubSpecies="",
                         Sex="", Author = "Cameron",
                         Determiner="J. Carpenter",
                         temp.id=c("PL_081312_105")),
 
-  adiabatus = list(Genus="Ancistrocerus", SubGenus ="",
+  Ancistrocerus_adiabatus = list(Genus="Ancistrocerus", SubGenus ="",
                    Species="adiabatus", SubSpecies="", Sex="",
                    Author = "Saussure", Determiner="J. Carpenter",
                    temp.id =c("SC_072912_32", "SC_072012_285",
                               "SC_072312_193", "SC_072312_258",
                               "MM_073112_111", "SC_072612_268")),
 
-  tuberculocephalus = list(Genus="Ancistrocerus", SubGenus ="",
+  Ancistrocerus_tuberculocephalus = list(Genus="Ancistrocerus", SubGenus ="",
                            Species="tuberculocephalus", SubSpecies="",
                            Sex="", Author = "Saussure",
                            Determiner="J. Carpenter",
@@ -123,40 +123,40 @@ sp.ids <- list(
                                "PL_081312_132")),
 
 
-  antilope = list(Genus="Ancistrocerus", SubGenus ="",
+  Ancistrocerus_antilope = list(Genus="Ancistrocerus", SubGenus ="",
                   Species="antilope", SubSpecies="", Sex="",
                   Author = "Panzer", Determiner="J. Carpenter",
                   temp.id =c("PL_081012_49", "PL_080912_110",
                              "SC_072312_23", "SC_072612_14")),
 
-  bollii = list(Genus="Eumenes", SubGenus ="", Species="bollii",
+  Eumenes_bollii = list(Genus="Eumenes", SubGenus ="", Species="bollii",
                 SubSpecies="", Sex="",
                 Author = "Cresson", Determiner="J. Carpenter",
                 temp.id =c("CH_082012_144")),
 
-  arenaria = list(Genus="Dolichovespula", SubGenus ="",
+  Dolichovespula_arenaria_f = list(Genus="Dolichovespula", SubGenus ="",
                   Species="arenaria", SubSpecies="",
                   Sex="f", Author = "Fabricius",
                   Determiner="J. Carpenter",
                   temp.id =c("JC_071612_22")),
 
-  hidalgo = list(Genus="Euodynerus", SubGenus ="", Species="hidalgo",
+  Euodynerus_hidalgo = list(Genus="Euodynerus", SubGenus ="", Species="hidalgo",
                  SubSpecies="", Sex="",
                  Author = "Saussure",
                  Determiner="J. Carpenter", temp.id
                  =c("CH_082112_165")),
 
-  annulatus = list(Genus="Euodynerus", SubGenus ="",
+  Euodynerus_annulatus = list(Genus="Euodynerus", SubGenus ="",
                    Species="annulatus", SubSpecies="",
                    Sex="", Author = "Say",
                    Determiner="J. Carpenter", temp.id =c("PL_081312_141")),
 
-  herrichii = list(Genus="Pseudepipona", SubGenus ="",
+  Pseudepipona_herrichii_aldrichi = list(Genus="Pseudepipona", SubGenus ="",
                    Species="herrichii", SubSpecies="aldrichi",
                    Sex="", Author = "Fox",
                    Determiner="J. Carpenter", temp.id =c("JC_071512_21")),
 
-  toas = list(Genus="Stenodynerus", SubGenus ="", Species="toas",
+  Stenodynerus_toas = list(Genus="Stenodynerus", SubGenus ="", Species="toas",
               SubSpecies="", Sex="", Author = "Cresson",
               Determiner="J. Carpenter", temp.id
               =c("PL_081312_106", "JC_071612_109", "JC_071712_106",
@@ -175,24 +175,24 @@ sp.ids <- list(
               
               ## pompilids
                             
-               Pepsis =  list(Genus="Pepsis", SubGenus ="", Species="formosa",
+               Pepsis_formosa_formosa_f_0016 =  list(Genus="Pepsis", SubGenus ="", Species="formosa",
               SubSpecies="formosa", Sex="f", Author = "",
               Determiner="M. van Dam", temp.id
               =c("PL_081212_32", "CH_082112_95", "CH_082012_162", "CH_082112_76", "CH_082012_6")), 
               
-               Pepsis =  list(Genus="Pepsis", SubGenus ="", Species="formosa",
+               Pepsis_formosa_formosa_f_0017 =  list(Genus="Pepsis", SubGenus ="", Species="formosa",
               SubSpecies="formosa", Sex="f", Author = "",
               Determiner="M. van Dam", temp.id
               =c("CH_082112_2", "PL_081212_29", "CH_082012_91", "CH_082112_1", "CH_082112_172", "PL_081212_30")), 
                  
               
-               Pepsis =  list(Genus="Pepsis", SubGenus ="", Species="formosa",
+               Pepsis_formosa_formosa_m =  list(Genus="Pepsis", SubGenus ="", Species="formosa",
               SubSpecies="formosa", Sex="m", Author = "",
               Determiner="M. van Dam", temp.id
               =c("CH_082012_92", "CH_082012_123")),
               
               
-               Pepsis =  list(Genus="Pepsis", SubGenus ="", Species="formosa",
+               Pepsis_formosa_pattoni_f =  list(Genus="Pepsis", SubGenus ="", Species="formosa",
               SubSpecies="pattoni", Sex="f", Author = "",
               Determiner="M. van Dam", temp.id
               =c("CH_082012_5", "PL_081212_31")), 
@@ -209,7 +209,7 @@ sp.ids <- list(
                      
                          
                Chirodamus =  list(Genus="Chirodamus", SubGenus ="", Species="sp.",
-              SubSpecies="a", Sex="m", Author = "",
+              SubSpecies="SI-a", Sex="m", Author = "",
               Determiner="M. van Dam", temp.id
               =c("CH_082012_8"))
                      

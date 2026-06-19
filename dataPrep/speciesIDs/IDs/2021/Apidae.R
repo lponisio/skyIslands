@@ -190,17 +190,9 @@ sp.ids <- list(
                                 SubSpecies="",
                                 Sex="f",
                                 Author = "Cresson",
-                                Determiner="J.L. Neff",
-                                temp.id= c(30798, 31901)),
-    
-         Anthophora_urbana_f = list(Genus="Anthophora",
-                                SubGenus="Mystacanthophora",
-                                Species="urbana",
-                                SubSpecies="",
-                                Sex="f",
-                                Author = "Cresson",
-                                Determiner="J.F. Zorn",
-                                temp.id= c(36184)),
+                                Determiner="J.L. Neff, J.F. Zorn",
+                                temp.id= c(
+                                             "30798", "31901", "36184")),
 
      Anthophora_urbana_m = list(Genus="Anthophora",
                                 SubGenus="Mystacanthophora",
@@ -208,17 +200,9 @@ sp.ids <- list(
                                 SubSpecies="",
                                 Sex="m",
                                 Author = "Cresson",
-                                Determiner="J.L. Neff",
-                                temp.id= c(31881)),
-    
-      Anthophora_urbana_m = list(Genus="Anthophora",
-                                SubGenus="Mystacanthophora",
-                                Species="urbana",
-                                SubSpecies="",
-                                Sex="m",
-                                Author = "Cresson",
-                                Determiner="J.F. Zorn",
-                                temp.id= c(36214,35710)),
+                                Determiner="J.L. Neff, J.F. Zorn",
+                                temp.id= c(
+                                             "31881", "36214", "35710")),
 
 
     Bombus_sonorus_f = list(Genus = "Bombus", SubGenus="Thoracobombus",
@@ -409,21 +393,15 @@ sp.ids <- list(
                               Author = "Cresson",
                               Determiner="L. Best",
                               temp.id =
-                                c(31170, 31173, 31174, 31178,
-                                  31181, 31182, 31186, 31188, 31193,
-                                  31195, 31323, 31325, 31334,
-                                  31335, 31343, 31345, 31348,
-                                  31349, 31350, 31352, 32381,
-                                  32502, 31462, 32367, 32386,
-                                  32507, 32639, 31461)),
-
-  Bombus_rufocinctus_m = list(Genus = "Bombus",
-                              SubGenus="Cullumanobombus",
-                              Species ="rufocinctus",
-                              SubSpecies = "", Sex ="f",
-                              Author = "Cresson",
-                              Determiner="L. Best",
-                              temp.id = c(31172, 32512, 31466)),
+                                c(
+                                             "31170", "31173", "31174", "31178",
+                                             "31181", "31182", "31186", "31188",
+                                             "31193", "31195", "31323", "31325",
+                                             "31334", "31335", "31343", "31345",
+                                             "31348", "31349", "31350", "31352",
+                                             "32381", "32502", "31462", "32367",
+                                             "32386", "32507", "32639", "31461",
+                                             "31172", "32512", "31466")),
 
 
 
@@ -593,14 +571,14 @@ sp.ids <- list(
                                     Determiner="L. Best",
                                     temp.id= c(31131)),
   
-  Nomada_sp= list(Genus="Nomada", SubGenus="",
+  Nomada_sp_SI_d_f= list(Genus="Nomada", SubGenus="",
                   Species="sp.",
                   SubSpecies="SI-d", Sex="f",
                   Author = "",
                   Determiner="L.C. Ponisio",
                   temp.id= c(34220,34219,34221)),
   
-  Nomada_sp= list(Genus="Nomada", SubGenus="",
+  Nomada_sp_SI_e_f= list(Genus="Nomada", SubGenus="",
                   Species="sp.",
                   SubSpecies="SI-e", Sex="f",
                   Author = "",

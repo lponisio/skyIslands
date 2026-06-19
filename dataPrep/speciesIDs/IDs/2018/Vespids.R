@@ -1,7 +1,7 @@
 
 sp.ids <- list(
 
-  bustamente_f = list(Genus="Ancistrocerus", SubGenus ="",
+  Ancistrocerus_bustamente_f = list(Genus="Ancistrocerus", SubGenus ="",
      Species="bustamente", SubSpecies="", Sex="f", Author = "Saussure",
      Determiner="J. Carpenter", temp.id
      =c("17704","18253","17938","18154","17854","18455","18501","BBSL1058974",
@@ -13,7 +13,7 @@ sp.ids <- list(
         "BBSL1074086","BBSL1059750","BBSL1059859","BBSL1085041","BBSL1073918",
         "BBSL1074069","BBSL1059844","BBSL1073005","BBSL1074235","BBSL1071585")),
   
-  bustamente_m = list(Genus="Ancistrocerus", SubGenus ="",
+  Ancistrocerus_bustamente_m = list(Genus="Ancistrocerus", SubGenus ="",
      Species="bustamente", SubSpecies="", Sex="m", Author = "Saussure",
      Determiner="J. Carpenter", temp.id
      =c("BBSL1085173","BBSL1085168","BBSL1085099","BBSL1085182",
@@ -27,37 +27,37 @@ sp.ids <- list(
         "BBSL1073970","BBSL1073907","BBSL1059445","BBSL1059446",
         "BBSL1059638")),
   
-  catskill_f = list(Genus="Ancistrocerus", SubGenus ="",
+  Ancistrocerus_catskill_f = list(Genus="Ancistrocerus", SubGenus ="",
      Species="catskill", SubSpecies="", Sex="f", Author = "Saussure",
      Determiner="J. Carpenter", temp.id
      =c("BBSL1071585")),
   
-  catskill_m = list(Genus="Ancistrocerus", SubGenus ="",
+  Ancistrocerus_catskill_m = list(Genus="Ancistrocerus", SubGenus ="",
      Species="catskill", SubSpecies="", Sex="m", Author = "Saussure",
      Determiner="J. Carpenter", temp.id
      =c("BBSL1059436")),
   
-  paracallosus_f = list(Genus="Ancistrocerus", SubGenus ="",
+  Ancistrocerus_paracallosus_f = list(Genus="Ancistrocerus", SubGenus ="",
      Species="paracallosus", SubSpecies="", Sex="f", Author = "Bequaert",
      Determiner="J. Carpenter", temp.id
      =c("BBSL1073337")),
   
-  tuberculocephalus_f = list(Genus="Ancistrocerus", SubGenus ="",
+  Ancistrocerus_tuberculocephalus_f = list(Genus="Ancistrocerus", SubGenus ="",
      Species="tuberculocephalus", SubSpecies="", Sex="f", Author = "Saussure",
      Determiner="J. Carpenter", temp.id
      =c("18747")),
   
-  tuberculocephalus_m = list(Genus="Ancistrocerus", SubGenus ="",
+  Ancistrocerus_tuberculocephalus_m = list(Genus="Ancistrocerus", SubGenus ="",
      Species="tuberculocephalus", SubSpecies="", Sex="m", Author = "Saussure",
      Determiner="J. Carpenter", temp.id
      =c("18377")),
   
-  consobrinus = list(Genus="Eumenes", SubGenus ="",
+  Eumenes_consobrinus_f = list(Genus="Eumenes", SubGenus ="",
      Species="consobrinus", SubSpecies="", Sex="f", Author = "Saussure",
      Determiner="J. Carpenter", temp.id
      =c("BBSL1059127")),
 
-  dilectus = list(Genus="Odynerus", SubGenus ="Odynerus",
+  Odynerus_dilectus = list(Genus="Odynerus", SubGenus ="Odynerus",
      Species="dilectus", SubSpecies="", Sex="", Author = "Saussure",
      Determiner="J. Carpenter", temp.id
      =c("BBSL1071118","BBSL1071114","BBSL1071113","BBSL1071070","BBSL1071020",
@@ -92,7 +92,7 @@ sp.ids <- list(
     =c("BBSL1072625")),
   
   Scoliidae = list(Genus="Scoliidae", SubGenus ="",
-   Species="sp.", SubSpecies="a", Sex="f", Author = "",
+   Species="sp.", SubSpecies="SI-a", Sex="f", Author = "",
     Determiner="J. Carpenter", temp.id
     =c("21637"))
 

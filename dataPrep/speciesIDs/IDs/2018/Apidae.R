@@ -72,16 +72,9 @@ sp.ids <- list(
                                    Species="terminalis",
                                    SubSpecies="", Sex="f",
                                    Author = "Cresson",
-                                   Determiner="L.C. Ponisio",
-                                   temp.id= c("20438")),
-
-    Anthophora_terminalis_f = list(Genus="Anthophora",
-                                   SubGenus="Clisodon",
-                                   Species="terminalis",
-                                   SubSpecies="", Sex="f",
-                                   Author = "Cresson",
-                                   Determiner="J.L. Neff",
-                                   temp.id= c("30624")),
+                                   Determiner="L.C. Ponisio, J.L. Neff",
+                                   temp.id= c(
+                                             "20438", "30624")),
 
     Apis_mellifera_f = list(Genus="Apis", SubGenus = "Apis",
                             Species="mellifera",

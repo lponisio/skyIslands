@@ -11,7 +11,7 @@ sp.ids <- list(
                                  temp.id = c(31440, 32423, 32446, 32447)),
 
     Chrysotoxum_morpho1 = list(Genus="Chrysotoxum",SubGenus="", Species
-                               = "sp.", SubSpecies = "a",
+                               = "sp.", SubSpecies = "SI-a",
                                Sex = "", Author = "",
                                Determiner="M.Hauser",
                                temp.id =  c(38310,38312, 38265,37995,
@@ -104,7 +104,7 @@ sp.ids <- list(
 
 
     Dasysyrphus_morpho1 = list(Genus = "Dasysyrphus", SubGenus="",
-                               Species = "sp.", SubSpecies = "a",
+                               Species = "sp.", SubSpecies = "SI-a",
                                Sex = "",
                                Author = "",
                                Determiner="M.Hauser",
@@ -491,14 +491,14 @@ sp.ids <- list(
 
 
     Copestylum_violaceum_f = list(Genus ="Copestylum",SubGenus="", Species
-                                  = "violaceum", SubSpecies="", Sex ="",
+                                  = "violaceum", SubSpecies="", Sex ="f",
                                   Author ="Say",
                                   Determiner="M.Hauser",
                                   temp.id = c(37674, 38015, 37964)),
 
 
     Copestylum_violaceum_m = list(Genus ="Copestylum",SubGenus="", Species
-                                  = "violaceum", SubSpecies="", Sex ="",
+                                  = "violaceum", SubSpecies="", Sex ="m",
                                   Author ="Say",
                                   Determiner="M.Hauser",
                                   temp.id =c(33891, 37596, 34242)),
@@ -558,49 +558,44 @@ sp.ids <- list(
 
     Cheilosia_morpho1 = list(Genus = "Cheilosia", SubGenus="",
                              Species = "sp.",
-                             SubSpecies="a", Sex = "",
+                             SubSpecies="SI-a", Sex = "",
                              Author = "", Determiner="M.Hauser",
                              temp.id  =c(32421, 32630, 32445)),
 
 
     Chrysogaster_morpho1 = list(Genus = "Chrysogaster", SubGenus="",
                                 Species = "sp.",
-                                SubSpecies="a", Sex = "",
+                                SubSpecies="SI-a", Sex = "",
                                 Author = "", Determiner="M.Hauser",
-                                temp.id  =c(32444, 32442)),
-
-
-    Chrysogaster_morpho1 = list(Genus = "Chrysogaster", SubGenus="",
-                                Species = "sp.",
-                                SubSpecies="a", Sex = "",
-                                Author = "", Determiner="M.Hauser",
-                                temp.id  =c(37666, 36734, 36814, 36812, 36821)),
+                                temp.id  =c(
+                                             "32444", "32442", "37666", "36734",
+                                             "36814", "36812", "36821")),
 
 
     Paragus_sp_a_f = list(Genus = "Paragus", SubGenus="",
                           Species = "sp.",
-                          SubSpecies="a", Sex = "f",
+                          SubSpecies="SI-a", Sex = "f",
                           Author = "", Determiner="M.Hauser",
                           temp.id  =c(32920, 32960, 30702, 30703, 34707)),
 
 
     Paragus_sp_a_m = list(Genus = "Paragus", SubGenus="",
                           Species = "sp.",
-                          SubSpecies="a", Sex = "m",
+                          SubSpecies="SI-a", Sex = "m",
                           Author = "", Determiner="M.Hauser",
                           temp.id  =c(32838, 32918, 32923, 34631, 34632, 34634)),
 
 
     Platycheirus_sp_a_f = list(Genus = "Platycheirus", SubGenus="",
                                Species = "sp.",
-                               SubSpecies="a", Sex = "f",
+                               SubSpecies="SI-a", Sex = "f",
                                Author = "", Determiner="M.Hauser",
                                temp.id  =c(37367, 31263, 32913, 34269, 31810, 32621, 34364, 32343, 31641, 31490, 34998, 38311, 34594)),
 
 
     Platycheirus_sp_a_m = list(Genus = "Platycheirus", SubGenus="",
                                Species = "sp.",
-                               SubSpecies="a", Sex = "m",
+                               SubSpecies="SI-a", Sex = "m",
                                Author = "", Determiner="M.Hauser",
                                temp.id  =c(30824, 30970, 30996, 31000, 34461,
                                            31279, 31285, 34459, 31425, 30818,
@@ -609,7 +604,7 @@ sp.ids <- list(
 
     Syrphus_sp_a_m =list(Genus = "Syrphus",
                          SubGenus="", Species = "sp.",
-                         SubSpecies="a", Sex = "m",
+                         SubSpecies="SI-a", Sex = "m",
                          Author = "",
                          Determiner="M.Hauser",
                          temp.id =c(36642, 32816, 33982, 32912, 32917,
@@ -625,7 +620,7 @@ sp.ids <- list(
 
     Syrphus_sp_a_f =list(Genus = "Syrphus",
                          SubGenus="", Species = "sp.",
-                         SubSpecies="a", Sex = "f",
+                         SubSpecies="SI-a", Sex = "f",
                          Author = "",
                          Determiner="M.Hauser",
                          temp.id =c(33509, 33711, 33716, 33755, 37541,

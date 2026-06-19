@@ -117,26 +117,25 @@ sp.ids <- list(
    Lasioglossum_lusorium_f= list(Genus="Lasioglossum", SubGenus
                                  ="Sphecodogastra", Species="lusorium",
                                  SubSpecies="", Sex="f",
-                                 Author = "Cresson",
+                                 Author = "Cresson, 1872",
                                  Determiner = "J.L. Neff",
                                  temp.id=  c(32695)),
 
    Lasioglossum_rupticristum_m= list(Genus="Lasioglossum", SubGenus
                            ="", Species="rupticristum",
                            SubSpecies="", Sex="m",
-                           Author = "McGinley",
+                           Author = "McGinley, 1986",
                            Determiner = "J.L. Neff",
                            temp.id=  c(38345, 38376, 38378, 30645, 32884, 31130, 31113, 37077, 33590, 33476, 30651)),
 
    Lasioglossum_rupticristum_f= list(Genus="Lasioglossum", SubGenus
                            ="", Species="rupticristum",
                            SubSpecies="", Sex="f",
-                           Author = "McGinley",
+                           Author = "McGinley, 1986",
                            Determiner = "J.L. Neff",
                            temp.id=  c(38355, 38371, 38344, 38388, 38347, 38324, 38386, 38377))
 
 
 
 )
-
 

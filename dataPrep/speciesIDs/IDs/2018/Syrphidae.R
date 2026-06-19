@@ -2,7 +2,7 @@
 sp.ids <- list(
 
     Dasysyrphus_morpho1 = list(Genus = "Dasysyrphus", SubGenus="",
-                               Species = "sp.", SubSpecies = "a",
+                               Species = "sp.", SubSpecies = "SI-a",
                                Sex = "",
                                Author = "",
                                Determiner="M.Hauser",
@@ -29,7 +29,7 @@ sp.ids <- list(
     Copestylum_lentum_f = list(Genus ="Copestylum",
                                SubGenus="",
                                Species =
-                                   "lentum", SubSpecies="", Sex="",
+                                   "lentum", SubSpecies="", Sex="f",
                                Author ="Williston",
                                Determiner="M.Hauser",
                                temp.id = c("18487","17929","18093")),
@@ -37,21 +37,21 @@ sp.ids <- list(
     Copestylum_lentum_m = list(Genus ="Copestylum",
                                SubGenus="",
                                Species =
-                                   "lentum", SubSpecies="", Sex="",
+                                   "lentum", SubSpecies="", Sex="m",
                                Author ="Williston",
                                Determiner="M.Hauser",
                                temp.id = c("18232","18043")),
 
 
     Copestylum_violaceum_f = list(Genus ="Copestylum",SubGenus="", Species
-                                  = "violaceum", SubSpecies="", Sex ="",
+                                  = "violaceum", SubSpecies="", Sex ="f",
                                   Author ="Say",
                                   Determiner="M.Hauser",
                                   temp.id = c("18231","18462","18019",
                                               "17881","17981")),
 
     Copestylum_violaceum_m = list(Genus ="Copestylum",SubGenus="", Species
-                                  = "violaceum", SubSpecies="", Sex ="",
+                                  = "violaceum", SubSpecies="", Sex ="m",
                                   Author ="Say",
                                   Determiner="M.Hauser",
                                   temp.id =c("17992","18174","17993",
@@ -68,7 +68,7 @@ sp.ids <- list(
 
 
     Chrysotoxum_morpho1 = list(Genus="Chrysotoxum",SubGenus="", Species
-                               = "sp.", SubSpecies = "a",
+                               = "sp.", SubSpecies = "SI-a",
                                Sex = "", Author = "",
                                Determiner="M.Hauser",
                                temp.id =  c("18182","18588","18645",
@@ -130,21 +130,21 @@ sp.ids <- list(
 
     Eristalis_bellardii_f= list(Genus = "Eristalis", SubGenus="",
                                 Species = "bellardii", SubSpecies="",
-                                Sex = "", Author = "Jeannicke",
+                                Sex = "f", Author = "Jeannicke",
                                 Determiner="M.Hauser",
                                 temp.id = c("18087","18682","25176")),
 
 
     Paragus_sp_a_f = list(Genus = "Paragus", SubGenus="",
                           Species = "sp.",
-                          SubSpecies="a", Sex = "f",
+                          SubSpecies="SI-a", Sex = "f",
                           Author = "", Determiner="M.Hauser",
                           temp.id  =c("23910")),
 
 
     Platycheirus_sp_a_m = list(Genus = "Platycheirus", SubGenus="",
                                Species = "sp.",
-                               SubSpecies="a", Sex = "m",
+                               SubSpecies="SI-a", Sex = "m",
                                Author = "", Determiner="M.Hauser",
                                temp.id  =c("17758")),
 
@@ -192,7 +192,7 @@ sp.ids <- list(
 
     Cheilosia_morpho1 = list(Genus = "Cheilosia", SubGenus="",
                              Species = "sp.",
-                             SubSpecies="a", Sex = "",
+                             SubSpecies="SI-a", Sex = "",
                              Author = "", Determiner="M.Hauser",
                              temp.id  =c("18116","18426")),
 
@@ -228,13 +228,13 @@ sp.ids <- list(
                     temp.id= c("17699","17779")),
 
     neocnemodon_f = list(Genus="Neocnemodon", SubGenus="",
-                         Species="sp.", SubSpecies="a", Sex="f",
+                         Species="sp.", SubSpecies="SI-a", Sex="f",
                          Author = "",
                          Determiner="M.Hauser",
                          temp.id= c("17947")),
 
     heringia_f= list(Genus="Heringia", SubGenus="",
-                     Species="sp.", SubSpecies="a", Sex="f", Author = "",
+                     Species="sp.", SubSpecies="SI-a", Sex="f", Author = "",
                      Determiner="M.Hauser",
                      temp.id= c("18539")),
 

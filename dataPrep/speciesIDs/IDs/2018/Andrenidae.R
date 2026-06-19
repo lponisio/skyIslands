@@ -103,7 +103,8 @@ sp.ids <- list(
                                      SubSpecies="",
                                      Sex="f", Author = "Cockerell",
                                      Determiner="D. Yanega","J.L. Neff",
-                                     temp.id= c("18695","19674")),
+                                     temp.id= c(
+                                             "18695", "19674", "18579")),
 
 
     Protandrena_sp_a= list(Genus="Protandrena", SubGenus ="",
@@ -121,21 +122,21 @@ sp.ids <- list(
                            Determiner="D. Yanega",
                            temp.id= c("18469")),
 
-        Protandrena_sp_d= list(Genus="Protandrena", SubGenus ="",
+        Protandrena_sp_SI_d_f= list(Genus="Protandrena", SubGenus ="",
                            Species="sp.",
                            SubSpecies="SI-d",
                            Sex="f", Author = "",
                            Determiner="D. Yanega",
                            temp.id= c("18678")),
 
-      Protandrena_sp_d= list(Genus="Protandrena", SubGenus ="",
+      Protandrena_sp_SI_d_m= list(Genus="Protandrena", SubGenus ="",
                            Species="sp.",
                            SubSpecies="SI-d",
                            Sex="m", Author = "",
                            Determiner="D. Yanega",
                            temp.id= c("18317")),
 
-      Protandrena_sp_d= list(Genus="Protandrena", SubGenus ="",
+      Protandrena_sp_SI_e_m= list(Genus="Protandrena", SubGenus ="",
                            Species="sp.",
                            SubSpecies="SI-e",
                            Sex="m", Author = "",
@@ -271,13 +272,6 @@ sp.ids <- list(
                             Sex="f", Author = "",
                             Determiner="D. Yanega",
                             temp.id= c("18711")),
-
-    Panurginus_cressoniellus_f= list(Genus="Panurginus", SubGenus ="",
-                                     Species="cressoniellus",
-                                     SubSpecies="",
-                                     Sex="f", Author = "Cockerell",
-                                     Determiner="D. Yanega",
-                                     temp.id= c("18579")),
 
     
     Andrena_apacheorum_f= list(Genus="Andrena", SubGenus ="Cnemidandrena",

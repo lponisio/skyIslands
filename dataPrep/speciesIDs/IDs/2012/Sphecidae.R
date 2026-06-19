@@ -143,9 +143,9 @@ sp.ids <- list(
                              "SC_072012_91"
                              )),
 
- Crabro = list(Genus="Crabro", SubGenus ="",
+ Crabro_sp_a_f = list(Genus="Crabro", SubGenus ="",
                Species="sp.",
-               SubSpecies="a", Sex="f",
+               SubSpecies="SI-a", Sex="f",
                Author = "",
                Determiner="J.S. Ascher",
                temp.id =c("PL_080912_291",
@@ -153,35 +153,35 @@ sp.ids <- list(
                           )),
 
 
- Crabro = list(Genus="Crabro", SubGenus ="",
+ Crabro_sp_b_f = list(Genus="Crabro", SubGenus ="",
                Species="sp.",
-               SubSpecies="b", Sex="f",
+               SubSpecies="SI-b", Sex="f",
                Author = "",
                Determiner="J.S. Ascher",
                temp.id =c("JC_071712_73"
                           )),
 
 
- Tachytes = list(Genus="Tachytes", SubGenus ="",
+ Tachytes_sp_a_f = list(Genus="Tachytes", SubGenus ="",
                  Species="sp.",
-                 SubSpecies="a", Sex="f",
+                 SubSpecies="SI-a", Sex="f",
                  Author = "",
                  Determiner="J.S. Ascher",
                  temp.id =c("CH_081812_14", "CH_082012_73"
                             )),
 
- Tachytes = list(Genus="Tachytes", SubGenus ="",
+ Tachytes_sp_b_f = list(Genus="Tachytes", SubGenus ="",
                  Species="sp.",
-                 SubSpecies="b", Sex="f",
+                 SubSpecies="SI-b", Sex="f",
                  Author = "",
                  Determiner="J.S. Ascher",
                  temp.id =c("CH_082012_145"
                             )),
 
 
- Tachytes = list(Genus="Tachytes", SubGenus ="",
+ Tachytes_sp_c_f = list(Genus="Tachytes", SubGenus ="",
                  Species="sp.",
-                 SubSpecies="c", Sex="f",
+                 SubSpecies="SI-c", Sex="f",
                  Author = "",
                  Determiner="J.S. Ascher",
                  temp.id =c("CH_082012_12"
@@ -189,7 +189,7 @@ sp.ids <- list(
 
  Bembix = list(Genus="Bembix", SubGenus ="",
                Species="sp.",
-               SubSpecies="a", Sex="f",
+               SubSpecies="SI-a", Sex="f",
                Author = "",
                Determiner="J.S. Ascher",
                temp.id =c("PL_081212_180", "PL_080912_165", "PL_081312_194",
@@ -199,16 +199,16 @@ sp.ids <- list(
 
 
 
- Sphex = list(Genus="Sphex", SubGenus ="",
+ Sphex_sp_a_f = list(Genus="Sphex", SubGenus ="",
               Species="sp.",
-              SubSpecies="a", Sex="f",
+              SubSpecies="SI-a", Sex="f",
               Author = "",
               Determiner="J.S. Ascher",
               temp.id =c("CH_082112_14")),
 
- Sphex = list(Genus="Sphex", SubGenus ="",
+ Sphex_sp_b_f = list(Genus="Sphex", SubGenus ="",
               Species="sp.",
-              SubSpecies="b", Sex="f",
+              SubSpecies="SI-b", Sex="f",
               Author = "",
               Determiner="J.S. Ascher",
               temp.id =c("CH_082112_3"))

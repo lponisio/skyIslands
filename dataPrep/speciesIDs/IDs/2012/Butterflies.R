@@ -310,7 +310,7 @@ sp.ids <- list(
     "Nymphalidae", Determiner="L.Ponisio", temp.id = c("PL_081112_269")),
 
   Atrytonopsis_morpho1 = list(Genus = "Atrytonopsis", SubGenus="",
-    Species = "sp.", SubSpecies = "a", Sex = "", Author = "", Family =
+    Species = "sp.", SubSpecies = "SI-a", Sex = "", Author = "", Family =
     "Hesperiidae", Determiner="L.Ponisio", temp.id = c("JC_071412_29")),
 
   Poanes_zabulon_taxiles = list(Genus = "Poanes", SubGenus="", Species

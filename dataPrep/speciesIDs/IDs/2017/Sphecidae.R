@@ -85,7 +85,7 @@ sp.ids <- list(
 
 ## ammophila 2017
 ammophila= list(Genus="Ammophila", SubGenus ="",
-                 Species="sp.", SubSpecies="a", Sex="",
+                 Species="sp.", SubSpecies="SI-a", Sex="",
                  Author = "",
                  Determiner="J. Schlauch", temp.id
                 =c("BBSL1087079","BBSL1087213","BBSL1084508",
@@ -113,7 +113,7 @@ Philanthus = list(Genus="Philanthus", SubGenus ="",
 
 Crabro = list(Genus="Crabro", SubGenus ="",
        Species="sp.",
-       SubSpecies="b", Sex="f",
+       SubSpecies="SI-b", Sex="f",
                  Author = "",
                 Determiner="L.C. Ponisio",
        temp.id =c("BBSL1073475"
@@ -121,7 +121,7 @@ Crabro = list(Genus="Crabro", SubGenus ="",
 
 Bembix = list(Genus="Bembix", SubGenus ="",
        Species="sp.",
-       SubSpecies="b", Sex="f",
+       SubSpecies="SI-b", Sex="f",
                  Author = "",
                 Determiner="L.C. Ponisio",
        temp.id =c("BBSL1084373"

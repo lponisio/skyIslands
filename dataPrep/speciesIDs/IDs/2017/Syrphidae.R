@@ -3,7 +3,7 @@ sp.ids <- list(
 
     Copestylum_satur_f = list(Genus = "Copestylum",
                               SubGenus="",Species = "satur",
-                              SubSpecies="", Sex = "",
+                              SubSpecies="", Sex = "f",
                               Author  = "Osten Sacken",
                               Determiner="M.Hauser",
                               temp.id = c("BBSL1071340", "BBSL1084952")),
@@ -11,7 +11,7 @@ sp.ids <- list(
     Copestylum_satur_m = list(Genus = "Copestylum",
                               SubGenus="",
                               Species = "satur",
-                              SubSpecies="", Sex = "",
+                              SubSpecies="", Sex = "m",
                               Author = "Osten Sacken",
                               Determiner="M.Hauser",
                               temp.id = c("BBSL1060046",
@@ -19,7 +19,7 @@ sp.ids <- list(
 
     Toxomerus_marginatus_f = list(Genus = "Toxomerus",SubGenus="",
                                   Species = "marginatus",
-                                  SubSpecies="", Sex = "",
+                                  SubSpecies="", Sex = "f",
                                   Author ="Meigen",
                                   Determiner="M.Hauser",
                                   temp.id = c("BBSL1072192",
@@ -40,7 +40,7 @@ sp.ids <- list(
 
     Toxomerus_marginatus_m = list(Genus = "Toxomerus",SubGenus="", Species
                                   = "marginatus", SubSpecies="",
-                                  Sex = "", Author ="Meigen",
+                                  Sex = "m", Author ="Meigen",
                                   Determiner="M.Hauser",
                                   temp.id = c("BBSL1084385",
                                               "BBSL1084560",
@@ -55,7 +55,7 @@ sp.ids <- list(
 
     Eristalis_arbustorum_m = list(Genus = "Eristalis", SubGenus="",
                                   Species = "arbustorum",
-                                  SubSpecies="", Sex = "",
+                                  SubSpecies="", Sex = "m",
                                   Author =  "Linnaeus",
                                   Determiner="M.Hauser",
                                   temp.id = c("BBSL1073080",
@@ -64,7 +64,7 @@ sp.ids <- list(
 
     Eristalis_bellardii_m= list(Genus = "Eristalis", SubGenus="",
                                 Species = "bellardii", SubSpecies="",
-                                Sex = "",
+                                Sex = "m",
                                 Author =   "Jeannicke",
                                 Determiner="M.Hauser",
                                 temp.id = c("BBSL1058425",
@@ -84,7 +84,7 @@ sp.ids <- list(
 
     Eristalis_bellardii_f= list(Genus = "Eristalis", SubGenus="",
                                 Species = "bellardii", SubSpecies="",
-                                Sex = "",
+                                Sex = "f",
                                 Author =  "Jeannicke",
                                 Determiner="M.Hauser",
                                 temp.id = c("BBSL1071576",
@@ -102,19 +102,19 @@ sp.ids <- list(
 
 
     Didea_fuscipes_f = list(Genus = "Didea", SubGenus="", Species = "fuscipes",
-                            SubSpecies="", Sex = "", Author = "Loew",
+                            SubSpecies="", Sex = "f", Author = "Loew",
                             Determiner="M.Hauser",
                             temp.id = c("BBSL1074302", "BBSL1087173")),
 
     Didea_fuscipes_m
     = list(Genus = "Didea", SubGenus="", Species = "fuscipes",
-           SubSpecies="", Sex = "", Author = "Loew",
+           SubSpecies="", Sex = "m", Author = "Loew",
            Determiner="M.Hauser", temp.id = c("BBSL1059956")),
 
 
 
     Dasysyrphus_morpho1 = list(Genus = "Dasysyrphus", SubGenus="",
-                               Species = "sp.", SubSpecies = "a",
+                               Species = "sp.", SubSpecies = "SI-a",
                                Sex = "", Author = "",
                                Determiner="M.Hauser",
                                temp.id = c("BBSL1059973",
@@ -134,7 +134,7 @@ sp.ids <- list(
 
     Syrphus_ribesii_f =list(Genus = "Syrphus", SubGenus="",
                             Species = "ribesii", SubSpecies="",
-                            Sex = "", Author = "Linnaeus",
+                            Sex = "f", Author = "Linnaeus",
                             Determiner="M.Hauser",
                             temp.id =c("BBSL1071429", "BBSL1071555",
                                        "BBSL1059995", "BBSL1058569")),
@@ -142,7 +142,7 @@ sp.ids <- list(
     Syrphus_ribesii_m =list(Genus = "Syrphus", SubGenus="",
                             Species = "ribesii",
                             SubSpecies="",
-                            Sex = "",
+                            Sex = "m",
                             Author = "Linnaeus",
                             Determiner="M.Hauser",
                             temp.id  =c("BBSL1071974", "BBSL1058314",
@@ -152,7 +152,7 @@ sp.ids <- list(
     Syrphus_opinator_f =list(Genus = "Syrphus", SubGenus="",
                              Species =  "opinator",
                              SubSpecies="",
-                             Sex = "", Author = "Osten Sacken",
+                             Sex = "f", Author = "Osten Sacken",
                              Determiner="M.Hauser", temp.id
                              =c("BBSL1060063",
                                 "BBSL1060039", "BBSL1058287",
@@ -161,7 +161,7 @@ sp.ids <- list(
 
     Syrphus_opinator_m =list(Genus = "Syrphus", SubGenus="",
                              Species =  "opinator",
-                             SubSpecies="", Sex = "",
+                             SubSpecies="", Sex = "m",
                              Author = "Osten Sacken",
                              Determiner="M.Hauser",
                              temp.id =c("BBSL1072653", "BBSL1070802")),
@@ -169,7 +169,7 @@ sp.ids <- list(
 
     volucella_facialis_f =list(Genus = "Volucella", SubGenus="",
                                Species =  "facialis", SubSpecies="",
-                               Sex = "", Author = "Williston",
+                               Sex = "f", Author = "Williston",
                                Determiner="M.Hauser",
                                temp.id =c("BBSL1071107", "BBSL1058772")),
 
@@ -178,13 +178,13 @@ sp.ids <- list(
     Pipizini_morpho1_f = list(Genus = "Pipizini",
                               SubGenus="",
                               Species = "sp.",
-                              SubSpecies= "a", Sex = "",
+                              SubSpecies= "SI-a", Sex = "f",
                               Author = "",
                               Determiner="M.Hauser",
                               temp.id = c("BBSL1071130")),
 
     Cheilosia_morpho1 = list(Genus = "Cheilosia", SubGenus="",
-                             Species = "sp.", SubSpecies="a",
+                             Species = "sp.", SubSpecies="SI-a",
                              Sex = "", Author = "",
                              Determiner="M.Hauser",
                              temp.id =c("BBSL1058522", "BBSL1058648",
@@ -206,7 +206,7 @@ sp.ids <- list(
                                       SubGenus="",
                                       Species="polygrammus",
                                       SubSpecies="",
-                                      Sex="", Author = "Loew",
+                                      Sex="m", Author = "Loew",
                                       Determiner="M.Hauser",
                                       temp.id= c("BBSL1073070",
                                                  "BBSL1059934")),
@@ -250,19 +250,19 @@ sp.ids <- list(
     neocnemodon_m = list(Genus="Neocnemodon",
                          SubGenus="",
                          Species="sp.",
-                         SubSpecies="a",
+                         SubSpecies="SI-a",
                          Sex="m", Author = "",
                          Determiner="M.Hauser",
                          temp.id= c("BBSL1059903")),
 
     neocnemodon_f = list(Genus="Neocnemodon",
                          SubGenus="",
-                         Species="sp.", SubSpecies="a",
+                         Species="sp.", SubSpecies="SI-a",
                          Sex="f", Author = "",
                          Determiner="M.Hauser",
                          temp.id= c("BBSL1087165")),
 
-    eupeodes_f= list(Genus="Eupeodes",
+    Eupeodes_snowi_f= list(Genus="Eupeodes",
                      SubGenus="",
                      Species="snowi",
                      SubSpecies="",
@@ -271,7 +271,7 @@ sp.ids <- list(
                      Determiner="M.Hauser",
                      temp.id= c("BBSL1071709")),
 
-    eupeodes_m= list(Genus="Eupeodes",
+    Eupeodes_fumipennis_m= list(Genus="Eupeodes",
                      SubGenus="",
                      Species="fumipennis",
                      SubSpecies="",
@@ -280,7 +280,7 @@ sp.ids <- list(
                      Determiner="M.Hauser",
                      temp.id= c("BBSL1072804")),
 
-    eupeodes_m= list(Genus="Eupeodes",
+    Eupeodes_volucris_m= list(Genus="Eupeodes",
                      SubGenus="",
                      Species="volucris",
                      SubSpecies="",
@@ -293,7 +293,7 @@ sp.ids <- list(
                                 "BBSL1073370",
                                 "BBSL1060079" )),
 
-    eupeodes_f= list(Genus="Eupeodes",
+    Eupeodes_volucris_f= list(Genus="Eupeodes",
                      SubGenus="",
                      Species="volucris",
                      SubSpecies="",
@@ -379,7 +379,7 @@ sp.ids <- list(
     Copestylum_lentum_f = list(Genus ="Copestylum",
                                SubGenus="",
                                Species = "lentum", SubSpecies="",
-                               Sex="",
+                               Sex="f",
                                Author ="Williston",
                                Determiner="M.Hauser",
                                temp.id =
@@ -414,7 +414,7 @@ sp.ids <- list(
     Copestylum_lentum_m = list(Genus ="Copestylum",
                                SubGenus="",
                                Species =
-                                   "lentum", SubSpecies="", Sex="",
+                                   "lentum", SubSpecies="", Sex="m",
                                Author ="Williston",
                                Determiner="M.Hauser",
                                temp.id = c("BBSL1059941", "BBSL1059671",
@@ -422,7 +422,7 @@ sp.ids <- list(
 
 
     Copestylum_violaceum_f = list(Genus ="Copestylum",SubGenus="", Species
-                                  = "violaceum", SubSpecies="", Sex ="",
+                                  = "violaceum", SubSpecies="", Sex ="f",
                                   Author ="Say",
                                   Determiner="M.Hauser",
                                   temp.id =
@@ -493,7 +493,7 @@ sp.ids <- list(
     Copestylum_violaceum_m = list(Genus ="Copestylum",SubGenus="",
                                   Species = "violaceum",
                                   SubSpecies="",
-                                  Sex ="", Author ="Say",
+                                  Sex ="m", Author ="Say",
                                   Determiner="M.Hauser",
                                   temp.id =
                                       c("BBSL1071547",
@@ -596,7 +596,7 @@ sp.ids <- list(
     Copestylum_anna_f = list(Genus = "Copestylum",
                              SubGenus="",
                              Species = "anna",
-                             SubSpecies="", Sex = "",
+                             SubSpecies="", Sex = "f",
                              Author =  "Williston",
                              Determiner="M.Hauser",
                              temp.id =
@@ -604,7 +604,7 @@ sp.ids <- list(
 
     Copestylum_anna_m = list(Genus = "Copestylum", SubGenus="",
                              Species = "anna",
-                             SubSpecies="", Sex = "",
+                             SubSpecies="", Sex = "m",
                              Author = "Williston",
                              Determiner="M.Hauser",
                              temp.id =
@@ -621,7 +621,7 @@ sp.ids <- list(
 
     Chrysotoxum_morpho1 = list(Genus="Chrysotoxum",
                                SubGenus="", Species = "sp.",
-                               SubSpecies = "a", Sex = "",
+                               SubSpecies = "SI-a", Sex = "",
                                Author = "", Determiner="M.Hauser",
                                temp.id =  c("BBSL1074207",
                                             "BBSL1074208",
@@ -641,7 +641,7 @@ sp.ids <- list(
     Eristalis_tenax_f = list(Genus = "Eristalis",
                              SubGenus="",
                              Species = "tenax",
-                             SubSpecies="", Sex = "",
+                             SubSpecies="", Sex = "f",
                              Author = "Linnaeus",
                              Determiner="M.Hauser",
                              temp.id =  c("BBSL1059746")),
@@ -649,7 +649,7 @@ sp.ids <- list(
     Eristalis_tenax_m = list(Genus = "Eristalis",
                              SubGenus="",
                              Species =  "tenax",
-                             SubSpecies="", Sex = "",
+                             SubSpecies="", Sex = "m",
                              Author = "Linnaeus", Determiner="M.Hauser",
                              temp.id = c("BBSL1073072")),
 
@@ -658,7 +658,7 @@ sp.ids <- list(
 
     Eristalis_stipator_f = list(Genus = "Eristalis", SubGenus="",
                                 Species = "stipator",
-                                SubSpecies="", Sex = "",
+                                SubSpecies="", Sex = "f",
                                 Author = "Osten Sacken",
                                 Determiner="M.Hauser",
                                 temp.id = c("BBSL1074406",
@@ -755,7 +755,7 @@ sp.ids <- list(
 
     Eristalis_stipator_m = list(Genus = "Eristalis", SubGenus="", Species
                                 = "stipator", SubSpecies="",
-                                Sex = "",
+                                Sex = "m",
                                 Author = "Osten Sacken",
                                 Determiner="M.Hauser",
                                 temp.id = c("BBSL1058408",
