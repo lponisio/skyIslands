@@ -1,7 +1,20 @@
-## Compute spring, round, and cumulative precipitation Compute daily
-## Tmean and antecedent Tmean per round using daily PRISM data and
-## sample rounds Fully vectorized
-
+## ================================================================
+## Climate preprocessing
+##
+## Creates one climate record per Site × Year × SampleRound.
+##
+## Calculates:
+##   - Cumulative precipitation (May 1 → sample round)
+##   - Mean tmean, tmax, tmin
+##   - Mean maximum VPD
+##   - 30-year daily-normal climatology
+##   - Climate anomalies
+##   - Antecedent Precipitation Index (APi)
+##   - Growing Degree Days (GDD)
+##
+## Output:
+##   data/relational/original/climate.csv
+## ================================================================
 library(tidyverse)
 library(lubridate)
 source("dataPrep/relational/src/getAPi.R")
@@ -16,19 +29,20 @@ daily_precip_dir <- "data/PRISM_data/PRISM_daily_precip"
 # Temperature paths
 daily_temp_dir <- "data/PRISM_data/PRISM_daily_temp"
 monthly_normals_file <- "data/PRISM_data/temperature/PRISM_tmin_tmax_stable_800m_200801_202212.csv"
+daily_normals_file <- "data/PRISM_data/30-year_daily_normals/PRISM_ppt_tmin_tmean_tmax_vpdmax_30yr_normal_800m_daily_normals.csv"
+
+# Max vapor pressure paths
+daily_vpdmax_dir <- "data/PRISM_data/PRISM_daily_vpdmax"
 
 ## *******************************************************************
 ## Create a round level summary of weather (rounds extend over
 ## multiple days)
 ## *******************************************************************
-
 weather <- read_csv(weather_csv) %>%
   mutate(
     Year = as.numeric(Year)
   )  %>%
-  filter(SampleRound > 0)   # drop SampleRound 0 if needed
-
-
+  filter(Method == "Net")
 
 # Summarize sample rounds
 sample_windows <- weather %>%
@@ -42,17 +56,12 @@ sample_windows <- weather %>%
   group_by(Site, Year) %>%
   mutate(
     baseline_start = as.Date(paste0(Year, "-05-01")),
-    # # Define cumulative window start (May 1 for first round, previous
-    # # end for later rounds)
-    # window_start = lag(EndDate, default = first(baseline_start)),
-    # window_end   = StartDate - days(1)
   ) %>%
   ungroup()
 
 ## *******************************************************************
 # Calculate cumulative precipitation 
 ## *******************************************************************
-
 daily_precip_files  <- list.files(daily_precip_dir, pattern = "\\.csv$",
                           full.names = TRUE)
 
@@ -63,6 +72,160 @@ daily_precip_data <- daily_precip_files  %>%
             rename(Site = Name, Precip = `ppt (mm)`) %>%
             mutate(Date = ymd(Date),
                    Year = year(Date)))
+
+sample_precip <-
+  daily_precip_data %>%
+  inner_join(sample_windows,
+             by=c("Site","Year")) %>%
+  filter(Date >= baseline_start,
+         Date <= EndDate) %>%
+  group_by(Site,Year,SampleRound) %>%
+  summarise(
+    CumPrecip=sum(Precip),
+    .groups="drop")
+
+## *******************************************************************
+## Calculate temperature anomalies 
+## *******************************************************************
+daily_temp_files  <- list.files(daily_temp_dir, pattern = "\\.csv$", full.names = TRUE)
+
+
+daily_temp_data <- daily_temp_files %>%
+  set_names() %>%
+  map_dfr(~ read_csv(.x, skip = 10) %>% 
+            rename(
+              Site = Name,
+              tmin = `tmin (degrees C)`,
+              tmax = `tmax (degrees C)`,
+              tmean = `tmean (degrees C)`,
+              Date = Date
+            ) %>%
+            mutate(
+              Date = ymd(Date),
+              Year = year(Date),
+              Month = month(Date)
+            ))
+
+sample_temp <-
+  daily_temp_data %>%
+  inner_join(sample_windows,
+             by=c("Site","Year")) %>%
+  filter(Date >= baseline_start,
+         Date <= EndDate) %>%
+  group_by(Site,Year,SampleRound) %>%
+  summarise(
+    MeanTmean=mean(tmean),
+    MeanTmax=mean(tmax),
+    MeanTmin=mean(tmin),
+    .groups="drop")
+
+## *******************************************************************
+## Read in vapor pressure data and summarize
+## *******************************************************************
+daily_vpdmax_files  <- list.files(daily_vpdmax_dir, pattern = "\\.csv$", full.names = TRUE)
+
+
+daily_vpdmax_data <- daily_vpdmax_files %>%
+  set_names() %>%
+  map_dfr(~ read_csv(.x, skip = 10) %>%
+            select(Name, `vpdmax (hPa)`, Date) %>%
+            rename(Site = Name, vpdmax = `vpdmax (hPa)`) %>%
+            mutate(Date = ymd(Date),
+                   Year = year(Date)))
+
+sample_vpd <-
+  daily_vpdmax_data %>%
+  inner_join(sample_windows,
+             by=c("Site","Year")) %>%
+  filter(Date >= baseline_start,
+         Date <= EndDate) %>%
+  group_by(Site,Year,SampleRound) %>%
+  summarise(
+    MeanVPD=mean(vpdmax),
+    .groups="drop")
+
+## *******************************************************************
+## Join seasonal climate datasets
+## *******************************************************************
+sample_climate <-
+  sample_temp %>%
+  left_join(sample_precip,
+            by = c("Site","Year","SampleRound")
+  ) %>%
+  left_join(sample_vpd,
+            by = c("Site","Year","SampleRound"))
+
+## *******************************************************************
+## Calculate sample round anomalies
+## *******************************************************************
+daily_normals <- read_csv(daily_normals_file,
+                          skip = 10)
+
+daily_normals <- daily_normals %>%
+  mutate(
+    NormalDate = as.Date(
+      paste0(Date, "-2000"),
+      format = "%B-%d-%Y"))
+
+sample_windows <- sample_windows %>%
+  mutate(
+    NormalStart = as.Date(
+      paste0(
+        "2000-",
+        format(baseline_start, "%m-%d")
+      )
+    ),
+    NormalEnd = as.Date(
+      paste0(
+        "2000-",
+        format(EndDate, "%m-%d")
+      )
+    )
+  )
+
+climatology <-
+  daily_normals %>%
+  rename(Site = Name) %>%
+  inner_join(
+    sample_windows,
+    by = "Site",
+    relationship = "many-to-many"
+  ) %>%
+  filter(
+    NormalDate >= NormalStart,
+    NormalDate <= NormalEnd
+  ) %>%
+  group_by(
+    Site,
+    Year,
+    SampleRound
+  ) %>%
+  summarise(
+    MeanTmean = mean(`tmean (degrees C)`),
+    MeanTmax  = mean(`tmax (degrees C)`),
+    MeanTmin  = mean(`tmin (degrees C)`),
+    CumPrecip = sum(`ppt (mm)`),
+    MeanVPD   = mean(`vpdmax (hPa)`),
+    .groups = "drop"
+  )
+
+sample_climate <-
+  sample_climate %>%
+  left_join(
+    climatology,
+    by = c("Site","Year","SampleRound"),
+    suffix = c("", "_normal")
+  )
+
+sample_climate <-
+  sample_climate %>%
+  mutate(
+    Tmean_anom = MeanTmean - MeanTmean_normal,
+    Tmax_anom  = MeanTmax  - MeanTmax_normal,
+    Tmin_anom  = MeanTmin  - MeanTmin_normal,
+    Precip_anom = CumPrecip - CumPrecip_normal,
+    VPD_anom   = MeanVPD   - MeanVPD_normal
+  )
 
 ## *******************************************************************
 ## Calculate antecedent precipitation
@@ -79,109 +242,6 @@ precip <- daily_precip_data %>%
   mutate(APi = getApi(Precip, finite = FALSE)) %>% 
   ungroup() %>% 
   rename(EndDate = Date) #change name for joining at the end
-
-## *******************************************************************
-## Calculate temperature anomalies 
-## *******************************************************************
-daily_temp_files  <- list.files(daily_temp_dir, pattern = "\\.csv$", full.names = TRUE)
-
-
-daily_temp_data <- daily_temp_files %>%
-  set_names() %>%
-  map_dfr(~ read_csv(.x, skip = 10) %>%   # adjust skip if needed
-            rename(
-              Site = Name,
-              tmin = `tmin (degrees C)`,
-              tmax = `tmax (degrees C)`,
-              tmean = `tmean (degrees C)`,
-              Date = Date
-            ) %>%
-            mutate(
-              Date = ymd(Date),
-              Year = year(Date),
-              Month = month(Date)
-            ))
-
-## ---- Load long-term monthly normals ----
-monthly_normals <- read_csv(monthly_normals_file, skip = 10) %>%
-  rename(
-    Site = Name,
-    Tmin = `tmin (degrees C)`,
-    Tmax = `tmax (degrees C)`
-  ) %>%
-  mutate(
-    Date = as.Date(paste0(Date, "-01")),
-    Month = month(Date),
-    Tmean = (Tmin + Tmax)/2
-  ) %>%
-  group_by(Site, Month) %>%
-  summarize(Tmean_normal = mean(Tmean, na.rm = TRUE), .groups = "drop")
-
-## ---- Merge normals to daily data for anomalies ----
-daily_temp_data <- daily_temp_data %>%
-  left_join(monthly_normals, by = c("Site", "Month")) %>%
-  mutate(Tmean_anomaly = tmean - Tmean_normal)
-
-## *******************************************************************
-## Compute window TMeanAnomaly
-## Mirrors the APi structure: start from May 1, run continuously
-## through the end of each sample round. No spring/round split.
-## *******************************************************************
-
-tmean_combined <- sample_windows %>%
-  rowwise() %>%
-  mutate(
-    # Pull all daily anomaly values from May 1 through end of this round
-    daily_slice = list(
-      daily_temp_data %>%
-        filter(
-          Site == .data$Site,
-          Year == .data$Year,
-          Date >= baseline_start,   # May 1
-          Date <= EndDate            # end of this sample round
-        ) %>%
-        pull(Tmean_anomaly)
-    ),
-    
-    # Mean anomaly over the full window (May 1 → round end)
-    # This is the cumulative signal, consistent with how APi works
-    WindowTmeanAnom = mean(unlist(daily_slice), na.rm = TRUE),
-    
-    # Round-window-only anomaly (StartDate → EndDate), kept for diagnostics
-    daily_slice_round = list(
-      daily_temp_data %>%
-        filter(
-          Site == .data$Site,
-          Year == .data$Year,
-          Date >= StartDate,
-          Date <= EndDate
-        ) %>%
-        pull(Tmean_anomaly)
-    ),
-    RoundTmeanAnom = mean(unlist(daily_slice_round), na.rm = TRUE),
-    
-    # Plain tmean versions (same windows, no anomaly)
-    WindowTmean    = mean(
-      daily_temp_data$tmean[
-        daily_temp_data$Site == Site &
-          daily_temp_data$Year == Year &
-          daily_temp_data$Date >= baseline_start &
-          daily_temp_data$Date <= EndDate
-      ], na.rm = TRUE),
-    
-    RoundTmean = mean(
-      daily_temp_data$tmean[
-        daily_temp_data$Site == Site &
-          daily_temp_data$Year == Year &
-          daily_temp_data$Date >= StartDate &
-          daily_temp_data$Date <= EndDate
-      ], na.rm = TRUE)
-    
-  ) %>%
-  ungroup() %>%
-  select(Site, Year, SampleRound, StartDate, EndDate,
-         RoundTmean, RoundTmeanAnom,
-         WindowTmean, WindowTmeanAnom)
 
 ## *******************************************************************
 ## Calculate growing degree days 
@@ -206,24 +266,43 @@ gdd <- daily_temp_data %>%
   ungroup() %>% 
   rename(EndDate = Date)
 
-# ## Combine the dataframes of gdd and api. Keep only the important columns 
-# combined_gdd_api <-precip %>% 
-#   select(Site, Year, EndDate, APi) %>% 
-#   left_join(gdd,
-#             by = c("Site", "Year", "EndDate")) %>% 
-#   select(Site, Year, EndDate, APi, GDD)
-  
+## Combine the dataframes of gdd and api. Keep only the important columns
+combined_gdd_api <-precip %>%
+  select(Site, Year, EndDate, APi) %>%
+  left_join(gdd,
+            by = c("Site", "Year", "EndDate")) %>%
+  select(Site, Year, EndDate, APi, GDD)
 
-# ---- Combine precipitation and temperature summaries ----
-climate_combined <- tmean_combined %>%
+combined_gdd_api <- combined_gdd_api %>%
   left_join(
-    precip %>% select(Site, Year, EndDate, APi),
-    by = c("Site", "Year", "EndDate")
-  ) %>%
+  sample_windows %>%
+    select(Site, Year, SampleRound, EndDate),
+  by = c("Site","Year","EndDate")
+)
+
+###########################################
+## Combine GDD and APi with sample_climate
+###########################################
+climate_combined <-
+  sample_climate %>%
   left_join(
-    gdd %>% select(Site, Year, EndDate, GDD),
-    by = c("Site", "Year", "EndDate")
-  )
+    combined_gdd_api %>%
+      select(Site, Year, SampleRound, APi, GDD),
+    by = c("Site","Year","SampleRound"))
+
+write.csv(climate_combined,"data/relational/original/climate.csv",row.names = FALSE)
+
+
+# # ---- Combine precipitation and temperature summaries ----
+# climate_combined <- sample_climate %>%
+#   left_join(
+#     precip %>% select(Site, Year, EndDate, APi),
+#     by = c("Site", "Year", "EndDate")
+#   ) %>%
+#   left_join(
+#     gdd %>% select(Site, Year, EndDate, GDD),
+#     by = c("Site", "Year", "EndDate")
+#   )
 
 # climate_combined <- tmean_combined %>%
 #   left_join(precip %>% select(Site, Year, EndDate),
@@ -233,53 +312,53 @@ climate_combined <- tmean_combined %>%
 #   left_join(combined_gdd_api,
 #             by = c("Site", "Year", "EndDate"))
 
-###########################################
-## Calculate precipitation and temperature variability ##
-###########################################
-
-## annual standard deviation by site and year ##
-annual_precip_var <- daily_precip_data %>% 
-        # marking May 1st as time of year where temperatures are above freezing
-  mutate(baseline_start = as.Date(paste0(Year, "-05-01")),
-         # marking mid oct to account for the 2021 going into oct
-         season_end = as.Date(paste0(Year, "-10-15"))) %>%
-  filter(Date >= baseline_start &  Date <= season_end) %>%
-  group_by(Site, Year) %>% 
-  summarise(PrecipSD = sd(Precip, na.rm = TRUE))
-
-## Calculate annual temp and temp anomaly variability ##
-annual_temp_var <- daily_temp_data %>% 
-          # marking May 1st as time of year where temperatures are above freezing
-  mutate(baseline_start = as.Date(paste0(Year, "-05-01")),
-         # marking mid oct to account for the 2021 going into oct
-         season_end = as.Date(paste0(Year, "-10-15"))) %>%
-  filter(Date >= baseline_start &  Date <= season_end) %>%
-  group_by(Site, Year) %>% 
-  summarise(TempDifSD = sd(tmax - tmin, na.rm = TRUE), 
-            TempMeanSD = sd(Tmean_normal, na.rm = TRUE),
-            TempAnomSD = sd(Tmean_anomaly, na.rm = TRUE), .groups = "drop")
-
-## Merge temp and precipitation variability ##
-climate_variability <- annual_precip_var %>%
-  left_join(annual_temp_var, by = c("Site", "Year")) %>%
-  select(Site, Year, PrecipSD, TempDifSD, TempMeanSD, TempAnomSD)
-
-climate_combined <- climate_combined %>% 
-  left_join(climate_variability,
-            by = c("Site", "Year"))
-
-climate_combined <- climate_combined %>%
-  select(
-    Site, Year, SampleRound, StartDate, EndDate,
-    APi, WindowTmean,
-    WindowTmeanAnom,
-    RoundTmeanAnom,
-    GDD,
-    PrecipSD, TempDifSD, TempMeanSD, TempAnomSD
-  )
-
-write.csv(climate_combined, file =
-                              "data/relational/original/climate.csv", row.names=FALSE)
+# ###########################################
+# ## Calculate precipitation and temperature variability ##
+# ###########################################
+# 
+# ## annual standard deviation by site and year ##
+# annual_precip_var <- daily_precip_data %>% 
+#         # marking May 1st as time of year where temperatures are above freezing
+#   mutate(baseline_start = as.Date(paste0(Year, "-05-01")),
+#          # marking mid oct to account for the 2021 going into oct
+#          season_end = as.Date(paste0(Year, "-10-15"))) %>%
+#   filter(Date >= baseline_start &  Date <= season_end) %>%
+#   group_by(Site, Year) %>% 
+#   summarise(PrecipSD = sd(Precip, na.rm = TRUE))
+# 
+# ## Calculate annual temp and temp anomaly variability ##
+# annual_temp_var <- daily_temp_data %>% 
+#           # marking May 1st as time of year where temperatures are above freezing
+#   mutate(baseline_start = as.Date(paste0(Year, "-05-01")),
+#          # marking mid oct to account for the 2021 going into oct
+#          season_end = as.Date(paste0(Year, "-10-15"))) %>%
+#   filter(Date >= baseline_start &  Date <= season_end) %>%
+#   group_by(Site, Year) %>% 
+#   summarise(TempDifSD = sd(tmax - tmin, na.rm = TRUE), 
+#             TempMeanSD = sd(Tmean_normal, na.rm = TRUE),
+#             TempAnomSD = sd(Tmean_anomaly, na.rm = TRUE), .groups = "drop")
+# 
+# ## Merge temp and precipitation variability ##
+# climate_variability <- annual_precip_var %>%
+#   left_join(annual_temp_var, by = c("Site", "Year")) %>%
+#   select(Site, Year, PrecipSD, TempDifSD, TempMeanSD, TempAnomSD)
+# 
+# climate_combined <- climate_combined %>% 
+#   left_join(climate_variability,
+#             by = c("Site", "Year"))
+# 
+# climate_combined <- climate_combined %>%
+#   select(
+#     Site, Year, SampleRound, StartDate, EndDate,
+#     APi, WindowTmean,
+#     WindowTmeanAnom,
+#     RoundTmeanAnom,
+#     GDD,
+#     PrecipSD, TempDifSD, TempMeanSD, TempAnomSD
+#   )
+# 
+# write.csv(climate_combined, file =
+#                               "data/relational/original/climate.csv", row.names=FALSE)
 
 
 
