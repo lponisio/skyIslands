@@ -4,7 +4,7 @@ library(vegan)
 library(readxl)
 
 setwd("~/")
-setwd('C:/')
+## setwd('C:/')
 source("lab_paths.R")
 local.path
 

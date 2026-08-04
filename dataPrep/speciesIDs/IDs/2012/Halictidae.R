@@ -873,7 +873,7 @@ Lasioglossum_sisymbrii_f = list(Genus="Lasioglossum", SubGenus
 
            Lasioglossum_sp_m= list(Genus="Lasioglossum", SubGenus
                                   ="Sphecodogastra", Species="sp.",
-                                  SubSpecies="SI-s", Sex="m",
+                                  SubSpecies="SI-S", Sex="m",
                                   Author = "",
                                   Determiner = "J. Gardener",
                                   temp.id=  c("SC_072812_131")),
