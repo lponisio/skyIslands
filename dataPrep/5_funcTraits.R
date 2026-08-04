@@ -130,19 +130,19 @@ write.csv(spec.net, file="../data/spec_traits.csv", row.names=FALSE)
 # save(spec.net, file="../data/spec_traits_YR.Rdata")
 # write.csv(spec.net, file="../data/spec_traits_YR.csv", row.names=FALSE)
 
-spec.bee.microbes <- spec.net %>%
-  filter(Family != "Syrphidae") %>%
-  select(UniqueID, TempID, GenusSpecies, Site, Year, SampleRound,
-         PlantGenusSpecies, NestLocation, NestPartitions,
-         NestConstruction, PrimaryNestMaterial, MeanITD, PollenCarry,
-         ReproStrat, Sociality,
-         originalitySiteYearSR, uniqSiteYearSR,
-         originalitySiteYear, uniqSiteYear,
-         originalitySite, uniqSite,
-         zdegree,
-         zweighted.betweenness, zweighted.closeness, zd,
-         normalised.degree)
+## spec.bee.microbes <- spec.net %>%
+##   filter(Family != "Syrphidae") %>%
+##   select(UniqueID, TempID, GenusSpecies, Site, Year, SampleRound,
+##          PlantGenusSpecies, NestLocation, NestPartitions,
+##          NestConstruction, PrimaryNestMaterial, MeanITD, PollenCarry,
+##          ReproStrat, Sociality,
+##          originalitySiteYearSR, uniqSiteYearSR,
+##          originalitySiteYear, uniqSiteYear,
+##          originalitySite, uniqSite,
+##          zdegree,
+##          zweighted.betweenness, zweighted.closeness, zd,
+##          normalised.degree)
 
 
-write.csv(spec.bee.microbes,
-          file="../data/si_bee_microbes_traits.csv", row.names=FALSE)
+## write.csv(spec.bee.microbes,
+##           file="../data/si_bee_microbes_traits.csv", row.names=FALSE)
