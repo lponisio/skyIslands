@@ -51,7 +51,7 @@ calcFuncUniqOrigComm <- function(traits, traits.2.keep,
                          w = weights,
                          corr = "lingoes",
                          print.pco = TRUE,
-                         w.abun = w.abun,
+                         w.abun = w.abun, calc.FDiv =TRUE, calc.FRic=FALSE,
                          ...)
 
   coords <- site.func.mets$x.axes
@@ -158,7 +158,8 @@ add_func_uniq_orig <- function(spec.net, traits,
     fd <- tibble::tibble(
       !!id_col := names(out$fd$FDis),
       !!paste0("BeeFDis", suffix) := unname(out$fd$FDis),
-      !!paste0("BeeFEve", suffix) := unname(out$fd$FEve)
+      !!paste0("BeeFEve", suffix) := unname(out$fd$FEve),
+      !!paste0("BeeFDiv", suffix) := unname(out$fd$FDiv)
     )
     spec.net <- spec.net %>%
       dplyr::left_join(fd, by = id_col)
