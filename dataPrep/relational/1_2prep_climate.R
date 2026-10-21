@@ -76,7 +76,8 @@ daily_precip_data <- daily_precip_files  %>%
 sample_precip <-
   daily_precip_data %>%
   inner_join(sample_windows,
-             by=c("Site","Year")) %>%
+             by=c("Site","Year"),
+             relationship = "many-to-many")%>%
   filter(Date >= baseline_start,
          Date <= EndDate) %>%
   group_by(Site,Year,SampleRound) %>%
@@ -109,7 +110,8 @@ daily_temp_data <- daily_temp_files %>%
 sample_temp <-
   daily_temp_data %>%
   inner_join(sample_windows,
-             by=c("Site","Year")) %>%
+             by=c("Site","Year"),
+             relationship = "many-to-many")%>%
   filter(Date >= baseline_start,
          Date <= EndDate) %>%
   group_by(Site,Year,SampleRound) %>%
@@ -136,7 +138,8 @@ daily_vpdmax_data <- daily_vpdmax_files %>%
 sample_vpd <-
   daily_vpdmax_data %>%
   inner_join(sample_windows,
-             by=c("Site","Year")) %>%
+             by=c("Site","Year"),
+             relationship = "many-to-many")%>%
   filter(Date >= baseline_start,
          Date <= EndDate) %>%
   group_by(Site,Year,SampleRound) %>%

@@ -115,12 +115,22 @@ bloom$Date  <- as.character(bloom$Date)
 climate$StartDate <- NULL
 climate$EndDate <- NULL
 
-## Merge climate to conditions. This is not an ideal implementation
-## because the climate data will be repeated for SampleRounds that
-## endend multiple days. But there isn't a clean way to merge the
-## different dimensions of data without creating another redundant
-## key. 
-conditions <- merge(conditions, climate, all.x=TRUE)
+### Merge climate to conditions. This is not an ideal implementation
+### because the climate data will be repeated for SampleRounds that
+### endend multiple days. But there isn't a clean way to merge the
+### different dimensions of data without creating another redundant
+### key. 
+# conditions <- merge(conditions, climate, all.x=TRUE)
+
+## Join climate data to conditions using Site × Year × SampleRound.
+## Preserve all sampling methods (Net, Pan, Vane, Veg).
+## GeographyFK is already present in conditions.
+
+conditions <- dplyr::left_join(
+  conditions,
+  dplyr::select(climate, -GeographyFK),
+  by = c("Site", "Year", "SampleRound")
+)
 
 ## Temporarily identify unique combinations:
 keep.spec <- c("GeographyFK", "Date", "Method", "NetNumber")
@@ -128,11 +138,20 @@ conditions$cond.code <- apply(conditions[keep.spec], 1, paste, collapse=";")
 specimens$cond.code <- apply(specimens[keep.spec], 1, paste, collapse=";")
 
 ## make table
-keep <- c("Date", "SampleRound", "NetNumber", "Method", "StartTime",
-          "EndTime", "TempStart", "TempEnd", "WindStart", "WindEnd",
-          "SkyStart", "SkyEnd", "WindowTmean", "WindowTmeanAnom", "RoundTmeanAnom",
-          "APi", "GDD",
-          "GeographyFK", "cond.code")
+## Select variables for the conditions table
+keep <- c(
+  "Date", "SampleRound", "NetNumber", "Method",
+  "StartTime", "EndTime",
+  "TempStart", "TempEnd",
+  "WindStart", "WindEnd",
+  "SkyStart", "SkyEnd",
+  "MeanTmean", "MeanTmax", "MeanTmin",
+  "CumPrecip", "MeanVPD",
+  "Tmean_anom", "Tmax_anom", "Tmin_anom",
+  "Precip_anom", "VPD_anom",
+  "APi", "GDD",
+  "GeographyFK", "cond.code"
+)
 
 cond <- unique(conditions[keep])
 rownames(cond) <- NULL

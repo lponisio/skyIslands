@@ -473,16 +473,17 @@ write.csv(traits, file='../data/parasitetraits.csv', row.names=FALSE)
 
 ## plant-pollinator networks
 bees.syr.yr.sr <- makeNets(spec.net.nets, net.type="YearSR",
-                           poll.group="BeesSyrphids")
+                           poll.groups="BeesSyrphids")
+
 bees.syr.yr <- makeNets(spec.net.nets, net.type="YearSR", mean.by.year=TRUE,
-         poll.group="BeesSyrphids")
+         poll.groups="BeesSyrphids")
 
 bees.yr.sr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
          net.type="YearSR",
-         poll.group="Bees")
+         poll.groups="Bees")
 
 bees.yr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
-         net.type="YearSR", mean.by.year=TRUE, poll.group="Bees")
+         net.type="YearSR", mean.by.year=TRUE, poll.groups="Bees")
 
 ## -- Calculates species level network metrics by site and round -- ##
 ## Takes a while, only re-run if bee data is changed 
