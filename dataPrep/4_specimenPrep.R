@@ -164,6 +164,13 @@ write.csv(spec, file="../data/spec_net_pan.csv", row.names=FALSE)
 bee.families <- c("Andrenidae", "Apidae", "Colletidae", "Halictidae",
                   "Megachilidae")
 
+pollinator.families <- c(
+  bee.families,
+  "Syrphidae",
+  "Bombyliidae"
+)
+
+
 ## DECISION POINT: drop non bees but keep the syrphids
 # spec <- spec[spec$Family %in% c(bee.families, "Syrphidae"),]
 
@@ -484,6 +491,20 @@ bees.yr.sr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
 
 bees.yr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
          net.type="YearSR", mean.by.year=TRUE, poll.groups="Bees")
+
+spec.net.selected <- spec.net.nets %>%
+  filter(
+    Family %in% pollinator.families |
+      Order == "Lepidoptera"
+  )
+
+bees.flies.leps.yr <- makeNets(spec.net.selected,
+  net.type = "YearSR", mean.by.year = TRUE, poll.groups = "BeesFliesLepidoptera"
+)
+
+bees.flies.leps.yr.sr <- makeNets(spec.net.selected,
+  net.type = "YearSR",  poll.groups = "BeesFliesLepidoptera"
+)
 
 ## -- Calculates species level network metrics by site and round -- ##
 ## Takes a while, only re-run if bee data is changed 
