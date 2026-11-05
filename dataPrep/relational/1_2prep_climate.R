@@ -59,6 +59,14 @@ sample_windows <- weather %>%
   ) %>%
   ungroup()
 
+# Filter out sample window without matching network
+sample_windows <- sample_windows %>%
+  filter(
+    !(Site == "RP" &
+        Year == 2018 &
+        SampleRound == 1)
+  )
+
 ## *******************************************************************
 # Calculate cumulative precipitation 
 ## *******************************************************************
