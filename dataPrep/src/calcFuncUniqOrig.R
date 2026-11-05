@@ -51,7 +51,7 @@ calcFuncUniqOrigComm <- function(traits, traits.2.keep,
                          w = weights,
                          corr = "lingoes",
                          print.pco = TRUE,
-                         w.abun = w.abun, calc.FDiv =TRUE, calc.FRic=FALSE,
+                         w.abun = w.abun,
                          ...)
 
   coords <- site.func.mets$x.axes
