@@ -26,10 +26,11 @@ keep <- c("Site", "Country", "State", "County",
           "Meadow", "Forest",
           "MtRange", "Lat", "Long", "Elev", "Area")
 
-geography <- unique(geo[keep])
-## next sort into alphabetical order
-geography <- geography[match(sort(geography$Site),
-                             geography$Site),]
+## Sites are representative site coordinates, NOT individual net locations.
+geography <- geo[!duplicated(geo$Site), keep, drop=FALSE]
+geography <- geography[order(geography$Site), , drop=FALSE]
+if (anyDuplicated(geography$Site) || anyNA(geography$Site))
+  stop('Geography must contain one nonmissing record per Site.')
 
 ## generate primary geography key
 geography <- cbind(GeographyPK=seq_len(nrow(geography)), geography)
@@ -115,22 +116,36 @@ bloom$Date  <- as.character(bloom$Date)
 climate$StartDate <- NULL
 climate$EndDate <- NULL
 
-### Merge climate to conditions. This is not an ideal implementation
-### because the climate data will be repeated for SampleRounds that
-### endend multiple days. But there isn't a clean way to merge the
-### different dimensions of data without creating another redundant
-### key. 
-# conditions <- merge(conditions, climate, all.x=TRUE)
-
-## Join climate data to conditions using Site × Year × SampleRound.
-## Preserve all sampling methods (Net, Pan, Vane, Veg).
-## GeographyFK is already present in conditions.
-
+##  Site x Year x SampleRound must be a single
+## climate record before joining, or weather rows can multiply. Retain
+## the FIRST climate row as the previous merge intended; write conflicts
+## for review rather than silently expanding the conditions table.
+for (d in c('conditions', 'climate', 'specimens', 'veg', 'bloom')) {
+  x <- get(d)
+  x$Year <- as.character(x$Year)
+  x$SampleRound <- as.character(x$SampleRound)
+  assign(d, x)
+}
+clim.keys <- c('Site', 'Year', 'SampleRound')
+clim.duplicated <- duplicated(climate[clim.keys]) |
+                   duplicated(climate[clim.keys], fromLast=TRUE)
+dir.create('../../checks/relational_audit', recursive=TRUE,
+           showWarnings=FALSE)
+write.csv(climate[clim.duplicated, , drop=FALSE],
+  file='../../checks/relational_audit/climate_duplicate_rounds.csv',
+  row.names=FALSE)
+if (any(clim.duplicated))
+  warning('Repeated climate Site/Year/Round keys: ',
+          sum(clim.duplicated), ' rows; first record retained.')
+climate <- climate[!duplicated(climate[clim.keys]), , drop=FALSE]
+conditions.n <- nrow(conditions)
 conditions <- dplyr::left_join(
   conditions,
   dplyr::select(climate, -GeographyFK),
-  by = c("Site", "Year", "SampleRound")
+  by = clim.keys
 )
+if (nrow(conditions) != conditions.n)
+  stop('Climate join unexpectedly changed the weather row count.')
 
 ## Temporarily identify unique combinations:
 keep.spec <- c("GeographyFK", "Date", "Method", "NetNumber")
@@ -154,6 +169,20 @@ keep <- c(
 )
 
 cond <- unique(conditions[keep])
+##  Multiple weather rows can share the same SITE-level
+## event key (e.g., measurements from different subsites). The original
+## match() assigned the first record. Preserve that behavior, but keep
+## exactly ONE dimension row per event and audit conflicting records.
+cond.duplicate <- duplicated(cond$cond.code) |
+                  duplicated(cond$cond.code, fromLast=TRUE)
+write.csv(cond[cond.duplicate, , drop=FALSE],
+  file='../../checks/relational_audit/weather_repeated_site_events.csv',
+  row.names=FALSE)
+if (any(cond.duplicate))
+  message('## REVIEW: ', length(unique(cond$cond.code[cond.duplicate])),
+          ' site-level weather event keys have multiple measurements;',
+          ' retaining the first entry.')
+cond <- cond[!duplicated(cond$cond.code), , drop=FALSE]
 rownames(cond) <- NULL
 cond <- cbind(ConditionsPK=seq_len(nrow(cond)), cond)
 
@@ -199,21 +228,19 @@ write.csv(dbReadTable(con, "tblConditions"),
 ## *******************************************************
 
 keep <- c("Site", "Year", "SampleRound")
-conditions$samp.code <- gsub(" ", "", apply(conditions[keep], 1, paste, collapse=";"))
-veg$samp.code <- apply(veg[keep], 1, paste, collapse=";")
-bloom$samp.code <- apply(bloom[keep], 1, paste, collapse=";")
-
-keep <- c("Site", "Date", "SampleRound", "samp.code")
-samp <- unique(conditions[keep])
+## One sample FK per Site x Year x SampleRound,
+## not per visit date, since a round can span multiple days. 
+conditions$samp.code <- gsub(' ', '', apply(conditions[keep], 1,
+                                           paste, collapse=';'))
+veg$samp.code <- gsub(' ', '', apply(veg[keep], 1, paste, collapse=';'))
+bloom$samp.code <- gsub(' ', '', apply(bloom[keep], 1, paste, collapse=';'))
+keep <- c('Site', 'Date', 'SampleRound', 'samp.code')
+samp <- conditions[!duplicated(conditions$samp.code), keep, drop=FALSE]
 rownames(samp) <- NULL
 samp <- cbind(SamplePK=seq_len(nrow(samp)), samp)
 
 ## Don't upload the cond.code column
 dbWriteTable(con, "tblSample", samp[-ncol(samp)], row.names=FALSE)
-
-## ## Propagate conditions key to the conditions table.
-## conditions$SampleFK <-
-##     samp$SamplePK[match(conditions$samp.code, samp$samp.code)]
 
 ## Propagate conditions key to the veg table.
 veg$SampleFK <-
@@ -228,7 +255,7 @@ print(paste("site, round in quadrat data without condition key",
 
 print(paste("site, round in bloom data without condition key",
             unique(paste(bloom$Site,
-                         bloom$Date, veg$Date)[is.na(bloom$SampleFK)])))
+                         bloom$Date, bloom$SampleRound)[is.na(bloom$SampleFK)])))
 
 
 ## *******************************************************
@@ -247,6 +274,7 @@ insects$gen.sp <- paste(insects$Order,
                         insects$SubGenus,
                         insects$Species,
                         insects$SubSpecies,
+                        insects$Author,
                         ## insects$Sex,
                         ## insects$Determiner,
                         sep=";")
@@ -263,6 +291,8 @@ specimens$gen.sp <- paste(specimens$Order,
                           specimens$SubGenus,
                           specimens$Species,
                           specimens$SubSpecies,
+                          ## UPDATED [CONS-10]: Same fields on both sides.
+                          specimens$Author,
                           ## specimens$Sex,
                           ## specimens$Determiner,
                           sep=";")
@@ -384,10 +414,20 @@ veg$QuadFK <- quads$QuadPK[match(veg$Quadrat, quads$Quadrat)]
 ## 7. Specimens:
 ## *******************************************************
 
+##  original event fields only as provenance.
+## These never override or substitute for a missing ConditionsFK.
+specimens$SourceDate <- specimens$Date
+specimens$SourceSite <- specimens$Site
+specimens$SourceSampleRound <- specimens$SampleRound
+specimens$SourceMethod <- specimens$Method
+specimens$SourceNetNumber <- specimens$NetNumber
+
 keep <- c('UniqueID',
           'TempID',
     #      'EventID',
           'Collector',
+          'SourceDate', 'SourceSite', 'SourceSampleRound',
+          'SourceMethod', 'SourceNetNumber',
           'InsectFK',
           'PlantFK',
           'PanFK',
@@ -403,8 +443,22 @@ rownames(specimens) <- NULL
 ## *******************************************************
 ## 8. Add parasite data:
 ## *******************************************************
-specimens <- merge(specimens, parasites, by="UniqueID",
-                   all.x=TRUE)
+##  Parasite table must contain at most one result
+## per UniqueID, or merge() silently multiplies specimens.
+if (anyDuplicated(parasites$UniqueID)) {
+  write.csv(parasites[duplicated(parasites$UniqueID) |
+                      duplicated(parasites$UniqueID, fromLast=TRUE), , drop=FALSE],
+    '../../checks/relational_audit/duplicate_parasite_ids.csv',
+    row.names=FALSE)
+  stop('Duplicate parasite UniqueID; see checks/relational_audit.')
+}
+specimens.n <- nrow(specimens)
+specimens <- merge(specimens, parasites, by='UniqueID',
+                   all.x=TRUE, sort=FALSE)
+if (nrow(specimens) != specimens.n)
+  stop('Parasite join changed the number of specimens.')
+if (anyDuplicated(specimens$UniqueID))
+  stop('Final specimens contain duplicate UniqueID values.')
 
 
 ## *******************************************************
@@ -422,9 +476,11 @@ print(paste("before specimen traditional, dim=", nrow(specimens)))
 ## 10. quadrats:
 ## *******************************************************
 
+##  Retain actual vegetation survey date.
 keep <- c('QuadFK',
           'PlantFK',
           'SampleFK',
+          'Date',
           'BloomStatus',
           'PlantCount',
           'NumBlooms',
@@ -444,8 +500,10 @@ print(paste("before veg traditional, dim=", nrow(veg)))
 ## 11. Bloom data:
 ## *******************************************************
 
+##  Retain actual bloom survey date.
 keep <- c('PlantFK',
           'SampleFK',
+          'Date',
           'BloomStatus',
           "NumBlooms",
           'Notes')

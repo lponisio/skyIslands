@@ -16,13 +16,21 @@ spec.data <- read.csv("raw/specimens.csv",  stringsAsFactors=FALSE,
 ## will use to construct our relational database
 ## *******************************************************
 
+##  Preserve provenance before expanding historical
+## specimen counts; TempID numbering remains the same as in the original code.
+if (any(is.na(spec.data$SpecimenCount) |
+        spec.data$SpecimenCount < 0 |
+        spec.data$SpecimenCount != floor(spec.data$SpecimenCount)))
+  stop('SpecimenCount must contain nonnegative whole numbers.')
+if (!'rawRowNum' %in% names(spec.data))
+  spec.data$rawRowNum <- seq_len(nrow(spec.data))
+spec.data$RawSpecimenCount <- spec.data$SpecimenCount
 spec.data <- spec.data[rep(seq_len(nrow(spec.data)),
                            spec.data$SpecimenCount),]
-
+spec.data$ExpandedFromCount <- spec.data$RawSpecimenCount > 1
 spec.data$SpecimenCount <- NULL
 
 spec.data$SiteSubSite <-  paste0(spec.data$Site, spec.data$SubSite)
-## spec.data$Site <- gsub("[0-9]", "", spec.data$Site)
 
 print(paste("original number of specimens", nrow(spec.data)))
 
@@ -36,9 +44,6 @@ spec.data$Date <- as.Date(spec.data$Date, spec.date.format)
 spec.2012 <- spec.data$Date < "2013-01-01"
 spec.after.2012 <- spec.data$Date > "2013-01-01"
 
-## spec.data$SiteSubSite[spec.2012] <-
-##     paste0(spec.data$SiteSubSite[spec.2012], "1")
-
 spec.data$Method <- "Net"
 spec.data$Method[is.na(spec.data$FieldPlantID) |
                  spec.data$FieldPlantID == ""] <- "Pan"
@@ -50,19 +55,8 @@ spec.data$FinalPlantSp <-
     plant.keys$FinalPlantSp[match(spec.data$FieldPlantID,
                                   plant.keys$FieldPlantID)]
 
-## spec.data$UniqueID[spec.2017] <- spec.data$TempID[spec.2017] <-
-##     1:length(spec.data$UniqueID[spec.2017])
-
 
 spec.data$FinalPlantSp[is.na(spec.data$FinalPlantSp)] <- ""
-
-## spec.data$NetNumber <-
-##     sapply(strsplit(spec.data$SampleRound, ".", fixed=TRUE),
-##            function(x) x[2])
-
-## spec.data$SampleRound <-
-##     sapply(strsplit(spec.data$SampleRound, ".", fixed=TRUE),
-##            function(x) x[1])
 
 
 check.data.spec <- aggregate(spec.data$Date,
@@ -83,18 +77,60 @@ write.csv(check.data.spec, file="spec_counts.csv", row.names=FALSE)
 
 bbsl <- read.csv("raw/BBSLSpecimens.csv", stringsAsFactors=FALSE)
 
-
-## only time this will happen is when we get the labels form Terry
-spec.data$UniqueID[spec.data$Year == "2017"] <-
-    bbsl$BarcodeID[1:sum(spec.data$Year == "2017")]
-
-spec.data$TempID <- 1:nrow(spec.data)
-spec.data$UniqueID[is.na(spec.data$UniqueID)] <-  ""
-
-spec.data$UniqueID[spec.data$UniqueID == ""] <-
-    spec.data$TempID[spec.data$UniqueID == ""]
-
-## spec.data$UniqueID[20794:nrow(spec.data)] <- 20794:nrow(spec.data)
+## Use the frozen original order to guard against a new BBSL export with
+## inserted rows changing every later specimen ID.
+spec.data$OriginalUniqueID <- spec.data$UniqueID
+spec.data$TempID <- seq_len(nrow(spec.data))
+bar.file <- '../../skyIslands_saved/data/raw/2017_legacy_barcode_crosswalk.csv'
+if (!file.exists(bar.file)) stop('Missing original 2017 barcode reference: ', bar.file)
+bar.map <- read.csv(bar.file, stringsAsFactors=FALSE)
+rows.2017 <- which(spec.data$Year == '2017')
+if (length(rows.2017) != 20359L || nrow(bar.map) != 9330L)
+  stop('2017 specimen count or historical barcode count has changed. Review IDs first.')
+if (anyDuplicated(bar.map$TempID) || anyDuplicated(bar.map$BarcodeID) ||
+    anyNA(bar.map$TempID) || anyNA(bar.map$BarcodeID))
+  stop('The 2017 barcode reference contains duplicate or missing IDs.')
+first.2017 <- rows.2017[seq_len(nrow(bar.map))]
+if (!identical(as.integer(spec.data$TempID[first.2017]),
+               as.integer(bar.map$TempID)))
+  stop('Historical 2017 TempID positions changed; do not shift barcodes.')
+## Validate the raw-record provenance associated with
+## each historical ID, but do not require collection metadata in BBSL export.
+source.fields <- c(SourceRawRowNum='rawRowNum', SourceDate='Date',
+  SourceSite='Site', SourceSubSite='SubSite',
+  SourceCollector='Collector', SourceFieldPlantID='FieldPlantID',
+  SourceNetNumber='NetNumber', SourceSampleRound='SampleRound',
+  SourceSpecimenCount='RawSpecimenCount')
+normalise.id.field <- function(x) {
+  x <- trimws(as.character(x))
+  x[is.na(x) | x %in% c('', 'NA')] <- ''
+  x
+}
+for (field in names(source.fields)) {
+  if (!field %in% names(bar.map) ||
+      !source.fields[[field]] %in% names(spec.data))
+    stop('Missing ID audit field: ', field)
+  expected <- normalise.id.field(bar.map[[field]])
+  observed <- normalise.id.field(
+    spec.data[[source.fields[[field]]]][first.2017])
+  if (!identical(expected, observed))
+    stop('2017 specimen order differs at ', field,
+         '; barcode mapping intentionally not applied.')
+}
+if (!identical(as.character(bbsl$BarcodeID[seq_len(nrow(bar.map))]),
+               as.character(bar.map$BarcodeID)))
+  stop('BBSL inventory is not in historical order. Keep raw/BBSLSpecimens.csv unchanged.')
+## Assign only historically labeled 2017 records; preserve all other IDs.
+spec.data$UniqueID[rows.2017] <- NA_character_
+spec.data$UniqueID[first.2017] <- bar.map$BarcodeID
+spec.data$UniqueID[is.na(spec.data$UniqueID) |
+                   spec.data$UniqueID == ''] <- ''
+no.id <- spec.data$UniqueID == ''
+spec.data$UniqueID[no.id] <- as.character(spec.data$TempID[no.id])
+if (anyDuplicated(spec.data$UniqueID))
+  stop('Duplicate specimen UniqueID after restoring historical numbering.')
+##  This ID assignment intentionally retains the original TempID
+## ordering. Taxonomic ID scripts and parasite files are left unchanged.
 
 write.csv(spec.data, file="relational/original/specimens.csv",
           row.names=FALSE)
@@ -145,8 +181,6 @@ write.csv(unique(weather.data), file="relational/original/weather.csv",
 geo <- read.csv("raw/geography.csv")
 
 colnames(geo) <- gsub("\\.", "", colnames(geo))
-
-## geo$Site <- gsub("[0-9]", "", geo$Site)
 
 geo$SubSite <- substr(geo$SiteSubSite, 3, 3)
 
@@ -245,6 +279,12 @@ para.data$CrithidiaSpp[para.data$UniqueID %in%
 para.data$NosemaCeranae[para.data$UniqueID %in%
                               NosemaCeranae] <- 1
 
+## No specimens tested positive for Nosema bombi.
+## Preserve the original zero-positive result for successfully extracted
+## individuals (Apidae == 1). Do not infer positives from an absent list;
+## individuals without successful extraction remain NA after the check below.
+para.data$NosemaBombi[para.data$Apidae == 1] <- 0
+
 ## contaminated samples
 para.data$ApicystisSpp[para.data$UniqueID %in%
                               ApicystisSppNA] <- NA
@@ -270,12 +310,12 @@ para.data <- para.data[!para.data$UniqueID %in% controls$UniqueID,]
 print("before removing species without Apidae positivies")
 print(nrow(para.data))
 
-## para.data <- para.data[para.data$Apidae == 1,]
-## print("after removing species without Apidae positivies")
-## print(nrow(para.data))
-
 para.data$TempID <- NULL
-## para.data$Apidae <- NULL
+##  Apidae=1 means DNA extraction succeeded. Only those
+## extractions can have pathogen zeros; unknown/failed extractions are NA.
+pathogen.cols <- setdiff(names(para.data), c('UniqueID', 'Apidae'))
+failed <- is.na(para.data$Apidae) | para.data$Apidae != 1
+para.data[failed, pathogen.cols] <- NA
 
 write.csv(para.data, file="relational/original/parasites.csv",
                    row.names=FALSE)
