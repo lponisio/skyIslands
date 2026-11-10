@@ -330,7 +330,7 @@ all.site.sum <- calcSummaryStats(spec, "all")
 ## ***********************************************************************
 ## NETTED genus-by-year and ID-completeness diagnostics.
 ## Export diagnostic CSVs and plots to skyIslands_saved/data/checks,
-## NOT into the GitHub repository. Source is netted specimens before any
+##  Source is netted specimens before any
 ## summary joins, so each row is counted once.
 ## ***********************************************************************
 dir.guild.audit <- '../../skyIslands_saved/data/checks/guild_id_review'
@@ -436,7 +436,7 @@ ggplot2::ggsave(file.path(dir.guild.audit,
   'net_genus_stacked_by_guild_year.png'),
   genus.overview, width=13, height=11, dpi=180)
 
-## UPDATED [GUILD-12]: One barplot per guild, grouped by year within genus.
+## One barplot per guild, grouped by year within genus.
 ## This is easier for finding individual genera with missing identification
 ## coverage in particular years than the all-guild stacked overview.
 plot.slugs <- c('all_bees', 'honey_bees', 'bumble_bees',
