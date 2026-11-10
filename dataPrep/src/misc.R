@@ -25,6 +25,18 @@
 
 ## }
 
+guild.richness <- function(x) {
+  x <- trimws(as.character(x))
+  x <- x[!is.na(x) & nzchar(x)]
+  length(unique(x))
+}
+guild.shannon <- function(x) {
+  x <- trimws(as.character(x))
+  x <- x[!is.na(x) & nzchar(x)]
+  if (!length(x)) return(NA_real_)  ## No identified taxa: undefined Shannon
+  vegan::diversity(table(x), index='shannon')
+}
+
 
 
 fixPlantNamesgBIF <- function(data.to.fix, ## specimen or veg data

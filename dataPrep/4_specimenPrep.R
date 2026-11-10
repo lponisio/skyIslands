@@ -47,22 +47,28 @@ spec <-
 
 setwd("../skyIslands/dataPrep")
 source("src/misc.R")
+source("src/join_checks.R")
 source("src/prepNets.R")
 source("src/specialization.R")
 source("src/SpCalcMetrics.R")
 source("src/vaznull2.R")
 
+spec$GenusSpecies <- fix.white.space(paste(
+  ifelse(is.na(spec$Genus), '', spec$Genus),
+  ifelse(is.na(spec$Species), '', spec$Species),
+  ifelse(is.na(spec$SubSpecies), '', spec$SubSpecies)))
 
-spec$GenusSpecies <- fix.white.space(paste(spec$Genus,
-                          spec$Species,
-                          spec$SubSpecies))
+spec$PlantGenusSpecies <- fix.white.space(paste(
+  ifelse(is.na(spec$PlantGenus), '', spec$PlantGenus),
+  ifelse(is.na(spec$PlantSpecies), '', spec$PlantSpecies),
+  ifelse(is.na(spec$PlantVar), '', spec$PlantVar)))
 
-spec$PlantGenusSpecies <-  fix.white.space(paste(spec$PlantGenus,
-                                          spec$PlantSpecies,
-                                          spec$PlantVar))
-
-spec$Int <-  fix.white.space(paste(spec$GenusSpecies,
-                                   spec$PlantGenusSpecies))
+missing.plant <- is.na(spec$PlantGenusSpecies) |
+                 spec$PlantGenusSpecies == ''
+if ('SourcePlantName' %in% names(spec)) {
+  spec$PlantGenusSpecies[missing.plant] <-
+    spec$SourcePlantName[missing.plant]
+}
 
 spec$Date <- as.Date(spec$Date, format='%Y-%m-%d')
 spec$Doy <- as.numeric(strftime(spec$Date, format='%j'))
@@ -73,11 +79,6 @@ spec$Year <- as.numeric(format(spec$Date,'%Y'))
 collections <- data.frame(unique(cbind(spec$Site, spec$Year,
                                        spec$SampleRound)))
 colnames(collections) <- c("Site", "Year", "SampleRound")
-
-## calculate orthoganol polynomials for doy
-DoyPoly <- poly(spec$Doy, degree=2)
-spec$DoyPoly1 <- DoyPoly[,'1']
-spec$DoyPoly2 <- DoyPoly[,'2']
 
 ## check plant names
 ## library(Taxonstand)
@@ -99,6 +100,10 @@ spec <- fixPlantNamesgBIF(spec, "PlantGenusSpecies",
 spec$PlantGenusSpecies[spec$PlantGenus == "Erigeron"] <-
     "Erigeron spp."
 
+spec$Int <- fix.white.space(paste(spec$GenusSpecies,
+                                  spec$PlantGenusSpecies))
+check_unique_key(spec, 'UniqueID', 'Specimens loaded for analysis')
+
 ## *****************************************************************
 ## specimen-level parasite calculations
 ## *****************************************************************
@@ -113,33 +118,48 @@ nosemas <- c("NosemaBombi", "NosemaCeranae")
 parasites <- c( "AscosphaeraSpp",
                "ApicystisSpp", crithidias, nosemas)
 
-spec[, parasites][is.na(spec[, parasites])] <- 0
-spec[, parasites][spec[, parasites] == ""] <- 0
-spec[, parasites] <- apply(spec[, parasites], 2,  as.numeric)
+## Apidae == 1 means successful DNA extraction.
+## Only these specimens can be coded 0 for parasite tests with no positive
+## call. Their 0 values are established upstream in 1prep.R. Explicit
+## NA flags for contaminated/uninterpretable assays MUST remain NA.
+## Apidae != 1 or missing is unscreened: no parasite-negative zeros.
+for (this.para in parasites) {
+  spec[[this.para]] <- suppressWarnings(as.numeric(spec[[this.para]]))
+}
+spec$Apidae <- suppressWarnings(as.numeric(spec$Apidae))
+not.screened <- is.na(spec$Apidae) | spec$Apidae != 1
+spec[not.screened, parasites] <- NA
+spec$DNAExtractionSuccessful <- ifelse(spec$Apidae == 1, 1L, NA_integer_)
+##  If a successful Apidae assay still has NA parasite results,
+## retain NA: these include explicit contaminated-assay exclusions.
+## Do not turn an indeterminate assay into a documented negative.
 
-spec[spec$Apidae != 1 | is.na(spec$Apidae), parasites] <- NA
-
-spec$ParasiteRichness <- rowSums(spec[, parasites],
-                                 na.rm=TRUE)
-spec$CrithidiaRichness <- rowSums(spec[, crithidias],
-                                  na.rm=TRUE)
-spec$NosemaRichness <- rowSums(spec[, nosemas],
-                                 na.rm=TRUE)
-spec$PossibleParasite <- apply(spec[, parasites], 1,
-                               function(x) sum(!is.na(x)))
-spec$ParasitePresence <- (spec$ParasiteRichness >= 1)*1
-spec$CrithidiaPresence <- (spec$CrithidiaRichness >= 1)*1
-spec$NosemaPresence <- (spec$NosemaRichness >= 1)*1
-
-spec[spec$Apidae != 1  | is.na(spec$Apidae), "ParasiteRichness"] <- NA
-spec[spec$Apidae != 1  | is.na(spec$Apidae), "ParasitePresence"] <- NA
-spec[spec$Apidae != 1  | is.na(spec$Apidae), "CrithidiaRichness"] <-
-    NA
-spec[spec$Apidae != 1  | is.na(spec$Apidae), "NosemaRichness"] <-
-  NA
-spec[spec$Apidae != 1  | is.na(spec$Apidae), "CrithidiaPresence"] <- NA
-spec[spec$Apidae != 1  | is.na(spec$Apidae), "NosemaPresence"] <- NA
-
+## Denominator for pathogen-specific prevalence is the number of
+## Partial assay panels have an indeterminate *total* richness.
+known.richness <- function(x) {
+  if (anyNA(x)) return(NA_real_)
+  sum(x)
+}
+## A positive is certain even if another assay is missing; a negative is
+## certain only if every assay in this set is a documented negative.
+known.presence <- function(x) {
+  if (any(x > 0, na.rm=TRUE)) return(1L)
+  if (anyNA(x)) return(NA_integer_)
+  0L
+}
+spec$ParasiteRichness <- apply(spec[, parasites, drop=FALSE], 1,
+                               known.richness)
+spec$CrithidiaRichness <- apply(spec[, crithidias, drop=FALSE], 1,
+                                known.richness)
+spec$NosemaRichness <- apply(spec[, nosemas, drop=FALSE], 1,
+                             known.richness)
+spec$PossibleParasite <- rowSums(!is.na(spec[, parasites, drop=FALSE]))
+spec$ParasitePresence <- apply(spec[, parasites, drop=FALSE], 1,
+                               known.presence)
+spec$CrithidiaPresence <- apply(spec[, crithidias, drop=FALSE], 1,
+                                known.presence)
+spec$NosemaPresence <- apply(spec[, nosemas, drop=FALSE], 1,
+                             known.presence)
 check.spec <- spec[!is.na(spec$Apidae),]
 check.spec <- check.spec[check.spec$GenusSpecies == "",]
 
@@ -160,19 +180,17 @@ write.csv(spec, file="../data/spec_net_pan.csv", row.names=FALSE)
 ## site/species level insect data
 ## ***********************************************************************
 
-
 bee.families <- c("Andrenidae", "Apidae", "Colletidae", "Halictidae",
-                  "Megachilidae")
+                  "Megachilidae", "Melittidae")
 
-pollinator.families <- c(
-  bee.families,
-  "Syrphidae",
-  "Bombyliidae"
-)
+## Butterfly families plus Sphingidae (hawk moths).
+## Other moth families (e.g., Erebidae, Noctuidae) are not included.
 
-
-## DECISION POINT: drop non bees but keep the syrphids
-# spec <- spec[spec$Family %in% c(bee.families, "Syrphidae"),]
+butterfly.hawk.families <- c('Hesperiidae', 'Lycaenidae', 'Nymphalidae',
+                            'Papilionidae', 'Pieridae', 'Riodinidae',
+                            'Sphingidae')
+focal.pollinator.families <- c(bee.families, 'Syrphidae',
+                               butterfly.hawk.families)
 
 
 calcSummaryStats <- function(spec.method, method){
@@ -197,73 +215,92 @@ calcSummaryStats <- function(spec.method, method){
                   SpCrithidiaMellificae = sum(CrithidiaMellificae, na.rm=TRUE),
                   SpCrithidiaBombi = sum(CrithidiaBombi, na.rm=TRUE),
                   SpCrithidiaSpp = sum(CrithidiaSpp, na.rm=TRUE),
-                  SpScreened = sum(!is.na(Apidae))
+                  SpScreened = sum(Apidae == 1, na.rm=TRUE)
                   )
 
+    ## Preserve all existing summary-statistic
+    ## definitions/columns and add new guilds below. 
+    ## Syrphidae, and butterflies + Sphingidae but not other fly families.
     site.sum <- spec.method %>%
         group_by(Site, Year, SampleRound) %>%
         summarise(PollAbundance = length(GenusSpecies),
                   BeeAbundance = length(GenusSpecies[Family %in%
                                                      bee.families]),
                   SyrphidAbundance =
-                      length(GenusSpecies[Family == "Syrphidae"]),
-                  HBAbundance = sum(GenusSpecies == "Apis mellifera"),
-                  BombusAbundance = sum(Genus == "Bombus"),
+                      length(GenusSpecies[Family == 'Syrphidae']),
+                  HBAbundance = sum(GenusSpecies == 'Apis mellifera'),
+                  BombusAbundance = sum(Genus == 'Bombus'),
                   NonBombusHBAbundance =
-                      sum(Genus != "Bombus" &
-                          Genus != "Apis" &
+                      sum(Genus != 'Bombus' &
+                          Genus != 'Apis' &
                           Family %in% bee.families),
+                  ## New Lepidoptera and combined counts.
+                  ButterflyHawkAbundance =
+                      sum(Family %in% butterfly.hawk.families),
+                  BeeSyrphLepAbundance =
+                      sum(Family %in% focal.pollinator.families),
 
                   PollRichness= length(unique(GenusSpecies)),
                   BeeRichness= length(unique(GenusSpecies[Family %in%
                                                           bee.families])),
                   SyrphidRichness= length(unique(
-                    GenusSpecies[Family  == "Syrphidae"])),
+                    GenusSpecies[Family  == 'Syrphidae'])),
                   BombusRichness= length(unique(
-                    GenusSpecies[Genus == "Bombus"])),
+                    GenusSpecies[Genus == 'Bombus'])),
+                  ## Lepidoptera and
+                  ## combined taxonomic-label richness. 
+                  ButterflyHawkRichness = guild.richness(
+                      GenusSpecies[Family %in% butterfly.hawk.families]),
+                  BeeSyrphLepRichness = guild.richness(
+                      GenusSpecies[Family %in% focal.pollinator.families]),
 
                   PollDiversity=vegan:::diversity(table(GenusSpecies),
-                                                  index="shannon"),
+                                                  index='shannon'),
                   BeeDiversity=vegan:::diversity(table(
                     GenusSpecies[Family %in% bee.families]),
-                                                 index="shannon"),
+                                                 index='shannon'),
                   SyrphidDiversity=vegan:::diversity(table(
-                    GenusSpecies[Family  == "Syrphidae"]),
-                                                     index="shannon"),
+                    GenusSpecies[Family  == 'Syrphidae']),
+                                                     index='shannon'),
                   BombusDiversity=vegan:::diversity(table(
-                    GenusSpecies[Genus == "Bombus"]),
-                                                    index="shannon"),
+                    GenusSpecies[Genus == 'Bombus']),
+                                                    index='shannon'),
+                  ## Shannon for three added groups.
+                  ButterflyHawkDiversity = guild.shannon(
+                      GenusSpecies[Family %in% butterfly.hawk.families]),
+                  BeeSyrphLepDiversity = guild.shannon(
+                      GenusSpecies[Family %in% focal.pollinator.families]),
 
                   VisitedFloralRichness= length(unique(PlantGenusSpecies)),
                   VisitedFloralDiversity=vegan:::diversity(table(
-                    PlantGenusSpecies),  index="shannon"),
+                    PlantGenusSpecies),  index='shannon'),
 
                   SiteParasitismRate=mean(ParasitePresence, na.rm=TRUE),
                   MeanParasiteRichness=mean(ParasiteRichness, na.rm=TRUE),
                   HBSiteParasitismRate=mean(
-                      ParasitePresence[GenusSpecies == "Apis mellifera"],
+                      ParasitePresence[GenusSpecies == 'Apis mellifera'],
                       na.rm=TRUE),
                   BombusSiteParasitismRate=mean(
-                      ParasitePresence[Genus == "Bombus"],
+                      ParasitePresence[Genus == 'Bombus'],
                     na.rm=TRUE),
-                  SRDoyPoly1=mean(DoyPoly1),
-                  SRDoyPoly2=mean(DoyPoly2),
                   SRDoy=mean(Doy),
                   CrithidiaParasitismRate=mean(CrithidiaPresence, na.rm=TRUE),
                   ApicystisParasitismRate=mean(ApicystisSpp, na.rm=TRUE),
-                  CrithidiaBombusParasitismRate= mean(CrithidiaPresence[Genus == "Bombus"],
+                  CrithidiaBombusParasitismRate= mean(CrithidiaPresence[Genus == 'Bombus'],
                                                       na.rm=TRUE),
                   CrithidiaHBParasitismRate= mean (CrithidiaPresence
-                                                   [GenusSpecies == "Apis mellifera"],
+                                                   [GenusSpecies == 'Apis mellifera'],
                                                    na.rm=TRUE))
 
-    site.sp.yr <- spec %>%
+    site.sp.yr <- spec.method %>%
         group_by(Site, Year, GenusSpecies, Genus) %>%
         summarise(Abundance = length(GenusSpecies))
 
-    site.sp.yr.round <- spec %>%
+
+    site.sp.yr.round <- spec.method %>%
       group_by(Site, Year, SampleRound, GenusSpecies, Genus) %>%
-      summarise(AbundanceSYR = mean(length(GenusSpecies)))
+
+      summarise(AbundanceSYR = length(GenusSpecies))
 
     bombus <- site.sp.yr[site.sp.yr$Genus == "Bombus",]
     bombus$Genus  <- NULL
@@ -277,8 +314,12 @@ calcSummaryStats <- function(spec.method, method){
               row.names=FALSE)
     write.csv(site.sp, file=sprintf('../data/spstats_%s.csv', method),
               row.names=FALSE)
-    write.csv(site.sp.yr.round, file='../data/sp_year_site_round.csv',
+
+    write.csv(site.sp.yr.round,
+              file=sprintf('../data/sp_year_site_round_%s.csv', method),
               row.names=FALSE)
+    if (method == 'all') write.csv(site.sp.yr.round,
+      file='../data/sp_year_site_round.csv', row.names=FALSE)
     return(site.sum)
 }
 
@@ -286,48 +327,223 @@ net.site.sum <- calcSummaryStats(spec.net, "net")
 pan.site.sum <- calcSummaryStats(spec.pan, "pan")
 all.site.sum <- calcSummaryStats(spec, "all")
 
+## ***********************************************************************
+## NETTED genus-by-year and ID-completeness diagnostics.
+## Export diagnostic CSVs and plots to skyIslands_saved/data/checks,
+## NOT into the GitHub repository. Source is netted specimens before any
+## summary joins, so each row is counted once.
+## ***********************************************************************
+dir.guild.audit <- '../../skyIslands_saved/data/checks/guild_id_review'
+dir.create(dir.guild.audit, recursive=TRUE, showWarnings=FALSE)
+
+guild.plot.data <- spec.net %>%
+  dplyr::mutate(
+    Year=as.character(Year),
+    GenusLabel=trimws(as.character(Genus)),
+    GenusLabel=ifelse(is.na(GenusLabel) | !nzchar(GenusLabel),
+                      'Unidentified genus', GenusLabel),
+    SpeciesLabel=trimws(as.character(Species)),
+    IDResolution=dplyr::case_when(
+      GenusLabel == 'Unidentified genus' ~ 'Unidentified genus',
+      is.na(SpeciesLabel) | !nzchar(SpeciesLabel) |
+        tolower(SpeciesLabel) %in% c('sp', 'sp.', 'spp', 'spp.',
+                                     'unknown', 'unidentified') ~ 'Genus only',
+      TRUE ~ 'Species / morphospecies'
+    )
+  )
+
+## Guild membership is assigned by Family, except
+## Apis mellifera and Bombus, which must have the relevant identification.
+## Missing-genus bumble bees/honey bees cannot be reliably assigned to those
+## subguilds; the All bees panel is where to look for unidentified bees.
+plot.guilds <- dplyr::bind_rows(
+  guild.plot.data %>% dplyr::filter(Family %in% bee.families) %>%
+    dplyr::mutate(Guild='All bees'),
+  guild.plot.data %>% dplyr::filter(GenusSpecies == 'Apis mellifera') %>%
+    dplyr::mutate(Guild='Honey bees'),
+  guild.plot.data %>% dplyr::filter(Genus %in% 'Bombus') %>%
+    dplyr::mutate(Guild='Bumble bees'),
+  guild.plot.data %>%
+    dplyr::filter(Family %in% butterfly.hawk.families) %>%
+    dplyr::mutate(Guild='Butterflies + hawk moths'),
+  guild.plot.data %>% dplyr::filter(Family %in% 'Syrphidae') %>%
+    dplyr::mutate(Guild='Syrphids'),
+  guild.plot.data %>%
+    dplyr::filter(Family %in% focal.pollinator.families) %>%
+    dplyr::mutate(Guild='Bees + syrphids + butterflies/hawks')
+)
+guild.order <- c('All bees', 'Honey bees', 'Bumble bees',
+                 'Butterflies + hawk moths', 'Syrphids',
+                 'Bees + syrphids + butterflies/hawks')
+plot.guilds$Guild <- factor(plot.guilds$Guild, levels=guild.order)
+
+## Full genus counts and per-year identification status.
+## These tables make years with blank genus IDs apparent rather than silently
+## dropping them from barplots. Individual genera can be inspected in CSV.
+guild.genus.year <- plot.guilds %>%
+  dplyr::count(Guild, Year, GenusLabel, name='SpecimenCount')
+guild.id.year <- plot.guilds %>%
+  dplyr::count(Guild, Year, IDResolution, name='SpecimenCount') %>%
+  dplyr::group_by(Guild, Year) %>%
+  dplyr::mutate(TotalIndividuals=sum(SpecimenCount),
+                Proportion=SpecimenCount/TotalIndividuals) %>%
+  dplyr::ungroup()
+
+write.csv(guild.genus.year, file.path(dir.guild.audit,
+          'net_genus_counts_by_guild_year.csv'),
+          row.names=FALSE)
+write.csv(guild.id.year, file.path(dir.guild.audit,
+          'net_id_resolution_by_guild_year.csv'),
+          row.names=FALSE)
+
+##  Count distinct identified genera per guild-year.
+## The separate UnidentifiedCount makes low taxonomic resolution visible.
+guild.genus.richness <- guild.genus.year %>%
+  dplyr::group_by(Guild, Year) %>%
+  dplyr::summarise(NGenera=sum(GenusLabel != 'Unidentified genus'),
+                   UnidentifiedCount=sum(SpecimenCount[
+                     GenusLabel == 'Unidentified genus']),
+                   TotalIndividuals=sum(SpecimenCount), .groups='drop')
+write.csv(guild.genus.richness, file.path(dir.guild.audit,
+          'net_number_of_genera_by_guild_year.csv'), row.names=FALSE)
+
+## Some raw Lepidoptera rows lack Family and cannot be assigned to butterflies
+## versus other moths. Review those rather than assuming they are butterflies.
+guild.unassigned <- guild.plot.data %>%
+  dplyr::filter(is.na(Family) | !nzchar(trimws(as.character(Family))) |
+                (Order %in% 'Lepidoptera' &
+                 !(Family %in% butterfly.hawk.families)) |
+                Family %in% c('Apidaae')) %>%
+  dplyr::count(Year, Order, Family, GenusLabel, name='SpecimenCount')
+write.csv(guild.unassigned,
+          file.path(dir.guild.audit, 'net_guild_unassigned_taxa_by_year.csv'),
+          row.names=FALSE)
+
+##  Faceted stacked genus barplot by year. The diagnostic
+## CSV above is the source for exact counts; many genera can make the legend
+## large, so a second per-guild plot is written below with genus on the axis.
+genus.overview <- ggplot2::ggplot(guild.genus.year,
+    ggplot2::aes(x=Year, y=SpecimenCount, fill=GenusLabel)) +
+  ggplot2::geom_col() +
+  ggplot2::facet_wrap(~Guild, ncol=2, scales='free_y') +
+  ggplot2::labs(x='Year', y='Netted individuals', fill='Genus',
+    title='Netted pollinators by genus and year',
+    subtitle='Guilds overlap; unidentified genera are included where Family is known') +
+  ggplot2::theme_bw() +
+  ggplot2::theme(axis.text.x=ggplot2::element_text(angle=45, hjust=1),
+                 legend.position='none')
+ggplot2::ggsave(file.path(dir.guild.audit,
+  'net_genus_stacked_by_guild_year.png'),
+  genus.overview, width=13, height=11, dpi=180)
+
+## UPDATED [GUILD-12]: One barplot per guild, grouped by year within genus.
+## This is easier for finding individual genera with missing identification
+## coverage in particular years than the all-guild stacked overview.
+plot.slugs <- c('all_bees', 'honey_bees', 'bumble_bees',
+                'butterflies_hawkmoths', 'syrphids', 'combined')
+for (i in seq_along(guild.order)) {
+  this.guild <- guild.genus.year[
+    as.character(guild.genus.year$Guild) == guild.order[i], ,drop=FALSE]
+  if (!nrow(this.guild)) next
+  this.guild$GenusLabel <- factor(this.guild$GenusLabel,
+    levels=rev(sort(unique(as.character(this.guild$GenusLabel)))))
+  p <- ggplot2::ggplot(this.guild,
+      ggplot2::aes(x=GenusLabel, y=SpecimenCount, fill=Year)) +
+    ggplot2::geom_col(position='dodge') + ggplot2::coord_flip() +
+    ggplot2::theme_bw() +
+    ggplot2::labs(x='Genus', y='Netted individuals', fill='Year',
+                  title=paste0('Genus counts by year: ', guild.order[i]))
+  plot.height <- max(5, min(28, 2.5 + 0.32*nlevels(this.guild$GenusLabel)))
+  ggplot2::ggsave(file.path(dir.guild.audit, paste0(
+                'net_genera_', plot.slugs[i], '_by_year.png')),
+                  p, width=11, height=plot.height,
+                  dpi=180, limitsize=FALSE)
+
+
+## Number of distinct identified genera per year.
+## This complements the abundance bars, which count individuals per genus.
+genus.number.plot <- ggplot2::ggplot(guild.genus.richness,
+    ggplot2::aes(x=Year, y=NGenera)) +
+  ggplot2::geom_col() +
+  ggplot2::facet_wrap(~Guild, ncol=2, scales='free_y') +
+  ggplot2::theme_bw() +
+  ggplot2::labs(x='Year', y='Identified genera',
+                title='Number of identified genera by guild and year') +
+  ggplot2::theme(axis.text.x=ggplot2::element_text(angle=45, hjust=1))
+ggplot2::ggsave(file.path(dir.guild.audit,
+                'net_number_of_genera_by_guild_year.png'),
+                genus.number.plot, width=13, height=10, dpi=180)
+
+## Separate ID-resolution barplot by year and guild.
+## Species/morphospecies, genus-only, and unidentified genus are separate.
+## The percentages answer how identification completeness changes by year.
+id.plot <- ggplot2::ggplot(guild.id.year,
+    ggplot2::aes(x=Year, y=Proportion, fill=IDResolution)) +
+  ggplot2::geom_col() +
+  ggplot2::facet_wrap(~Guild, ncol=2) +
+  ggplot2::scale_y_continuous(labels=function(x) paste0(round(x*100), '%')) +
+  ggplot2::theme_bw() +
+  ggplot2::labs(x='Year', y='Proportion of netted individuals',
+                fill='Identification',
+                title='Taxonomic identification resolution by guild and year') +
+  ggplot2::theme(axis.text.x=ggplot2::element_text(angle=45, hjust=1))
+ggplot2::ggsave(file.path(dir.guild.audit,
+                'net_guild_ID_completeness_by_year.png'),
+                id.plot, width=13, height=10, dpi=180)
+}
+
 table(all.site.sum$Site)
 table(net.site.sum$Site)
 table(pan.site.sum$Site)
 
+##  Include newly calculated guild columns in the
+## existing summary-variable reference list.
 sum.cols <- c("PollAbundance", "BeeAbundance", "SyrphidAbundance",
-              "HBAbundance", "BombusAbundance",
-              "NonBombusHBAbundance", "PollRichness", "BeeRichness",
-              "SyrphidRichness", "BombusRichness", "PollDiversity",
-              "BeeDiversity", "SyrphidDiversity", "BombusDiversity",
+              "HBAbundance", "BombusAbundance", "ButterflyHawkAbundance",
+              "BeeSyrphLepAbundance", "NonBombusHBAbundance",
+              "PollRichness", "BeeRichness", "SyrphidRichness",
+              "BombusRichness", "HBRichness", "ButterflyHawkRichness",
+              "BeeSyrphLepRichness", "PollDiversity", "BeeDiversity",
+              "SyrphidDiversity", "BombusDiversity", "HBDiversity",
+              "ButterflyHawkDiversity", "BeeSyrphLepDiversity",
               "VisitedFloralRichness", "VisitedFloralDiversity",
               "SiteParasitismRate", "MeanParasiteRichness",
               "HBSiteParasitismRate", "BombusSiteParasitismRate")
 
-colnames(net.site.sum)[colnames(net.site.sum) %in% sum.cols] <-
-  paste0("Net_", sum.cols)
-colnames(pan.site.sum)[colnames(pan.site.sum) %in% sum.cols] <-
-  paste0("Pan_", sum.cols)
 
-## remove parasite columns from pan data because there will never be
-## anything but NAs
-pan.site.sum[, grepl("Parasit", colnames(pan.site.sum))] <- NULL
-
-## drop day columns that might cause merge issues
-dup.cols <- c("SRDoyPoly1", "SRDoyPoly2", "SRDoy")
-
-pan.site.sum[, dup.cols] <- NULL
-net.site.sum[, dup.cols] <- NULL
-
-dim(all.site.sum)
-site.sum <- merge(all.site.sum, net.site.sum, all.x=TRUE)
-dim(site.sum)
-site.sum <- merge(site.sum, pan.site.sum, all.x=TRUE)
-dim(site.sum)
+keys.sr <- c('Site', 'Year', 'SampleRound')
+dup.cols <- c('SRDoyPoly1', 'SRDoyPoly2', 'SRDoy')
+net.site.sum <- net.site.sum[, !names(net.site.sum) %in% dup.cols]
+pan.site.sum <- pan.site.sum[, !names(pan.site.sum) %in% dup.cols]
+net.vars <- !names(net.site.sum) %in% keys.sr
+pan.vars <- !names(pan.site.sum) %in% keys.sr
+names(net.site.sum)[net.vars] <- paste0('Net_', names(net.site.sum)[net.vars])
+names(pan.site.sum)[pan.vars] <- paste0('Pan_', names(pan.site.sum)[pan.vars])
+check_unique_key(all.site.sum, keys.sr, 'All-method sample-round stats')
+check_unique_key(net.site.sum, keys.sr, 'Net sample-round stats')
+check_unique_key(pan.site.sum, keys.sr, 'Pan sample-round stats')
+site.sum <- dplyr::left_join(all.site.sum, net.site.sum, by=keys.sr,
+                             relationship='one-to-one')
+site.sum <- dplyr::left_join(site.sum, pan.site.sum, by=keys.sr,
+                             relationship='one-to-one')
+check_rows_preserved(all.site.sum, site.sum,
+                     'Combined site x year x round stats')
 
 
 ## add back site characteristics
-sites <- unique(data.frame(Site=spec$Site,
-                           Lat= spec$Lat,
-                           Area=spec$Area,
-                           Elev=spec$Elev,
-                           Year=spec$Year))
-site.sum <- merge(site.sum, sites)
+## Event-derived geography below fills values for empty sampling rounds.
+mean.unique <- function(x) {
+  x <- unique(suppressWarnings(as.numeric(x)))
+  x <- x[is.finite(x)]
+  if (!length(x)) NA_real_ else mean(x)
+}
+sites <- spec %>%
+  group_by(Site, Year) %>%
+  summarise(Lat=mean.unique(Lat), Area=mean.unique(Area),
+            Elev=mean.unique(Elev), .groups='drop')
+check_unique_key(sites, c('Site', 'Year'), 'Site-year metadata')
+site.sum <- dplyr::left_join(site.sum, sites, by=c('Site', 'Year'),
+                              relationship='many-to-one')
 site.sum$Year <- as.factor(site.sum$Year)
 
 ## write the site, year, sampling round summary data after merging
@@ -351,7 +567,7 @@ par.site.sp <- spec.net %>%
               SpCrithidiaExpoeki = sum(CrithidiaExpoeki, na.rm=TRUE),
               SpCrithidiaBombi = sum(CrithidiaBombi, na.rm=TRUE),
               SpCrithidiaSpp = sum(CrithidiaSpp, na.rm=TRUE),
-              SpScreened = sum(!is.na(Apidae))
+              SpScreened = sum(Apidae == 1, na.rm=TRUE)
               )
 
 par.site.gen <- spec.net %>%
@@ -366,7 +582,7 @@ par.site.gen <- spec.net %>%
               GenusCrithidiaExpoeki = sum(CrithidiaExpoeki, na.rm=TRUE),
               GenusCrithidiaBombi = sum(CrithidiaBombi, na.rm=TRUE),
               GenusCrithidiaSpp = sum(CrithidiaSpp, na.rm=TRUE),
-              GenusScreened = sum(!is.na(Apidae))
+              GenusScreened = sum(Apidae == 1, na.rm=TRUE)
               )
 
 par.site.sum <- spec.net %>%
@@ -390,13 +606,18 @@ par.site.sum <- spec.net %>%
               SiteCrithidiaExpoeki = sum(CrithidiaExpoeki, na.rm=TRUE),
               SiteCrithidiaBombi = sum(CrithidiaBombi, na.rm=TRUE),
               SiteCrithidiaSpp = sum(CrithidiaSpp, na.rm=TRUE),
-              SiteScreened = sum(!is.na(Apidae))
+
+              SiteScreened = sum(Apidae == 1, na.rm=TRUE)
               )
 
 
-all.sums <- left_join(par.site.sp, par.site.gen)
 
-all.sums <- left_join(all.sums, par.site.sum)
+all.sums <- left_join(par.site.sp, par.site.gen,
+  by=c('Site', 'Year', 'SampleRound', 'Genus'),
+  relationship='many-to-one')
+all.sums <- left_join(all.sums, par.site.sum,
+  by=c('Site', 'Year', 'SampleRound'),
+  relationship='many-to-one')
 all.sums$Project <- "SI"
 
 save(all.sums, file="../data/SI_parasite_sums.Rdata")
@@ -406,7 +627,11 @@ save(all.sums, file="../data/SI_parasite_sums.Rdata")
 ## create a giant plant-pollinator network to calculate specialization
 ## etc. across all SI
 ## ***************************************** **************************
-spec.net.nets <- spec.net[!is.na(spec.net$PlantGenusSpecies),]
+##  exclude empty plant or pollinator IDs from observed interactions.
+spec.net.nets <- spec.net[!is.na(spec.net$PlantGenusSpecies) &
+                          spec.net$PlantGenusSpecies != '' &
+                          !is.na(spec.net$GenusSpecies) &
+                          spec.net$GenusSpecies != '',]
 
 agg.spec <- aggregate(list(abund=spec.net.nets$GenusSpecies),
                       list(GenusSpecies=spec.net.nets$GenusSpecies,
@@ -471,7 +696,7 @@ para.traits <- data.frame(GenusSpecies= unlist(sapply(all.traits.para,
 
 rownames(para.traits) <- NULL
 
-write.csv(traits, file='../data/parasitetraits.csv', row.names=FALSE)
+write.csv(para.traits, file='../data/parasitetraits.csv', row.names=FALSE)
 
 ## *******************************************************************
 ##  create site, SR, year level networks for plant-pollinators,
@@ -492,22 +717,8 @@ bees.yr.sr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
 bees.yr <- makeNets(spec.net.nets[spec.net.nets$Family %in% bee.families,],
          net.type="YearSR", mean.by.year=TRUE, poll.groups="Bees")
 
-spec.net.selected <- spec.net.nets %>%
-  filter(
-    Family %in% pollinator.families |
-      Order == "Lepidoptera"
-  )
-
-bees.flies.leps.yr <- makeNets(spec.net.selected,
-  net.type = "YearSR", mean.by.year = TRUE, poll.groups = "BeesFliesLepidoptera"
-)
-
-bees.flies.leps.yr.sr <- makeNets(spec.net.selected,
-  net.type = "YearSR",  poll.groups = "BeesFliesLepidoptera"
-)
-
-## -- Calculates species level network metrics by site and round -- ##
-## Takes a while, only re-run if bee data is changed 
+## ## Calculates species level network metrics by site and round
+## ## Takes a while, only re-run if bee data is changed 
 ## N <- 99
 ## load('../data/networks/YearSR_PlantPollinator_Bees.Rdata')
 
@@ -521,31 +732,6 @@ bees.flies.leps.yr.sr <- makeNets(spec.net.selected,
 #sp.network.metrics <- SpPrepDat(sp.mets,  spec.net.nets,
 #                   cols.to.keep=c("GenusSpecies", "Site","Year", "SampleRound"),
 #                   net.type="YearSR")
-
-#save(sp.network.metrics,
-#     file="../data/sp_network_mets_sr_pretty.RData")
-
-
-## -- Calculates species level network metrics by year -- ##
-## Takes a while, only re-run if bee data is changed
-# N <- 99
-# load('../data/networks/Year_PlantPollinator_BeesSyrphids.Rdata')
-# 
-# sp.mets <- lapply(nets, SpCalcNetworkMetrics,
-#                 N=N, index=c("closeness", "betweenness",
-#                             "degree", "d", "normalised degree"))
-# save(sp.mets,
-#       file="../data/sp_network_mets_Year.RData")
-# 
-#load(file="../data/sp_network_mets_Year.RData")
-
-#sp.mets <- sp.mets[!sapply(sp.mets, function(x) is.null(dim(x)))]
-#sp.network.metrics <- SpPrepDat(sp.mets,  spec.net.nets,
-#                   cols.to.keep=c("GenusSpecies", "Site","Year", "SampleRound"),
-#                   net.type="Year")
-
-#save(sp.network.metrics,
-#    file="../data/sp_network_mets_Year_pretty.RData")
 
 ## Parasites
 spec.sub <- agg.spec.sub %>%
@@ -562,12 +748,16 @@ prep.para <- spec.sub %>%
                names_to = "Parasite", values_to = "count")
 prep.para <- as.data.frame(prep.para)
 
+## an NA assay is unobserved, not an absent parasite edge;
+## omit those particular assays before aggregating species prevalence.
+prep.para <- prep.para[!is.na(prep.para$count), ]
+
 par.bees.yr.sr <- makeNets(prep.para, net.type="YearSR",
                            species=c("Pollinator",
                                      "Parasite"),
                            lower.level="GenusSpecies",
                            higher.level="Parasite",
-                           poll.group="Bees")
+                           poll.groups="Bees")
 
 
 par.bees.yr <- makeNets(prep.para, net.type="YearSR",
@@ -576,16 +766,24 @@ par.bees.yr <- makeNets(prep.para, net.type="YearSR",
                         lower.level="GenusSpecies",
                         higher.level="Parasite",
                         mean.by.year=TRUE,
-                        poll.group="Bees")
+                        poll.groups="Bees")
 
 ## merge site summary metrics
 print("specimen dim before network metric year-sr merge")
 dim(spec.net)
 
-bees.yr.sr <- bees.yr.sr[bees.yr.sr$speciesType == "higher.level",]
+bees.yr.sr <- bees.yr.sr[bees.yr.sr$speciesType == 'higher.level',]
 bees.yr.sr$SpSiteYear <- NULL
-
-spec.net <- merge(spec.net, bees.yr.sr, all.x=TRUE)
+network.keys <- c('Site', 'Year', 'SampleRound', 'GenusSpecies')
+bees.yr.sr$Year <- as.character(bees.yr.sr$Year)
+spec.net$Year <- as.character(spec.net$Year)
+bees.yr.sr$SampleRound <- as.character(bees.yr.sr$SampleRound)
+spec.net$SampleRound <- as.character(spec.net$SampleRound)
+check_unique_key(bees.yr.sr, network.keys, 'Bee network metrics')
+spec.net.before <- spec.net
+spec.net <- dplyr::left_join(spec.net, bees.yr.sr, by=network.keys,
+                             relationship='many-to-one')
+check_rows_preserved(spec.net.before, spec.net, 'Network metrics -> specimens')
 dim(spec.net)
 print("specimen dim after network metric year-sr merge")
 
@@ -617,14 +815,45 @@ veg <-
     read.csv("../../skyIslands_saved/data/relational/relational/traditional/veg-complete.csv",
              stringsAsFactors=FALSE)
 
-veg$PlantGenusSpecies <-  fix.white.space(paste(veg$PlantGenus,
-                                          veg$PlantSpecies,
-                                          veg$PlantVar))
+veg.required <- c('Site', 'Date', 'SampleRound', 'Quadrat',
+                  'PlantGenus', 'PlantSpecies', 'PlantVar',
+                  'NumBlooms', 'PlantCount')
+missing.veg <- setdiff(veg.required, names(veg))
+if (length(missing.veg)) {
+  stop('veg-complete.csv is missing: ', paste(missing.veg, collapse=', '),
+       '. Available columns: ', paste(names(veg), collapse=', '),
+       '. Check the current 2make.R / 3join.R vegetation export.')
+}
 
-## people in the field put NA as a placehold where there were no
-## flowers to express data was collected, just nothing was
-## there. Not needed for site level calculations.
-veg <- veg[veg$PlantGenusSpecies != "",]
+veg$Date <- as.Date(veg$Date, format='%Y-%m-%d')
+if (anyNA(veg$Date)) {
+  stop('veg-complete.csv contains ', sum(is.na(veg$Date)),
+       ' missing/unparseable vegetation dates; inspect its Date column.')
+}
+veg$Year <- as.numeric(format(veg$Date, '%Y'))
+veg$SampleRound <- as.character(veg$SampleRound)
+veg$Quadrat <- trimws(as.character(veg$Quadrat))
+
+bloom$Date <- as.Date(bloom$Date, format='%Y-%m-%d')
+bloom$Year <- as.numeric(format(bloom$Date, '%Y'))
+
+## capture survey effort BEFORE filtering empty plant entries.
+veg$PlantGenusSpecies <-  fix.white.space(paste(
+  ifelse(is.na(veg$PlantGenus),'',veg$PlantGenus),
+  ifelse(is.na(veg$PlantSpecies),'',veg$PlantSpecies),
+  ifelse(is.na(veg$PlantVar),'',veg$PlantVar)))
+
+##  In these standardized surveys, a quadrat containing no recorded
+## flowers can be ABSENT from raw quadratveg.csv.  Therefore observed
+## quadrat rows cannot define the floral denominator.  The full
+## protocol design is reconstructed below (20 in 2012; 27 later).
+## Preserve the four event/quadrat keys, even when that quadrat has no
+## identified flowers. Do not infer survey effort from the
+## plant-filtered rows below.
+recorded.quads <- unique(veg[, c('Site', 'Year', 'SampleRound', 'Quadrat'),
+                             drop=FALSE])
+veg <- veg[!is.na(veg$PlantGenusSpecies) &
+             nzchar(veg$PlantGenusSpecies),,drop=FALSE]
 
 bloom$PlantGenusSpecies <-  fix.white.space(paste(bloom$PlantGenus,
                                           bloom$PlantSpecies,
@@ -652,37 +881,93 @@ bloom <- fixPlantNamesgBIF(bloom, "PlantGenusSpecies",
 id(veg$PlantGenusSpecies)
 id(bloom$PlantGenusSpecies)
 
-## fix dates
-veg$Date <- as.Date(veg$Date,  "%Y-%m-%d")
-veg$Year <- format(veg$Date,  "%Y")
 
-bloom$Date <- as.Date(bloom$Date,  "%Y-%m-%d")
-bloom$Year <- format(bloom$Date,  "%Y")
-
-## 2017-2022 quad options
-quads.2017.2022 <- unique(veg$Quadrat)
-quads.2012 <- unique(veg$Quadrat[veg$Year == 2012])
-## quads not done in 2012
-not.in.2012 <- quads.2017.2022[!quads.2017.2022 %in% quads.2012]
-
-## prep a matrix of all the quads for site richness etc.
-combos <- collections[rep(seq_len(nrow(collections)),
-                          each = length(quads.2017.2022)), ]
-combos$Quadrat <- quads.2017.2022
-## drop the quads not done in 2012
-combos <- combos[!(combos$Year == 2012 & combos$Quad %in%
-                   not.in.2012),]
+##  Protocol quadrats, rather than the subset
+## with floral rows, define quadrat-level zeros and per-site means.
+## 2012: 20 standard labels, later years: 27 standard labels.
+quads.2012.design <- c(paste0(rep(c('C','E','N','S','W','ME'), each=3), 1:3),
+                       'MN1', 'MN2')
+quads.later.design <- paste0(
+  rep(c('C','E','N','S','W','ME','MN','MS','MW'), each=3), 1:3)
+## Excluded unknown labels are exported for manual correction, not silently
+## admitted as a 28th or 29th quadrat. Their observations are not used in
+## the standardized floral mean until the label is resolved.
+valid.quadrat <- function(y, q) {
+  ifelse(y == 2012, q %in% quads.2012.design,
+         q %in% quads.later.design)
+}
+invalid.quad <- !valid.quadrat(veg$Year, as.character(veg$Quadrat)) |
+                is.na(veg$Quadrat)
+invalid.quad[is.na(invalid.quad)] <- TRUE
+dir.create('../../skyIslands_saved/data/checks',
+           recursive=TRUE, showWarnings=FALSE)
+write.csv(veg[invalid.quad, ,drop=FALSE],
+ file='../../skyIslands_saved/data/checks/nonstandard_vegetation_quadrats.csv',
+ row.names=FALSE)
+if (any(invalid.quad)) warning('## UPDATED [USER-QUADRATS]: ',
+ sum(invalid.quad), ' floral rows have nonstandard quadrat IDs; ',
+ 'see checks/nonstandard_vegetation_quadrats.csv for review.')
+veg <- veg[!invalid.quad, ,drop=FALSE]
+## Survey rounds are identified from actual floral records and from
+## documented Net effort: a fully empty floral round can have NO veg rows.
+event.conditions <- read.csv(paste0(
+ '../../skyIslands_saved/data/relational/relational/traditional/',
+ 'conditions-specimens-complete.csv'), stringsAsFactors=FALSE,
+ colClasses=c(SampleRound='character'))
+event.net <- event.conditions[!is.na(event.conditions$Method) &
+  tolower(trimws(event.conditions$Method)) == 'net',
+  c('Site','Year','SampleRound'), drop=FALSE]
+event.net$Year <- as.numeric(as.character(event.net$Year))
+recorded.rounds <- unique(recorded.quads[, c('Site','Year','SampleRound')])
+recorded.rounds$SampleRound <- as.character(recorded.rounds$SampleRound)
+recorded.rounds$Year <- as.numeric(as.character(recorded.rounds$Year))
+event.net$SampleRound <- as.character(event.net$SampleRound)
+## Do not turn vegetation without
+## verified event geography into a newly inferred sampling location.
+missing.veg.events <- dplyr::anti_join(recorded.rounds,
+ event.net, by=c('Site','Year','SampleRound'))
+write.csv(missing.veg.events,
+ file='../../skyIslands_saved/data/checks/vegetation_without_verified_event.csv',
+ row.names=FALSE)
+if (nrow(missing.veg.events)) warning('## UPDATED: ',
+ nrow(missing.veg.events),
+ ' vegetation rounds lack verified site/round conditions; see checks.')
+rounds <- unique(event.net)
+rounds <- rounds[stats::complete.cases(rounds),,drop=FALSE]
+quadrat.design <- data.frame(
+ Year=sort(unique(rounds$Year)), stringsAsFactors=FALSE)
+quadrat.design <- do.call(rbind, lapply(quadrat.design$Year, function(y) {
+ data.frame(Year=y, Quadrat=if (y == 2012) quads.2012.design
+            else quads.later.design, stringsAsFactors=FALSE)
+}))
+combos <- dplyr::inner_join(rounds, quadrat.design,
+                             by='Year', relationship='many-to-many')
+recorded.quads$Year <- as.numeric(as.character(recorded.quads$Year))
+recorded.quads$SampleRound <- as.character(recorded.quads$SampleRound)
+recorded.quads$RecordedVegetation <- TRUE
+combos <- dplyr::left_join(combos,
+  recorded.quads[, c('Site','Year','SampleRound','Quadrat',
+                    'RecordedVegetation')],
+  by=c('Site','Year','SampleRound','Quadrat'),
+  relationship='one-to-one')
+combos$RecordedVegetation[is.na(combos$RecordedVegetation)] <- FALSE
+combos$ImputedZeroQuadrat <- !combos$RecordedVegetation
+check_unique_key(combos, c('Site', 'Year', 'SampleRound', 'Quadrat'),
+                 'Protocol vegetation quadrats')
 
 ## blooming flowers
-veg.blooming <- veg[veg$NumBlooms != "" &
-                    veg$NumBlooms != "0",]
+veg.blooming <- veg[!is.na(veg$NumBlooms) &
+                    veg$NumBlooms != '' & veg$NumBlooms != '0',]
 
 ## didn't count the exact number of flowers in 2017-2018, use
 ## midpoints of bins
 veg.blooming$NumBloomsNum <- veg.blooming$NumBlooms
+##  Use arithmetic midpoints for each bin.
+## '<10' uses 5 (for the positive-count interval 1-9); others use 55,
+## 550, not the former approximations 50 and 100.
 veg.blooming$NumBloomsNum[veg.blooming$NumBlooms == "<10"] <- 5
-veg.blooming$NumBloomsNum[veg.blooming$NumBlooms == "10-100"] <- 50
-veg.blooming$NumBloomsNum[veg.blooming$NumBlooms == "100-1000"] <- 100
+veg.blooming$NumBloomsNum[veg.blooming$NumBlooms == "10-100"] <- 55
+veg.blooming$NumBloomsNum[veg.blooming$NumBlooms == "100-1000"] <- 550
 
 veg.blooming$NumBloomsNum <- as.numeric(veg.blooming$NumBloomsNum)
 
@@ -737,13 +1022,18 @@ veg.bloom.sum.quad$FloweringPlantDiversity <-
         veg.name)]
 
 ## merge together quad combos and quad level data
-combos <- merge(combos, veg.bloom.sum.quad, all.x=TRUE)
+
+combos <- dplyr::left_join(combos, veg.bloom.sum.quad,
+  by=c('Site', 'Year', 'SampleRound', 'Quadrat'),
+  relationship='one-to-one')
 
 cols.to.fill <-  c("FloralAbundance", "FloralRichness",
                    "FloralDiversity", "FloweringPlantAbundance",
                    "FloweringPlantDiversity")
-## set NAs to zero
+## Missing protocol-quadrat records mean zero flowers under the stated
+## sampling design, and enter the mean.
 combos[, cols.to.fill][is.na(combos[, cols.to.fill])] <- 0
+write.csv(combos, file='../data/veg_quadrat_effort.csv', row.names=FALSE)
 
 veg.bloom.mean <- combos %>%
     group_by(Site, Year, SampleRound) %>%
@@ -758,8 +1048,49 @@ veg.bloom.mean[order(veg.bloom.mean$MeanFloralRichness), ]
 
 write.csv(veg.bloom.mean, file="../data/veg.csv", row.names=FALSE)
 
-## merge with specimen summary data
-site.sum <- merge(site.sum, veg.bloom.mean, all.x=TRUE)
+## Site-level summaries are EVENT anchored: empty Net rounds appear
+## with geographic/condition/floral data, and NA for specimen-derived
+## site statistics (not imaginary specimen rows).
+site.sum$Year <- as.numeric(as.character(site.sum$Year))
+site.sum$SampleRound <- as.character(site.sum$SampleRound)
+veg.bloom.mean$SampleRound <- as.character(veg.bloom.mean$SampleRound)
+check_unique_key(veg.bloom.mean, keys.sr, 'Vegetation sample-round stats')
+site.sum <- dplyr::left_join(rounds, site.sum, by=keys.sr,
+                             relationship='one-to-one')
+site.sum <- dplyr::left_join(site.sum, veg.bloom.mean, by=keys.sr,
+                             relationship='one-to-one')
+## Geographic and weather attributes are derived from distinct
+## condition rows, not specimens, preventing capture-weighted site
+## coordinates.
+event.geo <- event.conditions %>%
+  dplyr::filter(tolower(trimws(Method)) == 'net') %>%
+  dplyr::mutate(Year=as.numeric(as.character(Year)),
+                SampleRound=as.character(SampleRound)) %>%
+  dplyr::distinct(ConditionsPK, .keep_all=TRUE) %>%
+  dplyr::group_by(Site, Year, SampleRound) %>%
+  dplyr::summarise(
+    GeoLat=mean.unique(Lat), GeoLong=mean.unique(Long),
+    GeoElev=mean.unique(Elev), GeoArea=mean.unique(Area),
+    ## Carry environmental conditions into otherwise
+    ## empty rows so a no-capture event is still fully described.
+    EventMeanTempStart=mean.unique(TempStart),
+    EventMeanTempEnd=mean.unique(TempEnd),
+    EventMeanWindStart=mean.unique(WindStart),
+    EventMeanWindEnd=mean.unique(WindEnd),
+    EventAPi=mean.unique(APi), EventGDD=mean.unique(GDD),
+    EventMeanTmean=mean.unique(MeanTmean),
+    EventMeanVPD=mean.unique(MeanVPD),
+    .groups='drop')
+site.sum <- dplyr::left_join(site.sum, event.geo,
+  by=keys.sr, relationship='one-to-one')
+## The site-level relational geography is available from conditions
+## even when an event has no specimens. Keep the familiar
+## Lat/Elev/Area fields populated in sitestats.csv for those blank
+## events.  Do not infer specimen abundance or richness from these
+## event rows.
+site.sum$Lat <- dplyr::coalesce(site.sum$Lat, site.sum$GeoLat)
+site.sum$Elev <- dplyr::coalesce(site.sum$Elev, site.sum$GeoElev)
+site.sum$Area <- dplyr::coalesce(site.sum$Area, site.sum$GeoArea)
 write.csv(site.sum, file='../data/sitestats.csv', row.names=FALSE)
 
 ## floral richness across the entire meadow across sampling rounds
@@ -777,52 +1108,77 @@ write.csv(veg.year.sum, file="../data/veg_species_richness.csv",
 ## Merging specimen data with site characteristic data.
 print("Before merge with site characteristics")
 print(dim(spec.net))
-spec.net <- merge(spec.net, site.sum, all.xy=TRUE)
+## full join adds synthetic rows that are NOT specimens.
+spec.net$Year <- as.numeric(as.character(spec.net$Year))
+spec.net$SampleRound <- as.character(spec.net$SampleRound)
+spec.net.before <- spec.net
+spec.net <- dplyr::left_join(spec.net, site.sum, by=keys.sr,
+                             relationship='many-to-one')
+check_rows_preserved(spec.net.before, spec.net, 'Site stats -> specimens')
 print("After merge with site characteristics")
 print(dim(spec.net))
 
 ## Load the csv with the parasitism rate by site/SR/year/spp. Create a
 ## key that matches the spec.net dataset and then merge the species
 ## level information to the full dataset.
-spec.indiv <- read_csv("../data/spstats_net.csv")
-spec.indiv$SiteSRYearSpp <- paste(spec.indiv$Site, spec.indiv$Year, spec.indiv$SampleRound,
-                                spec.indiv$GenusSpecies, sep = "_")
-spec.indiv <- subset(spec.indiv, select = -c(Site, Year, SampleRound, GenusSpecies))
+spec.indiv <- read_csv('../data/spstats_net.csv', show_col_types=FALSE)
+## use the four natural key columns rather than pasted IDs.
+network.keys <- c('Site', 'Year', 'SampleRound', 'GenusSpecies')
+spec.indiv$Year <- as.numeric(as.character(spec.indiv$Year))
+spec.indiv$SampleRound <- as.character(spec.indiv$SampleRound)
 
-spec.net$SiteSRYearSpp <- paste(spec.net$Site, spec.net$Year, spec.net$SampleRound,
-                                spec.net$GenusSpecies, sep = "_")
+## The species summary includes unidentified netted specimens (blank
+## GenusSpecies). read_csv() interprets blank strings as NA.  Preserve
+## those specimen records, but do not treat 'unidentified' as a
+## species when attaching species-level parasite and abundance
+## summaries.  First check the actual sample-event keys; missing
+## geography/round is a different problem and must not be silently
+## dropped.
+missing.event.key <- is.na(spec.indiv$Site) |
+  !nzchar(trimws(as.character(spec.indiv$Site))) |
+  is.na(spec.indiv$Year) |
+  is.na(spec.indiv$SampleRound) |
+  !nzchar(trimws(as.character(spec.indiv$SampleRound)))
+if (any(missing.event.key)) {
+  dir.create('../../skyIslands_saved/data/checks', recursive=TRUE,
+             showWarnings=FALSE)
+  write.csv(spec.indiv[missing.event.key, ,drop=FALSE],
+            '../../skyIslands_saved/data/checks/species_summary_missing_event_keys.csv',
+            row.names=FALSE)
+  stop('Species-level summary has ', sum(missing.event.key),
+       ' rows without Site/Year/SampleRound. See saved/data/checks.')
+}
 
-## Merging species data with individual level data.
-print("Before merge with ind level data")
+## Exclude unidentified *summary rows from this join
+## only*, not the underlying specimens or their site-level abundances.
+## Keep an list of those groups in skyIslands_saved.
+missing.species <- is.na(spec.indiv$GenusSpecies) |
+  !nzchar(trimws(as.character(spec.indiv$GenusSpecies)))
+if (any(missing.species)) {
+  dir.create('../../skyIslands_saved/data/checks', recursive=TRUE,
+             showWarnings=FALSE)
+  write.csv(spec.indiv[missing.species, ,drop=FALSE],
+            '../../skyIslands_saved/data/checks/unidentified_net_species_summaries.csv',
+            row.names=FALSE)
+  message('## UPDATED: ', sum(missing.species),
+          ' unidentified species-summary groups retained, ',
+          'not matched as taxonomic species.')
+}
+spec.indiv.join <- spec.indiv[!missing.species, ,drop=FALSE]
+check_unique_key(spec.indiv.join, network.keys, 'Identified species-level summary')
+
+## Merging species data with individual-level data.
+print('Before merge with ind level data')
 print(dim(spec.net))
-spec.net <- merge(spec.net, spec.indiv, all.x=TRUE)
-spec.net$SiteSRYearSpp <- NULL
+
+spec.net.before <- spec.net
+## Join only identified species summaries; all specimen rows are
+## retained by the left join and checked below.
+spec.net <- dplyr::left_join(spec.net, spec.indiv.join, by=network.keys,
+                             relationship='many-to-one')
+check_rows_preserved(spec.net.before, spec.net, 'Species stats -> specimens')
 print("After merge with ind level data")
 print(dim(spec.net))
-
-## ## bee traits
-## bee.traits <-
-##     read.csv("../../skyIslands_saved/data/raw/bee_traits.csv")
-## bee.traits$GenusSpecies <- fix.white.space(bee.traits$GenusSpecies)
-## bee.traits <- bee.traits[, c("GenusSpecies", "Sociality", "Lecty", "MeanITD"),]
-
-## ## network traits
-## net.traits <- read.csv("../data/networks_traits.csv")
-## net.traits <- net.traits[, c("GenusSpecies", "r.degree"),]
-
-## ## merge network traits to specimen data
-## print("Before merge with network traits to species bee.traits")
-## print(dim(bee.traits))
-## all.traits <- merge(bee.traits, net.traits,
-##                     by="GenusSpecies", all.x=TRUE)
-## print("After merge with network bee.traits to species bee.traits")
-## print(dim(all.traits))
-
-## print("Before merge with traits")
-## print(dim(spec.net))
-## spec.net <- merge(spec.net, all.traits, all.x=TRUE)
-## print("After merge with traits")
-## print(dim(spec.net))
 
 spec.net$GenusSpecies[is.na(spec.net$GenusSpecies)] <- ""
 save(spec.net, file="../data/spec_net.Rdata")
