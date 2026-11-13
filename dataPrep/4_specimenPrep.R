@@ -887,6 +887,7 @@ veg.bloom.mean[order(veg.bloom.mean$MeanFloralRichness), ]
 
 write.csv(veg.bloom.mean, file="../data/veg.csv", row.names=FALSE)
 
+#write.csv(veg.bloom.quad.sp, file="../data/veg.bloom.quad.sp.csv", row.names=FALSE)
 ## Site-level summaries are EVENT anchored: empty Net rounds appear
 ## with geographic/condition/floral data, and NA for specimen-derived
 ## site statistics (not imaginary specimen rows).
@@ -1021,3 +1022,4 @@ print(dim(spec.net))
 
 spec.net$GenusSpecies[is.na(spec.net$GenusSpecies)] <- ""
 save(spec.net, file="../data/spec_net.Rdata")
+
