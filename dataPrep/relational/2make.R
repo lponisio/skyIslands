@@ -11,8 +11,9 @@ geo <- read.csv("../original/geography.csv", as.is=TRUE)
 parasites <- read.csv("../original/parasites.csv", as.is=TRUE)
 veg <- read.csv("../original/veg.csv", as.is=TRUE)
 bloom <- read.csv("../original/bloom.csv", as.is=TRUE)
-plants <- read.csv("../../raw/plants.csv",
-                   as.is=TRUE)
+## Prepared in 1prep: one shared GBIF-corrected plant vocabulary from
+## raw/plants + visits + vegetation + bloom surveys.
+plants <- read.csv("../original/plant_taxa.csv", as.is=TRUE)
 
 ## check that if there is already a database, remove it
 if(file.exists("si.db")) file.remove("si.db")
@@ -309,65 +310,48 @@ write.csv(dbReadTable(con, "tblInsect"),
 ## 4. Plant species:
 ## *******************************************************
 
-keep <- c('FinalPlantSp')
-plants <- fix.white.space(paste(plants$PlantGenus,
-                                         plants$PlantSpecies,
-                                         plants$PlantSubspecies))
-plants <- sort(unique(plants))
-
-PlantGenus <- sapply(strsplit(plants, ' '), function(x) x[1])
-PlantGenus[is.na(PlantGenus)] <- ''
-
-PlantSpecies <- sapply(strsplit(plants, ' '), function(x) x[2])
-PlantSpecies[is.na(PlantSpecies)] <- ''
-
-PlantVar <- sapply(strsplit(plants, ' '), function(x) x[3])
-PlantVar[is.na(PlantVar)] <- ''
-
-PlantSubSpecies <- sapply(strsplit(plants, ' '), function(x) x[4])
-PlantSubSpecies[is.na(PlantSubSpecies)] <- ''
-
-plants <- data.frame(PlantPK=seq_along(PlantGenus),
-                     PlantGenus, PlantSpecies, PlantVar,
-                     PlantSubSpecies)
-
+## Preserve a complete scientific name explicitly, instead of
+## reassembling it differently for different surveys. Non-binomial labels
+## such as "Agoseris spp." and infraspecific names are valid study labels.
+plant.names <- trimws(as.character(plants$PlantGenusSpecies))
+plant.names <- unique(plant.names[!is.na(plant.names) & nzchar(plant.names)])
+if (anyDuplicated(plant.names)) stop('Duplicate canonical plant names.')
+parts <- strsplit(plant.names, ' ', fixed=TRUE)
+plants <- data.frame(
+  PlantPK=seq_along(plant.names),
+  PlantGenusSpecies=plant.names,
+  PlantGenus=vapply(parts, `[`, character(1), 1),
+  PlantSpecies=vapply(parts, function(z) if (length(z) >= 2L) z[2] else '',
+                      character(1)),
+  ## Keep all tokens after the species epithet together, including
+  ## var./subsp. rank markers when present.
+  PlantVar=vapply(parts, function(z) if (length(z) > 2L)
+                   paste(z[-c(1, 2)], collapse=' ') else '', character(1)),
+  PlantSubSpecies='',
+  stringsAsFactors=FALSE)
+plant.family <- read.csv('../original/plant_taxa.csv',
+                         stringsAsFactors=FALSE)
+plants$PlantFamily <- plant.family$PlantFamily[
+   match(plants$PlantGenusSpecies, plant.family$PlantGenusSpecies)]
 rownames(plants) <- NULL
 dbWriteTable(con, 'tblPlant', plants, row.names=FALSE)
 
-## Propagate plant key to the specimens table.
-specimens.plant.sp <- specimens[keep][[1]]
-
-plants.plant.sp <- fix.white.space(paste(plants$PlantGenus,
-                                         plants$PlantSpecies,
-                                         plants$PlantVar,
-                                         plants$PlantSubSpecies))
-
-## propogate plant key to specimens
-specimens$PlantFK <- plants$PlantPK[match(specimens.plant.sp,
-                                          plants.plant.sp)]
-
-print(paste("spec IDs without plants IDs",
-            specimens$UniqueID[is.na(specimens$PlantFK)]))
-
-unique(print(paste("spec without plants IDs",
-            unique(specimens$FinalPlantSp[is.na(specimens$PlantFK)]))))
-
-# *********
-## Propagate plant key to the veg table.
-veg$PlantFK <- plants$PlantPK[match(veg$PlantGenusSpecies,
-                                          plants.plant.sp)]
-
-print(paste("veg without plants IDs",
-            unique(veg$PlantGenusSpecies[is.na(veg$PlantFK)])))
-
-# *********
-## Propagate plant key to the bloom table.
-bloom$PlantFK <- plants$PlantPK[match(bloom$PlantGenusSpecies,
-                                          plants.plant.sp)]
-
-print(paste("bloom without plants IDs",
-            unique(bloom$PlantGenusSpecies[is.na(bloom$PlantFK)])))
-
+## Audit names not matched to a plant FK; only truly blank names
+## should remain unmatched after collecting all plant sources in 1prep.
+plant_fk <- function(x) plants$PlantPK[match(trimws(as.character(x)),
+                                             plants$PlantGenusSpecies)]
+specimens$PlantFK <- plant_fk(specimens$FinalPlantSp)
+veg$PlantFK <- plant_fk(veg$PlantGenusSpecies)
+bloom$PlantFK <- plant_fk(bloom$PlantGenusSpecies)
+for (nm in c('specimens','veg','bloom')) {
+  dat <- get(nm)
+  col <- if (nm == 'specimens') 'FinalPlantSp' else 'PlantGenusSpecies'
+  unmatched <- is.na(dat$PlantFK) & !is.na(dat[[col]]) &
+    nzchar(trimws(as.character(dat[[col]])))
+  if (any(unmatched)) stop(nm, ': ', sum(unmatched),
+    ' named plant records cannot match the shared plant table: ',
+    paste(utils::head(unique(dat[[col]][unmatched]), 10), collapse=', '))
+}
 
 write.csv(dbReadTable(con, 'tblPlant'),
           file='tables/plant.csv', row.names=FALSE)
@@ -426,6 +410,7 @@ keep <- c('UniqueID',
           'TempID',
     #      'EventID',
           'Collector',
+          'InsectOriginalName', 'InsectGBIFStatus',
           'SourceDate', 'SourceSite', 'SourceSampleRound',
           'SourceMethod', 'SourceNetNumber',
           'InsectFK',

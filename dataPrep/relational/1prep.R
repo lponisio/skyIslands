@@ -2,6 +2,8 @@
 ## make files for use in relational database
 ## *******************************************************
 source('dataPrep/src/misc.R')
+source('dataPrep/src/taxonomy_gbif.R')
+source('dataPrep/relational/src/validate_2017_barcode_map.R')
 
 setwd("../skyIslands_saved/data")
 ## load data
@@ -40,10 +42,6 @@ print(spec.date.format)
 print(spec.data$Date[1])
 spec.data$Date <- as.Date(spec.data$Date, spec.date.format)
 
-## add subsite one to all 2012 data
-spec.2012 <- spec.data$Date < "2013-01-01"
-spec.after.2012 <- spec.data$Date > "2013-01-01"
-
 spec.data$Method <- "Net"
 spec.data$Method[is.na(spec.data$FieldPlantID) |
                  spec.data$FieldPlantID == ""] <- "Pan"
@@ -56,6 +54,19 @@ spec.data$FinalPlantSp <-
                                   plant.keys$FieldPlantID)]
 
 
+## Report unknown field plant codes before they become blanks. We do not
+## invent plant identities for those visit specimens.
+unknown.plant <- !is.na(spec.data$FieldPlantID) &
+  nzchar(trimws(as.character(spec.data$FieldPlantID))) &
+  is.na(spec.data$FinalPlantSp)
+dir.create('checks/taxonomy', recursive=TRUE, showWarnings=FALSE)
+unknown.ids <- sort(unique(as.character(spec.data$FieldPlantID[unknown.plant])))
+write.csv(data.frame(FieldPlantID=unknown.ids,
+                     NVisitSpecimens=vapply(unknown.ids, function(k)
+                       sum(spec.data$FieldPlantID == k, na.rm=TRUE), integer(1))),
+    'checks/taxonomy/unmatched_field_plant_codes.csv', row.names=FALSE)
+if (any(unknown.plant)) warning(sum(unknown.plant),
+  ' specimen visits have unmatched FieldPlantID; see checks/taxonomy.')
 spec.data$FinalPlantSp[is.na(spec.data$FinalPlantSp)] <- ""
 
 
@@ -77,49 +88,20 @@ write.csv(check.data.spec, file="spec_counts.csv", row.names=FALSE)
 
 bbsl <- read.csv("raw/BBSLSpecimens.csv", stringsAsFactors=FALSE)
 
-## Use the frozen original order to guard against a new BBSL export with
-## inserted rows changing every later specimen ID.
+## Restore historical 2017 barcode numbers only after verifying that the
+## original specimen rows, their expansion counts and collecting events have
+## NOT shifted. FieldPlantID is an editable field identification; its changes
+## are logged below, not treated as changes in specimen order.
 spec.data$OriginalUniqueID <- spec.data$UniqueID
 spec.data$TempID <- seq_len(nrow(spec.data))
-bar.file <- '../../skyIslands_saved/data/raw/2017_legacy_barcode_crosswalk.csv'
+bar.file <- 'raw/2017_legacy_barcode_crosswalk.csv'
 if (!file.exists(bar.file)) stop('Missing original 2017 barcode reference: ', bar.file)
 bar.map <- read.csv(bar.file, stringsAsFactors=FALSE)
-rows.2017 <- which(spec.data$Year == '2017')
-if (length(rows.2017) != 20359L || nrow(bar.map) != 9330L)
-  stop('2017 specimen count or historical barcode count has changed. Review IDs first.')
-if (anyDuplicated(bar.map$TempID) || anyDuplicated(bar.map$BarcodeID) ||
-    anyNA(bar.map$TempID) || anyNA(bar.map$BarcodeID))
-  stop('The 2017 barcode reference contains duplicate or missing IDs.')
-first.2017 <- rows.2017[seq_len(nrow(bar.map))]
-if (!identical(as.integer(spec.data$TempID[first.2017]),
-               as.integer(bar.map$TempID)))
-  stop('Historical 2017 TempID positions changed; do not shift barcodes.')
-## Validate the raw-record provenance associated with
-## each historical ID, but do not require collection metadata in BBSL export.
-source.fields <- c(SourceRawRowNum='rawRowNum', SourceDate='Date',
-  SourceSite='Site', SourceSubSite='SubSite',
-  SourceCollector='Collector', SourceFieldPlantID='FieldPlantID',
-  SourceNetNumber='NetNumber', SourceSampleRound='SampleRound',
-  SourceSpecimenCount='RawSpecimenCount')
-normalise.id.field <- function(x) {
-  x <- trimws(as.character(x))
-  x[is.na(x) | x %in% c('', 'NA')] <- ''
-  x
-}
-for (field in names(source.fields)) {
-  if (!field %in% names(bar.map) ||
-      !source.fields[[field]] %in% names(spec.data))
-    stop('Missing ID audit field: ', field)
-  expected <- normalise.id.field(bar.map[[field]])
-  observed <- normalise.id.field(
-    spec.data[[source.fields[[field]]]][first.2017])
-  if (!identical(expected, observed))
-    stop('2017 specimen order differs at ', field,
-         '; barcode mapping intentionally not applied.')
-}
-if (!identical(as.character(bbsl$BarcodeID[seq_len(nrow(bar.map))]),
-               as.character(bar.map$BarcodeID)))
-  stop('BBSL inventory is not in historical order. Keep raw/BBSLSpecimens.csv unchanged.')
+barcode.check <- validate_2017_barcode_map(
+  spec.data, bar.map, bbsl,
+  audit_file='checks/taxonomy/2017_barcode_field_plant_edits.csv')
+rows.2017 <- barcode.check$rows.2017
+first.2017 <- barcode.check$first.2017
 ## Assign only historically labeled 2017 records; preserve all other IDs.
 spec.data$UniqueID[rows.2017] <- NA_character_
 spec.data$UniqueID[first.2017] <- bar.map$BarcodeID
@@ -423,3 +405,107 @@ bloom.data$Date <- as.Date(bloom.data$Date, "%m/%d/%y")
 
 write.csv(bloom.data, file="relational/original/bloom.csv",
                    row.names=FALSE)
+
+## *******************************************************
+## Shared GBIF taxonomy reconciliation: run only AFTER IDs have been
+## assigned by AssignSpecies.R. This is the ONLY place where scientific
+## names are corrected. Do not alter files under raw/ or speciesIDs/IDs/.
+## *******************************************************
+check.dir <- 'checks/taxonomy'
+dir.create(check.dir, recursive=TRUE, showWarnings=FALSE)
+cache.file <- file.path(check.dir, 'gbif_backbone_cache.csv')
+## Version-controlled, approved spelling corrections are applied in every run.
+## Additional case-by-case approvals can be added in checks/taxonomy/.
+overrides.file <- c(
+    'dataPrep/speciesIDs/taxon_overrides_approved.csv',
+    file.path(check.dir, 'taxon_overrides_approved.csv'))
+## For a deliberate full GBIF recheck: set refresh=TRUE below.
+
+identified <- read.csv('relational/original/specimens.csv',
+                       stringsAsFactors=FALSE)
+identified$InsectOriginalName <- clean_taxon_string(paste(
+  ifelse(is.na(identified$Genus), '', identified$Genus),
+  ifelse(is.na(identified$Species), '', identified$Species),
+  ifelse(is.na(identified$SubSpecies), '', identified$SubSpecies)))
+
+## Collect every distinct name across all four plant inputs, even when
+## it appears in only one of them. The same lookup is applied everywhere.
+insect.names <- identified$InsectOriginalName
+plant.names <- c(plant.keys$FinalPlantSp, identified$FinalPlantSp,
+                 veg.data$PlantGenusSpecies, bloom.data$PlantGenusSpecies)
+all.names <- c(insect.names, plant.names)
+all.kingdoms <- c(rep('Animalia', length(insect.names)),
+                  rep('Plantae', length(plant.names)))
+all.families <- c(identified$Family,
+                  rep('', length(plant.names)))
+lookup <- reconcile_taxon_names(all.names, all.kingdoms, all.families,
+    cache_file=cache.file, overrides_file=overrides.file, refresh=FALSE)
+
+## Keep an actionable, stable review table of all input name mappings.
+taxon.counts <- table(paste(all.kingdoms, clean_taxon_string(all.names),
+                            sep='\r'))
+lookup$NSourceRecords <- as.integer(taxon.counts[
+  paste(lookup$Kingdom, lookup$OriginalName, sep='\r')])
+lookup$NSourceRecords[is.na(lookup$NSourceRecords)] <- 0L
+lookup$VisitNetworkName <- ifelse(lookup$Kingdom == 'Plantae',
+    si_plant_lump(lookup$CorrectedName), lookup$CorrectedName)
+write.csv(lookup, file.path(check.dir, 'taxon_name_mapping.csv'),
+          row.names=FALSE, na='')
+write.csv(lookup[lookup$Status %in%
+    c('REVIEW_GBIF_MATCH','REVIEW_FAMILY_CONFLICT','UNCHECKED'), ,drop=FALSE],
+    file.path(check.dir, 'taxa_needing_review.csv'),
+    row.names=FALSE, na='')
+write.csv(lookup[lookup$Status == 'PROVISIONAL_PRESERVED', ,drop=FALSE],
+    file.path(check.dir, 'morphospecies_preserved.csv'),
+    row.names=FALSE, na='')
+
+## Correct insects once, before tblInsect is constructed. Preserve the
+## original label for traceability; leave provisional names untouched.
+corrected <- replace_from_taxonomy(identified$InsectOriginalName,
+                                  'Animalia', lookup)
+identified$InsectGBIFStatus <- lookup$Status[match(
+  paste('Animalia', identified$InsectOriginalName, sep='\r'),
+  paste(lookup$Kingdom, lookup$OriginalName, sep='\r'))]
+identified$InsectGBIFStatus[is.na(identified$InsectGBIFStatus)] <-
+  'NO_INSECT_ID'
+changed <- nzchar(corrected) & corrected != identified$InsectOriginalName
+parts <- strsplit(corrected[changed], ' ', fixed=TRUE)
+identified$Genus[changed] <- vapply(parts, `[`, character(1), 1)
+identified$Species[changed] <- vapply(parts, function(z)
+  if (length(z) >= 2L) z[2] else '', character(1))
+identified$SubSpecies[changed] <- vapply(parts, function(z)
+  if (length(z) >= 3L) paste(z[-c(1,2)], collapse=' ') else '', character(1))
+
+## Correct plant name references in every input; no downstream lookup
+## of normalized_plants.csv and no raw file edits.
+plant.keys$FinalPlantSp <- replace_from_taxonomy(
+  plant.keys$FinalPlantSp, 'Plantae', lookup)
+## Existing analysis convention: field-visit Erigeron IDs are collapsed
+## across years to 'Erigeron spp.' Vegetation and bloom observations retain
+## species-level identities so floral species diversity is not reduced.
+identified$FinalPlantSp <- si_plant_lump(replace_from_taxonomy(
+  identified$FinalPlantSp, 'Plantae', lookup))
+veg.data$PlantGenusSpecies <- replace_from_taxonomy(
+  veg.data$PlantGenusSpecies, 'Plantae', lookup)
+bloom.data$PlantGenusSpecies <- replace_from_taxonomy(
+  bloom.data$PlantGenusSpecies, 'Plantae', lookup)
+
+## tblPlant must contain every study-level plant taxon used by the
+## specimen/veg/bloom source tables, not only raw/plants.csv values.
+plant.all <- sort(unique(c(plant.keys$FinalPlantSp,
+  identified$FinalPlantSp, veg.data$PlantGenusSpecies,
+  bloom.data$PlantGenusSpecies)))
+plant.all <- plant.all[nzchar(plant.all)]
+plant.lut <- lookup[lookup$Kingdom == 'Plantae', , drop=FALSE]
+family.map <- plant.lut$GBIFFamily[match(plant.all, plant.lut$CorrectedName)]
+family.map[is.na(family.map)] <- ''
+plant.table <- data.frame(PlantGenusSpecies=plant.all,
+                          PlantFamily=family.map, stringsAsFactors=FALSE)
+write.csv(plant.table, 'relational/original/plant_taxa.csv', row.names=FALSE)
+write.csv(identified, 'relational/original/specimens.csv', row.names=FALSE)
+write.csv(veg.data, 'relational/original/veg.csv', row.names=FALSE)
+write.csv(bloom.data, 'relational/original/bloom.csv', row.names=FALSE)
+message('GBIF taxonomy reconciled in 1prep: ', sum(changed),
+        ' insect specimen names adjusted; ', length(plant.all),
+        ' plant taxon labels represented; see ', check.dir)
+

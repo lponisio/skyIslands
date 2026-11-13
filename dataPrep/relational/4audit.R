@@ -1,4 +1,4 @@
-## UPDATED [SI-139]: NEW SCRIPT -- entire file added during this review session.
+
 ## *******************************************************
 ## optional relational integrity audit (run after 3join.R)
 ## *******************************************************
@@ -19,7 +19,7 @@ counts <- data.frame(Table=tables,
 write.csv(counts, file=file.path(audit.dir, 'table_row_counts.csv'),
           row.names=FALSE)
 
-## UPDATED [USER-01]: Missing specimen conditions/geography are a
+##  Missing specimen conditions/geography are a
 ## deliberate exclusion from locality-labelled specimen exports.
 ## Unmatched plant IDs remain descriptive and do not trigger exclusion.
 spec <- dbReadTable(con, 'tblSpecimens')
@@ -56,7 +56,7 @@ for (table in c('tblVeg', 'tblBloom')) {
   }
 }
 
-## UPDATED [USER-01]: The specimen export intentionally excludes records
+##  The specimen export intentionally excludes records
 ## without matched conditions/geography. Reconcile source, kept and dropped.
 exports <- c('specimens-complete.csv', 'veg-complete.csv',
              'bloom-complete.csv')
@@ -74,7 +74,7 @@ write.csv(reconstruction, file=file.path(audit.dir,
           'reconstruction_counts.csv'), row.names=FALSE)
 if (any(!reconstruction$Preserved))
   stop('Traditional exports unexpectedly changed row counts.')
-## UPDATED [USER-12]: Check every condition event is represented by one
+##  Check every condition event is represented by one
 ## or more rows, including an NA-specimen row for an empty event.
 ledger <- read.csv('traditional/conditions-specimens-complete.csv',
                    stringsAsFactors=FALSE)
