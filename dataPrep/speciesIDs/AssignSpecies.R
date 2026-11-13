@@ -167,6 +167,12 @@ add.to.data(sp.ids=sp.ids,
             case='lep',"","2018",
             data.file=spec.data.file)
 
+print("*********2018 Vespidae")
+source(file.path(save.dir, 'IDs/2018/Vespids.R'))
+add.to.data(sp.ids=sp.ids,
+            case='wasp',"Vespidae","2018",
+            data.file=spec.data.file)
+
 
 ## 2017 field season
 print("*********2017 Syrphidae")
@@ -228,7 +234,11 @@ add.to.data(sp.ids=sp.ids,
             case='lep',"","2017",
             data.file=spec.data.file)
 
-
+print("*********2017 Vespidae")
+source(file.path(save.dir, 'IDs/2017/Vespids.R'))
+add.to.data(sp.ids=sp.ids,
+            case='wasp',"Vespidae","2019",
+            data.file=spec.data.file)
 
 ## 2012 field season
 

@@ -105,7 +105,7 @@ podalonia_robusta = list(Genus="Podalonia", SubGenus ="",
 
 
 Philanthus = list(Genus="Philanthus", SubGenus ="",
-       Species="ventilubril",
+       Species="ventilabris",
        SubSpecies="", Sex="f",
                  Author = "",
                 Determiner="L.C. Ponisio",

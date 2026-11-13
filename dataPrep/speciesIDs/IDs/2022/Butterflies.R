@@ -6,6 +6,7 @@ sp.ids <- list(
                             Species="isola",
                             SubSpecies="",
                             Sex="", Author = "Reakirt",
+                            Family="Lycaenidae",
                             Determiner="A. Santillana",
                             temp.id= c(39014, 39025, 39027, 39028,
                                        39029, 39030, 39031)),
@@ -25,6 +26,7 @@ sp.ids <- list(
                          Species="taxiles",
                          SubSpecies="",
                          Sex="f", Author = "Edwards",
+                         Family="Hesperiidae",
                          Determiner="A. Santillana",
                          temp.id= c(39023, 39021, 39022, 39017, 39015))
 

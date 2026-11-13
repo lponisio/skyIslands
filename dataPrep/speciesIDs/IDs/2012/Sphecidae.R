@@ -123,7 +123,7 @@ sp.ids <- list(
 
 
  Philanthus = list(Genus="Philanthus", SubGenus ="",
-                   Species="ventilubril",
+                   Species="ventilabris",
                    SubSpecies="", Sex="f",
                    Author = "",
                    Determiner="J.S. Ascher",

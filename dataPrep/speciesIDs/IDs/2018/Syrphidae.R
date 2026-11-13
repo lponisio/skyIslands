@@ -202,8 +202,10 @@ sp.ids <- list(
                                       Determiner="M.Hauser",
                                       temp.id= c("17733")),
 
-    asemosyrphus_crandialli_f = list(Genus="Asemosyrphus", SubGenus="",
-                                     Species="crandialli", SubSpecies="",
+    ## Manually reviewed correction from original Asemosyrphus crandialli
+    ## (specimen 18483); no change to specimen ID or determiner.
+    Spilomyia_crandalli_f = list(Genus="Spilomyia", SubGenus="",
+                                     Species="crandalli", SubSpecies="",
                                      Sex="f", Author = "",
                                      Determiner="M.Hauser",
                                      temp.id= c("18483")),

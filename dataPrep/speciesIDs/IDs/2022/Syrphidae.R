@@ -672,8 +672,8 @@ sp.ids <- list(
     ##                             temp.id =c()),
 
 
-    ##    Asemosyrphus_crandialli_f = list(Genus="Asemosyrphus", SubGenus="",
-    ##                                     Species="crandialli", SubSpecies="",
+    ##    Spilomyia_crandalli_f = list(Genus="Spilomyia", SubGenus="",
+    ##                                     Species="crandalli", SubSpecies="",
     ##                                     Sex="f", Author = "",
     ##                                     Determiner="M.Hauser",
     ##                                     temp.id= c()),

@@ -1,3 +1,24 @@
+## Wasps occur in several families even when their IDs were archived in
+## Vespids.R or Sphecidae.R. Do not infer Family from the file name alone.
+## This is a deliberately explicit, auditable lookup for the wasp genera
+## represented in the 2012, 2017 and 2018 ID scripts.
+## Crabronidae is used sensu lato (consistent with the existing ID tables).
+wasp_family_by_genus <- c(
+  Ancistrocerus='Vespidae', Dolichovespula='Vespidae',
+  Eumenes='Vespidae', Euodynerus='Vespidae',
+  Odynerus='Vespidae', Polistes='Vespidae',
+  Pseudepipona='Vespidae', Stenodynerus='Vespidae',
+  Pepsis='Pompilidae', Cryptocheilus='Pompilidae',
+  Chirodamus='Pompilidae',
+  Scolia='Scoliidae', Triscolia='Scoliidae',
+  Ammophila='Sphecidae', Podalonia='Sphecidae', Sphex='Sphecidae',
+  Bembix='Crabronidae', Crabro='Crabronidae',
+  Ectemnius='Crabronidae', Philanthus='Crabronidae',
+  Tachytes='Crabronidae',
+  ## Family-only IDs in 2018/Vespids.R are stored in the Genus column.
+  Crabronidae='Crabronidae', Scoliidae='Scoliidae'
+)
+
 add.to.data <- function(sp.ids, case, family, date, data.file) {
   spec.dat <- read.csv(file=data.file, as.is=TRUE)
   lengths <- sapply(sp.ids, function(x) length(x$temp.id))
@@ -80,8 +101,26 @@ add.to.data <- function(sp.ids, case, family, date, data.file) {
   }
   spec.dat$DateDetermined[ind] <- date
 
-  if(case != "beetle"){
+  ## For Lepidoptera, the ID lists give Family per taxon but callers pass
+  ## family="". Do not overwrite those species-level family IDs with blanks:
+  ## the downstream butterfly / hawk-moth guilds are family-defined.
+  if(case != "beetle" && !is.na(family) && nzchar(family)){
     spec.dat$Family[ind] <- family
+  }
+
+  ## Family assignment for wasps must use the specimen's genus, not the
+  ## broad file label ('Vespidae' or 'Sphecidae') supplied by AssignSpecies.
+  ## Fail loudly on new / unmapped genera rather than writing a false Family.
+  if (case == 'wasp' && length(ind)) {
+    wasp.genera <- trimws(as.character(spec.dat$Genus[ind]))
+    mapped.families <- unname(wasp_family_by_genus[wasp.genera])
+    if (anyNA(mapped.families)) {
+      stop('Unmapped wasp genus in AddData.R: ',
+           paste(unique(wasp.genera[is.na(mapped.families)]),
+                 collapse=', '),
+           '. Add the verified family to wasp_family_by_genus.')
+    }
+    spec.dat$Family[ind] <- mapped.families
   }
   write.csv(spec.dat,
             file=data.file,

@@ -27,7 +27,7 @@ sp.ids <- list(
                            Species="tuberculocephalus", SubSpecies="", Sex="f",
                            Author =  "Saussure",
                            Determiner="K. Watrous",
-                           temp.id=c("BBSL1059157"
+                           temp.id=c("BBSL1059157",
                                      "BBSL1073340")),
 
 

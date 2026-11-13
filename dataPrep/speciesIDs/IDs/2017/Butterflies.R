@@ -127,7 +127,7 @@ Hyles_lineata = list(Genus = "Hyles", SubGenus="",Species =
 
 Echinargus_isola = list(Genus = "Echinargus", SubGenus="", Species =
     "isola", SubSpecies = "", Sex = "", Author = "Reakirt", Family
-    = "Lycanidae", Determiner="A. Santillana, ACS", temp.id = c(
+    = "Lycaenidae", Determiner="A. Santillana, ACS", temp.id = c(
                                              "38515", "24147", "24202", "24216",
                                              "24208", "24199", "24196", "24195",
                                              "24213", "24200", "24847")),
@@ -208,7 +208,7 @@ Ochlodes_snowi = list(Genus = "Ochlodes", SubGenus="", Species =
 
 Callophyris_affinis = list(Genus = "Callophyris", SubGenus="", Species =
     "affinis", SubSpecies = "", Sex = "", Author = "Edwards", Family =
-    "Lycanidae", Determiner="ACS", temp.id =c(23722)),
+    "Lycaenidae", Determiner="ACS", temp.id =c(23722)),
 
 Papilio_machaon = list(Genus = "Papilio", SubGenus="", Species =
     "machaon", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
@@ -319,7 +319,7 @@ Thorybes_drusius = list(Genus = "Thorybes", SubGenus="", Species =
 
 Pseudanthoecia_tumida = list(Genus = "Pseudanthoecia", SubGenus="", Species =
     "tumida", SubSpecies = "", Sex = "", Author = "Grote", Family =
-    "Noctuoidae", Determiner="ACS", temp.id =c(24817,20353,20288,20408,20409,19552,20359,30625,25103)),
+    "Noctuidae", Determiner="ACS", temp.id =c(24817,20353,20288,20408,20409,19552,20359,30625,25103)),
 
 Lacinipolia_martini = list(Genus = "Lacinipolia", SubGenus="", Species =
     "martini", SubSpecies = "", Sex = "", Author = "Selman & Leuschner, 2000", Family =
