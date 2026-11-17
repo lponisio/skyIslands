@@ -47,6 +47,7 @@ spec <-
 
 setwd("../skyIslands/dataPrep")
 source("src/misc.R")
+source("src/prepParasites.R")
 source("src/join_checks.R")
 source("src/prepNets.R")
 source("src/guild_networks.R")
@@ -87,72 +88,24 @@ check_unique_key(spec, 'UniqueID', 'Specimens loaded for analysis')
 ## *****************************************************************
 ## specimen-level parasite calculations
 ## *****************************************************************
-dir.create("../data/", showWarnings = FALSE)
-dir.create("../data/networks", showWarnings = FALSE)
-dir.create("../data/splevel_network_metrics", showWarnings = FALSE)
+## General output setup (also used by network and site-level analyses).
+dir.create('../data/', showWarnings=FALSE)
+dir.create('../data/networks', showWarnings=FALSE)
+dir.create('../data/splevel_network_metrics', showWarnings=FALSE)
 
-crithidias <- c("CrithidiaExpoeki",
-                "CrithidiaBombi", "CrithidiaSpp",
-                "CrithidiaMellificae")
-nosemas <- c("NosemaBombi", "NosemaCeranae")
-parasites <- c( "AscosphaeraSpp",
-               "ApicystisSpp", crithidias, nosemas)
+## Process assays and export the no-ID QC file using src/prepParasites.R.
+parasite.prep <- prepareParasites(spec)
+spec <- parasite.prep$spec
+parasites <- parasite.prep$parasites  # Used by the parasite-network section.
+rm(parasite.prep)
 
-## Apidae == 1 means successful DNA extraction.
-## Only these specimens can be coded 0 for parasite tests with no positive
-## call. Their 0 values are established upstream in 1prep.R. Explicit
-## NA flags for contaminated/uninterpretable assays MUST remain NA.
-## Apidae != 1 or missing is unscreened: no parasite-negative zeros.
-for (this.para in parasites) {
-  spec[[this.para]] <- suppressWarnings(as.numeric(spec[[this.para]]))
-}
-spec$Apidae <- suppressWarnings(as.numeric(spec$Apidae))
-not.screened <- is.na(spec$Apidae) | spec$Apidae != 1
-spec[not.screened, parasites] <- NA
-spec$DNAExtractionSuccessful <- ifelse(spec$Apidae == 1, 1L, NA_integer_)
-##  If a successful Apidae assay still has NA parasite results,
-## retain NA: these include explicit contaminated-assay exclusions.
-## Do not turn an indeterminate assay into a documented negative.
+## Archive all methods after assay preparation, without method-specific
+## summaries. This file is for reference, not used in downstream analyses.
+write.csv(spec, file='../data/spec_all_methods.csv', row.names=FALSE)
 
-## Denominator for pathogen-specific prevalence is the number of
-## Partial assay panels have an indeterminate *total* richness.
-known.richness <- function(x) {
-  if (anyNA(x)) return(NA_real_)
-  sum(x)
-}
-## A positive is certain even if another assay is missing; a negative is
-## certain only if every assay in this set is a documented negative.
-known.presence <- function(x) {
-  if (any(x > 0, na.rm=TRUE)) return(1L)
-  if (anyNA(x)) return(NA_integer_)
-  0L
-}
-spec$ParasiteRichness <- apply(spec[, parasites, drop=FALSE], 1,
-                               known.richness)
-spec$CrithidiaRichness <- apply(spec[, crithidias, drop=FALSE], 1,
-                                known.richness)
-spec$NosemaRichness <- apply(spec[, nosemas, drop=FALSE], 1,
-                             known.richness)
-spec$PossibleParasite <- rowSums(!is.na(spec[, parasites, drop=FALSE]))
-spec$ParasitePresence <- apply(spec[, parasites, drop=FALSE], 1,
-                               known.presence)
-spec$CrithidiaPresence <- apply(spec[, crithidias, drop=FALSE], 1,
-                                known.presence)
-spec$NosemaPresence <- apply(spec[, nosemas, drop=FALSE], 1,
-                             known.presence)
-check.spec <- spec[!is.na(spec$Apidae),]
-check.spec <- check.spec[check.spec$GenusSpecies == "",]
-
-write.csv(check.spec,
- file="../../skyIslands_saved/data/checks/screened_no_ID.csv",
- row.names=FALSE)
-
-
-## Archive the specimen-level assay data for all collection methods,
-## but restrict all subsequent analyses to Net specimens.
-write.csv(spec, file="../data/spec_all_methods.csv", row.names=FALSE)
-
-spec.net <- spec[!is.na(spec$Method) & spec$Method == "Net", , drop=FALSE]
+## Restrict subsequent analyses to Net specimens only. Keep both names:
+## later sections use both `spec` (dataset-wide) and `spec.net` (Net-specific).
+spec.net <- spec[!is.na(spec$Method) & spec$Method == 'Net', , drop=FALSE]
 spec <- spec.net
 
 ## ***********************************************************************
@@ -328,7 +281,7 @@ net.site.sum <- calcSummaryStats(spec.net, "net")
 ## ***********************************************************************
 dir.guild.audit <- '../../skyIslands_saved/data/checks/guild_id_review'
 dir.create(dir.guild.audit, recursive=TRUE, showWarnings=FALSE)
-source("src/guide_review.R")
+source("src/guild_review.R")
 
 table(net.site.sum$Site)
 
