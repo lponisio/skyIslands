@@ -77,12 +77,6 @@ spec$Date <- as.Date(spec$Date, format='%Y-%m-%d')
 spec$Doy <- as.numeric(strftime(spec$Date, format='%j'))
 spec$Year <- as.numeric(format(spec$Date,'%Y'))
 
-## all possible sample round, site, combos of net data, used for veg
-## data subsequently
-collections <- data.frame(unique(cbind(spec$Site, spec$Year,
-                                       spec$SampleRound)))
-colnames(collections) <- c("Site", "Year", "SampleRound")
-
 ## All plant names already come from the reconciled relational plant
 ## table; no second taxonomy pass is applied during specimen prep.
 
@@ -154,13 +148,12 @@ write.csv(check.spec,
  row.names=FALSE)
 
 
+## Archive the specimen-level assay data for all collection methods,
+## but restrict all subsequent analyses to Net specimens.
 write.csv(spec, file="../data/spec_all_methods.csv", row.names=FALSE)
 
-spec.net <- spec[spec$Method == "Net",]
-spec.pan <- spec[spec$Method == "Pan",]
-spec <- spec[spec$Method != "Vane",]
-
-write.csv(spec, file="../data/spec_net_pan.csv", row.names=FALSE)
+spec.net <- spec[!is.na(spec$Method) & spec$Method == "Net", , drop=FALSE]
+spec <- spec.net
 
 ## ***********************************************************************
 ## site/species level insect data
@@ -319,14 +312,13 @@ calcSummaryStats <- function(spec.method, method){
               file=sprintf('../data/sp_year_site_round_%s.csv', method),
               row.names=FALSE)
 
-    if (method == 'all') write.csv(site.sp.yr.round,
+    ## Retain the historical generic filename, now populated by Net only.
+    if (method == 'net') write.csv(site.sp.yr.round,
       file='../data/sp_year_site_round.csv', row.names=FALSE)
     return(site.sum)
 }
 
 net.site.sum <- calcSummaryStats(spec.net, "net")
-pan.site.sum <- calcSummaryStats(spec.pan, "pan")
-all.site.sum <- calcSummaryStats(spec, "all")
 
 ## ***********************************************************************
 ## NETTED genus-by-year and ID-completeness diagnostics.
@@ -338,45 +330,13 @@ dir.guild.audit <- '../../skyIslands_saved/data/checks/guild_id_review'
 dir.create(dir.guild.audit, recursive=TRUE, showWarnings=FALSE)
 source("src/guide_review.R")
 
-table(all.site.sum$Site)
 table(net.site.sum$Site)
-table(pan.site.sum$Site)
 
-##  Include newly calculated guild columns in the
-## existing summary-variable reference list.
-sum.cols <- c("PollAbundance", "BeeAbundance", "SyrphidAbundance",
-              "BeeFlyAbundance", "BeeFlyRichness", "BeeFlyDiversity",
-              "BeeSyrphBeeFlyLepAbundance", "BeeSyrphBeeFlyLepRichness",
-              "BeeSyrphBeeFlyLepDiversity",
-              "HBAbundance", "BombusAbundance", "ButterflyHawkAbundance",
-              "BeeSyrphLepAbundance", "NonBombusHBAbundance",
-              "PollRichness", "BeeRichness", "SyrphidRichness",
-              "BombusRichness", "HBRichness", "ButterflyHawkRichness",
-              "BeeSyrphLepRichness", "PollDiversity", "BeeDiversity",
-              "SyrphidDiversity", "BombusDiversity", "HBDiversity",
-              "ButterflyHawkDiversity", "BeeSyrphLepDiversity",
-              "VisitedFloralRichness", "VisitedFloralDiversity",
-              "SiteParasitismRate", "MeanParasiteRichness",
-              "HBSiteParasitismRate", "BombusSiteParasitismRate")
-
-
+## Only Net samples contribute to sample-round site statistics.
+## There are no redundant All_/Net_/Pan_ method-specific copies.
 keys.sr <- c('Site', 'Year', 'SampleRound')
-dup.cols <- c('SRDoyPoly1', 'SRDoyPoly2', 'SRDoy')
-net.site.sum <- net.site.sum[, !names(net.site.sum) %in% dup.cols]
-pan.site.sum <- pan.site.sum[, !names(pan.site.sum) %in% dup.cols]
-net.vars <- !names(net.site.sum) %in% keys.sr
-pan.vars <- !names(pan.site.sum) %in% keys.sr
-names(net.site.sum)[net.vars] <- paste0('Net_', names(net.site.sum)[net.vars])
-names(pan.site.sum)[pan.vars] <- paste0('Pan_', names(pan.site.sum)[pan.vars])
-check_unique_key(all.site.sum, keys.sr, 'All-method sample-round stats')
 check_unique_key(net.site.sum, keys.sr, 'Net sample-round stats')
-check_unique_key(pan.site.sum, keys.sr, 'Pan sample-round stats')
-site.sum <- dplyr::left_join(all.site.sum, net.site.sum, by=keys.sr,
-                             relationship='one-to-one')
-site.sum <- dplyr::left_join(site.sum, pan.site.sum, by=keys.sr,
-                             relationship='one-to-one')
-check_rows_preserved(all.site.sum, site.sum,
-                     'Combined site x year x round stats')
+site.sum <- net.site.sum
 
 
 ## add back site characteristics
@@ -386,7 +346,7 @@ mean.unique <- function(x) {
   x <- x[is.finite(x)]
   if (!length(x)) NA_real_ else mean(x)
 }
-sites <- spec %>%
+sites <- spec.net %>%
   group_by(Site, Year) %>%
   summarise(Lat=mean.unique(Lat), Area=mean.unique(Area),
             Elev=mean.unique(Elev), .groups='drop')
