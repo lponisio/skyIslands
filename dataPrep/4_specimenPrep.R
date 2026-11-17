@@ -802,15 +802,31 @@ veg.bloom.mean[order(veg.bloom.mean$MeanFloralRichness), ]
 write.csv(veg.bloom.mean, file="../data/veg.csv", row.names=FALSE)
 
 #write.csv(veg.bloom.quad.sp, file="../data/veg.bloom.quad.sp.csv", row.names=FALSE)
-## Site-level summaries are EVENT anchored: empty Net rounds appear
-## with geographic/condition/floral data, and NA for specimen-derived
-## site statistics (not imaginary specimen rows).
+## Site-level summaries are anchored to documented Net sampling rounds.
+## A round with Net effort but no specimens is a zero-capture observation:
+## counts, taxonomic richness, and Shannon diversity of captured/visited
+## organisms are zero. Parasite rates and mean parasite richness remain NA
+## because no specimens were screened. Vegetation comes from independent
+## quadrat observations, so its measured values must not be zeroed merely
+## because no insects were collected.
 site.sum$Year <- as.numeric(as.character(site.sum$Year))
 site.sum$SampleRound <- as.character(site.sum$SampleRound)
 veg.bloom.mean$SampleRound <- as.character(veg.bloom.mean$SampleRound)
 check_unique_key(veg.bloom.mean, keys.sr, 'Vegetation sample-round stats')
 site.sum <- dplyr::left_join(rounds, site.sum, by=keys.sr,
                              relationship='one-to-one')
+## Only fill capture-derived ecological metrics for VERIFIED empty Net
+## rounds, identified by their missing PollAbundance after the event join.
+## Do not overwrite NAs from actual specimen groups (e.g. untested assays).
+empty.net.round <- is.na(site.sum$PollAbundance)
+zero.capture.cols <- grep(
+  '^(Poll|Bee|Syrphid|BeeFly|HB|Bombus|NonBombusHB|ButterflyHawk|BeeSyrphLep|BeeSyrphBeeFlyLep|VisitedFloral).*(Abundance|Richness|Diversity)$',
+  names(net.site.sum), value=TRUE)
+for (col in zero.capture.cols) {
+  site.sum[[col]][empty.net.round] <- 0
+}
+message('Documented Net rounds without specimens: ', sum(empty.net.round),
+        ' (capture abundance/richness/diversity set to 0).')
 site.sum <- dplyr::left_join(site.sum, veg.bloom.mean, by=keys.sr,
                              relationship='one-to-one')
 ## Geographic and weather attributes are derived from distinct
@@ -838,10 +854,8 @@ event.geo <- event.conditions %>%
 site.sum <- dplyr::left_join(site.sum, event.geo,
   by=keys.sr, relationship='one-to-one')
 ## The site-level relational geography is available from conditions
-## even when an event has no specimens. Keep the familiar
-## Lat/Elev/Area fields populated in sitestats.csv for those blank
-## events.  Do not infer specimen abundance or richness from these
-## event rows.
+## even when an event has no specimens. Keep Lat/Elev/Area populated in
+## sitestats.csv; verified zero-capture rounds retain zero counts/richness.
 site.sum$Lat <- dplyr::coalesce(site.sum$Lat, site.sum$GeoLat)
 site.sum$Elev <- dplyr::coalesce(site.sum$Elev, site.sum$GeoElev)
 site.sum$Area <- dplyr::coalesce(site.sum$Area, site.sum$GeoArea)
