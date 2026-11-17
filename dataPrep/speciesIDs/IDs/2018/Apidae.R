@@ -1,7 +1,7 @@
 
 sp.ids <- list(
 
-    Xenoglossa_imitatrix_m = list(Genus="Xenoglossa",
+    Tetraloniella_imitatrix_m = list(Genus="Tetraloniella",
                                SubGenus="",
                                Species="imitatrix",
                                SubSpecies="", Sex="m",

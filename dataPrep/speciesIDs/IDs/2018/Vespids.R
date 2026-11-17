@@ -75,13 +75,13 @@ sp.ids <- list(
      Determiner="J. Carpenter", temp.id
      =c("18393")),
   
-  Stenodynerus_taos_f = list(Genus="Stenodynerus", SubGenus ="",
-     Species="taos", SubSpecies="", Sex="f", Author = "Cresson",
+  Stenodynerus_toas_f = list(Genus="Stenodynerus", SubGenus ="",
+     Species="toas", SubSpecies="", Sex="f", Author = "Cresson",
      Determiner="J. Carpenter", temp.id
      =c("BBSL1084744","BBSL1058702","BBSL1071943","17956")),
   
-  Stenodynerus_taos_m = list(Genus="Stenodynerus", SubGenus ="",
-     Species="taos", SubSpecies="", Sex="m", Author = "Cresson",
+  Stenodynerus_toas_m = list(Genus="Stenodynerus", SubGenus ="",
+     Species="toas", SubSpecies="", Sex="m", Author = "Cresson",
      Determiner="J. Carpenter", temp.id
      =c("BBSL1072824","BBSL1072821","BBSL1072842","BBSL1072790","BBSL1084878",
         "BBSL1084626","BBSL1070817","17825","18592")),

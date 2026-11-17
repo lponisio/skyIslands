@@ -9,8 +9,8 @@ sp.ids <- list(
     "cardui", SubSpecies = "", Sex = "m", Author = "Linnaeus", Family =
     "Nymphalidae", Determiner="A. Santillana", temp.id = c(38597)),
   
-    Vanessa_atlanta = list(Genus = "Vanessa", SubGenus="", Species =
-    "atlanta", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
+    Vanessa_atalanta = list(Genus = "Vanessa", SubGenus="", Species =
+    "atalanta", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
     = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36373,38427,38428,38433,38439,38496)),
   
      Erebia_epipsodea = list(Genus = "Erebia", SubGenus="", Species =
@@ -42,7 +42,7 @@ sp.ids <- list(
     "gilippus", SubSpecies = "", Sex = "", Author = "Cramer", Family
     = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36348,36405)),
   
-  Euptoierta_claudia = list(Genus = "Euptoierta", SubGenus="", Species
+  Euptoieta_claudia = list(Genus = "Euptoieta", SubGenus="", Species
     = "claudia", SubSpecies = "", Sex = "", Author = "Cramer", Family
     = "Nymphalidae", Determiner="J.F. Zorn", temp.id = c(36344,36362,36399,36408,36433,38405,38418,38421,38422,38432,38434,38482,38522,38525,38528)),
   
@@ -118,8 +118,8 @@ sp.ids <- list(
     "lupini", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
     "Lycaenidae", Determiner="A. Santillana", temp.id =c(36360,38520,38518)),
   
-    Brephidium_exile = list(Genus = "Brephidium", SubGenus="", Species =
-    "exile", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
+    Brephidium_exilis = list(Genus = "Brephidium", SubGenus="", Species =
+    "exilis", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
     "Lycaenidae", Determiner="A. Santillana", temp.id =c(36426)),
   
     Strymon_melinus = list(Genus = "Strymon", SubGenus="", Species =

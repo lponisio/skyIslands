@@ -77,7 +77,7 @@ sp.ids <- list(
     "SC_072012_327", "JC_071512_6", "SC_072712_267", "SC_072712_267B",
     "PL_081112_279")),
 
-  Euptoierta_claudia = list(Genus = "Euptoierta", SubGenus="", Species
+  Euptoieta_claudia = list(Genus = "Euptoieta", SubGenus="", Species
     = "claudia", SubSpecies = "", Sex = "", Author = "Cramer", Family
     = "Nymphalidae", Determiner="L.Ponisio", temp.id = c("CH_082012_185", "CH_082112_185",
     "PL_081312_278", "PL_081312_236", "PL_081012_320",
@@ -91,8 +91,8 @@ sp.ids <- list(
     "CH_082012_197", "PL_081112_289", "JC_071512_15",
     "MM_073112_128")),
 
-  Vanessa_atlanta = list(Genus = "Vanessa", SubGenus="", Species =
-    "atlanta", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
+  Vanessa_atalanta = list(Genus = "Vanessa", SubGenus="", Species =
+    "atalanta", SubSpecies = "", Sex = "", Author = "Linnaeus", Family
     = "Nymphalidae", Determiner="L.Ponisio", temp.id = c("CH_082012_167")),
 
   Vanessa_virginiensis = list(Genus = "Vanessa", SubGenus="", Species =
@@ -288,7 +288,7 @@ sp.ids <- list(
     "CH_082112_204", "PL_081112_263", "CH_082212_89", "CH_082112_211",
     "CH_082112_213", "PL_081112_264", "CH_082112_205")),
 
-  Garisma_garita = list(Genus = "Garisma", SubGenus="",Species =
+  Oarisma_garita = list(Genus = "Oarisma", SubGenus="",Species =
     "garita", SubSpecies = "", Sex = "", Author = "Reakirt", Family =
     "Hesperiidae", Determiner="L.Ponisio", temp.id = c("MM_080112_245", "MM_080112_246",
     "MM_080112_247", "MM_080312_214", "MM_080312_215",

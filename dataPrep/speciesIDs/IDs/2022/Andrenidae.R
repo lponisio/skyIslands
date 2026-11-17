@@ -57,9 +57,9 @@ sp.ids <- list(
                                                  38186,
                                                  38147)),
     #added HBL 2/13/24
-    Protandrena_stathamae_a= list(Genus="Protandrena", SubGenus ="",
-                                  Species="",
-                                  SubSpecies="stathamae",
+    Pseudopanurgus_stathamae_a= list(Genus="Pseudopanurgus", SubGenus ="",
+                                  Species="stathamae",
+                                  SubSpecies="",
                                   Sex="f", Author = "Cresson",
                                   Determiner="J.L. Neff",
                                   temp.id= c(38340, 38296)),

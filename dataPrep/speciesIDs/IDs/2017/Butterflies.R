@@ -132,11 +132,11 @@ Echinargus_isola = list(Genus = "Echinargus", SubGenus="", Species =
                                              "24208", "24199", "24196", "24195",
                                              "24213", "24200", "24847")),
     
-Limentis_bredowii = list(Genus = "Limentis", SubGenus="", Species =
+Limenitis_bredowii = list(Genus = "Limenitis", SubGenus="", Species =
     "bredowii", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
     "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(24180)),
 
-Euptoiteta_claudia = list(Genus = "Euptoiteta", SubGenus="", Species =
+Euptoieta_claudia = list(Genus = "Euptoieta", SubGenus="", Species =
     "claudia", SubSpecies = "", Sex = "", Author = "Cramer", Family =
     "Nymphalidae", Determiner="J. F. Zorn", temp.id =c(24917,30044,21629,30042)),
 
@@ -171,12 +171,12 @@ Lon_taxiles = list(Genus = "Lon", SubGenus="", Species =
 21549,21547,21566,21545,21568,21567,23693,23718,23685,23684,23681,23677,30065,24890,24873,24859,23762,24803,24804,24802,24801,24800,24260,21565,21502,21533,21531,21546,21571,23707,23706,23715,23716,23717,23724,23728,23729,23732,23733,23776,23849,23814,23816,24784,24810,24619,24799,21512,23692,24806,24174,30530,30095,30094,30091,23772,30523,30560,30562,30563,30570,24932,24176,30588,24924,24923,24925,24172,24102,
 24166,30557,30515,30558,30554,30627,30099,30101,30008,30006,30050,30051,30070,30124,30126,30137,30025,23655,23719,30060,38658,38441,24813,38660,38442,39049,39024,39019,39020,39026,38917,38916)),
 
-Hesperia_taxiles = list(Genus = "Hesperia", SubGenus="", Species =
+Lon_taxiles = list(Genus = "Lon", SubGenus="", Species =
     "taxiles", SubSpecies = "", Sex = "", Author = "Leussler", Family =
     "Hesperiidae", Determiner="ACS", temp.id =c(24266,23679,24764,23678,39053,23675,23714,23721,23682,24162,24169,21467,30559,24933,24809,23664,30529,24175,38465,38503,39054,39043,39059,36376,39051,38573)),
 
-Polites_sabutei = list(Genus = "Polites", SubGenus="", Species =
-    "sabutei", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
+Polites_sabuleti = list(Genus = "Polites", SubGenus="", Species =
+    "sabuleti", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
     "Hesperiidae", Determiner="ACS", temp.id =c(38553,38566,38568,38567,38750)),
 
 Amblyscirtes_fimbriata = list(Genus = "Amblyscirtes", SubGenus="", Species =
@@ -206,7 +206,7 @@ Ochlodes_snowi = list(Genus = "Ochlodes", SubGenus="", Species =
     "snowi", SubSpecies = "", Sex = "", Author = "Edwards", Family =
     "Hesperiidae", Determiner="ACS", temp.id =c(38627,38656,38657,38647,38651,38643)),
 
-Callophyris_affinis = list(Genus = "Callophyris", SubGenus="", Species =
+Callophrys_affinis = list(Genus = "Callophrys", SubGenus="", Species =
     "affinis", SubSpecies = "", Sex = "", Author = "Edwards", Family =
     "Lycaenidae", Determiner="ACS", temp.id =c(23722)),
 
@@ -214,8 +214,8 @@ Papilio_machaon = list(Genus = "Papilio", SubGenus="", Species =
     "machaon", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
     "Papilionidae", Determiner="ACS", temp.id =c(24871)),
 
-Phoebis_senna = list(Genus = "Phoebis", SubGenus="", Species =
-    "senna", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
+Phoebis_sennae = list(Genus = "Phoebis", SubGenus="", Species =
+    "sennae", SubSpecies = "", Sex = "", Author = "Linnaeus", Family =
     "Pieridae", Determiner="ACS", temp.id =c(36347,36393,36400)),
 
 Asterocampa_clyton = list(Genus = "Asterocampa", SubGenus="", Species =
@@ -234,8 +234,8 @@ Glaucopsyche_lygdamus = list(Genus = "Glaucopsyche", SubGenus="", Species =
     "lygdamus", SubSpecies = "", Sex = "", Author = "Doubleday", Family =
     "Lycaenidae", Determiner="ACS", temp.id =c(30140,23802,30564,24841,30510,24201,24156,24152,39071,24214,24228,39084,23896,30566,23801,21597,24153,24151,24217,24206,24193,24207,24210,24204,30567,39040,38591,38554,21595)),
 
-Brephidum_exile = list(Genus = "Brephidum", SubGenus="", Species =
-    "exile", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
+Brephidium_exilis = list(Genus = "Brephidium", SubGenus="", Species =
+    "exilis", SubSpecies = "", Sex = "", Author = "Boisduval", Family =
     "Lycaenidae", Determiner="ACS", temp.id =c(24225)),
 
 Leptotes_marina = list(Genus = "Leptotes", SubGenus="", Species =
@@ -258,7 +258,7 @@ Plebejus_melissa = list(Genus = "Plebejus", SubGenus="", Species =
     "melissa", SubSpecies = "", Sex = "", Author = "Edwards", Family =
     "Lycaenidae", Determiner="ACS", temp.id =c(24242,24820,21499,24815,39064,39070,24837,39079,24861,24830,39065,24236,24814,24827)),
 
-Plebajus_acmon = list(Genus = "Plebajus", SubGenus="", Species =
+Plebejus_acmon = list(Genus = "Plebejus", SubGenus="", Species =
     "acmon", SubSpecies = "", Sex = "", Author = "Westwood", Family =
     "Lycaenidae", Determiner="ACS", temp.id =c(21482)),
 
@@ -286,7 +286,7 @@ Atrytonopsis_python = list(Genus = "Atrytonopsis", SubGenus="", Species =
     "python", SubSpecies = "", Sex = "", Author = "Edwards", Family =
     "Hesperiidae", Determiner="ACS", temp.id =c(21495,24139,23740,23695,24795)),
 
-Apodemia_phyciodoides = list(Genus = "Apodemia", SubGenus="", Species =
+Emesis_phyciodoides = list(Genus = "Emesis", SubGenus="", Species =
     "phyciodoides", SubSpecies = "", Sex = "", Author = "Barnes & Benjamin", Family =
     "Riodinidae", Determiner="ACS", temp.id =c(38534)),
 

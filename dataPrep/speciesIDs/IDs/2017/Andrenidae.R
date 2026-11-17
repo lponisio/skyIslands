@@ -109,8 +109,8 @@ sp.ids <- list(
                            temp.id= c("BBSL1086888")),
 
     
-     Protandrena_nanula_f= list(Genus="Protandrena", SubGenus ="",
-                           Species="nanula",
+     Pseudopanurgus_nanulus_f= list(Genus="Pseudopanurgus", SubGenus ="",
+                           Species="nanulus",
                            SubSpecies="",
                            Sex="f", Author = "Timberlake",
                            Determiner="J.L. Neff",

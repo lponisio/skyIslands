@@ -143,14 +143,14 @@ sp.ids <- list(
                            Determiner="D. Yanega",
                            temp.id= c("18411")),
 
-      Protandrena_albitarsis= list(Genus="Protandrena", SubGenus ="",
+      Pseudopanurgus_albitarsis= list(Genus="Pseudopanurgus", SubGenus ="",
                            Species="albitarsis",
                            SubSpecies="",
                            Sex="m", Author = "Cresson",
                            Determiner="J.L. Neff",
                            temp.id= c("23960")),
 
-      Protandrena_citripes_m= list(Genus="Protandrena", SubGenus ="Pterosarus",
+      Pseudopanurgus_citripes_m= list(Genus="Pseudopanurgus", SubGenus ="",
                            Species="citripes",
                            SubSpecies="",
                            Sex="m", Author = "Ashmead",
