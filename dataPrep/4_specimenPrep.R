@@ -318,6 +318,7 @@ calcSummaryStats <- function(spec.method, method){
     write.csv(site.sp.yr.round,
               file=sprintf('../data/sp_year_site_round_%s.csv', method),
               row.names=FALSE)
+
     if (method == 'all') write.csv(site.sp.yr.round,
       file='../data/sp_year_site_round.csv', row.names=FALSE)
     return(site.sum)
