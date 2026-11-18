@@ -851,6 +851,11 @@ net.site.sr.event.geo <- event.conditions %>%
     EventAPi=mean.unique(APi), EventGDD=mean.unique(GDD),
     EventMeanTmean=mean.unique(MeanTmean),
     EventMeanVPD=mean.unique(MeanVPD),
+    Tmean_anom = mean.unique(Tmean_anom),
+    Tmax_anom = mean.unique(Tmax_anom),
+    Tmin_anom = mean.unique(Tmin_anom),
+    Precip_anom = mean.unique(Precip_anom),
+    VPD_anom = mean.unique(VPD_anom),
     .groups='drop')
 net.site.sr.sum <- dplyr::left_join(
   net.site.sr.sum, net.site.sr.event.geo,
