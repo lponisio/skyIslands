@@ -484,22 +484,6 @@ net.site.sr.guild.networks <- make_guild_networks(
   audit_dir='../../skyIslands_saved/data/checks/network_id_review')
 net.site.sr.bee.network.metrics <- net.site.sr.guild.networks$bee_metrics
 
-## ## Calculates species level network metrics by site and round
-## ## Takes a while, only re-run if bee data is changed 
-## N <- 99
-## load('../data/networks/YearSR_PlantPollinator_Bees.Rdata')
-
-## sp.mets <- lapply(nets, SpCalcNetworkMetrics,
-##                N=N, index=c("closeness", "betweenness",
-##                             "degree", "d", "normalised degree"))
-## save(sp.mets,
-##      file="../data/sp_network_mets_sr.RData")
-
-#sp.mets <- sp.mets[!sapply(sp.mets, function(x) is.null(dim(x)))]
-#sp.network.metrics <- SpPrepDat(sp.mets, net.specimens.for.interactions,
-#                   cols.to.keep=c("GenusSpecies", "Site","Year", "SampleRound"),
-#                   net.type="YearSR")
-
 ## Parasites
 net.parasite.assays.wide <- net.screened.specimens %>%
   dplyr::select(UniqueID, GenusSpecies, Site, Year, SampleRound, AscosphaeraSpp,
