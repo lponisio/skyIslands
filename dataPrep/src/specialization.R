@@ -22,6 +22,8 @@ calcSpec <- function(nets, dist.metric="gower"){
         diag(higher.level.niche.overlap) <- NA
         sl$'higher level'$niche.overlap <- apply(higher.level.niche.overlap, 1, mean,
                                                  na.rm=TRUE)
+        ## Chao1 estimates asymptotic partner richness, not rarefied degree.
+        ## Keep the legacy rare.degree field for existing specimen analyses.
         sl$'higher level'$rare.degree <- apply(x, 2, chao1)
         sl$'lower level'$rare.degree <- apply(x, 1, chao1)
         return(sl)
