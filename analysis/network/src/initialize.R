@@ -13,11 +13,11 @@ args <- commandArgs(trailingOnly=TRUE)
 if(length(args) != 0){
     net.type <- args[1]
     species <- args[2]
-    species.goup <- args[3]
+    species.group <- args[3]
 } else{
     net.type <- "YearSR" ## Year or YearSR
     species <- "Plant" ## Plant or Parasite
-    species.group <- "Bees" ## Bees or BeesSyrphids
+    species.group <- "BeesSyrphidsButterflyHawk" ## Bees or BeesSyrphids
 }
 
 

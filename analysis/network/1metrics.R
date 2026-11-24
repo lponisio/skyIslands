@@ -1,7 +1,9 @@
-
-setwd("~/University of Oregon Dropbox/Lauren Ponisio/")
 rm(list=ls())
-setwd('skyIslands/analysis/network')
+setwd("~/")
+source("lab_paths.R")
+
+setwd(file.path(local.path, "skyIslands", "analysis", "network"))
+
 source('src/initialize.R')
 source('src/vaznull2.R')
 
@@ -9,27 +11,38 @@ args <- commandArgs(trailingOnly=TRUE)
 if(length(args) != 0){
     N <- as.numeric(args[4])
 } else{
-    N <- 2
+    N <- 100
 }
 
 ## ************************************************************
 ## calculate metrics and zscores ## beware this takes a while!
 ## ************************************************************
 
-nets <- nets[apply(sapply(nets, dim) > 2, 2, all)]
+nets <- nets[apply(sapply(nets, dim) >= 2, 2, all)]
 
 mets <- lapply(nets, calcNetworkMetrics,
                N=N)
 
-## cor.dats <- prepDat(mets,  spec, net.type=net.type)
+event <- do.call(rbind, strsplit(names(mets), ".", fixed = TRUE))
 
-## save(cor.dats, file=sprintf('saved/corMets_%s_%s.Rdata',
-##                             paste(species, collapse=""),
-##                             net.type))
+cor.dats <- data.frame(
+  Site = event[, 1],
+  Year = as.integer(event[, 2]),
+  SampleRound = event[, 3],
+  do.call(rbind, mets),
+  row.names = NULL,
+  check.names = FALSE
+)
+
+save(cor.dats, file = sprintf(
+  "saved/corMets_%s_%s_%s_N%d.Rdata",
+  paste(species, collapse = ""), net.type, species.group, N
+))
 
 ## ************************************************************
-load(file=sprintf('saved/corMets_%s_%s.Rdata',
-                            paste(species, collapse=""), net.type))
+load(file=sprintf('saved/corMets_%s_%s_%s_N%d.Rdata',
+                  paste(species, collapse = ""), net.type, species.group, N
+))
 
 ys <- c("niche.overlap.LL",
         "niche.overlap.HL",
