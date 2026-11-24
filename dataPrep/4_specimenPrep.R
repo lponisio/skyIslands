@@ -43,7 +43,7 @@ setwd(file.path(local.path, "skyIslands_saved"))
 
 spec.all.methods <-
     read.csv('data/relational/relational/traditional/specimens-complete.csv',
-             stringsAsFactors=FALSE)
+             stringsAsFactors=FALSE, colClasses=c(SampleRound='character'))
 
 setwd("../skyIslands/dataPrep")
 source("src/misc.R")
@@ -108,6 +108,73 @@ spec.net <- spec.all.methods[
   !is.na(spec.all.methods$Method) & spec.all.methods$Method == 'Net',
   , drop=FALSE]
 rm(spec.all.methods)  # Avoid accidentally mixing all-method and Net specimens.
+
+## *****************************************************************
+## Net sampling events and environmental conditions
+## *****************************************************************
+
+site.sr.keys <- c('Site', 'Year', 'SampleRound')
+spec.net$SampleRound <- as.character(spec.net$SampleRound)
+
+event.conditions <- read.csv(
+  '../../skyIslands_saved/data/relational/relational/traditional/conditions-specimens-complete.csv',
+  stringsAsFactors=FALSE, colClasses=c(SampleRound='character'))
+
+## Ignore missing/nonfinite values; return NA for entirely missing groups.
+mean.observed <- function(x) {
+  x <- suppressWarnings(as.numeric(as.character(x)))
+  x <- x[is.finite(x)]
+  if (length(x)) mean(x) else NA_real_
+}
+mean.unique <- function(x) mean.observed(unique(x))
+
+## One record per condition, independent of the number of captures.
+net.events <- event.conditions %>%
+  filter(tolower(trimws(Method)) == 'net') %>%
+  mutate(Year=as.numeric(as.character(Year)),
+         SampleRound=as.character(SampleRound),
+         Date=as.Date(Date, format='%Y-%m-%d'),
+         Doy=as.numeric(format(Date, '%j')))
+
+## A missing condition ID or sampling key cannot define a verified event.
+check.event.cols <- c('ConditionsPK', site.sr.keys)
+invalid.event <- !complete.cases(net.events[, check.event.cols]) |
+  Reduce(`|`, lapply(net.events[, check.event.cols], function(x)
+    !nzchar(trimws(as.character(x)))))
+if (any(invalid.event)) {
+  stop('Net conditions contain missing IDs or sampling keys; inspect event.conditions.')
+}
+if (!nrow(net.events)) stop('No documented Net sampling events.')
+net.events <- net.events %>% distinct(ConditionsPK, .keep_all=TRUE)
+
+## One authoritative row per site-round, including zero-capture rounds.
+## Weather and day of year are averaged across distinct condition records.
+net.site.sr.events <- net.events %>%
+  group_by(Site, Year, SampleRound) %>%
+  summarise(
+    Lat=mean.unique(Lat), Long=mean.unique(Long),
+    Elev=mean.unique(Elev), Area=mean.unique(Area),
+    SRDoy=mean.observed(Doy),
+    EventMeanTempStart=mean.observed(TempStart),
+    EventMeanTempEnd=mean.observed(TempEnd),
+    EventMeanWindStart=mean.observed(WindStart),
+    EventMeanWindEnd=mean.observed(WindEnd),
+    EventAPi=mean.unique(APi), EventGDD=mean.unique(GDD),
+    EventMeanTmean=mean.unique(MeanTmean),
+    EventMeanVPD=mean.unique(MeanVPD),
+    across(c(Tmean_anom, Tmax_anom, Tmin_anom, Precip_anom, VPD_anom),
+           mean.unique),
+    .groups='drop')
+check_unique_key(net.site.sr.events, site.sr.keys, 'Net sampling events')
+
+## Do not silently lose observed specimen rounds when anchoring to events.
+net.rounds.without.events <- spec.net %>%
+  select(all_of(site.sr.keys)) %>% distinct() %>%
+  anti_join(net.site.sr.events, by=site.sr.keys)
+if (nrow(net.rounds.without.events)) {
+  warning(nrow(net.rounds.without.events),
+          ' specimen rounds lack verified Net conditions; inspect net.rounds.without.events.')
+}
 
 ## ***********************************************************************
 ## Net specimen summaries at Site x Year x SampleRound and species grains
@@ -232,7 +299,6 @@ calcNetSummaryStats <- function(net.specimens){
                   BombusSiteParasitismRate=mean(
                       ParasitePresence[Genus == 'Bombus'],
                     na.rm=TRUE),
-                  SRDoy=mean(Doy),
                   CrithidiaParasitismRate=mean(CrithidiaPresence, na.rm=TRUE),
                   ApicystisParasitismRate=mean(ApicystisSpp, na.rm=TRUE),
                   CrithidiaBombusParasitismRate= mean(CrithidiaPresence[Genus == 'Bombus'],
@@ -283,28 +349,7 @@ source("src/guild_review.R")
 table(net.site.sr.sum$Site)
 
 ## Site x Year x SampleRound: Net capture statistics only.
-site.sr.keys <- c('Site', 'Year', 'SampleRound')
 check_unique_key(net.site.sr.sum, site.sr.keys, 'Net sample-round stats')
-
-
-## Add site-by-year geography from Net specimens (event fallback below).
-## Event-derived geography below fills values for empty sampling rounds.
-mean.unique <- function(x) {
-  x <- unique(suppressWarnings(as.numeric(x)))
-  x <- x[is.finite(x)]
-  if (!length(x)) NA_real_ else mean(x)
-}
-net.site.year.geo <- spec.net %>%
-  group_by(Site, Year) %>%
-  summarise(Lat=mean.unique(Lat), Area=mean.unique(Area),
-            Elev=mean.unique(Elev), .groups='drop')
-check_unique_key(net.site.year.geo, c('Site', 'Year'), 'Site-year metadata')
-net.site.sr.sum <- dplyr::left_join(
-  net.site.sr.sum, net.site.year.geo, by=c('Site', 'Year'),
-  relationship='many-to-one')
-
-## The final Net + vegetation site-round table is exported below,
-## after the vegetation and event-condition joins.
 
 
 ## ***********************************************************************
@@ -464,20 +509,11 @@ write.csv(net.parasite.traits.table, file='../data/parasitetraits.csv', row.name
 ## Construct an explicitly filtered named list of plant x insect matrices
 ## for every pollinator guild, at Site x Year x SampleRound only.
 ## The event export also records true netting rounds with zero observations.
-network.event.conditions <- read.csv(paste0(
-  '../../skyIslands_saved/data/relational/relational/traditional/',
-  'conditions-specimens-complete.csv'), stringsAsFactors=FALSE,
-  colClasses=c(SampleRound='character'))
-net.site.sr.network.events <- network.event.conditions[!is.na(network.event.conditions$Method) &
-  tolower(trimws(network.event.conditions$Method)) == 'net',
-  c('Site','Year','SampleRound'), drop=FALSE]
-if (!nrow(net.site.sr.network.events)) warning('No documented Net events: ',
-  'networks will use observed specimen events only.')
 ## Reload the network helper when this block is run interactively after
 ## editing the file; otherwise a previous definition remains in memory.
 source('src/guild_networks.R')
 net.site.sr.guild.networks <- make_guild_networks(
-  spec.net, net.site.sr.network.events,
+  spec.net, net.site.sr.events %>% select(all_of(site.sr.keys)),
   guilds=pollinator_guilds(bee.families, butterfly.hawk.families),
   network_dir='../data/networks',
   metrics_dir='../data/splevel_network_metrics',
@@ -522,8 +558,7 @@ net.site.sr.bee.network.metrics <- net.site.sr.bee.network.metrics[
   net.site.sr.bee.network.metrics$speciesType == 'higher.level', , drop=FALSE]
 net.site.sr.bee.network.metrics$SpSiteYear <- NULL
 site.sr.sp.keys <- c('Site', 'Year', 'SampleRound', 'GenusSpecies')
-net.site.sr.bee.network.metrics$Year <- as.character(net.site.sr.bee.network.metrics$Year)
-spec.net$Year <- as.character(spec.net$Year)
+net.site.sr.bee.network.metrics$Year <- as.numeric(as.character(net.site.sr.bee.network.metrics$Year))
 net.site.sr.bee.network.metrics$SampleRound <- as.character(net.site.sr.bee.network.metrics$SampleRound)
 spec.net$SampleRound <- as.character(spec.net$SampleRound)
 check_unique_key(net.site.sr.bee.network.metrics, site.sr.sp.keys, 'Bee network metrics')
@@ -560,7 +595,7 @@ bloom <-
              stringsAsFactors=FALSE)
 veg <-
     read.csv("../../skyIslands_saved/data/relational/relational/traditional/veg-complete.csv",
-             stringsAsFactors=FALSE)
+             stringsAsFactors=FALSE, colClasses=c(SampleRound='character'))
 
 veg.required <- c('Site', 'Date', 'SampleRound', 'Quadrat',
                   'PlantGenus', 'PlantSpecies', 'PlantVar',
@@ -644,40 +679,29 @@ if (any(invalid.quad)) warning('## UPDATED [USER-QUADRATS]: ',
 veg <- veg[!invalid.quad, ,drop=FALSE]
 ## Verify vegetation rounds against documented Net events. A zero-bloom
 ## round may have no vegetation observations; Net effort anchors the design.
-event.conditions <- read.csv(paste0(
- '../../skyIslands_saved/data/relational/relational/traditional/',
- 'conditions-specimens-complete.csv'), stringsAsFactors=FALSE,
- colClasses=c(SampleRound='character'))
-net.site.sr.events.raw <- event.conditions[!is.na(event.conditions$Method) &
-  tolower(trimws(event.conditions$Method)) == 'net',
-  c('Site','Year','SampleRound'), drop=FALSE]
-net.site.sr.events.raw$Year <- as.numeric(as.character(net.site.sr.events.raw$Year))
 veg.site.sr.rounds.recorded <- unique(veg.site.sr.quads.recorded[
   , c('Site', 'Year', 'SampleRound')])
 veg.site.sr.rounds.recorded$SampleRound <- as.character(veg.site.sr.rounds.recorded$SampleRound)
 veg.site.sr.rounds.recorded$Year <- as.numeric(as.character(veg.site.sr.rounds.recorded$Year))
-net.site.sr.events.raw$SampleRound <- as.character(net.site.sr.events.raw$SampleRound)
 ## Do not turn vegetation without
 ## verified event geography into a newly inferred sampling location.
 veg.rounds.without.net.events <- dplyr::anti_join(veg.site.sr.rounds.recorded,
- net.site.sr.events.raw, by=c('Site','Year','SampleRound'))
+ net.site.sr.events, by=site.sr.keys)
 write.csv(veg.rounds.without.net.events,
  file='../../skyIslands_saved/data/checks/vegetation_without_verified_event.csv',
  row.names=FALSE)
 if (nrow(veg.rounds.without.net.events)) warning('## UPDATED: ',
  nrow(veg.rounds.without.net.events),
  ' vegetation rounds lack verified site/round conditions; see checks.')
-net.site.sr.events <- unique(net.site.sr.events.raw)
-net.site.sr.events <- net.site.sr.events[
-  stats::complete.cases(net.site.sr.events), , drop=FALSE]
 veg.quad.labels.by.year <- data.frame(
  Year=sort(unique(net.site.sr.events$Year)), stringsAsFactors=FALSE)
 veg.quad.labels.by.year <- do.call(rbind, lapply(veg.quad.labels.by.year$Year, function(y) {
  data.frame(Year=y, Quadrat=if (y == 2012) quads.2012.design
             else quads.later.design, stringsAsFactors=FALSE)
 }))
-veg.site.sr.quads.design <- dplyr::inner_join(net.site.sr.events, veg.quad.labels.by.year,
-                             by='Year', relationship='many-to-many')
+veg.site.sr.quads.design <- net.site.sr.events %>%
+  select(all_of(site.sr.keys)) %>%
+  inner_join(veg.quad.labels.by.year, by='Year', relationship='many-to-many')
 veg.site.sr.quads.recorded$Year <- as.numeric(as.character(veg.site.sr.quads.recorded$Year))
 veg.site.sr.quads.recorded$SampleRound <- as.character(veg.site.sr.quads.recorded$SampleRound)
 veg.site.sr.quads.recorded$RecordedVegetation <- TRUE
@@ -786,72 +810,21 @@ write.csv(veg.site.sr.sum, file="../data/veg.csv", row.names=FALSE)
 
 #write.csv(veg.site.sr.quad.sp.sum,
 #          file='../data/veg.bloom.quad.sp.csv', row.names=FALSE)
-## Final Net Site x Year x SampleRound table: anchor to verified Net events.
-## A round with Net effort but no specimens is a zero-capture observation:
-## counts, taxonomic richness, and Shannon diversity of captured/visited
-## organisms are zero. Parasite rates and mean parasite richness remain NA
-## because no specimens were screened. Vegetation comes from independent
-## quadrat observations, so its measured values must not be zeroed merely
-## because no insects were collected.
-net.site.sr.sum$SampleRound <- as.character(net.site.sr.sum$SampleRound)
-veg.site.sr.sum$SampleRound <- as.character(veg.site.sr.sum$SampleRound)
+## Combine verified Net events, captures and independent vegetation summaries.
 check_unique_key(veg.site.sr.sum, site.sr.keys, 'Vegetation sample-round stats')
-net.site.sr.sum <- dplyr::left_join(
-  net.site.sr.events, net.site.sr.sum, by=site.sr.keys,
-  relationship='one-to-one')
-## Only fill capture-derived ecological metrics for VERIFIED empty Net
-## rounds, identified by their missing PollAbundance after the event join.
-## Do not overwrite NAs from actual specimen groups (e.g. untested assays).
-net.site.sr.empty.capture <- is.na(net.site.sr.sum$PollAbundance)
-net.capture.zero.columns <- grep(
-  '^(Poll|Bee|Syrphid|BeeFly|HB|Bombus|NonBombusHB|ButterflyHawk|BeeSyrphLep|BeeSyrphBeeFlyLep|VisitedFloral).*(Abundance|Richness|Diversity)$',
+net.site.sr.sum <- net.site.sr.events %>%
+  left_join(net.site.sr.sum, by=site.sr.keys, relationship='one-to-one') %>%
+  left_join(veg.site.sr.sum, by=site.sr.keys, relationship='one-to-one')
+
+## Only verified zero-capture rounds receive zeros for capture metrics.
+## Parasite rates remain NA, and vegetation and conditions are unchanged.
+empty.capture <- is.na(net.site.sr.sum$PollAbundance)
+capture.cols <- grep(
+  '^(Poll|Bee|Syrphid|HB|Bombus|NonBombusHB|ButterflyHawk|VisitedFloral).*(Abundance|Richness|Diversity)$',
   names(net.site.sr.sum), value=TRUE)
-for (col in net.capture.zero.columns) {
-  net.site.sr.sum[[col]][net.site.sr.empty.capture] <- 0
-}
-message('Documented Net rounds without specimens: ', sum(net.site.sr.empty.capture),
-        ' (capture abundance/richness/diversity set to 0).')
-net.site.sr.sum <- dplyr::left_join(
-  net.site.sr.sum, veg.site.sr.sum, by=site.sr.keys,
-  relationship='one-to-one')
-## Geographic and weather attributes are derived from distinct
-## condition rows, not specimens, preventing capture-weighted site
-## coordinates.
-net.site.sr.event.geo <- event.conditions %>%
-  dplyr::filter(tolower(trimws(Method)) == 'net') %>%
-  dplyr::mutate(Year=as.numeric(as.character(Year)),
-                SampleRound=as.character(SampleRound)) %>%
-  dplyr::distinct(ConditionsPK, .keep_all=TRUE) %>%
-  dplyr::group_by(Site, Year, SampleRound) %>%
-  dplyr::summarise(
-    GeoLat=mean.unique(Lat), GeoLong=mean.unique(Long),
-    GeoElev=mean.unique(Elev), GeoArea=mean.unique(Area),
-    ## Carry environmental conditions into otherwise
-    ## empty rows so a no-capture event is still fully described.
-    EventMeanTempStart=mean.unique(TempStart),
-    EventMeanTempEnd=mean.unique(TempEnd),
-    EventMeanWindStart=mean.unique(WindStart),
-    EventMeanWindEnd=mean.unique(WindEnd),
-    EventAPi=mean.unique(APi), EventGDD=mean.unique(GDD),
-    EventMeanTmean=mean.unique(MeanTmean),
-    EventMeanVPD=mean.unique(MeanVPD),
-    Tmean_anom = mean.unique(Tmean_anom),
-    Tmax_anom = mean.unique(Tmax_anom),
-    Tmin_anom = mean.unique(Tmin_anom),
-    Precip_anom = mean.unique(Precip_anom),
-    VPD_anom = mean.unique(VPD_anom),
-    .groups='drop')
-net.site.sr.sum <- dplyr::left_join(
-  net.site.sr.sum, net.site.sr.event.geo,
-  by=site.sr.keys, relationship='one-to-one')
-## The site-level relational geography is available from conditions
-## even when an event has no specimens. Keep Lat/Elev/Area populated in
-## sitestats.csv; verified zero-capture rounds retain zero counts/richness.
-net.site.sr.sum$Lat <- dplyr::coalesce(net.site.sr.sum$Lat, net.site.sr.sum$GeoLat)
-net.site.sr.sum$Elev <- dplyr::coalesce(net.site.sr.sum$Elev, net.site.sr.sum$GeoElev)
-net.site.sr.sum$Area <- dplyr::coalesce(net.site.sr.sum$Area, net.site.sr.sum$GeoArea)
-## Final Site x Year x SampleRound export: Net counts/richness/diversity,
-## vegetation means, and environmental/geographic attributes.
+for (col in capture.cols) net.site.sr.sum[[col]][empty.capture] <- 0
+message('Documented Net rounds without specimens: ', sum(empty.capture))
+
 write.csv(net.site.sr.sum, file='../data/sitestats.csv', row.names=FALSE)
 
 ## floral richness across the entire meadow across sampling rounds
@@ -873,7 +846,10 @@ print(dim(spec.net))
 spec.net$Year <- as.numeric(as.character(spec.net$Year))
 spec.net$SampleRound <- as.character(spec.net$SampleRound)
 spec.net.before.join <- spec.net
+## Keep original specimen conditions under their original names; overlapping
+## site-round summaries receive an explicit .site.sr suffix.
 spec.net <- dplyr::left_join(spec.net, net.site.sr.sum, by=site.sr.keys,
+                             suffix=c('', '.site.sr'),
                              relationship='many-to-one')
 check_rows_preserved(spec.net.before.join, spec.net, 'Site stats -> specimens')
 print("After merge with site characteristics")
@@ -881,7 +857,8 @@ print(dim(spec.net))
 
 ## Load Site x Year x SampleRound x Species statistics from the Net
 ## export and attach them only to identified Net specimens.
-net.site.sr.sp.stats <- read_csv('../data/spstats_net.csv', show_col_types=FALSE)
+net.site.sr.sp.stats <- read_csv('../data/spstats_net.csv', show_col_types=FALSE,
+                                        col_types=cols(SampleRound=col_character()))
 ## Use the four natural key columns rather than pasted IDs.
 site.sr.sp.keys <- c('Site', 'Year', 'SampleRound', 'GenusSpecies')
 net.site.sr.sp.stats$Year <- as.numeric(as.character(net.site.sr.sp.stats$Year))
