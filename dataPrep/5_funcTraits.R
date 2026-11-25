@@ -1,148 +1,119 @@
 rm(list=ls())
 library(FD)
-library(vegan)
 library(readxl)
-
-setwd("~/")
-## setwd('C:/')
-source("lab_paths.R")
-local.path
-
 library(tidyverse)
-dir.bombus <- file.path(local.path, "skyIslands/dataPrep")
-setwd(dir.bombus)
 
-## calculate trait uniqueness and originality based on Coux et
-## al. 2016 for each site-year-round
+setwd('~/')
+source('lab_paths.R')
+setwd(file.path(local.path, 'skyIslands/dataPrep'))
+source('src/calcFuncUniqOrig.R')
 
-source("src/calcFuncUniqOrig.R")
-source("src/misc.R")
 load('../data/spec_net.Rdata')
-## only working with bees
-bee.families <- c("Andrenidae", "Apidae", "Colletidae", "Halictidae",
-                  "Megachilidae")
+site.sr.keys <- c('Site', 'Year', 'SampleRound')
+sitestats <- read.csv('../data/sitestats.csv', colClasses=c(SampleRound='character'))
+events <- sitestats %>% select(all_of(site.sr.keys)) %>% distinct()
 
-spec.net <- spec.net[spec.net$Family %in% bee.families,]
+bee.families <- c('Andrenidae', 'Apidae', 'Colletidae', 'Halictidae',
+                  'Megachilidae', 'Melittidae')
+spec.net <- spec.net %>% filter(Family %in% bee.families) %>%
+  mutate(GenusSpecies=na_if(trimws(GenusSpecies), ''),
+         Year=as.numeric(as.character(Year)), SampleRound=as.character(SampleRound))
 
-traits <-
-  read_excel("../../PonisioLab/bee_traits/western_us_bee_traits.xlsx",
-             sheet=1)
-traits <- traits[traits$GenusSpecies %in% spec.net$GenusSpecies,]
-traits <- as.data.frame(traits)
+## *******************************************************************
+## Prepare species traits and one common trait space
+## *******************************************************************
 
-missing <- spec.net[!spec.net$GenusSpecies %in%
-                                 traits$GenusSpecies,
-                    c("GenusSpecies", "Year")]
-missing
+trait.path <- '../../PonisioLab/bee_traits/western_us_bee_traits.xlsx'
+traits <- read_excel(trait.path, sheet='Data') %>%
+  mutate(across(where(is.character), ~na_if(trimws(.x), '')))
 
-itd <- traits %>%
-  group_by(Genus) %>%
-  summarize(MeanITD = mean(MeanITD, na.rm=TRUE))
+##  Each trait block (nesting, size, pollen carrying, reproductive
+## strategy/sociality) has weight 1.
 
-traits$MeanITD[is.na(traits$MeanITD)] <- itd$MeanITD[
-  match(traits$Genus[is.na(traits$MeanITD)], itd$Genus)]
+bee.traits <- c('NestLocation', 'NestPartitions', 'NestConstruction',
+                'NestLinning', 'PrimaryNestMaterial', 'MeanITD',
+                'PollenCarry', 'ReproStrat', 'Sociality')
+bee.weights <- setNames(c(rep(1/5, 5), 1, 1, 1/2, 1/2), bee.traits)
 
-bee.traits <- c("NestLocation", "NestPartitions","NestConstruction",
-                "NestLinning", "PrimaryNestMaterial", "MeanITD",
-                "PollenCarry", "ReproStrat", "Sociality"
-                )
+## Review duplicate records and trait coverage.
+audit.dir <- '../../skyIslands_saved/data/checks/functional_traits'
+source('src/trait_review.R')
 
-traits <- traits[, c("GenusSpecies", bee.traits)]
+## Species x trait matrix for the observed bee species.
+## Gower distance handles partially missing traits pairwise.
+trait.space <- traits %>%
+  filter(GenusSpecies %in% trait.audit$GenusSpecies[trait.audit$InTraitSpace]) %>%
+  select(GenusSpecies, all_of(bee.traits)) %>%
+  mutate(across(-c(GenusSpecies, MeanITD), as.factor)) %>%
+  column_to_rownames('GenusSpecies')
 
-traits[traits == ""] <- NA
+weights <- bee.weights
 
+## *******************************************************************
+## Community matrices: Site, Site x Year, Site x Year x SampleRound
+## *******************************************************************
 
-rownames(traits) <- traits$GenusSpecies
-traits$GenusSpecies <- NULL
+scales <- list(Site='Site', SiteYear=c('Site', 'Year'),
+               SiteYearSR=site.sr.keys)
+comms <- lapply(names(scales), function(suffix) {
+  make.comm.matrix(spec.net, events, scales[[suffix]],
+                   rownames(trait.space), suffix)
+})
+names(comms) <- names(scales)
+a <- do.call(rbind, lapply(comms, function(x) x$a))
 
-## We grouped the traits based on what they discuss. so for exaple, we
-## have 3 nesting traits, so weighted each one by 1/3.
+## Calculate a common regional trait space and community FD with dbFD.
+## Use Cailliez correction as in Coux et al. (2016); let dbFD select
+## the dimensionality for FDiv using its default m="max".
+out <- calcFuncUniqOrigComm(trait.space, weights, a, w.abun=TRUE,
+                           corr='cailliez')
 
-bee.weights <- c(rep(1/5, 5), rep(1, 2), rep(1/2, 2))
-length(bee.weights) == length(bee.traits)
+## *******************************************************************
+## Export community and species-level metrics and attach them to specimens
+## *******************************************************************
 
-
-# make the three IDs once
 spec.net <- spec.net %>%
-  tidyr::unite("SiteYearSR", Site, Year, SampleRound, sep = ";", remove = FALSE) %>%
-  tidyr::unite("SiteYear",   Site, Year,           sep = ";", remove = FALSE)
+  unite('SiteYearSR', Site, Year, SampleRound, sep=';', remove=FALSE) %>%
+  unite('SiteYear', Site, Year, sep=';', remove=FALSE) %>%
+  left_join(traits, by='GenusSpecies', suffix=c('', '.trait'),
+            na_matches='never', relationship='many-to-one')
 
-# run all three with one pattern
-spec.net <- add_func_uniq_orig(spec.net, traits,
-                               id_col = "Site",
-                               traits.2.keep = bee.traits, weights = bee.weights,
-                               suffix = "Site",
-                               add_fd = TRUE)
+file.suffix <- c(Site='site', SiteYear='site_year', SiteYearSR='site_year_round')
+for (suffix in names(scales)) {
+  keys <- scales[[suffix]]
+  community <- comms[[suffix]]$groups %>%
+    left_join(out$fd, by='commID', relationship='one-to-one')
+  species <- community %>% select(all_of(keys), commID) %>%
+    inner_join(out$by.comm.mets, by='commID', relationship='one-to-many') %>%
+    select(-commID)
+  community <- community %>% select(-commID)
 
-spec.net <- add_func_uniq_orig(spec.net, traits,
-                               id_col = "SiteYearSR",
-                               traits.2.keep = bee.traits, weights = bee.weights,
-                               suffix = "SiteYearSR",
-                               add_fd = TRUE)
+  if (suffix == 'SiteYearSR') site.round.fd <- community
+  write.csv(community, paste0('../data/bee_functional_', file.suffix[[suffix]], '.csv'),
+            row.names=FALSE)
+  write.csv(species, paste0('../data/bee_functional_species_', file.suffix[[suffix]], '.csv'),
+            row.names=FALSE)
 
-spec.net <- add_func_uniq_orig(spec.net, traits,
-                               id_col = "SiteYear",
-                               traits.2.keep = bee.traits, weights = bee.weights,
-                               suffix = "SiteYear",
-                               add_fd = TRUE)
+  ## Preserve existing specimen metric column names (e.g. uniqSiteYearSR).
+  species <- species %>% rename_with(~paste0(.x, suffix), c(uniq, originality, unweightedOriginality))
+  community <- community %>%
+    select(all_of(keys), BeeFDis, BeeFEve, BeeFDiv,
+           BeeTraitAbundance, BeeTraitRichness, BeeTraitCoverage) %>%
+    rename_with(~paste0(.x, suffix), -all_of(keys))
+  spec.net <- spec.net %>%
+    left_join(species, by=c(keys, 'GenusSpecies'), relationship='many-to-one') %>%
+    left_join(community, by=keys, relationship='many-to-one')
+}
 
-save(spec.net, file="../data/spec_traits.Rdata")
-write.csv(spec.net, file="../data/spec_traits.csv", row.names=FALSE)
+## Site-round community metrics also belong in a community-level dataset,
+## including rounds with zero bees (which have no rows in spec.net).
+site.round.fd <- site.round.fd %>%
+  select(all_of(site.sr.keys), BeeFDis, BeeFEve, BeeFDiv,
+         BeeTraitAbundance, BeeTraitRichness, BeeTraitCoverage)
+sitestats <- sitestats %>%
+  left_join(site.round.fd, by=site.sr.keys, relationship='one-to-one')
+write.csv(sitestats, '../data/sitestats_traits.csv', row.names=FALSE)
 
-# Merges network traits by site and round to spec.net
-# load('../data/sp_network_mets_sr_pretty.RData')
-# 
-# sp.network.metrics <- sp.network.metrics %>%
-#   select(GenusSpecies, Site, Year, SampleRound, zdegree,
-#          zweighted.betweenness, zweighted.closeness, zd,
-#          normalised.degree)
-# 
-# traits$GenusSpecies <- rownames(traits)
-# rownames(traits) <- NULL
-# 
-# dim(spec.net)
-# spec.net <- merge(spec.net, sp.network.metrics, all.x=TRUE)
-# dim(spec.net)
-# spec.net <- merge(spec.net, traits, all.x=TRUE)
-# dim(spec.net)
-# 
-# save(spec.net, file="../data/spec_traits.Rdata")
-# write.csv(spec.net, file="../data/spec_traits.csv", row.names=FALSE)
-
-# ## Merges network traits by year to spec.net
-# load('../data/sp_network_mets_Year_pretty.RData')
-#  
-# sp.network.metrics <- sp.network.metrics %>%
-#   select(GenusSpecies, Site, Year, SampleRound, zdegree,
-#       zweighted.betweenness, zweighted.closeness, zd,
-#           normalised.degree)
-# 
-# traits$GenusSpecies <- rownames(traits)
-# rownames(traits) <- NULL
-# 
-# dim(spec.net)
-# spec.net <- merge(spec.net, sp.network.metrics, all.x=TRUE)
-# dim(spec.net)
-# spec.net <- merge(spec.net, traits, all.x=TRUE)
-# dim(spec.net)
-# 
-#   
-# save(spec.net, file="../data/spec_traits_YR.Rdata")
-# write.csv(spec.net, file="../data/spec_traits_YR.csv", row.names=FALSE)
-
-## spec.bee.microbes <- spec.net %>%
-##   filter(Family != "Syrphidae") %>%
-##   select(UniqueID, TempID, GenusSpecies, Site, Year, SampleRound,
-##          PlantGenusSpecies, NestLocation, NestPartitions,
-##          NestConstruction, PrimaryNestMaterial, MeanITD, PollenCarry,
-##          ReproStrat, Sociality,
-##          originalitySiteYearSR, uniqSiteYearSR,
-##          originalitySiteYear, uniqSiteYear,
-##          originalitySite, uniqSite,
-##          zdegree,
-##          zweighted.betweenness, zweighted.closeness, zd,
-##          normalised.degree)
-
-
-## write.csv(spec.bee.microbes,
-##           file="../data/si_bee_microbes_traits.csv", row.names=FALSE)
+spec.net$GenusSpecies[is.na(spec.net$GenusSpecies)] <- ''
+save(spec.net, file='../data/spec_traits.Rdata')
+write.csv(spec.net, '../data/spec_traits.csv', row.names=FALSE)

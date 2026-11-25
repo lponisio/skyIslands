@@ -1,170 +1,114 @@
-library(FD)
+## Functional roles (Coux et al. 2016) and community functional diversity.
+## All community scales share one species pool, Gower matrix and PCoA.
 
+## A community matrix with explicit rows for sampled communities, including
+## those without bees or without taxa represented in the trait data.
+make.comm.matrix <- function(spec, events, keys, taxa, suffix) {
+  groups <- events %>% distinct(across(all_of(keys))) %>%
+    arrange(across(all_of(keys))) %>%
+    mutate(commID=paste0(suffix, '.', row_number()))
+  counts <- spec %>% select(all_of(keys), GenusSpecies) %>%
+    left_join(groups, by=keys, relationship='many-to-one')
+  a <- with(counts, table(factor(commID, levels=groups$commID),
+                          factor(GenusSpecies, levels=taxa)))
+  a <- matrix(as.numeric(a), nrow=nrow(groups), ncol=length(taxa),
+              dimnames=list(groups$commID, taxa))
+  coverage <- counts %>% group_by(commID) %>% summarise(
+    BeeAbundance=n(),
+    BeeIdentifiedAbundance=sum(!is.na(GenusSpecies) & GenusSpecies != ''),
+    BeeIdentifiedRichness=n_distinct(GenusSpecies[!is.na(GenusSpecies) &
+                                                   GenusSpecies != '']),
+    .groups='drop')
+  groups <- groups %>% left_join(coverage, by='commID') %>%
+    mutate(across(c(BeeAbundance, BeeIdentifiedAbundance,
+                    BeeIdentifiedRichness), ~replace_na(.x, 0)),
+           BeeTraitAbundance=as.numeric(rowSums(a)),
+           BeeTraitRichness=as.numeric(rowSums(a > 0)),
+           BeeTraitCoverage=if_else(BeeAbundance > 0,
+                                    BeeTraitAbundance/BeeAbundance, NA_real_))
+  list(groups=groups, a=a)
+}
 
-## standardize a vector
-standardize <- function(x)
-  (x-mean(x, na.rm=TRUE))/sd(x, na.rm=TRUE)
-
-
-calcFuncUniqOrigComm <- function(traits, traits.2.keep,
-                                 weights,
-                                 type = "network",
-                                 a,
-                                 comm_id = "CommID",
-                                 w.abun = TRUE,
-                                 ...){
-
-  # drop unwanted traits
-  these.traits <- traits[, traits.2.keep, drop = FALSE]
-
-  # ---- ALIGN traits and community matrix (this is the key fix) ----
-  sp <- intersect(rownames(these.traits), colnames(a))
-  if (length(sp) < 2) {
-    stop("Need >= 2 shared species between traits rownames and community colnames.")
+## Species-level raw distances, not within-community z-scores.
+## Uniqueness is independent of abundance; originality uses the weighted
+## centroid, as Coux et al. did for pollinators (w.abun=TRUE).
+## Also retain the unweighted species-centered version.
+calc.species.roles <- function(coords, abundance, w.abun=TRUE) {
+  n <- nrow(coords)
+  p <- if (w.abun) abundance/sum(abundance) else rep(1/n, n)
+  center <- colSums(coords*p)
+  originality <- sqrt(rowSums(sweep(coords, 2, center)^2))
+  unweightedOriginality <- sqrt(rowSums(sweep(coords, 2, colMeans(coords))^2))
+  uniq <- rep(NA_real_, n)
+  if (n > 1) {
+    d <- as.matrix(dist(coords))
+    diag(d) <- Inf
+    uniq <- apply(d, 1, min)
   }
-  these.traits <- these.traits[sp, , drop = FALSE]
-  a <- a[, sp, drop = FALSE]
-  stopifnot(identical(rownames(these.traits), colnames(a)))
-  # ---------------------------------------------------------------
+  data.frame(GenusSpecies=rownames(coords), uniq=unname(uniq),
+             originality=unname(originality),
+             unweightedOriginality=unname(unweightedOriginality), row.names=NULL)
+}
 
-  # convert traits with only 2 categories to binary numeric; others factors; numeric standardized
-  for (this.trait in traits.2.keep) {
-    out.traits <- unique(these.traits[, this.trait])
-    out.traits <- out.traits[!is.na(out.traits)]
-
-    if (!is.numeric(out.traits)) {
-      if (length(out.traits) == 2) {
-        message("cat == 2 ", this.trait)
-        these.traits[, this.trait] <- as.numeric(as.factor(these.traits[, this.trait])) - 1
-      } else {
-        message("cat > 2 ", this.trait)
-        these.traits[, this.trait] <- as.factor(these.traits[, this.trait])
-      }
+calcFuncUniqOrigComm <- function(traits, weights, a, w.abun=TRUE,
+                                corr='cailliez') {
+  a <- as.matrix(a[, rownames(traits), drop=FALSE])
+  fd <- data.frame(commID=rownames(a), BeeFDis=NA_real_,
+                   BeeFEve=NA_real_, BeeFDiv=NA_real_)
+  empty.roles <- data.frame(commID=character(), GenusSpecies=character(),
+                            uniq=numeric(), originality=numeric(),
+                            unweightedOriginality=numeric())
+  keep <- rowSums(a) > 0
+  if (!any(keep)) return(list(fd=fd, by.comm.mets=empty.roles,
+                              coords=NULL, distances=NULL, eigenvalues=NULL))
+  present.a <- a[keep, , drop=FALSE]
+  quality <- NA_real_
+  if (nrow(traits) == 1) {
+    trait.dist <- dist(matrix(0, 1, 1, dimnames=list(rownames(traits), NULL)))
+    coords <- matrix(0, 1, 1, dimnames=list(rownames(traits), 'Axis1'))
+    eigenvalues <- 0
+    fd$BeeFDis[keep] <- 0
+  } else {
+    ## Gower range-standardizes ITD and treats categorical traits as nominal.
+    ## Missing traits are omitted pairwise, not coded as a new category.
+    trait.dist <- FD::gowdis(traits, w=weights)
+    if (anyNA(trait.dist)) {
+      bad <- which(is.na(as.matrix(trait.dist)), arr.ind=TRUE)
+      stop('No comparable traits for some species pairs: ',
+           paste(head(rownames(traits)[bad[,1]], 10), collapse=', '),
+           '. Review the trait data rather than assigning arbitrary distances.')
+    }
+    if (all(trait.dist == 0)) {
+      coords <- matrix(0, nrow(traits), 1,
+                       dimnames=list(rownames(traits), 'Axis1'))
+      eigenvalues <- 0
+      fd$BeeFDis[keep] <- 0
     } else {
-      message("numeric ", this.trait)
-      these.traits[, this.trait] <- standardize(these.traits[, this.trait])
+      ## dbFD uses a single regional ordination. Its default m="max"
+      ## selects the number of axes for FRic and FDiv from community richness.
+      ## FRic must be enabled to calculate FDiv, but need not be exported.
+      calc.hull <- any(rowSums(present.a > 0) >= 3)
+      fit <- FD::dbFD(trait.dist, a=present.a, w.abun=w.abun,
+                      corr=corr, calc.FRic=calc.hull, calc.FDiv=calc.hull,
+                      calc.CWM=FALSE, print.pco=TRUE)
+      coords <- as.matrix(fit$x.axes)
+      eigenvalues <- fit$x.values
+      if (!is.null(fit$qual.FRic)) quality <- fit$qual.FRic
+      fd$BeeFDis[keep] <- unname(fit$FDis)
+      fd$BeeFEve[keep] <- unname(fit$FEve)
+      if (!is.null(fit$FDiv)) fd$BeeFDiv[keep] <- unname(fit$FDiv)
     }
   }
-
-  site.func.mets <- dbFD(these.traits,
-                         a = a,
-                         w = weights,
-                         corr = "lingoes",
-                         print.pco = TRUE,
-                         w.abun = w.abun,
-                         ...)
-
-  coords <- site.func.mets$x.axes
-
-  coords.comm <- vector(mode = "list", length = nrow(a))
-  for (i in seq_len(nrow(a))) {
-    # keep only present spp rows (and preserve rownames)
-    present <- unlist(a[i, ]) > 0
-    spp <- names(which(present))
-    coords.comm[[i]] <- coords[spp, , drop = FALSE]
-  }
-
-  calcSiteLevelSpMets <- function(coords_sub){
-    if (nrow(coords_sub) < 2) {
-      out <- data.frame(uniq = NA_real_, originality = NA_real_)
-      rownames(out) <- rownames(coords_sub)
-      return(out)
-    }
-
-    centr <- apply(coords_sub, 2, mean)
-
-    coords2 <- rbind(coords_sub, centr)
-    rownames(coords2)[nrow(coords2)] <- "centr"
-
-    dists_centr <- as.matrix(dist(coords2, diag = TRUE, upper = TRUE))
-    diag(dists_centr) <- NA
-
-    originality <- dists_centr[rownames(coords_sub), "centr"]
-
-    # nearest neighbour among present species
-    nn_mat <- dists_centr[rownames(coords_sub), rownames(coords_sub), drop = FALSE]
-    uniq <- apply(nn_mat, 1, min, na.rm = TRUE)
-
-    out <- as.data.frame(cbind(scale(uniq), scale(originality)))
-    colnames(out) <- c("uniq", "originality")
+  roles <- lapply(which(keep), function(i) {
+    present <- a[i, ] > 0
+    x <- coords[colnames(a)[present], , drop=FALSE]
+    abundance <- as.numeric(a[i, present])
+    out <- calc.species.roles(x, abundance, w.abun=w.abun)
+    out$commID <- rownames(a)[i]
     out
-  }
-
-  by.comm.mets <- lapply(coords.comm, calcSiteLevelSpMets)
-  names(by.comm.mets) <- rownames(a)
-
-  for (i in seq_along(by.comm.mets)) {
-    this.name <- names(by.comm.mets)[i]
-    this.comm <- by.comm.mets[[i]]
-
-    this.comm[[comm_id]] <- this.name
-    this.comm$GenusSpecies <- rownames(this.comm)
-    rownames(this.comm) <- NULL
-
-    by.comm.mets[[i]] <- this.comm
-  }
-
-  by.comm.mets <- do.call(rbind, by.comm.mets)
-  rownames(by.comm.mets) <- NULL
-
-  list(fd = site.func.mets,
-       by.comm.mets = by.comm.mets)
+  })
+  fd <- fd %>% mutate(across(c(BeeFDis, BeeFEve, BeeFDiv),
+                             ~replace(.x, !is.finite(.x), NA_real_)))
+  list(fd=fd, by.comm.mets=bind_rows(roles), coords=coords,
+       distances=trait.dist, eigenvalues=eigenvalues, qual.FRic=quality)
 }
-
-make_comm_matrix <- function(df, id_col, sp_col = "GenusSpecies") {
-  id_sym <- rlang::sym(id_col)
-  sp_sym <- rlang::sym(sp_col)
-
-  df %>%
-    filter(!is.na(!!sp_sym), !!sp_sym != "") %>%
-    count(!!id_sym, !!sp_sym, name = "N") %>%
-    tidyr::pivot_wider(names_from = !!sp_sym, values_from = N, values_fill = 0) %>%
-    tibble::column_to_rownames(id_col) %>%
-    as.data.frame()
-}
-
-add_func_uniq_orig <- function(spec.net, traits,
-                               id_col,
-                               traits.2.keep, weights,
-                               suffix,
-                               add_fd = FALSE,
-                               w.abun = TRUE,
-                               ...) {
-
-  # build comm matrix for this grouping
-  comms <- make_comm_matrix(spec.net, id_col = id_col)
-
-  # run FD + uniqueness/originality
-  out <- calcFuncUniqOrigComm(traits,
-                             traits.2.keep = traits.2.keep,
-                             weights = weights,
-                             a = comms,
-                             comm_id = id_col,
-                             w.abun = w.abun,
-                             ...)
-
-  # species-by-community uniq/orig
-  by_sp <- out$by.comm.mets %>%
-    dplyr::rename(
-      !!paste0("uniq", suffix) := uniq,
-      !!paste0("originality", suffix) := originality
-    )
-
-  spec.net <- spec.net %>%
-    dplyr::left_join(by_sp, by = c("GenusSpecies", id_col))
-
-  # optional: attach site/community-level FD metrics too
-  if (add_fd) {
-    fd <- tibble::tibble(
-      !!id_col := names(out$fd$FDis),
-      !!paste0("BeeFDis", suffix) := unname(out$fd$FDis),
-      !!paste0("BeeFEve", suffix) := unname(out$fd$FEve),
-      !!paste0("BeeFDiv", suffix) := unname(out$fd$FDiv)
-    )
-    spec.net <- spec.net %>%
-      dplyr::left_join(fd, by = id_col)
-  }
-
-  spec.net
-}
-
