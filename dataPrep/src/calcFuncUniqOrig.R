@@ -3,7 +3,7 @@
 
 ## A community matrix with explicit rows for sampled communities, including
 ## those without bees or without taxa represented in the trait data.
-make.comm.matrix <- function(spec, events, keys, taxa, suffix) {
+make.comm.matrix <- function(spec, events, keys, taxa, suffix, coverage=TRUE) {
   groups <- events %>% distinct(across(all_of(keys))) %>%
     arrange(across(all_of(keys))) %>%
     mutate(commID=paste0(suffix, '.', row_number()))
@@ -13,6 +13,7 @@ make.comm.matrix <- function(spec, events, keys, taxa, suffix) {
                           factor(GenusSpecies, levels=taxa)))
   a <- matrix(as.numeric(a), nrow=nrow(groups), ncol=length(taxa),
               dimnames=list(groups$commID, taxa))
+  if (!coverage) return(list(groups=groups, a=a))
   coverage <- counts %>% group_by(commID) %>% summarise(
     BeeAbundance=n(),
     BeeIdentifiedAbundance=sum(!is.na(GenusSpecies) & GenusSpecies != ''),
@@ -51,9 +52,10 @@ calc.species.roles <- function(coords, abundance, w.abun=TRUE) {
 }
 
 calcFuncUniqOrigComm <- function(traits, weights, a, w.abun=TRUE,
-                                corr='cailliez') {
+                                corr='cailliez', fd.ids=rownames(a)) {
   a <- as.matrix(a[, rownames(traits), drop=FALSE])
-  fd <- data.frame(commID=rownames(a), BeeFDis=NA_real_,
+  fd.a <- a[fd.ids, , drop=FALSE]
+  fd <- data.frame(commID=rownames(fd.a), BeeFDis=NA_real_,
                    BeeFEve=NA_real_, BeeFDiv=NA_real_)
   empty.roles <- data.frame(commID=character(), GenusSpecies=character(),
                             uniq=numeric(), originality=numeric(),
@@ -61,13 +63,14 @@ calcFuncUniqOrigComm <- function(traits, weights, a, w.abun=TRUE,
   keep <- rowSums(a) > 0
   if (!any(keep)) return(list(fd=fd, by.comm.mets=empty.roles,
                               coords=NULL, distances=NULL, eigenvalues=NULL))
-  present.a <- a[keep, , drop=FALSE]
+  keep.fd <- rowSums(fd.a) > 0
+  present.a <- fd.a[keep.fd, , drop=FALSE]
   quality <- NA_real_
   if (nrow(traits) == 1) {
     trait.dist <- dist(matrix(0, 1, 1, dimnames=list(rownames(traits), NULL)))
     coords <- matrix(0, 1, 1, dimnames=list(rownames(traits), 'Axis1'))
     eigenvalues <- 0
-    fd$BeeFDis[keep] <- 0
+    fd$BeeFDis[keep.fd] <- 0
   } else {
     ## Gower range-standardizes ITD and treats categorical traits as nominal.
     ## Missing traits are omitted pairwise, not coded as a new category.
@@ -82,9 +85,11 @@ calcFuncUniqOrigComm <- function(traits, weights, a, w.abun=TRUE,
       coords <- matrix(0, nrow(traits), 1,
                        dimnames=list(rownames(traits), 'Axis1'))
       eigenvalues <- 0
-      fd$BeeFDis[keep] <- 0
+      fd$BeeFDis[keep.fd] <- 0
     } else {
-      ## dbFD uses a single regional ordination. Its default m="max"
+      ## dbFD uses a single regional ordination based on the round matrix.
+      ## All pooled communities use its coordinates for species roles.
+      ## Its default m="max"
       ## selects the number of axes for FRic and FDiv from community richness.
       ## FRic must be enabled to calculate FDiv, but need not be exported.
       calc.hull <- any(rowSums(present.a > 0) >= 3)
@@ -94,9 +99,9 @@ calcFuncUniqOrigComm <- function(traits, weights, a, w.abun=TRUE,
       coords <- as.matrix(fit$x.axes)
       eigenvalues <- fit$x.values
       if (!is.null(fit$qual.FRic)) quality <- fit$qual.FRic
-      fd$BeeFDis[keep] <- unname(fit$FDis)
-      fd$BeeFEve[keep] <- unname(fit$FEve)
-      if (!is.null(fit$FDiv)) fd$BeeFDiv[keep] <- unname(fit$FDiv)
+      fd$BeeFDis[keep.fd] <- unname(fit$FDis)
+      fd$BeeFEve[keep.fd] <- unname(fit$FEve)
+      if (!is.null(fit$FDiv)) fd$BeeFDiv[keep.fd] <- unname(fit$FDiv)
     }
   }
   roles <- lapply(which(keep), function(i) {

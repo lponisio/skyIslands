@@ -57,16 +57,17 @@ scales <- list(Site='Site', SiteYear=c('Site', 'Year'),
                SiteYearSR=site.sr.keys)
 comms <- lapply(names(scales), function(suffix) {
   make.comm.matrix(spec.net, events, scales[[suffix]],
-                   rownames(trait.space), suffix)
+                   rownames(trait.space), suffix,
+                   coverage=(suffix == 'SiteYearSR'))
 })
 names(comms) <- names(scales)
 a <- do.call(rbind, lapply(comms, function(x) x$a))
 
-## Calculate a common regional trait space and community FD with dbFD.
-## Use Cailliez correction as in Coux et al. (2016); let dbFD select
-## the dimensionality for FDiv using its default m="max".
+## One regional trait space for species roles at all three scales.
+## Calculate community FD only for site-year-sampling rounds.
 out <- calcFuncUniqOrigComm(trait.space, weights, a, w.abun=TRUE,
-                           corr='cailliez')
+                           corr='cailliez',
+                           fd.ids=rownames(comms$SiteYearSR$a))
 
 ## *******************************************************************
 ## Export community and species-level metrics and attach them to specimens
@@ -78,41 +79,36 @@ spec.net <- spec.net %>%
   left_join(traits, by='GenusSpecies', suffix=c('', '.trait'),
             na_matches='never', relationship='many-to-one')
 
-file.suffix <- c(Site='site', SiteYear='site_year', SiteYearSR='site_year_round')
+## Attach species functional roles at all three scales.
 for (suffix in names(scales)) {
   keys <- scales[[suffix]]
-  community <- comms[[suffix]]$groups %>%
-    left_join(out$fd, by='commID', relationship='one-to-one')
-  species <- community %>% select(all_of(keys), commID) %>%
+  species <- comms[[suffix]]$groups %>%
+    select(all_of(keys), commID) %>%
     inner_join(out$by.comm.mets, by='commID', relationship='one-to-many') %>%
-    select(-commID)
-  community <- community %>% select(-commID)
-
-  if (suffix == 'SiteYearSR') site.round.fd <- community
-  write.csv(community, paste0('../data/bee_functional_', file.suffix[[suffix]], '.csv'),
-            row.names=FALSE)
-  write.csv(species, paste0('../data/bee_functional_species_', file.suffix[[suffix]], '.csv'),
-            row.names=FALSE)
-
-  ## Preserve existing specimen metric column names (e.g. uniqSiteYearSR).
-  species <- species %>% rename_with(~paste0(.x, suffix), c(uniq, originality, unweightedOriginality))
-  community <- community %>%
-    select(all_of(keys), BeeFDis, BeeFEve, BeeFDiv,
-           BeeTraitAbundance, BeeTraitRichness, BeeTraitCoverage) %>%
-    rename_with(~paste0(.x, suffix), -all_of(keys))
+    select(-commID) %>%
+    rename_with(~paste0(.x, suffix), c(uniq, originality, unweightedOriginality))
   spec.net <- spec.net %>%
-    left_join(species, by=c(keys, 'GenusSpecies'), relationship='many-to-one') %>%
-    left_join(community, by=keys, relationship='many-to-one')
+    left_join(species, by=c(keys, 'GenusSpecies'), relationship='many-to-one')
 }
 
-## Site-round community metrics also belong in a community-level dataset,
-## including rounds with zero bees (which have no rows in spec.net).
-site.round.fd <- site.round.fd %>%
-  select(all_of(site.sr.keys), BeeFDis, BeeFEve, BeeFDiv,
-         BeeTraitAbundance, BeeTraitRichness, BeeTraitCoverage)
+## Append community FD and trait coverage to sitestats, retaining all rounds.
+fd.cols <- c('BeeFDis', 'BeeFEve', 'BeeFDiv',
+             'BeeTraitAbundance', 'BeeTraitRichness', 'BeeTraitCoverage')
+site.round.fd <- comms$SiteYearSR$groups %>%
+  left_join(out$fd, by='commID', relationship='one-to-one') %>%
+  select(all_of(c(site.sr.keys, fd.cols)))
+
+## Replace existing FD columns if the script is rerun.
 sitestats <- sitestats %>%
+  select(-any_of(fd.cols)) %>%
   left_join(site.round.fd, by=site.sr.keys, relationship='one-to-one')
-write.csv(sitestats, '../data/sitestats_traits.csv', row.names=FALSE)
+write.csv(sitestats, '../data/sitestats.csv', row.names=FALSE)
+
+## Retain site-round FD columns on specimens for existing analyses.
+spec.net <- spec.net %>%
+  left_join(site.round.fd %>%
+              rename_with(~paste0(.x, 'SiteYearSR'), all_of(fd.cols)),
+            by=site.sr.keys, relationship='many-to-one')
 
 spec.net$GenusSpecies[is.na(spec.net$GenusSpecies)] <- ''
 save(spec.net, file='../data/spec_traits.Rdata')

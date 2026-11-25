@@ -49,11 +49,7 @@ setwd("../skyIslands/dataPrep")
 source("src/misc.R")
 source("src/prepParasites.R")
 source("src/join_checks.R")
-source("src/prepNets.R")
 source("src/guild_networks.R")
-source("src/specialization.R")
-source("src/SpCalcMetrics.R")
-source("src/vaznull2.R")
 
 spec.all.methods$GenusSpecies <- fix.white.space(paste(
   ifelse(is.na(spec.all.methods$Genus), '', spec.all.methods$Genus),
@@ -91,7 +87,6 @@ check_unique_key(spec.all.methods, 'UniqueID', 'Specimens loaded for analysis')
 ## General output setup (also used by network and site-level analyses).
 dir.create('../data/', showWarnings=FALSE)
 dir.create('../data/networks', showWarnings=FALSE)
-dir.create('../data/splevel_network_metrics', showWarnings=FALSE)
 
 ## Process assays and export the no-ID QC file using src/prepParasites.R.
 parasite.prep <- prepareParasites(spec.all.methods)
@@ -416,34 +411,39 @@ save(all.sums, file="../data/SI_parasite_sums.Rdata")
 
 
 ## *******************************************************************
-## Site x Year x SampleRound plant-pollinator and parasite networks
+## Site x Year x SampleRound plant-pollinator networks
 ## *******************************************************************
 
-## Construct an explicitly filtered named list of plant x insect matrices
-## for every pollinator guild, at Site x Year x SampleRound only.
-## The event export also records true netting rounds with zero observations.
+## Save plant x insect matrices for every guild, including verified empty
+## rounds. Full network metrics are calculated in 8_network_metrics.R.
 net.site.sr.guild.networks <- make_guild_networks(
   spec.net, net.site.sr.events %>% select(all_of(site.sr.keys)),
   guilds=pollinator_guilds(bee.families, butterfly.hawk.families),
   network_dir='../data/networks',
   metrics_dir='../data/splevel_network_metrics',
-  audit_dir='../../skyIslands_saved/data/checks/network_id_review')
-net.site.sr.bee.network.metrics <- net.site.sr.guild.networks$bee_metrics
+  audit_dir='../../skyIslands_saved/data/checks/network_id_review',
+  compute_bee_metrics=FALSE)
 
-## Attach site-round plant-pollinator network metrics to Net specimens.
-## rare.degree is the legacy name for Chao1-estimated asymptotic partner
-## richness, not rarefied degree; retain it for downstream analyses.
+## Retain only Chao1-estimated asymptotic plant partner richness per bee
+## species and sampling round. Keep the legacy column name rare.degree and
+## the previous calcSpec restriction to >= 3 taxa in both network guilds.
+site.sr.sp.keys <- c(site.sr.keys, 'GenusSpecies')
+net.site.sr.bee.partner.richness <- local({
+  load('../data/networks/YearSR_PlantPollinator_Bees.Rdata')
+  eligible <- which(vapply(nets, function(x) all(dim(x) > 2), logical(1)))
+  bind_rows(
+    data.frame(Site=character(), Year=numeric(), SampleRound=character(),
+               GenusSpecies=character(), rare.degree=numeric()),
+    lapply(eligible, function(i) {
+      data.frame(Site=unname(sites[i]), Year=as.numeric(years[i]),
+                 SampleRound=unname(SRs[i]),
+                 GenusSpecies=colnames(nets[[i]]),
+                 rare.degree=as.numeric(apply(nets[[i]], 2, fossil::chao1)))
+    }))
+})
 
-net.site.sr.bee.network.metrics <- net.site.sr.bee.network.metrics[
-  net.site.sr.bee.network.metrics$speciesType == 'higher.level', , drop=FALSE]
-net.site.sr.bee.network.metrics$SpSiteYear <- NULL
-site.sr.sp.keys <- c('Site', 'Year', 'SampleRound', 'GenusSpecies')
-net.site.sr.bee.network.metrics$Year <- as.numeric(as.character(net.site.sr.bee.network.metrics$Year))
-net.site.sr.bee.network.metrics$SampleRound <- as.character(net.site.sr.bee.network.metrics$SampleRound)
-spec.net <- dplyr::left_join(spec.net, net.site.sr.bee.network.metrics, by=site.sr.sp.keys,
-                             relationship='many-to-one')
-
-spec.net$speciesType <- NULL
+spec.net <- left_join(spec.net, net.site.sr.bee.partner.richness,
+                     by=site.sr.sp.keys, relationship='many-to-one')
 
 ## *******************************************************************
 ## Vegetation preparation
