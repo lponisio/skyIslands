@@ -431,15 +431,19 @@ site.sr.sp.keys <- c(site.sr.keys, 'GenusSpecies')
 net.site.sr.bee.partner.richness <- local({
   load('../data/networks/YearSR_PlantPollinator_Bees.Rdata')
   eligible <- which(vapply(nets, function(x) all(dim(x) > 2), logical(1)))
-  bind_rows(
-    data.frame(Site=character(), Year=numeric(), SampleRound=character(),
-               GenusSpecies=character(), rare.degree=numeric()),
-    lapply(eligible, function(i) {
-      data.frame(Site=unname(sites[i]), Year=as.numeric(years[i]),
-                 SampleRound=unname(SRs[i]),
-                 GenusSpecies=colnames(nets[[i]]),
-                 rare.degree=as.numeric(apply(nets[[i]], 2, fossil::chao1)))
-    }))
+
+  ## One data frame per network; remove list names before binding rows.
+  partner.richness <- lapply(unname(eligible), function(i) {
+    data.frame(Site=unname(sites[i]), Year=as.numeric(years[i]),
+               SampleRound=unname(SRs[i]),
+               GenusSpecies=colnames(nets[[i]]),
+               rare.degree=as.numeric(apply(nets[[i]], 2, fossil::chao1)))
+  })
+
+  ## Retain the join columns even if no network is eligible.
+  empty <- data.frame(Site=character(), Year=numeric(), SampleRound=character(),
+                      GenusSpecies=character(), rare.degree=numeric())
+  bind_rows(c(list(empty), partner.richness))
 })
 
 spec.net <- left_join(spec.net, net.site.sr.bee.partner.richness,

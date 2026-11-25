@@ -1,68 +1,39 @@
- ## vaznull.fast <- function(web) {
- ##        rs.p <- rowSums(web)/sum(web)
- ##        cs.p <- colSums(web)/sum(web)
- ##        P <- P1 <- tcrossprod(rs.p, cs.p)
- ##        finalmat <- matrix(0, nrow(web), ncol(web))
- ##        n.int.finalmat <- 0
- ##        finalmat <- try(simulate(vegan::nullmodel(web,
- ##                                                  method="quasiswap"),
- ##                                 1)[,,1], silent=TRUE)
- ##        if(inherits(finalmat, "try-error")) browser()
-
- ##        conn.remain <- sum(web > 0) - sum(finalmat > 0)
- ##        if (conn.remain > 0) {
- ##            add <- sample(which(finalmat == 0), conn.remain,
- ##                          prob = P1[finalmat == 0])
- ##            finalmat[add] <- 1
- ##        }
- ##        int.remain <- sum(web) - sum(finalmat)
- ##        if (int.remain > 0) {
- ##            add <- sample(which(finalmat > 0), int.remain,
- ##                          prob = P1[finalmat > 0], replace = TRUE)
- ##            finalmat[as.numeric(names(table(add)))] <-
- ##                finalmat[as.numeric(names(table(add)))] + table(add)
- ##        }
- ##        finalmat
- ##    }
-
-
+## Vazquez-style null: retain species, link count and total interactions.
+## Link probabilities are proportional to observed marginal interaction totals.
+## Marginal totals themselves are not fixed.
 vaznull.fast <- function(web) {
-    rs.p <- rowSums(web)/sum(web)
-    cs.p <- colSums(web)/sum(web)
-    P <- P1 <- tcrossprod(rs.p, cs.p)
-    finalmat <- matrix(0, nrow(web), ncol(web))
-    n.int.finalmat <- 0
-    while (n.int.finalmat < sum(dim(web))) {
-        sel <- sample(1:length(web), 1, prob = P, replace = TRUE)
-        selc <- floor((sel - 1)/(dim(web)[1])) + 1
-        selr <- ((sel - 1)%%dim(web)[1]) + 1
-        if (sum(finalmat[, selc]) == 0 | sum(finalmat[selr,
-                                                      ]) == 0) {
-            finalmat[sel] <- 1
-            P[sel] <- 0
-        }
-        n.int.finalmat <- sum(rowSums(finalmat) > 0) + sum(colSums(finalmat) >
-                                                           0)
-    }
-    conn.remain <- sum(web > 0) - sum(finalmat > 0)
-    if (conn.remain > 0) {
-        if (length(which(finalmat == 0)) == 1) {
-            add <- which(finalmat == 0)
-        }
-        else {
-            add <- sample(which(finalmat == 0), conn.remain,
-                          prob = P1[finalmat == 0])
-        }
-        finalmat[add] <- 1
-    }
-    int.remain <- sum(web) - sum(finalmat)
-    if (int.remain > 0) {
-        add <- sample(which(finalmat > 0),
-                      int.remain, prob = P1[which(finalmat >
-                                                  0)], replace = TRUE)
-        finalmat[as.numeric(names(table(add)))] <-
-            finalmat[as.numeric(names(table(add)))] +
-                table(add)
-        }
-        finalmat
-    }
+  probability <- outer(rowSums(web), colSums(web)) / sum(web)^2
+  finalmat <- matrix(0, nrow(web), ncol(web), dimnames=dimnames(web))
+  n.links <- sum(web > 0)
+
+  ## First give every species at least one link. Do not choose a link
+  ## that makes it impossible to cover all species within the link budget.
+  while (any(rowSums(finalmat) == 0) || any(colSums(finalmat) == 0)) {
+    missing.rows <- rowSums(finalmat) == 0
+    missing.cols <- colSums(finalmat) == 0
+    remaining <- n.links - sum(finalmat > 0) - 1
+    feasible <- outer(missing.rows, missing.cols, function(r, c) {
+      (r | c) & pmax(sum(missing.rows) - r, sum(missing.cols) - c) <= remaining
+    })
+    cells <- which(feasible & finalmat == 0)
+    cell <- cells[sample.int(length(cells), 1, prob=probability[cells])]
+    finalmat[cell] <- 1
+  }
+
+  ## Add links to reach observed connectance.
+  n.add <- n.links - sum(finalmat > 0)
+  if (n.add > 0) {
+    cells <- which(finalmat == 0)
+    add <- cells[sample.int(length(cells), n.add, prob=probability[cells])]
+    finalmat[add] <- 1
+  }
+
+  ## Allocate the remaining visits only among realized links.
+  n.add <- sum(web) - n.links
+  if (n.add > 0) {
+    cells <- which(finalmat > 0)
+    add <- sample.int(length(cells), n.add, replace=TRUE, prob=probability[cells])
+    finalmat[cells] <- finalmat[cells] + tabulate(add, nbins=length(cells))
+  }
+  finalmat
+}
